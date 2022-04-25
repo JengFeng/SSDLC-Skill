@@ -1,0 +1,909 @@
+.boardBox{
+    box-sizing: border-box;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    width: calc(100% - 240px);
+    height: inherit;
+    background: #edf1f3;
+    padding: 70px 10px 10px 10px;
+    overflow-y: scroll;
+    transition: all 0.3s;
+}
+.boardBox.active{
+  z-index: 2;
+}
+.boardBoxPhone {
+  width: calc(100% - 0px);
+}
+
+.boardBox > div{
+    border-radius: 16px;
+    margin-bottom: 20px; 
+}
+/*應變按鈕切換*/
+.boardBox > .StrainPeriodBox{
+  border-radius: 0;
+}
+.StrainPeriodBox{
+  display: flex;
+  max-width: 1000px;
+  padding: 10px 0;
+  margin: 0 auto;
+  border-bottom: 1px solid #b3b3b3;
+}
+.boardBox > .StrainPeriodBox a.btn-strain{
+  border-radius: 0;
+  padding: 10px 0;
+  overflow: visible;
+}
+.btn-strain{
+  position: relative;
+  flex: 1;
+  text-align: center;  
+  padding: 10px 0;
+  margin: 0 3%;
+}
+.btn-strain > div{
+}
+.btn-strain .time{
+   line-height: 16px;
+   font-size: 1.2rem;
+   color: #999;
+}
+.btn-strain .title{
+   line-height: 30px;
+   font-size: 2.2rem;
+   color: #2f353a;
+   font-weight: bolder;
+}
+.btn-strain .titleTip{
+   line-height: 16px;
+   font-size: 1.6rem;
+   color: #2f353a;
+}
+.btn-strain .circle{
+   display: inline-block;
+   width: 30px;
+   height: 30px;
+   line-height: 30px;
+   border-radius: 50%;
+   font-size: 1.6rem;
+   color: #fff;
+   text-align: center;
+   background: #2f353a;
+}
+.btn-strain.active{
+  background: #fff;
+}
+.btn-strain.active::before{
+  content: " ";
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: -30px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 117px 30px;
+  border-color: transparent transparent #ffffff transparent;
+}
+.btn-strain.active::after{
+  content: " ";
+  z-index: 2;
+  position: absolute;
+  bottom: 0;
+  right: -30px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 117px 30px 0 0;
+  border-color: #ffffff transparent transparent transparent;
+  
+}
+.btn-strain.active .circle{
+  background: #f7931e;
+}
+@media (max-width: 768px){
+  .StrainPeriodBox{
+    flex-wrap: wrap;
+    display: flex;
+    max-width: 100%;
+  }
+  .btn-strain{
+    flex: none;
+    width: 40%;
+  }
+}
+
+/*stepBox*/
+.stepBox{
+  position: relative;
+  padding: 0 10%;
+}
+.stepList{
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+.stepBox .title{
+  text-align: center;
+  line-height: 3.8rem;
+  padding: 10px 0;
+  font-weight: bolder;
+  font-size: 4rem;
+  width: 100%;
+}
+.step{
+  flex: 1;
+  margin: 0 5px;
+  background: #fff;
+  padding: 20px 20px;
+  border: 1px solid #e6e6e6;
+  font-size: 1.8rem; 
+  color: #838282;
+}
+.arrow{
+  display: flex;
+  align-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.0rem;
+}
+.arrow .ion-android-arrow-down{
+  display: none;
+}
+.stepBox .text-center{
+  font-size: 3rem;
+  color: #c3c4c4;
+  font-weight: bolder;
+}
+.step:hover{
+  background: #fff6a4;
+  color: #222;
+}
+.step:hover .text-center{
+  color: #222;
+}
+.step.active{
+  background: #fff348;
+  color: #222;
+  font-weight: bolder;
+}
+
+.step.active .text-center{
+  color: #727171;
+}
+.stepBox #closeStepBox{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.stepBox .stepBtnBox{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.stepBtnBox a.stepBtn-close{
+  display: inline-block;
+}
+.stepBtnBox a.stepBtn-open{
+  display: none;
+}
+.stepBtnBox{
+  display: block;
+}
+.stepBtnBox a{
+  color: #000;
+}
+
+@media (max-width: 768px){
+  .stepBox{
+    padding: 0;
+  }
+  .arrow {
+    display: block;
+    text-align: center;
+  }
+  .arrow .ion-android-arrow-forward{
+    display: none;
+  }
+  .arrow .ion-android-arrow-down {
+    display: block;
+}
+  .stepList{
+    display: block;
+    padding: 0%;
+  }
+  .stepBox .stepBtnBox {
+    top: -16px;
+    right: -10px;
+  }
+  
+}
+/*篩選條件*/
+.boardBox .strainMenuBg{
+  display: none;
+  z-index: 1000000;
+  position: fixed;
+  top: 0;
+  left: 130px;
+  width: calc(100% - 130px);
+  height: 100%;
+  background: rgba(0,0,0,0.5); 
+  overflow-y: hidden;
+  padding: 10px 10px;
+  border-radius: 0px;
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  -o-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+.strainMenuBg.in{
+  display: block;
+  opacity: 1;
+}
+.strainMenu{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  min-height: 30%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 20px 20px 10px 20px;
+  background: #fff;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  -webkit-transform: translate(-50%,-150%);
+  -ms-transform: translate(-50%,-150%);
+  -o-transform: translate(-50%,-150%);
+  transform: translate(-50%,-150%);
+  -webkit-transition: -webkit-transform 0.5s ease-out;
+  -o-transition: -o-transform 0.5s ease-out;
+  transition: -o-transform 0.5s ease-out;
+  transition: transform 0.5s ease-out;
+}
+.strainMenuBg.in .strainMenu.fadeIn{
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+/*checkbox樣式*/
+/* Customize the label (the container-check) */
+.container-check {
+    position: relative;
+    line-height: 20px;
+    padding-left: 35px;
+    padding: 10px 10px 10px 50px;
+    margin-bottom: 12px;
+    margin: 10px 10px;
+    cursor: pointer;
+    font-size: 1.6rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: #edf1f3;
+    border-radius: 6px;
+}
+
+  /* Hide the browser's default checkbox */
+  .container-check input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark-board {
+    position: absolute;
+    top: 8px;
+    left: 14px;
+    /* transform: translate(-50%,-50%); */
+    height: 25px;
+    width: 25px;
+    background-color: #b3b3b3;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container-check:hover input ~ .checkmark-board {
+    background-color: #5c5c5c;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container-check input:checked ~ .checkmark-board {
+    background-color: #000000;
+  }
+  .container-check.active {
+    background-color: #ffe120;
+  }
+  /* Create the checkmark-board/indicator (hidden when not checked) */
+  .checkmark-board:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  /* Show the checkmark-board when checked */
+  .container-check input:checked ~ .checkmark-board:after {
+    display: block;
+  }
+  /* Style the checkmark-board/indicator */
+  .container-check .checkmark-board:after {
+    left: 9px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+
+  /* .container-check .moreInput{
+    width: auto;
+    line-height: 20px;
+    vertical-align: top;
+    font-size: 2rem;
+    color: #0066ff;
+  }
+  .container-check .moreInput input{
+    position: static;
+    display: inline-block;
+    margin: 0;
+    margin-right: 4px;
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+  } */
+
+@media (min-width: 1024px){
+  .container-check.col-md-3 {
+    width: 22.3%;
+  }
+}
+
+
+@media (max-width: 768px){
+  .container-check {
+      position: relative;
+      line-height: 20px;
+      padding-left: 35px;
+      padding: 10px 10px 10px 50px;
+      margin: 2px 2px;
+  }
+  .strainMenu{
+      padding: 10px 10px 10px 10px;
+  }
+  .container-check.col-xs-6 {
+      width: 48.5%;
+  }
+}
+@media (max-width: 375px){
+  .container-check.col-xs-6 {
+    width: 100%;
+  }
+}
+@media (  max-width: 768px){
+  .boardBox .strainMenuBg{
+    position: fixed;
+    left: 130px;
+    width: calc(100%-130px);
+  }
+  .boardBox .strainMenuBg.full{
+    position: fixed;
+    left: 0px;
+    width: calc(100%);
+  }
+  .strainMenu {
+      height: 80%;
+      overflow-y: scroll;
+  }
+}
+
+
+
+/*重點應變任務*/
+.strainList{
+    padding: 20px 20px 10px 20px;
+    margin: 0 10px;
+    background: #fff;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+}
+.boardTitleBox{
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.boardTitle{
+  display: inline-block;
+  font-size: 3.4rem;
+  line-height: 34px;
+  padding-bottom: 4px;
+  font-weight: bold;
+}
+.boardTitle > span{
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    margin-left: 10px;
+    border-radius: 50%;
+    background: #d60000;
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+    vertical-align: top;
+}
+
+.strainLinkBox{
+  display: none;
+  padding-top: 10px;
+  border-top: 1px solid #f0ecec;
+}
+.strainLink{
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+  height: auto;
+  transition: all 0.3s;
+}
+.strainLink li{
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background: #f2f2f2;
+  border-radius: 6px;
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.15);
+  color: #000;
+}
+.strainLink a{
+  display: block;
+  line-height: 30px;
+  color: #000;
+  font-size: 2rem;
+}
+@media (min-width: 768px){
+  .strainLink > li {
+    width: 23.2%;
+  }
+}
+@media (min-width: 992px){
+  .strainLink > li {
+      width: 23.7%;
+  }
+}
+@media (min-width: 1200px){
+  .strainLink > li {
+      width: 24%;
+  }
+}
+.strainLink i{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 6px;
+    text-align: center;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid #e6e6e6;
+    color: #000;
+    font-size: 2rem;
+    vertical-align: middle;
+}
+.strainLink i:before {
+  line-height: 30px;
+}
+.strainLink li:hover,
+.strainLink li:focus{
+  background: #000;
+}
+.strainLink li:hover a,
+.strainLink li:focus a{
+  color: #fff;
+}
+/*浮動區塊*/
+.floatBlock{
+  width: 100%;
+  padding: 20px 0 10px 0;
+  /* display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start; */
+}
+
+.floatBlock > div{
+  padding-left: 0;
+  padding-right: 0; 
+}
+.block_box{
+  padding-left: 0;
+  padding-right: 0; 
+}
+.block_box > .row{
+  margin-left: 8px;  
+  margin-right: 8px;
+  margin-bottom: 1.4rem;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+}
+@media (min-width: 1200px){
+  .block_box.col-lg-4 {
+      width: 33.3%;
+  }
+}
+.floatTitle{
+  display: block;
+  padding: 10px 20px 4px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  font-size: 2.0rem;
+  line-height: 30px;
+  color: #666;
+  font-weight: bold;
+}
+
+/*共用顏色*/
+.fontColor-red{ color:#ff0000;}
+.fontColor-blue{ color:#0066ff;}
+.fontColor-black{ color:#2f353a;}
+.fontColor-green{ color: #00b767;}
+.fontColor-orange{ color: #ff6600;}
+
+.alertBtn{
+  display: inline-block;
+  padding: 0px 20px;
+  text-align: center;
+  border-radius: 28px;
+  overflow: hidden;
+  font-size: 2.0rem;
+}
+
+.boardBox a[class |= btn] {
+  padding: 0px 20px;
+  text-align: center;
+  border-radius: 28px;
+  overflow: hidden;
+  font-size: 2.0rem;
+}
+.btn-gray{ background:#a7a7a7; color:rgb(247, 247, 247); border: 1px solid rgba(165, 165, 165, 0.15); }
+.btn-red{ background:#ff0000; color:#fff; border: 1px solid rgba(0,0,0,0.15); }
+.btn-yellow{ background:#ffc400; color:#1a1d20; border: 1px solid rgba(0,0,0,0.15); }
+.btn-blue{ background:#0066ff; color:#fff; border: 1px solid rgba(0,0,0,0.15); }
+.btn-black{ background:#2f353a; color:#fff; border: 1px solid rgba(0,0,0,0.15); }
+.btn-green{ background: #00b767; color:#fff; border: 1px solid rgba(0,0,0,0.15); }
+.btn-orange{ background: #ff6600; color:#fff; border: 1px solid rgba(0,0,0,0.15); }
+.btn-lightgray { background: #eee; color: #777; border: 1px solid rgba(165, 165, 165, 0.55);}
+.btn-lightblack{ background: #888; color: #fff;}
+
+
+
+
+
+.bg-red{ background:#ff0000; color:#fff; }
+.bg-yellow{ background:#ffc400; color:#1a1d20; }
+.bg-blue{ background:#2f3a54; color:#fff; }
+.bg-lightblue{ background:#0066ff; color:#fff; }
+.bg-black{ background:#2f353a; color:#fff; }
+.bg-green{ background: #4c774c; color:#fff; }
+.bg-lightgreen{ background: #28aa3e; color:#fff; }
+.bg-orange{ background: #ff6600; color:#fff; }
+
+/*主題圖*/
+
+.phone-closeStrain{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: none;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  text-align: center;
+  font-size: 1.6rem;
+  background: #2f353a;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  border: 2px solid #fff;
+}
+@media (max-width: 768px) {
+  .phone-closeStrain{
+    display: block;
+  }
+  .web-closeStrain{
+    display: none;
+  }
+}
+
+
+.boardBox .text-center{
+  width: 100%;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.optionsBtn{
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0px 20px;
+  text-align: center;
+  border-radius: 28px;
+  overflow: hidden;
+  font-size: 2.0rem;
+}
+.optionsBtn:hover,
+.optionsBtn:focus{
+  background: #2f3a54;
+  color: #fff;
+}
+.strainMenu a:hover,
+.strainMenu a:focus{
+  background: #2f3a54;
+  color: #fff;
+}
+/*flex多欄平均寬*/
+.Content-inlinFlex{/* border: 1px solid #ff6600; */
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  padding: 6px 20px 6px 20px;
+}
+.Content-inlinFlex:hover{
+  background: #f9ffd9;
+}
+.Content-inlinFlex > div{
+  flex: 1;
+}
+.contentflex-Title{
+  text-align: center;
+  font-size: 2.0rem;
+}
+.total{
+  line-height: 32px;
+  font-size: 3.2rem;
+}
+.total > span{
+  font-size: 1.6rem;
+  color: #000;
+  margin-left: 6px;
+}
+.bg .total > span{
+  color: #fff;
+}
+.footerBox{
+  background: #edf1f3;
+  text-align: center;
+  margin-bottom: 0;
+}
+/*單行無限高*/
+.content-block{
+  border-bottom: 1px solid #eaeaea;
+}
+.bg-black{
+  background: #2f353a;
+  color: #fff;
+}
+.contentblock-Title{
+  /* display: flex; */
+  line-height: 24px;
+  padding: 0px 10px;
+  font-size: 2.0rem;
+  align-items: center;
+}
+.contentblock-Title img{
+  display: inline-block;
+  margin-right: 10px;
+}
+/* boardType1  */
+.boardType1 .total{
+  text-align: center;
+}
+
+/* boardType2  */
+.boardType2 .total{
+  text-align: right;
+}
+.boardType2 .contentblock-Title{
+  display: flex;
+  line-height: 24px;
+  padding: 4px 10px;
+  font-size: 2.0rem;
+  align-items: center;
+}
+
+/* boardType3  */
+.boardType3 .total{
+  text-align: right;
+}
+.boardType3 .Content-inlinFlex:nth-child(1) {
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* boardType4  */
+.boardType4 .total{
+  text-align: right;
+}
+.boardType4 .alertBtn {
+  min-width: 80px; 
+}
+.boardType4 .Content-inlinFlex:nth-child(even){
+  background: #f8f8f8;
+}
+.boardType4 .Content-inlinFlex:hover{
+  background: #f9ffd9;
+}
+.boardType4 .Content-inlinFlex {
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* boardType5  */
+.boardType5 .contentblock-Title {
+  display: flex;
+  line-height: 30px;
+  padding: 10px 20px;
+  font-size: 2.0rem;
+  align-items: center;
+}
+
+/* boardType6  */
+.boardType6 .Content-inlinFlex > div:nth-child(1) {
+  flex: 1;
+}
+.boardType6 .Content-inlinFlex > div:nth-child(2) {
+  flex: 5;
+}
+.boardType6 .Content-inlinFlex {
+  border-bottom: 1px solid #eaeaea;
+}
+.boardType6 .total{
+  text-align: right;
+}
+.boardType6 .Content-inlinFlex:nth-child(even){
+  background: #f8f8f8;
+}
+.boardType6 .Content-inlinFlex:hover{
+  background: #f9ffd9;
+}
+
+/* boardType7  */
+.boardType7 .Content-inlinFlex > div:nth-child(1) {
+  flex: 3;
+}
+.boardType7 .Content-inlinFlex > div:nth-child(2) {
+  flex: 4;
+}
+.boardType7 .Content-inlinFlex {
+  border-bottom: 1px solid #eaeaea;
+}
+.boardType7 .total{
+  text-align: right;
+}
+.boardType7 .Content-inlinFlex:nth-child(even):not(.bg){
+  background: #f8f8f8;
+}
+.boardType7 .Content-inlinFlex:nth-child(even):not(.bg):hover{
+  background: #f9ffd9;
+}
+.boardType7 .Content-inlinFlex:hover{
+  background: #f9ffd9;
+}
+.boardType7 .Content-inlinFlex.bg:hover{
+  background: #000;
+}
+/* boardType8  */
+.boardType8 .total {
+  text-align: center;
+}
+.blockGuoup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  width: 100%;
+}
+.blockGuoup .Content-inlinFlex {
+  display: inline-flex;
+  align-items: stretch;
+  width: 33.3%;
+  padding: 6px 10px 6px 10px;
+}
+.blockGuoup .contentblock-Title {
+  /* display: flex; */
+  justify-content: center;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  font-size: 2rem;
+}
+@media (max-width: 1366px) {
+  .blockGuoup .Content-inlinFlex {
+    width: 49.5%;
+    padding: 6px 4px 6px 4px;
+  }
+}
+@media (max-width: 1024px) {
+  .blockGuoup .Content-inlinFlex {
+    width: 19.9%;
+    padding: 6px 4px 6px 4px;
+  }
+}
+@media (max-width: 768px) {
+  .blockGuoup .Content-inlinFlex {
+    width: 49.5%;
+    padding: 6px 4px 6px 4px;
+  }
+}
+/* boardType9 */
+.block_box .tableBox{
+  padding: 0px;
+}
+.boardTB thead tr{
+  background: #ff8f8f;
+}
+.boardTB thead tr th{
+  padding: 4px 0;
+  color: #2f353a;
+  font-size: 2.0rem;
+  text-align: center;
+  font-weight: bolder;
+}
+.boardTB tbody tr{
+  border-bottom: 1px solid #eaeaea;
+}
+.boardTB tbody tr:nth-last-child(1){
+  border-bottom: 0px solid #eaeaea;
+}
+.boardTB tbody tr td{
+  padding: 4px 0;
+  color: #2f353a;
+  font-size: 2.0rem;
+  text-align: center;    
+  vertical-align: top;
+}
+.boardTB tbody tr th{
+  color: #2f353a;
+  font-size: 2.0rem;
+  text-align: center;
+}
+.boardTB tbody span{
+  font-size: 3.2rem;
+}
+.boardTB tbody .alertBtn {
+  vertical-align: top;
+}
+
+/*燈箱套件*/
+.imgSliderBox p {
+  display: block;
+  margin: 0 auto;
+  max-width: 1024px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.imgSlider {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.sliderImg {
+  margin: 0 4px;
+}
+
+.imgSlider img {
+  height: 400px;
+  width: auto;
+  margin: 0 auto;
+}

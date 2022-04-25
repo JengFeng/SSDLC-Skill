@@ -3,12 +3,17 @@ using TWNPPublic.Common.Attributes;
 
 namespace TWNPPublic.Controllers
 {
-    [Area("UserPanel")]
     public class QualityController : Controller
     {
-        public IActionResult Index()
+        public IActionResult WaterQuality()
         {
             return View();
         }
+        public IActionResult UseWaterQuery()
+        {
+            return View();
+        }
+        
     }
+    
 }

@@ -1,52 +1,107 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TWNPPublic</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/TWNPPublic.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TWNPPublic</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","Dashboard",new{area = "UserPanel"})">首頁</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<html lang="zh-Hant">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - TWNPPublic - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="~/images/favicon.ico" />
+    <link rel="bookmark" href="~/images/favicon.ico" />
+    <title>@ViewData["Title"] -智慧水網民眾版</title>
+
+    <link rel="stylesheet" href="~/css/All.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+
+    <!-- <script src="~/js/jquery-2.2.0.min.js" ></script> -->
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/layout.js"></script>
+
+    <!-- custom scrollbars plugin -->
+    <!-- custom scrollbar stylesheet -->
+    <link rel="stylesheet" href="~/js/mCustomScrollbar/jquery.mCustomScrollbar.css">
+    <script src="~/js/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+    <script src="~/js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- 跑馬燈 -->
+    <script type="text/javascript" src="~/js/marquee/jquery.marquee.js"></script>
+
+    <!-- fancyBox套件 -->
+    <link rel="stylesheet" href="~/js/fancyBox/jquery.fancybox.css" />
+    <script type="text/javascript" src="~/js/fancyBox/jquery.fancybox.js"></script>
+
+
+
+    <!-- footable套件 -->
+    <link rel="stylesheet" href="~/js/footable/footable.bootstrap.css" />
+    <script type="text/javascript" src="~/js/footable/footable.js"></script>
+
+    <script type="text/javascript">
+        // footable
+        $(document).ready(function () {
+            $(".footable").footable();
+        });
+    </script>
+
+    <script type="text/javascript">
+        //fancybox圖片
+        $(document).ready(function () {
+            $(".fancybox").fancybox();
+        });
+
+        //fancybox 小頁面
+        $(document).ready(function () {
+
+            if ($(window).width() < 768) {
+                $(".fbox_Add,.fbox_Modify,.fbox_View").fancybox({
+                    type: 'iframe',
+                    autoSize: false,
+                    width: '99.5%',
+                    height: '98%'
+                });
+            } else {
+
+                $(".fbox_Add").fancybox({
+                    type: 'iframe',
+                    autoSize: false,
+                    width: '60%',
+                    height: '98%'
+                });
+                $(".fbox_Modify").fancybox({
+                    type: 'iframe',
+                    autoSize: false,
+                    width: '60%',
+                    height: '98%'
+                });
+                $(".fbox_View").fancybox({
+                    type: 'iframe',
+                    autoSize: false,
+                    width: '80%',
+                    height: '98%'
+                });
+            }
+
+        });
+
+    </script>
+
+</head>
+<body onload="init();">
+
+
+    
+        
+        @RenderBody()
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

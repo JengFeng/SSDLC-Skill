@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "警示設定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+	$(function(){	
+		$(".menuList > a:nth-child(4)").addClass("active").siblings().removeClass("active");
+	});
+</script>
+
+<div class="pageWrap">
+	<partial name="_MenuPartial" />
+	<div class="pageArea">
+        <partial name="_NewsBoxPartial" />
+        <div class="mainGroup">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">警示設定</li>
+                </ol>
+            </nav>
+            <div class="unitTitle">
+                <i class="bi bi-person-square"></i>
+                基本資料
+            </div>
+            <div class="formGroup">
+                <div class="mb-3 row">
+                    <label for="inputText" class="col-sm-3 col-form-label"><i class="bi bi-phone"></i> 手機簡訊設定</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="inputText">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="inputEmail1" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i> 電子郵件設定</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="inputEmail1">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="inputEmail2">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="inputEmail3">
+                    </div>
+                </div>
+            </div>
+            <div class="unitTitle">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                警訊設定管理
+            </div>
+            <div class="formGroup">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio1" checked>
+                    <label class="form-check-label" for="radio1">
+                    無警示
+                    </label>
+                </div>
+
+                <div class="title">連續七天累積用水量</div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio2">
+                    <label class="form-check-label" for="radio2">
+                    較上週增加30%(含)以上
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio3">
+                    <label class="form-check-label" for="radio3">
+                    較上週增加50%(含)以上
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio4">
+                    <label class="form-check-label" for="radio4">
+                    較最近一月的週平均用水量突增30%(含)以上
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio5">
+                    <label class="form-check-label" for="radio5">
+                    較最近一月的週平均用水量突增50%(含)以上
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio5">
+                    <label class="row m-0" for="radio5">
+                        較上週增加
+                        <div class="col-auto">
+                            <input type="text" class="form-control" id="" value="">
+                        </div>
+                        度(含)以上(可自行輸入，惟至少50度以上)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio6">
+                    <label class="form-check-label" for="radio6">
+                    較去年同期突增30%(含)以上
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio7">
+                    <label class="form-check-label" for="radio7">
+                    較去年同期突增50%(含)以上
+                    </label>
+                </div>
+                <div class="title">連續三十天累積用水量</div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio8">
+                    <label class="form-check-label" for="radio8">
+                    較去年同期突增30%(含)以上
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio9">
+                    <label class="form-check-label" for="radio9">
+                    較去年同期突增50%(含)以上
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+	</div>
+
+
+</div><!-- wrap end -->

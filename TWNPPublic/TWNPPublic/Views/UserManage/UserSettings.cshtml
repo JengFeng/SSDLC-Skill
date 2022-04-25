@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "警示設定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+	$(function(){	
+		$(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
+	});
+</script>
+
+<form class="pageWrap">
+    <partial name="_MenuPartial" />
+	<div class="pageArea">
+        <partial name="_NewsBoxPartial" />
+        <div class="mainGroup">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">密碼設定</li>
+                </ol>
+            </nav>
+            <div class="unitTitle">
+                <i class="bi bi-person-square"></i>
+                用戶密碼管理
+            </div>
+            <div class="formGroup">
+                <div class="mb-3 row">
+                    <label for="inputText" class="col-sm-3 col-form-label"><i class="bi bi-phone"></i> 手機簡訊設定</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputText">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="inputEmail1" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i> 電子郵件設定</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputEmail1">
+                    </div>
+                </div>
+            </div>
+            <div class="btnGroup">
+                <a class="btn-green-o" href="javascript:;">儲存</a>
+                <a class="btn-lightGrey-o" href="javascript:;">重填</a>
+            </div>
+        </div>
+
+
+	</div>
+
+
+</form><!-- wrap end -->

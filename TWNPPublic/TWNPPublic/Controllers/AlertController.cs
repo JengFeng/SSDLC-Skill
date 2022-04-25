@@ -10,5 +10,10 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
+        public IActionResult AlertSettings()
+        {
+            return View();
+        }
     }
+    
 }

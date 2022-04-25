@@ -10,5 +10,9 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
+        public IActionResult UserSettings()
+        {
+            return View();
+        }
     }
 }

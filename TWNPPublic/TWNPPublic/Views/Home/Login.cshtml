@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "登入頁面";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <link rel="stylesheet" href="~/css/Login.css">
+
+  <div class="wrap_login">
+    <div class="loginGroup animated fadeInDown">
+      <div class="InputBox">
+        <div class="logo">
+          <div class="companyName">用戶用水</div>
+          <div class="systemTitle">查詢平台</div>
+        </div>
+        <div class="formBox">
+          <div class="form-group">
+            <label>帳號(水號)</label>
+            <input type="email" class="form-control" placeholder="請輸入您的帳號">
+          </div>
+          <div class="form-group">
+            <label>密碼</label>
+            <input type="password" class="form-control" placeholder="請輸入您的密碼">
+          </div>
+          <div class="form-group">
+            <label>驗證碼</label>
+            <div class="codeGroup">
+              <input type="text" class="form-control width100">
+              <span class="code"><img src="~/images/code.jpg"></span>
+              <a class="btn-grey-o" href="javascript:;">重新整理</a>
+            </div>
+          </div>
+          
+          <div class="btnGroup">
+              <a class="btn-green-o" href="@Url.Action("Index","Dashboard")">送出</a>
+              <a class="btn-lightGrey-o" href="javascript:;">清除</a>
+          </div>
+
+
+        </div>
+      </div><!-- InputBox -->
+
+
+
+    </div><!-- loginGroup end -->
+  </div><!-- wrap_login end-->
+  
