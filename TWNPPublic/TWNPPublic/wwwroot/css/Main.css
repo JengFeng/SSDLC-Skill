@@ -1,0 +1,818 @@
+/*儀錶板*/
+a{
+    text-decoration: none;
+}
+iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.framewinArea {
+    position: relative;
+    margin-top: 70px;
+    width: calc(100% - 240px);
+    height: calc(100% - 70px);
+    margin-left: 240px;
+    transition: all 0.3s;
+    background: #F6F8FC;
+    overflow-y: hidden;
+}
+
+    .framewinArea.full {
+        width: calc(100% - 0px);
+        height: calc(100% - 70px);
+        margin-left: 0px;
+    }
+
+@media (max-width: 1024px) {
+
+    .framewinArea {
+        position: relative;
+        margin-top: 70px;
+        width: calc(100% - 0px);
+        height: calc(100% - 70px);
+        margin-left: 0px;
+        transition: all 0.3s;
+        background: #F6F8FC;
+        overflow-y: hidden;
+    }
+}
+
+/*bootstrap modal-fade滑出套件*/
+.purpleModal .modal-header {
+    color: #fff;
+    background-color: #484AA3;
+}
+
+    .purpleModal .modal-header h5 {
+        font-size: 1.8rem;
+    }
+
+.purpleModal .btn-close {
+    color: #fff;
+    background: none;
+    line-height: 1em;
+}
+/*按鈕*/
+.btnGroup{
+    display: flex;
+    justify-content: center;
+}
+.btnGroup a{
+    margin: 0 2px;
+}
+a[class*="btn-"],
+input[class*="btn-"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px 0 10px;
+    line-height: 1.2;
+    min-width: 80px;
+    min-height: 36px;
+    font-size: 1.6rem;
+    
+}
+input[class*="btn-"] {
+    border: 0;
+}
+a[class*="btn-"] > i{
+    margin: 0 6px;
+}
+
+.btn-green-o {
+    border-radius: 20px;
+    color: #089BAB;
+    background-color: #CCEBE5;
+    border-color: #CCEBE5;
+}
+
+    .btn-green-o:hover {
+        color: #fff;
+        background-color: #089BAB;
+        border-color: #089BAB;
+    }
+.btn-green-o-line {
+    border: 1px solid #089BAB;
+    background: #fff;
+    color: #089BAB;
+    border-radius: 20px;
+}
+
+    .btn-green-o-line:hover {
+        color: #fff;
+        background: #089BAB;
+    }
+.btn-Purple-o-line {
+    border: 1px solid #fff;
+    background: #484AA3;
+    border-radius: 20px;
+}
+
+    .btn-Purple-o-line:hover {
+        background: #3D4184;
+    }
+
+.btn-Purple-o {
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: #484AA3;
+    border-color: #484AA3;
+    border-radius: 20px;
+}
+
+    .btn-Purple-o:hover {
+        color: #fff;
+        background-color: #3D4184;
+        border-color: #3D4184;
+    }
+
+.btn-blue-o {
+    color: #fff;
+    background-color: #3975F9;
+    border-color: #3975F9;
+    border-radius: 20px;
+}
+
+    .btn-blue-o:hover {
+        color: #fff;
+        background-color: #3671D8;
+        border-color: #3671D8;
+    }
+
+.btn-grey-o {
+    color: #fff;
+    background-color: #82889A;
+    border-color: #82889A;
+    border-radius: 20px;
+}
+
+    .btn-grey-o:hover {
+        color: #fff;
+        background-color: #4D5160;
+        border-color: #4D5160;
+    }
+.btn-lightGrey-o {
+    color: #4D5160;
+    background-color: #B7B9C0;
+    border-color: #B7B9C0;
+    border-radius: 20px;
+}
+
+    .btn-lightGrey-o:hover {
+        color: #fff;
+        background-color: #82889A;
+        border-color: #82889A;
+    }
+.btn-black-o {
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: #323C54;
+    border-color: #323C54;
+    border-radius: 20px;
+}
+
+    .btn-black-o:hover {
+        color: #fff;
+        background-color: #222938;
+        border-color: #222938;
+    }
+
+.btn-yellow-o {
+    color: #fff;
+    background-color: #FFB153;
+    border-color: #FFB153;
+    border-radius: 20px;
+}
+
+    .btn-yellow-o:hover {
+        color: #fff;
+        background-color: #E59C4C;
+        border-color: #E59C4C;
+    }
+
+.btn-red-o {
+    color: #fff;
+    background-color: #FD7077;
+    border-color: #FD7077;
+    border-radius: 20px;
+}
+
+    .btn-red-o:hover {
+        color: #fff;
+        background-color: #E56A76;
+        border-color: #E56A76;
+    }
+
+
+
+/*首頁*/
+.mainArea{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 80px 10px 10px 10px;
+}
+.feeInfoGroup{
+    width: 486px;    
+    display: flex;
+    flex-direction: column;
+}
+.chartInfoGroup{
+    flex: 1;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+.unitTitle{
+    display: flex;
+    align-items: center;
+    line-height: 1;    
+    min-height: 36px;
+    padding-bottom: 10px;
+    letter-spacing: 2px;
+    font-size: 2.4rem;
+    color: #089BAB;
+    border-bottom: 1px solid #EBF7F5;
+    font-weight: bold;
+}
+.unitTitle > i{
+    font-size: 2rem;
+    margin-right: 10px;
+}
+/* 跑馬燈 */
+.newsBox{
+	display: flex; 
+    flex: 0 0 35px;
+    margin-bottom: 10px;
+    padding: 0 10px;   
+    height: 35px;
+    background: #fff;
+    border-radius: 16px 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.newsBox > div, .newsBox > ul{
+	display: inline-block;
+	vertical-align: top;
+}
+.newsIcon{
+	position: relative;
+	width: 35px;
+	height: 35px;
+    line-height: 35px;
+	text-align: center;
+    color: #089BAB;
+    font-size: 2rem;
+}
+
+ul.marquee{
+	margin-left: -3px;
+    list-style:none;
+    line-height:1;
+    position:relative;
+    overflow:hidden;
+    width: 100%;
+    height: 35px;
+	border-radius: 0 6px 6px 0;
+}
+ul.marquee li{position:absolute;
+    top:-999em;
+    left:0;
+    display:block;
+    white-space:nowrap;
+    font: 1.6rem Arial,Helvetica,sans-serif;
+	line-height: 35px;
+	color: #000;
+}
+ul.marquee li a{
+    color: #222938;
+}
+ul.marquee li a:hover{
+    color: #000;
+}
+
+/* 異常狀態列表 */
+.exceptionGroup{
+    padding: 20px 20px;   
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 16px 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.chartGroup{
+    flex: 1;
+    display: flex;
+    margin: 0 -4px;
+}
+.chartItem{
+    flex: 1;
+    padding: 20px 20px;
+    margin: 0 4px;
+    background: #fff;
+    border-radius: 16px 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+}
+.chartItem .unitTitle{
+}
+/* 頁碼 */
+.paginationGroup{
+    display: flex;
+    justify-content: center;
+}
+.paginationGroup .page-item.active .page-link {
+    z-index: 3;
+    color: #089BAB;
+    background-color: #CCEBE5;
+    border-color: #CCEBE5;
+}
+.paginationGroup .page-link {
+    position: relative;
+    display: block;
+    color: #089BAB;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.paginationGroup .page-item:last-child .page-link {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+.paginationGroup .page-item:first-child .page-link {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+.themeSwitch{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+.themeSwitch a{
+    min-width: 36px;
+    width: 36px;
+    min-height: 36px;
+}
+.themeSwitch .name{
+    margin: 0 10px;
+    line-height: 1.3;
+}
+.chartItem{
+    display: flex;
+    flex-direction: column;
+}
+.chartBox{
+    flex: 1;
+}
+
+/*用水情形*/
+.feeInfoGroup{
+    padding-right: 10px;
+}
+.feeInfoGroup .userName{
+    width: 100%;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #003D59;
+}
+.stateGroup{
+    position: relative;
+    display: flex;
+    flex-direction: column;    
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.circularChart{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 18px solid #089BAB;
+    background: #fff url(../Images/bg_water.png)no-repeat;
+    background-position: center 80px;
+}
+.circularRed{ border-color: #FF0000; }
+.circularGrey{ border-color: #B7B9C0; }
+.circularOrange{ border-color: #FEAD54; }
+.circularBlue{ border-color: #5391C7; }
+.circularGreen{ border-color: #089BAB; }
+.circularLightGreen{ border-color: #85F9B6; }
+
+
+.circularChart::after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 10px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.circularChart .name{
+    font-size: 2rem;
+    color: #003D59;
+}
+.circularChart a{
+    z-index: 2;
+    min-height: 30px;
+    padding: 0 6px;
+    background: rgba(255,255,255,0);
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.circularChart a i{
+    margin: 0;
+}
+.totalUsageGroup{
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+.totalUsageGroup .name{
+    line-height: 1;
+    font-size: 2rem;
+    color: #003D59;
+}
+.totalUsage{
+    margin-left: 20px;
+    line-height: 1;
+    font-size: 5rem;
+    color: #089BAB;
+    font-weight: bold;
+}
+.totalUsage span{
+    padding-left: 20px;
+    font-size: 1.4rem;
+    color: #003D59;
+}
+.updateItem{
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    line-height: 1;
+    color: #B7B9C0;
+    font-size: 1.4rem;
+}
+.costGroup{
+    display: flex;
+    width: 100%;
+    padding-top: 10px;
+}
+.costGroup .costItem:nth-child(2){
+    margin: 0 6px;
+}
+.costItem{
+    flex: 1;
+    display: flex;    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 16px 16px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+}
+.costItem .name{
+    width: 100%;
+    padding-bottom: 10px;
+    line-height: 1.3;
+    font-size: 2rem;
+    color: #003D59;
+    border-bottom: 1px solid #EBF4F5;
+    text-align: center;
+}
+.costItem .costTotal{
+    font-size: 3.6rem;
+    color: #089BAB;
+    font-weight: bold;
+}
+.costItem .costTotal{
+    display: flex;
+    align-items: center;
+    line-height: 1.3;
+}
+.costItem .costTotal span{
+    font-size: 1.4rem;
+    padding-left: 10px;
+}
+.costItem .costTotal i{
+    font-size: 1.4rem;
+    padding-right: 10px;
+}
+/* 月曆套件 */
+.fullcalendarGroup{
+    flex: 1;
+    padding: 20px 20px;
+    margin: 0;
+    background: #fff;
+    border-radius: 16px 16px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+}
+#calendar {
+    width: 100%;
+  }
+.fc-view-harness{
+    
+}
+
+@media (max-width: 1024px){
+    .mainArea {
+        flex-direction: column;
+        overflow: scroll;
+    }
+    .feeInfoGroup {
+        display: inline-flex;
+        flex-wrap:wrap;
+        flex-direction: row;
+        width: 100%;
+        padding-right: 0px;
+        margin: 0 -6px 10px -6px;
+    }
+    .stateGroup {
+        width: 50%;
+        margin: 0 6px;
+    }
+    .chartBox {
+        flex: auto;
+        height: 260px;
+    }
+}
+@media (max-width: 768px){
+    .stateGroup {
+        width: 100%;
+        margin: 0 6px 10px 6px;
+    }    
+    .fullcalendarGroup {
+        min-height: 410px;
+    }
+}
+@media (max-width: 540px){
+    .costItem .costTotal {
+        font-size: 2.2rem;
+    }
+    .costItem .costTotal span {
+        font-size: 1.4rem;
+        padding-left: 0;
+    }
+    .costItem .costTotal i {
+        padding-right: 0px;
+    }
+    .feeInfoGroup {
+        margin: 0;
+    }
+    .stateGroup {
+        margin: 0 0px 10px 0px;
+    }
+    .fullcalendarGroup {
+        margin-bottom: 10px;
+    }
+    .chartGroup {
+        flex-direction: column;
+        margin: 0 -4px;
+    }
+    .chartItem {
+        margin-bottom: 10px;
+    }
+}
+/*內頁*/
+.pageArea{
+    min-width: 330px;
+    width: 1280px;
+}
+.mainGroup{
+    padding: 20px 20px;   
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 16px 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.formGroup{
+    padding: 10px 10px;
+}
+.formGroup .title{
+    color: #089BAB;
+    font-size: 2rem;
+}
+/*麵包屑*/
+.breadcrumb{
+    display: inline-flex;
+    padding: 6px 20px;
+    border: 1px solid #EBF4F5;
+    background: #F8FCFC;
+    border-radius: 20px 20px;
+}
+.breadcrumb li{
+    color: #089BAB;
+}
+.breadcrumb a{
+    color: #B4B3B3;
+}
+.breadcrumb a:hover{
+    color: #323C54;
+}
+.breadcrumb-item.active {
+    color: #089BAB;
+    font-weight: bold;
+}
+/*開啟圖台按鈕*/
+.toggleMapGroup{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.toggleMapGroup a{
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0;
+}
+/*圖台-地圖*/
+.mapGroup{
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    padding-top: 70px;
+    background: #fff;
+    transition: all 0.5s;
+}
+.mapGroup.active{
+    left: 0;
+}
+.mapGroup .toggleMapGroup{
+    z-index: 1;
+    top: 80px;
+    right: 10px;
+}
+.mapGroup #map{
+    height: 100%;
+}
+
+
+/*地圖*/
+.configureGroup{
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    padding-top: 70px;
+    background: #fff;
+    transition: all 0.5s;
+}
+.configureGroup.active{
+    left: 0;
+}
+.configureGroup .toggleMapGroup{
+    z-index: 1;
+    top: 80px;
+    right: 10px;
+}
+.configureGroup .configureArea{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.configureArea img{
+    width: auto;
+    height: 100%;
+}
+
+/*圖表內容*/
+.pagechartGroup{
+    height: 500px;
+}
+@media (max-width: 1024px){
+
+    .configureArea{
+        overflow: hidden;
+    }
+    .configureArea img{
+        width: 100%;
+        height: max-content;
+    }
+    
+}
+@media (max-width: 540px){
+    .search-inline > * {
+        flex-shrink: 0;
+        width: 50%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+        margin-top: var(--bs-gutter-y);
+    }
+
+    
+}
+
+.wrap-page{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: hidden;
+    background: #F6F8FC;
+}
+.main {
+    height: 100%;
+    padding: 10px 10px;
+    background: #fff;
+    overflow-y: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 2%);
+}
+.wrap-page .unitTitle{
+    display: flex;
+    justify-content: center;
+    font-size: 4rem;
+}
+.cycleGroup{
+    display: flex;
+    justify-content: center;
+}
+.cycleGroup a{
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0;
+    margin: 0 1px;
+}
+.cycleGroup a.active {
+    color: #fff;
+    background-color: #089BAB;
+    border-color: #089BAB;
+}
+
+/*水質查詢*/
+.waterQualityGroup {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+.waterQualityGroup .item{
+    display: flex;
+    margin: 10px 0;
+    padding: 10px 10px;
+    border: 1px solid #089BAB;
+    border-radius: 12px 12px;
+}
+.waterQualityGroup .item:hover{
+    background: rgba(203,246,215,0.2) ;
+}
+.waterQualityGroup .imgBox{
+    flex: 0 0 260px;
+    overflow: hidden;
+    margin-right: 10px;
+    border-radius: 10px 10px;
+}
+.waterQualityGroup .imgBox img{
+    width: 100%;
+    height: auto;
+}
+.waterQualityGroup .info{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.waterQualityGroup .address{
+    font-size: 2.6rem;
+    line-height: 1;
+    font-weight: bold;
+    color: #089BAB;
+}
+.waterQualityGroup .update{
+    font-size: 1.6rem;
+    color: #666;
+}
+@media (max-width: 540px){
+
+    .waterQualityGroup .item{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .waterQualityGroup .imgBox {
+        flex: 1;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}

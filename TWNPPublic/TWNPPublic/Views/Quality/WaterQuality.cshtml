@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "水質查詢";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+	$(function(){	
+		$(".menuList > a:nth-child(2)").addClass("active").siblings().removeClass("active");
+	});
+</script>
+
+<div class="pageWrap">
+    
+    <partial name="_MenuPartial" />
+
+    	<div class="pageArea">
+        
+        <partial name="_NewsBoxPartial" />
+        <div class="mainGroup">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">水質查詢</li>
+                </ol>
+            </nav>
+
+            <div class="waterQualityGroup">
+                <a class="item" href="javascript:;">
+                    <div class="imgBox"><img src="~/images/img_wangAn.jpg" alt=""></div>
+                    <div class="info">
+                        <div class="address">望安海淡廠(Wang-an)澎湖縣望安鄉西安村37-1號</div>
+                        <div class="update">2022/04/11</div>
+                    </div>
+                </a>
+                <a class="item" href="javascript:;">
+                    <div class="imgBox"><img src="~/images/img_siyu.jpg" alt=""></div>
+                    <div class="info">
+                        <div class="address">西嶼海淡廠(Siyu)澎湖縣西嶼鄉池西村27-3號</div>
+                        <div class="update">2022/04/11</div>
+                    </div>
+                </a>
+                <a class="item" href="javascript:;">
+                    <div class="imgBox"><img src="~/images/img_magong.jpg" alt=""></div>
+                    <div class="info">
+                        <div class="address">馬公(Magong)澎湖縣馬公市烏崁里306號</div>
+                        <div class="update">2022/04/11</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+
+	</div>
+
+
+</div>

@@ -10,5 +10,15 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
+
+        public IActionResult Fancybox_chart()
+        {
+            return View();
+        }
+
+        public IActionResult test()
+        {
+            return View();
+        }
     }
 }

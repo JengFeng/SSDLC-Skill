@@ -1,0 +1,250 @@
+﻿@{
+    ViewData["Title"] = "首頁";
+}
+
+<!-- 月曆套件 -->
+<link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
+<script src='~/js/fullcalendar-5.10.1/main.js'></script>
+<script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'zh-tw',             // 地區設台灣就顯示'週一', '週二', '週三', '週四', '週五'
+            contentHeight: 250,
+            initialDate: new Date(),        // 設定預設顯示日期
+            editable: false,                // 月曆是否允許手動編輯(拖移)
+            selectable: true,               // 是否可以選取月曆
+            slotEventOverlap: false,        // 事件使否重疊覆蓋
+            dayMaxEvents: true,            // 當行程太多是否用 more 檢視完整
+            weekends: false,                // 顯示星期六跟星期日
+            allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
+            contentHeight: 300,
+            dayHeaderFormat: {
+                weekday: 'narrow'
+            },
+        });
+
+        calendar.render();
+    });
+</script>
+<!-- Easymap -->
+<script type="text/javascript" src="http://easymap.gis.tw/easymap/latest/easymap.js?"></script>
+<script type="text/javascript">
+    //easy map
+    var map = null;
+    function init() {
+        map = new Easymap('map');	//'map'為div的id
+        map.zoomToXY(new dgXY(121.3, 24.5), 9);
+
+        map.switchMapType('VectorTile')
+    }
+
+</script>
+<script>
+    $(function () {
+        $(".menuList > a:nth-child(1)").addClass("active").siblings().removeClass("active");
+
+        $(".open-mapGroup").click(function () {
+            $(".mapGroup").addClass("active");
+        });
+        $(".close-mapGroup").click(function () {
+            $(".mapGroup").removeClass("active");
+        });
+        $(".open-configureGroup").click(function () {
+            $(".configureGroup").addClass("active");
+        });
+        $(".close-configureGroup").click(function () {
+            $(".configureGroup").removeClass("active");
+        });
+
+    });
+
+</script>
+<div class="wrap">
+    <partial name="_FadeModalPartial" />
+    <partial name="_MenuPartial" />
+    <div class="mainArea">
+        <div class="feeInfoGroup">
+            <div class="stateGroup">
+                <div class="toggleMapGroup">
+                    <a class="btn-green-o open-mapGroup" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
+                    <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>
+                </div>
+                <div class="userName">歡迎  福隆大飯店！</div>
+                <!-- 六個狀態色碼
+                .circularRed{ border-color: #FF0000; }
+                .circularGrey{ border-color: #B7B9C0; }
+                .circularOrange{ border-color: #FEAD54; }
+                .circularBlue{ border-color: #5391C7; }
+                .circularGreen{ border-color: #089BAB; }
+                .circularLightGreen{ border-color: #85F9B6; }
+                -->
+                <div class="circularChart circularRed">
+                    <div class="name">用水情形</div>
+                    <a class="btn-green-o-line fbox_View" href="@Url.Action("Fancybox_chart","Dashboard")">
+                        用水分析 <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+                <div class="totalUsageGroup">
+                    <div class="name">目前指針</div>
+                    <div class="totalUsage">03554<span>度</span></div>
+                    <div class="updateItem">資料更新時間 <br>2022/02/20</div>
+                </div>
+                <div class="costGroup">
+                    <div class="costItem">
+                        <div class="name">本期<br>累積水費</div>
+                        <div class="costTotal">1600<span>元</span></div>
+                    </div>
+                    <div class="costItem">
+                        <div class="name">本期<br>預估水費</div>
+                        <div class="costTotal">2200<span>元</span></div>
+                    </div>
+                    <div class="costItem">
+                        <div class="name">去年<br>同期水費</div>
+                        <div class="costTotal">
+                            <i class="bi bi-arrow-up text-red"></i>
+                            3500<span>元</span>
+                        </div>
+                    </div>
+                    <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
+                    <!-- <i class="bi bi-dash"></i> 持平-->
+                    <!-- <i class="bi bi-arrow-up"></i> 上-->
+                    <!-- <i class="bi bi-arrow-down"></i> 下-->
+                </div>
+            </div>
+
+
+            <div class="fullcalendarGroup">
+                <div class="unitTitle"><i class="bi bi-calendar-event"></i> 用水記事</div>
+                <div class="fullcalendarItem" style="height: 300px;">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div><!-- feeInfoGroup end -->
+        <div class="chartInfoGroup">
+            
+            <partial name="_NewsBoxPartial" />
+            <div class="exceptionGroup">
+                <div class="unitTitle">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    異常狀態列表
+                </div>
+                <div class="exceptionList tableBox">
+                    <table class="footable">
+                        <thead>
+                            <tr>
+                                <th>時間</th>
+                                <th data-breakpoints="xs sm">內容</th>
+                                <th>詳細資料</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="width15">2022/02/09 12:00</td>
+                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
+                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
+                            </tr>
+                            <tr>
+                                <td class="width15">2022/02/09 12:00</td>
+                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
+                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
+                            </tr>
+                            <tr>
+                                <td class="width15">2022/02/09 12:00</td>
+                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
+                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
+                            </tr>
+                            <tr>
+                                <td class="width15">2022/02/09 12:00</td>
+                                <td>
+                                    一號水錶水壓超過5kg / cm2 ，異常警示
+                                    一號水錶水壓超過5kg / cm2 ，異常警示
+                                    一號水錶水壓超過5kg / cm2 ，異常警示
+                                    一號水錶水壓超過5kg / cm2 ，異常警示
+                                </td>
+                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="paginationGroup">
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">&laquo;</span>
+
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">2</span>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">3</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">&raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="chartGroup">
+                <div class="chartItem">
+                    <div class="unitTitle">
+                        <i class="bi bi-shuffle"></i>
+                        用水情形比較
+                    </div>
+                    <div class="chartBox">
+                        放圖表
+                    </div>
+                </div>
+                <div class="chartItem">
+                    <div class="unitTitle  justify-content-between">
+                        <div class="name">
+                            <i class="bi bi-search"></i>
+                            用水量查詢
+                        </div>
+                        <a class="btn-green-o" href="javascript:;">
+                            <i class="bi bi-window"></i> 用水分析預測
+                        </a>
+                    </div>
+                    <div class="themeSwitch">
+                        <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-left"></i></a>
+                        <div class="name">111年03月14日當周用水量</div>
+                        <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
+                    </div>
+                    <div class="chartBox">
+                        放圖表
+                    </div>
+                </div>
+            </div>
+        </div><!-- chartInfoGroup end -->
+
+    </div>
+    <div class="mapGroup">
+
+        <div class="toggleMapGroup">
+            <a class="btn-green-o close-mapGroup" href="javascript:;" title="關閉圖台">
+                <i class="bi bi-x"></i>
+            </a>
+        </div>
+
+        <div id="map" class=""></div>
+    </div>
+    <div class="configureGroup">
+
+        <div class="toggleMapGroup">
+            <a class="btn-green-o close-configureGroup" href="javascript:;" title="關閉圖台">
+                <i class="bi bi-x"></i>
+            </a>
+        </div>
+
+        <div class="configureArea">
+            <img src="~/Images/map.jpg" alt="">
+        </div>
+    </div>
+</div>

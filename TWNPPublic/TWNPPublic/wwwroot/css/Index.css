@@ -1,0 +1,445 @@
+@charset "utf-8";
+/*************************
+    框架設定
+**************************/
+html{
+  height:100%;
+  /* overflow-x: hidden;
+  -webkit-overflow-x: hidden; */
+}
+body{
+  height:100%;
+  background: #f4f6f9;
+}
+
+
+.wrap{
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+}
+.wrap .main > div{
+    width: 80%;
+}
+@media (max-width: 768px) {
+    .wrap .main > div{
+        width: 95%;
+    }
+}
+@media (max-width: 414px) {
+    .wrap .main > div{
+        width: 98%;
+    }
+}
+.wrap .main{/* border: #237a09 1px solid; */
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.wrap .bg{
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* height: 3000px; */
+}
+/*topBar*/
+.menu {
+    z-index: 1000;   
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translate(-50%,0%); 
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+	width: 90%;
+	border: 0;
+    padding: 20px 30px;
+	background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 50px 50px;
+    box-sizing: border-box;
+}
+.logoBox{
+	display: flex;
+	flex: 0 0 300px;
+	align-items: center;
+	justify-content: left;
+    height: 100%;
+}
+
+@media (max-width: 414px) {
+    
+    .logoBox{
+        flex: 1;
+        justify-content: left;
+    }
+}
+.logoBox .logo{
+	flex: 0 0 60px;
+} 
+.logoBox .name{
+	flex: 0 0 1;
+} 
+.logoBox span{
+    display: block;
+}
+.logoBox .webName{
+	line-height: 30px;
+    color: #237a09;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+.logoBox .slogan{
+	text-align: center;
+	letter-spacing: 10px;
+    color: #094da0;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.loginBox{
+    display: flex;
+}
+.loginBox a{
+    padding: 0 10px;
+    color: #006bbe;
+    font-size: 1.6rem;
+
+}
+.loginBox a:hover{
+    font-weight: bold;
+}
+.sloganBox{
+    margin-top: 230px;
+    margin-bottom: 180px;
+}
+
+@media (max-width: 414px) {
+        
+    .loginBox{
+        display: flex;
+        flex-direction: column;
+    }
+    .imgBlock img{
+        width: 100%;
+    }
+}
+ul.imgUl{
+    max-width: 560px;
+}
+ul.imgUl li{
+    padding-left: 40px;
+    margin-bottom: 10px;
+    font-size: 2rem;
+    color: #0562c1;
+    background: url(../Images/index/icon_check1.png)no-repeat;
+    background-position: left 5px;
+}
+.btnBox{
+    display: flex;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 414px) {
+    
+    .btnBox{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.btn {
+    font-size: 1.6rem;
+    padding: 10px 30px;
+}
+.btn-more:hover{
+    margin-top: -20px;
+}
+.btn-blue {
+    color: #fff;
+    background: #4598e6;
+    border-radius: 30px;
+}
+.btn-blue:hover{
+    background: #2e6599;
+    color: #fff;
+}
+.btn-text {
+    color: #4598e6;
+}
+.btn-text:hover{
+    color: #2e6599;
+}
+.content-center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+.btnBox .btn-img{
+    position: relative;
+    padding: 0 2px;
+    cursor: pointer;
+}
+
+.img_phone{
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .img_pc{
+        display: none;
+    }
+    .img_phone{
+        display: block;
+    }
+}
+
+@media (max-width: 400px) {
+    .btn-img img{
+        width: 100%;
+    }
+}
+#stepBox1,#stepBox2{
+    display: none;
+}
+.stepBox{
+    display: flex;
+    max-width: 886px;
+}
+
+.stepBox .step{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 10px 2px;
+    margin: 0 2px;
+    border-radius: 16px;
+    font-size: 1.6rem;
+}
+
+.stepBox .step > div,
+.stepBox .step > a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 202px;
+    padding: 14px 14px;
+    margin-bottom: 10px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+.stepBox .step .text{
+    min-height: 76px;
+    font-size: 1.8rem;
+}
+#stepBox2{
+    display: none;
+}
+.check1 .icon_check{
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 54px;
+}
+.check2 .icon_check{
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 186px;
+}
+.btn-img.active .icon_check{
+    display: block;
+}
+@media (max-width: 1024px) {
+    .stepBox .step {
+        padding: 2px;
+    }
+    .stepBox .step .text {
+        min-height: 100px;
+    }
+    .stepBox .step > div {
+        min-height: 225px;
+    }
+}
+@media (max-width: 768px) {
+    .check1 .icon_check{
+        display: none;
+        position: absolute;
+        top: 220px;
+        left: 16px;
+    }
+    .check2 .icon_check{
+        display: none;
+        position: absolute;
+        top: 252px;
+        left: 150px;
+    }
+
+}
+@media (max-width: 500px) {
+    .stepBox {
+        flex-direction: column;
+        max-width: 100%;
+        width: 100%;
+    }
+    .stepBox .step{
+        flex: 1;
+        width: 100%;    
+        margin-bottom: 10px;        
+        /* background: #f4f6f9; */
+    }
+    .stepBox .step > div,
+    .stepBox .step > a{
+        width: 100%;
+        height: auto;
+        min-height: auto;
+    }
+    .stepBox .step .text {
+        min-height: auto;
+        height: auto;
+    }
+    
+}
+
+.qaUl {
+    max-width: 866px;
+    width: 100%;
+    
+}
+.qaUl li {
+}
+.qaUl li > div{
+    padding: 16px 16px;
+    font-size: 1.8rem;
+    color: #0276cf;
+}
+.qaUl li .Q{
+    background: #e5ecf8;
+    border-radius: 16px;
+}
+.qaUl li .A{
+
+}
+.bg > div{/* border: 1px solid #237a09; */
+    position: absolute;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.bg > div > img{
+    width: 100%;
+    height: auto;
+}
+.bg1{z-index:2; 
+    top:150px; right: 3%; 
+    width:994px; height: 632px; 
+    background: url(../Images/index/img_key.png)no-repeat;
+    background-size: 100% auto;
+}
+.bg2{z-index:1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,68%);
+    width: 100%;
+    height: 912px;
+    overflow: hidden;
+    background: url(../Images/index/img_bg1.png)no-repeat;
+    background-size: 1920px auto;
+    background-position: center top;
+}
+
+.bg3{z-index:1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,238%);
+    width: 100%;
+    height: 650px;
+    overflow: hidden;
+    background: url(../Images/index/img_bg2.png)no-repeat;
+    background-size: 1920px auto;
+    background-position: center top;
+}
+.bg3 .bg-white{
+    height: 600px;
+    background:#fff;
+    margin-top: 219px;
+}
+.bg4{
+    z-index:10; top:1220px; left: 3%;
+    width: 301px;
+    height: 400px;
+    background: url(../Images/index/img_float1.png)no-repeat;
+    background-position: 50% 0%;
+}
+.bg5{
+    z-index:10; top:1160px; right: 3%;
+    width: 239px;
+    height: 400px;
+    background: url(../Images/index/img_float2.png)no-repeat;
+}
+.bg6{
+    z-index:10; top:1580px; left: 8%;
+    width: 129px;
+    height: 400px;
+    background: url(../Images/index/img_float3.png)no-repeat;
+}
+.bg7{
+    z-index:10; top:1580px; right: 1%;
+    width: 35px;
+    height: 400px;
+    background: url(../Images/index/img_float4.png)no-repeat;
+}
+@media (max-width: 1366px) {
+    .bg1{z-index:2; top:200px; right: 2%; width: 700px;}
+}
+@media (max-width: 1024px) {
+    .bg1{z-index:2; top:280px; right: 2%; width: 500px;}
+    
+    .bg3 .bg-white{
+        height: 600px;
+        background:#fff;
+    }
+}
+@media (max-width: 768px) {
+    .bg1{
+        opacity: 0.1; z-index:2; 
+        top:200px; left: 0%; 
+        width: 100%;
+    }
+    .bg3{top: 130px;}
+    .bg3 .bg-white{
+        /* height: 800px;
+        background:#fff; */
+    }
+}
+
+@media (max-width: 500px) {
+    .bg1{
+        opacity: 0.1; z-index:2; 
+        top:200px; left: 0%; 
+        right: 0;;
+        width: 100%;
+        background-size: 750px;
+    }
+    .bg3{top: 750px;}
+    .bg3 .bg-white{
+        /* height: 800px;
+        background:#fff; */
+    }
+}
+

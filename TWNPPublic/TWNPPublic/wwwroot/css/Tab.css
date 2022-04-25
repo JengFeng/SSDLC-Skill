@@ -1,0 +1,719 @@
+/*表格CSS*/
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+    word-wrap:break-word;
+    word-break: break-all;
+    text-align: justify;
+    font-size: 1.6rem;
+}
+
+
+
+/*查詢*/
+.tableBox{
+    width: 100%;
+    padding: 6px 0px;
+}
+
+
+
+
+/*footable*/
+.footable {
+    margin-bottom: 10px;
+}
+
+    .footable th,
+    .footable td {
+        font-size: 1.6rem;
+    }
+
+    .footable > thead > tr {
+        background: #fff;
+        text-align: center;
+    }
+
+    .footable > tbody > tr {
+        background: #fff;
+    }
+
+        .footable > tbody > tr:nth-child(odd) {
+            /* background: #f1efef; */
+        }
+
+        .footable > tbody > tr.modify {
+            background: rgba(255,247,245, 0.7);
+        }
+
+        .footable > tbody > tr:hover {
+            background: rgba( 84,112,198, 0.1);
+        }
+
+    .footable > thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 0px solid #f2f9fd;
+        color: #3a4d51;
+        text-align: left;
+        padding: 14px 10px;
+        font-weight: 900;
+        font-size: 1.6rem;
+        background: #EBF7F5;
+    }
+
+    .footable thead tr th:first-child {
+        text-align: center;
+    }
+
+    .footable > tbody > tr > td {
+        padding: 10px 6px;
+        line-height: 1.3;
+        vertical-align: top;
+        text-align: left;
+        border-bottom: 1px dashed #B7B9C0;
+        font-weight: 900;
+    }
+
+        .footable > tbody > tr > td .btn-orange {
+            display: inline-block;
+            min-width: 100px;
+            padding: 0px 10px;
+            line-height: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.4rem;
+            background: #f7931e;
+            text-decoration: none;
+            border: 0;
+            vertical-align: middle;
+        }
+
+    .footable tbody tr td:first-child {
+        text-align: center;
+    }
+
+    .footable tbody tr:last-child td {
+        /* border-bottom: 0; */
+    }
+
+    .footable tbody td.alignLeft {
+        text-align: left;
+    }
+
+    .footable tbody td.alignRight {
+        text-align: right;
+    }
+
+
+    .footable tbody td.width6nowrap {
+        width: 6%;
+    }
+
+    .footable tbody td.width7nowrap {
+        width: 7%;
+    }
+
+    .footable tbody td.width8nowrap {
+        width: 8%;
+    }
+
+    .footable tbody td.width9nowrap {
+        width: 9%;
+    }
+
+    .footable tbody td.width6 {
+        width: 6%;
+        white-space: nowrap;
+    }
+
+    .footable tbody td.width7 {
+        width: 7%;
+        white-space: nowrap;
+    }
+
+    .footable tbody td.width8 {
+        width: 8%;
+        white-space: nowrap;
+    }
+
+    .footable tbody td.width9 {
+        width: 9%;
+        white-space: nowrap;
+    }
+
+    .footable tbody td.width10 {
+        width: 10%;
+        white-space: nowrap;
+    }
+
+    .footable tbody td.width12 {
+        width: 12%;
+        white-space: nowrap;
+    }
+
+    .footable tbody td.width15 {
+        width: 15%;
+        white-space: nowrap;
+    }
+
+
+.searchGroup .footable thead tr th {
+    text-align: left;
+    padding: 10px 6px;
+    font-weight: bolder;
+    color: #167ab8;
+}
+
+.searchGroup .footable tbody tr td {
+    text-align: left;
+}
+/*footable展開表格*/
+
+
+.footable-first-visible .fooicon {
+    display: inline-block;
+    margin-right: 0px;
+}
+
+.tableBox table.footable-details > tbody > tr > th:nth-child(1) {
+    width: 20%;
+}
+
+.statiticstable table.footable-details > tbody > tr > th:nth-child(1) {
+    width: 60%;
+}
+
+.footable .footable-detail-row > td {
+    background: #e3e3e3;
+    color: #fff;
+    padding: 0;
+}
+
+.footable-details > tbody > tr {
+    border-bottom: 1px solid #efefef;
+}
+
+    .footable-details > tbody > tr:last-child {
+        border-bottom: 0;
+    }
+
+    .footable-details > tbody > tr > th {
+        padding: 10px 10px;
+        color: #3a4d51;
+        font-size: 1.6rem;
+        background: rgba(0,0,0,0.1);
+    }
+
+        .footable-details > tbody > tr > th p {
+            font-size: inherit;
+        }
+
+    .footable-details > tbody > tr > td {
+        padding: 10px 10px;
+        color: #3a4d51;
+    }
+
+.footable-details tbody td.width20,
+.footable-details tbody td.width30,
+.footable-details tbody td.width40,
+.footable-details tbody td.width50 {
+    width: 75%;
+}
+
+.footable .footable-details tbody td {
+    text-align: left;
+}
+
+    .footable .footable-details tbody td.width6,
+    .footable .footable-details tbody td.width7,
+    .footable .footable-details tbody td.width8,
+    .footable .footable-details tbody td.width9,
+    .footable .footable-details tbody td.width10,
+    .footable .footable-details tbody td.width11,
+    .footable .footable-details tbody td.width12,
+    .footable .footable-details tbody td.width13,
+    .footable .footable-details tbody td.width14,
+    .footable .footable-details tbody td.width15 {
+        width: 75%;
+    }
+
+@media (min-width:1024px) {
+    .footable tbody td.width20 {
+        width: 20%;
+    }
+
+    .footable tbody td.width30 {
+        width: 30%;
+    }
+
+    .footable tbody td.width40 {
+        width: 40%;
+    }
+
+    .footable tbody td.width50 {
+        width: 50%;
+    }
+}
+
+
+/*footable-深色板*/
+.footable.dark {
+    border: 0px;
+    margin: 10px 0;
+}
+
+    .footable.dark th,
+    .footable.dark td {
+        font-size: 1.6rem;
+    }
+
+    .footable.dark > thead > tr {
+        background: #272C44;
+    }
+
+    .footable.dark > tbody > tr {
+        background: #323C54;
+    }
+
+        .footable.dark > tbody > tr:nth-child(odd) {
+            background: #39425D;
+        }
+
+        .footable.dark > tbody > tr.modify {
+            background: rgba(44, 107, 28, 0.7);
+        }
+
+        .footable.dark > tbody > tr:hover {
+            background: #2B3047;
+        }
+        .footable.dark > tbody > tr:hover td {
+            /* color: #fff; */
+        }
+
+    .footable.dark > thead > tr > th {
+        padding: 8px 6px;
+        line-height: 18px;
+        vertical-align: inherit;
+        border-bottom: 0px;
+        color: #BDCCD4;
+        text-align: left;
+        font-weight: 900;
+        font-size: 1.6rem;
+    }
+
+    .footable.dark > tbody > tr > td {
+        padding: 10px 6px;
+        vertical-align: inherit;
+        text-align: left;
+        border-bottom: 0;
+        font-weight: 900;
+        color: #BDCCD4;
+    }
+    .footable.dark thead tr th:first-child {
+        /* text-align: center; */
+    }
+
+    .footable.dark tbody tr td.text-center {
+        text-align: center;
+    }
+
+    .footable.dark tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .footable.dark tbody td.alignLeft {
+        text-align: left;
+    }
+
+    .footable.dark tbody td.alignRight {
+        text-align: right;
+    }
+
+
+    .footable.dark tbody td.width6nowrap {
+        width: 6%;
+    }
+
+    .footable.dark tbody td.width7nowrap {
+        width: 7%;
+    }
+
+    .footable.dark tbody td.width8nowrap {
+        width: 8%;
+    }
+
+    .footable.dark tbody td.width9nowrap {
+        width: 9%;
+    }
+
+    .footable.dark tbody td.width6 {
+        width: 6%;
+        white-space: nowrap;
+    }
+
+    .footable.dark tbody td.width7 {
+        width: 7%;
+        white-space: nowrap;
+    }
+
+    .footable.dark tbody td.width8 {
+        width: 8%;
+        white-space: nowrap;
+    }
+
+    .footable.dark tbody td.width9 {
+        width: 9%;
+        white-space: nowrap;
+    }
+
+    .footable.dark tbody td.width10 {
+        width: 10%;
+        white-space: nowrap;
+    }
+
+    .footable.dark tbody td.width12 {
+        width: 12%;
+        white-space: nowrap;
+    }
+
+    .footable.dark tbody td.width15 {
+        width: 15%;
+        white-space: nowrap;
+    }
+
+
+.searchGroup .footable.dark thead tr th {
+    text-align: left;
+    padding: 10px 6px;
+    font-weight: bolder;
+    color: #167ab8;
+}
+
+.searchGroup .footable.dark tbody tr td {
+    text-align: left;
+}
+/*footable展開表格*/
+
+.footable-first-visible .fooicon {
+    display: inline-block;
+    margin-right: 0px;
+}
+
+.tableBox .footable.dark table.footable-details > tbody > tr > th:nth-child(1) {
+    width: 24%;
+}
+
+.footable.dark .footable-detail-row > td {
+    background: #e3e3e3;
+    color: #fff;
+    padding: 0;
+}
+.footable.dark .footable-details > tbody > tr {
+    border-bottom: 1px solid #efefef;
+}
+
+.footable.dark .footable-details > tbody > tr:last-child {
+        border-bottom: 0;
+    }
+
+    .footable.dark .footable-details > tbody > tr > th {
+        padding: 10px 10px;
+        color: #3a4d51;
+        font-size: 1.6rem;
+        background: rgba(0,0,0,0.2);
+    }
+
+    .footable.dark .footable-details > tbody > tr > th p {
+            font-size: inherit;
+        }
+
+    .footable.dark .footable-details > tbody > tr > td {
+        padding: 10px 10px;
+        color: #3a4d51;
+    }
+    .footable.dark .footable-details > tbody > tr:hover > td {
+        color: #3a4d51;
+    }
+
+.footable.dark  .footable-details tbody td.width20,
+.footable.dark  .footable-details tbody td.width30,
+.footable.dark  .footable-details tbody td.width40,
+.footable.dark  .footable-details tbody td.width50 {
+    width: 75%;
+}
+
+.footable.dark .footable-details tbody td {
+    text-align: left;
+}
+
+    .footable.dark .footable-details tbody td.width6,
+    .footable.dark .footable-details tbody td.width7,
+    .footable.dark .footable-details tbody td.width8,
+    .footable.dark .footable-details tbody td.width9,
+    .footable.dark .footable-details tbody td.width10,
+    .footable.dark .footable-details tbody td.width11,
+    .footable.dark .footable-details tbody td.width12,
+    .footable.dark .footable-details tbody td.width13,
+    .footable.dark .footable-details tbody td.width14,
+    .footable.dark .footable-details tbody td.width15 {
+        width: 75%;
+    }
+
+@media (min-width:1024px) {
+    .footable.dark tbody td.width20 {
+        width: 20%;
+    }
+
+    .footable.dark tbody td.width30 {
+        width: 30%;
+    }
+
+    .footable.dark tbody td.width40 {
+        width: 40%;
+    }
+
+    .footable.dark tbody td.width50 {
+        width: 50%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*footable-淺色板*/
+.footable.light {
+    border: 0px;
+    margin: 10px 0;
+}
+
+    .footable.light th,
+    .footable.light td {
+        font-size: 1.6rem;
+    }
+
+    .footable.light > thead > tr {
+        background: #484AA3;
+    }
+
+    .footable.light > tbody > tr {
+        background: #fff;
+    }
+
+        .footable.light > tbody > tr:nth-child(odd) {
+            background: #E9E9F8;
+        }
+
+        .footable.light > tbody > tr.modify {
+            background: rgba(44, 107, 28, 0.7);
+        }
+
+        .footable.light > tbody > tr:hover {
+            background: #3D4184;
+            color: #fff;
+        }
+        .footable.light > tbody > tr:hover td {
+            color: #fff;
+        }
+
+    .footable.light > thead > tr > th {
+        padding: 16px 6px;
+        line-height: 18px;
+        vertical-align: inherit;
+        border-bottom: 0px;
+        color: #fff;
+        text-align: left;
+        font-weight: 900;
+        font-size: 1.6rem;
+    }
+
+    .footable.light > tbody > tr > th {
+        padding: 10px 6px;
+    }
+    .footable.light > tbody > tr > td {
+        padding: 10px 6px;
+        vertical-align: inherit;
+        text-align: left;
+        border-bottom: 0;
+        font-weight: 900;
+        color: #383B4F;
+    }
+    .footable.light thead tr th:first-child {
+        /* text-align: center; */
+    }
+
+    .footable.light tbody tr td.text-center {
+        text-align: center;
+    }
+
+    .footable.light tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .footable.light tbody td.alignLeft {
+        text-align: left;
+    }
+
+    .footable.light tbody td.alignRight {
+        text-align: right;
+    }
+
+
+    .footable.light tbody td.width6nowrap {
+        width: 6%;
+    }
+
+    .footable.light tbody td.width7nowrap {
+        width: 7%;
+    }
+
+    .footable.light tbody td.width8nowrap {
+        width: 8%;
+    }
+
+    .footable.light tbody td.width9nowrap {
+        width: 9%;
+    }
+
+    .footable.light tbody td.width6 {
+        width: 6%;
+        white-space: nowrap;
+    }
+
+    .footable.light tbody td.width7 {
+        width: 7%;
+        white-space: nowrap;
+    }
+
+    .footable.light tbody td.width8 {
+        width: 8%;
+        white-space: nowrap;
+    }
+
+    .footable.light tbody td.width9 {
+        width: 9%;
+        white-space: nowrap;
+    }
+
+    .footable.light tbody td.width10 {
+        width: 10%;
+        white-space: nowrap;
+    }
+
+    .footable.light tbody td.width12 {
+        width: 12%;
+        white-space: nowrap;
+    }
+
+    .footable.light tbody td.width15 {
+        width: 15%;
+        white-space: nowrap;
+    }
+
+
+.searchGroup .footable.light thead tr th {
+    text-align: left;
+    padding: 10px 6px;
+    font-weight: bolder;
+    color: #167ab8;
+}
+
+.searchGroup .footable.light tbody tr td {
+    text-align: left;
+}
+/*footable展開表格*/
+
+.footable-first-visible .fooicon {
+    display: inline-block;
+    margin-right: 0px;
+}
+
+.tableBox .footable.light table.footable-details > tbody > tr > th:nth-child(1) {
+    width: 24%;
+}
+
+.footable.light .footable-detail-row > td {
+    background: #fafafb;
+    padding: 0;
+}
+.footable.light .footable-details > tbody > tr {
+    border-bottom: 1px solid #efefef;
+}
+
+.footable.light .footable-details > tbody > tr:last-child {
+        border-bottom: 0;
+    }
+
+    .footable.light .footable-details > tbody > tr > th {
+        padding: 10px 10px;
+        color: #fff;
+        font-size: 1.6rem;
+        background: #3D4184;
+    }
+
+    .footable.light .footable-details > tbody > tr > th p {
+            font-size: inherit;
+        }
+
+    .footable.light .footable-details > tbody > tr > td {
+        padding: 10px 10px;
+        color: #3a4d51;
+    }
+    .footable.light .footable-details > tbody > tr:hover > td {
+        color: #3a4d51;
+    }
+
+.footable.light  .footable-details tbody td.width20,
+.footable.light  .footable-details tbody td.width30,
+.footable.light  .footable-details tbody td.width40,
+.footable.light  .footable-details tbody td.width50 {
+    width: 75%;
+}
+
+.footable.light .footable-details tbody td {
+    text-align: left;
+}
+
+    .footable.light .footable-details tbody td.width6,
+    .footable.light .footable-details tbody td.width7,
+    .footable.light .footable-details tbody td.width8,
+    .footable.light .footable-details tbody td.width9,
+    .footable.light .footable-details tbody td.width10,
+    .footable.light .footable-details tbody td.width11,
+    .footable.light .footable-details tbody td.width12,
+    .footable.light .footable-details tbody td.width13,
+    .footable.light .footable-details tbody td.width14,
+    .footable.light .footable-details tbody td.width15 {
+        width: 75%;
+    }
+
+@media (min-width:1024px) {
+    .footable.light tbody td.width20 {
+        width: 20%;
+    }
+
+    .footable.light tbody td.width30 {
+        width: 30%;
+    }
+
+    .footable.light tbody td.width40 {
+        width: 40%;
+    }
+
+    .footable.light tbody td.width50 {
+        width: 50%;
+    }
+}
