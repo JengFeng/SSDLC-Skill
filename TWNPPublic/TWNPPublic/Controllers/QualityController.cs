@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TWNPPublic.Common.Attributes;
 
-namespace TWNPPublic.Areas.UserPanel.Controllers
+namespace TWNPPublic.Controllers
 {
     [Area("UserPanel")]
-    [Menu("警示設定")]
-    public class AlertController : Controller
+    public class QualityController : Controller
     {
         public IActionResult Index()
         {

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TWNPPublic.Common.Attributes;
 
-namespace TWNPPublic.Areas.UserPanel.Controllers
+namespace TWNPPublic.Controllers
 {
-    [Area("UserPanel")]
-    [Menu("用水指針查詢")]
-    public class IndicatorController : Controller
+    [Menu("密碼設定")]
+    public class UserManageController : Controller
     {
         public IActionResult Index()
         {

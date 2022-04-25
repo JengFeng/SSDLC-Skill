@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TWNPPublic.Common.Attributes;
 
-namespace TWNPPublic.Areas.UserPanel.Controllers
+namespace TWNPPublic.Controllers
 {
-    [Area("UserPanel")]
     [Menu("首頁")]
     public class DashboardController : Controller
     {
