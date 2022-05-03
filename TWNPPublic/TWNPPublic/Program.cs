@@ -1,7 +1,9 @@
+using TWNPPublic;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+//§ÚÁÙ¬O²ßºD Startup ©çÁÂ:D
+Startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 

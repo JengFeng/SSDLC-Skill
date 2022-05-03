@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Domain\Common\" />
     <Folder Include="Script\" />
     <Folder Include="wwwroot\js\fancyBox\helpers\" />
   </ItemGroup>
@@ -207,6 +208,10 @@
     <None Include="wwwroot\js\mCustomScrollbar\jquery.mCustomScrollbar.concat.min.js" />
     <None Include="wwwroot\js\mCustomScrollbar\jquery.mCustomScrollbar.css" />
     <None Include="wwwroot\js\mCustomScrollbar\jquery.mCustomScrollbar.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SqlData\SqlData.csproj" />
   </ItemGroup>
 
 </Project>
