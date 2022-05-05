@@ -1,58 +1,56 @@
-﻿        <div class="topBar">
-            <div class="topMenuLogo">
-                <!-- <div class="enName">台灣自來水公司</div> -->
-                <!-- <div class="systemName">用戶用水查詢系統</div> -->
+﻿<div class="topBar">
+    <div class="topMenuLogo">
+        <!-- <div class="enName">台灣自來水公司</div> -->
+        <!-- <div class="systemName">用戶用水查詢系統</div> -->
+    </div>
+    <div class="menuBar">
+        <div class="tipGroup">
+            <div class="menuGroup">
+                <div class="updateTime"><i class="bi bi-clock"></i> 最新資料 @DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") </div>
+                <div class="menuList">
+                    <a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a>
+                    <a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a>
+                    <a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a>
+                    <a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a>
+                    <a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a>
+                </div>
             </div>
-            <div class="menuBar">
-                <div class="tipGroup">
-                    <div class="menuGroup">
-                        <div class="updateTime"><i class="bi bi-clock"></i> 最新資料 2022/02/22 09:40:30</div>
-                        <div class="menuList">
-                            <a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a>
-                            <a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a>
-                            <a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a>
-                            <a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a>
-                            <a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a>
-                        </div>
-                    </div>
-
-                    <div class="toggleBtnBox">
-                        <nav class="menu-opener ">
-                            <div class="menu-opener-inner"></div>
-                        </nav>
-                    </div>
-                    <div class="userArea">
-                        <div class="signOut">
-                            <div class="text">520 秒後</div>
-                            <a href="@Url.Action("Login","Home")">登出</a>
-                        </div>
-                    </div>
-                </div><!-- tipGroup end -->
-
-            </div><!-- menuBar end -->
-        </div><!-- topBar end -->
-
-         <nav>
-            <ul class="nav_sub">
-                <li>
-                    <div class="userArea">
-                        <div class="signOut">
-                            <div class="text">520 秒後</div>
-                            <a href="Login.php">登出</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
-                <li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>
-                <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
-                <li tabindex="-1"><a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a></li>
-                <li tabindex="-1"><a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a></li>
-
-
-
-                <li>
-                    <a tabindex="-1" id="closeMobile" href="javascript:;"><i class="ion-android-close"></i><span class="sr-only">關閉手機選單</span></a>
-                </li>
-            </ul>
-        </nav>
+            <div class="toggleBtnBox">
+                <nav class="menu-opener ">
+                    <div class="menu-opener-inner"></div>
+                </nav>
+            </div>
+            <div class="userArea">
+                <div class="signOut">
+                    <div class="text" id="LogoutHint">00:00後</div>
+                    <a href="javascript:;" onclick="btnLogout()" >登出</a>
+                </div>
+            </div>
+        </div><!-- tipGroup end -->
+    </div><!-- menuBar end -->
+</div><!-- topBar end -->
+<nav>
+    <ul class="nav_sub">
+        <li>
+            <div class="userArea">
+                <div class="signOut">
+                    <div class="text" id="mobileLogoutHint">00:00後</div>
+                    <a href="javascript:;" onclick="btnLogout()" >登出</a>
+                </div>
+            </div>
+        </li>
+        <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
+        <li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>
+        <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
+        <li tabindex="-1"><a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a></li>
+        <li tabindex="-1"><a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a></li>
+        <li>
+            <a tabindex="-1" id="closeMobile" href="javascript:;"><i class="ion-android-close"></i><span class="sr-only">關閉手機選單</span></a>
+        </li>
+    </ul>
+</nav>
+<script>
+    function btnLogout(){
+       $.post("@Url.Action("Logout","Home")");
+    }
+</script>

@@ -1,13 +1,18 @@
 ﻿@{
     ViewData["Title"] = "首頁";
 }
+@section echart{
+<script type="text/javascript" src="/js/echarts/echarts.js"></script>
+}
 
+}
 <!-- 月曆套件 -->
 <link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
 <script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+
+    $(function () {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'zh-tw',             // 地區設台灣就顯示'週一', '週二', '週三', '週四', '週五'
@@ -17,27 +22,115 @@
             selectable: true,               // 是否可以選取月曆
             slotEventOverlap: false,        // 事件使否重疊覆蓋
             dayMaxEvents: true,            // 當行程太多是否用 more 檢視完整
-            weekends: false,                // 顯示星期六跟星期日
+            weekends: true,                // 顯示星期六跟星期日
             allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
             contentHeight: 300,
             dayHeaderFormat: {
                 weekday: 'narrow'
             },
+            events:function(info, successCallback, failureCallback) {
+                var model = {start : info.startStr, end : info.endStr };
+                $.post("@Url.Action("ListedNotes","Dashboard")",model,function(result){
+                     var events = [];
+                     successCallback(events);
+                });
+            }
         });
-
         calendar.render();
     });
 </script>
 <!-- Easymap -->
 <script type="text/javascript" src="http://easymap.gis.tw/easymap/latest/easymap.js?"></script>
 <script type="text/javascript">
+    $(function () {
+
+        $.get("@Url.Action("GetDashMainData","Dashboard")", function(result){
+            if(result.Success){
+                //名稱
+                $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
+                //目前指針度數
+                $('#divNEW_METER').html(result.Data.NEW_METER + '<span>度</span>');
+                //本月水費
+                $('#divTHISMONTH_MONEY').html(result.Data.THISMONTH_MONEY + '<span>元</span>');
+                //本期預估
+                $('#divTHISMONTHEND_METER').html(result.Data.THISMONTHEND_METER + '<span>元</span>');
+                //去年同期水費
+                $('#divLASTYEAR_MONEY').html('<i class="bi bi-arrow-up text-red"></i>' + result.Data.LASTYEAR_MONEY + '<span>元</span>');
+                //用水情形比較
+                InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
+            }
+        });
+        InitWaterUseSearchChart();
+
+    });
+
+    //初始化用水情形比較圖表
+    function InitCompareChart(LASTYEAR_METER,LASTMONTH_METER,THISMONTH_METER){
+        var xAxisDataLASTYEAR_METER = "無資料",xAxisDataLASTMONTH_METER = "無資料",xAxisDataTHISMONTH_METER = "無資料";
+
+        if(LASTYEAR_METER != null)
+           xAxisDataLASTYEAR_METER = '去年當月\n' + LASTYEAR_METER +'度';
+        if(LASTMONTH_METER != null)
+           xAxisDataLASTMONTH_METER = '上個月\n'+LASTMONTH_METER+'度'
+        if(THISMONTH_METER != null)
+           xAxisDataTHISMONTH_METER = '本月已用\n'+THISMONTH_METER+'度';
+
+        var chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
+        option = {
+            grid: {
+              top: 20
+            },
+            xAxis: {
+                type: 'category',
+                data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+            {
+                data: [LASTYEAR_METER, LASTMONTH_METER, THISMONTH_METER],
+                type: 'bar'
+            }]
+        };
+        chartCompareWaterUse.setOption(option);
+    }
+
+    //初始化用水量查詢圖表
+    function InitWaterUseSearchChart(){
+        var model ={ Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart")};
+        $.post("@Url.Action("GetDashWaterUseSearchChart","Dashboard")", model ,function(result){
+            if(result.Success){
+                var chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
+                option = {
+                    grid: {
+                      top: 20
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: result.Data,
+                            type: 'bar'
+                        }]
+                    };
+                chartWaterUseMonitor.setOption(option);
+            }
+        });
+    }
+
     //easy map
     var map = null;
     function init() {
-        map = new Easymap('map');	//'map'為div的id
-        map.zoomToXY(new dgXY(121.3, 24.5), 9);
+        //map = new Easymap('map');	//'map'為div的id
+        //map.zoomToXY(new dgXY(121.3, 24.5), 9);
 
-        map.switchMapType('VectorTile')
+        //map.switchMapType('VectorTile')
     }
 
 </script>
@@ -71,7 +164,7 @@
                     <a class="btn-green-o open-mapGroup" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
                     <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>
                 </div>
-                <div class="userName">歡迎  福隆大飯店！</div>
+                <div class="userName" id="divNAME"></div>
                 <!-- 六個狀態色碼
                 .circularRed{ border-color: #FF0000; }
                 .circularGrey{ border-color: #B7B9C0; }
@@ -88,23 +181,23 @@
                 </div>
                 <div class="totalUsageGroup">
                     <div class="name">目前指針</div>
-                    <div class="totalUsage">03554<span>度</span></div>
-                    <div class="updateItem">資料更新時間 <br>2022/02/20</div>
+                    <div class="totalUsage" id="divNEW_METER"><span>度</span></div>
+                    <div class="updateItem">資料更新時間 <br>@DateTime.Now.ToString("yyyy/MM/dd")</div>
                 </div>
                 <div class="costGroup">
                     <div class="costItem">
                         <div class="name">本期<br>累積水費</div>
-                        <div class="costTotal">1600<span>元</span></div>
+                        <div class="costTotal" id="divTHISMONTH_MONEY"><span>元</span></div>
                     </div>
                     <div class="costItem">
                         <div class="name">本期<br>預估水費</div>
-                        <div class="costTotal">2200<span>元</span></div>
+                        <div class="costTotal" id="divTHISMONTHEND_METER"><span>元</span></div>
                     </div>
                     <div class="costItem">
                         <div class="name">去年<br>同期水費</div>
-                        <div class="costTotal">
+                        <div class="costTotal" id="divLASTYEAR_MONEY">
                             <i class="bi bi-arrow-up text-red"></i>
-                            3500<span>元</span>
+                            <span>元</span>
                         </div>
                     </div>
                     <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
@@ -123,7 +216,7 @@
             </div>
         </div><!-- feeInfoGroup end -->
         <div class="chartInfoGroup">
-            
+
             <partial name="_NewsBoxPartial" />
             <div class="exceptionGroup">
                 <div class="unitTitle">
@@ -199,7 +292,7 @@
                         用水情形比較
                     </div>
                     <div class="chartBox">
-                        放圖表
+                        <div id="ChartCompareWaterUse" style="width:100%;height:300px;"></div>
                     </div>
                 </div>
                 <div class="chartItem">
@@ -213,12 +306,26 @@
                         </a>
                     </div>
                     <div class="themeSwitch">
-                        <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-left"></i></a>
-                        <div class="name">111年03月14日當周用水量</div>
-                        <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
+                        <a class="btn-green-o-line"
+                           href="javascript:;"
+                           data-themeswitchchart="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")"
+                           title="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                        <div class="name"
+                             id="divWaterUserSearchChartTitle"
+                             data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
+                            @(ViewBag.CurrentTime)當周用水量
+                        </div>
+                        <a class="btn-green-o-line"
+                           href="javascript:;"
+                           data-themeswitchchart="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")"
+                           title="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
                     </div>
                     <div class="chartBox">
-                        放圖表
+                        <div id="ChartWaterUseMonitor" style="width:100%;height:250px;"></div>
                     </div>
                 </div>
             </div>
