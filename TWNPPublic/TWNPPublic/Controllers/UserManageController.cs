@@ -4,12 +4,8 @@ using TWNPPublic.Common.Attributes;
 namespace TWNPPublic.Controllers
 {
     [Menu("密碼設定")]
-    public class UserManageController : Controller
+    public class UserManageController : BasicController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
         public IActionResult UserSettings()
         {
             return View();

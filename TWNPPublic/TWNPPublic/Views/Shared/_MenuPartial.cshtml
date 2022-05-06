@@ -51,6 +51,6 @@
 </nav>
 <script>
     function btnLogout(){
-       $.post("@Url.Action("Logout","Home")");
+       window.location.href = "@Url.Action("Logout","Home")";
     }
 </script>

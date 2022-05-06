@@ -5,9 +5,9 @@
 @section echart{
 <script type="text/javascript" src="/js/echarts/echarts.js"></script>
 }
+
 <div class="wrap-page">
     <div class="searchAreaInline">
-
         <div class="unitTitle">
             用水情形分析
         </div>
@@ -21,25 +21,47 @@
             <div class="name">111年03月14日當周用水量</div>
             <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
         </div>
-
-
     </div><!-- searchAreaInline end -->
-
     <div class="version1">
         <div class="main videoScroll">
-            <div class="pagechartGroup">
-                <!-- 六個狀態色碼
-                    .circularRed{ border-color: #FF0000; }
-                    .circularGrey{ border-color: #B7B9C0; }
-                    .circularOrange{ border-color: #FEAD54; }
-                    .circularBlue{ border-color: #5391C7; }
-                    .circularGreen{ border-color: #089BAB; }
-                    .circularLightGreen{ border-color: #85F9B6; }
-                -->
-
-                <div>
-                </div>
+            <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">              
             </div>
         </div>
     </div><!-- main end -->
 </div><!-- wrap end -->
+<!-- 六個狀態色碼
+    .circularRed{ border-color: #FF0000; }
+    .circularGrey{ border-color: #B7B9C0; }
+    .circularOrange{ border-color: #FEAD54; }
+    .circularBlue{ border-color: #5391C7; }
+    .circularGreen{ border-color: #089BAB; }
+    .circularLightGreen{ border-color: #85F9B6;}
+-->    
+
+<script>
+    var chartDom = document.getElementById('divpagechartGroup');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [150, 230, 224, 218, 135, 147, 260],
+          type: 'line'
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+
+    window.onresize = function() {
+      myChart.resize();
+    };
+</script>

@@ -10,7 +10,6 @@ using TWNPPublic.ViewModels.Dashboard;
 namespace TWNPPublic.Controllers
 {
     [Menu("首頁")]
-    [SessionAuthorization]
     public class DashboardController : BasicController
     {
         
@@ -27,6 +26,11 @@ namespace TWNPPublic.Controllers
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
             ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月dd日", culture);
+            return View();
+        }
+
+        public IActionResult Fancybox_chart_WaterUseAnalyzer()
+        {
             return View();
         }
 

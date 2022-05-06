@@ -4,12 +4,8 @@ using TWNPPublic.Common.Attributes;
 namespace TWNPPublic.Controllers
 {
     [Menu("警示設定")]
-    public class AlertController : Controller
+    public class AlertController : BasicController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
         public IActionResult AlertSettings()
         {
             return View();

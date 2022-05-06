@@ -5,7 +5,6 @@
 <script type="text/javascript" src="/js/echarts/echarts.js"></script>
 }
 
-}
 <!-- 月曆套件 -->
 <link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
@@ -58,11 +57,25 @@
                 $('#divLASTYEAR_MONEY').html('<i class="bi bi-arrow-up text-red"></i>' + result.Data.LASTYEAR_MONEY + '<span>元</span>');
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
+                InitTableB_Message(result.Data.DashMainBMessage);
             }
         });
         InitWaterUseSearchChart();
 
     });
+
+    //初始化異常狀態列表
+    function InitTableB_Message(obj){
+        $("#tbB_Message > tbody").empty();
+        $.each(obj,function(index,value){
+            $("#tbB_Message > tbody").append('<tr>' + 
+                                            '<td class="width15">'+value.INP_DATE+'</td>' +
+                                            '<td>'+ value.NOTE +'</td>' +
+                                            '<td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i>查看</a></td>'+
+                                            '</tr>');
+            
+        });
+    }
 
     //初始化用水情形比較圖表
     function InitCompareChart(LASTYEAR_METER,LASTMONTH_METER,THISMONTH_METER){
@@ -224,7 +237,7 @@
                     異常狀態列表
                 </div>
                 <div class="exceptionList tableBox">
-                    <table class="footable">
+                    <table class="footable" id="tbB_Message">
                         <thead>
                             <tr>
                                 <th>時間</th>
@@ -232,31 +245,10 @@
                                 <th>詳細資料</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <tr>
                                 <td class="width15">2022/02/09 12:00</td>
                                 <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                </td>
                                 <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
                             </tr>
                         </tbody>
@@ -301,7 +293,7 @@
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        <a class="btn-green-o" href="javascript:;">
+                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")">
                             <i class="bi bi-window"></i> 用水分析預測
                         </a>
                     </div>

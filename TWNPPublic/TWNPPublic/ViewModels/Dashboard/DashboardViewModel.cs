@@ -30,6 +30,12 @@ namespace TWNPPublic.ViewModels.Dashboard
         /// 警告訊息
         /// </summary>
         public string B_MESSAGE { get; set; } = string.Empty;
+
+        public List<DashBMessage> DashMainBMessage
+        {
+            get { return JsonConvert.DeserializeObject<List<DashBMessage>>(this.B_MESSAGE); }
+        }
+
         /// <summary>
         /// 去年同期使用度數
         /// </summary>
@@ -69,15 +75,6 @@ namespace TWNPPublic.ViewModels.Dashboard
     }
 
     /// <summary>
-    /// 首頁右下用水查詢圖表
-    /// </summary>
-    public class DashMainWaterUseSearchViewModel
-    {
-        public string X { get; set; } = string.Empty;
-        public float? Y { get; set; }
-    }
-
-    /// <summary>
     /// 最新消息 首頁 ViewModel 用
     /// </summary>
     public class DashMainNEWS
@@ -86,6 +83,26 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string TITLE { get; set; }
         public string NOTE { get; set; }
         public DateTime? INP_DATE { get; set; }
+    }
+
+    /// <summary>
+    /// 警告訊息 首頁 ViewModel 用
+    /// </summary>
+    public class DashBMessage
+    {
+        public string WATER_NO { get; set; }
+        public string NOTE { get; set; }
+        public DateTime INP_DATE { get; set; }
+        public string B_MESSAGE_SN { get; set; }
+    }
+
+    /// <summary>
+    /// 首頁右下用水查詢圖表
+    /// </summary>
+    public class DashMainWaterUseSearchViewModel
+    {
+        public string X { get; set; } = string.Empty;
+        public float? Y { get; set; }
     }
 
     /// <summary>

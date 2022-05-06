@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TWNPPublic.Common.Attributes;
 using TWNPPublic.ViewModels;
 
 namespace TWNPPublic.Controllers
 {
+    [SessionAuthorization]//認證在這裡喔 沒有角色規則簡單隨便寫 :D
     public class BasicController : Controller
     {
 

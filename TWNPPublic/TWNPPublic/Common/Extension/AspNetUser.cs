@@ -3,7 +3,11 @@
     public class AspNetUser : IAspNetUser
     {
         private readonly IHttpContextAccessor accessor;
-        public string Name { get; set; } = string.Empty;
+        public string Name
+        {
+            get => GetUserName();
+        }
+
         public string WaterNo
         {
             get => GetWaterNo();
@@ -13,7 +17,8 @@
         {
             this.accessor = accessor;
         }
-        private string GetWaterNo()
+
+        private string GetUserName()
         {
             if (accessor.HttpContext == null)
                 return string.Empty;
@@ -25,11 +30,24 @@
 
             return UserName;
         }
+
+        private string GetWaterNo()
+        {
+            if (accessor.HttpContext == null)
+                return string.Empty;
+
+            var WaterNo = accessor.HttpContext.Session.GetString("WaterNo");
+
+            if (string.IsNullOrEmpty(WaterNo))
+                return string.Empty;
+
+            return WaterNo;
+        }
     }
 
     public interface IAspNetUser
     {
         public string WaterNo { get; }
-        public string Name { get; set; }
+        public string Name { get;}
     }
 }

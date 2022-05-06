@@ -2,14 +2,17 @@
     ViewData["Title"] = "用水指針查詢";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section echart{
+<script type="text/javascript" src="/js/echarts/echarts.js"></script>
+}
 <script>
-	$(function(){	
-		$(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
-	});
+    $(function(){
+        $(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
+    });
 </script>
 <div class="pageWrap">
-	<partial name="_MenuPartial" />
-	<div class="pageArea">
+    <partial name="_MenuPartial" />
+    <div class="pageArea">
         <partial name="_NewsBoxPartial" />
         <div class="mainGroup">
             <nav aria-label="breadcrumb">
@@ -18,32 +21,47 @@
                     <li class="breadcrumb-item active" aria-current="page">用水指針查詢</li>
                 </ol>
             </nav>
-
-
             <div class="search-inline row">
-                    
-                    <div class="mb-3 col-xs-12 col-lg-6">
-                        <label for="form-name" class="form-label"><i class="bi bi-search"></i> 日期起</label>
-                        <input type="text" class="form-control datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'  data-language='zh'>
-                    </div>
-                    <div class="mb-3 col-xs-12 col-lg-6">
-                        <label for="form-name" class="form-label">日期訖</label>
-                        <input type="text" class="form-control datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'  data-language='zh'>
-                    </div>
-
-                    
-
-
+                <div class="mb-3 col-xs-12 col-lg-6">
+                    <label for="form-name" class="form-label"><i class="bi bi-search"></i> 日期起</label>
+                    <input type="text" class="form-control datepicker-here" data-timepicker="true" data-time-format='hh:ii aa' data-language='zh'>
                 </div>
-
-                <div class="pagechartGroup">
-                    這裡放圖表，預設高500px
+                <div class="mb-3 col-xs-12 col-lg-6">
+                    <label for="form-name" class="form-label">日期訖</label>
+                    <input type="text" class="form-control datepicker-here" data-timepicker="true" data-time-format='hh:ii aa' data-language='zh'>
                 </div>
-
+            </div>
+            <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">
+                這裡放圖表，預設高500px
+            </div>
         </div>
-
-
-	</div>
-
-
+    </div>
 </div><!-- wrap end -->
+
+<script>
+    var chartDom = document.getElementById('divpagechartGroup');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [150, 230, 224, 218, 135, 147, 260],
+          type: 'line'
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+
+    window.onresize = function() {
+      myChart.resize();
+    };
+</script>
