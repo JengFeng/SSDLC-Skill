@@ -2,46 +2,44 @@
     ViewData["Title"] = "用水情形分析";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
 }
-    <div class="wrap-page">
-        <div class="searchAreaInline">
+@section echart{
+<script type="text/javascript" src="/js/echarts/echarts.js"></script>
+}
+<div class="wrap-page">
+    <div class="searchAreaInline">
 
-            <div class="unitTitle">
-                用水情形分析
-            </div>
-            <div class="cycleGroup">
-                <a class="btn-green-o active" href="javascript:;">日</a>
-                <a class="btn-green-o" href="javascript:;">周</a>
-                <a class="btn-green-o" href="javascript:;">月</a>
-            </div>
-            <div class="themeSwitch">
-                <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-left"></i></a>
-                <div class="name">111年03月14日當周用水量</div> 
-                <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
-            </div>
-           
-         
-        </div><!-- searchAreaInline end -->
+        <div class="unitTitle">
+            用水情形分析
+        </div>
+        <div class="cycleGroup">
+            <a class="btn-green-o active" href="javascript:;">日</a>
+            <a class="btn-green-o" href="javascript:;">周</a>
+            <a class="btn-green-o" href="javascript:;">月</a>
+        </div>
+        <div class="themeSwitch">
+            <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-left"></i></a>
+            <div class="name">111年03月14日當周用水量</div>
+            <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
+        </div>
 
-        <div class="version1">
-            <div class="main videoScroll">
-                <div class="pagechartGroup">
+
+    </div><!-- searchAreaInline end -->
+
+    <div class="version1">
+        <div class="main videoScroll">
+            <div class="pagechartGroup">
                 <!-- 六個狀態色碼
                     .circularRed{ border-color: #FF0000; }
                     .circularGrey{ border-color: #B7B9C0; }
                     .circularOrange{ border-color: #FEAD54; }
                     .circularBlue{ border-color: #5391C7; }
                     .circularGreen{ border-color: #089BAB; }
-                    .circularLightGreen{ border-color: #85F9B6; } 
-				-->
+                    .circularLightGreen{ border-color: #85F9B6; }
+                -->
 
-                    圖表專區
+                <div>
                 </div>
             </div>
-
-            
-            
-        </div><!-- main end -->
-    
-    </div><!-- wrap end -->
-    
-	
+        </div>
+    </div><!-- main end -->
+</div><!-- wrap end -->

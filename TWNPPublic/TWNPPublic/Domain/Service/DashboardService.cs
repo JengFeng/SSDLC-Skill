@@ -15,8 +15,8 @@ namespace TWNPPublic.Domain.Service
 
         public DashMainViewModel GetDashMain(string WaterNo, string Account, DateTime Theday)
         {
-            string mainsql = @"select * From dbo.F_B_HOME(@WaterNo,@Account,@Theday)";
-            object obj = new { WaterNo, Account, Theday };
+            string mainsql = @"select *  From dbo.F_B_HOME(@WaterNo,@Account,@Theday)";
+            object obj = new { Account,WaterNo, Theday };
             return dataAccess.Query<DashMainViewModel>(mainsql, obj).FirstOrDefault();
         }
 

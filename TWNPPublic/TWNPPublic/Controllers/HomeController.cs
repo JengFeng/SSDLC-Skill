@@ -64,7 +64,7 @@ namespace TWNPPublic.Controllers
                 return View(model);
             }
 
-            //if(model.CapthCode != "000")
+            //if(model.CapthCode != )
             //{
             //    ModelState.AddModelError("CapthCode", "驗證碼錯誤");
             //    return View(model);

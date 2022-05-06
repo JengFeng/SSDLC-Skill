@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +18,7 @@ namespace SyncDataBase
     public class DapperService : IDapperService
     {
 
-        public int Execute(string sql, object parameters = null)
+        public int Execute(string sql, string parameters = null)
         {
             using (var connection = CreateConnection())
             {
@@ -25,11 +26,21 @@ namespace SyncDataBase
             }
         }
 
-        public string Query(string sql, object parameters = null)
+        public string Query(string sql, string parameters = null)
         {
-            using (var connection = CreateConnection())
+            var parameter = new DynamicParameters();
+            if (parameters != "null")
             {
-                var result = connection.Query<object>(sql, parameters).ToList();
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(parameters);
+                foreach (var item in obj)
+                {
+                    parameter.Add(item.Key, item.Value);
+                }
+            }
+
+            using (var connection = CreateConnection())
+            {            
+                var result = connection.Query<object>(sql, parameter).ToList();
                 return JsonConvert.SerializeObject(result);
             }
         }

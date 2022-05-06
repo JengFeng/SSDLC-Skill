@@ -2,6 +2,7 @@
 using SyncDataBase;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -73,7 +74,8 @@ namespace SqlData
 
         public List<T> Query<T>(string sql, object parameters = null)
         {
-            return JsonConvert.DeserializeObject<List<T>>(ChannelService.Query(sql, parameters)); ;
+            var steamparameters = JsonConvert.SerializeObject(parameters);
+            return JsonConvert.DeserializeObject<List<T>>(ChannelService.Query(sql, steamparameters)); ;
         }
 
 

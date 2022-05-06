@@ -13,10 +13,11 @@ namespace TWNPPublic.Controllers
     [SessionAuthorization]
     public class DashboardController : BasicController
     {
-        private readonly IDashboardService dashboardService;
+        
         private readonly IAspNetUser aspNetUser;
+        private readonly IDashboardService dashboardService;
 
-        public DashboardController(IDashboardService dashboardService, IAspNetUser aspNetUser)
+        public DashboardController(IAspNetUser aspNetUser,IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
             this.aspNetUser = aspNetUser;
