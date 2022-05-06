@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AdminService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/WRBWebService/AdminService.svc?xsd=xsd2" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/WRBWebService/AdminService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/WRBWebService/AdminService.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/SyncDataBase" />
+      <xsd:import schemaLocation="http://localhost/WRBWebService/AdminService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAdminService_GetLocalDataBase_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLocalDataBase" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetLocalDataBase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLocalDataBaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetUseDataBase_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUseDataBase" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetUseDataBase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUseDataBaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_IsBackup_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsBackup" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_IsBackup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsBackupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_IsExecute_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsExecute" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_IsExecute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsExecuteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetFailDataBaseDate_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFailDataBaseDate" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetFailDataBaseDate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFailDataBaseDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetRecordFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRecordFiles" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetRecordFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRecordFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetLogFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLogFile" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_GetLogFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLogFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_TryDatabaseConnection_InputMessage">
+    <wsdl:part name="parameters" element="tns:TryDatabaseConnection" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_TryDatabaseConnection_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TryDatabaseConnectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_TryDatabaseConnection2_InputMessage">
+    <wsdl:part name="parameters" element="tns:TryDatabaseConnection2" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_TryDatabaseConnection2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TryDatabaseConnection2Response" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_SynchronizeService_InputMessage">
+    <wsdl:part name="parameters" element="tns:SynchronizeService" />
+  </wsdl:message>
+  <wsdl:message name="IAdminService_SynchronizeService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SynchronizeServiceResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAdminService">
+    <wsdl:operation name="GetLocalDataBase">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/GetLocalDataBase" message="tns:IAdminService_GetLocalDataBase_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/GetLocalDataBaseResponse" message="tns:IAdminService_GetLocalDataBase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUseDataBase">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/GetUseDataBase" message="tns:IAdminService_GetUseDataBase_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/GetUseDataBaseResponse" message="tns:IAdminService_GetUseDataBase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsBackup">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/IsBackup" message="tns:IAdminService_IsBackup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/IsBackupResponse" message="tns:IAdminService_IsBackup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsExecute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/IsExecute" message="tns:IAdminService_IsExecute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/IsExecuteResponse" message="tns:IAdminService_IsExecute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFailDataBaseDate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/GetFailDataBaseDate" message="tns:IAdminService_GetFailDataBaseDate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/GetFailDataBaseDateResponse" message="tns:IAdminService_GetFailDataBaseDate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRecordFiles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/GetRecordFiles" message="tns:IAdminService_GetRecordFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/GetRecordFilesResponse" message="tns:IAdminService_GetRecordFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLogFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/GetLogFile" message="tns:IAdminService_GetLogFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/GetLogFileResponse" message="tns:IAdminService_GetLogFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TryDatabaseConnection">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/TryDatabaseConnection" message="tns:IAdminService_TryDatabaseConnection_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/TryDatabaseConnectionResponse" message="tns:IAdminService_TryDatabaseConnection_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TryDatabaseConnection2">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/TryDatabaseConnection2" message="tns:IAdminService_TryDatabaseConnection2_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/TryDatabaseConnection2Response" message="tns:IAdminService_TryDatabaseConnection2_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SynchronizeService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAdminService/SynchronizeService" message="tns:IAdminService_SynchronizeService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAdminService/SynchronizeServiceResponse" message="tns:IAdminService_SynchronizeService_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAdminService" type="tns:IAdminService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetLocalDataBase">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/GetLocalDataBase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUseDataBase">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/GetUseDataBase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsBackup">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/IsBackup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsExecute">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/IsExecute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFailDataBaseDate">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/GetFailDataBaseDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecordFiles">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/GetRecordFiles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLogFile">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/GetLogFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TryDatabaseConnection">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/TryDatabaseConnection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TryDatabaseConnection2">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/TryDatabaseConnection2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SynchronizeService">
+      <soap:operation soapAction="http://tempuri.org/IAdminService/SynchronizeService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AdminService">
+    <wsdl:port name="BasicHttpBinding_IAdminService" binding="tns:BasicHttpBinding_IAdminService">
+      <soap:address location="http://localhost/WRBWebService/AdminService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

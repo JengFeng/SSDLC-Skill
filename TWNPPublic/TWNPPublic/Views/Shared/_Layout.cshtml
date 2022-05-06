@@ -31,11 +31,12 @@
     <link rel="stylesheet" href="~/js/fancyBox/jquery.fancybox.css" />
     <script type="text/javascript" src="~/js/fancyBox/jquery.fancybox.js"></script>
 
-
-
     <!-- footable套件 -->
     <link rel="stylesheet" href="~/js/footable/footable.bootstrap.css" />
     <script type="text/javascript" src="~/js/footable/footable.js"></script>
+
+    @RenderSection("echart", required: false)
+    @RenderSection("validation",required:false)
 
     <script type="text/javascript">
         // footable
@@ -52,6 +53,18 @@
 
         //fancybox 小頁面
         $(document).ready(function () {
+
+            //老馬燈AJAX
+             $.get("@Url.Action("ListedNews","Dashboard")", function(result){
+                if(result.Success){
+                    $.each(result.Data,function(index,value){
+                        var $ul = $("#marquee1").append("<li>" + value.TITLE + "</li>");
+                        // update the marquee
+                        $ul.marquee("update");
+                    });
+                }
+             });
+
 
             if ($(window).width() < 768) {
                 $(".fbox_Add,.fbox_Modify,.fbox_View").fancybox({
@@ -84,24 +97,36 @@
 
         });
 
+        var LimitSleepTimer = "15:01";
+        $(document).ready(function () {
+             $(document).mousemove(function (e) {
+                timer2 = LimitSleepTimer;
+            });
+        });
+
+        var timer2 = LimitSleepTimer;
+        var interval = setInterval(function () {
+            var timer = timer2.split(':');
+            var minutes = parseInt(timer[0], 10);
+            var seconds = parseInt(timer[1], 10);
+            --seconds;
+            minutes = (seconds < 0) ? --minutes : minutes;
+            if (minutes < 0) clearInterval(interval);
+            seconds = (seconds < 0) ? 59 : seconds;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+            $('#LogoutHint').html(minutes + ':' + seconds + '後');
+            $('#mobileLogoutHint').html(minutes + ':' + seconds + '後');
+            timer2 = minutes + ':' + seconds;
+            if (timer2 == "0:00") {
+                alert("網頁已閒置超過15分鐘，請從新登入");
+                window.location = "@Url.Action("Logout", "Home")";
+            }
+        }, 1000);
+
     </script>
 
 </head>
 <body onload="init();">
-
-
-    
-        
-        @RenderBody()
-
-
-
-
-
-
-
-
-
-
+    @RenderBody()
 </body>
 </html>

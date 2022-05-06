@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="85f9aadf-4683-4e7a-b914-b2616bbfa5ab" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="System.Data" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/WRBWebService/AdminService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AdminService.xsd" MetadataType="Schema" ID="ea22c29a-ac94-4e51-9554-2b485967c56c" SourceId="1" SourceUrl="http://localhost/WRBWebService/AdminService.svc?xsd=xsd3" />
+    <MetadataFile FileName="AdminService1.xsd" MetadataType="Schema" ID="07abf94d-b6db-4036-a0b0-d013bafe8e97" SourceId="1" SourceUrl="http://localhost/WRBWebService/AdminService.svc?xsd=xsd1" />
+    <MetadataFile FileName="AdminService.disco" MetadataType="Disco" ID="749bc86e-f913-4bc6-abe2-3229d3ba19c9" SourceId="1" SourceUrl="http://localhost/WRBWebService/AdminService.svc?disco" />
+    <MetadataFile FileName="AdminService.wsdl" MetadataType="Wsdl" ID="befea238-25cf-4e0d-87ef-02bfe466d4ab" SourceId="1" SourceUrl="http://localhost/WRBWebService/AdminService.svc?wsdl" />
+    <MetadataFile FileName="AdminService2.xsd" MetadataType="Schema" ID="a71d0ec2-dc4f-4e62-a5d0-6ce9904abaf6" SourceId="1" SourceUrl="http://localhost/WRBWebService/AdminService.svc?xsd=xsd2" />
+    <MetadataFile FileName="AdminService3.xsd" MetadataType="Schema" ID="3db7ef35-0632-43a0-9b6b-b370a3572244" SourceId="1" SourceUrl="http://localhost/WRBWebService/AdminService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

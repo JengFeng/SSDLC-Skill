@@ -1,46 +1,72 @@
-﻿@{
+﻿@using TWNPPublic.ViewModels.Home
+@model LoginViewModel
+@{
     ViewData["Title"] = "登入頁面";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+<link rel="stylesheet" href="~/css/Login.css">
 
-    <link rel="stylesheet" href="~/css/Login.css">
-
-  <div class="wrap_login">
+<div class="wrap_login">
     <div class="loginGroup animated fadeInDown">
-      <div class="InputBox">
-        <div class="logo">
-          <div class="companyName">用戶用水</div>
-          <div class="systemTitle">查詢平台</div>
-        </div>
-        <div class="formBox">
-          <div class="form-group">
-            <label>帳號(水號)</label>
-            <input type="email" class="form-control" placeholder="請輸入您的帳號">
-          </div>
-          <div class="form-group">
-            <label>密碼</label>
-            <input type="password" class="form-control" placeholder="請輸入您的密碼">
-          </div>
-          <div class="form-group">
-            <label>驗證碼</label>
-            <div class="codeGroup">
-              <input type="text" class="form-control width100">
-              <span class="code"><img src="~/images/code.jpg"></span>
-              <a class="btn-grey-o" href="javascript:;">重新整理</a>
+        <div class="InputBox">
+            <div class="logo">
+                <div class="companyName">用戶用水</div>
+                <div class="systemTitle">查詢平台</div>
             </div>
-          </div>
-          
-          <div class="btnGroup">
-              <a class="btn-green-o" href="@Url.Action("Index","Dashboard")">送出</a>
-              <a class="btn-lightGrey-o" href="javascript:;">清除</a>
-          </div>
-
-
-        </div>
-      </div><!-- InputBox -->
-
-
-
+            <div class="formBox">
+                <form id="formLogin" autocomplete="off" method="post" action="@Url.Action("Login","Home")">
+                    <div class="form-group">
+                        <label>帳號(水號)</label>
+                        <div>
+                            @Html.TextBoxFor(m=>m.UserName , new {@class="form-control",@placeholder="請輸入您的帳號"})
+                            @Html.ValidationMessageFor(m=>m.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>密碼</label>
+                        <div>
+                            @if (ViewBag.islocalhost)
+                            {
+                                @Html.PasswordFor(m=>m.Password , new {@class="form-control",@placeholder="請輸入您的密碼",@value ="106G000221"})
+                            }
+                            else
+                            {
+                                @Html.PasswordFor(m=>m.Password , new {@class="form-control",@placeholder="請輸入您的密碼"})
+                            }
+                            @Html.ValidationMessageFor(m=>m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>驗證碼</label>
+                        <div class="codeGroup">
+                            <div>
+                                @Html.PasswordFor(m=>m.CapthCode , new {@class="form-control width100",@placeholder="驗證碼"})
+                                @Html.ValidationMessageFor(m=>m.CapthCode, "", new { @class = "text-danger" })
+                            </div>
+                            <span class="code"><img src="~/images/code.jpg"></span>
+                            <a class="btn-grey-o" href="javascript:;">重新整理</a>
+                        </div>
+                    </div>
+                    <div class="btnGroup">
+                        <a class="btn-green-o" href="javascript:;" onclick="submitForm()">送出</a>
+                        <a class="btn-lightGrey-o" href="javascript:;" onclick="clearFrom()">清除</a>
+                    </div>
+                </form>
+            </div>
+        </div><!-- InputBox -->
     </div><!-- loginGroup end -->
-  </div><!-- wrap_login end-->
-  
+</div><!-- wrap_login end-->
+<script>
+
+    function submitForm(){
+        $('#formLogin').submit();
+    }
+
+    function clearFrom(){
+        document.getElementById("formLogin").reset();
+    }
+</script>

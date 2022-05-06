@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="~/images/favicon.ico" />
     <link rel="bookmark" href="~/images/favicon.ico" />
     <title>@ViewBag.Title</title>
-        <link rel="stylesheet" href="~/css/All.css">
+    <link rel="stylesheet" href="~/css/All.css">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 
     <!-- <script src="~/Js/jquery-2.2.0.min.js" ></script> -->
@@ -39,6 +39,9 @@
     <!-- footable套件 -->
     <link rel="stylesheet" href="~/Js/footable/footable.bootstrap.css" />
     <script type="text/javascript" src="~/Js/footable/footable.js"></script>
+
+    @RenderSection("echart", required: false)
+
     <script type="text/javascript">
         // footable
         $(document).ready(function () {
@@ -48,8 +51,8 @@
 
 </head>
 <body>
-    
+
     @RenderBody()
-    
+
 </body>
 </html>
