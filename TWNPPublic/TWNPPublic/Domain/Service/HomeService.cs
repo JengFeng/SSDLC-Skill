@@ -11,7 +11,7 @@ namespace TWNPPublic.Domain.Service
         {
             this.dataAccess = dataAccess;
         }
-        public (bool IsSuccess, string Message, List<F_B_LOGIN_WaterNo>? WaterNos) LoginByUserNameAndPassWord(string UserName, string PassWord)
+        public (bool IsSuccess, string Message, F_B_LOGIN? UserInfo) LoginByUserNameAndPassWord(string UserName, string PassWord)
         {
             string mainsql = @"SELECT * FROM [dbo].[F_B_LOGIN] (@UserName,@PassWord)";
             object obj = new { UserName, PassWord };
@@ -24,7 +24,7 @@ namespace TWNPPublic.Domain.Service
 
             if (result.LOGIN_STATUS == "OK")
             {
-                return (true, "登入成功", result.F_B_LOGIN_WaterNos);
+                return (true, "登入成功", result);
             }
 
             return (false, result.LOGIN_STATUS, null);
@@ -35,6 +35,6 @@ namespace TWNPPublic.Domain.Service
     public interface IHomeService
     {
         //不成體統的寫法 隨便吧==
-        public (bool IsSuccess, string Message, List<F_B_LOGIN_WaterNo>? WaterNos) LoginByUserNameAndPassWord(string UserName, string PassWord);
+        public (bool IsSuccess, string Message, F_B_LOGIN? UserInfo) LoginByUserNameAndPassWord(string UserName, string PassWord);
     }
 }

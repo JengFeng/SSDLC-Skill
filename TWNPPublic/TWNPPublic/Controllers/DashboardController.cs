@@ -12,11 +12,11 @@ namespace TWNPPublic.Controllers
     [Menu("首頁")]
     public class DashboardController : BasicController
     {
-        
+
         private readonly IAspNetUser aspNetUser;
         private readonly IDashboardService dashboardService;
 
-        public DashboardController(IAspNetUser aspNetUser,IDashboardService dashboardService)
+        public DashboardController(IAspNetUser aspNetUser, IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
             this.aspNetUser = aspNetUser;
@@ -36,6 +36,9 @@ namespace TWNPPublic.Controllers
 
         public IActionResult Fancybox_chart()
         {
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+            ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月dd日", culture);
             return View();
         }
 
@@ -45,11 +48,11 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public async Task<IActionResult> GetDashMainData()
         {
-            var result = dashboardService.GetDashMain(aspNetUser.WaterNo, aspNetUser.WaterNo, new DateTime(2022, 4, 22));
+            var result = dashboardService.GetDashMain(aspNetUser.CurrentWaterNo, aspNetUser.CurrentWaterNo, new DateTime(2022, 4, 22));
             //名字是空的話 用帳號先取代
             if (string.IsNullOrEmpty(result.NAME))
             {
-                result.NAME = aspNetUser.WaterNo;
+                result.NAME = aspNetUser.CurrentWaterNo;
             }
             return Json(Success(result));
         }
@@ -60,7 +63,7 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public async Task<IActionResult> GetDashWaterUseSearchChart(string Cdate)
         {
-            var result = dashboardService.GetDashWaterUse(aspNetUser.WaterNo, new DateTime(2022, 4, 4));
+            var result = dashboardService.GetDashWaterUse(aspNetUser.CurrentWaterNo, new DateTime(2022, 4, 4));
             Dictionary<string, float> dic = new Dictionary<string, float>();
 
             for (int i = 1; i <= 7; i++)
@@ -91,7 +94,7 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> ListedNotes(DateTime start, DateTime end)
         {
 
-             int Year = 0, Month = 0;
+            int Year = 0, Month = 0;
 
             DateTime starttime;
             DateTime endtime;
@@ -107,7 +110,7 @@ namespace TWNPPublic.Controllers
                 endtime = new DateTime(Setdate.AddMonths(1).Year, Setdate.AddMonths(1).Month, 1).AddDays(-1);
             }
 
-            var result = dashboardService.ListedNotes(aspNetUser.WaterNo, starttime, endtime);
+            var result = dashboardService.ListedNotes(aspNetUser.CurrentWaterNo, starttime, endtime);
             return Json(Success(result));
         }
     }

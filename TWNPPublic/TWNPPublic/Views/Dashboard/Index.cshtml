@@ -75,6 +75,16 @@
                                             '</tr>');
             
         });
+
+        if (obj.length <= 4) {
+            for (var i = 0; i < 4 - obj.length; i++) {
+                $("#tbB_Message > tbody").append('<tr>' +
+                    '<td class="width15"></td>' +
+                    '<td>尚無訊息</td>' +
+                    '<td class="width15"></td>' +
+                    '</tr>');
+            }
+        }
     }
 
     //初始化用水情形比較圖表

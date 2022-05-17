@@ -1,16 +1,174 @@
-﻿@{
-    ViewData["Title"] = "警示設定";
+﻿@using TWNPPublic.ViewModels.UserManage
+@model UpdateUserManageViewModel
+@{
+    ViewData["Title"] = "密碼設定";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript" src="~/js/jquery.tmpl.min.js"></script>
+}
 <script>
-	$(function(){	
-		$(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
-	});
+        var WaterNoIndex = 1;
+        $(function(){
+            $(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
+            $.get("@Url.Action("GetUserInfo","UserManage")",function(result){
+                if(result.Success){
+                    $("#Account").val(result.Data.B_ACCOUNT);
+                    $("#Password").val(result.Data.PWD);
+                    $("#PhoneNumber").val(result.Data.CELL_PHONE);
+                    $("#Email").val(result.Data.EMAIL);
+                }
+            });
+            $.get("@Url.Action("ListedUserWaterNo","UserManage")",function(result){
+                if(result.Success){
+                    $.each(result.Data,function(index,value){
+                        value["Index"] = WaterNoIndex;
+                        $("#TemplateWaterNoitem").tmpl(value).appendTo("#divWaterNoFromGroup");
+                        WaterNoIndex++;
+                    })
+                }
+            });
+        });
+
+        function btnDeleteWaterNo(obj){
+            var Id = $(obj).data('id');
+            $("#WaterNoItem" + Id).remove();
+        }
+        function btnAddWaterNo(){
+            var item = { Index : WaterNoIndex};
+            WaterNoIndex++;
+            $("#TemplateWaterNoitem").tmpl(item).appendTo("#divWaterNoFromGroup");
+        }
+        function btnReset(){
+            history.go(0);
+        }
+
+        function btnSave(){
+            var Url = "@Url.Action("CreatUserInfo","UserManage")";
+            var Data ={
+                Account : $("#Account").val(),
+                Password : $("#Password").val(),
+                PhoneNumber : $("#PhoneNumber").val(),
+                Email : $("#Email").val()
+            };
+            var Validator = $("#FormAccount").validate();
+            $.ajax({
+                type: 'POST',
+                url: Url,
+                data: Data,
+                success: function (data) {
+                    if (data.Success) {
+                        alert(data.Message);
+                    }
+                    else {
+                        if (data.ModelStateErrors != null) {
+                            Validator.showErrors(data.ModelStateErrors);
+                        }
+                        else {
+                            alert(data.Message);
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError){
+                    alert("伺服器繁忙，請稍後再試");
+                }
+            });
+        }
+
+
+    @if (!ViewBag.IsSignAccount)
+    {
+        @*無帳號創建帳號*@
+        <text>
+                function btnSave(){
+                    var Url = "@Url.Action("CreatUserInfo","UserManage")";
+                    var Data ={
+                        Account : $("#Account").val(),
+                        Password : $("#Password").val(),
+                        PhoneNumber : $("#PhoneNumber").val(),
+                        Email : $("#Email").val()
+                    };
+                    var Validator = $("#FormAccount").validate();
+                    $.ajax({
+                        type: 'POST',
+                        url: Url,
+                        data: Data,
+                        success: function (data) {
+                            if (data.Success) {
+                                alert(data.Message);
+                                history.go(0);
+                            }
+                            else {
+                                if (data.ModelStateErrors != null) {
+                                    Validator.showErrors(data.ModelStateErrors);
+                                }
+                                else {
+                                    alert(data.Message);
+                                }
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError){
+                            alert("伺服器繁忙，請稍後再試");
+                        }
+                    });
+                }
+        </text>
+    }
+    else
+    {
+        @*有帳號更新資料*@
+        <text>
+            function btnSave(){
+                var Url = "@Url.Action("UpdateUserInfo","UserManage")";
+                var Data ={
+                    Account : $("#Account").val(),
+                    Password : $("#Password").val(),
+                    PhoneNumber : $("#PhoneNumber").val(),
+                    Email : $("#Email").val(),
+                    WaterNO : $("input[name='WaterNo[]']").map(function(){return $(this).val();}).get()
+                };
+                var Validator = $("#FormAccount").validate();
+                $('#spanWaterNO').text('');
+                $.ajax({
+                    type: 'POST',
+                    url: Url,
+                    data: Data,
+                    success: function (data) {
+                        if (data.Success) {
+                            alert(data.Message);
+                        }
+                        else {
+                            if (data.ModelStateErrors != null) {
+                                if(data.ModelStateErrors['WaterNO'] != null)
+                                {
+                                    $('#spanWaterNO').text(data.ModelStateErrors['WaterNO'][0]);
+                                }
+                                else
+                                {
+                                    Validator.showErrors(data.ModelStateErrors);
+                                }
+                            }
+                            else {
+                                alert(data.Message);
+                            }
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError){
+                        alert("伺服器繁忙，請稍後再試");
+                    }
+                });
+            }
+        </text>
+    }
+
+
 </script>
 
-<form class="pageWrap">
+<div class="pageWrap">
     <partial name="_MenuPartial" />
-	<div class="pageArea">
+    <div class="pageArea">
         <partial name="_NewsBoxPartial" />
         <div class="mainGroup">
             <nav aria-label="breadcrumb">
@@ -23,28 +181,70 @@
                 <i class="bi bi-person-square"></i>
                 用戶密碼管理
             </div>
-            <div class="formGroup">
-                <div class="mb-3 row">
-                    <label for="inputText" class="col-sm-3 col-form-label"><i class="bi bi-phone"></i> 手機簡訊設定</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="inputText">
+            <form id="FormAccount">
+                <div class="formGroup" style="padding:15px 60px">
+                    <div class="mb-3 row">
+                        <label for="Account" class="col-sm-3 col-form-label"><i class="bi bi-person-plus"></i>帳號</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m=>m.Account,!(ViewBag.IsSignAccount) ? new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的帳號"} :  (object)new { disabled = "disabled",@class="form-control" } )
+                            @Html.ValidationMessageFor(m=>m.Account,"",new { @class = "text-danger"})
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="Password" class="col-sm-3 col-form-label"><i class="bi bi-key"></i>密碼</label>
+                        <div class="col-sm-9">
+                            @Html.PasswordFor(m=>m.Password,new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的密碼" })
+                            @Html.ValidationMessageFor(m=>m.Password,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="PhoneNumber" class="col-sm-3 col-form-label"><i class="bi bi-phone"></i>手機簡訊設定</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m=>m.PhoneNumber,new{@class="form-control",autocomplete="off",@placeholder="0901000123" })
+                            @Html.ValidationMessageFor(m=>m.PhoneNumber,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="Email" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i>電子郵件設定</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m=>m.Email,new{@class="form-control",autocomplete="off",@placeholder="Someone@mail.com" })
+                            @Html.ValidationMessageFor(m=>m.Email,"",new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-                <div class="mb-3 row">
-                    <label for="inputEmail1" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i> 電子郵件設定</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="inputEmail1">
+                @if (ViewBag.IsSignAccount)
+                {
+                    <div class="unitTitle justify-content-between">
+                        <div class="name">
+                            <i class="bi bi-search"></i>
+                            用戶水號綁定管理
+                        </div>
+                        <a class="btn-green-o" href="javascript:;" onclick="btnAddWaterNo()"><i class="bi bi-droplet"></i>增加水號</a>
                     </div>
-                </div>
-            </div>
+                    <span class="text-danger" id="spanWaterNO">
+                    </span>
+                    <div class="formGroup" id="divWaterNoFromGroup" style="padding:15px 60px">
+                    </div>
+                }
+            </form>
             <div class="btnGroup">
-                <a class="btn-green-o" href="javascript:;">儲存</a>
-                <a class="btn-lightGrey-o" href="javascript:;">重填</a>
+                <a class="btn-green-o" href="javascript:;" onclick="btnSave()">儲存</a>
+                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重填</a>
             </div>
         </div>
+    </div>
+</div><!-- wrap end -->
+
+<script type="text/template" data-template="TemplateWaterNoitem" id="TemplateWaterNoitem">
+    <div class="mb-3 row" id="WaterNoItem${Index}">
+        <label class="col-sm-3 col-form-label"><i class="bi bi-pin-angle-fill"></i>水號</label>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <input type="text" class="form-control" autocomplete="off" value="${WATER_NO}" name="WaterNo[]">
+        </div>
+        <div class="col-sm-1 col-md-1 col-lg-1">
+            <button class="btn btn-danger" type="button" data-id="${Index}" onclick="btnDeleteWaterNo(this)">x</button>
+        </div>
+    </div>
+</script>
 
 
-	</div>
-
-
-</form><!-- wrap end -->

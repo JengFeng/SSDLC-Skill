@@ -31,6 +31,8 @@ namespace TWNPPublic
             services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<IAlertService, AlertService>();
+            services.AddTransient<IUserManageService, UserManageService>();
         }
     }
 }

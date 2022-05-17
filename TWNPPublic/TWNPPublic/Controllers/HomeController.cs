@@ -25,16 +25,16 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    var sqlexecute = "SELECT * FROM [B_NEWS]";
-        //    var execute = dataAccess.Execute(sqlexecute);
+        public IActionResult Index()
+        {
+            //var sqlexecute = "SELECT * FROM [B_NEWS]";
+            //var execute = dataAccess.Execute(sqlexecute);
 
-        //    var sqlString = "SELECT * FROM [B_NEWS]";
-        //    var result = dataAccess.Query<B_NEWS>(sqlString);
+            //var sqlString = "SELECT * FROM [B_NEWS]";
+            //var result = dataAccess.Query<B_NEWS>(sqlString);
 
-        //    return View();
-        //}
+            return View();
+        }
 
         public IActionResult Logout()
         {
@@ -96,7 +96,9 @@ namespace TWNPPublic.Controllers
             if (result.IsSuccess)
             {
                 HttpContext.Session.SetString("UserName", model.UserName);
-                HttpContext.Session.SetString("WaterNo", result.WaterNos.First().WATER_NO);
+                HttpContext.Session.SetString("CurrentWaterNo", result.UserInfo.F_B_LOGIN_WaterNos.First().WATER_NO.ToString());
+                HttpContext.Session.SetString("WaterNo", string.Join(',', result.UserInfo.F_B_LOGIN_WaterNos.Select(c=>c.WATER_NO)));
+                HttpContext.Session.SetString("UserId", result.UserInfo.B_ACCOUNT_SN.ToString() ?? "0");
                 return RedirectToAction("Index", "Dashboard");
             }
             else

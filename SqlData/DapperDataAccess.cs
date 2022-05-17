@@ -67,9 +67,10 @@ namespace SqlData
             if (disposing) GC.SuppressFinalize(this);
         }
 
-        public int Execute(string sql)
+        public int Execute(string sql, object parameters = null)
         {
-            return ChannelService.Execute(sql);
+            var steamparameters = JsonConvert.SerializeObject(parameters);
+            return ChannelService.Execute(sql, steamparameters);
         }
 
         public List<T> Query<T>(string sql, object parameters = null)

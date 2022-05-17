@@ -20,9 +20,19 @@ namespace SyncDataBase
 
         public int Execute(string sql, string parameters = null)
         {
+            var parameter = new DynamicParameters();
+            if (parameters != "null")
+            {
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(parameters);
+                foreach (var item in obj)
+                {
+                    parameter.Add(item.Key, item.Value);
+                }
+            }
+
             using (var connection = CreateConnection())
             {
-                return connection.Execute(sql);
+                return connection.Execute(sql, parameter);
             }
         }
 
