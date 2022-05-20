@@ -12,8 +12,7 @@
     <title>@ViewData["Title"] -智慧水網民眾版</title>
 
     <link rel="stylesheet" href="~/css/All.css">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
     <!-- <script src="~/js/jquery-2.2.0.min.js" ></script> -->
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/layout.js"></script>
@@ -53,6 +52,13 @@
 
         //fancybox 小頁面
         $(document).ready(function () {
+            //水號選單
+            $.get("@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
+                $.each(result.Data.WaterNos,function(index,value){
+                    $("#SelectWaterNos").append('<option value=' + value + '>' + value + '</option>');
+                });
+                $("#SelectWaterNos option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
+            });
 
             //老馬燈AJAX
              $.get("@Url.Action("ListedNews","Dashboard")", function(result){
@@ -122,9 +128,7 @@
                 window.location = "@Url.Action("Logout", "Home")";
             }
         }, 1000);
-
     </script>
-
 </head>
 <body onload="init();">
     @RenderBody()

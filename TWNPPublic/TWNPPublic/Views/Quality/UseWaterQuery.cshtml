@@ -2,14 +2,17 @@
     ViewData["Title"] = "用水指針查詢";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section echart{
+<script type="text/javascript" src="/js/echarts/echarts.js"></script>
+}
 <script>
-	$(function(){	
-		$(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
-	});
+    $(function(){
+        $(".menuList > a:nth-child(2)").addClass("active").siblings().removeClass("active");
+    });
 </script>
 <div class="pageWrap">
-	<partial name="_MenuPartial" />
-	<div class="pageArea">
+    <partial name="_MenuPartial" />
+    <div class="pageArea">
         <partial name="_NewsBoxPartial" />
         <div class="mainGroup">
             <nav aria-label="breadcrumb">
@@ -18,32 +21,135 @@
                     <li class="breadcrumb-item active" aria-current="page">用水指針查詢</li>
                 </ol>
             </nav>
-
-
             <div class="search-inline row">
-                    
-                    <div class="mb-3 col-xs-12 col-lg-6">
-                        <label for="form-name" class="form-label"><i class="bi bi-search"></i> 日期起</label>
-                        <input type="text" class="form-control datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'  data-language='zh'>
-                    </div>
-                    <div class="mb-3 col-xs-12 col-lg-6">
-                        <label for="form-name" class="form-label">日期訖</label>
-                        <input type="text" class="form-control datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'  data-language='zh'>
-                    </div>
-
-                    
-
-
+                <div class="mb-3 col-xs-12 col-lg-6">
+                    <label for="form-name" class="form-label"><i class="bi bi-search"></i> 日期起</label>
+                    <input type="date" id="inputStartTime" class="form-control datepicker-here">
                 </div>
-
-                <div class="pagechartGroup">
-                    這裡放圖表，預設高500px
+                <div class="mb-3 col-xs-12 col-lg-6">
+                    <label for="form-name" class="form-label">日期訖</label>
+                    <input type="date" id="inputEndTime" class="form-control datepicker-here">
                 </div>
-
+            </div>
+            <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
+                <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
+                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重製</a>
+            </div>
+            <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px;margin-top:15px">
+            </div>
         </div>
-
-
-	</div>
-
-
+    </div>
 </div><!-- wrap end -->
+
+<script>
+
+    window.onresize = function() {
+      myChart.resize();
+    };
+    function btnReset(){
+        history.go(0);
+    }
+
+    function btnSearch(){
+        var url = "@Url.Action("UseWaterChart","Quality")";
+        var model = {
+            StartTime : $("#inputStartTime").val(),
+            EndTime :$("#inputEndTime").val()
+        };
+
+        $.ajax({
+            url: url,
+            type: "Post",
+            data: model,
+            success: function (data) {
+                if (data.Success) {
+                        LoadChartMethod(jQuery.parseJSON(data.Data));
+                    } else {
+                        if (data.ModelStateErrors != null) {
+                        } else {
+                            alert(data.Message);
+                        }
+                    }
+                },
+            traditional: true
+        });
+    }
+
+    var myChart = echarts.init(document.getElementById('divpagechartGroup'));
+    function LoadChartMethod(obj){
+        var option;
+        const colors = ['#ffb1c1', '#5391C7'];
+        option = {
+            color: colors,
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['水費','用水量']
+            },
+            xAxis: [{
+                type: 'time',
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }],
+            dataZoom: [
+                {
+                    minSpan: 0.01,
+                    type: 'slider', 
+                    start: 0,      
+                    end: 50
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '用水量',
+                    position: 'right',
+                    alignTicks: true,
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                          color: colors[0]
+                        }
+                    },
+                    axisLabel: {formatter: '{value} 元'}
+                },
+                {
+                    type: 'value',
+                    name: '水費',
+                    position: 'left',
+                    alignTicks: true,
+                    axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colors[1]
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                },
+                axisLabel: {
+                    formatter: '{value} 度'
+                    }
+                }],
+          series: [
+            {
+              name: '用水量',
+              type: 'bar',
+              data: obj.Pindatas
+            },
+            {
+              name: '水費',
+              type: 'line',
+              yAxisIndex: 1,
+              data: obj.Amountdatas
+            }
+          ]
+        };
+        option && myChart.setOption(option);
+    }
+</script>

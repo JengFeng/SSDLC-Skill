@@ -5,7 +5,6 @@
 <script type="text/javascript" src="/js/echarts/echarts.js"></script>
 }
 
-}
 <!-- 月曆套件 -->
 <link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
@@ -21,17 +20,23 @@
             editable: false,                // 月曆是否允許手動編輯(拖移)
             selectable: true,               // 是否可以選取月曆
             slotEventOverlap: false,        // 事件使否重疊覆蓋
-            dayMaxEvents: true,            // 當行程太多是否用 more 檢視完整
+            dayMaxEvents: false,            // 當行程太多是否用 more 檢視完整
             weekends: true,                // 顯示星期六跟星期日
             allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
             contentHeight: 300,
             dayHeaderFormat: {
                 weekday: 'narrow'
             },
+            eventContent: function (arg) {
+                var event = arg.event;
+                var customHtml = '';
+                customHtml += "<span onclick=\"OpenNotesModal()\">檢視</span>";
+                return { html: customHtml }
+            },
             events:function(info, successCallback, failureCallback) {
                 var model = {start : info.startStr, end : info.endStr };
                 $.post("@Url.Action("ListedNotes","Dashboard")",model,function(result){
-                     var events = [];
+                     var events = result.Data;
                      successCallback(events);
                 });
             }
@@ -42,6 +47,7 @@
 <!-- Easymap -->
 <script type="text/javascript" src="http://easymap.gis.tw/easymap/latest/easymap.js?"></script>
 <script type="text/javascript">
+
     $(function () {
 
         $.get("@Url.Action("GetDashMainData","Dashboard")", function(result){
@@ -58,11 +64,26 @@
                 $('#divLASTYEAR_MONEY').html('<i class="bi bi-arrow-up text-red"></i>' + result.Data.LASTYEAR_MONEY + '<span>元</span>');
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
+                //InitTableB_Message(result.Data.DashMainBMessage);
             }
         });
         InitWaterUseSearchChart();
-
+        ReloadTable();
     });
+
+    const colors = ['#ffb1c1', '#5391C7'];
+    //初始化異常狀態列表
+    function InitTableB_Message(obj){
+        $("#tbB_Message > tbody").empty();
+        $.each(obj,function(index,value){
+            $("#tbB_Message > tbody").append('<tr>' +
+                                            '<td class="width15">'+value.Time+'</td>' +
+                                            '<td>'+ value.Message +'</td>' +
+                                            '<td class="width15"><a class="btn-green-o" href="javascript:;" onclick="OpenExceptionModal()"><i class="bi bi-window"></i>查看</a></td>'+
+                                            '</tr>');
+
+        });
+    }
 
     //初始化用水情形比較圖表
     function InitCompareChart(LASTYEAR_METER,LASTMONTH_METER,THISMONTH_METER){
@@ -77,6 +98,7 @@
 
         var chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
         option = {
+            color: colors,
             grid: {
               top: 20
             },
@@ -85,24 +107,80 @@
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colors[0]
+                    }
+                },
+                axisLabel: {formatter: '{value} 度'}
             },
             series: [
             {
                 data: [LASTYEAR_METER, LASTMONTH_METER, THISMONTH_METER],
-                type: 'bar'
+                type: 'bar',
+                itemStyle:{
+                        color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#ffb1c1'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(255, 192, 184, 0.1)'
+                    }])
+                },
+                label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                        color: colors[0],
+                        fontSize: 16
+                    }
+                }
             }]
         };
         chartCompareWaterUse.setOption(option);
     }
 
-    //初始化用水量查詢圖表
+    //easy map
+    var map = null;
+    function init() {
+        //map = new Easymap('map');	//'map'為div的id
+        //map.zoomToXY(new dgXY(121.3, 24.5), 9);
+        //map.switchMapType('VectorTile')
+    }
+
+    //用水量查詢標題的左右按鈕
+    function btnSwitchWaterSearch(obj){
+        //這個會變成中間
+        var btnSetNow = $(obj);
+        //中間的時間
+        var middledate = btnSetNow.data('themeswitchchart');
+        // 左邊的時間
+        var leftdate = new Date(middledate);
+        var setleftdate = DataFormatPaser(leftdate.setDate(leftdate.getDate()-7));
+        //右邊的時間
+        var rightdate = new Date(middledate);
+        var setrightdate = DataFormatPaser(rightdate.setDate(rightdate.getDate()+7));
+
+        $("#LeftSwitchChart").prop('title', setleftdate);
+        $("#LeftSwitchChart").data('themeswitchchart',setleftdate)
+        $("#divWaterUserSearchChartTitle").text(middledate + "當周用水量");
+        $("#divWaterUserSearchChartTitle").data('themeswitchchart',middledate)
+        $("#RightSwitchChart").prop('title', setrightdate);
+        $("#RightSwitchChart").data('themeswitchchart',setrightdate);
+
+        InitWaterUseSearchChart();
+    }
+
+    //用水量查詢圖表
     function InitWaterUseSearchChart(){
         var model ={ Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart")};
         $.post("@Url.Action("GetDashWaterUseSearchChart","Dashboard")", model ,function(result){
             if(result.Success){
                 var chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
                 option = {
+                    color: colors,
                     grid: {
                       top: 20
                     },
@@ -111,12 +189,35 @@
                         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                     },
                     yAxis: {
-                        type: 'value'
+                        type: 'value',
+                        axisLine: {
+                        show: true,
+                            lineStyle: {
+                                color: colors[1]
+                            }
+                        },
+                        axisLabel: {formatter: '{value} 度'}
                     },
-                    series: [
-                        {
+                    series: [{
                             data: result.Data,
-                            type: 'bar'
+                            type: 'bar',
+                            itemStyle:{
+                                color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#248ff7'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(22,75,247,0.1)'
+                            }])
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    color: colors[1],
+                                    fontSize: 16
+                                }
+                            }
                         }]
                     };
                 chartWaterUseMonitor.setOption(option);
@@ -124,15 +225,140 @@
         });
     }
 
-    //easy map
-    var map = null;
-    function init() {
-        //map = new Easymap('map');	//'map'為div的id
-        //map.zoomToXY(new dgXY(121.3, 24.5), 9);
-
-        //map.switchMapType('VectorTile')
+    //用水量查詢用日期轉換
+    function DataFormatPaser(origindate){
+        var odate = new Date(origindate);
+        var dd = (odate.getDate() + 1 <= 10 ? '0' : '') + (odate.getDate());
+        var mm = (odate.getMonth() + 1 <= 10 ? '0' : '') + (odate.getMonth() + 1);
+        var y = odate.getFullYear();
+        return y + '/' + mm + '/' + dd;
     }
 
+
+    function OpenExceptionModal(){
+        $("#ModalException").modal('show');
+    }
+
+    function OpenNotesModal(){
+        $("#ModalNode").modal('show');
+    }
+
+    /* 以條件生成 Listed 查詢條件 */
+    function GetTableQueryString() {
+        return '@Url.Action("ListedExceptionState", "Dashboard")'
+    }
+
+    function ReloadTable(){
+         var Url = GetTableQueryString() + '?page=' + currentpage;
+          $.ajax({
+            type: 'Get',
+            url: Url,
+            dataType: "json",
+            success: function (data) {
+                if (data.Success) {
+                    InitTableB_Message(data.Data.PageData);
+                    LoadPaginate(data.Data.Max, 4);
+                    $("#tbB_Message").footable();
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    }
+
+    /* 現在頁數 */
+    var currentpage = 1;
+    /* 總頁簽方法*/
+    function LoadPaginate(TotalCount,ItemPerPage) {
+        //$("#PageCount").html("共 " + TotalCount + " 筆");
+        maxpage = (TotalCount / ItemPerPage);
+        //處理頁籤
+        var tags = LoadPageItem('#first', '<<');
+        tags += LoadPageItem('#prev', '<');
+        if (parseInt(currentpage, 10) <= 5) {
+            for (var i = 0; i < Math.min(9, maxpage); i++) {
+                if (i == parseInt(currentpage, 10) - 1) {
+                    tags += LoadPageItem('#' + (i + 1), i + 1, 'active');
+                } else {
+                    tags += LoadPageItem('#' + (i + 1), i + 1);
+                }
+            }
+        } else if (parseInt(currentpage, 10) >= maxpage - 4) {
+            for (var i = Math.max(Math.ceil(maxpage) - 9, 0); i < maxpage; i++) {
+                if (i == parseInt(currentpage, 10) - 1) {
+                    tags += LoadPageItem('#' + (i + 1), i + 1, 'active');
+                } else {
+                    tags += LoadPageItem('#' + (i + 1), i + 1);
+                }
+            }
+        } else {
+            for (var i = parseInt(currentpage, 10) - 5; i < parseInt(currentpage, 10) + 4; i++) {
+                if (i == parseInt(currentpage, 10) - 1) {
+                    tags += LoadPageItem('#' + (i + 1), i + 1, 'active');
+                } else {
+                    tags += LoadPageItem('#' + (i + 1), i + 1);
+                }
+            }
+        }
+        tags += LoadPageItem('#next', '>');
+        tags += LoadPageItem('#last', '>>');
+        $('#UlPagination').html(tags);
+    }
+
+     /* 頁數載入方法
+     * @@param href 頁數指標參數
+     * @@param pagename 要顯示的頁碼
+     * @@param active 是否標記
+     */
+    function LoadPageItem(href, pagename, active) {
+        var TplPageitem = $('script[data-template="TemplatePageitem"]').text().split(/\$\{(.+?)\}/g);
+        return TplPageitem.map(render({
+            "HrefName": href,
+            "PageName": pagename,
+            "Active": active
+            })).join('')
+    }
+
+    /* 換頁方法 */
+    function PagelinkOnclick(obj) {
+        console.log(obj);
+        var $this = $(obj);
+        var gopage = currentpage;
+        if ($this.attr('href') == "#first") {
+            gopage = 1;
+        } else if ($this.attr('href') == "#prev") {
+            if (currentpage - 1 == 0) {
+                gopage = 1;
+            } else {
+                gopage = currentpage - 1;
+            }
+        } else if ($this.attr('href') == "#next") {
+            if (currentpage + 1 > Math.ceil(maxpage)) {
+                gopage = Math.ceil(maxpage);
+            } else {
+                gopage = currentpage + 1;
+            }
+        } else if ($this.attr('href') == "#last") {
+            gopage = Math.ceil(maxpage);
+        } else {
+            gopage = parseInt($this.attr('href').substring(1, 5), 10);
+        }
+        if (gopage == currentpage) { return false; }
+        currentpage = gopage;
+        ReloadTable();
+        return false;
+    }
+     /* Template Helper */
+    function render(props) {
+        return function (tok, i) { return (i % 2) ? props[tok] : tok; };
+    }
+
+</script>
+<script type="text/template" data-template="TemplatePageitem">
+    <li class="page-item ${Active}"><a class="page-link" href="${HrefName}" onclick="PagelinkOnclick(this)">${PageName}</a></li>
 </script>
 <script>
     $(function () {
@@ -150,9 +376,7 @@
         $(".close-configureGroup").click(function () {
             $(".configureGroup").removeClass("active");
         });
-
     });
-
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -206,8 +430,6 @@
                     <!-- <i class="bi bi-arrow-down"></i> 下-->
                 </div>
             </div>
-
-
             <div class="fullcalendarGroup">
                 <div class="unitTitle"><i class="bi bi-calendar-event"></i> 用水記事</div>
                 <div class="fullcalendarItem" style="height: 300px;">
@@ -216,7 +438,6 @@
             </div>
         </div><!-- feeInfoGroup end -->
         <div class="chartInfoGroup">
-
             <partial name="_NewsBoxPartial" />
             <div class="exceptionGroup">
                 <div class="unitTitle">
@@ -224,7 +445,7 @@
                     異常狀態列表
                 </div>
                 <div class="exceptionList tableBox">
-                    <table class="footable">
+                    <table id="tbB_Message">
                         <thead>
                             <tr>
                                 <th>時間</th>
@@ -232,41 +453,19 @@
                                 <th>詳細資料</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <tr>
                                 <td class="width15">2022/02/09 12:00</td>
                                 <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
                                 <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
                             </tr>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                    一號水錶水壓超過5kg / cm2 ，異常警示
-                                </td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="paginationGroup">
                         <nav>
-                            <ul class="pagination">
+                            <ul class="pagination" id="UlPagination">
                                 <li class="page-item disabled">
                                     <span class="page-link" aria-hidden="true">&laquo;</span>
-
                                 </li>
                                 <li class="page-item">
                                     <a class="page-link" href="#">1</a>
@@ -285,7 +484,7 @@
                     </div>
                 </div>
             </div>
-            <div class="chartGroup">
+            <div class="chartGroup" style="max-height:350px">
                 <div class="chartItem">
                     <div class="unitTitle">
                         <i class="bi bi-shuffle"></i>
@@ -301,26 +500,30 @@
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        <a class="btn-green-o" href="javascript:;">
+                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")">
                             <i class="bi bi-window"></i> 用水分析預測
                         </a>
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line"
                            href="javascript:;"
-                           data-themeswitchchart="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")"
-                           title="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")">
+                           id="LeftSwitchChart"
+                           data-themeswitchchart="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")"
+                           title="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")"
+                           onclick="btnSwitchWaterSearch(this)">
                             <i class="bi bi-chevron-left"></i>
                         </a>
                         <div class="name"
                              id="divWaterUserSearchChartTitle"
                              data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                            @(ViewBag.CurrentTime)當周用水量
+                            @DateTime.Now.ToString("yyyy/MM/dd")當周用水量
                         </div>
                         <a class="btn-green-o-line"
                            href="javascript:;"
-                           data-themeswitchchart="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")"
-                           title="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")">
+                           id="RightSwitchChart"
+                           data-themeswitchchart="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")"
+                           title="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")"
+                           onclick="btnSwitchWaterSearch(this)">
                             <i class="bi bi-chevron-right"></i>
                         </a>
                     </div>
@@ -330,7 +533,6 @@
                 </div>
             </div>
         </div><!-- chartInfoGroup end -->
-
     </div>
     <div class="mapGroup">
 
@@ -355,3 +557,46 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalNode" tabindex="-1" aria-labelledby="ModalNodeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">用水記事</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br />您的水號:7D762461969 於111年5月 超過上個月50% 請注意
+                <br />
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-primary">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalException" tabindex="-1" aria-labelledby="ModalExceptionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">異常狀態</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br />您的水號:7D762461969 於111年5月 超過上個月50% 請注意
+                <br />
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-primary">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+

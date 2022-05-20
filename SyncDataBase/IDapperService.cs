@@ -18,6 +18,9 @@ namespace SyncDataBase
 
         [OperationContract]
         int Execute(string sql, string parameters = null);
+
+        [OperationContract]
+        int ExecuteList(string sql, string parameters = null);
     }
 
 
