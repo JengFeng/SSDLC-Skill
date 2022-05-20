@@ -1,9 +1,9 @@
 using TWNPPublic;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//我還是習慣 Startup 拍謝:D
-Startup.ConfigureServices(builder.Services);
+ConfigurationManager configuration = builder.Configuration;
+//我還是習慣額外注入拍謝:D
+Startup.ConfigureServices(builder.Services, configuration);
 
 var app = builder.Build();
 

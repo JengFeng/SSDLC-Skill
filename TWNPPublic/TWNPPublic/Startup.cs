@@ -6,7 +6,7 @@ namespace TWNPPublic
 {
     public class Startup
     {
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services,IConfiguration configuration)
         {
             services.AddSession(option => {
                 option.Cookie.Name = ".TWNP.Session";
@@ -21,7 +21,7 @@ namespace TWNPPublic
             });
 
             //Wcf 功能網站的網址
-            var wcfServerUrl = "http://localhost:41027/DapperService.svc";
+            var wcfServerUrl = configuration["DapperWcfUrl"];
             //加入資料庫注入
             services.AddWcfData(wcfServerUrl);
             //用ORM代理 Wcf
