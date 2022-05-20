@@ -1,0 +1,64 @@
+﻿using SqlData;
+using System.Dynamic;
+using TWNPPublic.Common.Extension;
+using TWNPPublic.Models.SqlFunctions;
+using TWNPPublic.ViewModels.Quality;
+
+namespace TWNPPublic.Domain.Service
+{
+    public class QualityService : IQualityService
+    {
+        private readonly IDapperDataAccess dapperDataAccess;
+        private readonly IAspNetUser aspNetUser;
+
+        public QualityService(IDapperDataAccess dapperDataAccess, IAspNetUser aspNetUser)
+        {
+            this.dapperDataAccess = dapperDataAccess;
+            this.aspNetUser = aspNetUser;
+        }
+
+        public QualityChartViewModel GetWaterUseChart(DateTime? StartTime, DateTime? EndTime)
+        {
+            string pinsql = @"SELECT * FROM [dbo].[F_B_CHART1](@WaterNo,'PIN',@StartTime,@EndTime)";
+            string amountsql = @"SELECT * FROM [dbo].[F_B_CHART1](@WaterNo,'AMOUNT',@StartTime,@EndTime)";
+
+            var NowDate = DateTime.Now;
+            //兩個都沒資料
+            if (!StartTime.HasValue && !EndTime.HasValue)
+            {
+                EndTime = new DateTime(NowDate.Year, NowDate.Month, NowDate.Day);
+                StartTime = new DateTime(NowDate.Year, NowDate.Month - 1, NowDate.Day);
+            }
+            else if (!StartTime.HasValue)
+            {
+                StartTime = EndTime.Value.AddMonths(-1);
+            }
+            else if (!EndTime.HasValue)
+            {
+                EndTime = new DateTime(NowDate.Year, NowDate.Month, NowDate.Day);
+            }
+
+            object obj = new
+            {
+                WaterNo = aspNetUser.CurrentWaterNo,
+                StartTime,
+                EndTime
+            };
+
+            var PinResult = this.dapperDataAccess.Query<F_B_CHART1>(pinsql, obj);
+            var AmountResult = this.dapperDataAccess.Query<F_B_CHART1>(amountsql, obj);
+
+            return new QualityChartViewModel
+            {
+                StartTime = StartTime.Value,
+                EndTime = EndTime.Value,
+                PinChartData = PinResult,
+                AmountChartData = AmountResult
+            };
+        }
+    }
+    public interface IQualityService
+    {
+        public QualityChartViewModel GetWaterUseChart(DateTime? StartTime, DateTime? EndTime);
+    }
+}

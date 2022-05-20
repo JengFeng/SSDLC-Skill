@@ -25,6 +25,7 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
+        [NonAction]
         public IActionResult Index()
         {
             //var sqlexecute = "SELECT * FROM [B_NEWS]";

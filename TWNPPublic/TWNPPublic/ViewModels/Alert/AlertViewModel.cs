@@ -32,7 +32,7 @@ namespace TWNPPublic.ViewModels.Alert
         public string? AlertEmail3 { get; set; } = string.Empty;
         public string AlertValue1 { get; set; } = string.Empty;
         public string AlertValue2 { get; set; } = string.Empty;
-        public string? AlertExtion2 { get; set; } = string.Empty;
+        public int? AlertExtion2 { get; set; }
         public string AlertValue3 { get; set; } = string.Empty;
     }
 }

@@ -13,6 +13,32 @@ namespace TWNPPublic.Domain.Service
             this.dataAccess = dataAccess;
         }
 
+        public int UpdateAlertServiceBySN(int AccountSN, List<B_ALART_SETTING> obj)
+        {
+            DeleteAllAlertSetBySN(AccountSN);
+            string mainsql = @"INSERT INTO [dbo].[B_ALART_SETTING]
+                                       ([WATER_NO]
+                                       ,[B_ALART_CODE_SN]
+                                       ,[VALUE]
+                                       ,[VALUE1]
+                                       ,[B_ACCOUNT_SN])
+                                 VALUES
+                                       (@WATER_NO
+                                       ,@B_ALART_CODE_SN
+                                       ,@VALUE
+                                       ,@VALUE1
+                                       ,@B_ACCOUNT_SN)";
+            return dataAccess.ExecuteList(mainsql, obj); ;
+        }
+
+        public int DeleteAllAlertSetBySN(int AccountSN)
+        {
+            string mainsql = @"DELETE FROM B_ALART_SETTING
+                                WHERE B_ACCOUNT_SN = @SN";
+            object obj = new { SN = AccountSN };
+            return dataAccess.Execute(mainsql, obj);
+        }
+
         public ListedAlertSetViewModel GetAertSetByAccountSN(int SN)
         {
             string mainsql = @"Select * From B_ALART_SETTING Where B_ACCOUNT_SN = @SN";
@@ -102,6 +128,8 @@ namespace TWNPPublic.Domain.Service
 
     public interface IAlertService
     {
+        public int UpdateAlertServiceBySN(int AccountSN, List<B_ALART_SETTING> obj);
+        public int DeleteAllAlertSetBySN(int AccountSN);
         public Dictionary<string, List<Tuple<int, string>>> GetAlertMMCode();
         public ListedAlertSetViewModel GetAertSetByAccountSN(int SN);
         //public ListedAlertSetViewModel GetAlertSetByWaterNo(string WaterNO);

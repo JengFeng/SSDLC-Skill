@@ -16,7 +16,7 @@ namespace TWNPPublic.Domain.Service
         public DashMainViewModel GetDashMain(string WaterNo, string Account, DateTime Theday)
         {
             string mainsql = @"select * From dbo.F_B_HOME(@WaterNo,@Account,@Theday)";
-            object obj = new { Account,WaterNo, Theday };
+            object obj = new { Account, WaterNo, Theday };
             return dataAccess.Query<DashMainViewModel>(mainsql, obj).FirstOrDefault();
         }
 
@@ -24,6 +24,13 @@ namespace TWNPPublic.Domain.Service
         {
             string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,'WEEK',@Cdate) Order by X";
             object obj = new { WaterNo, Cdate };
+            return dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
+        }
+
+        public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate, string Timesplit)
+        {
+            string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,@Timesplit,@Cdate) Order by X";
+            object obj = new { WaterNo, Cdate, Timesplit };
             return dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
         }
 
@@ -37,7 +44,7 @@ namespace TWNPPublic.Domain.Service
         {
             string mainsql = @"Select * From B_NOTE Where WATER_NO = @WaterNo And A_DATE Between @StartTime And @EndTime";
             object obj = new { WaterNo, StartTime, EndTime };
-            return dataAccess.Query<B_NOTEViewModel>(mainsql,obj);
+            return dataAccess.Query<B_NOTEViewModel>(mainsql, obj);
         }
     }
 
@@ -45,6 +52,7 @@ namespace TWNPPublic.Domain.Service
     {
         public DashMainViewModel GetDashMain(string WATER_NO, string ACCOUNT, DateTime THEDAY);
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate);
+        public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate, string Timesplit);
         public List<B_NEWSViewModel> ListedNews();
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime);
     }

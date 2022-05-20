@@ -11,7 +11,7 @@
                 <div class="updateTime"><i class="bi bi-clock"></i> 最新資料 @DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") </div>
                 <div class="menuList">
                     <a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a>
-                    @*<a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a>*@
+                    @*         <a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a>*@
                     <a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a>
                     @{
                         if (HttpContextAccessor.HttpContext != null)
@@ -24,6 +24,8 @@
                         }
                     }
                     <a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a>
+                    <select id="SelectWaterNos" onchange="SelectWaterNosChange()">
+                    </select>
                 </div>
             </div>
             <div class="toggleBtnBox">
@@ -50,8 +52,13 @@
                 </div>
             </div>
         </li>
+        <li tabindex="-1">
+            <select id="SelectWaterNos">
+                <option value="7D76026501K">7D76026501K</option>
+            </select>
+        </li>
         <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
-        @*        <li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>*@
+        @*<li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>*@
         <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
         <li tabindex="-1"><a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a></li>
         <li tabindex="-1"><a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a></li>
@@ -64,4 +71,22 @@
     function btnLogout(){
        window.location.href = "@Url.Action("Logout","Home")";
     }
+    $('#SelectWaterNos').change(function(){
+        var value = $(this).val();
+        var model = {
+            WaterNos : value
+        };
+        $.post("@Url.Action("ChangeUserWaterNos","Dashboard")",model,function(result){
+            if(result.Success)
+            {
+                alert(result.Message);
+                history.go(0);
+            }
+            else
+            {
+                alert('一片空白');
+            }
+        });
+    });
+
 </script>

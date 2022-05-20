@@ -12,7 +12,7 @@
 <script>
         var WaterNoIndex = 1;
         $(function(){
-            $(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
+            $(".menuList > a:nth-child(4)").addClass("active").siblings().removeClass("active");
             $.get("@Url.Action("GetUserInfo","UserManage")",function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
@@ -82,84 +82,84 @@
     {
         @*無帳號創建帳號*@
         <text>
-                function btnSave(){
-                    var Url = "@Url.Action("CreatUserInfo","UserManage")";
-                    var Data ={
-                        Account : $("#Account").val(),
-                        Password : $("#Password").val(),
-                        PhoneNumber : $("#PhoneNumber").val(),
-                        Email : $("#Email").val()
-                    };
-                    var Validator = $("#FormAccount").validate();
-                    $.ajax({
-                        type: 'POST',
-                        url: Url,
-                        data: Data,
-                        success: function (data) {
-                            if (data.Success) {
-                                alert(data.Message);
-                                history.go(0);
-                            }
-                            else {
-                                if (data.ModelStateErrors != null) {
-                                    Validator.showErrors(data.ModelStateErrors);
-                                }
-                                else {
-                                    alert(data.Message);
-                                }
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError){
-                            alert("伺服器繁忙，請稍後再試");
-                        }
-                    });
-                }
+                                            function btnSave(){
+                                                var Url = "@Url.Action("CreatUserInfo","UserManage")";
+                                                var Data ={
+                                                    Account : $("#Account").val(),
+                                                    Password : $("#Password").val(),
+                                                    PhoneNumber : $("#PhoneNumber").val(),
+                                                    Email : $("#Email").val()
+                                                };
+                                                var Validator = $("#FormAccount").validate();
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: Url,
+                                                    data: Data,
+                                                    success: function (data) {
+                                                        if (data.Success) {
+                                                            alert(data.Message);
+                                                            history.go(0);
+                                                        }
+                                                        else {
+                                                            if (data.ModelStateErrors != null) {
+                                                                Validator.showErrors(data.ModelStateErrors);
+                                                            }
+                                                            else {
+                                                                alert(data.Message);
+                                                            }
+                                                        }
+                                                    },
+                                                    error: function (xhr, ajaxOptions, thrownError){
+                                                        alert("伺服器繁忙，請稍後再試");
+                                                    }
+                                                });
+                                            }
         </text>
     }
     else
     {
         @*有帳號更新資料*@
         <text>
-            function btnSave(){
-                var Url = "@Url.Action("UpdateUserInfo","UserManage")";
-                var Data ={
-                    Account : $("#Account").val(),
-                    Password : $("#Password").val(),
-                    PhoneNumber : $("#PhoneNumber").val(),
-                    Email : $("#Email").val(),
-                    WaterNO : $("input[name='WaterNo[]']").map(function(){return $(this).val();}).get()
-                };
-                var Validator = $("#FormAccount").validate();
-                $('#spanWaterNO').text('');
-                $.ajax({
-                    type: 'POST',
-                    url: Url,
-                    data: Data,
-                    success: function (data) {
-                        if (data.Success) {
-                            alert(data.Message);
-                        }
-                        else {
-                            if (data.ModelStateErrors != null) {
-                                if(data.ModelStateErrors['WaterNO'] != null)
-                                {
-                                    $('#spanWaterNO').text(data.ModelStateErrors['WaterNO'][0]);
-                                }
-                                else
-                                {
-                                    Validator.showErrors(data.ModelStateErrors);
-                                }
-                            }
-                            else {
-                                alert(data.Message);
-                            }
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError){
-                        alert("伺服器繁忙，請稍後再試");
-                    }
-                });
-            }
+                                        function btnSave(){
+                                            var Url = "@Url.Action("UpdateUserInfo","UserManage")";
+                                            var Data ={
+                                                Account : $("#Account").val(),
+                                                Password : $("#Password").val(),
+                                                PhoneNumber : $("#PhoneNumber").val(),
+                                                Email : $("#Email").val(),
+                                                WaterNO : $("input[name='WaterNo[]']").map(function(){return $(this).val();}).get()
+                                            };
+                                            var Validator = $("#FormAccount").validate();
+                                            $('#spanWaterNO').text('');
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: Url,
+                                                data: Data,
+                                                success: function (data) {
+                                                    if (data.Success) {
+                                                        alert(data.Message);
+                                                    }
+                                                    else {
+                                                        if (data.ModelStateErrors != null) {
+                                                            if(data.ModelStateErrors['WaterNO'] != null)
+                                                            {
+                                                                $('#spanWaterNO').text(data.ModelStateErrors['WaterNO'][0]);
+                                                            }
+                                                            else
+                                                            {
+                                                                Validator.showErrors(data.ModelStateErrors);
+                                                            }
+                                                        }
+                                                        else {
+                                                            alert(data.Message);
+                                                        }
+                                                    }
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError){
+                                                    alert("伺服器繁忙，請稍後再試");
+                                                }
+                                            });
+                                        }
         </text>
     }
 
@@ -184,28 +184,40 @@
             <form id="FormAccount">
                 <div class="formGroup" style="padding:15px 60px">
                     <div class="mb-3 row">
-                        <label for="Account" class="col-sm-3 col-form-label"><i class="bi bi-person-plus"></i>帳號</label>
+                        <label for="Account" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-person-plus"></i>帳號
+                        </label>
                         <div class="col-sm-9">
                             @Html.TextBoxFor(m=>m.Account,!(ViewBag.IsSignAccount) ? new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的帳號"} :  (object)new { disabled = "disabled",@class="form-control" } )
                             @Html.ValidationMessageFor(m=>m.Account,"",new { @class = "text-danger"})
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="Password" class="col-sm-3 col-form-label"><i class="bi bi-key"></i>密碼</label>
+                        <label for="Password" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-key"></i>密碼
+                        </label>
                         <div class="col-sm-9">
                             @Html.PasswordFor(m=>m.Password,new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的密碼" })
                             @Html.ValidationMessageFor(m=>m.Password,"",new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="PhoneNumber" class="col-sm-3 col-form-label"><i class="bi bi-phone"></i>手機簡訊設定</label>
+                        <label for="PhoneNumber" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-phone"></i>手機簡訊設定
+                        </label>
                         <div class="col-sm-9">
                             @Html.TextBoxFor(m=>m.PhoneNumber,new{@class="form-control",autocomplete="off",@placeholder="0901000123" })
                             @Html.ValidationMessageFor(m=>m.PhoneNumber,"",new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="Email" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i>電子郵件設定</label>
+                        <label for="Email" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-mailbox"></i>電子郵件設定
+                        </label>
                         <div class="col-sm-9">
                             @Html.TextBoxFor(m=>m.Email,new{@class="form-control",autocomplete="off",@placeholder="Someone@mail.com" })
                             @Html.ValidationMessageFor(m=>m.Email,"",new { @class = "text-danger" })

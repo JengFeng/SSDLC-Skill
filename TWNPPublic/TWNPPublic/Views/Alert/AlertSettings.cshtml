@@ -10,7 +10,7 @@
 }
 <script>
     $(function(){
-        $(".menuList > a:nth-child(4)").addClass("active").siblings().removeClass("active");
+        $(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
         $.get("@Url.Action("LoadAlertSet","Alert")",function(result){
             if(result.Success){
                 $("#AlertPhone").val(result.Data.AlertPhone);
@@ -23,12 +23,14 @@
                           $("input[name=\"WaterNo\"][value=" + value + "]").prop('checked',true);
                     });
                 }
+                if(result.Data.AlertValueStraight7Day == '' && result.Data.AlertValueStraight30Day == '')
+                    $("input[name=\"radio1\"][value=0]").prop('checked',true);
                 if(result.Data.AlertValueStraight7Day != '')
                     $("input[name=\"radio2\"][value=" + result.Data.AlertValueStraight7Day + "]").prop('checked',true);
                 if(result.Data.AlertValueStraight30Day != '')
-                    $("input[name=\"radio3\"][value=" + result.Data.AlertValueStraight7Day + "]").prop('checked',true);
+                    $("input[name=\"radio3\"][value=" + result.Data.AlertValueStraight30Day + "]").prop('checked',true);
                 if(result.Data.ExtendValueStraight7Day != '')
-                    $("#InputExtend").val(result.Data.ExtendValueStraight7Day);
+                    $("#AlertExtion2").val(result.Data.ExtendValueStraight7Day);
             }
         });
         $('input:radio[name="radio1"]').change(function() {
@@ -57,6 +59,16 @@
             AlertExtion2:$("#AlertExtion2").val(),
             AlertValue3:$("input[name='radio3']:checked").val()
         };
+
+        if(model.WaterNo.length == 0)
+        {
+            let confirmAction = confirm("若您尚未選擇水號，系統將清空您的設定，您確定要執行以下操作?");
+            if (!confirmAction) {
+                return;
+            }
+        }
+            
+        $(".text-danger").text('');
         var Validator = $("#FormAlertSet").validate();
         var url = "@Url.Action("SaveAlertSet", "Alert")"
             $.ajax({
@@ -125,22 +137,22 @@
                             <i class="bi bi-phone"></i> 手機簡訊設定
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertPhone" placeholder="0901001001">
+                            <input type="text" class="form-control" id="AlertPhone" placeholder="0901001001" autocomplete="off">
                             <span class="text-danger" id="dangerAlertPhone"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="inputEmail1" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i> 電子郵件設定</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail1" name="AlertEmail1" placeholder="some@mail.com">
+                            <input type="text" class="form-control" id="AlertEmail1" name="AlertEmail1" placeholder="some@mail.com" autocomplete="off">
                             <span class="text-danger" id="dangerAlertEmail1"></span>
                         </div>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail2" name="AlertEmail2" placeholder="some@mail.com">
+                            <input type="text" class="form-control" id="AlertEmail2" name="AlertEmail2" placeholder="some@mail.com" autocomplete="off">
                             <span class="text-danger" id="dangerAlertEmail2"></span>
                         </div>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail3" name="AlertEmail3" placeholder="some@mail.com">
+                            <input type="text" class="form-control" id="AlertEmail3" name="AlertEmail3" placeholder="some@mail.com" autocomplete="off">
                             <span class="text-danger" id="dangerAlertEmail3"></span>
                         </div>
                     </div>
@@ -188,7 +200,7 @@
                             較上週增加
                             <div class="col-auto">
                                 <input type="text" class="form-control" id="AlertExtion2">
-                                 <span class="text-danger" id="dangerAlertExtion2"></span>
+                                 <span class="text-danger" id="dangerAlertExtion2" autocomplete="off"></span>
                             </div>
                             度(含)以上(可自行輸入，惟至少50度以上)
                         </label>

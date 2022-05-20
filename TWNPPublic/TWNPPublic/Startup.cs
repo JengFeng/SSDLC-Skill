@@ -27,12 +27,14 @@ namespace TWNPPublic
             //用ORM代理 Wcf
             services.AddWcfDapper(wcfServerUrl);
 
+            //服務只有幾個就不用AOF了
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IAlertService, AlertService>();
             services.AddTransient<IUserManageService, UserManageService>();
+            services.AddTransient<IQualityService, QualityService>();
         }
     }
 }

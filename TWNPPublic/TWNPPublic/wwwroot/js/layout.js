@@ -5,33 +5,19 @@ $(function () {
 		// JavaScript here 
 		// 當視窗寬度小於1025px時執行
 		/*災難摘要動態縮放*/
-
-		$(".wrap > .menuArea").removeClass("out");
-		
+		$(".wrap > .menuArea").removeClass("out");		
 		//小螢幕只有menu縮放內容滿版
 		$(".menu-opener").click( function(){
 			$(".menuArea").removeClass("out").toggleClass("in");
 		});
-
 	} else {
 		// JavaScript here
 		// 當視窗寬度不小於1024px時執行
-
-		$(".wrap > .menuArea").removeClass("in");
-				
-		
+		$(".wrap > .menuArea").removeClass("in");						
 		// });
-
 		//大螢幕menu和視窗一起縮放
-
-		
-
-
 	}
 });
-
-
-
 
 $(function () {
 	if($(window).width() < 767)
@@ -39,15 +25,9 @@ $(function () {
 		// JavaScript here 
 		// 當視窗寬度小於767px時執行
 	
-
-	
-	
 	} else {
 		// JavaScript here
 		// 當視窗寬度不小於767px時執行
-
-	
-
 	}
 });
 //menu選單	
