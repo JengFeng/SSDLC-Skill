@@ -73,6 +73,12 @@ namespace SqlData
             return ChannelService.Execute(sql, steamparameters);
         }
 
+        public int ExecuteList(string sql, object parameters = null)
+        {
+            var steamparameters = JsonConvert.SerializeObject(parameters);
+            return ChannelService.ExecuteList(sql, steamparameters);
+        }
+
         public List<T> Query<T>(string sql, object parameters = null)
         {
             var steamparameters = JsonConvert.SerializeObject(parameters);

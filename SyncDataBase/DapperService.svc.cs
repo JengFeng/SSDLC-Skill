@@ -36,6 +36,28 @@ namespace SyncDataBase
             }
         }
 
+        public int ExecuteList(string sql, string parameters = null)
+        {
+            var parameter = new List<DynamicParameters>();
+            if (parameters != "null")
+            {
+                var obj = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(parameters);
+                foreach(var item in obj)
+                {
+                    DynamicParameters keyValuePairs = new DynamicParameters();
+                    foreach (var cell in item)
+                    {
+                        keyValuePairs.Add(cell.Key, cell.Value);
+                    }
+                    parameter.Add(keyValuePairs);
+                }
+            }
+            using (var connection = CreateConnection())
+            {
+                return connection.Execute(sql, parameter);
+            }
+        }
+
         public string Query(string sql, string parameters = null)
         {
             var parameter = new DynamicParameters();
