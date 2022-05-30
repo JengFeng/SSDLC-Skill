@@ -18,7 +18,7 @@ namespace SyncDataBase
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SqlService : ISqlService
     {
-        string Key = "ILoveJeffery"; 
+        string Key = "ILoveJeffrey"; 
         public static bool Pass;
 
         public string CheckKey(string InputKey)
