@@ -34,7 +34,17 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
-
+        //左中詳細資料
+        public IActionResult Fancybox_detailsTable()
+        {
+            return View();
+        }
+        //用戶記事
+        public IActionResult Fancybox_tableChart()
+        {
+            return View();
+        }
+        
         //左上的圖表頁面
         public IActionResult Fancybox_chart()
         {
