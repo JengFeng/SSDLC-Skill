@@ -1,5 +1,6 @@
 ﻿using SqlData;
 using System.Data.SqlClient;
+using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.Dashboard;
 
 namespace TWNPPublic.Domain.Service
@@ -46,6 +47,32 @@ namespace TWNPPublic.Domain.Service
             object obj = new { WaterNo, StartTime, EndTime };
             return dataAccess.Query<B_NOTEViewModel>(mainsql, obj);
         }
+
+        public List<V_B_MESSAGE> LitedExceptionItem(string WaterNo, int page, int itemsPerPage)
+        {
+            //測試機是 又舊版SQL 又要ROW_NUMBER() 真的母湯 ==
+            string countsql = @"Select Count(*)
+                                From  V_B_ACCOUNT V,B_MESSAGE M 
+                                Where V.B_ACCOUNT_SN=M.B_ACCOUNT_SN AND M.VALID=1 ANd M.WATER_NO = @WaterNo";
+            string mainsql = @"Select * From 
+                                (
+	                                Select Top 10000 ROW_NUMBER() OVER (ORDER BY M.INP_DATE) AS Seq,M.WATER_NO,M.NOTE,M.INP_DATE,M.B_MESSAGE_SN 
+	                                From  V_B_ACCOUNT V,B_MESSAGE M 
+	                                Where V.B_ACCOUNT_SN=M.B_ACCOUNT_SN AND M.VALID=1 ANd M.WATER_NO = @WaterNo
+                                )t
+                                WHERE 1=1 ";
+
+            mainsql += " AND Seq Between @StartPage AND @EndPage";
+            //mainsql += @" ORDER BY CreateTime DESC" + @" OFFSET @skip ROWS" + @" FETCH NEXT @take ROWS ONLY";
+            object obj = new
+            {
+                WaterNo,
+                StartPage = itemsPerPage * page,
+                EndPage = itemsPerPage * page + itemsPerPage
+            };
+            var result = dataAccess.Query<V_B_MESSAGE>(mainsql, obj);
+            return result;
+        }
     }
 
     public interface IDashboardService
@@ -55,5 +82,6 @@ namespace TWNPPublic.Domain.Service
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate, string Timesplit);
         public List<B_NEWSViewModel> ListedNews();
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime);
+        public List<V_B_MESSAGE> LitedExceptionItem(string WaterNo, int page, int itemsPerPage);
     }
 }

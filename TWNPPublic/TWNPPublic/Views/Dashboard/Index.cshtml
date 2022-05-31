@@ -2,7 +2,7 @@
     ViewData["Title"] = "首頁";
 }
 @section echart{
-<script type="text/javascript" src="/js/echarts/echarts.js"></script>
+<script type="text/javascript" src="~/js/echarts/echarts.js"></script>
 }
 
 <!-- 月曆套件 -->
@@ -407,22 +407,38 @@
                     <div class="name">目前指針</div>
                     <div class="totalUsage" id="divNEW_METER"><span>度</span></div>
                     <div class="updateItem">資料更新時間 <br>@DateTime.Now.ToString("yyyy/MM/dd")</div>
+                    <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_detailsTable","Dashboard")">
+                        詳細資料
+                    </a>
+
                 </div>
                 <div class="costGroup">
                     <div class="costItem">
-                        <div class="name">本期<br>累積水費</div>
+                        <div class="name">
+                            上期水費
+                            <div class="date">帳單年月：111/05</div>
+                        </div>
                         <div class="costTotal" id="divTHISMONTH_MONEY"><span>元</span></div>
                     </div>
-                    <div class="costItem">
-                        <div class="name">本期<br>預估水費</div>
-                        <div class="costTotal" id="divTHISMONTHEND_METER"><span>元</span></div>
-                    </div>
-                    <div class="costItem">
-                        <div class="name">去年<br>同期水費</div>
-                        <div class="costTotal" id="divLASTYEAR_MONEY">
-                            <i class="bi bi-arrow-up text-red"></i>
-                            <span>元</span>
+                    <div class="costItemRow">
+                        <div class="costItem">
+                            <div class="name">
+                                預估水費
+								<span class="date">計費期間：1110510~1110611</span>
+							</div>
+                            <div class="costTotal" id="divLASTYEAR_MONEY">
+                                <i class="bi bi-arrow-up text-red"></i>
+                                <span>元</span>
+                            </div>
                         </div>
+                        <div class="costItem">
+                            <div class="name">
+								去年同期水費
+								<span class="date">帳單年月：110/06</span>
+							</div>
+                            <div class="costTotal" id="divTHISMONTHEND_METER"><span>元</span></div>
+                        </div>
+
                     </div>
                     <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                     <!-- <i class="bi bi-dash"></i> 持平-->
@@ -431,8 +447,13 @@
                 </div>
             </div>
             <div class="fullcalendarGroup">
-                <div class="unitTitle"><i class="bi bi-calendar-event"></i> 用水記事</div>
-                <div class="fullcalendarItem" style="height: 300px;">
+                <div class="unitTitle">
+                    <i class="bi bi-calendar-event"></i> 用水記事
+                    <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_tableChart","Dashboard")">
+                        用水記事-套板後可刪除
+                    </a>
+                </div>
+                <div class="fullcalendarItem" style="height: 230px;">
                     <div id="calendar"></div>
                 </div>
             </div>
@@ -526,6 +547,11 @@
                            onclick="btnSwitchWaterSearch(this)">
                             <i class="bi bi-chevron-right"></i>
                         </a>
+                        <div class="cycleGroup">
+							<a class="btn-green-o active" href="javascript:;">日</a>
+							<a class="btn-green-o" href="javascript:;">周</a>
+							<a class="btn-green-o" href="javascript:;">月</a>
+						</div>
                     </div>
                     <div class="chartBox">
                         <div id="ChartWaterUseMonitor" style="width:100%;height:250px;"></div>
