@@ -128,4 +128,14 @@ namespace TWNPPublic.ViewModels.Dashboard
         public DateTime INP_DATE { get; set; }
         public DateTime? A_DATE { get; set; }
     }
+
+    /// <summary>
+    /// 首頁 異常狀態列表
+    /// </summary>
+    public class ExceptionItem
+    {
+        public string Time { get; set; }
+        public int Id { get; set; }
+        public string Message { get; set; }
+    }
 }

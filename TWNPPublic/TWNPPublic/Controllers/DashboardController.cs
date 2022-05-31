@@ -273,23 +273,19 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> ListedExceptionState(int? page)
         {
             int pager = (page ?? 1) - 1;
-            ListedTable TempTest = new ListedTable();
-            TempTest.Max = 100;
-
+            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager, 10);
             List<ExceptionItem> exceptionItems = new List<ExceptionItem>();
-            DateTime cdate = DateTime.Now;
-            for (int i = 1; i <= 4; i++)
-            {
-                exceptionItems.Add(new ExceptionItem
-                {
-                    Id = i,
-                    Message = "一號水錶流量超過30000m³/s ，異常警示",
-                    Time = cdate.AddHours(i).ToString("yyyy/MM/dd HH:mm:ss")
-                });
-            }
-            TempTest.PageData = exceptionItems;
 
-            return Json(Success(TempTest));
+            //foreach (var item in reuslt)
+            //{
+            //    exceptionItems.Add(new ExceptionItem
+            //    {
+            //        Id = item.Id,
+            //        Message = item.Message,
+            //        Time = item.Time
+            //    });
+            //}
+            return Json(Success(exceptionItems));
         }
 
         public async Task<IActionResult> ListedUserWaterNos()
@@ -323,12 +319,5 @@ namespace TWNPPublic.Controllers
     {
         public int Max { get; set; }
         public List<ExceptionItem> PageData { get; set; }
-    }
-
-    public class ExceptionItem
-    {
-        public string Time { get; set; }
-        public int Id { get; set; }
-        public string Message { get; set; }
     }
 }
