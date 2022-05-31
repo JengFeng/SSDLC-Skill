@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "目前指針詳細資料";
+    Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
+}
+<script>
+    $(function(){
+		var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+		var total = searchAreaInlineHeight;
+		$('.chartTableGroup').css('height','calc(100% - {total}px)'.replace('{total}',total));
+	});
+    $(function(){
+		var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
+		var total = chartsTitleHeightHeight;
+		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
+	});
+    $(function(){
+        $(".videoScroll,.chartsScroll").mCustomScrollbar({
+            autoHideScrollbar:true,
+            advanced:{
+                updateOnContentResize: true,
+                updateOnImageLoad: false
+            },
+            theme:"minimal-dark",
+                mouseWheel:{ preventDefault:true }
+        });
+        $(".videoScroll,.chartsScroll").mCustomScrollbar("update");
+    });
+</script>
+<div class="wrap-page">
+        <div class="searchAreaInline">
+            <div class="unitTitle">
+                用戶記事
+            </div>
+
+        </div><!-- searchAreaInline end -->
+
+        <div class="chartTableGroup">
+            <div class="main videoScroll">
+                <table class="footable green">
+                    <thead>
+                        <tr>
+                            <th>時間</th>
+                            <th>估算用水量(度)</th>
+                            <th data-breakpoints="xs sm">較前日突增減(%)</th>
+                            <th data-breakpoints="xs sm">用水記事</th>
+                        </tr>	
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>9:00</td>
+                            <td>154</td>
+                            <td>7</td>
+                            <td class="text-red">
+                                用水異常
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9:15</td>
+                            <td>154</td>
+                            <td class="text-red">-50</td>
+                            <td>
+                                <textarea class="form-control">用水異常</textarea>
+                                <a class="btn-green-o" href="javascript:;">確認</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9:90</td>
+                            <td>154</td>
+                            <td class="text-red">7</td>
+                            <td class="text-red">用水異常</td>
+                        </tr>
+                        <tr>
+                            <td>9:00</td>
+                            <td>154</td>
+                            <td>7</td>
+                            <td><textarea class="form-control"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>9:00</td>
+                            <td>154</td>
+                            <td>7</td>
+                            <td><textarea class="form-control"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>9:00</td>
+                            <td>154</td>
+                            <td>7</td>
+                            <td><textarea class="form-control"></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+              
+            </div>
+            <div class="main">
+                <div class="chartBlock">
+                    <div class="searchAreaInline chartsTitleHeight">
+                        <div class="unitTitle">
+                        用戶水率
+                        </div>
+                        <div class="themeSwitch">
+                            <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-left"></i></a>
+                            <div class="name">111年03月14日當周用水量</div> 
+                            <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="chartBox">
+                        圖表的家
+                    </div>
+
+                </div>
+            </div><!-- main end -->
+        </div>
+
+</div><!-- wrap end -->
