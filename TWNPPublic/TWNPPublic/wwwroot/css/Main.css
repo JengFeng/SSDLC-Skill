@@ -503,7 +503,7 @@ ul.marquee {
     }
 
 .totalUsage {
-    margin-left: 20px;
+    /* margin-left: 20px; */
     line-height: 1;
     font-size: 4rem;
     color: #089BAB;
@@ -524,6 +524,32 @@ ul.marquee {
     color: #B7B9C0;
     font-size: 1.4rem;
 }
+
+.totalUsageArea {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+    .totalUsageArea .btn-more {
+        position: absolute;
+        top: -40px;
+        right: 0;
+    }
+
+    .totalUsageArea .totalUsageGroup {
+        flex: 1;
+        position: static;
+        border-right: 1px solid #089BAB;
+    }
+
+        .totalUsageArea .totalUsageGroup:last-child {
+            border-right: 0;
+        }
+
+    .totalUsageArea .updateItem {
+        position: static;
+    }
 
 .totalUsageGroup a[class*="btn-"] {
     position: absolute;
@@ -580,6 +606,17 @@ ul.marquee {
     line-height: 1;
     font-size: 1.2rem;
     color: #666;
+}
+
+@media (max-width: 768px) {
+    .totalUsage {
+        font-size: 3.6rem;
+    }
+
+    .costItem .date {
+        width: 100%;
+        display: block;
+    }
 }
 
 .costItem .costTotal {
