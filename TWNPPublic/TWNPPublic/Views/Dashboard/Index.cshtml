@@ -1,5 +1,8 @@
-﻿@{
+﻿@using System.Globalization;
+@{
     ViewData["Title"] = "首頁";
+    CultureInfo culture = new CultureInfo("zh-TW");
+    culture.DateTimeFormat.Calendar = new TaiwanCalendar();
 }
 @section echart{
 <script type="text/javascript" src="~/js/echarts/echarts.js"></script>

@@ -8,87 +8,94 @@
 <script>
     $(function(){
         LoadChart();
+        LoadFakeTimeline();
     });
 
-      //上面的按鈕
+    function btnSwitchTimesplit(obj){
+        $(obj).addClass("active").siblings().removeClass("active");
+        LoadChart();
+    }
+
+    //上面的按鈕
     function btnSwitchWaterSearch(obj){
-            //時間切割粒度
-            var timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
-            //先抓中間的舊的時間
-            var oldmiddle = new Date($("#divWaterUserSearchChartTitle").data('themeswitchchart'));
-            //在看往左還是往右
-            //正負號
-            var SetTimeStage = 0;
-            switch($(obj).data('switcher')){
-                case 'next':
-                    SetTimeStage = 1;
-                break;
-                case 'last':
-                    SetTimeStage = -1;
-                break;    
-            }
+        //時間切割粒度
+        var timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
+        //先抓中間的舊的時間
+        var oldmiddle = new Date($("#divWaterUserSearchChartTitle").data('themeswitchchart'));
+        //在看往左還是往右
+        //正負號
+        var SetTimeStage = 0;
+        switch($(obj).data('switcher')){
+            case 'next':
+                SetTimeStage = 1;
+            break;
+            case 'last':
+                SetTimeStage = -1;
+            break;
+        }
 
-            switch(timesplit){
-                case 'day':
-                    oldmiddle = DataFormatPaser(oldmiddle.setDate(oldmiddle.getDate()+1*SetTimeStage));
-                break;
-                case 'week':
-                    var test =  DataFormatPaser(oldmiddle.setDate(oldmiddle.getDate()+(7*SetTimeStage)))
-                    oldmiddle = test;
-                break;
-                case 'month':
-                    oldmiddle = DataFormatPaser(oldmiddle.setMonth(oldmiddle.getMonth()+1*SetTimeStage));
-                break;
-                default:
-                    alert('未合法的時間單位')
-                return;
-            }
-
-            //新的中間的時間
-            var middledate = oldmiddle;
-            //左邊的時間
-            var leftdate = new Date(middledate);
-            var setleftdate ="";
-            //右邊的時間
-            var rightdate = new Date(middledate);
-            var setrightdate =""
-
-            switch(timesplit){
-                case 'day':
-                    setleftdate = DataFormatPaser(leftdate.setDate(leftdate.getDate()-1));
-                    setrightdate = DataFormatPaser(rightdate.setDate(rightdate.getDate()+1));
-                break;
-                case 'week':
-                    setleftdate = DataFormatPaser(leftdate.setDate(leftdate.getDate()-7));
-                    setrightdate = DataFormatPaser(rightdate.setDate(rightdate.getDate()+7));
-                break;
-                case 'month':
-                    setleftdate = DataFormatPaser(leftdate.setMonth(leftdate.getMonth()-1));
-                    setrightdate = DataFormatPaser(rightdate.setMonth(rightdate.getMonth()+1));
-                break;
-                default:
+        switch(timesplit){
+            case 'day':
+                oldmiddle = DataFormatPaser(oldmiddle.setDate(oldmiddle.getDate()+1*SetTimeStage));
+            break;
+            case 'week':
+                var test =  DataFormatPaser(oldmiddle.setDate(oldmiddle.getDate()+(7*SetTimeStage)))
+                oldmiddle = test;
+            break;
+            case 'month':
+                oldmiddle = DataFormatPaser(oldmiddle.setMonth(oldmiddle.getMonth()+1*SetTimeStage));
+            break;
+            default:
                 alert('未合法的時間單位')
-                return;
-            }
-
-            $("#LeftSwitchChart").prop('title', setleftdate);
-            $("#LeftSwitchChart").data('themeswitchchart',setleftdate)
-            $("#divWaterUserSearchChartTitle").text(middledate + "當周用水量");
-            $("#divWaterUserSearchChartTitle").data('themeswitchchart',middledate)
-            $("#RightSwitchChart").prop('title', setrightdate);
-            $("#RightSwitchChart").data('themeswitchchart',setrightdate);
-
-            LoadChart();
+            return;
         }
 
-            //用水量查詢用日期轉換
-        function DataFormatPaser(origindate){
-            var odate = new Date(origindate);
-            var dd = (odate.getDate() + 1 <= 10 ? '0' : '') + (odate.getDate());
-            var mm = (odate.getMonth() + 1 < 10 ? '0' : '') + (odate.getMonth() + 1);
-            var y = odate.getFullYear();
-            return y + '/' + mm + '/' + dd;
+        //新的中間的時間
+        var middledate = oldmiddle;
+        //左邊的時間
+        var leftdate = new Date(middledate);
+        var setleftdate ="";
+        //右邊的時間
+        var rightdate = new Date(middledate);
+        var setrightdate =""
+
+        switch(timesplit){
+            case 'day':
+                setleftdate = DataFormatPaser(leftdate.setDate(leftdate.getDate()-1));
+                setrightdate = DataFormatPaser(rightdate.setDate(rightdate.getDate()+1));
+            break;
+            case 'week':
+                setleftdate = DataFormatPaser(leftdate.setDate(leftdate.getDate()-7));
+                setrightdate = DataFormatPaser(rightdate.setDate(rightdate.getDate()+7));
+            break;
+            case 'month':
+                setleftdate = DataFormatPaser(leftdate.setMonth(leftdate.getMonth()-1));
+                setrightdate = DataFormatPaser(rightdate.setMonth(rightdate.getMonth()+1));
+            break;
+            default:
+            alert('未合法的時間單位')
+            return;
         }
+
+        $("#LeftSwitchChart").prop('title', setleftdate);
+        $("#LeftSwitchChart").data('themeswitchchart',setleftdate)
+        $("#divWaterUserSearchChartTitle").text(middledate + "當周用水量");
+        $("#divWaterUserSearchChartTitle").data('themeswitchchart',middledate)
+        $("#RightSwitchChart").prop('title', setrightdate);
+        $("#RightSwitchChart").data('themeswitchchart',setrightdate);
+
+        LoadChart();
+    }
+
+    //用水量查詢用日期轉換
+    function DataFormatPaser(origindate){
+        var odate = new Date(origindate);
+        var dd = (odate.getDate() + 1 <= 10 ? '0' : '') + (odate.getDate());
+        var mm = (odate.getMonth() + 1 < 10 ? '0' : '') + (odate.getMonth() + 1);
+        var y = odate.getFullYear();
+        return y + '/' + mm + '/' + dd;
+    }
+
 </script>
 
 <div class="wrap-page">
@@ -97,9 +104,9 @@
             用水情形分析
         </div>
         <div class="cycleGroup">
-            <a class="timesplit btn-green-o" data-timesplit="day" href="javascript:;">日</a>
-            <a class="timesplit btn-green-o active" data-timesplit="week" href="javascript:;">周</a>
-            <a class="timesplit btn-green-o" data-timesplit="month" href="javascript:;">月</a>
+            <a class="timesplit btn-green-o" data-timesplit="day" onclick="btnSwitchTimesplit(this)">日</a>
+            <a class="timesplit btn-green-o active" data-timesplit="week" onclick="btnSwitchTimesplit(this)" href="javascript:;">周</a>
+            <a class="timesplit btn-green-o" data-timesplit="month" onclick="btnSwitchTimesplit(this)" href="javascript:;">月</a>
         </div>
         <div class="themeSwitch">
             <a class="btn-green-o-line"
@@ -130,7 +137,11 @@
     <div class="version1">
         <div class="main videoScroll">
             <span id="spanError">此時間段尚無資料</span>
-            <div class="pagechartGroup" id="mychart" style="width:100%;height:500px">
+            <div class="pagechartGroup" id="mychart" style="width:100%;height:400px">
+            </div>
+        </div>
+        <div class="main videoScroll" style="text-align:center;margin-top:15px">
+            <div class="pagechartGroup" id="mychart2" style="width:1200px;height:100px;">
             </div>
         </div>
     </div><!-- main end -->
@@ -152,7 +163,7 @@
     var myChart = echarts.init(document.getElementById('mychart'));
     function LoadChart(){
         $("#spanError").text('');
-         var model ={ 
+         var model ={
              Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart"),
              timespilt: $(".timesplit.btn-green-o.active").data("timesplit")
          };
@@ -168,6 +179,9 @@
                             type: 'cross'
                         }
                     },
+                    grid: {
+                        bottom:80
+                    },
                     legend: {
                         orient: 'vertical',
                         right: 10,
@@ -175,6 +189,9 @@
                         data: ["用水量分析"]
                     },
                     xAxis: {
+                        axisLabel:{
+                            rotate:result.Data.Rotate
+                        },
                         name: '日期',
                         type: 'category',
                         data: result.Data.X
@@ -241,4 +258,86 @@
             }
         });
     }
+
+    var mychart2 = echarts.init(document.getElementById('mychart2'))
+    function LoadFakeTimeline(){
+        const hours = [
+            '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '6a',
+            '7a', '8a', '9a', '10a', '11a',
+            '12p', '1p', '2p', '3p', '4p', '5p',
+            '6p', '7p', '8p', '9p', '10p', '11p'
+        ];
+        option = {
+          tooltip: {
+            position: 'top'
+          },
+          legend: {
+            data: ['斷訊','低電壓','逆流','用水增加','連續用水','無異常']
+          },
+          title: [
+          {
+            textBaseline: 'middle',
+            top: ((1 + 0.5) * 100) / 7 + '%',
+            text: '用水分析圖'
+          }],
+          singleAxis: [{
+            left: 150,
+            type: 'category',
+            boundaryGap: false,
+            data: hours,
+            axisLabel: {
+              interval: 2
+            }}],
+            series: [
+            {
+                name:'斷訊',
+                singleAxisIndex: 0,
+                coordinateSystem: 'singleAxis',
+                type: 'scatter',
+                data: [[0,'斷訊'],[1,'斷訊'],[2,'斷訊'],[3,'斷訊'],[4,'斷訊']],
+                symbolSize:10
+            },
+            {
+                name:'低電壓',
+                singleAxisIndex: 0,
+                coordinateSystem: 'singleAxis',
+                type: 'scatter',
+                data: [[5,'低電壓']],
+                symbolSize:10
+            },
+            {
+                name:'逆流',
+                singleAxisIndex: 0,
+                coordinateSystem: 'singleAxis',
+                type: 'scatter',
+                data: [],
+                symbolSize:10
+            },
+            {
+                name:'用水增加',
+                singleAxisIndex: 0,
+                coordinateSystem: 'singleAxis',
+                type: 'scatter',
+                data: [],
+                symbolSize:10
+            },
+            {
+                name:'連續用水',
+                singleAxisIndex: 0,
+                coordinateSystem: 'singleAxis',
+                type: 'scatter',
+                data: [],
+                symbolSize:10
+            },
+            {
+                name:'無異常',
+                singleAxisIndex: 0,
+                coordinateSystem: 'singleAxis',
+                type: 'scatter',
+                data: [],
+                symbolSize:10
+            }]};
+            option && mychart2.setOption(option);
+    }
+
 </script>

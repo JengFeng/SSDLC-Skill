@@ -32,7 +32,8 @@ namespace TWNPPublic.Domain.Service
         {
             string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,@Timesplit,@Cdate) Order by X";
             object obj = new { WaterNo, Cdate, Timesplit };
-            return dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
+            var result = dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
+            return result;
         }
 
         public List<B_NEWSViewModel> ListedNews()

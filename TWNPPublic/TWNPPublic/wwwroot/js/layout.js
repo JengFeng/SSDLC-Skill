@@ -42,9 +42,9 @@ $(function(){
 
 	});
 
-	$(".cycleGroup a").click( function(){
-		$(this).addClass("active").siblings().removeClass("active");
-	});
+	//$(".cycleGroup a").click( function(){
+	//	$(this).addClass("active").siblings().removeClass("active");
+	//});
 	
 	//選單點選狀態
 	$(".leftMenu > li.active .subMenu").slideDown(100);

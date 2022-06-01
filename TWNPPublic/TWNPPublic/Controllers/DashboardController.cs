@@ -44,7 +44,7 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
-        
+
         //左上的圖表頁面
         public IActionResult Fancybox_chart()
         {
@@ -113,7 +113,7 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 用水量分析
+        /// 用水情形分析
         /// </summary>
         /// <param name="timespilt"></param>
         /// <param name="Cdate"></param>
@@ -134,9 +134,21 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(message: "查無資料"));
             }
 
+            int Rotate = 0;
             switch (timespilt)
             {
                 case "day":
+                    Rotate = 30;
+                    for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
+                    {
+                        dic.Add(item.ToString("yyyy-MM-dd HH:mm:ss"),null);
+                    }
+
+                    foreach (var item in result)
+                    {
+                        dic[item.X.ToString()] = item.Y;
+                    }
+
                     break;
                 case "week":
                     dic.Add("Mon", null);
@@ -195,7 +207,8 @@ namespace TWNPPublic.Controllers
             object obj = new
             {
                 X = dic.Select(c => c.Key).ToArray(),
-                Y = dic.Select(c => c.Value).ToArray()
+                Y = dic.Select(c => c.Value).ToArray(),
+                Rotate
             };
             return Json(Success(obj));
         }
