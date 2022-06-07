@@ -7,12 +7,39 @@
 }
 <script>
 
-$(function () {
-    var width = $('#divpagechartGroup').width();
-    var height = $('#divpagechartGroup').height();  
-    $("#WaterUserAnalyzer").css("width", width);
-    $("#WaterUserAnalyzer").css("height", height);
-});
+    $(function () {
+        var width = $('#divpagechartGroup').width();
+        var height = $('#divpagechartGroup').height();
+        $("#WaterUserAnalyzer").css("width", width);
+        $("#WaterUserAnalyzer").css("height", height);
+    });
+
+    function btnSwitchTimesplit(obj){
+        $(obj).addClass("active").siblings().removeClass("active");
+        LoadChart();
+    }
+
+    function LoadChart(obj){
+        //時間切割粒度
+        var timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
+        //先抓中間的舊的時間
+        var oldmiddle = new Date($("#divWaterUserSearchChartTitle").data('themeswitchchart'));
+        var currenttime = $("#divWaterUserSearchChartTitle").data('themeswitchchart');
+        switch(timesplit){
+            case 'day':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當日用水分析預測');
+            break;
+            case 'week':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當週用水分析預測');
+            break;
+            case 'month':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當月用水分析預測');
+            break;
+            default:
+                alert('未合法的時間單位')
+            return;
+        }
+    }
 
 </script>
 
@@ -22,16 +49,21 @@ $(function () {
             用水分析預測
         </div>
         <div class="cycleGroup">
-            <a class="btn-green-o active" href="javascript:;">日</a>
-            <a class="btn-green-o" href="javascript:;">周</a>
-            <a class="btn-green-o" href="javascript:;">月</a>
+            <a class="timesplit btn-green-o" data-timesplit="day" onclick="btnSwitchTimesplit(this)" href="javascript:;">日</a>
+            <a class="timesplit btn-green-o active" data-timesplit="week" onclick="btnSwitchTimesplit(this)" href="javascript:;">週</a>
+            <a class="timesplit btn-green-o" data-timesplit="month" onclick="btnSwitchTimesplit(this)" href="javascript:;">月</a>
         </div>
         <div class="themeSwitch">
+            <div class="name"
+                 id="divWaterUserSearchChartTitle"
+                 data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
+                @DateTime.Now.ToString("yyyy/MM/dd")當周用水分析預測
+            </div>
         </div>
     </div><!-- searchAreaInline end -->
     <div class="version1">
         <div class="main videoScroll">
-            <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">              
+            <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">
             </div>
         </div>
     </div><!-- main end -->
@@ -43,25 +75,74 @@ $(function () {
     .circularBlue{ border-color: #5391C7; }
     .circularGreen{ border-color: #089BAB; }
     .circularLightGreen{ border-color: #85F9B6;}
--->    
+-->
 
 <script>
     var chartDom = document.getElementById('divpagechartGroup');
     var myChart = echarts.init(chartDom);
     var option;
 
-    option = {
+    option ={
+
+       tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        }
+      },
+      legend: {
+        orient: 'horizontal',
+        top: 10,
+        data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次"]
+      },
       xAxis: {
         type: 'category',
         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
       },
-      yAxis: {
-        type: 'value'
-      },
+      yAxis: [
+        {
+            type: 'value',
+            name: '用水趨勢',
+            position: 'left',
+            alignTicks: true,
+            axisLine: {
+                show: true,
+            },
+            axisLabel: {formatter: '{value} 度數'}    
+        },
+        {
+            type: 'value',
+            name: '觀光人次',
+            position: 'right',
+            alignTicks: true,
+            axisLine: {
+                show: true,
+            },
+            axisLabel: {formatter: '{value} 人次'}    
+        }
+      ],
       series: [
         {
+          name: '去年同期用水趨勢',
           data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line'
+          type: 'line',
+          smooth: true
+        },
+        {
+          name: '本期用水趨勢',
+          data: [100, 130, 124, 118, 235, 247, 160],
+          type: 'line',
+          smooth: true
+        },
+        {
+          name: '去年同期觀光人次',
+          yAxisIndex: 1,
+          data: [50, 50, 50, 50, 35, 47, 60],
+          type: 'line',
+          smooth: true
         }
       ]
     };

@@ -25,7 +25,6 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
-        [NonAction]
         public IActionResult Index()
         {
             //var sqlexecute = "SELECT * FROM [B_NEWS]";
@@ -51,7 +50,7 @@ namespace TWNPPublic.Controllers
                 ViewBag.islocalhost = true;
                 return View(new LoginViewModel
                 {
-                    UserName = "7D76026501K",
+                    UserName = "jeffrey",
                 });
             }
             else

@@ -1,6 +1,7 @@
 ﻿using SqlData;
 using System.Data.SqlClient;
 using TWNPPublic.Models.Entity;
+using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Dashboard;
 
 namespace TWNPPublic.Domain.Service
@@ -28,11 +29,11 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
         }
 
-        public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate, string Timesplit)
+        public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit)
         {
             string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,@Timesplit,@Cdate) Order by X";
             object obj = new { WaterNo, Cdate, Timesplit };
-            var result = dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
+            var result = dataAccess.Query<F_B_CHART>(mainsql, obj);
             return result;
         }
 
@@ -74,15 +75,71 @@ namespace TWNPPublic.Domain.Service
             var result = dataAccess.Query<V_B_MESSAGE>(mainsql, obj);
             return result;
         }
+
+        public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime)
+        {
+            string mainsql = @"SELECT * FROM [dbo].[F_B_CHART1]('7D762461969','pin','2022/4/4 00:00:00','2022/4/4 23:00:00')";
+
+            //object obj = new
+            //{
+            //    WaterNo = "7D762461969",
+            //    ChartTpye,
+            //    StartTimes = StartTime.ToString("yyyy/MM/dd HH:mm:ss"),
+            //    EndTimes = EndTime.ToString("yyyy/MM/dd HH:mm:ss")
+            //};
+            var result = dataAccess.Query<F_B_CHART1>(mainsql);
+            return result;
+        }
+
+        public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date)
+        {
+            string mainsql = @"Select * From [dbo].[B_NOTE] Where WATER_NO = @WaterNo And A_DATE = @date";
+            object obj = new
+            {
+                WaterNo,
+                date
+            };
+            var result = dataAccess.Query<B_NOTE>(mainsql, obj).ToList().FirstOrDefault();
+            return result;
+        }
+
+        public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN)
+        {
+            string mainsql = @"Select * From [dbo].[B_NOTE_HOUR] Where B_NODE_SN  = @SN";
+            object obj = new
+            {
+                SN,
+            };
+            var result = dataAccess.Query<B_NOTE_HOUR>(mainsql, obj).ToList();
+            return result;
+        }
+
+        public int UpdateNoteHour(int SN, int Hour, string Note)
+        {
+            string mainsql = @"UPDATE [dbo].[B_NOTE_HOUR]
+                               SET [NOTE] = @Note
+                               WHERE B_NODE_SN = @SN And A_HOUR = @Hour";
+            object obj = new
+            {
+                Note,
+                SN,
+                Hour
+            };
+            return dataAccess.Execute(mainsql, obj);
+        }
     }
 
     public interface IDashboardService
     {
         public DashMainViewModel GetDashMain(string WATER_NO, string ACCOUNT, DateTime THEDAY);
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate);
-        public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate, string Timesplit);
         public List<B_NEWSViewModel> ListedNews();
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime);
         public List<V_B_MESSAGE> LitedExceptionItem(string WaterNo, int page, int itemsPerPage);
+        public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit);
+        public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
+        public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
+        public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
+        public int UpdateNoteHour(int SN, int Hour, string Note);
     }
 }
