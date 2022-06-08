@@ -25,7 +25,6 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
-        [NonAction]
         public IActionResult Index()
         {
             //var sqlexecute = "SELECT * FROM [B_NEWS]";
@@ -51,7 +50,7 @@ namespace TWNPPublic.Controllers
                 ViewBag.islocalhost = true;
                 return View(new LoginViewModel
                 {
-                    UserName = "7D76026501K",
+                    UserName = "jeffrey",
                 });
             }
             else
@@ -93,7 +92,9 @@ namespace TWNPPublic.Controllers
                 return View();
             }
 
-            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password);
+            var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
+
+            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password, remoteIpAddress.ToString());
             if (result.IsSuccess)
             {
                 HttpContext.Session.SetString("UserName", model.UserName);

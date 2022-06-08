@@ -1,9 +1,9 @@
 /*表格CSS*/
 
-table{
+table {
     border-collapse: collapse;
     width: 100%;
-    word-wrap:break-word;
+    word-wrap: break-word;
     word-break: break-all;
     text-align: justify;
     font-size: 1.6rem;
@@ -12,7 +12,7 @@ table{
 
 
 /*查詢*/
-.tableBox{
+.tableBox {
     width: 100%;
     padding: 6px 0px;
 }
@@ -52,11 +52,12 @@ table{
         }
 
     .footable > thead > tr > th {
-        vertical-align: bottom;
+        vertical-align: center;
+        padding: 10px 6px;
         border-bottom: 0px solid #f2f9fd;
         color: #3a4d51;
         text-align: left;
-        padding: 14px 10px;
+        line-height: 1;
         font-weight: 900;
         font-size: 1.6rem;
         background: #EBF7F5;
@@ -91,6 +92,7 @@ table{
 
     .footable tbody tr td:first-child {
         text-align: center;
+        min-width: 80px;
     }
 
     .footable tbody tr:last-child td {
@@ -287,9 +289,10 @@ table{
         .footable.dark > tbody > tr:hover {
             background: #2B3047;
         }
-        .footable.dark > tbody > tr:hover td {
-            /* color: #fff; */
-        }
+
+            .footable.dark > tbody > tr:hover td {
+                /* color: #fff; */
+            }
 
     .footable.dark > thead > tr > th {
         padding: 8px 6px;
@@ -310,6 +313,7 @@ table{
         font-weight: 900;
         color: #BDCCD4;
     }
+
     .footable.dark thead tr th:first-child {
         /* text-align: center; */
     }
@@ -409,11 +413,12 @@ table{
     color: #fff;
     padding: 0;
 }
+
 .footable.dark .footable-details > tbody > tr {
     border-bottom: 1px solid #efefef;
 }
 
-.footable.dark .footable-details > tbody > tr:last-child {
+    .footable.dark .footable-details > tbody > tr:last-child {
         border-bottom: 0;
     }
 
@@ -424,7 +429,7 @@ table{
         background: rgba(0,0,0,0.2);
     }
 
-    .footable.dark .footable-details > tbody > tr > th p {
+        .footable.dark .footable-details > tbody > tr > th p {
             font-size: inherit;
         }
 
@@ -432,14 +437,15 @@ table{
         padding: 10px 10px;
         color: #3a4d51;
     }
+
     .footable.dark .footable-details > tbody > tr:hover > td {
         color: #3a4d51;
     }
 
-.footable.dark  .footable-details tbody td.width20,
-.footable.dark  .footable-details tbody td.width30,
-.footable.dark  .footable-details tbody td.width40,
-.footable.dark  .footable-details tbody td.width50 {
+.footable.dark .footable-details tbody td.width20,
+.footable.dark .footable-details tbody td.width30,
+.footable.dark .footable-details tbody td.width40,
+.footable.dark .footable-details tbody td.width50 {
     width: 75%;
 }
 
@@ -487,11 +493,16 @@ table{
 
 
 
+/*footable-th綠色版*/
 
+.footable.green > thead > tr > th {
+    background: #089BAB;
+    color: #fff;
+}
 
-
-
-
+.footable.green > tbody > tr:hover {
+    background: #089BAB10;
+}
 
 
 /*footable-淺色板*/
@@ -525,9 +536,10 @@ table{
             background: #3D4184;
             color: #fff;
         }
-        .footable.light > tbody > tr:hover td {
-            color: #fff;
-        }
+
+            .footable.light > tbody > tr:hover td {
+                color: #fff;
+            }
 
     .footable.light > thead > tr > th {
         padding: 16px 6px;
@@ -543,6 +555,7 @@ table{
     .footable.light > tbody > tr > th {
         padding: 10px 6px;
     }
+
     .footable.light > tbody > tr > td {
         padding: 10px 6px;
         vertical-align: inherit;
@@ -551,6 +564,7 @@ table{
         font-weight: 900;
         color: #383B4F;
     }
+
     .footable.light thead tr th:first-child {
         /* text-align: center; */
     }
@@ -649,11 +663,12 @@ table{
     background: #fafafb;
     padding: 0;
 }
+
 .footable.light .footable-details > tbody > tr {
     border-bottom: 1px solid #efefef;
 }
 
-.footable.light .footable-details > tbody > tr:last-child {
+    .footable.light .footable-details > tbody > tr:last-child {
         border-bottom: 0;
     }
 
@@ -664,7 +679,7 @@ table{
         background: #3D4184;
     }
 
-    .footable.light .footable-details > tbody > tr > th p {
+        .footable.light .footable-details > tbody > tr > th p {
             font-size: inherit;
         }
 
@@ -672,14 +687,15 @@ table{
         padding: 10px 10px;
         color: #3a4d51;
     }
+
     .footable.light .footable-details > tbody > tr:hover > td {
         color: #3a4d51;
     }
 
-.footable.light  .footable-details tbody td.width20,
-.footable.light  .footable-details tbody td.width30,
-.footable.light  .footable-details tbody td.width40,
-.footable.light  .footable-details tbody td.width50 {
+.footable.light .footable-details tbody td.width20,
+.footable.light .footable-details tbody td.width30,
+.footable.light .footable-details tbody td.width40,
+.footable.light .footable-details tbody td.width50 {
     width: 75%;
 }
 

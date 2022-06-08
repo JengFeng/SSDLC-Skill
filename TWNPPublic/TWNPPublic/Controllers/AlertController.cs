@@ -56,6 +56,8 @@ namespace TWNPPublic.Controllers
                 //先檢查手機是不是必填
                 //在檢查信箱格式
                 //在檢查 惟至少50度以上 有選這個就要填 要填就要50度以上
+                //好醜 Not like this
+                #region 額外判斷
                 if (!ModelState.IsValid)
                 {
                     return Json(ValidationFailed(
@@ -84,6 +86,34 @@ namespace TWNPPublic.Controllers
                           ), "欄位錯誤"));
                     }
                 }
+
+                if (model.AlertValue5 == "53")
+                {
+                    if (!model.AlertExtion3.HasValue || !model.AlertExtion4.HasValue)
+                    {
+                        ModelState.AddModelError("AlertExtion3", "您需填寫限制值");
+                        ModelState.AddModelError("AlertExtion4", "您需填寫限制值");
+                        return Json(ValidationFailed(
+                        ModelState.Where(x => x.Value.Errors.Count > 0)
+                        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        ), "欄位錯誤"));
+                    }
+                }
+
+                if (model.AlertValue5 == "54")
+                {
+                    if (!model.AlertExtion5.HasValue || !model.AlertExtion6.HasValue)
+                    {
+                        ModelState.AddModelError("AlertExtion5", "您需填寫限制值");
+                        ModelState.AddModelError("AlertExtion6", "您需填寫限制值");
+                        return Json(ValidationFailed(
+                        ModelState.Where(x => x.Value.Errors.Count > 0)
+                        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        ), "欄位錯誤"));
+                    }
+                }
+
+                #endregion
 
                 List<B_ALART_SETTING> alertsetitems = new List<B_ALART_SETTING>();
                 //Mail處理
@@ -146,8 +176,43 @@ namespace TWNPPublic.Controllers
                         alertsetitems.Add(MMcode5Item);
                     }
 
-                }
 
+                    if (!string.IsNullOrEmpty(model.AlertValue4))
+                    {
+                        B_ALART_SETTING MMcode49Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 49,
+                            WATER_NO = item,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue4
+                        };
+                        alertsetitems.Add(MMcode49Item);
+                    }
+
+                    if (!string.IsNullOrEmpty(model.AlertValue5))
+                    {
+                        var temp = "";
+                        if(model.AlertValue5 == "53")
+                        {
+                            temp = model.AlertExtion3.ToString() + ',' + model.AlertExtion4.ToString();
+                        }
+
+                        if (model.AlertValue5 == "54")
+                        {
+                            temp = model.AlertExtion5.ToString() + ',' + model.AlertExtion6.ToString();
+                        }
+
+                        B_ALART_SETTING MMcode50Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 50,
+                            WATER_NO = item,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue5,
+                            VALUE1 = temp
+                        };
+                        alertsetitems.Add(MMcode50Item);
+                    }
+                }
 
                 alertService.UpdateAlertServiceBySN(aspNetUser.UserId.Value, alertsetitems);
 

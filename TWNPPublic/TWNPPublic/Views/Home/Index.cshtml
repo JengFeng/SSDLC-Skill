@@ -2,23 +2,6 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Layout = null;
 }
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
-<form id="testfrom">
-    <input id="CityId" name="CityId" type="text" />
-    <button type="button" onclick="onValidateCity()">test</button>
-</form>
-<script>
-    function onValidateCity() {
-
-    var validator = $('#testfrom').validate();
-
-    validator.showErrors({
-        "CityId": "My custom error message!"
-    });
-}
-</script>
+民眾版
