@@ -294,7 +294,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.Success) {
-                    InitTableB_Message(data.Data.PageData);
+                    InitTableB_Message(data.Data);
                     LoadPaginate(data.Data.Max, 4);
                     $("#tbB_Message").footable();
                 }
@@ -581,7 +581,7 @@
                         <div class="name"
                              id="divWaterUserSearchChartTitle"
                              data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                            @DateTime.Now.ToString("yyyy/MM/dd")當周用水量
+                            @DateTime.Now.ToString("yyyy/MM/dd")當週用水量
                         </div>
                         <a class="btn-green-o-line"
                            href="javascript:;"
@@ -593,7 +593,7 @@
                         </a>
                         <div class="cycleGroup">
                             <a class="btn-green-o timesplit active" href="javascript:;" data-timesplit="day" onclick="btnSwitchTimesplit(this)">日</a>
-                            <a class="btn-green-o timesplit" href="javascript:;" data-timesplit="week" onclick="btnSwitchTimesplit(this)">周</a>
+                            <a class="btn-green-o timesplit" href="javascript:;" data-timesplit="week" onclick="btnSwitchTimesplit(this)">週</a>
                             <a class="btn-green-o timesplit" href="javascript:;" data-timesplit="month" onclick="btnSwitchTimesplit(this)">月</a>
                             <a hidden class="fbox_View" href="@Url.Action("Fancybox_modalBarchart","Dashboard")" id="btngofbox"></a>
                         </div>

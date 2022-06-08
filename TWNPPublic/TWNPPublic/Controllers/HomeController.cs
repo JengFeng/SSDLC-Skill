@@ -92,7 +92,9 @@ namespace TWNPPublic.Controllers
                 return View();
             }
 
-            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password);
+            var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
+
+            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password, remoteIpAddress.ToString());
             if (result.IsSuccess)
             {
                 HttpContext.Session.SetString("UserName", model.UserName);

@@ -4,7 +4,7 @@
     {
         public string WATER_NO { get; set; }
         public string NOTE { get; set; }
-        public string INP_DATE { get; set; }
+        public DateTime INP_DATE { get; set; }
         public int B_MESSAGE_SN { get; set; }
     }
 }

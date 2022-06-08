@@ -448,7 +448,7 @@ namespace TWNPPublic.Controllers
 
             var result = dashboardService.UpdateNoteHour(NoteSN, Convert.ToInt32(Hour), Msg);
 
-            if(result >= 1 )
+            if (result >= 1)
             {
                 return Json(Success("更新成功"));
             }
@@ -471,15 +471,18 @@ namespace TWNPPublic.Controllers
             var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager, 10);
             List<ExceptionItem> exceptionItems = new List<ExceptionItem>();
 
-            //foreach (var item in reuslt)
-            //{
-            //    exceptionItems.Add(new ExceptionItem
-            //    {
-            //        Id = item.Id,
-            //        Message = item.Message,
-            //        Time = item.Time
-            //    });
-            //}
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+
+            foreach (var item in reuslt)
+            {
+                exceptionItems.Add(new ExceptionItem
+                {
+                    Id = item.B_MESSAGE_SN,
+                    Message = item.NOTE,
+                    Time = item.INP_DATE.ToString("yyy年MM月dd日", culture)
+                }); ;
+            }
             return Json(Success(exceptionItems));
         }
 
