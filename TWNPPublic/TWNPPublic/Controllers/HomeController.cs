@@ -25,15 +25,21 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string WaterNo)
         {
+            HttpContext.Session.SetString("UserName", WaterNo);
+            HttpContext.Session.SetString("CurrentWaterNo", WaterNo);
+            HttpContext.Session.SetString("WaterNo", WaterNo);
+            HttpContext.Session.SetString("UserId", "0");
+
+
             //var sqlexecute = "SELECT * FROM [B_NEWS]";
             //var execute = dataAccess.Execute(sqlexecute);
 
             //var sqlString = "SELECT * FROM [B_NEWS]";
             //var result = dataAccess.Query<B_NEWS>(sqlString);
 
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public IActionResult Logout()

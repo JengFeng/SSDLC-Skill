@@ -38,7 +38,7 @@ namespace TWNPPublic.Domain.Service
 
                 object execobj = new
                 {
-                    WATER_NO = result.F_B_LOGIN_WaterNos.FirstOrDefault(),
+                    WATER_NO = "",
                     B_ACCOUNT_SN = result.B_ACCOUNT_SN,
                     INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                     IP = remoteIpAddress

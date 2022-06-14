@@ -124,9 +124,24 @@
         var chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
         option = {
             color: colors,
-            grid: {
-              top: 20
+            legend:{
+                data: ['度數'],
+                y:'top',
+                x:'right',
+                padding:[30,0,0,0]
             },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            //grid: {
+            //    left: '10%',
+            //    right: '10%',
+            //    top: '10%',
+            //    bottom: 60
+            //},
             xAxis: {
                 type: 'category',
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
@@ -143,6 +158,7 @@
             },
             series: [
             {
+                name: '度數',
                 data: [LASTYEAR_METER, LASTMONTH_METER, THISMONTH_METER],
                 type: 'bar',
                 itemStyle:{
@@ -180,27 +196,71 @@
         //這個會變成中間
         var btnSetNow = $(obj);
         //中間的時間
-        var middledate = btnSetNow.data('themeswitchchart');
-        // 左邊的時間
-        var leftdate = new Date(middledate);
-        var setleftdate = DataFormatPaser(leftdate.setDate(leftdate.getDate()-7));
-        //右邊的時間
-        var rightdate = new Date(middledate);
-        var setrightdate = DataFormatPaser(rightdate.setDate(rightdate.getDate()+7));
+        let currenttime = new Date($("#divWaterUserSearchChartTitle").data('themeswitchchart'));
+        //時間粒度
+        let timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
+        var SwitcherTime;
+        switch($(obj).data('switcher')){
+            case 'next':
+            switch(timesplit){
+                case 'day':
+                    SwitcherTime =  DataFormatPaser(currenttime.setDate(currenttime.getDate()+1));
+                break;
+                case 'week':
+                    SwitcherTime =  DataFormatPaser(currenttime.setDate(currenttime.getDate()+7));
+                break;
+                case 'month':
+                    SwitcherTime =  DataFormatPaser(currenttime.setMonth(currenttime.getMonth()+1));
+                break;
+                default:
+                    alert('未合法的時間單位')
+                return;
+            }
+            break;
+            case 'last':
+            switch(timesplit){
+                case 'day':
+                    SwitcherTime =  DataFormatPaser(currenttime.setDate(currenttime.getDate()-1));
+                break;
+                case 'week':
+                    SwitcherTime =  DataFormatPaser(currenttime.setDate(currenttime.getDate()-7));
+                break;
+                case 'month':
+                    SwitcherTime =  DataFormatPaser(currenttime.setMonth(currenttime.getMonth()-1));
+                break;
+                default:
+                    alert('未合法的時間單位')
+                return;
+            }
+            break;
+        }
 
-        $("#LeftSwitchChart").prop('title', setleftdate);
-        $("#LeftSwitchChart").data('themeswitchchart',setleftdate)
-        $("#divWaterUserSearchChartTitle").text(middledate + "當周用水量");
-        $("#divWaterUserSearchChartTitle").data('themeswitchchart',middledate)
-        $("#RightSwitchChart").prop('title', setrightdate);
-        $("#RightSwitchChart").data('themeswitchchart',setrightdate);
-
+        $("#divWaterUserSearchChartTitle").data('themeswitchchart',SwitcherTime)
         InitWaterUseSearchChart();
     }
 
     //用水量查詢圖表
     function InitWaterUseSearchChart(){
         $("#spanError").text('');
+
+        var currenttime = $("#divWaterUserSearchChartTitle").data('themeswitchchart');
+        let timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
+        switch(timesplit){
+            case 'day':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當日用水量');
+            break;
+            case 'week':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當週用水量');
+            break;
+            case 'month':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當月用水量');
+            break;
+            default:
+                alert('未合法的時間單位')
+            return;
+        }
+
+
         var model ={
             Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart"),
             timespilt: $(".timesplit.btn-green-o.active").data("timesplit")
@@ -209,6 +269,17 @@
             if(result.Success){
                 option = {
                     color: colors,
+                    legend:{
+                        data: ['度數'],
+                        y:'top',
+                        x:'right'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
                     grid: {
                       top: 20
                     },
@@ -228,6 +299,7 @@
                         axisLabel: {formatter: '{value} 度'}
                     },
                     series: [{
+                            name: '度數',
                             data: result.Data.Y,
                             type: 'bar',
                             itemStyle:{
@@ -572,9 +644,7 @@
                     <div class="themeSwitch">
                         <a class="btn-green-o-line"
                            href="javascript:;"
-                           id="LeftSwitchChart"
-                           data-themeswitchchart="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")"
-                           title="@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")"
+                           data-switcher="last"
                            onclick="btnSwitchWaterSearch(this)">
                             <i class="bi bi-chevron-left"></i>
                         </a>
@@ -585,9 +655,7 @@
                         </div>
                         <a class="btn-green-o-line"
                            href="javascript:;"
-                           id="RightSwitchChart"
-                           data-themeswitchchart="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")"
-                           title="@DateTime.Now.AddDays(7).ToString("yyyy/MM/dd")"
+                           data-switcher="next"
                            onclick="btnSwitchWaterSearch(this)">
                             <i class="bi bi-chevron-right"></i>
                         </a>
