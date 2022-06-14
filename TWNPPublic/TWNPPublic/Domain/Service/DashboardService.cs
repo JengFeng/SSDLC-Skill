@@ -127,6 +127,22 @@ namespace TWNPPublic.Domain.Service
             };
             return dataAccess.Execute(mainsql, obj);
         }
+
+        public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
+        {
+            string mainsql = @"SELECT TOP (1) *
+                             FROM [TWN].[dbo].[A_WATERFEE2] 
+                             Where WATERNO = @WaterNo And METERED= @Time";
+            object obj = new
+            {
+                WaterNo,
+                Time
+            };
+            var result = dataAccess.Query<A_WATERFEE2>(mainsql, obj).FirstOrDefault();
+            if(result == null)
+                return new A_WATERFEE2();
+            return result;
+        }
     }
 
     public interface IDashboardService
@@ -141,5 +157,6 @@ namespace TWNPPublic.Domain.Service
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
         public int UpdateNoteHour(int SN, int Hour, string Note);
+        public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo,string Time);
     }
 }

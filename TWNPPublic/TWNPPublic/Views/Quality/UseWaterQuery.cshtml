@@ -25,12 +25,12 @@
                 <div class="mb-3 col-xs-12 col-lg-6">
                     <label class="form-label"><i class="bi bi-search"></i> 日期起</label>
                     <input type="date" id="inputStartTime" class="form-control mb-3 col-xs-6 col-lg-6">
-                    <input type="time" id="StartTimeZone" class="form-control mb-3 col-xs-6 col-lg-6" />
+                    @*<input type="time" id="StartTimeZone" class="form-control mb-3 col-xs-6 col-lg-6" />*@
                 </div>
                 <div class="mb-3 col-xs-12 col-lg-6">
                     <label class="form-label">日期訖</label>
                     <input type="date" id="inputEndTime" class="form-control mb-3 col-xs-6 col-lg-6">
-                    <input type="time" id="EndTimeZone" class="form-control mb-3 col-xs-6 col-lg-6" />
+                    @*<input type="time" id="EndTimeZone" class="form-control mb-3 col-xs-6 col-lg-6" />*@
                 </div>
             </div>
             <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
@@ -56,9 +56,9 @@
         var url = "@Url.Action("UseWaterChart","Quality")";
         var model = {
             StartTime : $("#inputStartTime").val(),
-            EndTime :$("#inputEndTime").val(),
-            StartTimeZone : $("#StartTimeZone").val(),
-            EndTimeZone : $("#EndTimeZone").val()
+            //EndTime :$("#inputEndTime").val(),
+            StartTimeZone : $("#StartTimeZone").val()
+            //EndTimeZone : $("#EndTimeZone").val()
         };
 
         $.ajax({

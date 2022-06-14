@@ -32,31 +32,31 @@ namespace TWNPPublic.Controllers
         }
 
         [HttpPost]
-        public IActionResult UseWaterChart(DateTime? StartTime, DateTime? EndTime, DateTime? StartTimeZone, DateTime? EndTimeZone)
+        public IActionResult UseWaterChart(DateTime? StartTime, DateTime? EndTime)
         {
-            if (StartTimeZone.HasValue)
-            {
-                if (StartTime.HasValue)
-                {
-                    StartTime = StartTime.Value.AddHours(StartTimeZone.Value.Hour).AddMinutes(StartTimeZone.Value.Minute);
-                }
-                else
-                {
-                    return Json(Failed(message: "需要指定日期"));
-                }
-            }
+            //if (StartTimeZone.HasValue)
+            //{
+            //    if (StartTime.HasValue)
+            //    {
+            //        StartTime = StartTime.Value.AddHours(StartTimeZone.Value.Hour).AddMinutes(StartTimeZone.Value.Minute);
+            //    }
+            //    else
+            //    {
+            //        return Json(Failed(message: "需要指定日期"));
+            //    }
+            //}
 
-            if (EndTimeZone.HasValue)
-            {
-                if (EndTime.HasValue)
-                {
-                    EndTime = EndTime.Value.AddHours(EndTimeZone.Value.Hour).AddMinutes(EndTimeZone.Value.Minute);
-                }
-                else
-                {
-                    return Json(Failed(message: "需要指定日期"));
-                }
-            }
+            //if (EndTimeZone.HasValue)
+            //{
+            //    if (EndTime.HasValue)
+            //    {
+            //        EndTime = EndTime.Value.AddHours(EndTimeZone.Value.Hour).AddMinutes(EndTimeZone.Value.Minute);
+            //    }
+            //    else
+            //    {
+            //        return Json(Failed(message: "需要指定日期"));
+            //    }
+            //}
 
 
             var result = qualityService.GetWaterUseChart(StartTime, EndTime);

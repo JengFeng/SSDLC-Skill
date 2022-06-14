@@ -17,6 +17,7 @@ namespace TWNPPublic.Controllers
         private readonly IAspNetUser aspNetUser;
         private readonly IDashboardService dashboardService;
 
+        //好醜...寫得好醜,我真醜 ┏( .-. ┏ ) ┓
         public DashboardController(IAspNetUser aspNetUser, IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
@@ -35,6 +36,7 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        #region 右下角上方按鈕
         /// <summary>
         /// 用水分析預測圖表點擊
         /// </summary>
@@ -43,6 +45,14 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
+
+        public IActionResult LoadWaterUseAnalyzer(string timespilt, DateTime Cdate)
+        {
+            var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt);//今年
+            var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt);//去年同期
+            return Json(Success());
+        }
+        #endregion
 
         /// <summary>
         /// 用水情形分析資料來源
@@ -79,6 +89,9 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public IActionResult Fancybox_detailsTable()
         {
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+            ViewBag.DetailResult = dashboardService.GetWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
             return View();
         }
 
@@ -213,48 +226,48 @@ namespace TWNPPublic.Controllers
                     Rotate = 30;
                     for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
                     {
-                        dic.Add(item.ToString("yyyy-MM-dd HH:mm:ss"), null);
+                        dic.Add(item.ToString("yyyy-MM-dd HH:mm"), null);
                     }
 
                     foreach (var item in result)
                     {
-                        dic[item.X.ToString()] = item.Y;
+                        dic[item.X.Substring(0, 16)] = item.Y;
                     }
 
                     break;
                 case "week":
-                    dic.Add("Mon", null);
-                    dic.Add("Tue", null);
-                    dic.Add("Wed", null);
-                    dic.Add("Thu", null);
-                    dic.Add("Fri", null);
-                    dic.Add("Sat", null);
-                    dic.Add("Sun", null);
+                    dic.Add("一", null);
+                    dic.Add("二", null);
+                    dic.Add("三", null);
+                    dic.Add("四", null);
+                    dic.Add("五", null);
+                    dic.Add("六", null);
+                    dic.Add("日", null);
 
                     foreach (var item in result)
                     {
                         switch (item.X)
                         {
                             case "1":
-                                dic["Mon"] = item.Y;
+                                dic["一"] = item.Y;
                                 break;
                             case "2":
-                                dic["Tue"] = item.Y;
+                                dic["二"] = item.Y;
                                 break;
                             case "3":
-                                dic["Wed"] = item.Y;
+                                dic["三"] = item.Y;
                                 break;
                             case "4":
-                                dic["Thu"] = item.Y;
+                                dic["四"] = item.Y;
                                 break;
                             case "5":
-                                dic["Fri"] = item.Y;
+                                dic["五"] = item.Y;
                                 break;
                             case "6":
-                                dic["Sat"] = item.Y;
+                                dic["六"] = item.Y;
                                 break;
                             case "7":
-                                dic["Sun"] = item.Y;
+                                dic["日"] = item.Y;
                                 break;
                         }
                     }
@@ -502,6 +515,7 @@ namespace TWNPPublic.Controllers
             HttpContext.Session.SetString("CurrentWaterNo", WaterNos);
             return Json(Success(message: $"已切換至{WaterNos}"));
         }
+
     }
 
     /// <summary>

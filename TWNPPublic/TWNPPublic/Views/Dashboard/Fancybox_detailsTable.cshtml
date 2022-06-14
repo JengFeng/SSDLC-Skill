@@ -1,6 +1,8 @@
-﻿@{
+﻿@using TWNPPublic.Models.Entity
+@{
     ViewData["Title"] = "目前指針詳細資料";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
+    var DetailResult = (A_WATERFEE2)ViewBag.DetailResult;
 }
 <script>
     $(function(){
@@ -33,46 +35,46 @@
             <div class="main videoScroll">
                 <div class="container">
                     <div class="row detailsTable">
-                        <div class="col-sm-6">用戶名稱：*震*</div>
-                        <div class="col-sm-6">水表情況：堪用</div>
-                        <div class="col-sm-12">用水地址：</div>
-                        <div class="col-sm-12">通訊地址</div>
-                        <div class="col-sm-4">開單檔號：11</div>
-                        <div class="col-sm-8">計費期間：1110210~1110411</div>
-                        <div class="col-sm-4">水　號：BA291220208</div>
-                        <div class="col-sm-4">用水種別：普通</div>
-                        <div class="col-sm-4">口　徑：20</div>
-                        <div class="col-sm-4">實用度數：51</div>
-                        <div class="col-sm-4">分攤度數：0</div>
-                        <div class="col-sm-4">合計度數：51</div>
-                        <div class="col-sm-4">契約度數：0</div>
-                        <div class="col-sm-4">本期指針：857</div>
-                        <div class="col-sm-4">上期指針：806</div>
-                        <div class="col-sm-4">總表度數：0</div>
-                        <div class="col-sm-8">分攤戶數：0</div>
-                        <div class="col-sm-4">使用水費：439.6</div>
-                        <div class="col-sm-4">加退水費：0</div>
-                        <div class="col-sm-4">基本費：71.4</div>
-                        <div class="col-sm-4">合計水費：511</div>
-                        <div class="col-sm-4">下期抄表日：1110610</div>
-                        <div class="col-sm-4">下期收費日：1110701</div>
-                        <div class="col-sm-4">水費項目小記：411</div>
-                        <div class="col-sm-4">固定補助費小計：0</div>
-                        <div class="col-sm-4">臨時補助費小計：0</div>
-                        <div class="col-sm-4">營業稅：0</div>
-                        <div class="col-sm-4">清除處理費：189</div>
-                        <div class="col-sm-4">加退清除處理費：0</div>
-                        <div class="col-sm-4">汙水下水道使用費(含加退)：0</div>
-                        <div class="col-sm-4">保護區優惠水費(含加退)：0</div>
-                        <div class="col-sm-4">水源保育與回饋費(含加退)：0</div>
-                        <div class="col-sm-12">補助代徵費用：0</div>
-                        <div class="col-sm-8">應繳總金額：NT$700元</div>
-                        <div class="col-sm-4">用水排放CO2約8公斤</div>
-                        <div class="col-sm-4">本期預繳餘額：0</div>
-                        <div class="col-sm-4">上期預繳餘額：0</div>
-                        <div class="col-sm-4">補收延遲繳付費：0.00</div>
-                        <div class="col-sm-4">本期收費日：1110501</div>
-                        <div class="col-sm-4">繳費期限：1110521</div>
+                        <div class="col-sm-6">用戶名稱：@DetailResult.NAME</div>
+                        <div class="col-sm-6">水表情況：@DetailResult.MSTUS</div>
+                        <div class="col-sm-12">用水地址：@DetailResult.ADDRESS</div>
+                        <div class="col-sm-12">通訊地址：@DetailResult.ADDRESS</div>
+                        <div class="col-sm-4">(*)開單檔號：</div>
+                        <div class="col-sm-8">計費期限：@DetailResult.DUEDATE</div>
+                        <div class="col-sm-4">水　號：@DetailResult.WATERNO</div>
+                        <div class="col-sm-4">用水種別：@DetailResult.TYPE</div>
+                        <div class="col-sm-4">口　徑：@DetailResult.DIAMETER</div>
+                        <div class="col-sm-4">實用度數：@DetailResult.TOQTY</div>
+                        <div class="col-sm-4">分攤度數：@DetailResult.M_SHSQTY</div>
+                        <div class="col-sm-4">(*)合計度數：</div>
+                        <div class="col-sm-4">(*)契約度數：</div>
+                        <div class="col-sm-4">本期指針：@DetailResult.READING</div>
+                        <div class="col-sm-4">上期指針：@DetailResult.LASTREAD</div>
+                        <div class="col-sm-4">(*)總表度數：0</div>
+                        <div class="col-sm-8">(*)分攤戶數：</div>
+                        <div class="col-sm-4">(*)使用水費：</div>
+                        <div class="col-sm-4">加退水費：@DetailResult.PBFEE</div>
+                        <div class="col-sm-4">基本費：@DetailResult.BASICFEE</div>
+                        <div class="col-sm-4">合計水費：</div>
+                        <div class="col-sm-4">下期抄表日：@DetailResult.NEXTMETERED</div>
+                        <div class="col-sm-4">下期收費日：@DetailResult.NEXTBILL</div>
+                        <div class="col-sm-4">(*)水費項目小記：</div>
+                        <div class="col-sm-4">(*)固定補助費小計：</div>
+                        <div class="col-sm-4">臨時補助費小計：@DetailResult.ALLOW33</div>
+                        <div class="col-sm-4">(*)營業稅：</div>
+                        <div class="col-sm-4">清除處理費：@DetailResult.PBSERV</div>
+                        <div class="col-sm-4">加退清除處理費：@DetailResult.PBSERV</div>
+                        <div class="col-sm-4">汙水下水道使用費(含加退)：@DetailResult.DIRTY</div>
+                        <div class="col-sm-4">保護區優惠水費(含加退)@DetailResult.FEEDBACK</div>
+                        <div class="col-sm-4">水源保育與回饋費(含加退)：@DetailResult.PRESERVE</div>
+                        <div class="col-sm-12">(*)補助代徵費用：0</div>
+                        <div class="col-sm-8">應繳總金額：@DetailResult.TOTAL</div>
+                        <div class="col-sm-4">(*)用水排放CO2約8公斤</div>
+                        <div class="col-sm-4">(*)本期預繳餘額：0</div>
+                        <div class="col-sm-4">上期預繳餘額：@DetailResult.LASTFEE</div>
+                        <div class="col-sm-4">補收延遲繳付費：</div>
+                        <div class="col-sm-4">本期收費日：@DetailResult.BILLDATE</div>
+                        <div class="col-sm-4">繳費期限：@DetailResult.DUEDATE</div>
                         <div class="col-sm-4">預定扣繳日期：</div>                    
                     </div>
 
