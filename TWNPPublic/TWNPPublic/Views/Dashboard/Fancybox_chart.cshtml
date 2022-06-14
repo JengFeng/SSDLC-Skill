@@ -6,6 +6,26 @@
 <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
 }
 <script>
+$(function(){
+	var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+	var total = searchAreaInlineHeight;
+	$('.version1').css('height','calc(100% - {total}px)'.replace('{total}',total));
+});
+$(function(){
+    $(".videoScroll").mCustomScrollbar({
+        autoHideScrollbar:true,
+        advanced:{
+            updateOnContentResize: true,
+            updateOnImageLoad: false
+        },
+        theme:"minimal-dark",
+            mouseWheel:{ preventDefault:true }
+    });
+    $(".videoScroll").mCustomScrollbar("update");
+});
+
+</script>
+<script>
     $(function(){
         LoadChart();
     });
@@ -90,7 +110,15 @@
             return y + '/' + mm + '/' + dd;
         }
 </script>
+<style>
+.pagechartGroup > div{
+    height:inherit;
+}
+    .mCSB_container{
+    height:inherit;
 
+    }
+</style>
 <div class="wrap-page">
     <div class="searchAreaInline">
         <div class="unitTitle">
@@ -130,7 +158,8 @@
     <div class="version1">
         <div class="main videoScroll">
             <span id="spanError">此時間段尚無資料</span>
-            <div class="pagechartGroup" id="mychart" style="width:100%;height:500px">
+            <div class="pagechartGroup" style="width:100%; height:inherit;">
+                <div id="mychart" style="width:100%; height:100%;"></div>
             </div>
         </div>
     </div><!-- main end -->
@@ -159,6 +188,7 @@
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
                 const colors = ['#5391C7'];
+          
                 var option;
                 option = {
                     color: colors,

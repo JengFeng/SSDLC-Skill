@@ -9,6 +9,11 @@
 <link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
 <script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
+<style>
+.chartSVG > div{
+    height: 100%;
+}
+</style>
 <script>
 
     $(function () {
@@ -460,7 +465,7 @@
                         用水記事-套板後可刪除
                     </a>
                 </div>
-                <div class="fullcalendarItem" style="height: 230px;">
+                <div class="fullcalendarItem" style="height: 300px; overflow:hidden">
                     <div id="calendar"></div>
                 </div>
             </div>
@@ -512,14 +517,14 @@
                     </div>
                 </div>
             </div>
-            <div class="chartGroup" style="max-height:350px">
+            <div class="chartGroup">
                 <div class="chartItem">
                     <div class="unitTitle">
                         <i class="bi bi-shuffle"></i>
                         用水情形比較
                     </div>
-                    <div class="chartBox">
-                        <div id="ChartCompareWaterUse" style="width:100%;height:300px;"></div>
+                    <div class="chartBox" style="width:100%;height:100%;">
+                        <div id="ChartCompareWaterUse" class="chartSVG" style="width:100%;height:100%;"></div>
                     </div>
                 </div>
                 <div class="chartItem">
