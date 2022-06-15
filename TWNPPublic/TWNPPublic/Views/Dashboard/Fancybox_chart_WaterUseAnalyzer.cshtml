@@ -44,6 +44,35 @@
     }
 
 </script>
+<script>
+$(function(){
+	var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+	var total = searchAreaInlineHeight;
+	$('.version1').css('height','calc(100% - {total}px)'.replace('{total}',total));
+});
+$(function(){
+    $(".videoScroll").mCustomScrollbar({
+        autoHideScrollbar:true,
+        advanced:{
+            updateOnContentResize: true,
+            updateOnImageLoad: false
+        },
+        theme:"minimal-dark",
+            mouseWheel:{ preventDefault:true }
+    });
+    $(".videoScroll").mCustomScrollbar("update");
+});
+
+</script>
+<style>
+.pagechartGroup > div{
+    height:inherit;
+}
+    .mCSB_container{
+    height:inherit;
+
+    }
+</style>
 
 <div class="wrap-page">
     <div class="searchAreaInline">
@@ -65,7 +94,8 @@
     </div><!-- searchAreaInline end -->
     <div class="version1">
         <div class="main videoScroll">
-            <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">
+            <div class="pagechartGroup"  style="width:100%; height:inherit;">
+                <div id="divpagechartGroup" style="width:100%; height:100%;"></div>
             </div>
         </div>
     </div><!-- main end -->
