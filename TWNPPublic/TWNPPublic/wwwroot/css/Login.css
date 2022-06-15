@@ -10,8 +10,8 @@
 body {
     padding-top: 0px;
 }
-   /*登入畫面*/
-   .wrap_login {
+/*登入畫面*/
+.wrap_login {
     width: 100%;
     height: 100%;
     position: relative;
@@ -21,6 +21,7 @@ body {
     background-position: center center;
     transition: all 0.3s;
 }
+
 .loginGroup { /*border: 1px solid #eee;*/
     width: 400px;
     position: absolute;
@@ -40,24 +41,30 @@ body {
     border-radius: 20px;
 }
 
-.logo .companyName{
-    font-size: 8rem;
-    line-height: 74px;
-    text-align: center;
+.loginGroup .logo {
+    padding-left: 66px;
+    background: url(../Images/icon_logo.png)no-repeat;
+    background-position: 10px center;
+}
+
+.logo .companyName {
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-align: left;
     font-weight: bolder;
     padding: 0 10px;
-    margin: 10px 0;
+    margin: 6px 0;
     color: rgba(8,155,171,1);
     text-shadow: 0 0 6px rgba(255,255,255, 0.25);
 }
 
-.logo .systemTitle{
-    letter-spacing: 10px;
-    font-size: 3.2rem;
-    line-height: 40px;
-    text-align: center;
+.logo .systemTitle {
+    font-size: 2.6rem;
+    line-height: 1;
+    text-align: left;
     padding: 0 10px;
-    margin: 10px 0;
+    margin: 6px 0;
     color: #089BAB;
     /* color: #fff; */
     text-shadow: 0 0 6px rgba(255,255,255, 0.25);
@@ -72,27 +79,32 @@ body {
     margin-bottom: 6px;
     background: rgba(8,155,171,0.05);
 }
-.wrap_login .form-group .form-control{
-    display: initial;
-}
-.wrap_login .form-group > div{
-    flex: 1;
-}
+
+    .wrap_login .form-group .form-control {
+        display: initial;
+    }
+
+    .wrap_login .form-group > div {
+        flex: 1;
+    }
+
 .formBox {
     padding: 10px 10px;
 }
 
-.formBox .w100 {
-    width: 100%;
-}
+    .formBox .w100 {
+        width: 100%;
+    }
 
-.formBox select {
-    margin-bottom: 10px;
-}
-.formBox span{
-    font-size: inherit;
-}
-.wrap_login .form-group label{
+    .formBox select {
+        margin-bottom: 10px;
+    }
+
+    .formBox span {
+        font-size: inherit;
+    }
+
+.wrap_login .form-group label {
     flex: 0 0 80px;
     display: flex;
     align-items: center;
@@ -114,6 +126,7 @@ body {
 .code {
     display: inline-block;
 }
+
 @media (max-width:414px) {
     .loginGroup {
         width: 97%;
@@ -122,17 +135,20 @@ body {
         left: 50%;
     }
 }
+
 @media (max-width:410px) {
-    .wrap_login .codeGroup{
+    .wrap_login .codeGroup {
         display: flex;
         flex-direction: column;
         width: 100%;
     }
-    .wrap_login .width80{
+
+    .wrap_login .width80 {
         display: flex;
         flex-direction: column;
         width: 100%;
     }
+
     .btn-black {
         display: inline-block;
         padding: 0 10px;
@@ -199,26 +215,29 @@ body {
     box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
 }
 
-    .width100 {
-        width: 100px;
-    }
-    .width80 {
-        width: 80px;
-    }
+.width100 {
+    width: 100px;
+}
 
-.btnGroup{
+.width80 {
+    width: 80px;
+}
+
+.btnGroup {
     display: flex;
     justify-content: center;
     padding: 10px 0;
 }
 /*按鈕*/
-.btnGroup{
+.btnGroup {
     display: flex;
     justify-content: center;
 }
-.btnGroup a{
-    margin: 0 2px;
-}
+
+    .btnGroup a {
+        margin: 0 2px;
+    }
+
 a[class*="btn-"],
 input[class*="btn-"] {
     display: inline-flex;
@@ -229,12 +248,13 @@ input[class*="btn-"] {
     min-width: 80px;
     min-height: 36px;
     font-size: 1.6rem;
-    
 }
+
 input[class*="btn-"] {
     border: 0;
 }
-a[class*="btn-"] > i{
+
+a[class*="btn-"] > i {
     margin: 0 6px;
 }
 
@@ -250,6 +270,7 @@ a[class*="btn-"] > i{
         background-color: #089BAB;
         border-color: #089BAB;
     }
+
 .btn-green-o-line {
     border: 1px solid #089BAB;
     background: #fff;
@@ -261,6 +282,7 @@ a[class*="btn-"] > i{
         color: #fff;
         background: #089BAB;
     }
+
 .btn-Purple-o-line {
     border: 1px solid #484AA3;
     background: #fff;
@@ -311,6 +333,7 @@ a[class*="btn-"] > i{
         background-color: #4D5160;
         border-color: #4D5160;
     }
+
 .btn-lightGrey-o {
     color: #4D5160;
     background-color: #B7B9C0;
@@ -323,6 +346,7 @@ a[class*="btn-"] > i{
         background-color: #82889A;
         border-color: #82889A;
     }
+
 .btn-black-o {
     font-size: 1.6rem;
     color: #fff;
@@ -363,15 +387,14 @@ a[class*="btn-"] > i{
         border-color: #E56A76;
     }
 
-.justify-content-end a{
-    
+.justify-content-end a {
     justify-content: flex-end;
     text-decoration: underline;
 }
 
 
 /*footer*/
-.loginFooter{
+.loginFooter {
     width: 100%;
     padding: 10px 10px 10px 10px;
     box-sizing: border-box;
@@ -382,11 +405,11 @@ a[class*="btn-"] > i{
     background: rgba(333,333,333, 0.5);
     border-top: 1px solid #fff;
 }
-.footer{
+
+.footer {
     max-width: 768px;
     margin: 0 auto;
     line-height: 18px;
     font-size: 1.4rem;
     color: #0068b7;
 }
-
