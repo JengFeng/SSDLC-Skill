@@ -58,11 +58,14 @@
 <!-- Easymap -->
 <script type="text/javascript" src="http://easymap.gis.tw/easymap/latest/easymap.js?"></script>
 <script type="text/javascript">
-    var chartWaterUseMonitor
+    //兩個圖表全域
+    var chartWaterUseMonitor;
+    var chartCompareWaterUse;
     let barchatpopurl = "@Url.Action("Fancybox_modalBarchart","Dashboard")";
     let waternotepopurl = "@Url.Action("Fancybox_tableChart","Dashboard")";
     $(function () {
-
+       //圖表初始化
+       chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
        chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
 
         $.get("@Url.Action("GetDashMainData","Dashboard")", function(result){
@@ -90,11 +93,17 @@
         chartWaterUseMonitor.on('click', function (params) {
             //jquery 算日期太陰間了 調後端==
             //動態填入Fancybox Uri路徑
-            var middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
+            let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
             $("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
             $('#btngofbox').trigger('click');
         });
     });
+
+    //右下角開窗重新載入url
+    function openAnalyzerfbox(){
+        let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
+        $("#btngoAnalyzerfbox").attr("href", "@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" + '?Cdate=' + middledate);
+    }
 
     const colors = ['#ffb1c1', '#5391C7'];
     //初始化異常狀態列表
@@ -120,8 +129,6 @@
            xAxisDataLASTMONTH_METER = '上個月\n'+LASTMONTH_METER+'度'
         if(THISMONTH_METER != null)
            xAxisDataTHISMONTH_METER = '本月已用\n'+THISMONTH_METER+'度';
-
-        var chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
         option = {
             color: colors,
             legend:{
@@ -235,7 +242,8 @@
             break;
         }
 
-        $("#divWaterUserSearchChartTitle").data('themeswitchchart',SwitcherTime)
+        $("#divWaterUserSearchChartTitle").data('themeswitchchart',SwitcherTime);
+        $("#divWaterUserSearchChartTitle").attr('data-themeswitchchart',SwitcherTime);
         InitWaterUseSearchChart();
     }
 
@@ -467,6 +475,11 @@
         return function (tok, i) { return (i % 2) ? props[tok] : tok; };
     }
 
+    window.onresize = function() {
+        chartWaterUseMonitor.resize();
+        chartCompareWaterUse.resize();
+    };
+
 </script>
 <script type="text/template" data-template="TemplatePageitem">
     <li class="page-item ${Active}"><a class="page-link" href="${HrefName}" onclick="PagelinkOnclick(this)">${PageName}</a></li>
@@ -569,7 +582,7 @@
                     <i class="bi bi-calendar-event"></i> 用水記事
                     <a hidden class="btn-green-o fbox_View" href="@Url.Action("Fancybox_tableChart","Dashboard")" id="btnGoNoteFb"></a>
                 </div>
-                <div class="fullcalendarItem" style="height: 230px;">
+                <div class="fullcalendarItem">
                     <div id="calendar"></div>
                 </div>
             </div>
@@ -637,7 +650,7 @@
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")">
+                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
                             <i class="bi bi-window"></i> 用水分析預測
                         </a>
                     </div>

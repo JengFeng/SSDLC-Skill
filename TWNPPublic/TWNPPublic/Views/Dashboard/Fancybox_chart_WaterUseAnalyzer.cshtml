@@ -39,7 +39,6 @@
                 alert('未合法的時間單位')
             return;
         }
-
         LoadAnalyzeChart();
     }
 
@@ -58,13 +57,14 @@
         <div class="themeSwitch">
             <div class="name"
                  id="divWaterUserSearchChartTitle"
-                 data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                @DateTime.Now.ToString("yyyy/MM/dd")當周用水分析預測
+                 data-themeswitchchart="@ViewBag.CurrentTime">
+                @ViewBag.CurrentTimeTW 當周用水分析預測
             </div>
         </div>
     </div><!-- searchAreaInline end -->
     <div class="version1">
         <div class="main videoScroll">
+            <span id="spanAlert"></span>
             <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">
             </div>
         </div>
@@ -85,72 +85,83 @@
     var myChart = echarts.init(chartDom);
 
     function LoadAnalyzeChart(){
-        let timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
-        $()
-        var option ={
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              crossStyle: {
-                color: '#999'
-              }
-            }
-          },
-          legend: {
-            orient: 'horizontal',
-            top: 10,
-            data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次"]
-          },
-          xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-          },
-          yAxis: [
-            {
-                type: 'value',
-                name: '用水趨勢',
-                position: 'left',
-                alignTicks: true,
-                axisLine: {
-                    show: true,
-                },
-                axisLabel: {formatter: '{value} 度數'}    
-            },
-            {
-                type: 'value',
-                name: '觀光人次',
-                position: 'right',
-                alignTicks: true,
-                axisLine: {
-                    show: true,
-                },
-                axisLabel: {formatter: '{value} 人次'}    
-            }
-          ],
-          series: [
-            {
-              name: '去年同期用水趨勢',
-              data: [150, 230, 224, 218, 135, 147, 260],
-              type: 'line',
-              smooth: true
-            },
-            {
-              name: '本期用水趨勢',
-              data: [100, 130, 124, 118, 235, 247, 160],
-              type: 'line',
-              smooth: true
-            },
-            {
-              name: '去年同期觀光人次',
-              yAxisIndex: 1,
-              data: [50, 50, 50, 50, 35, 47, 60],
-              type: 'line',
-              smooth: true
-            }
-          ]
+        let model = {
+            timespilt:$(".timesplit.btn-green-o.active").data("timesplit"),
+            Cdate:$("#divWaterUserSearchChartTitle").data('themeswitchchart')
         };
-        option && myChart.setOption(option);
+        let url = "@Url.Action("LoadWaterUseAnalyzer","Dashboard")";
+        var option
+        $.get(url,model,function(data){
+            $("#spanAlert").text('');
+            if(data.Data.alert != ''){
+                $("#spanAlert").text(data.Data.alert);
+            }
+
+            option ={
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'cross',
+                  crossStyle: {
+                    color: '#999'
+                  }
+                }
+              },
+              legend: {
+                orient: 'horizontal',
+                top: 10,
+                data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次"]
+              },
+              xAxis: {
+                type: 'category',
+                data: data.Data.X
+              },
+              yAxis: [
+                {
+                    type: 'value',
+                    name: '用水趨勢',
+                    position: 'left',
+                    alignTicks: true,
+                    axisLine: {
+                        show: true,
+                    },
+                    axisLabel: {formatter: '{value} 度數'}
+                },
+                {
+                    type: 'value',
+                    name: '觀光人次',
+                    position: 'right',
+                    alignTicks: true,
+                    axisLine: {
+                        show: true,
+                    },
+                    axisLabel: {formatter: '{value} 人次'}
+                }
+              ],
+              series: [
+                {
+                  name: '去年同期用水趨勢',
+                  data: data.Data.Ynextyear,
+                  type: 'line',
+                  smooth: true
+                },
+                {
+                  name: '本期用水趨勢',
+                  data: data.Data.Ythisyear,
+                  type: 'line',
+                  smooth: true
+                },
+                {
+                  name: '去年同期觀光人次',
+                  yAxisIndex: 1,
+                  data: [50, 50, 50, 50, 35, 47, 60],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            };
+            option && myChart.setOption(option);
+        });
     }
 
     window.onresize = function() {

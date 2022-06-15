@@ -139,9 +139,44 @@ namespace TWNPPublic.Domain.Service
                 Time
             };
             var result = dataAccess.Query<A_WATERFEE2>(mainsql, obj).FirstOrDefault();
-            if(result == null)
+            if (result == null)
                 return new A_WATERFEE2();
             return result;
+        }
+
+        public List<J_PEOPLE> Listedpeople(DateTime date)
+        {
+            string mainsql = @"SELECT * FROM [J_PEOPLE] WHERE  AYEAR>=@ayear";
+            var obj = new
+            {
+                ayear = date.Year
+            };
+            return dataAccess.Query<J_PEOPLE>(mainsql, obj);
+        }
+
+        public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo)
+        {
+            string mainsql = @"Select * From B_ALART_SETTING Where WATER_NO = @WaterNo And B_ALART_CODE_SN = 50";
+            object obj = new
+            {
+                WaterNo
+            };
+            var result = dataAccess.Query<B_ALART_SETTING>(mainsql, obj).FirstOrDefault();
+            int increase;
+            int decrease;
+            if (result != null)
+            {
+                if (!string.IsNullOrEmpty(result.VALUE1))
+                {
+                    //高明的設計...
+                    var vs = result.VALUE1.Split(',');
+                    Int32.TryParse(vs[0], out increase);
+                    Int32.TryParse(vs[1], out decrease);
+                    return (increase, decrease);
+                }
+            }
+
+            return (null, null);
         }
     }
 
@@ -157,6 +192,8 @@ namespace TWNPPublic.Domain.Service
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
         public int UpdateNoteHour(int SN, int Hour, string Note);
-        public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo,string Time);
+        public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
+        public List<J_PEOPLE> Listedpeople(DateTime date);
+        public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo);
     }
 }
