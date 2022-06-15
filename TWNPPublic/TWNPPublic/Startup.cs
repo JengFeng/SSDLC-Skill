@@ -8,8 +8,21 @@ namespace TWNPPublic
     {
         public static void ConfigureServices(IServiceCollection services,IConfiguration configuration)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+            });
+
             services.AddSession(option => {
+                option.Cookie.HttpOnly = true;
                 option.Cookie.Name = ".TWNP.Session";
+                option.Cookie.SameSite = SameSiteMode.None;
                 option.IdleTimeout = TimeSpan.FromSeconds(3600);
                 option.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });

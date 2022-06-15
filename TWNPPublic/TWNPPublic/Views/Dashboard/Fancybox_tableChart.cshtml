@@ -1,18 +1,28 @@
-﻿@{
+﻿@using TWNPPublic.Models.Entity
+@using System.Globalization;
+@{
     ViewData["Title"] = "目前指針詳細資料";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
+    var Cdate = (DateTime)ViewBag.Cdate;
+    CultureInfo culture = new CultureInfo("zh-TW");
+    culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+    string RocTime = Cdate.ToString("yyy年MM月dd日", culture);
+    var HourNotes = (List<B_NOTE_HOUR>)ViewBag.HourNotes;
+}
+@section echart{
+<script type="text/javascript" src="~/js/echarts/echarts.js"></script>
 }
 <script>
     $(function(){
-		var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
-		var total = searchAreaInlineHeight;
-		$('.chartTableGroup').css('height','calc(100% - {total}px)'.replace('{total}',total));
-	});
+        var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+        var total = searchAreaInlineHeight;
+        $('.chartTableGroup').css('height','calc(100% - {total}px)'.replace('{total}',total));
+    });
     $(function(){
-		var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
-		var total = chartsTitleHeightHeight;
-		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
-	});
+        var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
+        var total = chartsTitleHeightHeight;
+        $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
+    });
     $(function(){
         $(".videoScroll,.chartsScroll").mCustomScrollbar({
             autoHideScrollbar:true,
@@ -25,117 +35,286 @@
         });
         $(".videoScroll,.chartsScroll").mCustomScrollbar("update");
     });
+    function LoadChart(){
+        var model = {
+            Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart")
+            };
+        $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model ,function(result){
+            $("#spanError").text('');
+            if(result.Success){
+                const colors = ['#5391C7'];
+                var option;
+                option = {
+                    color: colors,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+                    grid: {
+                        bottom:80
+                    },
+                    //legend: {
+                    //    orient: 'vertical',
+                    //    top: 10,
+                    //    data: ["用水量趨勢"]
+                    //},
+                    xAxis: {
+                        axisLabel:{
+                            rotate:result.Data.Rotate
+                        },
+                        name: '時間',
+                        type: 'category',
+                        data: result.Data.X
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: colors[0]
+                            }
+                        },
+                        axisLabel: {formatter: '{value} 度'}
+                    },
+                    series: [{
+                        type: 'line',
+                        data:  result.Data.Y
+                        }]
+                };
+                option && myChart.setOption(option);
+            }
+            else{
+                $("#spanError").text('此時間段尚無資料');
+                myChart.clear();
+            }
+        });
+    }
 </script>
 <div class="wrap-page">
-        <div class="searchAreaInline">
-            <div class="unitTitle">
-                用戶記事
-            </div>
-
-        </div><!-- searchAreaInline end -->
-
-        <div class="chartTableGroup">
-            <div class="main videoScroll">
-                <table class="footable green">
-                    <thead>
-                        <tr>
-                            <th>時間</th>
-                            <th>估算用水量(度)</th>
-                            <th data-breakpoints="xs sm">較前日突增減(%)</th>
-                            <th data-breakpoints="xs sm">用水記事</th>
-                        </tr>	
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>9:00</td>
-                            <td>154</td>
-                            <td>7</td>
-                            <td class="text-red">
-                                <div class="tdflex">
-                                    <div class="info">用水異常</div>
-                                    <a class="btn-green-o" href="javascript:;">修改</a>
-                                </div> 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>9:15</td>
-                            <td>154</td>
-                            <td class="text-red">-50</td>
-                            <td>
-                                <div class="tdflex">
-                                    <div class="info">
-                                        <textarea class="form-control">用水異常</textarea>
-                                    </div>
-                                    <a class="btn-green-o" href="javascript:;">確認</a>
-                                </div> 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>9:90</td>
-                            <td>154</td>
-                            <td class="text-red">7</td>
-                            <td class="text-red">
-                                <div class="tdflex">
-                                    <div class="info">用水異常</div>
-                                    <a class="btn-green-o" href="javascript:;">修改</a>
-                                </div> 
-                           </td>
-                        </tr>
-                        <tr>
-                            <td>9:00</td>
-                            <td>154</td>
-                            <td>7</td>
-                            <td>
-                                <div class="tdflex">
-                                    <div class="info"></div>
-                                    <a class="btn-green-o" href="javascript:;">修改</a>
-                                </div> 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>9:00</td>
-                            <td>154</td>
-                            <td>7</td>
-                            <td>
-                                <div class="tdflex">
-                                    <div class="info"></div>
-                                    <a class="btn-green-o" href="javascript:;">修改</a>
-                                </div> 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>9:00</td>
-                            <td>154</td>
-                            <td>7</td>
-                            <td>
-                                <div class="tdflex">
-                                    <div class="info"></div>
-                                    <a class="btn-green-o" href="javascript:;">修改</a>
-                                </div> 
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-              
-            </div>
-            <div class="main">
-                <div class="chartBlock">
-                    <div class="searchAreaInline chartsTitleHeight">
-                        <div class="unitTitle">
-                        用戶水率
-                        </div>
-                        <div class="themeSwitch">
-                            <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-left"></i></a>
-                            <div class="name">111年03月14日當周用水量</div> 
-                            <a class="btn-green-o-line" href="javascript:;"><i class="bi bi-chevron-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="chartBox">
-                        圖表的家
-                    </div>
-
-                </div>
-            </div><!-- main end -->
+    <div class="searchAreaInline">
+        <div class="unitTitle">
+            用戶記事
         </div>
+    </div><!-- searchAreaInline end -->
+    <div class="chartTableGroup">
+        <div class="main videoScroll">
+            <table class="footable green" data-empty="尚無資料">
+                <thead>
+                    <tr>
+                        <th>時間</th>
+                        <th>估算用水量(度)</th>
+                        <th data-breakpoints="xs sm">較前日突增減(%)</th>
+                        <th data-breakpoints="xs sm">用水記事</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (HourNotes != null)
+                    {
+
+                        foreach (var item in HourNotes)
+                        {
+                            var TimeSource = String.Format("{0:00}", item.A_HOUR);
+                            <tr>
+                                <td>@(TimeSource):00</td>
+                                <td>@item.AMOUNT</td>
+                                <td>@item.APERCENT</td>
+                                <td class="text-red">
+                                    <div class="tdflex"  id="textNote@(TimeSource)">
+                                        <div class="info">
+                                            <span>@item.NOTE</span>
+                                            <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
+                                        </div>
+                                        <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
+                                        <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
+                                        <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
+                                    </div>
+                                </td>
+@*
+
+                                <td class="text-red" id="textNote@(TimeSource)">
+                                    <span>@item.NOTE</span>
+                                    <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
+                                    <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
+                                    <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
+                                    <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
+                                </td>*@
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+@*            <table class="footable green">
+                <thead>
+                    <tr>
+                        <th>時間</th>
+                        <th>估算用水量(度)</th>
+                        <th data-breakpoints="xs sm">較前日突增減(%)</th>
+                        <th data-breakpoints="xs sm">用水記事</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>9:00</td>
+                        <td>154</td>
+                        <td>7</td>
+                        <td class="text-red">
+                            <div class="tdflex">
+                                <div class="info">用水異常</div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9:15</td>
+                        <td>154</td>
+                        <td class="text-red">-50</td>
+                        <td>
+                            <div class="tdflex">
+                                <div class="info">
+                                    <textarea class="form-control">用水異常</textarea>
+                                </div>
+                                <a class="btn-green-o" href="javascript:;">確認</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9:90</td>
+                        <td>154</td>
+                        <td class="text-red">7</td>
+                        <td class="text-red">
+                            <div class="tdflex">
+                                <div class="info">用水異常</div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9:00</td>
+                        <td>154</td>
+                        <td>7</td>
+                        <td>
+                            <div class="tdflex">
+                                <div class="info"></div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9:00</td>
+                        <td>154</td>
+                        <td>7</td>
+                        <td>
+                            <div class="tdflex">
+                                <div class="info"></div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9:00</td>
+                        <td>154</td>
+                        <td>7</td>
+                        <td>
+                            <div class="tdflex">
+                                <div class="info"></div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+        </div>
+        <div class="main">
+            <div class="chartBlock">
+                <div class="searchAreaInline chartsTitleHeight">
+                    <div class="unitTitle">
+                        用戶水率
+                    </div>
+                    <div class="themeSwitch">
+                        <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('last')"><i class="bi bi-chevron-left"></i></a>
+                        <div class="name"
+                             id="divWaterUserSearchChartTitle"
+                             data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
+                            @(RocTime)當周用水量
+                        </div>
+                        <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('next')"><i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="chartBox">
+                    <span id="spanError">此時間段尚無資料</span>
+                    <div class="pagechartGroup" id="mychart" style="width:100%;height:600px">
+                    </div>
+                </div>
+            </div>
+        </div><!-- main end -->
+    </div>
 
 </div><!-- wrap end -->
+<script>
+    function UpdateNote(obj){
+        var getNoteArea = $('#textNote' + obj);
+        getNoteArea.find('.info>span').hide();
+        getNoteArea.find('.info>textarea').show();
+        getNoteArea.find('.btnsave').show();
+        getNoteArea.find('.btncancel').show();
+        getNoteArea.find('.btnUpdate').hide();
+    }
+
+    function Cancel(obj){
+        var getNoteArea = $('#textNote' + obj);
+        getNoteArea.find('span').show();
+        getNoteArea.find('textarea').hide();
+        getNoteArea.find('.btnsave').hide();
+        getNoteArea.find('.btncancel').hide();
+        getNoteArea.find('.btnUpdate').show();
+    }
+
+    function SaveNote(obj){
+        var getNoteArea = $('#textNote' + obj);
+        let url = "@Url.Action("UpdateHourNote","Dashboard")";
+        let model = {
+            NoteSN : @ViewBag.NoteSN,
+            Hour : obj,
+            Msg : getNoteArea.find('textarea').val()
+        };
+        $.post(url,model,function(data){
+            if(data.Success){
+                alert(data.Message);
+                getNoteArea.find('span').text(model.Msg);
+                getNoteArea.find('span').show();
+                getNoteArea.find('textarea').hide();
+                getNoteArea.find('.btnsave').hide();
+                getNoteArea.find('.btncancel').hide();
+                getNoteArea.find('.btnUpdate').show();
+            }
+            else{
+                alert(data.Message);
+            }
+        });
+    }
+
+    function ChangePage(obj){
+        switch(obj)
+        {
+            case 'last':
+                window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(-1).ToString("yyyy-MM-dd") })";
+            break;
+            case 'next':
+                window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(1).ToString("yyyy-MM-dd") })";
+            break;
+        }
+    }
+
+    var myChart = echarts.init(document.getElementById('mychart'));
+
+        window.onresize = function() {
+        myChart.resize();
+    };
+
+    $(function(){
+         LoadChart();
+    });
+</script>

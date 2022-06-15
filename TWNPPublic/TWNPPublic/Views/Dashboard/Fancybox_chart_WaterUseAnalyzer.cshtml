@@ -7,12 +7,40 @@
 }
 <script>
 
-$(function () {
-    var width = $('#divpagechartGroup').width();
-    var height = $('#divpagechartGroup').height();  
-    $("#WaterUserAnalyzer").css("width", width);
-    $("#WaterUserAnalyzer").css("height", height);
-});
+    $(function () {
+        var width = $('#divpagechartGroup').width();
+        var height = $('#divpagechartGroup').height();
+        $("#WaterUserAnalyzer").css("width", width);
+        $("#WaterUserAnalyzer").css("height", height);
+        LoadAnalyzeChart();
+    });
+
+    function btnSwitchTimesplit(obj){
+        $(obj).addClass("active").siblings().removeClass("active");
+        LoadChart();
+    }
+
+    function LoadChart(obj){
+        //時間切割粒度
+        let timesplit = $(".timesplit.btn-green-o.active").data("timesplit");
+        //先抓中間的舊的時間
+        var currenttime = $("#divWaterUserSearchChartTitle").data('themeswitchchart');
+        switch(timesplit){
+            case 'day':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當日用水分析預測');
+            break;
+            case 'week':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當週用水分析預測');
+            break;
+            case 'month':
+            $("#divWaterUserSearchChartTitle").text(currenttime + '當月用水分析預測');
+            break;
+            default:
+                alert('未合法的時間單位')
+            return;
+        }
+        LoadAnalyzeChart();
+    }
 
 </script>
 <script>
@@ -51,16 +79,21 @@ $(function(){
             用水分析預測
         </div>
         <div class="cycleGroup">
-            <a class="btn-green-o active" href="javascript:;">日</a>
-            <a class="btn-green-o" href="javascript:;">周</a>
-            <a class="btn-green-o" href="javascript:;">月</a>
+            <a class="timesplit btn-green-o" data-timesplit="day" onclick="btnSwitchTimesplit(this)" href="javascript:;">日</a>
+            <a class="timesplit btn-green-o active" data-timesplit="week" onclick="btnSwitchTimesplit(this)" href="javascript:;">週</a>
+            <a class="timesplit btn-green-o" data-timesplit="month" onclick="btnSwitchTimesplit(this)" href="javascript:;">月</a>
         </div>
         <div class="themeSwitch">
+            <div class="name"
+                 id="divWaterUserSearchChartTitle"
+                 data-themeswitchchart="@ViewBag.CurrentTime">
+                @ViewBag.CurrentTimeTW 當周用水分析預測
+            </div>
         </div>
     </div><!-- searchAreaInline end -->
     <div class="version1">
         <div class="main videoScroll">
-            <div class="pagechartGroup"  style="width:100%; height:inherit;">
+            <span id="spanAlert"></span>
                 <div id="divpagechartGroup" style="width:100%; height:100%;"></div>
             </div>
         </div>
@@ -73,32 +106,95 @@ $(function(){
     .circularBlue{ border-color: #5391C7; }
     .circularGreen{ border-color: #089BAB; }
     .circularLightGreen{ border-color: #85F9B6;}
--->    
+-->
 
 <script>
+
     var chartDom = document.getElementById('divpagechartGroup');
     var myChart = echarts.init(chartDom);
-    var option;
 
-    option = {
-      xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line'
-        }
-      ]
-    };
+    function LoadAnalyzeChart(){
+        let model = {
+            timespilt:$(".timesplit.btn-green-o.active").data("timesplit"),
+            Cdate:$("#divWaterUserSearchChartTitle").data('themeswitchchart')
+        };
+        let url = "@Url.Action("LoadWaterUseAnalyzer","Dashboard")";
+        var option
+        $.get(url,model,function(data){
+            $("#spanAlert").text('');
+            if(data.Data.alert != ''){
+                $("#spanAlert").text(data.Data.alert);
+            }
 
-    option && myChart.setOption(option);
+            option ={
+              tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'cross',
+                  crossStyle: {
+                    color: '#999'
+                  }
+                }
+              },
+              legend: {
+                orient: 'horizontal',
+                top: 10,
+                data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次"]
+              },
+              xAxis: {
+                type: 'category',
+                data: data.Data.X
+              },
+              yAxis: [
+                {
+                    type: 'value',
+                    name: '用水趨勢',
+                    position: 'left',
+                    alignTicks: true,
+                    axisLine: {
+                        show: true,
+                    },
+                    axisLabel: {formatter: '{value} 度數'}
+                },
+                {
+                    type: 'value',
+                    name: '觀光人次',
+                    position: 'right',
+                    alignTicks: true,
+                    axisLine: {
+                        show: true,
+                    },
+                    axisLabel: {formatter: '{value} 人次'}
+                }
+              ],
+              series: [
+                {
+                  name: '去年同期用水趨勢',
+                  data: data.Data.Ynextyear,
+                  type: 'line',
+                  smooth: true
+                },
+                {
+                  name: '本期用水趨勢',
+                  data: data.Data.Ythisyear,
+                  type: 'line',
+                  smooth: true
+                },
+                {
+                  name: '去年同期觀光人次',
+                  yAxisIndex: 1,
+                  data: [50, 50, 50, 50, 35, 47, 60],
+                  type: 'line',
+                  smooth: true
+                }
+              ]
+            };
+            option && myChart.setOption(option);
+        });
+    }
 
     window.onresize = function() {
       myChart.resize();
     };
+
 </script>

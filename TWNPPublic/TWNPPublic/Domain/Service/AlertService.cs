@@ -48,9 +48,13 @@ namespace TWNPPublic.Domain.Service
             //那一長串奇怪的參數來自 MMcode 
             string AlertValueStraight7Day = "";
             string AlertValueStraight30Day = "";
+            string AlertValueStraight24HR = "";
             //額外參數 這設計應該是有點問題""
             string ExtendValueStraight7Day = "";
             string ExtendValueStraight30Day = "";
+            string AlertValueStraightLimitGate = "";
+            string ExtendValueStraightLimitMaxGate = "";
+            string ExtendValueStraightLimitMinGate = "";
             //聯絡信箱
             string AlertEmail = "";
             //連絡電話
@@ -84,6 +88,24 @@ namespace TWNPPublic.Domain.Service
                 WaterNo = result.Where(c => c.B_ALART_CODE_SN == 16).Select(c => c.WATER_NO).ToList();
             }
 
+
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 49) != null)
+            {
+                AlertValueStraight24HR = result.First(c => c.B_ALART_CODE_SN == 49).VALUE;
+            }
+
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 50) != null)
+            {
+                AlertValueStraightLimitGate = result.First(c => c.B_ALART_CODE_SN == 50).VALUE;
+                var temp = result.First(c => c.B_ALART_CODE_SN == 50).VALUE1;
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    var array = temp.Split(',');
+                    ExtendValueStraightLimitMaxGate = array[0];
+                    ExtendValueStraightLimitMinGate = array[1];
+                }
+            }
+
             return new ListedAlertSetViewModel()
             {
                 AlertEmail = AlertEmail,
@@ -93,7 +115,11 @@ namespace TWNPPublic.Domain.Service
                 ExtendValueStraight7Day = ExtendValueStraight7Day,
                 AlertValueStraight30Day = AlertValueStraight30Day,
                 ExtendValueStraight30Day = ExtendValueStraight30Day,
-                WaterNos = WaterNo
+                WaterNos = WaterNo,
+                AlertValueStraight24HR = AlertValueStraight24HR,
+                AlertValueStraightLimitGate = AlertValueStraightLimitGate,
+                ExtendValueStraightLimitMaxGate = ExtendValueStraightLimitMaxGate,
+                ExtendValueStraightLimitMinGate = ExtendValueStraightLimitMinGate
             };
 
         }

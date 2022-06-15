@@ -23,12 +23,14 @@
             </nav>
             <div class="search-inline row">
                 <div class="mb-3 col-xs-12 col-lg-6">
-                    <label for="form-name" class="form-label"><i class="bi bi-search"></i> 日期起</label>
-                    <input type="date" id="inputStartTime" class="form-control datepicker-here">
+                    <label class="form-label"><i class="bi bi-search"></i> 日期起</label>
+                    <input type="date" id="inputStartTime" class="form-control mb-3 col-xs-6 col-lg-6">
+                    @*<input type="time" id="StartTimeZone" class="form-control mb-3 col-xs-6 col-lg-6" />*@
                 </div>
                 <div class="mb-3 col-xs-12 col-lg-6">
-                    <label for="form-name" class="form-label">日期訖</label>
-                    <input type="date" id="inputEndTime" class="form-control datepicker-here">
+                    <label class="form-label">日期訖</label>
+                    <input type="date" id="inputEndTime" class="form-control mb-3 col-xs-6 col-lg-6">
+                    @*<input type="time" id="EndTimeZone" class="form-control mb-3 col-xs-6 col-lg-6" />*@
                 </div>
             </div>
             <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
@@ -54,7 +56,9 @@
         var url = "@Url.Action("UseWaterChart","Quality")";
         var model = {
             StartTime : $("#inputStartTime").val(),
-            EndTime :$("#inputEndTime").val()
+            //EndTime :$("#inputEndTime").val(),
+            StartTimeZone : $("#StartTimeZone").val()
+            //EndTimeZone : $("#EndTimeZone").val()
         };
 
         $.ajax({
@@ -80,7 +84,7 @@
         var option;
         const colors = ['#ffb1c1', '#5391C7'];
         option = {
-            color: colors,
+            color:colors,
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -88,7 +92,7 @@
                 }
             },
             legend: {
-                data: ['水費','用水量']
+                data: ['用水量','水費']
             },
             xAxis: [{
                 type: 'time',
@@ -99,34 +103,34 @@
             dataZoom: [
                 {
                     minSpan: 0.01,
-                    type: 'slider', 
-                    start: 0,      
+                    type: 'slider',
+                    start: 0,
                     end: 50
                 }
             ],
             yAxis: [
                 {
                     type: 'value',
-                    name: '用水量',
+                    name: '水費',
                     position: 'right',
                     alignTicks: true,
                     axisLine: {
                         show: true,
                         lineStyle: {
-                          color: colors[0]
+                          color: '#ffb1c1'
                         }
                     },
                     axisLabel: {formatter: '{value} 元'}
                 },
                 {
                     type: 'value',
-                    name: '水費',
+                    name: '用水量',
                     position: 'left',
                     alignTicks: true,
                     axisLine: {
                     show: true,
                     lineStyle: {
-                        color: colors[1]
+                        color: '#5391C7'
                     },
                     splitLine: {
                         show: false
@@ -138,14 +142,16 @@
                 }],
           series: [
             {
-              name: '用水量',
+              name: '水費',
               type: 'bar',
-              data: obj.Pindatas
+              data: null,
+              lineStyle: {color: '#ffb1c1'}
             },
             {
-              name: '水費',
+              name: '用水量',
               type: 'line',
               yAxisIndex: 1,
+              lineStyle: {color: '#5391C7'},
               data: obj.Amountdatas
             }
           ]

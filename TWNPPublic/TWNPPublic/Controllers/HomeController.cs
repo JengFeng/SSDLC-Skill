@@ -25,16 +25,21 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
-        [NonAction]
-        public IActionResult Index()
+        public IActionResult Index(string WaterNo)
         {
+            HttpContext.Session.SetString("UserName", WaterNo);
+            HttpContext.Session.SetString("CurrentWaterNo", WaterNo);
+            HttpContext.Session.SetString("WaterNo", WaterNo);
+            HttpContext.Session.SetString("UserId", "0");
+
+
             //var sqlexecute = "SELECT * FROM [B_NEWS]";
             //var execute = dataAccess.Execute(sqlexecute);
 
             //var sqlString = "SELECT * FROM [B_NEWS]";
             //var result = dataAccess.Query<B_NEWS>(sqlString);
 
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public IActionResult Logout()
@@ -51,7 +56,7 @@ namespace TWNPPublic.Controllers
                 ViewBag.islocalhost = true;
                 return View(new LoginViewModel
                 {
-                    UserName = "7D76026501K",
+                    UserName = "jeffrey",
                 });
             }
             else
@@ -93,7 +98,9 @@ namespace TWNPPublic.Controllers
                 return View();
             }
 
-            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password);
+            var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
+
+            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password, remoteIpAddress.ToString());
             if (result.IsSuccess)
             {
                 HttpContext.Session.SetString("UserName", model.UserName);
