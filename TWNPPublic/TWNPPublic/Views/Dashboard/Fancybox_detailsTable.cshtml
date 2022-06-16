@@ -2,18 +2,17 @@
 @{
     ViewData["Title"] = "目前指針詳細資料";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
-    var DetailResult = (A_WATERFEE2)ViewBag.DetailResult;
+    var DetailResult = (V_A_WATERFEE)ViewBag.VDetailResult;
 
-    decimal fee = 0, tax = 0;
-    if (string.IsNullOrEmpty(DetailResult.FEE))
+    double fee = 0, tax = 0;
+    if (DetailResult.FEE.HasValue)
     {
-        Decimal.TryParse(DetailResult.FEE, out fee);
+        fee = DetailResult.FEE.Value;
     }
-    if (string.IsNullOrEmpty(DetailResult.TAX))
+    if (DetailResult.TAX.HasValue)
     {
-        Decimal.TryParse(DetailResult.TAX, out tax);
+        tax = DetailResult.TAX.Value;
     }
-
     var WaterBillSubtotal = fee + tax + DetailResult.BASICFEE;
 }
 <script>
@@ -47,7 +46,7 @@
         <div class="main videoScroll">
             <div class="container">
                 <div class="row detailsTable">
-                    <div class="col-sm-6" data-field="name">用戶名稱：@DetailResult.NAME</div>
+                    <div class="col-sm-6" data-field="name">用戶名稱：@DetailResult.NAME_DAES.Substring(0,10)OOOOOO</div>
                     <div class="col-sm-6">水表情況：*</div>
                     <div class="col-sm-12" data-field="address">用水地址：@DetailResult.ADDRESS</div>
                     <div class="col-sm-12" data-field="address">通訊地址：@DetailResult.ADDRESS</div>
@@ -91,10 +90,5 @@
                 </div>
             </div>
         </div>
-
-
-
     </div><!-- main end -->
-
-
 </div><!-- wrap end -->

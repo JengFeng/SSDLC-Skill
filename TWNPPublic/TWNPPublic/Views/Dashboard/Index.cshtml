@@ -159,8 +159,14 @@
             legend:{
                 data: ['度數'],
                 y:'top',
-                x:'right',
+                x:'left',
                 padding:[30,0,0,0]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                  saveAsImage: {}
+                }
             },
             tooltip: {
                 trigger: 'axis',
@@ -305,16 +311,19 @@
                     legend:{
                         data: ['度數'],
                         y:'top',
-                        x:'right'
+                        x:'left'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: {}
+                        }
                     },
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'shadow'
                         }
-                    },
-                    grid: {
-                      top: 20
                     },
                     xAxis: {
                         type: 'category',

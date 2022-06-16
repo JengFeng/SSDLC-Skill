@@ -54,5 +54,7 @@
         public string LASTFEE { get; set; }
         public string BILLDATE { get; set; }
         public string M_SHSQTY { get; set; }
+        public string READING { get; set; } = String.Empty;
+        public string LASTREAD { get; set; } = String.Empty;
     }
 }

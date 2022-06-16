@@ -150,11 +150,11 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
- 		public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
+        public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
         {
             string mainsql = @"SELECT TOP (1) *
                              FROM [TWN].[dbo].[V_A_WATERFEE] 
-                             Where WATERNO = @WaterNo And METERED= @Time";
+                             Where WATERNO = @WaterNo";
             object obj = new
             {
                 WaterNo,
@@ -166,37 +166,6 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
-    public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
-        {
-            string mainsql = @"SELECT TOP (1) *
-                             FROM [TWN].[dbo].[V_A_WATERFEE] 
-                             Where WATERNO = @WaterNo And METERED= @Time";
-            object obj = new
-            {
-                WaterNo,
-                Time
-            };
-            var result = dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
-            if (result == null)
-                return new V_A_WATERFEE();
-            return result;
-        }
-
-
-        {
-            string mainsql = @"SELECT TOP (1) *
-                             FROM [TWN].[dbo].[V_A_WATERFEE] 
-                             Where WATERNO = @WaterNo And METERED= @Time";
-            object obj = new
-            {
-                WaterNo,
-                Time
-            };
-            var result = dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
-            if (result == null)
-                return new V_A_WATERFEE();
-            return result;
-        }
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate)
         {
             var sdate = cdate.AddMonths(-1);
