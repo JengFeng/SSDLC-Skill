@@ -120,60 +120,112 @@
                                 <td>@(TimeSource):00</td>
                                 <td>@item.AMOUNT</td>
                                 <td>@item.APERCENT</td>
+                                <td class="text-red">
+                                    <div class="tdflex"  id="textNote@(TimeSource)">
+                                        <div class="info">
+                                            <span>@item.NOTE</span>
+                                            <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
+                                        </div>
+                                        <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
+                                        <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
+                                        <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
+                                    </div>
+                                </td>
+@*
+
                                 <td class="text-red" id="textNote@(TimeSource)">
                                     <span>@item.NOTE</span>
                                     <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
                                     <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
                                     <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
                                     <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
-                                </td>
+                                </td>*@
                             </tr>
                         }
                     }
-                    @*<tr>
+                </tbody>
+            </table>
+
+@*            <table class="footable green">
+                <thead>
+                    <tr>
+                        <th>時間</th>
+                        <th>估算用水量(度)</th>
+                        <th data-breakpoints="xs sm">較前日突增減(%)</th>
+                        <th data-breakpoints="xs sm">用水記事</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
                         <td>9:00</td>
                         <td>154</td>
                         <td>7</td>
                         <td class="text-red">
-                        用水異常
-                        <a class="btn-green-o" href="javascript:;">修改</a>
+                            <div class="tdflex">
+                                <div class="info">用水異常</div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
                         </td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    <tr>
                         <td>9:15</td>
                         <td>154</td>
                         <td class="text-red">-50</td>
                         <td>
-                        <textarea class="form-control">用水異常</textarea>
-                        <a class="btn-green-o" href="javascript:;">確認</a>
+                            <div class="tdflex">
+                                <div class="info">
+                                    <textarea class="form-control">用水異常</textarea>
+                                </div>
+                                <a class="btn-green-o" href="javascript:;">確認</a>
+                            </div>
                         </td>
-                        </tr>
-                        <tr>
+                    </tr>
+                    <tr>
                         <td>9:90</td>
                         <td>154</td>
                         <td class="text-red">7</td>
-                        <td class="text-red">用水異常</td>
-                        </tr>
-                        <tr>
+                        <td class="text-red">
+                            <div class="tdflex">
+                                <div class="info">用水異常</div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>9:00</td>
                         <td>154</td>
                         <td>7</td>
-                        <td><textarea class="form-control"></textarea></td>
-                        </tr>
-                        <tr>
+                        <td>
+                            <div class="tdflex">
+                                <div class="info"></div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>9:00</td>
                         <td>154</td>
                         <td>7</td>
-                        <td><textarea class="form-control"></textarea></td>
-                        </tr>
-                        <tr>
+                        <td>
+                            <div class="tdflex">
+                                <div class="info"></div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>9:00</td>
                         <td>154</td>
                         <td>7</td>
-                        <td><textarea class="form-control"></textarea></td>
-                        </tr>*@
+                        <td>
+                            <div class="tdflex">
+                                <div class="info"></div>
+                                <a class="btn-green-o" href="javascript:;">修改</a>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
-            </table>
+            </table>*@
         </div>
         <div class="main">
             <div class="chartBlock">
@@ -204,8 +256,8 @@
 <script>
     function UpdateNote(obj){
         var getNoteArea = $('#textNote' + obj);
-        getNoteArea.find('span').hide();
-        getNoteArea.find('textarea').show();
+        getNoteArea.find('.info>span').hide();
+        getNoteArea.find('.info>textarea').show();
         getNoteArea.find('.btnsave').show();
         getNoteArea.find('.btncancel').show();
         getNoteArea.find('.btnUpdate').hide();
