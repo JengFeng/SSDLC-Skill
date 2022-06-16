@@ -251,6 +251,7 @@ a[class*="btn-"] > i {
 }
 
 .unitTitle {
+    flex: 0 0 36px;
     display: flex;
     align-items: center;
     line-height: 1;
@@ -326,7 +327,7 @@ ul.marquee {
 
 /* 異常狀態列表 */
 .exceptionGroup {
-    flex: 0 0 40%;
+    /*flex: 0 0 40%;*/
     padding: 10px 20px;
     margin-bottom: 10px;
     background: #fff;
@@ -342,6 +343,7 @@ ul.marquee {
 
 .chartItem {
     flex: 1;
+    height: 100%;
     padding: 10px 20px;
     margin: 0 4px;
     background: #fff;
