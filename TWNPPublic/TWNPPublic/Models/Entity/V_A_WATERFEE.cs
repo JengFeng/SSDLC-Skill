@@ -44,5 +44,17 @@
         public double? LAT { get; set; }
         public int USERTYPE_CODE_SN { get; set; }
         public decimal? ISAUTOMETER { get; set; }
+        public string STQTY { get; set; }
+        public string SCNT { get; set; }
+        public string NEXTMETERED { get; set; }
+        public string NEXTBILL { get; set; }
+        public string ALLOW2 { get; set; }
+        public string FOUL_AMT2 { get; set; }
+        public string ALLOW33 { get; set; }
+        public string LASTFEE { get; set; }
+        public string BILLDATE { get; set; }
+        public string M_SHSQTY { get; set; }
+        public string READING { get; set; } = String.Empty;
+        public string LASTREAD { get; set; } = String.Empty;
     }
 }

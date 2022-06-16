@@ -128,6 +128,12 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Execute(mainsql, obj);
         }
 
+        /// <summary>
+        /// 直接取Table
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Time"></param>
+        /// <returns></returns>
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
         {
             string mainsql = @"SELECT TOP (1) *
@@ -148,7 +154,7 @@ namespace TWNPPublic.Domain.Service
         {
             string mainsql = @"SELECT TOP (1) *
                              FROM [TWN].[dbo].[V_A_WATERFEE] 
-                             Where WATERNO = @WaterNo And METERED= @Time";
+                             Where WATERNO = @WaterNo";
             object obj = new
             {
                 WaterNo,
@@ -159,14 +165,40 @@ namespace TWNPPublic.Domain.Service
                 return new V_A_WATERFEE();
             return result;
         }
-        public List<J_PEOPLE> Listedpeople(DateTime date)
+
+        public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate)
         {
-            string mainsql = @"SELECT * FROM [J_PEOPLE] WHERE  AYEAR>=@ayear";
-            var obj = new
+            var sdate = cdate.AddMonths(-1);
+            int startYear = sdate.Year;
+            int startMonth = sdate.Month;
+            int? ansStartPeople = null;
+            int? ansEnderPeople = null;
+
+            string mainsql = @"SELECT * FROM [J_PEOPLE] WHERE AYEAR=@Year And AMONTH=@Month";
+            object sobj = new
             {
-                ayear = date.Year
+                Year = startYear,
+                Month = startMonth
             };
-            return dataAccess.Query<J_PEOPLE>(mainsql, obj);
+            var startPeople = dataAccess.Query<J_PEOPLE>(mainsql, sobj).FirstOrDefault();
+            object eobj = new
+            {
+                Year = cdate.Year,
+                Month = cdate.Month
+            };
+            var enderPeople = dataAccess.Query<J_PEOPLE>(mainsql, eobj).FirstOrDefault();
+
+            if (startPeople != null)
+            {
+                ansStartPeople = startPeople.PEOPLE;
+            }
+
+            if (enderPeople != null)
+            {
+                ansEnderPeople = enderPeople.PEOPLE;
+            }
+
+            return (ansStartPeople, ansEnderPeople);
         }
 
         public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo)
@@ -208,7 +240,8 @@ namespace TWNPPublic.Domain.Service
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
         public int UpdateNoteHour(int SN, int Hour, string Note);
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
-        public List<J_PEOPLE> Listedpeople(DateTime date);
+        public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
         public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo);
+        public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
     }
 }

@@ -55,11 +55,17 @@
                     grid: {
                         bottom:80
                     },
-                    //legend: {
-                    //    orient: 'vertical',
-                    //    top: 10,
-                    //    data: ["用水量趨勢"]
-                    //},
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    legend: {
+                       y:'top',
+                        x:'left',
+                        data: ["用水量趨勢"]
+                    },
                     xAxis: {
                         axisLabel:{
                             rotate:result.Data.Rotate
@@ -78,9 +84,37 @@
                         },
                         axisLabel: {formatter: '{value} 度'}
                     },
-                    series: [{
-                        type: 'line',
-                        data:  result.Data.Y
+                    series: [
+                        {
+                            name: '用水量趨勢',
+                            type: 'line',
+                            data:  result.Data.Y
+                        },
+                        {
+                          name: '移動上界',
+                          type: 'line',
+                          data: result.Data.Ymax,
+                          lineStyle: {
+                            opacity: 0
+                          },
+                          areaStyle: {
+                            color: '#ccc'
+                          },
+                          stack: 'confidence-band',
+                          symbol: 'none'
+                        },
+                        {
+                          name: '移動下界',
+                          type: 'line',
+                          data: result.Data.Ymin,
+                          lineStyle: {
+                            opacity: 0
+                          },
+                          areaStyle: {
+                            color: '#ccc'
+                          },
+                          stack: 'confidence-band',
+                          symbol: 'none'
                         }]
                 };
                 option && myChart.setOption(option);

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "用水情形分析";
+    ViewData["Title"] = "用水分析預測";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
 }
 @section echart{
@@ -44,32 +44,32 @@
 
 </script>
 <script>
-$(function(){
-	var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
-	var total = searchAreaInlineHeight;
-	$('.version1').css('height','calc(100% - {total}px)'.replace('{total}',total));
-});
-$(function(){
-    $(".videoScroll").mCustomScrollbar({
-        autoHideScrollbar:true,
-        advanced:{
-            updateOnContentResize: true,
-            updateOnImageLoad: false
-        },
-        theme:"minimal-dark",
-            mouseWheel:{ preventDefault:true }
+    $(function(){
+        var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+        var total = searchAreaInlineHeight;
+        $('.version1').css('height','calc(100% - {total}px)'.replace('{total}',total));
     });
-    $(".videoScroll").mCustomScrollbar("update");
-});
+    $(function(){
+        $(".videoScroll").mCustomScrollbar({
+            autoHideScrollbar:true,
+            advanced:{
+                updateOnContentResize: true,
+                updateOnImageLoad: false
+            },
+            theme:"minimal-dark",
+                mouseWheel:{ preventDefault:true }
+        });
+        $(".videoScroll").mCustomScrollbar("update");
+    });
 
 </script>
 <style>
-.pagechartGroup > div{
-    height:inherit;
-}
-    .mCSB_container{
-    height:inherit;
+    .pagechartGroup > div {
+        height: inherit;
+    }
 
+    .mCSB_container {
+        height: inherit;
     }
 </style>
 
@@ -90,14 +90,16 @@ $(function(){
                 @ViewBag.CurrentTimeTW 當周用水分析預測
             </div>
         </div>
+        <span id="spanAlert"></span>
     </div><!-- searchAreaInline end -->
     <div class="version1">
         <div class="main videoScroll">
             <span id="spanAlert"></span>
-                <div id="divpagechartGroup" style="width:100%; height:100%;"></div>
-            </div>
+            <div id="divpagechartGroup" style="width:100%; height:100%;"></div>
         </div>
-    </div><!-- main end -->
+    </div>
+</div>
+</div><!-- main end -->
 </div><!-- wrap end -->
 <!-- 六個狀態色碼
     .circularRed{ border-color: #FF0000; }
@@ -122,8 +124,14 @@ $(function(){
         var option
         $.get(url,model,function(data){
             $("#spanAlert").text('');
-            if(data.Data.alert != ''){
-                $("#spanAlert").text(data.Data.alert);
+            if(data.Data.Alert.length > 0){
+                data.Data.Alert.map(function(value){
+                    $("#spanAlert").append(value + '<br/>');
+                });
+            }
+
+            if(data.Data.Alert.length >= 3){
+                return ;
             }
 
             option ={
@@ -136,10 +144,16 @@ $(function(){
                   }
                 }
               },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {}
+                }
+            },
               legend: {
                 orient: 'horizontal',
                 top: 10,
-                data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次"]
+                data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次(開放資料維度僅顯示到月)"]
               },
               xAxis: {
                 type: 'category',
@@ -181,15 +195,17 @@ $(function(){
                   smooth: true
                 },
                 {
-                  name: '去年同期觀光人次',
+                  name: '去年同期觀光人次(開放資料維度僅顯示到月)',
                   yAxisIndex: 1,
-                  data: [50, 50, 50, 50, 35, 47, 60],
+                  data: data.Data.People,
                   type: 'line',
-                  smooth: true
+                  smooth: true,
+                  connectNulls: true
                 }
               ]
             };
             option && myChart.setOption(option);
+            myChart.resize();
         });
     }
 

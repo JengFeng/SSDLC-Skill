@@ -47,7 +47,8 @@ namespace TWNPPublic.Controllers
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
             ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月份", culture);
-            ViewBag.DetailResult = dashboardService.GetWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
+            //ViewBag.DetailResult = dashboardService.GetWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
+            ViewBag.VDetailResult = dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
             return View();
         }
 
@@ -131,7 +132,7 @@ namespace TWNPPublic.Controllers
             Cdate = new DateTime(2022, 3, 21);
             var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day");
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
-
+            List<int> faker = new List<int>();
             if (result == null)
             {
                 return Json(Failed(message: "查無資料"));
@@ -155,8 +156,10 @@ namespace TWNPPublic.Controllers
 
             object obj = new
             {
-                X = dic.Select(c => c.Key.Substring(10)).ToArray(),
+                X = dic.Select(c => c.Key.Substring(11, 5)).ToArray(),
                 Y = dic.Select(c => c.Value).ToArray(),
+                Ymax = dic.Select(c => c.Value + 1).ToArray(),
+                Ymin = dic.Select(c => c.Value - 1).ToArray(),
             };
             return Json(Success(obj));
         }
@@ -315,25 +318,33 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 用水分析圖表點上面那個秀下面這個
+        /// </summary>
+        /// <param name="timespilt"></param>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
         public IActionResult LoadWaterUseAnalyzer(string timespilt, DateTime Cdate)
         {
             var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt).OrderBy(c => c.X).ToList();//今年
             var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt).OrderBy(c => c.X).ToList();//去年同期
-            var people = dashboardService.Listedpeople(Cdate);
 
-            string alert = "";
+
+            List<string> alert = new List<string>();
             if (thisyear == null || thisyear.Count() == 0)
             {
-                alert += "本期用水趨勢,尚無資料\n";
+                alert.Add("本期用水趨勢,尚無資料");
             }
 
             if (nextyear == null || nextyear.Count() == 0)
             {
-                alert += "去年同期用水趨勢,尚無資料";
+                alert.Add("去年同期用水趨勢,尚無資料");
             }
 
             Dictionary<string, float?> dicthisyear = new Dictionary<string, float?>();
             Dictionary<string, float?> dictnextyear = new Dictionary<string, float?>();
+            //人數的空殼
+            Dictionary<string, float?> dicpeople = new Dictionary<string, float?>();
 
             switch (timespilt)
             {
@@ -353,7 +364,7 @@ namespace TWNPPublic.Controllers
                     {
                         dictnextyear[item.X.Substring(0, 16)] = item.Y;
                     }
-
+                    alert.Add("日查詢不提供觀光人次");
                     break;
                 case "week":
                     //寫這啥機巴玩意我好爛==
@@ -429,7 +440,7 @@ namespace TWNPPublic.Controllers
                                 break;
                         }
                     }
-
+                    alert.Add("週查詢不提供觀光人次");
                     break;
                 case "month":
                     int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
@@ -437,6 +448,7 @@ namespace TWNPPublic.Controllers
                     {
                         dicthisyear.Add(i.ToString(), null);
                         dictnextyear.Add(i.ToString(), null);
+                        dicpeople.Add(i.ToString(), null);
                     }
 
                     foreach (var item in thisyear)
@@ -448,9 +460,17 @@ namespace TWNPPublic.Controllers
                     {
                         dictnextyear[item.X.ToString()] = item.Y;
                     }
-
+                    var people = dashboardService.Listedpeople(Cdate);
+                    if (people.startPeople == null && people.enderPeople == null)
+                    {
+                        alert.Add("此區段觀光人次尚無資料");
+                        break;
+                    }
+                    dicpeople[dicpeople.First().Key] = people.startPeople;
+                    dicpeople[dicpeople.Last().Key] = people.enderPeople;
                     break;
             }
+
 
             return Json(Success(
                 new
@@ -458,9 +478,9 @@ namespace TWNPPublic.Controllers
                     X = dicthisyear.Keys.ToArray(),
                     Ythisyear = dicthisyear.Values.ToArray(),
                     Ynextyear = dictnextyear.Values.ToArray(),
-                    people,
-                    alert = alert
-                }));
+                    People = dicpeople.Values.ToArray(),
+                    Alert = alert.ToArray()
+                })); ; ;
         }
 
         /// <summary>
