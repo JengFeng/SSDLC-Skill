@@ -43,6 +43,35 @@
     }
 
 </script>
+<script>
+    $(function(){
+        var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+        var total = searchAreaInlineHeight;
+        $('.version1').css('height','calc(100% - {total}px)'.replace('{total}',total));
+    });
+    $(function(){
+        $(".videoScroll").mCustomScrollbar({
+            autoHideScrollbar:true,
+            advanced:{
+                updateOnContentResize: true,
+                updateOnImageLoad: false
+            },
+            theme:"minimal-dark",
+                mouseWheel:{ preventDefault:true }
+        });
+        $(".videoScroll").mCustomScrollbar("update");
+    });
+
+</script>
+<style>
+    .pagechartGroup > div {
+        height: inherit;
+    }
+
+    .mCSB_container {
+        height: inherit;
+    }
+</style>
 
 <div class="wrap-page">
     <div class="searchAreaInline">
@@ -61,6 +90,7 @@
                 @ViewBag.CurrentTimeTW 當周用水分析預測
             </div>
         </div>
+        <span id="spanAlert"></span>
     </div><!-- searchAreaInline end -->
     <div class="version1">
         <div class="main videoScroll">
@@ -68,7 +98,8 @@
             <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px">
             </div>
         </div>
-    </div><!-- main end -->
+    </div>
+</div><!-- main end -->
 </div><!-- wrap end -->
 <!-- 六個狀態色碼
     .circularRed{ border-color: #FF0000; }
@@ -94,7 +125,7 @@
         $.get(url,model,function(data){
             $("#spanAlert").text('');
             if(data.Data.alert != ''){
-                $("#spanAlert").text(data.Data.alert);
+                $("#spanAlert").html(data.Data.alert.replace(/\n/g, '<br />'));
             }
 
             option ={
@@ -110,7 +141,7 @@
               legend: {
                 orient: 'horizontal',
                 top: 10,
-                data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次"]
+                data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次(開放資料維度僅顯示到月)"]
               },
               xAxis: {
                 type: 'category',
@@ -152,7 +183,7 @@
                   smooth: true
                 },
                 {
-                  name: '去年同期觀光人次',
+                  name: '去年同期觀光人次(開放資料維度僅顯示到月)',
                   yAxisIndex: 1,
                   data: [50, 50, 50, 50, 35, 47, 60],
                   type: 'line',

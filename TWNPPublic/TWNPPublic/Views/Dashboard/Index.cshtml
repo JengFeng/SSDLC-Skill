@@ -73,18 +73,22 @@
                 //名稱
                 $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
                 //目前指針度數
-                $('#NEWMETER').html(result.Data.NEW_METER + '<span>度</span>');
+                $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER) + '<span>度</span>');
                 //本月水費
-                $('#THISMONTHMETER').html(result.Data.THISMONTH_MONEY + '<span>元</span>');
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
                 //上期水費
-                $('#LASTMONTHMONEY').html(result.Data.THISMONTHEND_METER + '<span>元</span>');
+                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
                 //本期預估
-                $('#THISMONTHENDMONEY').html(result.Data.THISMONTHEND_METER + '<span>元</span>');
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
                 //去年同期水費
-                $('#LASTYEARMONEY').html('<i class="bi bi-arrow-up text-red"></i>' + result.Data.LASTYEAR_MONEY + '<span>元</span>');
+                $('#LASTYEARMONEY').html('<i class="bi bi-arrow-up text-red"></i>' + setNodataifNullOrEmpty(result.Data.LASTYEAR_MONEY) + '<span>元</span>');
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 //InitTableB_Message(result.Data.DashMainBMessage);
+                //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
+                //<!-- <i class="bi bi-dash"></i> 持平-->
+                //<!-- <i class="bi bi-arrow-up"></i> 上-->
+                //<!-- <i class="bi bi-arrow-down"></i> 下-->
             }
         });
         InitWaterUseSearchChart();
@@ -98,6 +102,23 @@
             $('#btngofbox').trigger('click');
         });
     });
+
+    function SetArrowCompareTHISMONTH_MONEYAndLASTYEAR_MONEY(thismonth,lastyear){
+        if(thismonth == null || thismonth == '')
+            return "";
+        if(lastyear == null || lastyear == '')
+            return "";
+
+    }
+
+    //判斷為空就回傳上無資料
+    function setNodataifNullOrEmpty(obj){
+        if(obj == null)
+            return '尚無資料';
+        if(obj == '')
+            return '尚無資料';
+        return obj;
+    }
 
     //右下角開窗重新載入url
     function openAnalyzerfbox(){
@@ -569,7 +590,6 @@
                             </div>
                             <div class="costTotal" id="LASTYEARMONEY"><span>元</span></div>
                         </div>
-
                     </div>
                     <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                     <!-- <i class="bi bi-dash"></i> 持平-->

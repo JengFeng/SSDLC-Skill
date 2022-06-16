@@ -48,6 +48,7 @@ namespace TWNPPublic.Controllers
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
             ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月份", culture);
             ViewBag.DetailResult = dashboardService.GetWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
+            ViewBag.VDetailResult = dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
             return View();
         }
 
@@ -315,6 +316,12 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 用水分析圖表點上面那個秀下面這個
+        /// </summary>
+        /// <param name="timespilt"></param>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
         public IActionResult LoadWaterUseAnalyzer(string timespilt, DateTime Cdate)
         {
             var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt).OrderBy(c => c.X).ToList();//今年
@@ -329,7 +336,7 @@ namespace TWNPPublic.Controllers
 
             if (nextyear == null || nextyear.Count() == 0)
             {
-                alert += "去年同期用水趨勢,尚無資料";
+                alert += "去年同期用水趨勢,尚無資料\n";
             }
 
             Dictionary<string, float?> dicthisyear = new Dictionary<string, float?>();
@@ -353,7 +360,7 @@ namespace TWNPPublic.Controllers
                     {
                         dictnextyear[item.X.Substring(0, 16)] = item.Y;
                     }
-
+                    alert += "日查詢不提供觀光人次\n";
                     break;
                 case "week":
                     //寫這啥機巴玩意我好爛==
@@ -429,7 +436,7 @@ namespace TWNPPublic.Controllers
                                 break;
                         }
                     }
-
+                    alert += "週查詢不提供觀光人次\n";
                     break;
                 case "month":
                     int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
@@ -448,6 +455,8 @@ namespace TWNPPublic.Controllers
                     {
                         dictnextyear[item.X.ToString()] = item.Y;
                     }
+
+
 
                     break;
             }
