@@ -79,7 +79,6 @@
         $.post("@Url.Action("ChangeUserWaterNos","Dashboard")",model,function(result){
             if(result.Success)
             {
-                alert(result.Message);
                 history.go(0);
             }
             else
