@@ -274,22 +274,26 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> ListedExceptionState(int? page)
         {
             int pager = (page ?? 1) - 1;
-            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager, 10);
-            List<ExceptionItem> exceptionItems = new List<ExceptionItem>();
+            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager, 3);
+            List<ExceptionItem> ExceptionItems = new List<ExceptionItem>();
 
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
 
-            foreach (var item in reuslt)
+            foreach (var item in reuslt.items)
             {
-                exceptionItems.Add(new ExceptionItem
+                ExceptionItems.Add(new ExceptionItem
                 {
                     Id = item.B_MESSAGE_SN,
                     Message = item.NOTE,
                     Time = item.INP_DATE.ToString("yyy年MM月dd日", culture)
-                }); ;
+                });
             }
-            return Json(Success(exceptionItems));
+            return Json(Success(new
+            {
+                ExceptionItems,
+                Max = reuslt.Count
+            }));
         }
 
         /// <summary>
@@ -328,6 +332,8 @@ namespace TWNPPublic.Controllers
         {
             var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt).OrderBy(c => c.X).ToList();//今年
             var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt).OrderBy(c => c.X).ToList();//去年同期
+            //單位
+            string xAayUnit = "";
 
 
             List<string> alert = new List<string>();
@@ -341,106 +347,152 @@ namespace TWNPPublic.Controllers
                 alert.Add("去年同期用水趨勢,尚無資料");
             }
 
+
             Dictionary<string, float?> dicthisyear = new Dictionary<string, float?>();
             Dictionary<string, float?> dictnextyear = new Dictionary<string, float?>();
             //人數的空殼
             Dictionary<string, float?> dicpeople = new Dictionary<string, float?>();
 
+            //好像可以用代理人或適配器模式解決下次試試看
             switch (timespilt)
             {
                 case "day":
                     for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
                     {
-                        dicthisyear.Add(item.ToString("yyyy-MM-dd HH:mm"), null);
-                        dictnextyear.Add(item.ToString("yyyy-MM-dd HH:mm"), null);
+                        dicthisyear.Add(item.ToString("HH:mm"), null);
+                        dictnextyear.Add(item.ToString("HH:mm"), null);
                     }
 
-                    foreach (var item in thisyear)
+                    if (thisyear != null && thisyear.Count() != 0)
                     {
-                        dicthisyear[item.X.Substring(0, 16)] = item.Y;
+                        foreach (var item in thisyear)
+                        {
+                            dicthisyear[item.X.Substring(11, 5)] = item.Y;
+                        }
                     }
 
-                    foreach (var item in nextyear)
+                    if (nextyear != null && dicthisyear.Count() != 0)
                     {
-                        dictnextyear[item.X.Substring(0, 16)] = item.Y;
+                        foreach (var item in nextyear)
+                        {
+                            dictnextyear[item.X.Substring(11, 5)] = item.Y;
+                        }
                     }
+
                     alert.Add("日查詢不提供觀光人次");
+                    xAayUnit = "時間(小時)";
                     break;
                 case "week":
+                    DateTime dt = Cdate.StartOfWeek(DayOfWeek.Monday);
+
                     //寫這啥機巴玩意我好爛==
-                    dicthisyear.Add("一", null);
-                    dicthisyear.Add("二", null);
-                    dicthisyear.Add("三", null);
-                    dicthisyear.Add("四", null);
-                    dicthisyear.Add("五", null);
-                    dicthisyear.Add("六", null);
-                    dicthisyear.Add("日", null);
-
-                    dictnextyear.Add("一", null);
-                    dictnextyear.Add("二", null);
-                    dictnextyear.Add("三", null);
-                    dictnextyear.Add("四", null);
-                    dictnextyear.Add("五", null);
-                    dictnextyear.Add("六", null);
-                    dictnextyear.Add("日", null);
-
-                    foreach (var item in thisyear)
+                    for (int i = 0; i < 7; i++)
                     {
-                        switch (item.X)
+                        dicthisyear.Add(dt.AddDays(i).ToString("MM/dd"), null);
+                        dictnextyear.Add(dt.AddDays(i).ToString("MM/dd"), null);
+                    }
+                    #region 嚴重譴責這種改了又改的行為==
+                    //dicthisyear.Add("一", null);
+                    //dicthisyear.Add("二", null);
+                    //dicthisyear.Add("三", null);
+                    //dicthisyear.Add("四", null);
+                    //dicthisyear.Add("五", null);
+                    //dicthisyear.Add("六", null);
+                    //dicthisyear.Add("日", null);
+
+                    //dictnextyear.Add("一", null);
+                    //dictnextyear.Add("二", null);
+                    //dictnextyear.Add("三", null);
+                    //dictnextyear.Add("四", null);
+                    //dictnextyear.Add("五", null);
+                    //dictnextyear.Add("六", null);
+                    //dictnextyear.Add("日", null);
+                    #endregion
+
+                    int rollnumber = 0;
+                    if (thisyear != null && thisyear.Count() != 0)
+                    {
+                        foreach (var cell in dicthisyear)
                         {
-                            case "1":
-                                dicthisyear["一"] = item.Y;
-                                break;
-                            case "2":
-                                dicthisyear["二"] = item.Y;
-                                break;
-                            case "3":
-                                dicthisyear["三"] = item.Y;
-                                break;
-                            case "4":
-                                dicthisyear["四"] = item.Y;
-                                break;
-                            case "5":
-                                dicthisyear["五"] = item.Y;
-                                break;
-                            case "6":
-                                dicthisyear["六"] = item.Y;
-                                break;
-                            case "7":
-                                dicthisyear["日"] = item.Y;
-                                break;
+                            dicthisyear[cell.Key] = thisyear.OrderBy(c => c.X).ElementAt(rollnumber).Y;
+                            rollnumber++;
                         }
                     }
 
-
-                    foreach (var item in nextyear)
+                    rollnumber = 0;
+                    if (nextyear != null && nextyear.Count() != 0)
                     {
-                        switch (item.X)
+                        foreach (var cell in dictnextyear)
                         {
-                            case "1":
-                                dictnextyear["一"] = item.Y;
-                                break;
-                            case "2":
-                                dictnextyear["二"] = item.Y;
-                                break;
-                            case "3":
-                                dictnextyear["三"] = item.Y;
-                                break;
-                            case "4":
-                                dictnextyear["四"] = item.Y;
-                                break;
-                            case "5":
-                                dictnextyear["五"] = item.Y;
-                                break;
-                            case "6":
-                                dictnextyear["六"] = item.Y;
-                                break;
-                            case "7":
-                                dictnextyear["日"] = item.Y;
-                                break;
+                            dictnextyear[cell.Key] = thisyear.OrderBy(c => c.X).ElementAt(rollnumber).Y;
+                            rollnumber++;
                         }
                     }
+
+                    #region
+                    //foreach (var item in thisyear)
+                    //{
+
+                    //    switch (item.X)
+                    //    {
+                    //        case "1":
+                    //            dicthisyear["一"] = item.Y;
+                    //            break;
+                    //        case "2":
+                    //            dicthisyear["二"] = item.Y;
+                    //            break;
+                    //        case "3":
+                    //            dicthisyear["三"] = item.Y;
+                    //            break;
+                    //        case "4":
+                    //            dicthisyear["四"] = item.Y;
+                    //            break;
+                    //        case "5":
+                    //            dicthisyear["五"] = item.Y;
+                    //            break;
+                    //        case "6":
+                    //            dicthisyear["六"] = item.Y;
+                    //            break;
+                    //        case "7":
+                    //            dicthisyear["日"] = item.Y;
+                    //            break;
+                    //    }
+
+                    //}
+                    #endregion
+                    #region
+                    //foreach (var item in nextyear)
+                    //{
+                    //switch (item.X)
+                    //{
+                    //    case "1":
+                    //        dictnextyear["一"] = item.Y;
+                    //        break;
+                    //    case "2":
+                    //        dictnextyear["二"] = item.Y;
+                    //        break;
+                    //    case "3":
+                    //        dictnextyear["三"] = item.Y;
+                    //        break;
+                    //    case "4":
+                    //        dictnextyear["四"] = item.Y;
+                    //        break;
+                    //    case "5":
+                    //        dictnextyear["五"] = item.Y;
+                    //        break;
+                    //    case "6":
+                    //        dictnextyear["六"] = item.Y;
+                    //        break;
+                    //    case "7":
+                    //        dictnextyear["日"] = item.Y;
+                    //        break;
+                    //}
+                    //}
+                    #endregion
+
                     alert.Add("週查詢不提供觀光人次");
+                    xAayUnit = "時間(日期)";
+
                     break;
                 case "month":
                     int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
@@ -451,15 +503,22 @@ namespace TWNPPublic.Controllers
                         dicpeople.Add(i.ToString(), null);
                     }
 
-                    foreach (var item in thisyear)
+                    if (thisyear != null && thisyear.Count() != 0)
                     {
-                        dicthisyear[item.X.ToString()] = item.Y;
+                        foreach (var item in thisyear)
+                        {
+                            dicthisyear[item.X.ToString()] = item.Y;
+                        }
                     }
 
-                    foreach (var item in nextyear)
+                    if (nextyear != null && nextyear.Count() != 0)
                     {
-                        dictnextyear[item.X.ToString()] = item.Y;
+                        foreach (var item in nextyear)
+                        {
+                            dictnextyear[item.X.ToString()] = item.Y;
+                        }
                     }
+
                     var people = dashboardService.Listedpeople(Cdate);
                     if (people.startPeople == null && people.enderPeople == null)
                     {
@@ -468,6 +527,7 @@ namespace TWNPPublic.Controllers
                     }
                     dicpeople[dicpeople.First().Key] = people.startPeople;
                     dicpeople[dicpeople.Last().Key] = people.enderPeople;
+                    xAayUnit = "時間(號)";
                     break;
             }
 
@@ -479,8 +539,9 @@ namespace TWNPPublic.Controllers
                     Ythisyear = dicthisyear.Values.ToArray(),
                     Ynextyear = dictnextyear.Values.ToArray(),
                     People = dicpeople.Values.ToArray(),
-                    Alert = alert.ToArray()
-                })); ; ;
+                    Alert = alert.ToArray(),
+                    xAayUnit
+                }));
         }
 
         /// <summary>
@@ -490,7 +551,10 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public IActionResult Fancybox_modalBarchart(DateTime Cdate)
         {
-            ViewBag.Cdate = Cdate;
+            ViewBag.Cdate = Cdate.ToString("yyyy/MM/dd");
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+            ViewBag.CurrentTimeTW = Cdate.ToString("yyy年MM月dd日", culture);
             return View();
         }
 
@@ -502,7 +566,6 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> ModalBarchart(DateTime Cdate)
         {
             int Rotate = 10;
-            Cdate = new DateTime(2020, 4, 4);
             DateTime start = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 0, 0, 0);
             DateTime end = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 23, 0, 0);
             var reuslt = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
