@@ -34,6 +34,8 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public IActionResult UseWaterChart(DateTime? StartTime, DateTime? EndTime)
         {
+            #region 摺疊
+
             //if (StartTimeZone.HasValue)
             //{
             //    if (StartTime.HasValue)
@@ -58,6 +60,7 @@ namespace TWNPPublic.Controllers
             //    }
             //}
 
+            #endregion
 
             var result = qualityService.GetWaterUseChart(StartTime, EndTime);
 
@@ -65,7 +68,10 @@ namespace TWNPPublic.Controllers
             List<JObject> Amountdatas = new List<JObject>();
 
             if (result.PinChartData.Count() == 0 && result.AmountChartData.Count() == 0)
-                return Json(Failed(message: "查無資料"));
+                return Json(Failed(new
+                {
+                    alert = "此時間段尚無資料"
+                })); ;
 
             foreach (var item in result.PinChartData)
             {

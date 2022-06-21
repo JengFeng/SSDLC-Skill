@@ -7,7 +7,10 @@
 }
 <script>
     $(function(){
+        $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");
+        $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");
         $(".menuList > a:nth-child(2)").addClass("active").siblings().removeClass("active");
+        btnSearch();
     });
 </script>
 <div class="pageWrap">
@@ -37,6 +40,7 @@
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
                 <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重製</a>
             </div>
+            <span id="spanError">此時間段尚無資料</span>
             <div class="pagechartGroup" id="divpagechartGroup" style="width:100%;height:500px;margin-top:15px">
             </div>
         </div>
@@ -53,11 +57,12 @@
     }
 
     function btnSearch(){
+        $("#spanError").text('');
         var url = "@Url.Action("UseWaterChart","Quality")";
         var model = {
             StartTime : $("#inputStartTime").val(),
-            //EndTime :$("#inputEndTime").val(),
-            StartTimeZone : $("#StartTimeZone").val()
+            EndTime :$("#inputEndTime").val(),
+            //StartTimeZone : $("#StartTimeZone").val()
             //EndTimeZone : $("#EndTimeZone").val()
         };
 
@@ -71,7 +76,8 @@
                     } else {
                         if (data.ModelStateErrors != null) {
                         } else {
-                            alert(data.Message);
+                            $("#spanError").text(data.Data.alert);
+                            return;
                         }
                     }
                 },
@@ -101,6 +107,7 @@
                 }
             },
             xAxis: [{
+                name: '時間(小時)',
                 type: 'time',
                 axisTick: {
                     alignWithLabel: true
@@ -117,7 +124,7 @@
             yAxis: [
                 {
                     type: 'value',
-                    name: '水費',
+                    name: '水費(元)',
                     position: 'right',
                     alignTicks: true,
                     axisLine: {
@@ -126,11 +133,11 @@
                           color: '#ffb1c1'
                         }
                     },
-                    axisLabel: {formatter: '{value} 元'}
+                    axisLabel: {formatter: '{value}'}
                 },
                 {
                     type: 'value',
-                    name: '用水量',
+                    name: '用水量(度)',
                     position: 'left',
                     alignTicks: true,
                     axisLine: {
@@ -143,7 +150,7 @@
                     },
                 },
                 axisLabel: {
-                    formatter: '{value} 度'
+                    formatter: '{value}'
                     }
                 }],
           series: [

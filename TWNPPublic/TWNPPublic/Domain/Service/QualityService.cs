@@ -42,7 +42,8 @@ namespace TWNPPublic.Domain.Service
             {
                 WaterNo = aspNetUser.CurrentWaterNo,
                 StartTime,
-                EndTime
+                //配合資料庫的做出的妥協
+                EndTime = EndTime.Value.AddDays(1).AddSeconds(-1)
             };
 
             var PinResult = this.dapperDataAccess.Query<F_B_CHART1>(pinsql, obj);
