@@ -50,10 +50,17 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<B_NOTEViewModel>(mainsql, obj);
         }
 
-        public List<V_B_MESSAGE> LitedExceptionItem(string WaterNo, int page, int itemsPerPage)
+        /// <summary>
+        /// 警示訊息分頁用
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <returns></returns>
+        public (List<V_B_MESSAGE> items, int Count) LitedExceptionItem(string WaterNo, int page, int itemsPerPage)
         {
             //測試機是 又舊版SQL 又要ROW_NUMBER() 真的母湯 ==
-            string countsql = @"Select Count(*)
+            string countsql = @"Select Count(*) as Counter
                                 From  V_B_ACCOUNT V,B_MESSAGE M 
                                 Where V.B_ACCOUNT_SN=M.B_ACCOUNT_SN AND M.VALID=1 ANd M.WATER_NO = @WaterNo";
             string mainsql = @"Select * From 
@@ -73,7 +80,12 @@ namespace TWNPPublic.Domain.Service
                 EndPage = itemsPerPage * page + itemsPerPage
             };
             var result = dataAccess.Query<V_B_MESSAGE>(mainsql, obj);
-            return result;
+            object countobj = new
+            {
+                WaterNo
+            };
+            var counter = dataAccess.Query<CounterModel>(countsql, countobj);
+            return (result, counter.First().Counter);
         }
 
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime)
@@ -233,7 +245,7 @@ namespace TWNPPublic.Domain.Service
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate);
         public List<B_NEWSViewModel> ListedNews();
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime);
-        public List<V_B_MESSAGE> LitedExceptionItem(string WaterNo, int page, int itemsPerPage);
+        public (List<V_B_MESSAGE> items, int Count) LitedExceptionItem(string WaterNo, int page, int itemsPerPage);
         public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit);
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);

@@ -26,8 +26,8 @@
             </a>
             <div class="name"
                  id="divWaterUserSearchChartTitle"
-                 data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                @DateTime.Now.ToString("yyyy/MM/dd")當周用水量
+                 data-themeswitchchart="@ViewBag.Cdate">
+                @(ViewBag.Cdate)當周用水量
             </div>
             <a class="btn-green-o-line"
                href="javascript:;"
@@ -80,7 +80,7 @@
                     toolbox: {
                         show: true,
                         feature: {
-                            saveAsImage: {}
+                            saveAsImage: {title: "另存圖片"}
                         }
                     },
                     grid: {
@@ -95,12 +95,13 @@
                         axisLabel:{
                             rotate:result.Data.Rotate
                         },
-                        name: '日期',
+                        name: '時間(小時)',
                         type: 'category',
                         data: result.Data.X
                     },
                     yAxis: {
                         type: 'value',
+                        name: '用水量(度)',
                         axisLine: {
                             show: true,
                             lineStyle: {

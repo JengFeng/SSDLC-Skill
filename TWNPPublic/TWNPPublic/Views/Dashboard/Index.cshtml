@@ -14,9 +14,7 @@
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
 <script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script><style>
-.chartSVG > div{
-    height: 100%;
-}
+
 </style>
 <script>
 
@@ -60,7 +58,7 @@
     });
 </script>
 <!-- Easymap -->
-<script type="text/javascript" src="http://easymap.gis.tw/easymap/latest/easymap.js?"></script>
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js?"></script>
 <script type="text/javascript">
     //兩個圖表全域
     var chartWaterUseMonitor;
@@ -81,7 +79,7 @@
                 //本月水費
                 $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
                 //上期水費
-                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
+                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_METER) + '<span>元</span>');
                 //本期預估
                 $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
                 //去年同期水費
@@ -159,13 +157,13 @@
             legend:{
                 data: ['度數'],
                 y:'top',
-                x:'left',
+                x:'middle',
                 padding:[30,0,0,0]
             },
             toolbox: {
                 show: true,
                 feature: {
-                  saveAsImage: {}
+                    saveAsImage: {title: "另存圖片"}
                 }
             },
             tooltip: {
@@ -185,6 +183,7 @@
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
             },
             yAxis: {
+                name: '用水量(度)',
                 type: 'value',
                 axisLine: {
                     show: true,
@@ -311,12 +310,12 @@
                     legend:{
                         data: ['度數'],
                         y:'top',
-                        x:'left'
+                        x:'middle'
                     },
                     toolbox: {
                         show: true,
                         feature: {
-                            saveAsImage: {}
+                            saveAsImage: {title: "另存圖片"}
                         }
                     },
                     tooltip: {
@@ -408,8 +407,8 @@
             dataType: "json",
             success: function (data) {
                 if (data.Success) {
-                    InitTableB_Message(data.Data);
-                    LoadPaginate(data.Data.Max, 4);
+                    InitTableB_Message(data.Data.ExceptionItems);
+                    LoadPaginate(data.Data.Max, 3);
                     $("#tbB_Message").footable();
                 }
                 else {
@@ -535,6 +534,18 @@
             $(".configureGroup").removeClass("active");
         });
     });
+
+    
+    $(function(){
+		var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
+		var total = unitTitleHeight;
+		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
+
+        
+
+
+	});
+
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -568,12 +579,12 @@
                     <div class="totalUsageGroup">
                         <div class="name">現行指針</div>
                         <div class="totalUsage" id="NEWMETER"></div>
-                        <div class="updateItem">水表更新時間 <br>@RocTime</div>
+                        <div class="updateItem">水表更新時間@(RocTime)</div>
                     </div>
                     <div class="totalUsageGroup">
                         <div class="name">本期累積度數</div>
                         <div class="totalUsage" id="THISMONTHMETER"><span>度</span></div>
-                        <div class="updateItem">計算期間 <br>@RocTime</div>
+                        <div class="updateItem">計算期間@(RocTime)</div>
                     </div>
                 </div>
 
@@ -668,16 +679,16 @@
                 </div>
             </div>
             <div class="chartGroup">
-                <div class="chartItem">
-                    <div class="unitTitle">
+                <div class="chartItem" style="">
+                    <div class="unitTitle unitTitleHeight">
                         <i class="bi bi-shuffle"></i>
                         用水情形比較
                     </div>
-                    <div class="chartBox" style="width:100%;height:100%;">
-                        <div id="ChartCompareWaterUse" @* class="chartSVG"*@ style="width:100%;height:100%;"></div>
+                    <div class="chartBox">
+                        <div id="ChartCompareWaterUse"  class="chartSVG" style="width:100%; height:83%;"></div>
                     </div>
                 </div>
-                <div class="chartItem">
+                <div class="chartItem" style="">
                     <div class="unitTitle  justify-content-between">
                         <div class="name">
                             <i class="bi bi-search"></i>
@@ -712,32 +723,28 @@
                             <a hidden class="fbox_View" href="@Url.Action("Fancybox_modalBarchart","Dashboard")" id="btngofbox"></a>
                         </div>
                     </div>
-                    <div class="chartBox">
+                    <div class="chartBox" style="">
                         <span id="spanError">此時間段尚無資料</span>
-                        <div id="ChartWaterUseMonitor" style="width:100%;height:100%;"></div>
+                        <div id="ChartWaterUseMonitor" style="width:100%; height:81%;"></div>
                     </div>
                 </div>
             </div>
         </div><!-- chartInfoGroup end -->
     </div>
     <div class="mapGroup">
-
         <div class="toggleMapGroup">
             <a class="btn-green-o close-mapGroup" href="javascript:;" title="關閉圖台">
                 <i class="bi bi-x"></i>
             </a>
         </div>
-
         <div id="map" class=""></div>
     </div>
     <div class="configureGroup">
-
         <div class="toggleMapGroup">
             <a class="btn-green-o close-configureGroup" href="javascript:;" title="關閉圖台">
                 <i class="bi bi-x"></i>
             </a>
         </div>
-
         <div class="configureArea">
             <img src="~/Images/map.jpg" alt="">
         </div>

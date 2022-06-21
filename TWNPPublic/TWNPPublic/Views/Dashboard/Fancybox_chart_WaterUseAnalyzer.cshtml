@@ -87,7 +87,7 @@
             <div class="name"
                  id="divWaterUserSearchChartTitle"
                  data-themeswitchchart="@ViewBag.CurrentTime">
-                @ViewBag.CurrentTimeTW 當周用水分析預測
+                @ViewBag.CurrentTimeTW 當週用水分析預測
             </div>
         </div>
         <span id="spanAlert"></span>
@@ -130,6 +130,10 @@
                 });
             }
 
+            if(!data.Success){
+                return ;
+            }
+
             if(data.Data.Alert.length >= 3){
                 return ;
             }
@@ -147,7 +151,7 @@
             toolbox: {
                 show: true,
                 feature: {
-                    saveAsImage: {}
+                    saveAsImage: {title: "另存圖片"}
                 }
             },
               legend: {
@@ -156,29 +160,30 @@
                 data: ["去年同期用水趨勢","本期用水趨勢","去年同期觀光人次(開放資料維度僅顯示到月)"]
               },
               xAxis: {
+                name : data.Data.xAayUnit,
                 type: 'category',
                 data: data.Data.X
               },
               yAxis: [
                 {
                     type: 'value',
-                    name: '用水趨勢',
+                    name: '用水量(度)',
                     position: 'left',
                     alignTicks: true,
                     axisLine: {
                         show: true,
                     },
-                    axisLabel: {formatter: '{value} 度數'}
+                    axisLabel: {formatter: '{value}'}
                 },
                 {
                     type: 'value',
-                    name: '觀光人次',
+                    name: '觀光人次(人次)',
                     position: 'right',
                     alignTicks: true,
                     axisLine: {
                         show: true,
                     },
-                    axisLabel: {formatter: '{value} 人次'}
+                    axisLabel: {formatter: '{value}'}
                 }
               ],
               series: [

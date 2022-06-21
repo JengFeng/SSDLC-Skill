@@ -251,6 +251,7 @@ a[class*="btn-"] > i {
 }
 
 .unitTitle {
+    flex: 0 0 36px;
     display: flex;
     align-items: center;
     line-height: 1;
@@ -326,7 +327,7 @@ ul.marquee {
 
 /* 異常狀態列表 */
 .exceptionGroup {
-    flex: 0 0 40%;
+    /*flex: auto;*/
     padding: 10px 20px;
     margin-bottom: 10px;
     background: #fff;
@@ -342,15 +343,24 @@ ul.marquee {
 
 .chartItem {
     flex: 1;
+    height: 94.5%;
     padding: 10px 20px;
     margin: 0 4px;
     background: #fff;
     border-radius: 16px 16px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+.chartBox{
+    position: relative;
+}
+.chartItem .unitTitle {
+}
+#spanError{
+    position:absolute;
+    width: 100%;
+    height: 100%;
 
-    .chartItem .unitTitle {
-    }
+}
 /* 頁碼 */
 .paginationGroup {
     display: flex;
@@ -409,6 +419,15 @@ ul.marquee {
 
 .chartBox {
     flex: 1;
+}
+
+.chartSVG {
+    display: flex;
+}
+.chartSVG > div:last-child {
+    position: absolute;
+    display: none;
+    flex: none;
 }
 
 /*用水情形*/
