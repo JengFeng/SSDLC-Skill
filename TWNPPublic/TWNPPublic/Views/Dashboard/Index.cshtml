@@ -58,7 +58,7 @@
     });
 </script>
 <!-- Easymap -->
-<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js?"></script>
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/Easymap/easymap.js"></script>
 <script type="text/javascript">
     //兩個圖表全域
     var chartWaterUseMonitor;
@@ -76,8 +76,8 @@
                 $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
                 //目前指針度數
                 $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER) + '<span>度</span>');
-                //本月水費
-                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
+                //本期累積度數
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_METER) + '<span>度</span>');
                 //上期水費
                 $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_METER) + '<span>元</span>');
                 //本期預估
@@ -183,7 +183,10 @@
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
             },
             yAxis: {
-                name: '用水量(度)',
+                nameLocation : 'center',
+                nameGap: 45,
+                nameRotate : 360,
+                name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
                 type: 'value',
                 axisLine: {
                     show: true,
@@ -191,7 +194,7 @@
                         color: colors[0]
                     }
                 },
-                axisLabel: {formatter: '{value} 度'}
+                axisLabel: {formatter: '{value}'}
             },
             series: [
             {
@@ -325,10 +328,17 @@
                         }
                     },
                     xAxis: {
+                        nameGap: 25,
+                        nameLocation : 'center',
                         type: 'category',
-                        data: result.Data.X
+                        data: result.Data.X,
+                        name: result.Data.XrayUnit
                     },
                     yAxis: {
+                        nameLocation : 'center',
+                        nameGap: 25,
+                        nameRotate : 360,
+                        name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
                         triggerEvent:true,
                         type: 'value',
                         axisLine: {
@@ -337,7 +347,7 @@
                                 color: colors[1]
                             }
                         },
-                        axisLabel: {formatter: '{value} 度'}
+                        axisLabel: {formatter: '{value}'}
                     },
                     series: [{
                             name: '度數',
@@ -535,17 +545,11 @@
         });
     });
 
-    
     $(function(){
 		var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
 		var total = unitTitleHeight;
-		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
-
-        
-
-
+		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));   
 	});
-
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -737,7 +741,11 @@
                 <i class="bi bi-x"></i>
             </a>
         </div>
-        <div id="map" class=""></div>
+        @*<div id="map" class="mapGroup"></div>*@
+        <!--圖層管理功能-->
+        <partial name="~/Views/Dashboard/_EzLayerPartial.cshtml" />
+        <!--底圖圖台地圖-->
+        <partial name="~/Views/Dashboard/_EzMapPartial.cshtml" />
     </div>
     <div class="configureGroup">
         <div class="toggleMapGroup">

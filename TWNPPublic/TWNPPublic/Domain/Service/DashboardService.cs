@@ -61,13 +61,14 @@ namespace TWNPPublic.Domain.Service
         {
             //測試機是 又舊版SQL 又要ROW_NUMBER() 真的母湯 ==
             string countsql = @"Select Count(*) as Counter
-                                From  V_B_ACCOUNT V,B_MESSAGE M 
-                                Where V.B_ACCOUNT_SN=M.B_ACCOUNT_SN AND M.VALID=1 ANd M.WATER_NO = @WaterNo";
+                                From  B_MESSAGE M 
+                                Where M.VALID=1 ANd M.WATER_NO = @WaterNo";
             string mainsql = @"Select * From 
                                 (
-	                                Select Top 10000 ROW_NUMBER() OVER (ORDER BY M.INP_DATE) AS Seq,M.WATER_NO,M.NOTE,M.INP_DATE,M.B_MESSAGE_SN 
-	                                From  V_B_ACCOUNT V,B_MESSAGE M 
-	                                Where V.B_ACCOUNT_SN=M.B_ACCOUNT_SN AND M.VALID=1 ANd M.WATER_NO = @WaterNo
+                                    Select Top 10000 ROW_NUMBER() OVER (ORDER BY M.INP_DATE) AS Seq,M.WATER_NO,M.NOTE,M.INP_DATE,M.B_MESSAGE_SN 
+                                    From B_MESSAGE M 
+                                    Where M.VALID=1 ANd M.WATER_NO = @WaterNo
+                                    order by M.INP_DATE desc 
                                 )t
                                 WHERE 1=1 ";
 
@@ -76,7 +77,7 @@ namespace TWNPPublic.Domain.Service
             object obj = new
             {
                 WaterNo,
-                StartPage = itemsPerPage * page,
+                StartPage = itemsPerPage * page + 1,
                 EndPage = itemsPerPage * page + itemsPerPage
             };
             var result = dataAccess.Query<V_B_MESSAGE>(mainsql, obj);

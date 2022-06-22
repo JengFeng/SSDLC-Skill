@@ -123,13 +123,13 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 點擊用戶記事後右邊的圖表
+        /// 點擊用戶記事後右邊的圖表(裡面還有固定資料記得刪掉)
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
         public IActionResult WaterNoteTableChart(DateTime Cdate)
         {
-            Cdate = new DateTime(2022, 3, 21);
+            //3/21
             var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day");
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
             List<int> faker = new List<int>();
@@ -274,7 +274,7 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> ListedExceptionState(int? page)
         {
             int pager = (page ?? 1) - 1;
-            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager, 3);
+            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager , 3);
             List<ExceptionItem> ExceptionItems = new List<ExceptionItem>();
 
             CultureInfo culture = new CultureInfo("zh-TW");
@@ -309,6 +309,7 @@ namespace TWNPPublic.Controllers
         #endregion
 
         #region 右下角用水量查詢
+
         /// <summary>
         /// 用水分析預測圖表點擊
         /// </summary>
@@ -617,61 +618,84 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(message: "查無資料"));
             }
 
-            int Rotate = 0;
+
+            string XrayUnit = "";
             switch (timespilt)
             {
                 case "day":
-                    Rotate = 30;
+
                     for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
                     {
-                        dic.Add(item.ToString("yyyy-MM-dd HH:mm"), null);
+                        dic.Add(item.ToString("HH:mm"), null);
                     }
 
                     foreach (var item in result)
                     {
-                        dic[item.X.Substring(0, 16)] = item.Y;
+                        dic[item.X.Substring(11, 5)] = item.Y;
                     }
+                    XrayUnit = "時間(小時)";
 
                     break;
                 case "week":
-                    dic.Add("一", null);
-                    dic.Add("二", null);
-                    dic.Add("三", null);
-                    dic.Add("四", null);
-                    dic.Add("五", null);
-                    dic.Add("六", null);
-                    dic.Add("日", null);
+                    #region 已棄用
 
-                    foreach (var item in result)
+                    //dic.Add("一", null);
+                    //dic.Add("二", null);
+                    //dic.Add("三", null);
+                    //dic.Add("四", null);
+                    //dic.Add("五", null);
+                    //dic.Add("六", null);
+                    //dic.Add("日", null);
+
+                    //foreach (var item in result)
+                    //{
+                    //    switch (item.X)
+                    //    {
+                    //        case "1":
+                    //            dic["一"] = item.Y;
+                    //            break;
+                    //        case "2":
+                    //            dic["二"] = item.Y;
+                    //            break;
+                    //        case "3":
+                    //            dic["三"] = item.Y;
+                    //            break;
+                    //        case "4":
+                    //            dic["四"] = item.Y;
+                    //            break;
+                    //        case "5":
+                    //            dic["五"] = item.Y;
+                    //            break;
+                    //        case "6":
+                    //            dic["六"] = item.Y;
+                    //            break;
+                    //        case "7":
+                    //            dic["日"] = item.Y;
+                    //            break;
+                    //    }
+                    //}
+
+                    #endregion
+                    DateTime dt = Cdate.StartOfWeek(DayOfWeek.Monday);
+
+                    for (int i = 0; i < 7; i++)
                     {
-                        switch (item.X)
+                        dic.Add(dt.AddDays(i).ToString("MM/dd"), null);
+                    }
+
+                    int rollnumber = 0;
+                    if (result != null && result.Count() != 0)
+                    {
+                        foreach (var cell in dic)
                         {
-                            case "1":
-                                dic["一"] = item.Y;
-                                break;
-                            case "2":
-                                dic["二"] = item.Y;
-                                break;
-                            case "3":
-                                dic["三"] = item.Y;
-                                break;
-                            case "4":
-                                dic["四"] = item.Y;
-                                break;
-                            case "5":
-                                dic["五"] = item.Y;
-                                break;
-                            case "6":
-                                dic["六"] = item.Y;
-                                break;
-                            case "7":
-                                dic["日"] = item.Y;
-                                break;
+                            dic[cell.Key] = result.OrderBy(c => c.X).ElementAt(rollnumber).Y;
+                            rollnumber++;
                         }
                     }
 
-
+                    XrayUnit = "時間(日期)";
                     break;
+
                 case "month":
                     int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
                     for (int i = 1; i <= days; i++)
@@ -684,6 +708,8 @@ namespace TWNPPublic.Controllers
                         dic[item.X.ToString()] = item.Y;
                     }
 
+                    XrayUnit = $"時間({Cdate.Month}月/號)";
+
                     break;
             }
 
@@ -691,7 +717,7 @@ namespace TWNPPublic.Controllers
             {
                 X = dic.Select(c => c.Key).ToArray(),
                 Y = dic.Select(c => c.Value).ToArray(),
-                Rotate
+                XrayUnit = XrayUnit
             };
             return Json(Success(obj));
         }

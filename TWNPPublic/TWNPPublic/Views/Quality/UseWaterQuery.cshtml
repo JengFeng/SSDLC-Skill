@@ -87,6 +87,7 @@
 
     var myChart = echarts.init(document.getElementById('divpagechartGroup'));
     function LoadChartMethod(obj){
+        let fakerMount = obj.Amountdatas.map((_,value) => value * 5);
         var option;
         const colors = ['#ffb1c1', '#5391C7'];
         option = {
@@ -123,8 +124,11 @@
             ],
             yAxis: [
                 {
+                    nameLocation : 'center',
+                    nameGap: 45,
+                    nameRotate : 360,
                     type: 'value',
-                    name: '水費(元)',
+                    name: ' 水 \n 費 \n ︵ \n 元 \n ︶ \n',
                     position: 'right',
                     alignTicks: true,
                     axisLine: {
@@ -133,24 +137,35 @@
                           color: '#ffb1c1'
                         }
                     },
-                    axisLabel: {formatter: '{value}'}
+                    axisLabel: {
+                        formatter: '{value}'
+                    },
+                    nameTextStyle: {
+                        fontSize: 18
+                    }
                 },
                 {
+                    nameLocation : 'center',
+                    nameGap: 45,
+                    nameRotate : 360,
+                    name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
                     type: 'value',
-                    name: '用水量(度)',
                     position: 'left',
                     alignTicks: true,
                     axisLine: {
-                    show: true,
-                    lineStyle: {
-                        color: '#5391C7'
+                        show: true,
+                        lineStyle: {
+                            color: '#5391C7'
+                        },
+                        splitLine: {
+                            show: false
+                        },
                     },
-                    splitLine: {
-                        show: false
+                    axisLabel: {
+                        formatter: '{value}'
                     },
-                },
-                axisLabel: {
-                    formatter: '{value}'
+                    nameTextStyle: {
+                        fontSize: 18
                     }
                 }],
           series: [
@@ -158,14 +173,15 @@
               name: '水費',
               type: 'bar',
               data: null,
-              lineStyle: {color: '#ffb1c1'}
+              lineStyle: {color: '#ffb1c1'},
+              data: obj.Amountdatas
             },
             {
               name: '用水量',
               type: 'line',
               yAxisIndex: 1,
               lineStyle: {color: '#5391C7'},
-              data: obj.Amountdatas
+              data: obj.Pindatas
             }
           ]
         };

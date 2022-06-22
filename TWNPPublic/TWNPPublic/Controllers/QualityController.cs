@@ -80,13 +80,21 @@ namespace TWNPPublic.Controllers
                             });
             }
 
-
-            foreach (var item in result.AmountChartData)
+            foreach (var item in result.PinChartData)
             {
                 Amountdatas.Add(new JObject {
-                                 new JProperty("value", new Object[] { item.X, item.Y})
-                            });
+                                     new JProperty("value", new Object[] {item.X, item.Y * 5})
+                                });
             }
+
+
+
+            //foreach (var item in result.AmountChartData)
+            //{
+            //    Amountdatas.Add(new JObject {
+            //                     new JProperty("value", new Object[] { item.X, item.Y})
+            //                });
+            //}
 
             JObject option = new JObject()
             {

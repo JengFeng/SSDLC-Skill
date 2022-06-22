@@ -209,6 +209,11 @@
     <None Include="wwwroot\js\mCustomScrollbar\jquery.mCustomScrollbar.concat.min.js" />
     <None Include="wwwroot\js\mCustomScrollbar\jquery.mCustomScrollbar.css" />
     <None Include="wwwroot\js\mCustomScrollbar\jquery.mCustomScrollbar.min.js" />
+    <None Include="wwwroot\js\mmLayer\CardTabs\jquery.cardtabs.js" />
+    <None Include="wwwroot\js\mmLayer\CardTabs\js\jquery.cardtabs.js" />
+    <None Include="wwwroot\js\mmLayer\jsTree\jquery-1.9.1.js" />
+    <None Include="wwwroot\js\mmLayer\jsTree\jstree.js" />
+    <None Include="wwwroot\js\mmLayer\jsTree\jstree.min.js" />
   </ItemGroup>
 
   <ItemGroup>
