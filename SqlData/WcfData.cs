@@ -11,7 +11,7 @@ namespace SqlData
     public class WcfData : ISqlData
     {
         #region 參數
-        protected const string Key = "ILoveJeffery";
+        protected const string Key = "ILoveJeffrey";
         private bool IsConnection = false;
         [ThreadStatic]
         private ChannelFactory<ISqlService> ServerChannel = null;

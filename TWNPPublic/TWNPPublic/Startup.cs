@@ -35,8 +35,9 @@ namespace TWNPPublic
 
             //Wcf 功能網站的網址
             var wcfServerUrl = configuration["DapperWcfUrl"];
+            var SQLWcfUrl = configuration["SQLWcfUrl"];
             //加入資料庫注入
-            services.AddWcfData(wcfServerUrl);
+            services.AddWcfData(SQLWcfUrl);
             //用ORM代理 Wcf
             services.AddWcfDapper(wcfServerUrl);
 
