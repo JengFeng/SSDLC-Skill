@@ -1,8 +1,10 @@
 @import "bootstrap.css";
 @import "reset.css";
 @import "layout.css";
+
+@import "layerBox.css";
 @import "menu.css";
-@import "main.css?r=47";
+@import "main.css?r=2";
 @import "tab.css";
 @import "ionicons.css";
 @import "font-awesome.css";

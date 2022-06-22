@@ -327,7 +327,7 @@ ul.marquee {
 
 /* 異常狀態列表 */
 .exceptionGroup {
-    /*flex: auto;*/
+    /*flex: 0 0 40%;*/
     padding: 10px 20px;
     margin-bottom: 10px;
     background: #fff;
@@ -343,24 +343,16 @@ ul.marquee {
 
 .chartItem {
     flex: 1;
-    height: 94.5%;
+    height: 100%;
     padding: 10px 20px;
     margin: 0 4px;
     background: #fff;
     border-radius: 16px 16px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-.chartBox{
-    position: relative;
-}
-.chartItem .unitTitle {
-}
-#spanError{
-    position:absolute;
-    width: 100%;
-    height: 100%;
 
-}
+    .chartItem .unitTitle {
+    }
 /* 頁碼 */
 .paginationGroup {
     display: flex;
@@ -419,15 +411,6 @@ ul.marquee {
 
 .chartBox {
     flex: 1;
-}
-
-.chartSVG {
-    display: flex;
-}
-.chartSVG > div:last-child {
-    position: absolute;
-    display: none;
-    flex: none;
 }
 
 /*用水情形*/
@@ -810,13 +793,13 @@ ul.marquee {
     font-weight: bold;
 }
 /*開啟圖台按鈕*/
-.toggleMapGroup {
+.toggleMapArea {
     position: absolute;
     right: 0;
     top: 34px;
 }
 
-    .toggleMapGroup a {
+    .toggleMapArea a {
         width: 36px;
         height: 36px;
         min-width: 36px;
@@ -824,7 +807,7 @@ ul.marquee {
         padding: 0;
     }
 /*圖台-地圖*/
-.mapGroup {
+.mapArea {
     z-index: 10;
     position: absolute;
     top: 0;
@@ -833,20 +816,21 @@ ul.marquee {
     height: 100%;
     padding-top: 70px;
     background: #fff;
+    overflow: hidden;
     transition: all 0.5s;
 }
 
-    .mapGroup.active {
+    .mapArea.active {
         left: 0;
     }
 
-    .mapGroup .toggleMapGroup {
+    .mapArea .toggleMapArea {
         z-index: 1;
         top: 80px;
         right: 10px;
     }
 
-    .mapGroup #map {
+    .mapArea .mapGroup {
         height: 100%;
     }
 
@@ -868,7 +852,7 @@ ul.marquee {
         left: 0;
     }
 
-    .configureGroup .toggleMapGroup {
+    .configureGroup .toggleMapArea {
         z-index: 1;
         top: 80px;
         right: 10px;
