@@ -531,12 +531,12 @@
     $(function () {
         $(".menuList > a:nth-child(1)").addClass("active").siblings().removeClass("active");
 
-        $(".open-mapGroup").click(function () {
-            $(".mapGroup").addClass("active");
-        });
-        $(".close-mapGroup").click(function () {
-            $(".mapGroup").removeClass("active");
-        });
+		$(".open-mapArea").click(function() {
+			$(".mapArea").addClass("active");
+		});
+		$(".close-mapArea").click(function() {
+			$(".mapArea").removeClass("active");
+		});
         $(".open-configureGroup").click(function () {
             $(".configureGroup").addClass("active");
         });
@@ -557,8 +557,8 @@
     <div class="mainArea">
         <div class="feeInfoGroup">
             <div class="stateGroup">
-                <div class="toggleMapGroup">
-                    <a class="btn-green-o open-mapGroup" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
+                <div class="toggleMapArea">
+                    <a class="btn-green-o open-mapArea" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
                     <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>
                 </div>
                 <div class="userName" id="divNAME"></div>
@@ -735,9 +735,9 @@
             </div>
         </div><!-- chartInfoGroup end -->
     </div>
-    <div class="mapGroup">
-        <div class="toggleMapGroup">
-            <a class="btn-green-o close-mapGroup" href="javascript:;" title="關閉圖台">
+    <div class="mapArea">
+        <div class="toggleMapArea">
+            <a class="btn-green-o close-mapArea" href="javascript:;" title="關閉圖台">
                 <i class="bi bi-x"></i>
             </a>
         </div>

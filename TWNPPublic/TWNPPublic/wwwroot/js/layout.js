@@ -24,12 +24,92 @@ $(function () {
 	{
 		// JavaScript here 
 		// 當視窗寬度小於767px時執行
+
+		//圖層設定
+		$(".hidelayerBox").click(function () {
+			$(".layerSettingBtn").removeClass("active");
+			$(".layerBoxBg").css("top", "100%");
+		});
+		$(".layerSettingBtn").click(function () {
+			$(".layerBoxBg").hide().show();
+			$(".layerBoxBg").css("top", "0");
+		});
 	
 	} else {
 		// JavaScript here
 		// 當視窗寬度不小於767px時執行
+
+		//圖層設定
+		//$(".layerBox").addClass("open");
+		$(".layerSettingBtn").addClass("active");
+		$(".hidelayerBox").click(function () {
+			$(".layerBox").removeClass("open");
+			$(".layerSettingBtn").removeClass("active");
+		});
+		$(".layerSettingBtn").click(function () {
+			$(".layerBox").toggleClass("open");
+		});
 	}
 });
+
+//底圖選擇
+$(function () {
+	$(".layerAbgne .layerBg").click(function () {
+		$(this).toggleClass("active");
+		$(this).siblings().removeClass("active");
+	});
+});
+
+//圖層頁籤
+$(function () {
+	// 預設顯示第一個頁籤
+	// 並先把 .tabs, .tabs li 及 .tab_content, .tab_content li 等元素取出
+	// 同時也要取得 .tab_content 的寬
+	var _default = 0,
+		$block = $('.layerAbgne'),
+		$tabs = $block.find('.tabs'),
+		$tabsLi = $tabs.find('li'),
+		$tab_content = $block.find('.tab_content'),
+		$tab_contentLi = $tab_content.find('li'),
+		_width = $tab_content.width();
+
+	// 當滑鼠移到 .tabs li 上時要套用 .hover 樣式
+	// 移出時要移除 .hover 樣式
+	$tabsLi.hover(function () {
+		var $this = $(this);
+
+		// 若被滑鼠移上去的 li 是目前顯示的頁籤就不做任何動作
+		if ($this.hasClass('active')) return;
+
+		$this.toggleClass('hover');
+	}).click(function () {	// 當滑鼠點擊 .tabs li 時
+		// 先取出被點擊及目前顯示的頁籤與索引
+		var $active = $tabsLi.filter('.active').removeClass('active'),
+			_activeIndex = $active.index(),
+			$this = $(this).addClass('active').removeClass('hover'),
+			_index = $this.index(),
+			isNext = _index > _activeIndex;
+
+		// 如果被點擊的頁籤就是目前已顯示的頁籤, 則不做任何動作
+		if (_activeIndex == _index) return;
+
+		// 依索引大或小來決定移動的位置
+		$tab_contentLi.eq(_activeIndex).stop().animate({
+			left: isNext ? -_width : _width
+		}).end().eq(_index).css('left', isNext ? _width : -_width).stop().animate({
+			left: 0
+		});
+	});
+
+	// 先把預設要顯示的頁籤加上 .active 樣式及顯示相對應的內容
+	$tabsLi.eq(_default).addClass('active');
+	$tab_contentLi.eq(_default).siblings().css({
+		left: _width
+	});
+});
+
+
+
 //menu選單	
 $(function(){
 
