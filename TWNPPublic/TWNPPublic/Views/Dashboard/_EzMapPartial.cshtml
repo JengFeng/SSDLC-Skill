@@ -1,0 +1,24 @@
+﻿<!-- 圖台頁面 1 -->
+<div class="mapGroup" id="map"></div>
+<!--右下角圖層功能控制-->
+<ul class="menuSettingBox maplayerSetting">
+	<li><a href="javascript:;" class="menuBoxBtn layerSettingBtn active" title="圖層設定"></a></li>
+	<li><a href="javascript:;" class="menuBoxBtn gpsSettingBtn" title="定位點查詢" onclick="Layer1.locateGps();"></a></li>
+</ul><!-- 圖層開關 -->
+<script type="text/javascript" src="~/js/EzMap.js"></script>
+<script type="text/javascript">
+    var map = null;
+    (function(){
+        MapInit(map, 'map'); 
+    })();
+
+    function LayerMapInit1(callback) {
+        if (callback === undefined) return;
+        var intervalLayer1 = setInterval(() => {
+            if (Layer1.map === null) return;
+            if($('#boxLayerWindow1').is(':visible') && !LayerTree1.isInited) return;
+            clearInterval(intervalLayer1);
+            callback.apply();
+        }, 500);
+    }
+</script>

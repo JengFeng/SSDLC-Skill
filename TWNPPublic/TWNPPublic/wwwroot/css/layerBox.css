@@ -1,0 +1,405 @@
+/*圖層設定*/
+.layerBox {
+    display: block;
+    z-index: 1000;
+    position: absolute;
+    right: -310px;
+    top: 124px;
+    background: #fafafa;
+    width: 300px;
+    height: 78%;
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.3);
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+.iconlayerBox {
+    top: 60px;
+    height: 78%;
+}
+.layerBox.open {
+    right: 1%;
+}
+.hidelayerBox {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    text-align: right;
+    color: #089BAB;
+}
+
+.layerBoxScrollbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.layerAbgne {
+    width: 100%;
+    height: 95%;
+}
+    .layerAbgne ul, .layerAbgne > li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .layerAbgne .tabs li {
+        float: left;
+        width: 33.3%;
+        margin: 0 0;
+        padding: 0px 10px;
+        border-bottom: 4px solid #fafafa;
+        cursor: pointer;
+        border-radius: 5px 5px 0 0;
+    }
+        .layerAbgne .tabs li.active {
+            background: #fff;
+            border-bottom: 4px solid #089BAB;
+        }
+        .layerAbgne .tabs li.hover {
+            /* background: #f5f5f5;  */
+        }
+
+    .layerAbgne .tabs span {
+        display: block;
+        float: left;
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
+        padding: 7px 15px 5px 15px;
+    }
+    .layerAbgne .tab_container {
+        height: inherit;
+        clear: both;
+        overflow: hidden;
+    }
+        .layerAbgne .tab_container > ul {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+        .layerAbgne .tab_container .tab_content > li {
+            position: absolute;
+            width: 100%;
+            height: 96%;
+            padding: 10px 10px;
+            margin-top: 10px;
+        }
+@media (max-width: 767px) {
+    .layerBoxBg {
+        z-index: 10100;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.9);
+        transition: all 0.3s;
+    }
+    .layerBox {
+        position: absolute;
+        top: 54%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        height: 88%;
+        width: 98%;
+    }
+
+    .layerAbgne .tab_container ul {
+        position: relative;
+        height: 95%;
+        overflow: hidden;
+    }
+
+    .layerAbgne .tab_container .tab_content > li {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 15px 10px;
+        margin-top: 0px;
+    }
+}
+@media (max-height: 767px) {
+    .layerBox {
+        height: 85%;
+    }
+}
+
+.flagArea.w50 {
+    display: inline-block;
+    width: 49%;
+    margin-right: -1px;
+    vertical-align: top;
+}
+.flagArea {
+    background: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #c6c6c6;
+    border-radius: 4px;
+}
+    .flagArea .title {
+        display: flex;
+        align-items: center;
+        padding: 2px 10px;
+        font-size: 1.8rem;
+        border-bottom: 1px solid #c6c6c6;
+    }
+    .flagArea .title span{
+        flex: 80%;
+        line-height: 1.2;
+        padding: 6px 0;
+    }
+.flagBox {
+    display: flex;
+    padding: 2px 2px;
+}
+.flag {
+    /* flex: 1; */
+    /* width: 60px; */
+}
+    .flag span {
+        display: block;
+        line-height: 20px;
+        text-align: center;
+        color: #3a3a3a;
+    }
+        .flag span img {
+            width: 100%;
+            height: auto;
+        }
+        .flagBox img {
+            width: 100%;
+        }
+
+/* checkbox滑動切換鈕==============================Start */
+.move_switch_div {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 24px;
+}
+.move_switch input, .offline_switch_id {
+    display: none;
+}
+
+/* The slider */
+.move_slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 18px;
+}
+
+/* 離線連線用 */
+.offline_slider {
+    background-color: #ccc;
+}
+    .offline_slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        border-radius: 13px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    .offline_slider:after {
+        content: "關閉";
+        line-height: 25px;
+        text-align: right;
+        display: block;
+        font-size: 0.8em;
+        padding-right: 20px;
+    }
+
+input:checked + .offline_slider {
+    background-color: #39b54a;
+}
+input:focus + .offline_slider {
+    box-shadow: 0 0 1px #39b54a;
+}
+input:checked + .offline_slider:before {
+    -webkit-transform: translateX(48px);
+    -ms-transform: translateX(48px);
+    transform: translateX(48px);
+}
+input:checked + .offline_slider:after {
+    text-align: left;
+    padding-left: 20px;
+    content: "開啟";
+    color: #fff;
+}
+
+/* 顯示切換用 */
+.pictchange_slider {
+    background-color: #8dd2fe;
+}
+    .pictchange_slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        border-radius: 13px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    .pictchange_slider:after {
+        content: "";
+        line-height: 35px;
+        text-align: right;
+        display: block;
+        font-size: 0.8em;
+        padding-right: 20px;
+    }
+
+input:checked + .pictchange_slider {
+    background-color: #39b54a;
+}
+input:focus + .pictchange_slider {
+    box-shadow: 0 0 1px #39b54a;
+}
+input:checked + .pictchange_slider:before {
+    -webkit-transform: translateX(56px);
+    -ms-transform: translateX(56px);
+    transform: translateX(56px);
+}
+input:checked + .pictchange_slider:after {
+    text-align: left;
+    padding-left: 20px;
+    content: "照片";
+}
+
+/*  checkbox滑動切換鈕==============================End */
+
+/* 圖層底圖套疊 */
+.layerBg {
+    cursor: pointer;
+    position: relative;
+    float: left;
+    width: 48%;
+    box-sizing: border-box;
+    margin: 1% 1%;
+    height: 120px;
+    margin-bottom: 40px;
+}
+    .layerBg.active {
+        background: #b5ecff;
+    }
+    .layerBg span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        border: 1px solid #707070;
+        display: block;
+        width: 106px;
+        height: 106px;
+        overflow: hidden;
+    }
+    .layerBg img {
+        height: 100%;
+        width: auto;
+    }
+    .layerBg .title {
+        text-align: center;
+        line-height: 20px;
+        padding: 124px 10px 0 10px;
+    }
+
+    .closeGroup{
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+/*圖層開關按鈕*/
+.maplayerSetting {
+    z-index: 2;
+    position: absolute;
+    bottom: 25px;
+    right: 10px;
+    width: auto;
+    height: 50px;
+}
+.menuSettingBox{
+	display: flex;
+	text-align: center;
+}
+.menuSettingBox > li{
+	display: block ;
+	padding: 2px 2px;
+}
+
+    .menuBoxBtn{
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .layerSettingBtn{
+        background: #089BAB40 url(../Images/icon_layer.png)no-repeat;
+        background-position: center center;
+        background-size: 40%;
+    }
+    .gpsSettingBtn {
+        background: #089bab40 url(../Images/icon_navigate.png)no-repeat;
+        background-position: center center;
+        background-size: 40%;
+    }
+
+    .layerSettingBtn.active,
+    .layerSettingBtn:hover{
+        background:#089BAB url(../Images/icon_layer.png)no-repeat;
+        background-position: center center;
+        background-size: 40%;
+    }
+    .gpsSettingBtn.active,
+    .gpsSettingBtn:hover{
+        background:#089BAB url(../Images/icon_navigate.png)no-repeat;
+        background-position: center center;
+        background-size: 40%;
+    }
+
+    .showContentBtn{
+        position: absolute;
+        left: -130px;
+        top: 100px;
+        width: 130px;
+        padding: 0 5px;
+        background: rgba(0,0,0,0.6) url(../Images/icon_show.png)no-repeat;
+        background-position: 97% center;
+        color: #fff;
+        transition: all 0.4s ease-in-out;
+    }
+    
+    @media (max-width: 767px){
+        .showContentBtn{
+            left: -130px;
+        }
+        .layerSettingBtn:hover{
+            background:rgba(0,47,73,0) url(../images/icon_layer.png)no-repeat;
+            background-position: center center;
+            background-size: 40%;
+        }
+    }
+    .showContentBtn:hover,
+    .showiframeBoxBtn:hover{
+        color: #fff;
+        background: rgb(180, 122, 122);
+    }
+    

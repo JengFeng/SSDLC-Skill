@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TWNPSendMailService.Model
+namespace TWNPPublicSendmail.Model
 {
     public class V_B_MESSAGE_MAIL
     {

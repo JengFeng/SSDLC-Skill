@@ -58,7 +58,7 @@
     });
 </script>
 <!-- Easymap -->
-<script type="text/javascript" src="https://easymap.gis.tw/easymap/latest/easymap.js?"></script>
+<script type="text/javascript" src="https://easymap.gis.tw/easymap/Easymap/easymap.js"></script>
 <script type="text/javascript">
     //兩個圖表全域
     var chartWaterUseMonitor;
@@ -76,8 +76,8 @@
                 $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
                 //目前指針度數
                 $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER) + '<span>度</span>');
-                //本月水費
-                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
+                //本期累積度數
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_METER) + '<span>度</span>');
                 //上期水費
                 $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_METER) + '<span>元</span>');
                 //本期預估
@@ -183,7 +183,10 @@
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
             },
             yAxis: {
-                name: '用水量(度)',
+                nameLocation : 'center',
+                nameGap: 45,
+                nameRotate : 360,
+                name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
                 type: 'value',
                 axisLine: {
                     show: true,
@@ -191,7 +194,7 @@
                         color: colors[0]
                     }
                 },
-                axisLabel: {formatter: '{value} 度'}
+                axisLabel: {formatter: '{value}'}
             },
             series: [
             {
@@ -325,10 +328,17 @@
                         }
                     },
                     xAxis: {
+                        nameGap: 25,
+                        nameLocation : 'center',
                         type: 'category',
-                        data: result.Data.X
+                        data: result.Data.X,
+                        name: result.Data.XrayUnit
                     },
                     yAxis: {
+                        nameLocation : 'center',
+                        nameGap: 25,
+                        nameRotate : 360,
+                        name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
                         triggerEvent:true,
                         type: 'value',
                         axisLine: {
@@ -337,7 +347,7 @@
                                 color: colors[1]
                             }
                         },
-                        axisLabel: {formatter: '{value} 度'}
+                        axisLabel: {formatter: '{value}'}
                     },
                     series: [{
                             name: '度數',
@@ -521,12 +531,12 @@
     $(function () {
         $(".menuList > a:nth-child(1)").addClass("active").siblings().removeClass("active");
 
-        $(".open-mapGroup").click(function () {
-            $(".mapGroup").addClass("active");
-        });
-        $(".close-mapGroup").click(function () {
-            $(".mapGroup").removeClass("active");
-        });
+		$(".open-mapArea").click(function() {
+			$(".mapArea").addClass("active");
+		});
+		$(".close-mapArea").click(function() {
+			$(".mapArea").removeClass("active");
+		});
         $(".open-configureGroup").click(function () {
             $(".configureGroup").addClass("active");
         });
@@ -535,17 +545,11 @@
         });
     });
 
-    
     $(function(){
 		var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
 		var total = unitTitleHeight;
-		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
-
-        
-
-
+		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));   
 	});
-
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -553,8 +557,8 @@
     <div class="mainArea">
         <div class="feeInfoGroup">
             <div class="stateGroup">
-                <div class="toggleMapGroup">
-                    <a class="btn-green-o open-mapGroup" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
+                <div class="toggleMapArea">
+                    <a class="btn-green-o open-mapArea" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
                     <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>
                 </div>
                 <div class="userName" id="divNAME"></div>
@@ -731,13 +735,17 @@
             </div>
         </div><!-- chartInfoGroup end -->
     </div>
-    <div class="mapGroup">
-        <div class="toggleMapGroup">
-            <a class="btn-green-o close-mapGroup" href="javascript:;" title="關閉圖台">
+    <div class="mapArea">
+        <div class="toggleMapArea">
+            <a class="btn-green-o close-mapArea" href="javascript:;" title="關閉圖台">
                 <i class="bi bi-x"></i>
             </a>
         </div>
-        <div id="map" class=""></div>
+        @*<div id="map" class="mapGroup"></div>*@
+        <!--圖層管理功能-->
+        <partial name="~/Views/Dashboard/_EzLayerPartial.cshtml" />
+        <!--底圖圖台地圖-->
+        <partial name="~/Views/Dashboard/_EzMapPartial.cshtml" />
     </div>
     <div class="configureGroup">
         <div class="toggleMapGroup">

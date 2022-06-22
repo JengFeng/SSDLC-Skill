@@ -67,14 +67,17 @@
                         data: ["用水量趨勢"]
                     },
                     xAxis: {
-                        axisLabel:{
-                            rotate:result.Data.Rotate
-                        },
-                        name: '時間',
+                        nameGap: 25,
+                        nameLocation : 'center',
+                        name: '時間(小時)',
                         type: 'category',
                         data: result.Data.X
                     },
                     yAxis: {
+                        nameLocation : 'center',
+                        nameGap: 25,
+                        nameRotate : 360,
+                        name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
                         type: 'value',
                         axisLine: {
                             show: true,
@@ -82,40 +85,41 @@
                                 color: colors[0]
                             }
                         },
-                        axisLabel: {formatter: '{value} 度'}
+                        axisLabel: {formatter: '{value}'}
                     },
                     series: [
                         {
                             name: '用水量趨勢',
                             type: 'line',
                             data:  result.Data.Y
-                        },
-                        {
-                          name: '移動上界',
-                          type: 'line',
-                          data: result.Data.Ymax,
-                          lineStyle: {
-                            opacity: 0
-                          },
-                          areaStyle: {
-                            color: '#ccc'
-                          },
-                          stack: 'confidence-band',
-                          symbol: 'none'
-                        },
-                        {
-                          name: '移動下界',
-                          type: 'line',
-                          data: result.Data.Ymin,
-                          lineStyle: {
-                            opacity: 0
-                          },
-                          areaStyle: {
-                            color: '#ccc'
-                          },
-                          stack: 'confidence-band',
-                          symbol: 'none'
-                        }]
+                        }
+                        //,{
+                        //  name: '移動上界',
+                        //  type: 'line',
+                        //  data: result.Data.Ymax,
+                        //  lineStyle: {
+                        //    opacity: 0
+                        //  },
+                        //  areaStyle: {
+                        //    color: '#ccc'
+                        //  },
+                        //  stack: 'confidence-band',
+                        //  symbol: 'none'
+                        //},
+                        //{
+                        //  name: '移動下界',
+                        //  type: 'line',
+                        //  data: result.Data.Ymin,
+                        //  lineStyle: {
+                        //    opacity: 0
+                        //  },
+                        //  areaStyle: {
+                        //    color: '#ccc'
+                        //  },
+                        //  stack: 'confidence-band',
+                        //  symbol: 'none'
+                        //}
+                        ]
                 };
                 option && myChart.setOption(option);
             }
@@ -165,9 +169,7 @@
                                         <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
                                     </div>
                                 </td>
-                                @*
-
-                                    <td class="text-red" id="textNote@(TimeSource)">
+                                @* <td class="text-red" id="textNote@(TimeSource)">
                                     <span>@item.NOTE</span>
                                     <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
                                     <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
@@ -179,8 +181,7 @@
                     }
                 </tbody>
             </table>
-
-            @*            <table class="footable green">
+            @* <table class="footable green">
                 <thead>
                 <tr>
                 <th>時間</th>
@@ -271,8 +272,9 @@
                         <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('last')"><i class="bi bi-chevron-left"></i></a>
                         <div class="name"
                              id="divWaterUserSearchChartTitle"
-                             data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                            @* @(RocTime)*@<input type="date" style="width:110px"/>當日用水量
+                             data-themeswitchchart="@Cdate.ToString("yyyy/MM/dd")">
+                            @* @(RocTime)*@
+                            <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" style="width:110px" onchange="btnJumpTime(this)" id="tbJumpTime" />當日用水量
                         </div>
                         <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('next')"><i class="bi bi-chevron-right"></i></a>
                     </div>
@@ -288,6 +290,11 @@
 
 </div><!-- wrap end -->
 <script>
+    function btnJumpTime(obj){
+        let Jempdata = $(obj).val();
+        window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard")?Cdate=" + Jempdata;
+    }
+
     function UpdateNote(obj){
         var getNoteArea = $('#textNote' + obj);
         getNoteArea.find('.info>span').hide();
