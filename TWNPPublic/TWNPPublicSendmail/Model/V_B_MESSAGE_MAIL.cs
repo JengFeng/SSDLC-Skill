@@ -14,5 +14,6 @@ namespace TWNPPublicSendmail.Model
         public string VALUE { get; set; }
         public decimal IS_SEND { get; set; }
         public DateTime INP_DATE { get; set; }
+        public string CODE_NAME { get; set; }
     }
 }

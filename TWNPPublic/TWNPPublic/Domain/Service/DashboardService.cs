@@ -238,6 +238,16 @@ namespace TWNPPublic.Domain.Service
 
             return (null, null);
         }
+
+        public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo)
+        {
+            string mainsql = @"SELECT Top(1) [STQTY] FROM [TWN].[dbo].[A_WATERFEE] where WATERNO = @WaterNo Order by BILLDATE ";
+            object obj = new
+            {
+                WaterNo
+            };
+            return dataAccess.Query<A_WATERFEE_BILLDATE>(mainsql, obj).FirstOrDefault();
+        }
     }
 
     public interface IDashboardService
@@ -256,5 +266,6 @@ namespace TWNPPublic.Domain.Service
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
         public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo);
         public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
+        public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo);
     }
 }

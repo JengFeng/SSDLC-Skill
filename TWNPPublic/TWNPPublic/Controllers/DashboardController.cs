@@ -572,19 +572,24 @@ namespace TWNPPublic.Controllers
             var reuslt = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
             var (increase, decrease) = dashboardService.GetIncreaseAndDecrease(aspNetUser.CurrentWaterNo);
 
-            if (increase != null)
+            //取上一期水費
+            var STQTY  = dashboardService.GetA_WATERFEE_BILLDATE(aspNetUser.CurrentWaterNo);
+
+            if(STQTY.STQTY != null)
             {
+                if (increase != null)
+                {
 
-            }
+                }
 
-            if (decrease != null)
-            {
+                if (decrease != null)
+                {
 
+                }
             }
 
             //要計算前兩個月的平均
-            //var increase = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
-            //var decrease = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
+
             var Xray = reuslt.Select(c => DateTime.Parse(c.X).ToString("HH:mm"));
             return Json(Success(new
             {
