@@ -163,20 +163,17 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
-        public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
+        public V_A_WATERFEE? GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
         {
             string mainsql = @"SELECT TOP (1) *
                              FROM [TWN].[dbo].[V_A_WATERFEE] 
-                             Where WATERNO = @WaterNo";
+                             Where WATERNO = @WaterNo And BILLDATE = @Time";
             object obj = new
             {
                 WaterNo,
                 Time
             };
-            var result = dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
-            if (result == null)
-                return new V_A_WATERFEE();
-            return result;
+            return dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
         }
 
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate)
@@ -214,7 +211,7 @@ namespace TWNPPublic.Domain.Service
             return (ansStartPeople, ansEnderPeople);
         }
 
-        public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo)
+        public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo)
         {
             string mainsql = @"Select * From B_ALART_SETTING Where WATER_NO = @WaterNo And B_ALART_CODE_SN = 50";
             object obj = new
@@ -222,16 +219,16 @@ namespace TWNPPublic.Domain.Service
                 WaterNo
             };
             var result = dataAccess.Query<B_ALART_SETTING>(mainsql, obj).FirstOrDefault();
-            int increase;
-            int decrease;
+            float increase;
+            float decrease;
             if (result != null)
             {
                 if (!string.IsNullOrEmpty(result.VALUE1))
                 {
                     //高明的設計...
                     var vs = result.VALUE1.Split(',');
-                    Int32.TryParse(vs[0], out increase);
-                    Int32.TryParse(vs[1], out decrease);
+                    float.TryParse(vs[0], out increase);
+                    float.TryParse(vs[1], out decrease);
                     return (increase, decrease);
                 }
             }
@@ -264,8 +261,8 @@ namespace TWNPPublic.Domain.Service
         public int UpdateNoteHour(int SN, int Hour, string Note);
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
-        public (int? Increase, int? Decrease) GetIncreaseAndDecrease(string WaterNo);
-        public V_A_WATERFEE GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
+        public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo);
+        public V_A_WATERFEE? GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
         public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo);
     }
 }

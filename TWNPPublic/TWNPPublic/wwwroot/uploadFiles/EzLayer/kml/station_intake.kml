@@ -1,0 +1,2396 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="station_intake" id="station_intake">
+	<SimpleField name="fid" type="string"></SimpleField>
+	<SimpleField name="gid" type="int"></SimpleField>
+	<SimpleField name="angle" type="float"></SimpleField>
+	<SimpleField name="finish_id" type="string"></SimpleField>
+	<SimpleField name="unific_id" type="string"></SimpleField>
+	<SimpleField name="it_no" type="string"></SimpleField>
+	<SimpleField name="it_name" type="string"></SimpleField>
+	<SimpleField name="admin_unit" type="string"></SimpleField>
+	<SimpleField name="wltype" type="string"></SimpleField>
+	<SimpleField name="method" type="string"></SimpleField>
+	<SimpleField name="q_de" type="int"></SimpleField>
+	<SimpleField name="q_re" type="int"></SimpleField>
+	<SimpleField name="high" type="float"></SimpleField>
+	<SimpleField name="waright" type="float"></SimpleField>
+	<SimpleField name="dlevel" type="float"></SimpleField>
+	<SimpleField name="slevel" type="float"></SimpleField>
+	<SimpleField name="assets_code" type="string"></SimpleField>
+	<SimpleField name="proj_code" type="string"></SimpleField>
+	<SimpleField name="proj_name" type="string"></SimpleField>
+	<SimpleField name="ud_date" type="string"></SimpleField>
+	<SimpleField name="monitor_mode" type="string"></SimpleField>
+	<SimpleField name="coord_97x" type="float"></SimpleField>
+	<SimpleField name="coord_97y" type="float"></SimpleField>
+	<SimpleField name="coord_97z" type="float"></SimpleField>
+</Schema>
+<Folder><name>station_intake</name>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.0</SimpleData>
+		<SimpleData name="gid">23</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">861</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">313533.138</SimpleData>
+		<SimpleData name="coord_97y">2608313.430</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.622429768044,23.5769731394098</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.1</SimpleData>
+		<SimpleData name="gid">1</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002983161179760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302430.730</SimpleData>
+		<SimpleData name="coord_97y">2611082.894</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.51376136735,23.6023781116815</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.2</SimpleData>
+		<SimpleData name="gid">2</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002975561029760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">301688.126</SimpleData>
+		<SimpleData name="coord_97y">2609528.376</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.506431023088,23.5883651895785</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.3</SimpleData>
+		<SimpleData name="gid">3</SimpleData>
+		<SimpleData name="angle">-0.02</SimpleData>
+		<SimpleData name="unific_id">0749002997758609760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">304249.465</SimpleData>
+		<SimpleData name="coord_97y">2585340.694</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.530651277489,23.3698715058336</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.4</SimpleData>
+		<SimpleData name="gid">4</SimpleData>
+		<SimpleData name="angle">6.75</SimpleData>
+		<SimpleData name="unific_id">0749002104860269760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309076.053</SimpleData>
+		<SimpleData name="coord_97y">2602080.872</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.57851949392,23.5208641141123</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.5</SimpleData>
+		<SimpleData name="gid">5</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105160959760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309257.639</SimpleData>
+		<SimpleData name="coord_97y">2608995.299</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.580571814604,23.5832922562931</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.6</SimpleData>
+		<SimpleData name="gid">6</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104160839760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308282.489</SimpleData>
+		<SimpleData name="coord_97y">2607787.622</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.570971065552,23.5724227939545</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.7</SimpleData>
+		<SimpleData name="gid">7</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103460809760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307581.155</SimpleData>
+		<SimpleData name="coord_97y">2607454.342</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.564087778406,23.5694384871714</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.8</SimpleData>
+		<SimpleData name="gid">8</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105761929760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309803.315</SimpleData>
+		<SimpleData name="coord_97y">2618692.177</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586307438033,23.6708305377337</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.9</SimpleData>
+		<SimpleData name="gid">9</SimpleData>
+		<SimpleData name="angle">-44.42</SimpleData>
+		<SimpleData name="unific_id">0749002105660759760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309814.378</SimpleData>
+		<SimpleData name="coord_97y">2606952.019</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585944321963,23.5648217762747</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.10</SimpleData>
+		<SimpleData name="gid">10</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0712004096660819760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">澎湖203號線（內垵－外垵）汰換管線工程</SimpleData>
+		<SimpleData name="coord_97x">300832.870</SimpleData>
+		<SimpleData name="coord_97y">2607438.442</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.497980433745,23.5695207440887</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.11</SimpleData>
+		<SimpleData name="gid">11</SimpleData>
+		<SimpleData name="angle">62.36</SimpleData>
+		<SimpleData name="unific_id">0749002106160749760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310294.886</SimpleData>
+		<SimpleData name="coord_97y">2606873.230</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59064801908,23.564092531578</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.12</SimpleData>
+		<SimpleData name="gid">12</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002899656849760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">294685.987</SimpleData>
+		<SimpleData name="coord_97y">2567608.840</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.43658410731,23.2100396716004</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.13</SimpleData>
+		<SimpleData name="gid">13</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0762002889067509760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">293634.940</SimpleData>
+		<SimpleData name="coord_97y">2566692.696</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.426289314221,23.2017948272564</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.14</SimpleData>
+		<SimpleData name="gid">14</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106060269760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310298.027</SimpleData>
+		<SimpleData name="coord_97y">2602041.756</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590483965573,23.5204659899914</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.15</SimpleData>
+		<SimpleData name="gid">15</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002112560939760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">316683.369</SimpleData>
+		<SimpleData name="coord_97y">2608863.039</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.653315410454,23.5818091539078</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.16</SimpleData>
+		<SimpleData name="gid">16</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002111560929760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315711.023</SimpleData>
+		<SimpleData name="coord_97y">2608783.809</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.643786048946,23.5811335123467</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.17</SimpleData>
+		<SimpleData name="gid">17</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110860809760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">314985.767</SimpleData>
+		<SimpleData name="coord_97y">2607497.876</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.636624899707,23.5695514367517</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.18</SimpleData>
+		<SimpleData name="gid">18</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105961929760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309965.190</SimpleData>
+		<SimpleData name="coord_97y">2618688.541</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587894237142,23.6707916978418</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.19</SimpleData>
+		<SimpleData name="gid">19</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0762000091055603197600</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">恆春龍鑾路送水管抽換工程</SimpleData>
+		<SimpleData name="coord_97x">309827.847</SimpleData>
+		<SimpleData name="coord_97y">2602517.163</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585898791451,23.5247761434054</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.20</SimpleData>
+		<SimpleData name="gid">20</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110960679760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315126.194</SimpleData>
+		<SimpleData name="coord_97y">2606184.348</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.637943235394,23.5576852596983</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.21</SimpleData>
+		<SimpleData name="gid">21</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110960689760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315086.624</SimpleData>
+		<SimpleData name="coord_97y">2606291.284</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.637560307307,23.5586524350415</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.22</SimpleData>
+		<SimpleData name="gid">22</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108861099760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312977.023</SimpleData>
+		<SimpleData name="coord_97y">2610376.324</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.617068887687,23.595621840021</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.23</SimpleData>
+		<SimpleData name="gid">24</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108461079760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312599.130</SimpleData>
+		<SimpleData name="coord_97y">2610177.067</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.613357976242,23.5938373126301</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.24</SimpleData>
+		<SimpleData name="gid">25</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108260989760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312358.041</SimpleData>
+		<SimpleData name="coord_97y">2609289.811</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.610958747192,23.5858351064411</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.25</SimpleData>
+		<SimpleData name="gid">26</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107260859760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311429.884</SimpleData>
+		<SimpleData name="coord_97y">2608031.661</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.601813643465,23.5745100473293</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.26</SimpleData>
+		<SimpleData name="gid">27</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107460879760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311601.203</SimpleData>
+		<SimpleData name="coord_97y">2608213.633</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.603499449119,23.5761466691947</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.27</SimpleData>
+		<SimpleData name="gid">28</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107260689760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311458.435</SimpleData>
+		<SimpleData name="coord_97y">2606255.457</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.602020235582,23.5584705788313</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.28</SimpleData>
+		<SimpleData name="gid">30</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105660739760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309873.808</SimpleData>
+		<SimpleData name="coord_97y">2606809.661</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586520770212,23.5635341422535</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.29</SimpleData>
+		<SimpleData name="gid">31</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106360699760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310517.717</SimpleData>
+		<SimpleData name="coord_97y">2606322.426</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.592808469431,23.5591106851317</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.30</SimpleData>
+		<SimpleData name="gid">32</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105560709760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309780.867</SimpleData>
+		<SimpleData name="coord_97y">2606478.408</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585597102993,23.5605464909318</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.31</SimpleData>
+		<SimpleData name="gid">33</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106060339760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310234.990</SimpleData>
+		<SimpleData name="coord_97y">2602793.025</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589896915239,23.5272520254067</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.32</SimpleData>
+		<SimpleData name="gid">34</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104860989760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309040.096</SimpleData>
+		<SimpleData name="coord_97y">2609203.430</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.578448776621,23.58517955243</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.33</SimpleData>
+		<SimpleData name="gid">35</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104860799760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308972.413</SimpleData>
+		<SimpleData name="coord_97y">2607356.941</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.577712712725,23.5685089410495</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.34</SimpleData>
+		<SimpleData name="gid">36</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106161929760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310125.025</SimpleData>
+		<SimpleData name="coord_97y">2618694.107</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589461414571,23.6708359980178</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.35</SimpleData>
+		<SimpleData name="gid">37</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105360819760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309534.722</SimpleData>
+		<SimpleData name="coord_97y">2607511.200</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.583227200177,23.5698812690396</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.36</SimpleData>
+		<SimpleData name="gid">38</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105160689760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309315.091</SimpleData>
+		<SimpleData name="coord_97y">2606257.323</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.581025890209,23.5585672871703</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.37</SimpleData>
+		<SimpleData name="gid">39</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104160909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308304.294</SimpleData>
+		<SimpleData name="coord_97y">2608413.932</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.571209136044,23.5780773560031</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.38</SimpleData>
+		<SimpleData name="gid">40</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104660829760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308823.698</SimpleData>
+		<SimpleData name="coord_97y">2607630.172</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.576266677902,23.5709815224688</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.39</SimpleData>
+		<SimpleData name="gid">41</SimpleData>
+		<SimpleData name="angle">135.06</SimpleData>
+		<SimpleData name="unific_id">0749002103860789760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308040.578</SimpleData>
+		<SimpleData name="coord_97y">2607212.805</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.568578904211,23.5672410976752</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.40</SimpleData>
+		<SimpleData name="gid">42</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103960979760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308104.838</SimpleData>
+		<SimpleData name="coord_97y">2609131.848</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.569283090252,23.5845670352106</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.41</SimpleData>
+		<SimpleData name="gid">43</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103660929760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307761.166</SimpleData>
+		<SimpleData name="coord_97y">2608661.787</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.565897892662,23.5803348606547</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.42</SimpleData>
+		<SimpleData name="gid">44</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103860869760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308038.942</SimpleData>
+		<SimpleData name="coord_97y">2608013.392</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.568593997234,23.5744701664106</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.43</SimpleData>
+		<SimpleData name="gid">45</SimpleData>
+		<SimpleData name="angle">24.66</SimpleData>
+		<SimpleData name="unific_id">0749002103361829760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307372.130</SimpleData>
+		<SimpleData name="coord_97y">2617583.580</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.562430363384,23.6609087839561</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.44</SimpleData>
+		<SimpleData name="gid">46</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103760839760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307901.863</SimpleData>
+		<SimpleData name="coord_97y">2607706.320</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56723921226,23.5717023246833</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.45</SimpleData>
+		<SimpleData name="gid">47</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103560739760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307726.795</SimpleData>
+		<SimpleData name="coord_97y">2606708.042</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.565485621253,23.5626944836775</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.46</SimpleData>
+		<SimpleData name="gid">48</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103160779760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307319.135</SimpleData>
+		<SimpleData name="coord_97y">2607163.021</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.561509834245,23.566817257819</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.47</SimpleData>
+		<SimpleData name="gid">49</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105160949760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309266.781</SimpleData>
+		<SimpleData name="coord_97y">2608869.568</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.58065638301,23.5821566263133</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.48</SimpleData>
+		<SimpleData name="gid">50</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105761929760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309729.856</SimpleData>
+		<SimpleData name="coord_97y">2618724.961</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585588598319,23.6711292922601</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.49</SimpleData>
+		<SimpleData name="gid">51</SimpleData>
+		<SimpleData name="angle">1.70</SimpleData>
+		<SimpleData name="unific_id">0749002985261739760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302558.731</SimpleData>
+		<SimpleData name="coord_97y">2616702.253</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.515214030097,23.6531147889135</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.50</SimpleData>
+		<SimpleData name="gid">52</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002975061489760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">西嶼深井管線連接工程</SimpleData>
+		<SimpleData name="coord_97x">301580.683</SimpleData>
+		<SimpleData name="coord_97y">2614159.960</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.505538705911,23.6301903575894</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.51</SimpleData>
+		<SimpleData name="gid">53</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106261899760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310226.994</SimpleData>
+		<SimpleData name="coord_97y">2618353.587</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590447255087,23.6677574792728</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.52</SimpleData>
+		<SimpleData name="gid">54</SimpleData>
+		<SimpleData name="angle">5.32</SimpleData>
+		<SimpleData name="unific_id">0749002107161699760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311202.158</SimpleData>
+		<SimpleData name="coord_97y">2616402.520</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.599926697315,23.6501036305919</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.53</SimpleData>
+		<SimpleData name="gid">55</SimpleData>
+		<SimpleData name="angle">-3.52</SimpleData>
+		<SimpleData name="unific_id">0749002105060919760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309181.051</SimpleData>
+		<SimpleData name="coord_97y">2608578.570</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.57980494995,23.5795321670573</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.54</SimpleData>
+		<SimpleData name="gid">56</SimpleData>
+		<SimpleData name="angle">171.89</SimpleData>
+		<SimpleData name="unific_id">0749002983761439760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302454.679</SimpleData>
+		<SimpleData name="coord_97y">2613666.459</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.514087017228,23.6257060691388</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.55</SimpleData>
+		<SimpleData name="gid">57</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002978661419760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">301951.250</SimpleData>
+		<SimpleData name="coord_97y">2613461.124</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.509146101346,23.6238682306626</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.56</SimpleData>
+		<SimpleData name="gid">58</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002979261359760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302016.632</SimpleData>
+		<SimpleData name="coord_97y">2612880.772</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.509766581684,23.6186257432134</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.57</SimpleData>
+		<SimpleData name="gid">59</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002109460829760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">313596.796</SimpleData>
+		<SimpleData name="coord_97y">2607688.900</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.623026793021,23.5713314252916</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.58</SimpleData>
+		<SimpleData name="gid">60</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002982161299760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302318.758</SimpleData>
+		<SimpleData name="coord_97y">2612264.999</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.512705707158,23.6130557635866</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.59</SimpleData>
+		<SimpleData name="gid">62</SimpleData>
+		<SimpleData name="angle">-22.89</SimpleData>
+		<SimpleData name="unific_id">0749002976861209760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">301798.992</SimpleData>
+		<SimpleData name="coord_97y">2611371.715</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.507581278979,23.6050064322641</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.60</SimpleData>
+		<SimpleData name="gid">63</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002985361149760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302661.777</SimpleData>
+		<SimpleData name="coord_97y">2610724.394</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.516012625622,23.5991334677335</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.61</SimpleData>
+		<SimpleData name="gid">64</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002980761159760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302189.441</SimpleData>
+		<SimpleData name="coord_97y">2610879.199</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.511389950137,23.6005466229129</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.62</SimpleData>
+		<SimpleData name="gid">65</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002965658669760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">301028.899</SimpleData>
+		<SimpleData name="coord_97y">2585980.465</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.499171295647,23.3757522908385</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.63</SimpleData>
+		<SimpleData name="gid">66</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104860669760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308995.195</SimpleData>
+		<SimpleData name="coord_97y">2606056.094</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.577884499532,23.5567619412183</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.64</SimpleData>
+		<SimpleData name="gid">67</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002979661509760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302039.108</SimpleData>
+		<SimpleData name="coord_97y">2614314.808</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.510036970228,23.6315738697243</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.65</SimpleData>
+		<SimpleData name="gid">68</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002890656779760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">293793.840</SimpleData>
+		<SimpleData name="coord_97y">2566950.885</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.427849060557,23.2041221303588</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.66</SimpleData>
+		<SimpleData name="gid">69</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002892756759760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">293997.562</SimpleData>
+		<SimpleData name="coord_97y">2566737.289</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.429833138029,23.2021878785784</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.67</SimpleData>
+		<SimpleData name="gid">70</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002892356879760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">293954.801</SimpleData>
+		<SimpleData name="coord_97y">2567933.672</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.42944991712,23.2129926459047</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.68</SimpleData>
+		<SimpleData name="gid">71</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002899456849760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">294667.077</SimpleData>
+		<SimpleData name="coord_97y">2567629.135</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.436399952225,23.210223455014</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.69</SimpleData>
+		<SimpleData name="gid">72</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107661329760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311733.045</SimpleData>
+		<SimpleData name="coord_97y">2612662.519</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.604975248983,23.616313064247</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.70</SimpleData>
+		<SimpleData name="gid">73</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002309361839760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">湖西系統深井導水管工程</SimpleData>
+		<SimpleData name="coord_97x">309370.894</SimpleData>
+		<SimpleData name="coord_97y">2618319.855</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582053295356,23.6674846454752</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.71</SimpleData>
+		<SimpleData name="gid">74</SimpleData>
+		<SimpleData name="angle">0.47</SimpleData>
+		<SimpleData name="unific_id">0749002105861919760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309815.304</SimpleData>
+		<SimpleData name="coord_97y">2618526.960</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586418321563,23.6693382697683</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.72</SimpleData>
+		<SimpleData name="gid">75</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002314760749760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">314769.285</SimpleData>
+		<SimpleData name="coord_97y">2607455.748</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.634502439051,23.5691797111554</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.73</SimpleData>
+		<SimpleData name="gid">76</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002982861169760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302399.203</SimpleData>
+		<SimpleData name="coord_97y">2610920.010</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.51344671805,23.6009083472499</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.74</SimpleData>
+		<SimpleData name="gid">77</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105961909760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309961.007</SimpleData>
+		<SimpleData name="coord_97y">2618464.303</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587844180273,23.668767094438</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.75</SimpleData>
+		<SimpleData name="gid">78</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002987561279760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302859.207</SimpleData>
+		<SimpleData name="coord_97y">2612037.893</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.51799369384,23.6109874942116</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.76</SimpleData>
+		<SimpleData name="gid">79</SimpleData>
+		<SimpleData name="angle">-2.23</SimpleData>
+		<SimpleData name="unific_id">0749002108061729760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312093.499</SimpleData>
+		<SimpleData name="coord_97y">2616641.770</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.608673571597,23.6522298824602</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.77</SimpleData>
+		<SimpleData name="gid">80</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106261889760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310225.082</SimpleData>
+		<SimpleData name="coord_97y">2618257.767</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590424627738,23.6668923372696</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.78</SimpleData>
+		<SimpleData name="gid">81</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002115060969760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">319178.481</SimpleData>
+		<SimpleData name="coord_97y">2609181.196</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.67777415905,23.5845772334106</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.79</SimpleData>
+		<SimpleData name="gid">82</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106860699760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310993.272</SimpleData>
+		<SimpleData name="coord_97y">2606353.558</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597467901495,23.5593739651949</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.80</SimpleData>
+		<SimpleData name="gid">83</SimpleData>
+		<SimpleData name="angle">-0.30</SimpleData>
+		<SimpleData name="unific_id">0749002105361899760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309368.594</SimpleData>
+		<SimpleData name="coord_97y">2618316.738</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582030630589,23.6674565810031</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.81</SimpleData>
+		<SimpleData name="gid">84</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105961909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309920.916</SimpleData>
+		<SimpleData name="coord_97y">2618500.987</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.5874526334,23.6690998246958</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.82</SimpleData>
+		<SimpleData name="gid">85</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105861909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309910.879</SimpleData>
+		<SimpleData name="coord_97y">2618460.134</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587352583256,23.6687313150986</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.83</SimpleData>
+		<SimpleData name="gid">86</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105861919760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309854.491</SimpleData>
+		<SimpleData name="coord_97y">2618518.722</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586802151329,23.6692624360885</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.84</SimpleData>
+		<SimpleData name="gid">87</SimpleData>
+		<SimpleData name="angle">-27.36</SimpleData>
+		<SimpleData name="unific_id">0749002106161909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310156.986</SimpleData>
+		<SimpleData name="coord_97y">2618416.053</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589763472952,23.6683241238253</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.85</SimpleData>
+		<SimpleData name="gid">88</SimpleData>
+		<SimpleData name="angle">-11.12</SimpleData>
+		<SimpleData name="unific_id">0749002106161899760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310108.022</SimpleData>
+		<SimpleData name="coord_97y">2618384.055</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589282169199,23.6680370282717</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.86</SimpleData>
+		<SimpleData name="gid">89</SimpleData>
+		<SimpleData name="angle">178.78</SimpleData>
+		<SimpleData name="unific_id">0749002105961889760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310007.609</SimpleData>
+		<SimpleData name="coord_97y">2618255.342</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588292593294,23.6668785576995</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.87</SimpleData>
+		<SimpleData name="gid">90</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002314360519760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">314362.617</SimpleData>
+		<SimpleData name="coord_97y">2605125.142</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.63041835983,23.5481516126225</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.88</SimpleData>
+		<SimpleData name="gid">91</SimpleData>
+		<SimpleData name="angle">-6.88</SimpleData>
+		<SimpleData name="unific_id">0749002105961909760003</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309985.504</SimpleData>
+		<SimpleData name="coord_97y">2618532.922</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588087098611,23.6693857854019</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.89</SimpleData>
+		<SimpleData name="gid">92</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104360959760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308501.543</SimpleData>
+		<SimpleData name="coord_97y">2608899.585</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.573160561453,23.5824554996954</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.90</SimpleData>
+		<SimpleData name="gid">93</SimpleData>
+		<SimpleData name="angle">-2.31</SimpleData>
+		<SimpleData name="unific_id">0749002106761879760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310755.516</SimpleData>
+		<SimpleData name="coord_97y">2618194.682</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.595622012642,23.6663028209775</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.91</SimpleData>
+		<SimpleData name="gid">94</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002990258529760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">303523.436</SimpleData>
+		<SimpleData name="coord_97y">2584616.664</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.523524053422,23.3633574915869</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.92</SimpleData>
+		<SimpleData name="gid">95</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002997958589760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">304282.904</SimpleData>
+		<SimpleData name="coord_97y">2585214.451</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.530973818285,23.3687304362086</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.93</SimpleData>
+		<SimpleData name="gid">96</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002998158589760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">304290.037</SimpleData>
+		<SimpleData name="coord_97y">2585161.634</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.531041687265,23.36825326649</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.94</SimpleData>
+		<SimpleData name="gid">97</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002989858539760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">303470.683</SimpleData>
+		<SimpleData name="coord_97y">2584655.698</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.523009464923,23.3637116917448</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.95</SimpleData>
+		<SimpleData name="gid">98</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107460389760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311698.218</SimpleData>
+		<SimpleData name="coord_97y">2603244.749</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.604244697548,23.5312759591338</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.96</SimpleData>
+		<SimpleData name="gid">100</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108060619760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312222.859</SimpleData>
+		<SimpleData name="coord_97y">2605599.548</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.60948056406,23.5525188260188</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.97</SimpleData>
+		<SimpleData name="gid">101</SimpleData>
+		<SimpleData name="angle">-22.45</SimpleData>
+		<SimpleData name="unific_id">0749002108160639760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312347.147</SimpleData>
+		<SimpleData name="coord_97y">2605781.116</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.610705498694,23.554153529607</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.98</SimpleData>
+		<SimpleData name="gid">102</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002981161069760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302251.722</SimpleData>
+		<SimpleData name="coord_97y">2610014.062</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.511969878986,23.5927326888598</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.99</SimpleData>
+		<SimpleData name="gid">103</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002888256929760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">293631.557</SimpleData>
+		<SimpleData name="coord_97y">2568375.043</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.426304454015,23.2169869297512</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.100</SimpleData>
+		<SimpleData name="gid">104</SimpleData>
+		<SimpleData name="angle">0.81</SimpleData>
+		<SimpleData name="unific_id">0749002108962749760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312837.032</SimpleData>
+		<SimpleData name="coord_97y">2626887.061</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.616395999631,23.7447099990695</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.101</SimpleData>
+		<SimpleData name="gid">105</SimpleData>
+		<SimpleData name="angle">0.81</SimpleData>
+		<SimpleData name="unific_id">0749002108862799760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312753.750</SimpleData>
+		<SimpleData name="coord_97y">2627463.344</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.615603548746,23.7499167171222</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.102</SimpleData>
+		<SimpleData name="gid">106</SimpleData>
+		<SimpleData name="angle">0.81</SimpleData>
+		<SimpleData name="unific_id">0749002108762779760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312637.357</SimpleData>
+		<SimpleData name="coord_97y">2627233.204</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.614452051136,23.7478432451181</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.103</SimpleData>
+		<SimpleData name="gid">107</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107061969760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311024.010</SimpleData>
+		<SimpleData name="coord_97y">2619026.378</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.598288280812,23.6738024490685</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.104</SimpleData>
+		<SimpleData name="gid">108</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106461909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310406.150</SimpleData>
+		<SimpleData name="coord_97y">2618489.158</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.592209085216,23.6689749111829</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.105</SimpleData>
+		<SimpleData name="gid">109</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106760419760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310969.166</SimpleData>
+		<SimpleData name="coord_97y">2603619.534</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597120264905,23.5346876914662</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.106</SimpleData>
+		<SimpleData name="gid">110</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002310260729760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310273.324</SimpleData>
+		<SimpleData name="coord_97y">2607223.369</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590450943091,23.5672549523983</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.107</SimpleData>
+		<SimpleData name="gid">111</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106060369760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310270.904</SimpleData>
+		<SimpleData name="coord_97y">2603033.967</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590258319969,23.5294263159056</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.108</SimpleData>
+		<SimpleData name="gid">112</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0762002106260659760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">馬公23與56號井管線連接工程</SimpleData>
+		<SimpleData name="coord_97x">310391.504</SimpleData>
+		<SimpleData name="coord_97y">2605934.494</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.591556506943,23.5556125203445</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.109</SimpleData>
+		<SimpleData name="gid">113</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106260629760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310467.081</SimpleData>
+		<SimpleData name="coord_97y">2605713.800</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59228784741,23.5536169156607</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.110</SimpleData>
+		<SimpleData name="gid">114</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002111860839760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315982.059</SimpleData>
+		<SimpleData name="coord_97y">2607869.544</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.646400898619,23.5728671330518</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.111</SimpleData>
+		<SimpleData name="gid">115</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002963458539760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">300821.295</SimpleData>
+		<SimpleData name="coord_97y">2584608.905</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.497094368172,23.3633736044</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.112</SimpleData>
+		<SimpleData name="gid">116</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002970258669760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">301487.257</SimpleData>
+		<SimpleData name="coord_97y">2585917.375</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.503652727158,23.3751682134589</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.113</SimpleData>
+		<SimpleData name="gid">117</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106061869760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310067.752</SimpleData>
+		<SimpleData name="coord_97y">2618083.909</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588875255636,23.6653283653042</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.114</SimpleData>
+		<SimpleData name="gid">119</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106460649760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310664.952</SimpleData>
+		<SimpleData name="coord_97y">2605868.130</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.594232217955,23.555003062624</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.115</SimpleData>
+		<SimpleData name="gid">120</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105061909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309134.646</SimpleData>
+		<SimpleData name="coord_97y">2618531.473</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.579745723504,23.6694041280984</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.116</SimpleData>
+		<SimpleData name="gid">121</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002979361289760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302053.968</SimpleData>
+		<SimpleData name="coord_97y">2612136.768</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.5101064532,23.6119064314736</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.117</SimpleData>
+		<SimpleData name="gid">122</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002983261359760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302409.420</SimpleData>
+		<SimpleData name="coord_97y">2612876.258</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.513615650315,23.6185722862449</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.118</SimpleData>
+		<SimpleData name="gid">123</SimpleData>
+		<SimpleData name="angle">31.30</SimpleData>
+		<SimpleData name="unific_id">0749002984961329760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">302613.874</SimpleData>
+		<SimpleData name="coord_97y">2612561.017</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.515608105979,23.615719128913</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.119</SimpleData>
+		<SimpleData name="gid">124</SimpleData>
+		<SimpleData name="angle">-5.05</SimpleData>
+		<SimpleData name="unific_id">0749002106861789760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310924.499</SimpleData>
+		<SimpleData name="coord_97y">2617303.160</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597242017568,23.6582464599931</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.120</SimpleData>
+		<SimpleData name="gid">125</SimpleData>
+		<SimpleData name="angle">3.18</SimpleData>
+		<SimpleData name="unific_id">0749002884156899760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">293143.580</SimpleData>
+		<SimpleData name="coord_97y">2568090.954</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.421528701647,23.214434384888</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.121</SimpleData>
+		<SimpleData name="gid">126</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002311260229760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311258.579</SimpleData>
+		<SimpleData name="coord_97y">2602275.416</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.599899583439,23.5225398931011</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.122</SimpleData>
+		<SimpleData name="gid">127</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002893556799760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">294076.192</SimpleData>
+		<SimpleData name="coord_97y">2567137.784</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.43061288411,23.205802348802</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.123</SimpleData>
+		<SimpleData name="gid">128</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106761429760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310859.496</SimpleData>
+		<SimpleData name="coord_97y">2613715.624</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59645799846,23.6258552360164</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.124</SimpleData>
+		<SimpleData name="gid">129</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105260769760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309389.605</SimpleData>
+		<SimpleData name="coord_97y">2607057.680</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.581787588886,23.5657914834545</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.125</SimpleData>
+		<SimpleData name="gid">130</SimpleData>
+		<SimpleData name="angle">30.41</SimpleData>
+		<SimpleData name="unific_id">0749002107761789760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311745.859</SimpleData>
+		<SimpleData name="coord_97y">2617306.629</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.605293590116,23.6582465469641</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.126</SimpleData>
+		<SimpleData name="gid">131</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002104460819760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">308608.822</SimpleData>
+		<SimpleData name="coord_97y">2607568.452</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.574159301136,23.5704320013457</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.127</SimpleData>
+		<SimpleData name="gid">132</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002315860949760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315850.789</SimpleData>
+		<SimpleData name="coord_97y">2609450.355</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.645184720938,23.5871464002995</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.128</SimpleData>
+		<SimpleData name="gid">133</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002315860949760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315927.624</SimpleData>
+		<SimpleData name="coord_97y">2609495.583</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.64593948881,23.5875516609989</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.129</SimpleData>
+		<SimpleData name="gid">134</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105760659760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">馬公23與56號井管線連接工程</SimpleData>
+		<SimpleData name="coord_97x">309973.273</SimpleData>
+		<SimpleData name="coord_97y">2605958.119</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587460893613,23.5558413749698</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.130</SimpleData>
+		<SimpleData name="gid">135</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002114261089760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">318422.121</SimpleData>
+		<SimpleData name="coord_97y">2610352.157</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.670417859822,23.5951825055727</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.131</SimpleData>
+		<SimpleData name="gid">136</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002114161029760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">318255.997</SimpleData>
+		<SimpleData name="coord_97y">2609794.843</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.668764707636,23.5901572870857</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.132</SimpleData>
+		<SimpleData name="gid">137</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002318260999760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">318279.751</SimpleData>
+		<SimpleData name="coord_97y">2609901.219</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.669002306078,23.5911168041427</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.133</SimpleData>
+		<SimpleData name="gid">138</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002316661069760760</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">316686.151</SimpleData>
+		<SimpleData name="coord_97y">2610631.122</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.653421717953,23.5977738929909</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.134</SimpleData>
+		<SimpleData name="gid">139</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002316360979760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">316313.647</SimpleData>
+		<SimpleData name="coord_97y">2609762.895</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.649733319316,23.5899495799616</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.135</SimpleData>
+		<SimpleData name="gid">142</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110060899760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">314168.635</SimpleData>
+		<SimpleData name="coord_97y">2608440.402</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.628660862861,23.5780945828726</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.136</SimpleData>
+		<SimpleData name="gid">143</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110360969760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">314537.767</SimpleData>
+		<SimpleData name="coord_97y">2609137.295</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.632307221233,23.5843725184209</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.137</SimpleData>
+		<SimpleData name="gid">144</SimpleData>
+		<SimpleData name="angle">0.81</SimpleData>
+		<SimpleData name="unific_id">0749002107862719760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311679.182</SimpleData>
+		<SimpleData name="coord_97y">2626557.388</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.605024886996,23.7417781323441</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.138</SimpleData>
+		<SimpleData name="gid">145</SimpleData>
+		<SimpleData name="angle">0.81</SimpleData>
+		<SimpleData name="unific_id">0749002108262719760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312179.387</SimpleData>
+		<SimpleData name="coord_97y">2626577.994</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609932166848,23.7419449059797</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.139</SimpleData>
+		<SimpleData name="gid">146</SimpleData>
+		<SimpleData name="angle">65.98</SimpleData>
+		<SimpleData name="unific_id">0749002108662739760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312552.037</SimpleData>
+		<SimpleData name="coord_97y">2626769.953</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.613595532654,23.7436637054188</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.140</SimpleData>
+		<SimpleData name="gid">147</SimpleData>
+		<SimpleData name="angle">-49.09</SimpleData>
+		<SimpleData name="unific_id">0749002108562769760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312470.565</SimpleData>
+		<SimpleData name="coord_97y">2627060.609</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.612808660563,23.7462913200382</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.141</SimpleData>
+		<SimpleData name="gid">148</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002309260229760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309275.601</SimpleData>
+		<SimpleData name="coord_97y">2602232.988</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.580479566343,23.5222303996482</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.142</SimpleData>
+		<SimpleData name="gid">149</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108361029760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312468.162</SimpleData>
+		<SimpleData name="coord_97y">2609728.370</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.612055990135,23.5897908445464</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.143</SimpleData>
+		<SimpleData name="gid">152</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002315460889760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315402.851</SimpleData>
+		<SimpleData name="coord_97y">2608884.243</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.64077136447,23.5820528588048</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.144</SimpleData>
+		<SimpleData name="gid">153</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002114760789760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">318895.387</SimpleData>
+		<SimpleData name="coord_97y">2607465.558</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.67492150368,23.5690980537064</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.145</SimpleData>
+		<SimpleData name="gid">154</SimpleData>
+		<SimpleData name="angle">27.69</SimpleData>
+		<SimpleData name="unific_id">0749002108061269760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312175.088</SimpleData>
+		<SimpleData name="coord_97y">2612139.435</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609285180972,23.6115729213805</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.146</SimpleData>
+		<SimpleData name="gid">155</SimpleData>
+		<SimpleData name="angle">55.31</SimpleData>
+		<SimpleData name="unific_id">0749002106161689760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310192.680</SimpleData>
+		<SimpleData name="coord_97y">2616245.488</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590025463123,23.6487236824415</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.147</SimpleData>
+		<SimpleData name="gid">156</SimpleData>
+		<SimpleData name="angle">-21.51</SimpleData>
+		<SimpleData name="unific_id">0749002106561659760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310604.385</SimpleData>
+		<SimpleData name="coord_97y">2615925.866</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.594047912018,23.6458222420122</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.148</SimpleData>
+		<SimpleData name="gid">157</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105861699760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309895.942</SimpleData>
+		<SimpleData name="coord_97y">2616404.053</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587123262373,23.6501664857856</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.149</SimpleData>
+		<SimpleData name="gid">158</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105261839760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309233.591</SimpleData>
+		<SimpleData name="coord_97y">2617720.132</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.580683364959,23.6620744971936</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.150</SimpleData>
+		<SimpleData name="gid">159</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002103861859760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">307852.150</SimpleData>
+		<SimpleData name="coord_97y">2617900.068</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.567148241446,23.6637493741775</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.151</SimpleData>
+		<SimpleData name="gid">160</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108461109760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312547.914</SimpleData>
+		<SimpleData name="coord_97y">2610468.571</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.61286840481,23.5964714378376</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.152</SimpleData>
+		<SimpleData name="gid">161</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105761909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309783.714</SimpleData>
+		<SimpleData name="coord_97y">2618419.593</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586104306251,23.6683699742918</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.153</SimpleData>
+		<SimpleData name="gid">162</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105761889760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309766.835</SimpleData>
+		<SimpleData name="coord_97y">2618293.935</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585933780892,23.6672359712269</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.154</SimpleData>
+		<SimpleData name="gid">163</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002972858529760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">301773.563</SimpleData>
+		<SimpleData name="coord_97y">2584591.459</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.506407840497,23.3631862117432</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.155</SimpleData>
+		<SimpleData name="gid">164</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105461799760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309451.044</SimpleData>
+		<SimpleData name="coord_97y">2617289.888</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582797813966,23.6581816028682</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.156</SimpleData>
+		<SimpleData name="gid">165</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002112260949760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">316347.387</SimpleData>
+		<SimpleData name="coord_97y">2608977.842</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.650028969522,23.5828595756557</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.157</SimpleData>
+		<SimpleData name="gid">166</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002310760259760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310796.637</SimpleData>
+		<SimpleData name="coord_97y">2602593.582</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59538894076,23.5254301899105</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.158</SimpleData>
+		<SimpleData name="gid">167</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002310961549760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310961.412</SimpleData>
+		<SimpleData name="coord_97y">2615454.892</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597528060874,23.6415561420186</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.159</SimpleData>
+		<SimpleData name="gid">168</SimpleData>
+		<SimpleData name="angle">22.77</SimpleData>
+		<SimpleData name="unific_id">0749002107361459760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311398.698</SimpleData>
+		<SimpleData name="coord_97y">2614028.597</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.60175517681,23.6286608254033</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.160</SimpleData>
+		<SimpleData name="gid">169</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002302459819760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">馬公虎井里飲水改善配管_4</SimpleData>
+		<SimpleData name="coord_97x">302484.454</SimpleData>
+		<SimpleData name="coord_97y">2598137.509</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.513833367242,23.4854828328938</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.161</SimpleData>
+		<SimpleData name="gid">170</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106161929760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫集水管工程(緊急工程)</SimpleData>
+		<SimpleData name="coord_97x">310407.223</SimpleData>
+		<SimpleData name="coord_97y">2618504.381</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.592220228563,23.6691123281543</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.162</SimpleData>
+		<SimpleData name="gid">171</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106961909760002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310927.482</SimpleData>
+		<SimpleData name="coord_97y">2618466.371</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597318963983,23.668749539556</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.163</SimpleData>
+		<SimpleData name="gid">172</SimpleData>
+		<SimpleData name="angle">2.51</SimpleData>
+		<SimpleData name="unific_id">0749002110960739760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">315161.560</SimpleData>
+		<SimpleData name="coord_97y">2606780.836</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.638315668963,23.5630698463764</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.164</SimpleData>
+		<SimpleData name="gid">173</SimpleData>
+		<SimpleData name="angle">-5.62</SimpleData>
+		<SimpleData name="unific_id">0749002106061909760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫8、9井抽供水工程</SimpleData>
+		<SimpleData name="coord_97x">310103.447</SimpleData>
+		<SimpleData name="coord_97y">2618470.344</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589240809385,23.6688163409202</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.165</SimpleData>
+		<SimpleData name="gid">174</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105761919760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫8、9井抽供水工程</SimpleData>
+		<SimpleData name="coord_97x">309763.035</SimpleData>
+		<SimpleData name="coord_97y">2618557.686</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585907139439,23.6696176543739</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.166</SimpleData>
+		<SimpleData name="gid">175</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002107260409760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">311497.939</SimpleData>
+		<SimpleData name="coord_97y">2603525.758</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.602294898254,23.5338209705488</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.167</SimpleData>
+		<SimpleData name="gid">176</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106961609760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">310957.329</SimpleData>
+		<SimpleData name="coord_97y">2615439.834</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597487425469,23.6414203310935</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.168</SimpleData>
+		<SimpleData name="gid">177</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002106161789760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">309988.849</SimpleData>
+		<SimpleData name="coord_97y">2617222.056</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588066956076,23.6575491994387</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.169</SimpleData>
+		<SimpleData name="gid">178</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108161739760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312140.013</SimpleData>
+		<SimpleData name="coord_97y">2616787.931</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609135614717,23.6535478452801</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.170</SimpleData>
+		<SimpleData name="gid">179</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002318360819760003</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">318364.866</SimpleData>
+		<SimpleData name="coord_97y">2608156.594</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.669756275157,23.5753602139351</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.171</SimpleData>
+		<SimpleData name="gid">180</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002312261069760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312237.829</SimpleData>
+		<SimpleData name="coord_97y">2610602.028</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609835779208,23.5976884474782</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.172</SimpleData>
+		<SimpleData name="gid">181</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002108461159760001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">0</SimpleData>
+		<SimpleData name="coord_97x">312622.585</SimpleData>
+		<SimpleData name="coord_97y">2610961.201</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.613620716179,23.6009167660847</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.173</SimpleData>
+		<SimpleData name="gid">29</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002105760749770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">309950.656</SimpleData>
+		<SimpleData name="coord_97y">2606814.352</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587273727152,23.5635736638915</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.174</SimpleData>
+		<SimpleData name="gid">61</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002979261269770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">302023.468</SimpleData>
+		<SimpleData name="coord_97y">2611988.121</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.50980239165,23.6105651769207</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.175</SimpleData>
+		<SimpleData name="gid">99</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="unific_id">0749002303559849770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="proj_name">馬公虎井里飲水改善配管_3</SimpleData>
+		<SimpleData name="coord_97x">303514.510</SimpleData>
+		<SimpleData name="coord_97y">2598457.411</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.523928910966,23.4883379150149</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.176</SimpleData>
+		<SimpleData name="gid">140</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110260909770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">314353.489</SimpleData>
+		<SimpleData name="coord_97y">2608474.330</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.630473254809,23.5783935927904</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.177</SimpleData>
+		<SimpleData name="gid">141</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002110360959770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">314525.339</SimpleData>
+		<SimpleData name="coord_97y">2608999.428</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.632179501995,23.5831281395175</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.178</SimpleData>
+		<SimpleData name="gid">150</SimpleData>
+		<SimpleData name="angle">14.27</SimpleData>
+		<SimpleData name="unific_id">0749002962658559770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">300740.286</SimpleData>
+		<SimpleData name="coord_97y">2584822.398</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.496309203782,23.3653039566296</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.179</SimpleData>
+		<SimpleData name="gid">151</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="unific_id">0749002111060729770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">315272.779</SimpleData>
+		<SimpleData name="coord_97y">2606737.948</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.639403221863,23.5626781145606</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_intake">
+		<SimpleData name="fid">sql_statement.180</SimpleData>
+		<SimpleData name="gid">118</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="unific_id">0749002897056849770001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="wltype">1</SimpleData>
+		<SimpleData name="coord_97x">294428.390</SimpleData>
+		<SimpleData name="coord_97y">2567705.194</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.434040027227,23.2109238552966</coordinates></Point>
+  </Placemark>
+</Folder>
+</Document></kml>

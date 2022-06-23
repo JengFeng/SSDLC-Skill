@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="regionnetm" id="regionnetm">
+	<SimpleField name="fid" type="string"></SimpleField>
+	<SimpleField name="gid" type="int"></SimpleField>
+	<SimpleField name="unific_id" type="string"></SimpleField>
+	<SimpleField name="mediumarea_name" type="string"></SimpleField>
+	<SimpleField name="admin_unit" type="string"></SimpleField>
+	<SimpleField name="mediumarea_id" type="string"></SimpleField>
+	<SimpleField name="status" type="string"></SimpleField>
+	<SimpleField name="area" type="float"></SimpleField>
+	<SimpleField name="pipe_length" type="float"></SimpleField>
+	<SimpleField name="eum_overall_num" type="int"></SimpleField>
+	<SimpleField name="eum_alone_num" type="int"></SimpleField>
+	<SimpleField name="eum_branch_num" type="int"></SimpleField>
+	<SimpleField name="bdate" type="string"></SimpleField>
+	<SimpleField name="bproj_code" type="string"></SimpleField>
+	<SimpleField name="bproj_name" type="string"></SimpleField>
+	<SimpleField name="pdate" type="string"></SimpleField>
+	<SimpleField name="pcom" type="string"></SimpleField>
+	<SimpleField name="pname" type="string"></SimpleField>
+	<SimpleField name="border_valve" type="string"></SimpleField>
+	<SimpleField name="meter_in" type="string"></SimpleField>
+	<SimpleField name="meter_out" type="string"></SimpleField>
+</Schema>
+<Folder><name>regionnetm</name>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#regionnetm">
+		<SimpleData name="fid">sql_statement.0</SimpleData>
+		<SimpleData name="gid">1</SimpleData>
+		<SimpleData name="mediumarea_name">望安系統望安中區</SimpleData>
+		<SimpleData name="mediumarea_id">0756-00-01-00</SimpleData>
+		<SimpleData name="status">A</SimpleData>
+		<SimpleData name="area">3794.711</SimpleData>
+		<SimpleData name="pipe_length">33.188</SimpleData>
+		<SimpleData name="eum_overall_num">0</SimpleData>
+		<SimpleData name="eum_alone_num">911</SimpleData>
+		<SimpleData name="eum_branch_num">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>119.480921125075,23.3978978248647 119.549056131611,23.3953539125338 119.549446387014,23.3455713027996 119.489818567714,23.3447052976775 119.484373026494,23.3623081047795 119.480921125075,23.3978978248647</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#regionnetm">
+		<SimpleData name="fid">sql_statement.1</SimpleData>
+		<SimpleData name="gid">2</SimpleData>
+		<SimpleData name="unific_id">0742003910729000300A</SimpleData>
+		<SimpleData name="mediumarea_name">馬公系統澎南中區</SimpleData>
+		<SimpleData name="mediumarea_id">0729-00-03-00</SimpleData>
+		<SimpleData name="status">A</SimpleData>
+		<SimpleData name="area">1513.704</SimpleData>
+		<SimpleData name="pipe_length">56.200</SimpleData>
+		<SimpleData name="eum_overall_num">0</SimpleData>
+		<SimpleData name="eum_alone_num">2130</SimpleData>
+		<SimpleData name="eum_branch_num">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>119.537471202531,23.5467803433166 119.554940563801,23.545537451662 119.562498512026,23.5362329051933 119.590060805755,23.5339070880485 119.592196215307,23.5402543246232 119.614180372697,23.5366237043803 119.615744354914,23.5167162941875 119.590779488848,23.5221171325392 119.580886271999,23.5124182251316 119.564679299957,23.5226598678694 119.556470646075,23.521802741894 119.545496109481,23.5336531291511 119.538014895159,23.5359266456191 119.537471202531,23.5467803433166</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>

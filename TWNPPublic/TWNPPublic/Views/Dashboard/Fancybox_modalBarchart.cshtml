@@ -122,21 +122,17 @@
                     },
                     series: [
                         {
-                            name: '用水量趨勢',
-                            type: 'line',
-                            data:  result.Data.Y
-                        },
-                        {
                             name: '突增',
                             type: 'line',
+                            symbol:"none",
+                            data: [result.Data.IncreaseValue],
                             markLine:{
                                 itemStyle: {
                                     normal: { lineStyle: { type: 'solid' }, label: { show: true, position: 'end' } },
                                 },
                                 data:[{
-                                    name: '突增20%，轉換為度數120度',
-                                    yAxis: 70000,
-                                    label: {formatter: '突增20%，\n 轉換為度數120度'},
+                                    yAxis: result.Data.IncreaseValue,
+                                    label: {formatter: result.Data.Increase},
                                     lineStyle: {
                                         color: 'red'
                                     }
@@ -144,16 +140,22 @@
                             }
                         },
                         {
+                            name: '用水量趨勢',
+                            type: 'line',
+                            data:  result.Data.Y
+                        },
+                        {
                             name: '突減',
                             type: 'line',
+                            symbol:"none",
+                            data: [result.Data.DecreaseValue],
                             markLine:{
                                 itemStyle: {
                                     normal: { lineStyle: { type: 'solid' }, label: { show: true, position: 'end' } },
                                 },
                                 data:[{
-                                    name: '突減10%，轉換為度數82度',
-                                    yAxis: 10000,
-                                    label: {formatter: '突減10%，\n 轉換為度數82度'},
+                                    yAxis: result.Data.DecreaseValue,
+                                    label: {formatter: result.Data.Decrease},
                                     lineStyle: {
                                         color: 'blue'
                                     }

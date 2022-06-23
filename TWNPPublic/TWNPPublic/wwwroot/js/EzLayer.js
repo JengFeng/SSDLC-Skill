@@ -10,7 +10,7 @@ var LayerTree1 = null,
 
 var LayerMenuTree = function () {
     //# Parameter
-    this.isInited = false;
+    this.isInited = false;   // 是否初始化
     this.version = 0;        // 圖台版本
     this.isInited = false;   // 是否初始化
     this._instance = null;   // 目錄的 Instance
@@ -41,6 +41,7 @@ var LayerMenuTree = function () {
         //MM.easymap.items = listLayer;
         this._dirs = getJsonData(GetDirApi(), 'GET', null, '無圖層目錄資料', '圖層目錄資料錯誤');
         this._bgs = getJsonData(GetBaseMapApi(), 'GET', null, '無底圖資料', '底圖資料錯誤');
+        Tmpl.init();
         RenderInit();
         RunderTree();
         RenderBgMap();
@@ -122,7 +123,18 @@ var LayerMenuTree = function () {
     }                         // 清除所有圖層、圖徵
     //# Private Function
     let LayerSlef = this;
-    var RenderInit = () => {
+    let Tmpl = {
+        legend: '', // 圖例
+        bg: '',     // 底圖
+        init() {
+            $(LayerSlef.elm.boxBasemap).mCustomScrollbar('destroy');    // 先把 Scrollbar 撤除，以便拿取底圖項目
+            this.legend = $(LayerSlef.elm.boxLegend).html().replace(/\n/g, '').replace(/\t/g, '').replace(/  /g, '');
+            this.bg = $(LayerSlef.elm.boxBasemap).html().replace(/\n/g, '').replace(/\t/g, '').replace(/  /g, '');
+            $(LayerSlef.elm.boxLegend).empty().removeClass('d-none');
+            $(LayerSlef.elm.boxBasemap).empty().removeClass('d-none');
+        }   // 初始化
+    }                            // 樣板
+    let RenderInit = () => {
         var _default = 0,
             $block = $(LayerSlef.elm.boxContent),
             $tabs = $block.find('.tabs'),
@@ -158,7 +170,25 @@ var LayerMenuTree = function () {
         // 先把預設要顯示的頁籤加上 .active 樣式及顯示相對應的內容
         $tabsLi.eq(_default).addClass('active');
         $tab_contentLi.eq(_default).siblings().css({ left: _width });
-    }
+    }                // 渲染初始化
+    let RenderBgMap = () => {
+        $(LayerSlef.elm.boxBasemap).empty();
+        $(LayerSlef.elm.boxBasemap).empty();
+        var clickElm = LayerSlef.version == 1 ? 'LayerTree1' : 'LayerTree2';
+        LayerSlef._bgs.forEach(item => {
+            var isActive = item.PRELOAD === '1' ? ' active' : '',
+                imgUrl = (location.href.indexOf('localhost') < 0 ? location.href : origin) + '/images/' + item.LEGEND,
+                boxItem = Tmpl.bg
+                    .replace('{isActive}', isActive)
+                    .replace('{clickElm}', clickElm)
+                    .replace('{item.LAYER}', item.LAYER)
+                    .replace('//:0', imgUrl)
+                    .replace(/{item.LAYER_NAME}/g, item.LAYER_NAME);
+            $(LayerSlef.elm.boxBasemap).append(boxItem);
+        });
+        $(LayerSlef.elm.boxBasemap).addClass('layerBoxScrollbar');
+        RenderScrollBar($(LayerSlef.elm.boxBasemap));
+    }               // 渲染底圖
     let RunderTree = () => {
         var dataLayers = getJsonData(GetLayerListApi(LayerSlef.folderId), 'GET', null, '無圖層清單資料', '圖層清單資料錯誤'),
             iconOrigin = location.href.indexOf('localhost') < 0 ? location.href : origin,
@@ -261,23 +291,26 @@ var LayerMenuTree = function () {
                     //}
                 }
             });
-    }         // 排序圖層目錄
-    let RenderBgMap = () => {
-        $(LayerSlef.elm.boxBasemap).empty();
-        var clickElm = LayerSlef.version == 1 ? 'LayerTree1' : 'LayerTree2';
-        LayerSlef._bgs.forEach(item => {
-            var isActive = item.PRELOAD === '1' ? ' active' : '',
-                imgUrl = (location.href.indexOf('localhost') < 0 ? location.href : origin) + '/images/' + item.LEGEND,
-                tmpl =
-                    `<div class="layerBg${isActive}" onClick="${clickElm}.switchMap(this, '${item.LAYER}')">
-                        <span><img alt="" src="${imgUrl}"></span>
-                        <div class="title">${item.LAYER_NAME}</div>
-                     </div>`;
-            $(LayerSlef.elm.boxBasemap).append(tmpl);
-            $(LayerSlef.elm.boxBasemap).removeClass().addClass('layerBoxScrollbar');
-        });
-        RenderScrollBar($(LayerSlef.elm.boxBasemap));
-    }        // 渲染底圖
+    }                // 排序圖層目錄
+    let RenderLayerItem = (item, sw) => {
+        if (sw) {
+            RenderLayerLegend(item);
+            $('#' + item.id).click(function () {
+                if (this.checked) return;
+                LayerSlef._instance.uncheck_node(this.id);
+            });
+        }
+        else {
+            document.getElementById(item.id).parentNode.parentNode.parentNode.parentNode.remove();
+        }
+    }   // 渲染圖層
+    let RenderLayerLegend = item => {
+        var div = Tmpl.legend
+            .replace('{checkBoxId}', item.id)
+            .replace(/{name}/g, item.text)
+            .replace('//:0', item.original.legend);
+        $(LayerSlef.elm.boxLegend + ' .mCSB_container').append(div);
+    }       // 渲染圖例
     let RenderScrollBar = elm => {
         elm.mCustomScrollbar({
             autoHideScrollbar: true,
@@ -289,7 +322,7 @@ var LayerMenuTree = function () {
             mouseWheel: { preventDefault: true }
         });
         elm.mCustomScrollbar("update");
-    }   // 渲染滾軸
+    }          // 渲染滾軸
     let getJsonData = (dataUrl, type, obj, noneMsg, errMsg, callback) => {
         let data = null,
             ajax = $.ajax({
@@ -316,49 +349,11 @@ var LayerMenuTree = function () {
     }   // 取得 Json 資料
     let GetLayerMap = () => {
         return LayerSlef.version == 1 ? Layer1.map : Layer2.map;
-    }             // 取得圖台
-    let RenderLayerItem = (item, sw) => {
-        if (sw) {
-            var div = Tmpl.legend
-                .replace('{checkBoxId}', item.id)
-                .replace('{name}', item.text)
-                .replace('//:0', item.original.legend);
-            $(LayerSlef.elm.boxLegend + ' .mCSB_container').append(div);
-            $('#' + item.id).click(function () {
-                if (this.checked) return;
-                LayerSlef._instance.uncheck_node(this.id);
-            });
-        }
-        else {
-            document.getElementById(item.id).parentNode.parentNode.parentNode.parentNode.remove();
-        }
-    }
-    let Tmpl = {
-        legend:
-            `<div class="flagArea">
-			 	<div class="title">
-					<span>{name}</span>
-					<div class='move_switch_div'>
-						<label class='offline_switch'>
-							<input type='checkbox' id='{checkBoxId}' checked />
-							<div class='move_slider offline_slider'></div>
-						</label>
-					</div>
-				</div>
-				<div class="flagBox">
-					<div class="flag">
-						<span><img alt="" src="//:0" /></span>
-					</div>
-				</div>
-			 </div>`,
-        init() {
-
-        }
-    }
+    }               // 取得圖台
     //# JsTree
     let HideFolderCheckBox = () => {
         $(LayerSlef.elm.menuFolderCheckBox).hide();
-    }   // 隱藏 Folder 的 Checkbox
+    }        // 隱藏 Folder 的 Checkbox
     return this;
 }
 
@@ -379,7 +374,7 @@ function LayerMenuInit1(item) {
     LayerTree1.elm.boxLegend = '#boxLegend1';
     LayerTree1.elm.boxLayer = '#boxLayer1';
     LayerTree1.elm.boxBasemap = '#boxBg1'
-    //LayerTree1.onSelect = RenderLayerItem;  // 選擇圖層事件
+    LayerTree1.onSelect = item.onSelect != undefined ? item.onSelect : null;  // 選擇圖層事件
     LayerTree1.start();
 }
 
@@ -400,10 +395,6 @@ function LayerMenuInit2(item) {
     LayerTree2.elm.boxLegend = '#boxLegend2';
     LayerTree2.elm.boxLayer = '#boxLayer2';
     LayerTree2.elm.boxBasemap = '#boxBg2'
-    //LayerTree2.onSelect = RenderLayerItem;  // 選擇圖層事件
+    LayerTree2.onSelect = item.onSelect != undefined ? item.onSelect : null;  // 選擇圖層事件
     LayerTree2.start();
-}
-
-function RenderLayerItem(layer, sw) {
-    console.log('額外選擇事件')
 }
