@@ -1,0 +1,3487 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="meter" id="meter">
+	<SimpleField name="fid" type="string"></SimpleField>
+	<SimpleField name="gid" type="int"></SimpleField>
+	<SimpleField name="finish_id" type="string"></SimpleField>
+	<SimpleField name="unific_id" type="string"></SimpleField>
+	<SimpleField name="meter_type" type="string"></SimpleField>
+	<SimpleField name="meter_model" type="string"></SimpleField>
+	<SimpleField name="meter_size" type="int"></SimpleField>
+	<SimpleField name="const_unit" type="string"></SimpleField>
+	<SimpleField name="proj_code" type="string"></SimpleField>
+	<SimpleField name="proj_name" type="string"></SimpleField>
+	<SimpleField name="up_pipe" type="string"></SimpleField>
+	<SimpleField name="large_id" type="string"></SimpleField>
+	<SimpleField name="med_id" type="string"></SimpleField>
+	<SimpleField name="small_id" type="string"></SimpleField>
+	<SimpleField name="auto_on" type="string"></SimpleField>
+	<SimpleField name="comm_type" type="string"></SimpleField>
+	<SimpleField name="locate_img" type="string"></SimpleField>
+	<SimpleField name="meter_img" type="string"></SimpleField>
+	<SimpleField name="assets_code" type="string"></SimpleField>
+	<SimpleField name="remark" type="string"></SimpleField>
+	<SimpleField name="coord_97x" type="float"></SimpleField>
+	<SimpleField name="coord_97y" type="float"></SimpleField>
+	<SimpleField name="base_elev" type="float"></SimpleField>
+	<SimpleField name="chamber_id" type="string"></SimpleField>
+</Schema>
+<Folder><name>meter</name>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.0</SimpleData>
+		<SimpleData name="gid">159</SimpleData>
+		<SimpleData name="unific_id">07490021037618206  001</SimpleData>
+		<SimpleData name="coord_97x">307808.750</SimpleData>
+		<SimpleData name="coord_97y">2617597.686</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56671102162,23.661020562427</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.1</SimpleData>
+		<SimpleData name="gid">19</SimpleData>
+		<SimpleData name="unific_id">07490021040613506  001</SimpleData>
+		<SimpleData name="coord_97x">308123.353</SimpleData>
+		<SimpleData name="coord_97y">2612894.574</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56961122459,23.6185422641414</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.2</SimpleData>
+		<SimpleData name="gid">20</SimpleData>
+		<SimpleData name="unific_id">0749002105160260600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">309429.217</SimpleData>
+		<SimpleData name="coord_97y">2602073.655</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.581977524258,23.520786059339</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.3</SimpleData>
+		<SimpleData name="gid">1</SimpleData>
+		<SimpleData name="unific_id">0749002105660800600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">309789.017</SimpleData>
+		<SimpleData name="coord_97y">2607469.197</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585716598927,23.5694926334472</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.4</SimpleData>
+		<SimpleData name="gid">2</SimpleData>
+		<SimpleData name="unific_id">0749002104660810600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">308772.434</SimpleData>
+		<SimpleData name="coord_97y">2607550.581</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.575761348478,23.5702647040228</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.5</SimpleData>
+		<SimpleData name="gid">3</SimpleData>
+		<SimpleData name="unific_id">0729006109760600650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公系統300/mm與500m/m水量計工程</SimpleData>
+		<SimpleData name="coord_97x">313953.008</SimpleData>
+		<SimpleData name="coord_97y">2605550.293</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.626424700185,23.5520067406376</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.6</SimpleData>
+		<SimpleData name="gid">4</SimpleData>
+		<SimpleData name="unific_id">0762002105160950650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區計量網工程</SimpleData>
+		<SimpleData name="assets_code">1359000</SimpleData>
+		<SimpleData name="remark">DA-01-0729-01</SimpleData>
+		<SimpleData name="coord_97x">309269.841</SimpleData>
+		<SimpleData name="coord_97y">2608988.894</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.580691103746,23.5832339768287</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.7</SimpleData>
+		<SimpleData name="gid">5</SimpleData>
+		<SimpleData name="unific_id">0749002108260640600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">312470.604</SimpleData>
+		<SimpleData name="coord_97y">2605925.194</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.611920757381,23.5554497486027</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.8</SimpleData>
+		<SimpleData name="gid">6</SimpleData>
+		<SimpleData name="unific_id">0749002104260830600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">308397.221</SimpleData>
+		<SimpleData name="coord_97y">2607728.761</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.572092703762,23.5718871681958</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.9</SimpleData>
+		<SimpleData name="gid">7</SimpleData>
+		<SimpleData name="unific_id">0749002104660630600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">308839.264</SimpleData>
+		<SimpleData name="coord_97y">2605748.128</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.576345023735,23.553986794483</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.10</SimpleData>
+		<SimpleData name="gid">8</SimpleData>
+		<SimpleData name="unific_id">0749002103460810600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307664.102</SimpleData>
+		<SimpleData name="coord_97y">2607500.968</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.564902126763,23.5698565506028</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.11</SimpleData>
+		<SimpleData name="gid">9</SimpleData>
+		<SimpleData name="unific_id">0749002103660800600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307839.160</SimpleData>
+		<SimpleData name="coord_97y">2607390.167</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56661271401,23.5688498214052</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.12</SimpleData>
+		<SimpleData name="gid">10</SimpleData>
+		<SimpleData name="unific_id">0749002103360730600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307490.592</SimpleData>
+		<SimpleData name="coord_97y">2606728.247</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.563172664295,23.5628853219902</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.13</SimpleData>
+		<SimpleData name="gid">11</SimpleData>
+		<SimpleData name="unific_id">0749002103360730600002</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307568.878</SimpleData>
+		<SimpleData name="coord_97y">2606753.229</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56394048647,23.5631081232643</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.14</SimpleData>
+		<SimpleData name="gid">12</SimpleData>
+		<SimpleData name="unific_id">0749002103360730600003</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307501.953</SimpleData>
+		<SimpleData name="coord_97y">2606747.158</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.563284676191,23.5630556759842</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.15</SimpleData>
+		<SimpleData name="gid">13</SimpleData>
+		<SimpleData name="unific_id">0749002103560740600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307713.888</SimpleData>
+		<SimpleData name="coord_97y">2606807.579</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.565363040329,23.5635937201769</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.16</SimpleData>
+		<SimpleData name="gid">14</SimpleData>
+		<SimpleData name="unific_id">0749002102960730600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307148.413</SimpleData>
+		<SimpleData name="coord_97y">2606704.729</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.559819932417,23.5626850678356</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.17</SimpleData>
+		<SimpleData name="gid">15</SimpleData>
+		<SimpleData name="unific_id">0749002102860730600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307043.502</SimpleData>
+		<SimpleData name="coord_97y">2606695.974</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.558791936847,23.5626097099228</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.18</SimpleData>
+		<SimpleData name="gid">16</SimpleData>
+		<SimpleData name="unific_id">0749002102860730600002</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307050.399</SimpleData>
+		<SimpleData name="coord_97y">2606692.060</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.558859352811,23.5625741211274</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.19</SimpleData>
+		<SimpleData name="gid">17</SimpleData>
+		<SimpleData name="unific_id">07490021105607206  001</SimpleData>
+		<SimpleData name="coord_97x">314729.943</SimpleData>
+		<SimpleData name="coord_97y">2606767.652</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.634087223476,23.562968102024</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.20</SimpleData>
+		<SimpleData name="gid">18</SimpleData>
+		<SimpleData name="unific_id">07490021104616806  001</SimpleData>
+		<SimpleData name="coord_97x">314504.307</SimpleData>
+		<SimpleData name="coord_97y">2616275.050</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.632288585512,23.6488240307078</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.21</SimpleData>
+		<SimpleData name="gid">21</SimpleData>
+		<SimpleData name="unific_id">0749002109261020600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313388.485</SimpleData>
+		<SimpleData name="coord_97y">2609739.257</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.621073265632,23.5898533649477</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.22</SimpleData>
+		<SimpleData name="gid">25</SimpleData>
+		<SimpleData name="unific_id">0749002109060850600007</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313194.276</SimpleData>
+		<SimpleData name="coord_97y">2608048.361</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619098888461,23.5745929475794</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.23</SimpleData>
+		<SimpleData name="gid">26</SimpleData>
+		<SimpleData name="unific_id">0749002108860720600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313039.834</SimpleData>
+		<SimpleData name="coord_97y">2606738.930</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.617530652578,23.5627753896262</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.24</SimpleData>
+		<SimpleData name="gid">27</SimpleData>
+		<SimpleData name="unific_id">0762009105161870680001</SimpleData>
+		<SimpleData name="meter_type">8</SimpleData>
+		<SimpleData name="meter_model">超音波式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">309158.853</SimpleData>
+		<SimpleData name="coord_97y">2618152.109</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.579967918446,23.6659777757462</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.25</SimpleData>
+		<SimpleData name="gid">28</SimpleData>
+		<SimpleData name="unific_id">0762009104061350640002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區計量管網工程</SimpleData>
+		<SimpleData name="remark">DB-03-0729-01</SimpleData>
+		<SimpleData name="coord_97x">308151.040</SimpleData>
+		<SimpleData name="coord_97y">2612897.212</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.569882649722,23.618565089992</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.26</SimpleData>
+		<SimpleData name="gid">29</SimpleData>
+		<SimpleData name="unific_id">0762000000090640001001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">301689.105</SimpleData>
+		<SimpleData name="coord_97y">2609690.652</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.506446236645,23.5898304702755</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.27</SimpleData>
+		<SimpleData name="gid">30</SimpleData>
+		<SimpleData name="unific_id">0762000091052602706400</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="remark">DB-03-0729-01</SimpleData>
+		<SimpleData name="coord_97x">309526.385</SimpleData>
+		<SimpleData name="coord_97y">2602171.893</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582932943488,23.5216695593683</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.28</SimpleData>
+		<SimpleData name="gid">31</SimpleData>
+		<SimpleData name="unific_id">0762000091067603006400</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">311003.758</SimpleData>
+		<SimpleData name="coord_97y">2602505.843</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597413636409,23.524630170009</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.29</SimpleData>
+		<SimpleData name="gid">32</SimpleData>
+		<SimpleData name="unific_id">0749002103260330600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">307466.230</SimpleData>
+		<SimpleData name="coord_97y">2602765.987</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.562781730842,23.5271082761247</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.30</SimpleData>
+		<SimpleData name="gid">33</SimpleData>
+		<SimpleData name="unific_id">07490021066614606  001</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區計量管網工程</SimpleData>
+		<SimpleData name="coord_97x">310771.376</SimpleData>
+		<SimpleData name="coord_97y">2614055.921</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.595608308636,23.6289312698272</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.31</SimpleData>
+		<SimpleData name="gid">34</SimpleData>
+		<SimpleData name="unific_id">0749002103260780600001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">307414.976</SimpleData>
+		<SimpleData name="coord_97y">2607235.016</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.562451447977,23.5674639490579</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.32</SimpleData>
+		<SimpleData name="gid">36</SimpleData>
+		<SimpleData name="unific_id">07490029710608806  001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">301265.962</SimpleData>
+		<SimpleData name="coord_97y">2608152.881</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.502247594897,23.5759582843143</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.33</SimpleData>
+		<SimpleData name="gid">196</SimpleData>
+		<SimpleData name="unific_id">0749002109060850600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313221.403</SimpleData>
+		<SimpleData name="coord_97y">2607961.627</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619360963196,23.5738087270064</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.34</SimpleData>
+		<SimpleData name="gid">37</SimpleData>
+		<SimpleData name="unific_id">07490029709608806  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">彭湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">301252.499</SimpleData>
+		<SimpleData name="coord_97y">2608147.177</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.502115507321,23.5759072093161</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.35</SimpleData>
+		<SimpleData name="gid">38</SimpleData>
+		<SimpleData name="unific_id">0729006298461270690002</SimpleData>
+		<SimpleData name="meter_type">9</SimpleData>
+		<SimpleData name="meter_model">電磁式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="coord_97x">302527.185</SimpleData>
+		<SimpleData name="coord_97y">2612051.677</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.514740638583,23.6111227748454</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.36</SimpleData>
+		<SimpleData name="gid">39</SimpleData>
+		<SimpleData name="unific_id">0762009106761880650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">310766.588</SimpleData>
+		<SimpleData name="coord_97y">2618238.972</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.595732360721,23.6667023149309</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.37</SimpleData>
+		<SimpleData name="gid">40</SimpleData>
+		<SimpleData name="unific_id">0749002109060850600002</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313251.445</SimpleData>
+		<SimpleData name="coord_97y">2607998.815</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619656836381,23.5741433432642</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.38</SimpleData>
+		<SimpleData name="gid">41</SimpleData>
+		<SimpleData name="unific_id">0749002313260800650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公系統支援管線連接工程_2</SimpleData>
+		<SimpleData name="remark">工程編號：WR-94-0729-14。</SimpleData>
+		<SimpleData name="coord_97x">313256.582</SimpleData>
+		<SimpleData name="coord_97y">2608013.273</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619707775225,23.5742736903735</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.39</SimpleData>
+		<SimpleData name="gid">42</SimpleData>
+		<SimpleData name="unific_id">07490021081617206  001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子型</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">白沙淨水場水質改善工程</SimpleData>
+		<SimpleData name="remark">WR-94-0753-01</SimpleData>
+		<SimpleData name="coord_97x">312154.100</SimpleData>
+		<SimpleData name="coord_97y">2616730.800</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609271310988,23.653031437985</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.40</SimpleData>
+		<SimpleData name="gid">43</SimpleData>
+		<SimpleData name="unific_id">07490021081617306  001</SimpleData>
+		<SimpleData name="coord_97x">312144.303</SimpleData>
+		<SimpleData name="coord_97y">2616751.726</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609176149132,23.6532207721299</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.41</SimpleData>
+		<SimpleData name="gid">44</SimpleData>
+		<SimpleData name="unific_id">0762009108161730640002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">312165.100</SimpleData>
+		<SimpleData name="coord_97y">2616762.988</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609380479361,23.6533216621123</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.42</SimpleData>
+		<SimpleData name="gid">45</SimpleData>
+		<SimpleData name="unific_id">0762009108161730640003</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">312167.097</SimpleData>
+		<SimpleData name="coord_97y">2616758.801</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609399881835,23.6532837748702</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.43</SimpleData>
+		<SimpleData name="gid">46</SimpleData>
+		<SimpleData name="unific_id">07490021081617306  001</SimpleData>
+		<SimpleData name="coord_97x">312148.637</SimpleData>
+		<SimpleData name="coord_97y">2616749.708</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609218550214,23.6532023840182</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.44</SimpleData>
+		<SimpleData name="gid">47</SimpleData>
+		<SimpleData name="unific_id">0749002311761730630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="coord_97x">311746.125</SimpleData>
+		<SimpleData name="coord_97y">2617306.785</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.605296203443,23.6582479458742</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.45</SimpleData>
+		<SimpleData name="gid">48</SimpleData>
+		<SimpleData name="unific_id">0749002103360790600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_model">螺旋型水表</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">307478.452</SimpleData>
+		<SimpleData name="coord_97y">2607296.839</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.563075633822,23.5680199349543</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.46</SimpleData>
+		<SimpleData name="gid">49</SimpleData>
+		<SimpleData name="unific_id">0749002107360850600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_model">螺旋型水表</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">311464.305</SimpleData>
+		<SimpleData name="coord_97y">2608016.243</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.602150204161,23.5743695226179</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.47</SimpleData>
+		<SimpleData name="gid">50</SimpleData>
+		<SimpleData name="unific_id">0749002107460690600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">311619.563</SimpleData>
+		<SimpleData name="coord_97y">2606372.159</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.603603321274,23.5595182369992</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.48</SimpleData>
+		<SimpleData name="gid">51</SimpleData>
+		<SimpleData name="unific_id">0749002107260680600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="remark">60-58-2</SimpleData>
+		<SimpleData name="coord_97x">311455.348</SimpleData>
+		<SimpleData name="coord_97y">2606249.283</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.601989746032,23.5584149470725</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.49</SimpleData>
+		<SimpleData name="gid">23</SimpleData>
+		<SimpleData name="unific_id">0749002109060850600004</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313244.156</SimpleData>
+		<SimpleData name="coord_97y">2608011.478</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619516643995,23.5741871515608</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.50</SimpleData>
+		<SimpleData name="gid">22</SimpleData>
+		<SimpleData name="unific_id">0749002109060850600003</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313195.087</SimpleData>
+		<SimpleData name="coord_97y">2608049.753</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619157477631,23.5746224876917</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.51</SimpleData>
+		<SimpleData name="gid">24</SimpleData>
+		<SimpleData name="unific_id">0749002109060850600006</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">313196.028</SimpleData>
+		<SimpleData name="coord_97y">2608051.298</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619179882279,23.574649659143</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.52</SimpleData>
+		<SimpleData name="gid">52</SimpleData>
+		<SimpleData name="unific_id">0749002106960710600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">311115.286</SimpleData>
+		<SimpleData name="coord_97y">2606533.096</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.598670401318,23.5609905258512</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.53</SimpleData>
+		<SimpleData name="gid">53</SimpleData>
+		<SimpleData name="unific_id">0749002105460630600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">309593.869</SimpleData>
+		<SimpleData name="coord_97y">2605759.351</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.583736714542,23.5540605629793</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.54</SimpleData>
+		<SimpleData name="gid">54</SimpleData>
+		<SimpleData name="unific_id">0749002105360630600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">309545.104</SimpleData>
+		<SimpleData name="coord_97y">2605737.744</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.583258205476,23.553867248978</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.55</SimpleData>
+		<SimpleData name="gid">55</SimpleData>
+		<SimpleData name="unific_id">0749002105760730600001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">309879.065</SimpleData>
+		<SimpleData name="coord_97y">2606795.570</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586571693884,23.5634067145994</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.56</SimpleData>
+		<SimpleData name="gid">56</SimpleData>
+		<SimpleData name="unific_id">0749002106160640600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310372.652</SimpleData>
+		<SimpleData name="coord_97y">2605904.718</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.591370646909,23.5553443545316</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.57</SimpleData>
+		<SimpleData name="gid">57</SimpleData>
+		<SimpleData name="unific_id">0749002106160640600002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310386.025</SimpleData>
+		<SimpleData name="coord_97y">2605897.427</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.591501342323,23.5552780208871</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.58</SimpleData>
+		<SimpleData name="gid">58</SimpleData>
+		<SimpleData name="unific_id">0749002106560650600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310756.340</SimpleData>
+		<SimpleData name="coord_97y">2605995.521</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59513253109,23.5561499342727</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.59</SimpleData>
+		<SimpleData name="gid">59</SimpleData>
+		<SimpleData name="unific_id">07490021055618806  001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">309516.947</SimpleData>
+		<SimpleData name="coord_97y">2618312.385</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.583484799927,23.6674118050306</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.60</SimpleData>
+		<SimpleData name="gid">60</SimpleData>
+		<SimpleData name="unific_id">07490021055618806  002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">309515.262</SimpleData>
+		<SimpleData name="coord_97y">2618299.210</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.583467754448,23.6672929060568</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.61</SimpleData>
+		<SimpleData name="gid">61</SimpleData>
+		<SimpleData name="unific_id">0749002301561410660001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">西嶼深井管線連接工程_1</SimpleData>
+		<SimpleData name="remark">WR-93-0759-01</SimpleData>
+		<SimpleData name="coord_97x">301582.483</SimpleData>
+		<SimpleData name="coord_97y">2614159.999</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.505556345694,23.6301906495945</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.62</SimpleData>
+		<SimpleData name="gid">62</SimpleData>
+		<SimpleData name="unific_id">0749002314760740650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">湖西鄉太武村新鑿深井管線工程</SimpleData>
+		<SimpleData name="remark">工程編號：WR-93-0729-14。</SimpleData>
+		<SimpleData name="coord_97x">314770.078</SimpleData>
+		<SimpleData name="coord_97y">2607455.757</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.634510201843,23.5691797646505</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.63</SimpleData>
+		<SimpleData name="gid">63</SimpleData>
+		<SimpleData name="unific_id">0762002990640005003003</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">303779.213</SimpleData>
+		<SimpleData name="coord_97y">2614901.695</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.527112459201,23.6368162312415</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.64</SimpleData>
+		<SimpleData name="gid">64</SimpleData>
+		<SimpleData name="unific_id">07490029975615506  002</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">303818.891</SimpleData>
+		<SimpleData name="coord_97y">2614905.514</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.527501485557,23.6368493954796</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.65</SimpleData>
+		<SimpleData name="gid">65</SimpleData>
+		<SimpleData name="unific_id">07490021005615406  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">304659.439</SimpleData>
+		<SimpleData name="coord_97y">2614805.966</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.535736113716,23.635922282574</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.66</SimpleData>
+		<SimpleData name="gid">66</SimpleData>
+		<SimpleData name="unific_id">0749002106660630600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310814.161</SimpleData>
+		<SimpleData name="coord_97y">2605784.062</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.595690285723,23.5542383713396</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.67</SimpleData>
+		<SimpleData name="gid">67</SimpleData>
+		<SimpleData name="unific_id">07490029844614706  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">302514.355</SimpleData>
+		<SimpleData name="coord_97y">2614082.747</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.514686547733,23.6294630601401</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.68</SimpleData>
+		<SimpleData name="gid">68</SimpleData>
+		<SimpleData name="unific_id">07490029977615506  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">303825.805</SimpleData>
+		<SimpleData name="coord_97y">2614902.087</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.527569128889,23.6368182213321</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.69</SimpleData>
+		<SimpleData name="gid">69</SimpleData>
+		<SimpleData name="unific_id">0749002302561400650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區管網建置工程_6</SimpleData>
+		<SimpleData name="remark">WV-95-0729-02</SimpleData>
+		<SimpleData name="coord_97x">302500.108</SimpleData>
+		<SimpleData name="coord_97y">2614064.100</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.5145462642,23.6292951488599</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.70</SimpleData>
+		<SimpleData name="gid">70</SimpleData>
+		<SimpleData name="unific_id">07490029811613106  001</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所小區計量網工程</SimpleData>
+		<SimpleData name="assets_code">1359011</SimpleData>
+		<SimpleData name="coord_97x">302204.861</SimpleData>
+		<SimpleData name="coord_97y">2612451.071</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.511596113625,23.614739615372</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.71</SimpleData>
+		<SimpleData name="gid">71</SimpleData>
+		<SimpleData name="unific_id">0729006298461270640003</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">250</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">302538.416</SimpleData>
+		<SimpleData name="coord_97y">2612049.442</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.514850609037,23.6111022333273</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.72</SimpleData>
+		<SimpleData name="gid">72</SimpleData>
+		<SimpleData name="unific_id">07490029666608306  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">300833.383</SimpleData>
+		<SimpleData name="coord_97y">2607591.102</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.497990656162,23.5708992067608</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.73</SimpleData>
+		<SimpleData name="gid">73</SimpleData>
+		<SimpleData name="unific_id">0749002300860750600002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">300819.552</SimpleData>
+		<SimpleData name="coord_97y">2607582.111</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.497854857492,23.5708184577797</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.74</SimpleData>
+		<SimpleData name="gid">74</SimpleData>
+		<SimpleData name="unific_id">0749002895156770600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">294250.400</SimpleData>
+		<SimpleData name="coord_97y">2566923.004</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.432308573177,23.2038581627937</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.75</SimpleData>
+		<SimpleData name="gid">75</SimpleData>
+		<SimpleData name="unific_id">0762000090640003002002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">294248.482</SimpleData>
+		<SimpleData name="coord_97y">2566946.032</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.432290504288,23.2040661627741</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.76</SimpleData>
+		<SimpleData name="gid">76</SimpleData>
+		<SimpleData name="unific_id">0762000090640003003003</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">294261.883</SimpleData>
+		<SimpleData name="coord_97y">2566952.407</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.432421607749,23.2041233713228</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.77</SimpleData>
+		<SimpleData name="gid">77</SimpleData>
+		<SimpleData name="unific_id">0729006107261760650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公系統等四小區計量管綱工程</SimpleData>
+		<SimpleData name="coord_97x">311266.290</SimpleData>
+		<SimpleData name="coord_97y">2617100.162</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.6005840726,23.65640054707</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.78</SimpleData>
+		<SimpleData name="gid">78</SimpleData>
+		<SimpleData name="unific_id">0762009107261760650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">311237.773</SimpleData>
+		<SimpleData name="coord_97y">2617094.309</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.600304295903,23.6563487776875</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.79</SimpleData>
+		<SimpleData name="gid">79</SimpleData>
+		<SimpleData name="unific_id">0749002310661740600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310685.442</SimpleData>
+		<SimpleData name="coord_97y">2617420.308</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.594903425826,23.6593132533948</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.80</SimpleData>
+		<SimpleData name="gid">80</SimpleData>
+		<SimpleData name="unific_id">0749002310261730600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310186.306</SimpleData>
+		<SimpleData name="coord_97y">2617317.245</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590006385472,23.658401349416</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.81</SimpleData>
+		<SimpleData name="gid">81</SimpleData>
+		<SimpleData name="unific_id">0749002294456780600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">294408.981</SimpleData>
+		<SimpleData name="coord_97y">2567886.755</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.433885908657,23.2125567982448</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.82</SimpleData>
+		<SimpleData name="gid">82</SimpleData>
+		<SimpleData name="unific_id">0749002294356780600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">294369.900</SimpleData>
+		<SimpleData name="coord_97y">2567858.444</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.433503264387,23.2123021936764</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.83</SimpleData>
+		<SimpleData name="gid">83</SimpleData>
+		<SimpleData name="unific_id">0749002294256690600004</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">294254.788</SimpleData>
+		<SimpleData name="coord_97y">2566931.904</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.432351696525,23.2039384183176</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.84</SimpleData>
+		<SimpleData name="gid">84</SimpleData>
+		<SimpleData name="unific_id">0749002301861270600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">301828.055</SimpleData>
+		<SimpleData name="coord_97y">2612713.554</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.507912749448,23.6171218765546</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.85</SimpleData>
+		<SimpleData name="gid">85</SimpleData>
+		<SimpleData name="unific_id">0749002302561400600003</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">302506.279</SimpleData>
+		<SimpleData name="coord_97y">2614080.149</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.514607308552,23.6294398656101</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.86</SimpleData>
+		<SimpleData name="gid">86</SimpleData>
+		<SimpleData name="unific_id">0749002303761480600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">303788.994</SimpleData>
+		<SimpleData name="coord_97y">2614886.033</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.527207760122,23.6366744869647</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.87</SimpleData>
+		<SimpleData name="gid">87</SimpleData>
+		<SimpleData name="unific_id">0749002304261490600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">304266.613</SimpleData>
+		<SimpleData name="coord_97y">2614948.313</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.531891211827,23.6372208651848</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.88</SimpleData>
+		<SimpleData name="gid">88</SimpleData>
+		<SimpleData name="unific_id">0749002304661470600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">304670.719</SimpleData>
+		<SimpleData name="coord_97y">2614799.898</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.53584644117,23.6358671081873</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.89</SimpleData>
+		<SimpleData name="gid">89</SimpleData>
+		<SimpleData name="unific_id">0749002108861090600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">313002.905</SimpleData>
+		<SimpleData name="coord_97y">2610371.897</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.617322294202,23.595580865284</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.90</SimpleData>
+		<SimpleData name="gid">90</SimpleData>
+		<SimpleData name="unific_id">0749002312561010600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">312547.956</SimpleData>
+		<SimpleData name="coord_97y">2610198.199</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.612857466839,23.5940301036582</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.91</SimpleData>
+		<SimpleData name="gid">91</SimpleData>
+		<SimpleData name="unific_id">0749002313061030600002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">313016.876</SimpleData>
+		<SimpleData name="coord_97y">2610391.522</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.617460004372,23.5957575225432</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.92</SimpleData>
+		<SimpleData name="gid">92</SimpleData>
+		<SimpleData name="unific_id">0749002313360800600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">313332.159</SimpleData>
+		<SimpleData name="coord_97y">2608057.060</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.620450008406,23.5746661081583</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.93</SimpleData>
+		<SimpleData name="gid">93</SimpleData>
+		<SimpleData name="unific_id">0749002306160400630001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">306161.063</SimpleData>
+		<SimpleData name="coord_97y">2604052.344</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.550048640767,23.5387693847089</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.94</SimpleData>
+		<SimpleData name="gid">94</SimpleData>
+		<SimpleData name="unific_id">0749002307460720650650</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">307479.757</SimpleData>
+		<SimpleData name="coord_97y">2607285.030</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.563087955748,23.5679132599715</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.95</SimpleData>
+		<SimpleData name="gid">95</SimpleData>
+		<SimpleData name="unific_id">0762009306061390640001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310100.304</SimpleData>
+		<SimpleData name="coord_97y">2613350.412</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589003040678,23.6225859680495</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.96</SimpleData>
+		<SimpleData name="gid">96</SimpleData>
+		<SimpleData name="unific_id">0749002103460730600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公港四號碼頭管線抽換工程</SimpleData>
+		<SimpleData name="remark">WY-92-0729-05</SimpleData>
+		<SimpleData name="coord_97x">307670.502</SimpleData>
+		<SimpleData name="coord_97y">2606710.593</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.564934299931,23.5627195192249</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.97</SimpleData>
+		<SimpleData name="gid">97</SimpleData>
+		<SimpleData name="unific_id">0749002302861200650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙、西嶼深井導水管工程</SimpleData>
+		<SimpleData name="remark">WE-91-0759-02</SimpleData>
+		<SimpleData name="coord_97x">302859.083</SimpleData>
+		<SimpleData name="coord_97y">2612035.646</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.51799239573,23.6109672064159</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.98</SimpleData>
+		<SimpleData name="gid">98</SimpleData>
+		<SimpleData name="unific_id">0749002312061660650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙、西嶼深井導水管工程</SimpleData>
+		<SimpleData name="remark">WE-91-0759-02</SimpleData>
+		<SimpleData name="coord_97x">312091.193</SimpleData>
+		<SimpleData name="coord_97y">2616640.980</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.608650933962,23.6522228343289</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.99</SimpleData>
+		<SimpleData name="gid">99</SimpleData>
+		<SimpleData name="unific_id">0749002310261820600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫淺井導水管工程_1</SimpleData>
+		<SimpleData name="remark">WE-91-0753-01</SimpleData>
+		<SimpleData name="coord_97x">310225.008</SimpleData>
+		<SimpleData name="coord_97y">2618257.734</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590423898426,23.6668920497782</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.100</SimpleData>
+		<SimpleData name="gid">100</SimpleData>
+		<SimpleData name="unific_id">0749002310061820650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫淺井導水管工程_1</SimpleData>
+		<SimpleData name="remark">WE-91-0753-01</SimpleData>
+		<SimpleData name="coord_97x">310006.989</SimpleData>
+		<SimpleData name="coord_97y">2618255.739</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588286527672,23.6668821634455</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.101</SimpleData>
+		<SimpleData name="gid">101</SimpleData>
+		<SimpleData name="unific_id">0749002319160910650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">湖西系統深井導水管工程</SimpleData>
+		<SimpleData name="remark">WE-91-0757-03</SimpleData>
+		<SimpleData name="coord_97x">319180.527</SimpleData>
+		<SimpleData name="coord_97y">2609182.105</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.677794243599,23.5845853532055</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.102</SimpleData>
+		<SimpleData name="gid">102</SimpleData>
+		<SimpleData name="unific_id">0749002310960630650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">湖西系統深井導水管工程_2</SimpleData>
+		<SimpleData name="remark">WE-91-0757-03</SimpleData>
+		<SimpleData name="coord_97x">310992.126</SimpleData>
+		<SimpleData name="coord_97y">2606355.673</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597456762451,23.5593931038267</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.103</SimpleData>
+		<SimpleData name="gid">103</SimpleData>
+		<SimpleData name="unific_id">0749002309361830650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">309370.651</SimpleData>
+		<SimpleData name="coord_97y">2618318.142</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582050845576,23.667469185262</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.104</SimpleData>
+		<SimpleData name="gid">104</SimpleData>
+		<SimpleData name="unific_id">0749002309361830650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">湖西系統深井導水管工程_3</SimpleData>
+		<SimpleData name="remark">WE-91-0757-03</SimpleData>
+		<SimpleData name="coord_97x">309371.599</SimpleData>
+		<SimpleData name="coord_97y">2618319.754</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582060203662,23.6674837042145</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.105</SimpleData>
+		<SimpleData name="gid">105</SimpleData>
+		<SimpleData name="unific_id">0762000091073604106400</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">311527.922</SimpleData>
+		<SimpleData name="coord_97y">2603612.213</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.602592085267,23.5346004919067</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.106</SimpleData>
+		<SimpleData name="gid">106</SimpleData>
+		<SimpleData name="unific_id">0749002107360420600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公澎南小區管網工程(一)</SimpleData>
+		<SimpleData name="remark">工程編號：WV-95-0729-01。</SimpleData>
+		<SimpleData name="coord_97x">311544.699</SimpleData>
+		<SimpleData name="coord_97y">2603618.894</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.602756663631,23.5346601763505</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.107</SimpleData>
+		<SimpleData name="gid">107</SimpleData>
+		<SimpleData name="unific_id">07490029812611906  001</SimpleData>
+		<SimpleData name="meter_type">9</SimpleData>
+		<SimpleData name="meter_model">電磁式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公系統等四小區計量管綱工程</SimpleData>
+		<SimpleData name="assets_code">1309250</SimpleData>
+		<SimpleData name="remark">DA-00-0729-01</SimpleData>
+		<SimpleData name="coord_97x">302213.130</SimpleData>
+		<SimpleData name="coord_97y">2611203.122</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.511633411442,23.603470776901</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.108</SimpleData>
+		<SimpleData name="gid">108</SimpleData>
+		<SimpleData name="unific_id">0749002310761810650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙深井導水管連接工程</SimpleData>
+		<SimpleData name="remark">WE-90-0753-04</SimpleData>
+		<SimpleData name="coord_97x">310755.658</SimpleData>
+		<SimpleData name="coord_97y">2618195.625</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.595623434112,23.6663113236678</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.109</SimpleData>
+		<SimpleData name="gid">109</SimpleData>
+		<SimpleData name="unific_id">07490029935615506  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">DA-99-0729-02</SimpleData>
+		<SimpleData name="coord_97x">303420.599</SimpleData>
+		<SimpleData name="coord_97y">2614857.932</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.52359607346,23.6364329791058</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.110</SimpleData>
+		<SimpleData name="gid">110</SimpleData>
+		<SimpleData name="unific_id">0749002303858480650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">南區工程處</SimpleData>
+		<SimpleData name="proj_name">望安鄉將軍淨水場工程~土建</SimpleData>
+		<SimpleData name="remark">工程編號：WT-90-0756-02。</SimpleData>
+		<SimpleData name="coord_97x">303886.895</SimpleData>
+		<SimpleData name="coord_97y">2584873.545</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.527088180361,23.3656651760606</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.111</SimpleData>
+		<SimpleData name="gid">111</SimpleData>
+		<SimpleData name="unific_id">0729006109760610650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">300</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公系統300/mm與500m/m水量計工程</SimpleData>
+		<SimpleData name="coord_97x">313988.473</SimpleData>
+		<SimpleData name="coord_97y">2605674.864</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.626777399314,23.5531301635363</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.112</SimpleData>
+		<SimpleData name="gid">112</SimpleData>
+		<SimpleData name="unific_id">0749002311660320650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎南9號井等配管工程</SimpleData>
+		<SimpleData name="remark">WR-88-0729-01</SimpleData>
+		<SimpleData name="coord_97x">311698.367</SimpleData>
+		<SimpleData name="coord_97y">2603243.371</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.604246107558,23.5312635175497</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.113</SimpleData>
+		<SimpleData name="gid">113</SimpleData>
+		<SimpleData name="unific_id">0749002313560760650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎南9號井等配管工程</SimpleData>
+		<SimpleData name="remark">WR-88-0729-01</SimpleData>
+		<SimpleData name="coord_97x">313596.796</SimpleData>
+		<SimpleData name="coord_97y">2607687.763</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.62302674102,23.5713211611313</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.114</SimpleData>
+		<SimpleData name="gid">114</SimpleData>
+		<SimpleData name="unific_id">0749002303259840650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">南區工程處</SimpleData>
+		<SimpleData name="proj_name">馬公虎井里飲水改善配管</SimpleData>
+		<SimpleData name="remark">WQ-87-0729-01</SimpleData>
+		<SimpleData name="coord_97x">303206.508</SimpleData>
+		<SimpleData name="coord_97y">2598421.745</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.520912278813,23.4880259660092</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.115</SimpleData>
+		<SimpleData name="gid">115</SimpleData>
+		<SimpleData name="unific_id">07490021071618506  001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">311188.972</SimpleData>
+		<SimpleData name="coord_97y">2617951.649</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.599861236,23.6640919614414</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.116</SimpleData>
+		<SimpleData name="gid">116</SimpleData>
+		<SimpleData name="unific_id">0712004308060610600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="coord_97x">312220.966</SimpleData>
+		<SimpleData name="coord_97y">2605600.349</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609462048885,23.5525261301134</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.117</SimpleData>
+		<SimpleData name="gid">117</SimpleData>
+		<SimpleData name="unific_id">0749002312360570650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">光復路327巷管線汰換工程</SimpleData>
+		<SimpleData name="remark">WY-87-0729-03</SimpleData>
+		<SimpleData name="coord_97x">312349.427</SimpleData>
+		<SimpleData name="coord_97y">2605780.174</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.610727788323,23.5541449366915</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.118</SimpleData>
+		<SimpleData name="gid">118</SimpleData>
+		<SimpleData name="unific_id">0749002302261000650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">西嶼鄉新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WR-86-0759-01</SimpleData>
+		<SimpleData name="coord_97x">302253.791</SimpleData>
+		<SimpleData name="coord_97y">2610014.310</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.51199015944,23.5927348670772</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.119</SimpleData>
+		<SimpleData name="gid">119</SimpleData>
+		<SimpleData name="unific_id">0749002293656830650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">七美8#號深井配管工程</SimpleData>
+		<SimpleData name="remark">WR-86-0760-01</SimpleData>
+		<SimpleData name="coord_97x">293631.331</SimpleData>
+		<SimpleData name="coord_97y">2568373.545</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.426302203918,23.2169734107268</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.120</SimpleData>
+		<SimpleData name="gid">162</SimpleData>
+		<SimpleData name="unific_id">0749002316661060640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公地區供水應急改善工程</SimpleData>
+		<SimpleData name="remark">WR-83-0757-01</SimpleData>
+		<SimpleData name="coord_97x">316683.503</SimpleData>
+		<SimpleData name="coord_97y">2610628.064</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.65339563495,23.5977463896867</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.121</SimpleData>
+		<SimpleData name="gid">120</SimpleData>
+		<SimpleData name="unific_id">0749002312662720650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙、西嶼深井導水管工程</SimpleData>
+		<SimpleData name="remark">WE-91-0759-02</SimpleData>
+		<SimpleData name="coord_97x">312636.732</SimpleData>
+		<SimpleData name="coord_97y">2627231.366</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.614445842167,23.7478266667583</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.122</SimpleData>
+		<SimpleData name="gid">121</SimpleData>
+		<SimpleData name="unific_id">0749002312862680650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">吉貝新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WT-86-0753-01</SimpleData>
+		<SimpleData name="coord_97x">312836.066</SimpleData>
+		<SimpleData name="coord_97y">2626885.919</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.616386478523,23.7446997250886</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.123</SimpleData>
+		<SimpleData name="gid">122</SimpleData>
+		<SimpleData name="unific_id">0749002312762740650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">吉貝新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WT-86-0753-01</SimpleData>
+		<SimpleData name="coord_97x">312752.189</SimpleData>
+		<SimpleData name="coord_97y">2627463.771</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.615588255333,23.7499206306233</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.124</SimpleData>
+		<SimpleData name="gid">123</SimpleData>
+		<SimpleData name="unific_id">0749002311061900650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙鄉新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WR-86-0753-01</SimpleData>
+		<SimpleData name="coord_97x">311024.305</SimpleData>
+		<SimpleData name="coord_97y">2619025.283</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.598291133486,23.67379254926</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.125</SimpleData>
+		<SimpleData name="gid">124</SimpleData>
+		<SimpleData name="unific_id">0749002310461840650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫集水管工程(緊急工程)_1</SimpleData>
+		<SimpleData name="remark">WR-87-0753-01</SimpleData>
+		<SimpleData name="coord_97x">310404.125</SimpleData>
+		<SimpleData name="coord_97y">2618499.356</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.592189651696,23.6690670667839</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.126</SimpleData>
+		<SimpleData name="gid">125</SimpleData>
+		<SimpleData name="unific_id">0749002293156800650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎42號線拓路配管工程_1</SimpleData>
+		<SimpleData name="remark">WT-86-0760-01</SimpleData>
+		<SimpleData name="coord_97x">293144.475</SimpleData>
+		<SimpleData name="coord_97y">2568089.748</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.42153740687,23.2144234784829</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.127</SimpleData>
+		<SimpleData name="gid">126</SimpleData>
+		<SimpleData name="unific_id">0749002310960360650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公58湖西22.23澎南7.8號深井配管工程_1</SimpleData>
+		<SimpleData name="remark">WR-85-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310968.158</SimpleData>
+		<SimpleData name="coord_97y">2603617.915</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59711032766,23.5346731098751</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.128</SimpleData>
+		<SimpleData name="gid">127</SimpleData>
+		<SimpleData name="unific_id">0749002310260720650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公59號深井配管埋設_1</SimpleData>
+		<SimpleData name="remark">WR-85-0729-06</SimpleData>
+		<SimpleData name="coord_97x">310274.818</SimpleData>
+		<SimpleData name="coord_97y">2607223.542</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59046557901,23.5672564578224</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.129</SimpleData>
+		<SimpleData name="gid">128</SimpleData>
+		<SimpleData name="unific_id">0749002105960340600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">36-18-1；WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310177.062</SimpleData>
+		<SimpleData name="coord_97y">2602823.360</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589330855055,23.5275280912002</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.130</SimpleData>
+		<SimpleData name="gid">129</SimpleData>
+		<SimpleData name="unific_id">0749002310260300650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公58湖西22.23澎南7.8號深井配管工程_2</SimpleData>
+		<SimpleData name="remark">WR-85-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310268.800</SimpleData>
+		<SimpleData name="coord_97y">2603033.193</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590237683748,23.5294194016711</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.131</SimpleData>
+		<SimpleData name="gid">130</SimpleData>
+		<SimpleData name="unific_id">0762002106260650650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公23與56號井管線連接工程</SimpleData>
+		<SimpleData name="coord_97x">310391.776</SimpleData>
+		<SimpleData name="coord_97y">2605933.738</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.591559139028,23.555605681271</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.132</SimpleData>
+		<SimpleData name="gid">131</SimpleData>
+		<SimpleData name="unific_id">0749002310460570650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公58湖西22.23澎南7.8號深井配管工程_3</SimpleData>
+		<SimpleData name="remark">WR-85-0729-02</SimpleData>
+		<SimpleData name="coord_97x">310466.345</SimpleData>
+		<SimpleData name="coord_97y">2605715.598</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.592280711305,23.553633176467</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.133</SimpleData>
+		<SimpleData name="gid">132</SimpleData>
+		<SimpleData name="unific_id">0749002315960780650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公58湖西22.23澎南7.8號深井配管工程</SimpleData>
+		<SimpleData name="remark">WR-85-0729-02</SimpleData>
+		<SimpleData name="coord_97x">315983.010</SimpleData>
+		<SimpleData name="coord_97y">2607871.120</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.646410278786,23.5728813304254</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.134</SimpleData>
+		<SimpleData name="gid">133</SimpleData>
+		<SimpleData name="unific_id">0749002301458590640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">望安深井配管工程</SimpleData>
+		<SimpleData name="remark">WR-85-0756-01</SimpleData>
+		<SimpleData name="coord_97x">301487.125</SimpleData>
+		<SimpleData name="coord_97y">2585918.372</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.503651471908,23.3751772218806</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.135</SimpleData>
+		<SimpleData name="gid">134</SimpleData>
+		<SimpleData name="unific_id">0749002312462690650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="coord_97x">312496.551</SimpleData>
+		<SimpleData name="coord_97y">2626920.385</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.613057627799,23.7450241759461</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.136</SimpleData>
+		<SimpleData name="gid">135</SimpleData>
+		<SimpleData name="unific_id">0749002312462690650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="coord_97x">312471.148</SimpleData>
+		<SimpleData name="coord_97y">2626932.482</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.612808967065,23.7451343903398</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.137</SimpleData>
+		<SimpleData name="gid">136</SimpleData>
+		<SimpleData name="unific_id">0749002312161670650004</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙鄉西嶼鄉新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WT-85-0753-03</SimpleData>
+		<SimpleData name="coord_97x">312138.218</SimpleData>
+		<SimpleData name="coord_97y">2616788.268</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609118030465,23.6535509615783</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.138</SimpleData>
+		<SimpleData name="gid">137</SimpleData>
+		<SimpleData name="unific_id">0749002310660580650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公60號深井配管工程</SimpleData>
+		<SimpleData name="remark">WT-85-0729-11</SimpleData>
+		<SimpleData name="coord_97x">310664.605</SimpleData>
+		<SimpleData name="coord_97y">2605867.550</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.594228799003,23.5549978375346</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.139</SimpleData>
+		<SimpleData name="gid">138</SimpleData>
+		<SimpleData name="unific_id">07490021049619006  001</SimpleData>
+		<SimpleData name="coord_97x">308996.828</SimpleData>
+		<SimpleData name="coord_97y">2618423.246</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.578390326383,23.6684319454306</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.140</SimpleData>
+		<SimpleData name="gid">139</SimpleData>
+		<SimpleData name="unific_id">0749002309161850650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙鄉西嶼鄉新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WT-85-0753-03</SimpleData>
+		<SimpleData name="coord_97x">309133.545</SimpleData>
+		<SimpleData name="coord_97y">2618533.058</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.579734987323,23.6694184805665</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.141</SimpleData>
+		<SimpleData name="gid">140</SimpleData>
+		<SimpleData name="unific_id">0749002302061210650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙鄉西嶼鄉新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WT-85-0753-03</SimpleData>
+		<SimpleData name="coord_97x">302052.223</SimpleData>
+		<SimpleData name="coord_97y">2612138.028</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.510089398897,23.6119178662949</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.142</SimpleData>
+		<SimpleData name="gid">141</SimpleData>
+		<SimpleData name="unific_id">0749002302661250650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙鄉西嶼鄉新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WT-85-0753-03</SimpleData>
+		<SimpleData name="coord_97x">302614.688</SimpleData>
+		<SimpleData name="coord_97y">2612559.829</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.5156160429,23.6157083760926</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.143</SimpleData>
+		<SimpleData name="gid">142</SimpleData>
+		<SimpleData name="unific_id">07490028960567906  002</SimpleData>
+		<SimpleData name="coord_97x">294337.171</SimpleData>
+		<SimpleData name="coord_97y">2567160.232</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.433163172115,23.2059980581047</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.144</SimpleData>
+		<SimpleData name="gid">143</SimpleData>
+		<SimpleData name="unific_id">0749002896156790600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="coord_97x">294347.754</SimpleData>
+		<SimpleData name="coord_97y">2567163.228</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.433266655737,23.2060248233643</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.145</SimpleData>
+		<SimpleData name="gid">144</SimpleData>
+		<SimpleData name="unific_id">0749002310861370640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">白沙鄉城前新鑿深井導水管工程</SimpleData>
+		<SimpleData name="remark">WR-84-0753-01</SimpleData>
+		<SimpleData name="coord_97x">310860.497</SimpleData>
+		<SimpleData name="coord_97y">2613715.664</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.596467814493,23.625855563411</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.146</SimpleData>
+		<SimpleData name="gid">145</SimpleData>
+		<SimpleData name="unific_id">07490029704608606  001</SimpleData>
+		<SimpleData name="coord_97x">301206.359</SimpleData>
+		<SimpleData name="coord_97y">2607971.273</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.501657459525,23.5743203050795</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.147</SimpleData>
+		<SimpleData name="gid">146</SimpleData>
+		<SimpleData name="unific_id">0749002311761280600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">311790.372</SimpleData>
+		<SimpleData name="coord_97y">2612802.472</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.605542823049,23.6175745814358</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.148</SimpleData>
+		<SimpleData name="gid">148</SimpleData>
+		<SimpleData name="unific_id">0749002312561090600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_model">文式</SimpleData>
+		<SimpleData name="meter_size">300</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖三號線7K+960-9K+600路面拓寬配管改遷工程_1</SimpleData>
+		<SimpleData name="remark">WY-83-0753-03</SimpleData>
+		<SimpleData name="coord_97x">312564.570</SimpleData>
+		<SimpleData name="coord_97y">2610978.973</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.61305301867,23.6010794841873</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.149</SimpleData>
+		<SimpleData name="gid">149</SimpleData>
+		<SimpleData name="unific_id">0749002315960940640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公地區供水應急改善工程</SimpleData>
+		<SimpleData name="remark">WR-83-0757-01</SimpleData>
+		<SimpleData name="coord_97x">315931.772</SimpleData>
+		<SimpleData name="coord_97y">2609494.492</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.645980078931,23.5875416357534</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.150</SimpleData>
+		<SimpleData name="gid">150</SimpleData>
+		<SimpleData name="unific_id">0762002105760650650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="coord_97x">309971.109</SimpleData>
+		<SimpleData name="coord_97y">2605954.593</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587439562209,23.5558096123504</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.151</SimpleData>
+		<SimpleData name="gid">151</SimpleData>
+		<SimpleData name="unific_id">0749002309960590640002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖馬公56號白沙25、26號深井配水管工程</SimpleData>
+		<SimpleData name="remark">WP-81-0729-04</SimpleData>
+		<SimpleData name="coord_97x">309972.622</SimpleData>
+		<SimpleData name="coord_97y">2605957.061</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587454473355,23.5558318458699</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.152</SimpleData>
+		<SimpleData name="gid">152</SimpleData>
+		<SimpleData name="unific_id">0749002309761870640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖馬公56號白沙25、26號深井配水管工程</SimpleData>
+		<SimpleData name="remark">WP-81-0729-04</SimpleData>
+		<SimpleData name="coord_97x">309730.004</SimpleData>
+		<SimpleData name="coord_97y">2618723.226</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.5855899867,23.6711136177566</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.153</SimpleData>
+		<SimpleData name="gid">153</SimpleData>
+		<SimpleData name="unific_id">0749002318260940600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">318252.023</SimpleData>
+		<SimpleData name="coord_97y">2609769.194</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.668724595307,23.5899258556556</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.154</SimpleData>
+		<SimpleData name="gid">154</SimpleData>
+		<SimpleData name="unific_id">0749002318260990640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公地區供水應急改善工程</SimpleData>
+		<SimpleData name="remark">WR-83-0757-01</SimpleData>
+		<SimpleData name="coord_97x">318275.187</SimpleData>
+		<SimpleData name="coord_97y">2609901.410</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.668957599333,23.5911187170293</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.155</SimpleData>
+		<SimpleData name="gid">155</SimpleData>
+		<SimpleData name="unific_id">0749002318461030640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖馬公地區北寮深井配管工程</SimpleData>
+		<SimpleData name="remark">WP-81-0729-08</SimpleData>
+		<SimpleData name="coord_97x">318420.812</SimpleData>
+		<SimpleData name="coord_97y">2610351.503</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.670405005489,23.5951766514971</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.156</SimpleData>
+		<SimpleData name="gid">156</SimpleData>
+		<SimpleData name="unific_id">0749002103660730600001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公巷新擴建6.7.8碼頭船舶用水工程</SimpleData>
+		<SimpleData name="remark">WQ-80-0729-01</SimpleData>
+		<SimpleData name="coord_97x">307820.620</SimpleData>
+		<SimpleData name="coord_97y">2606634.682</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.566401841322,23.5620287164257</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.157</SimpleData>
+		<SimpleData name="gid">157</SimpleData>
+		<SimpleData name="unific_id">0749002307760660640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公巷新擴建6.7.8碼頭船舶用水工程</SimpleData>
+		<SimpleData name="remark">WQ-80-0729-01</SimpleData>
+		<SimpleData name="coord_97x">307778.850</SimpleData>
+		<SimpleData name="coord_97y">2606637.810</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.565992814007,23.562058455528</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.158</SimpleData>
+		<SimpleData name="gid">158</SimpleData>
+		<SimpleData name="unific_id">0749002308361780600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">308395.739</SimpleData>
+		<SimpleData name="coord_97y">2617892.747</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.572476775819,23.6636636835084</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.159</SimpleData>
+		<SimpleData name="gid">160</SimpleData>
+		<SimpleData name="unific_id">0729006113061010650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">317170.130</SimpleData>
+		<SimpleData name="coord_97y">2609653.708</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.658119693196,23.5889283530647</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.160</SimpleData>
+		<SimpleData name="gid">161</SimpleData>
+		<SimpleData name="unific_id">0749002316360970640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公地區供水應急改善工程</SimpleData>
+		<SimpleData name="remark">WR-83-0757-01</SimpleData>
+		<SimpleData name="coord_97x">316308.748</SimpleData>
+		<SimpleData name="coord_97y">2609762.959</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.64968532867,23.589950356223</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.161</SimpleData>
+		<SimpleData name="gid">163</SimpleData>
+		<SimpleData name="unific_id">0749002310161840640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫8、9井抽供水工程</SimpleData>
+		<SimpleData name="remark">WT-80-0729-10</SimpleData>
+		<SimpleData name="coord_97x">310103.135</SimpleData>
+		<SimpleData name="coord_97y">2618469.446</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.589237721683,23.6688082469066</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.162</SimpleData>
+		<SimpleData name="gid">164</SimpleData>
+		<SimpleData name="unific_id">0749002314160840650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">南區工程處</SimpleData>
+		<SimpleData name="proj_name">馬公系統第二期增闢水源-#54.#55抽供水工程_2</SimpleData>
+		<SimpleData name="remark">WT-80-0729-09</SimpleData>
+		<SimpleData name="coord_97x">314170.854</SimpleData>
+		<SimpleData name="coord_97y">2608438.343</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.628682515282,23.5780758957847</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.163</SimpleData>
+		<SimpleData name="gid">165</SimpleData>
+		<SimpleData name="unific_id">0749002314560910650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">南區工程處</SimpleData>
+		<SimpleData name="proj_name">馬公系統第二期增闢水源-#54.#55抽供水工程_3</SimpleData>
+		<SimpleData name="remark">WT-80-0729-09</SimpleData>
+		<SimpleData name="coord_97x">314536.358</SimpleData>
+		<SimpleData name="coord_97y">2609135.105</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.632293324361,23.5843527920589</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.164</SimpleData>
+		<SimpleData name="gid">166</SimpleData>
+		<SimpleData name="unific_id">07490021057619106  001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫8、9井抽供水工程</SimpleData>
+		<SimpleData name="remark">WT-80-0729-10</SimpleData>
+		<SimpleData name="coord_97x">309796.380</SimpleData>
+		<SimpleData name="coord_97y">2618530.039</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.586232920009,23.6693667721636</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.165</SimpleData>
+		<SimpleData name="gid">167</SimpleData>
+		<SimpleData name="unific_id">07490021057618806  001</SimpleData>
+		<SimpleData name="coord_97x">309757.258</SimpleData>
+		<SimpleData name="coord_97y">2618296.186</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585839979806,23.6672566475981</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.166</SimpleData>
+		<SimpleData name="gid">168</SimpleData>
+		<SimpleData name="unific_id">0749002309761820650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫淺井導水管工程_1</SimpleData>
+		<SimpleData name="remark">WE-91-0753-01</SimpleData>
+		<SimpleData name="coord_97x">309766.696</SimpleData>
+		<SimpleData name="coord_97y">2618292.923</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585932378216,23.6672268344982</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.167</SimpleData>
+		<SimpleData name="gid">169</SimpleData>
+		<SimpleData name="unific_id">0749002309761850640002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">赤崁地下水庫8、9井抽供水工程</SimpleData>
+		<SimpleData name="remark">WT-80-0729-10</SimpleData>
+		<SimpleData name="coord_97x">309764.059</SimpleData>
+		<SimpleData name="coord_97y">2618557.549</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585917177787,23.6696163710494</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.168</SimpleData>
+		<SimpleData name="gid">170</SimpleData>
+		<SimpleData name="unific_id">0749002311460350640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公鐵線里新鑿深井抽供水工程</SimpleData>
+		<SimpleData name="remark">WT-81-0729-10</SimpleData>
+		<SimpleData name="coord_97x">311498.994</SimpleData>
+		<SimpleData name="coord_97y">2603527.470</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.602305299017,23.5338363896601</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.169</SimpleData>
+		<SimpleData name="gid">171</SimpleData>
+		<SimpleData name="unific_id">0729006296358530640003</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">300798.475</SimpleData>
+		<SimpleData name="coord_97y">2584621.232</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.496871585064,23.3634856297187</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.170</SimpleData>
+		<SimpleData name="gid">172</SimpleData>
+		<SimpleData name="unific_id">0762000090640002002002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">300789.192</SimpleData>
+		<SimpleData name="coord_97y">2584637.812</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.496781351202,23.3636356355239</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.171</SimpleData>
+		<SimpleData name="gid">173</SimpleData>
+		<SimpleData name="unific_id">0749002300858460640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">望安深井配管工程</SimpleData>
+		<SimpleData name="remark">WR-85-0756-01</SimpleData>
+		<SimpleData name="coord_97x">300820.466</SimpleData>
+		<SimpleData name="coord_97y">2584608.245</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.497086239321,23.3633676785052</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.172</SimpleData>
+		<SimpleData name="gid">174</SimpleData>
+		<SimpleData name="unific_id">0749002312562670630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">吉貝嶼供水工程─導送配水管(一)</SimpleData>
+		<SimpleData name="remark">WP-79-0753-01</SimpleData>
+		<SimpleData name="coord_97x">312551.890</SimpleData>
+		<SimpleData name="coord_97y">2626769.434</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.613594065349,23.7436590295248</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.173</SimpleData>
+		<SimpleData name="gid">175</SimpleData>
+		<SimpleData name="unific_id">0749002312462700630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">吉貝嶼供水工程─導送配水管(一)</SimpleData>
+		<SimpleData name="remark">AL-99-0711-01</SimpleData>
+		<SimpleData name="coord_97x">312470.538</SimpleData>
+		<SimpleData name="coord_97y">2627060.607</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.612808393088,23.7462913042353</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.174</SimpleData>
+		<SimpleData name="gid">176</SimpleData>
+		<SimpleData name="unific_id">0749002312162650630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">吉貝嶼供水工程─導送配水管(一)</SimpleData>
+		<SimpleData name="remark">WP-79-0753-01</SimpleData>
+		<SimpleData name="coord_97x">312179.305</SimpleData>
+		<SimpleData name="coord_97y">2626578.132</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609931366017,23.7419461549802</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.175</SimpleData>
+		<SimpleData name="gid">177</SimpleData>
+		<SimpleData name="unific_id">0749002107160680600001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">311294.897</SimpleData>
+		<SimpleData name="coord_97y">2606230.337</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.600417326115,23.5582499456366</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.176</SimpleData>
+		<SimpleData name="gid">178</SimpleData>
+		<SimpleData name="unific_id">0749002311060600650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公海軍眷區用水設備工程</SimpleData>
+		<SimpleData name="remark">WQ-79-0729-01</SimpleData>
+		<SimpleData name="coord_97x">311061.237</SimpleData>
+		<SimpleData name="coord_97y">2606078.140</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.598122370454,23.5568844938694</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.177</SimpleData>
+		<SimpleData name="gid">179</SimpleData>
+		<SimpleData name="unific_id">0749002309260220650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">澎湖本島未供水工程-導送配水管(三)_2</SimpleData>
+		<SimpleData name="remark">WP-79-0729-04</SimpleData>
+		<SimpleData name="coord_97x">309277.383</SimpleData>
+		<SimpleData name="coord_97y">2602232.296</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.580496990064,23.5222240919648</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.178</SimpleData>
+		<SimpleData name="gid">180</SimpleData>
+		<SimpleData name="unific_id">0749002107160360600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="remark">36-7-1</SimpleData>
+		<SimpleData name="coord_97x">311330.036</SimpleData>
+		<SimpleData name="coord_97y">2603070.252</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.600631890855,23.5297142751752</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.179</SimpleData>
+		<SimpleData name="gid">181</SimpleData>
+		<SimpleData name="unific_id">0749002316360890630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">南區工程處</SimpleData>
+		<SimpleData name="proj_name">澎湖本島未供水社區~紅蘿供水站土建及配管工程_1</SimpleData>
+		<SimpleData name="remark">WP-79-0757-03</SimpleData>
+		<SimpleData name="coord_97x">316319.719</SimpleData>
+		<SimpleData name="coord_97y">2608990.133</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.649758455482,23.5829716936977</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.180</SimpleData>
+		<SimpleData name="gid">182</SimpleData>
+		<SimpleData name="unific_id">0749002316360890630002</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">南區工程處</SimpleData>
+		<SimpleData name="proj_name">澎湖本島未供水社區~紅蘿供水站土建及配管工程</SimpleData>
+		<SimpleData name="remark">WP-79-0757-03</SimpleData>
+		<SimpleData name="coord_97x">316326.539</SimpleData>
+		<SimpleData name="coord_97y">2608982.223</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.649824921764,23.5828999861967</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.181</SimpleData>
+		<SimpleData name="gid">183</SimpleData>
+		<SimpleData name="unific_id">0749002313160800630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">澎湖本島未供水社區~導送水管(一)</SimpleData>
+		<SimpleData name="remark">WT-78-0729-11</SimpleData>
+		<SimpleData name="coord_97x">313181.768</SimpleData>
+		<SimpleData name="coord_97y">2608069.190</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.618977237905,23.5747815114348</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.182</SimpleData>
+		<SimpleData name="gid">184</SimpleData>
+		<SimpleData name="unific_id">0749002300858460650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖縣望安鄉西安水庫抽供水工程(二)</SimpleData>
+		<SimpleData name="remark">WQ-77-0729-06</SimpleData>
+		<SimpleData name="coord_97x">300800.334</SimpleData>
+		<SimpleData name="coord_97y">2584631.054</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.496890103839,23.3635742612844</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.183</SimpleData>
+		<SimpleData name="gid">185</SimpleData>
+		<SimpleData name="unific_id">0749002315260670630001</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖縣四號線道落拓寬改遷工程</SimpleData>
+		<SimpleData name="remark">WR-82-0729-02，利用原有的材料遷移</SimpleData>
+		<SimpleData name="coord_97x">315286.784</SimpleData>
+		<SimpleData name="coord_97y">2606749.462</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.639540914355,23.5627815147417</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.184</SimpleData>
+		<SimpleData name="gid">186</SimpleData>
+		<SimpleData name="unific_id">0749002312161210640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">312173.650</SimpleData>
+		<SimpleData name="coord_97y">2612138.733</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.609271058435,23.6115666437662</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.185</SimpleData>
+		<SimpleData name="gid">187</SimpleData>
+		<SimpleData name="unific_id">0749002310661590640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">310603.821</SimpleData>
+		<SimpleData name="coord_97y">2615924.768</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.594042336079,23.6458123509461</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.186</SimpleData>
+		<SimpleData name="gid">188</SimpleData>
+		<SimpleData name="unific_id">0749002310161620640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">310191.704</SimpleData>
+		<SimpleData name="coord_97y">2616244.011</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.590015836759,23.6487103837435</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.187</SimpleData>
+		<SimpleData name="gid">189</SimpleData>
+		<SimpleData name="unific_id">0749002309861640640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">309897.333</SimpleData>
+		<SimpleData name="coord_97y">2616403.300</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.587136868838,23.6501596372933</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.188</SimpleData>
+		<SimpleData name="gid">190</SimpleData>
+		<SimpleData name="unific_id">0749002309961720640002</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">309990.096</SimpleData>
+		<SimpleData name="coord_97y">2617220.863</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588079128522,23.6575383835728</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.189</SimpleData>
+		<SimpleData name="gid">191</SimpleData>
+		<SimpleData name="unific_id">0762009106161780650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="coord_97x">309996.356</SimpleData>
+		<SimpleData name="coord_97y">2617210.745</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.588140086665,23.6574467838615</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.190</SimpleData>
+		<SimpleData name="gid">192</SimpleData>
+		<SimpleData name="unific_id">0749002309461720640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">309452.971</SimpleData>
+		<SimpleData name="coord_97y">2617289.205</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582816677353,23.6581753600104</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.191</SimpleData>
+		<SimpleData name="gid">193</SimpleData>
+		<SimpleData name="unific_id">0749002309261770640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">309233.919</SimpleData>
+		<SimpleData name="coord_97y">2617721.816</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.580686643137,23.6620896888268</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.192</SimpleData>
+		<SimpleData name="gid">194</SimpleData>
+		<SimpleData name="unific_id">0749002307861780640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">307852.865</SimpleData>
+		<SimpleData name="coord_97y">2617898.880</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.567155206294,23.66373862593</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.193</SimpleData>
+		<SimpleData name="gid">195</SimpleData>
+		<SimpleData name="unific_id">0749002313260790630003</SimpleData>
+		<SimpleData name="meter_type">3</SimpleData>
+		<SimpleData name="meter_model">螺旋槳式</SimpleData>
+		<SimpleData name="meter_size">350</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公增闢水源第一期管線工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-08</SimpleData>
+		<SimpleData name="coord_97x">313211.971</SimpleData>
+		<SimpleData name="coord_97y">2607977.291</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.619269226944,23.5739505252068</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.194</SimpleData>
+		<SimpleData name="gid">197</SimpleData>
+		<SimpleData name="unific_id">0712004297458480640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="coord_97x">301882.362</SimpleData>
+		<SimpleData name="coord_97y">2584128.160</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.507456076946,23.3589991859968</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.195</SimpleData>
+		<SimpleData name="gid">198</SimpleData>
+		<SimpleData name="unific_id">0749002308460670600001</SimpleData>
+		<SimpleData name="meter_type">0</SimpleData>
+		<SimpleData name="meter_size">0</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="coord_97x">308467.541</SimpleData>
+		<SimpleData name="coord_97y">2606761.360</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.57274369968,23.5631493590662</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.196</SimpleData>
+		<SimpleData name="gid">199</SimpleData>
+		<SimpleData name="unific_id">0749002316360890650003</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">馬公58湖西22.23澎南7.8號深井配管工程_7</SimpleData>
+		<SimpleData name="remark">WR-85-0729-02</SimpleData>
+		<SimpleData name="coord_97x">316346.961</SimpleData>
+		<SimpleData name="coord_97y">2608976.586</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.650024737256,23.5828482530293</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.197</SimpleData>
+		<SimpleData name="gid">200</SimpleData>
+		<SimpleData name="unific_id">07490021075614106  001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="coord_97x">311672.020</SimpleData>
+		<SimpleData name="coord_97y">2613632.300</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.604417408549,23.6250720490772</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.198</SimpleData>
+		<SimpleData name="gid">201</SimpleData>
+		<SimpleData name="unific_id">0749002311461400640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">75</SimpleData>
+		<SimpleData name="const_unit">工務課</SimpleData>
+		<SimpleData name="proj_name">馬公系統增闢水源導水管及井圍牆工程</SimpleData>
+		<SimpleData name="remark">WT-74-0729-13</SimpleData>
+		<SimpleData name="coord_97x">311400.610</SimpleData>
+		<SimpleData name="coord_97y">2614029.576</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.601773953281,23.6286695920874</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.199</SimpleData>
+		<SimpleData name="gid">202</SimpleData>
+		<SimpleData name="unific_id">07490021069616106  001</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區管網建置傳訊工程</SimpleData>
+		<SimpleData name="remark">DB-03-0729-01</SimpleData>
+		<SimpleData name="coord_97x">310952.711</SimpleData>
+		<SimpleData name="coord_97y">2615583.687</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597448054462,23.6427194222206</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.200</SimpleData>
+		<SimpleData name="gid">203</SimpleData>
+		<SimpleData name="unific_id">0762009109461020640001</SimpleData>
+		<SimpleData name="meter_type">4</SimpleData>
+		<SimpleData name="meter_model">奧多曼式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖所</SimpleData>
+		<SimpleData name="proj_name">澎湖所25小區計量管網工程</SimpleData>
+		<SimpleData name="coord_97x">313545.344</SimpleData>
+		<SimpleData name="coord_97y">2609670.545</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.622607146258,23.5892267758311</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.201</SimpleData>
+		<SimpleData name="gid">35</SimpleData>
+		<SimpleData name="unific_id">07490029866615406  001</SimpleData>
+		<SimpleData name="meter_type">6</SimpleData>
+		<SimpleData name="meter_model">渦流式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="proj_code">DA-99-0729-02</SimpleData>
+		<SimpleData name="proj_name">澎湖17小區管網改善工程</SimpleData>
+		<SimpleData name="remark">依工程(RB-08-0759-02)測量成果報告書定位</SimpleData>
+		<SimpleData name="coord_97x">302738.760</SimpleData>
+		<SimpleData name="coord_97y">2614788.614</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.516910578409,23.6358293473266</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.202</SimpleData>
+		<SimpleData name="gid">204</SimpleData>
+		<SimpleData name="finish_id">0743000106460630650001</SimpleData>
+		<SimpleData name="unific_id">0743000106460630650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-00-02-02</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">310861.875</SimpleData>
+		<SimpleData name="coord_97y">2606000.451</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.596166446543,23.5561904853499</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.203</SimpleData>
+		<SimpleData name="gid">206</SimpleData>
+		<SimpleData name="finish_id">0743000105660720650001</SimpleData>
+		<SimpleData name="unific_id">0743000105660720650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-03</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">309902.650</SimpleData>
+		<SimpleData name="coord_97y">2606741.580</SimpleData>
+		<SimpleData name="base_elev">14.820</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.58680055721,23.5629183338971</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.204</SimpleData>
+		<SimpleData name="gid">205</SimpleData>
+		<SimpleData name="finish_id">0743000105260720650001</SimpleData>
+		<SimpleData name="unific_id">0743000105260720650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-03</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">309723.817</SimpleData>
+		<SimpleData name="coord_97y">2606709.501</SimpleData>
+		<SimpleData name="base_elev">8.030</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.585047517737,23.5626352759369</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.205</SimpleData>
+		<SimpleData name="gid">207</SimpleData>
+		<SimpleData name="finish_id">0743000105260720650002</SimpleData>
+		<SimpleData name="unific_id">0743000105260720650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">300</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-04</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">309712.428</SimpleData>
+		<SimpleData name="coord_97y">2606808.782</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.584939925452,23.5635321662758</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.206</SimpleData>
+		<SimpleData name="gid">208</SimpleData>
+		<SimpleData name="finish_id">0743000105260780650001</SimpleData>
+		<SimpleData name="unific_id">0743000105260780650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-05</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">309445.742</SimpleData>
+		<SimpleData name="coord_97y">2607468.975</SimpleData>
+		<SimpleData name="base_elev">11.220</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582353866989,23.5695032567361</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.207</SimpleData>
+		<SimpleData name="gid">209</SimpleData>
+		<SimpleData name="finish_id">0743000105260780650002</SimpleData>
+		<SimpleData name="unific_id">0743000105260780650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">300</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-07</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">309433.365</SimpleData>
+		<SimpleData name="coord_97y">2607481.140</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.582233110047,23.5696135564897</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.208</SimpleData>
+		<SimpleData name="gid">210</SimpleData>
+		<SimpleData name="finish_id">0743000104460810650001</SimpleData>
+		<SimpleData name="unific_id">0743000104460810650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-05</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">308763.346</SimpleData>
+		<SimpleData name="coord_97y">2607527.862</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.575671430745,23.5700598881851</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.209</SimpleData>
+		<SimpleData name="gid">211</SimpleData>
+		<SimpleData name="finish_id">0743000104460810650002</SimpleData>
+		<SimpleData name="unific_id">0743000104460810650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-06</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">308791.068</SimpleData>
+		<SimpleData name="coord_97y">2607771.167</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.575952576351,23.5722558305022</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.210</SimpleData>
+		<SimpleData name="gid">212</SimpleData>
+		<SimpleData name="finish_id">0743000104460810650003</SimpleData>
+		<SimpleData name="unific_id">0743000104460810650003</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-06</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">308787.790</SimpleData>
+		<SimpleData name="coord_97y">2607790.523</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.57592122367,23.5724307275855</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.211</SimpleData>
+		<SimpleData name="gid">213</SimpleData>
+		<SimpleData name="finish_id">0743000103260780650001</SimpleData>
+		<SimpleData name="unific_id">0743000103260780650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-08</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307663.681</SimpleData>
+		<SimpleData name="coord_97y">2607425.706</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.564895096784,23.5691769741867</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.212</SimpleData>
+		<SimpleData name="gid">214</SimpleData>
+		<SimpleData name="finish_id">0743000103260780650002</SimpleData>
+		<SimpleData name="unific_id">0743000103260780650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">300</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-11</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307677.375</SimpleData>
+		<SimpleData name="coord_97y">2607405.469</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56502846524,23.5689937557841</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.213</SimpleData>
+		<SimpleData name="gid">215</SimpleData>
+		<SimpleData name="finish_id">0743000103260780650003</SimpleData>
+		<SimpleData name="unific_id">0743000103260780650003</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-11</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307623.958</SimpleData>
+		<SimpleData name="coord_97y">2607352.898</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.564503160017,23.5685209611758</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.214</SimpleData>
+		<SimpleData name="gid">216</SimpleData>
+		<SimpleData name="finish_id">0743000103660900650001</SimpleData>
+		<SimpleData name="unific_id">0743000103660900650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-08</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307932.193</SimpleData>
+		<SimpleData name="coord_97y">2608619.575</SimpleData>
+		<SimpleData name="base_elev">7.170</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56757177682,23.5799475930032</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.215</SimpleData>
+		<SimpleData name="gid">217</SimpleData>
+		<SimpleData name="finish_id">0743000103660780650001</SimpleData>
+		<SimpleData name="unific_id">0743000103660780650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-09</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">308022.115</SimpleData>
+		<SimpleData name="coord_97y">2607386.540</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.568404799133,23.5688105270904</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.216</SimpleData>
+		<SimpleData name="gid">218</SimpleData>
+		<SimpleData name="finish_id">0743000103660780650002</SimpleData>
+		<SimpleData name="unific_id">0743000103660780650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">200</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-09</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">308007.882</SimpleData>
+		<SimpleData name="coord_97y">2607274.916</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.568261037402,23.5678031086332</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.217</SimpleData>
+		<SimpleData name="gid">219</SimpleData>
+		<SimpleData name="finish_id">0743000103260780650004</SimpleData>
+		<SimpleData name="unific_id">0743000103260780650004</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-09</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307658.114</SimpleData>
+		<SimpleData name="coord_97y">2607250.430</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.564833792083,23.5675944919421</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.218</SimpleData>
+		<SimpleData name="gid">220</SimpleData>
+		<SimpleData name="finish_id">0743000103660750650001</SimpleData>
+		<SimpleData name="unific_id">0743000103660750650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-10</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">308034.241</SimpleData>
+		<SimpleData name="coord_97y">2607044.880</SimpleData>
+		<SimpleData name="base_elev">0.000</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.568510302808,23.565725023239</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.219</SimpleData>
+		<SimpleData name="gid">221</SimpleData>
+		<SimpleData name="finish_id">0743000103260750650001</SimpleData>
+		<SimpleData name="unific_id">0743000103260750650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">100</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-10</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307720.057</SimpleData>
+		<SimpleData name="coord_97y">2607065.261</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.565433422008,23.565920278748</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.220</SimpleData>
+		<SimpleData name="gid">222</SimpleData>
+		<SimpleData name="finish_id">0743000103260750650002</SimpleData>
+		<SimpleData name="unific_id">0743000103260750650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="small_id">0729-01-02-10</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="coord_97x">307582.729</SimpleData>
+		<SimpleData name="coord_97y">2607053.841</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56408775461,23.5658220463488</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.221</SimpleData>
+		<SimpleData name="gid">223</SimpleData>
+		<SimpleData name="finish_id">0743000106460780650001</SimpleData>
+		<SimpleData name="unific_id">0743000106460780650001</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">300</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_code">DB-06-0729-01</SimpleData>
+		<SimpleData name="proj_name">澎湖營運所轄區分區計量管網委外建置</SimpleData>
+		<SimpleData name="med_id">02</SimpleData>
+		<SimpleData name="auto_on">0</SimpleData>
+		<SimpleData name="comm_type">1</SimpleData>
+		<SimpleData name="remark">02中區總表</SimpleData>
+		<SimpleData name="coord_97x">310713.564</SimpleData>
+		<SimpleData name="coord_97y">2607403.645</SimpleData>
+		<SimpleData name="base_elev">0.110</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.594770783072,23.5688663301657</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#meter">
+		<SimpleData name="fid">sql_statement.222</SimpleData>
+		<SimpleData name="gid">147</SimpleData>
+		<SimpleData name="unific_id">0749002299360720650002</SimpleData>
+		<SimpleData name="meter_type">5</SimpleData>
+		<SimpleData name="meter_model">豎軸葉輪電子式</SimpleData>
+		<SimpleData name="meter_size">150</SimpleData>
+		<SimpleData name="const_unit">澎湖營運所</SimpleData>
+		<SimpleData name="proj_name">澎湖所配水管水量計裝置工程</SimpleData>
+		<SimpleData name="remark">WZ-93-0729-02</SimpleData>
+		<SimpleData name="coord_97x">299311.081</SimpleData>
+		<SimpleData name="coord_97y">2607214.023</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.48310640588,23.5675883598598</coordinates></Point>
+  </Placemark>
+</Folder>
+</Document></kml>

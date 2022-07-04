@@ -1,35 +1,56 @@
 ﻿<!-- 圖層頁面 1 -->
 <div class="layerBoxBg" id="boxLayerWindow1">
-	<div class="layerBox open"><!-- 加上.open 可以打開圖層-->
-		@* 按鈕_隱藏 *@
-		<div class="closeGroup">
-			<a href="javascript:;" class="hidelayerBox">
-				<i class="bi bi-x"></i>
-			</a>
-		</div>	
-		@* 圖層視窗 *@
-		<div class="layerAbgne" id="boxLayerAbgne1">
-			@* 標籤 *@
-			<ul class="tabs">
-				<li><span>圖例</span></li>
-				<li><span>圖層</span></li>
-				<li><span>底圖</span></li>
-			</ul>
-			@* 圖例、圖層、底圖 *@
-			<div class="tab_container">
-				<ul class="tab_content">
-					@* 圖例 *@
-					<li class="layerBoxScrollbar222" id="boxLegend1"></li>
-					@* 圖層 *@
-					<li class="layerBoxScrollbar2" id=boxLayer1></li>
-					@* 底圖 *@
-					<li class="layerBoxScrollbar" id="boxBg1">
-						<div class="layerBg active"><span><img src="~/images/layerBox_layerImg1.png" alt=""></span><div class="title">通用版電子地圖</div></div>
-					</li><!-- layerBoxScrollbar end -->
-				</ul><!-- tab_content end -->
-			</div><!-- tab_container end -->
-		</div><!-- layerAbgne end -->
-	</div><!-- layerBox end -->
+    <div class="layerBox open">
+        <!-- 加上.open 可以打開圖層-->
+        @* 按鈕_隱藏 *@
+        <div class="closeGroup">
+            <a href="javascript:;" class="hidelayerBox">
+                <i class="bi bi-x"></i>
+            </a>
+        </div>
+        @* 圖層視窗 *@
+        <div class="layerAbgne" id="boxLayerAbgne1">
+            @* 標籤 *@
+            <ul class="tabs">
+                <li><span>圖例</span></li>
+                <li><span>圖層</span></li>
+                <li><span>底圖</span></li>
+            </ul>
+            @* 圖例、圖層、底圖 *@
+            <div class="tab_container">
+                <ul class="tab_content">
+                    @* 圖例 *@
+                    <li class="layerBoxScrollbar222 d-none" id="boxLegend1">
+                        <div class="flagArea">
+                            <div class="title">
+                                <span>{name}</span>
+                                <div class="move_switch_div">
+                                    <label class="offline_switch">
+                                        <input type="checkbox" class="offline_switch_id" id="{checkBoxId}" checked />
+                                        <div class="move_slider offline_slider"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="flagBox">
+                                <div class="flag">
+                                    <span><img alt="圖例_{name}" src="//:0" /></span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    @* 圖層 *@
+                    <li class="layerBoxScrollbar2" id=boxLayer1></li>
+                    @* 底圖 *@
+                    <li class="layerBoxScrollbar d-none" id="boxBg1">
+                        <div class="layerBg{isActive}" onClick="{clickElm}.switchMap(this, '{item.LAYER}')">
+                            <span><img alt="底圖_{item.LAYER_NAME}" src="//:0"></span>
+                            <div class="title">{item.LAYER_NAME}</div>
+                        </div>
+                    </li><!-- layerBoxScrollbar end -->
+                </ul><!-- tab_content end -->
+            </div><!-- tab_container end -->
+        </div><!-- layerAbgne end -->
+    </div><!-- layerBox end -->
 </div>
 @* Tab *@
 <link rel="stylesheet" type="text/css" href="~/js/mmLayer/CardTabs/jquery.cardTabs.css" />
@@ -39,43 +60,43 @@
 <script type="text/javascript" src="~/js/mmLayer/jstree/jstree.min.js"></script>
 <script type="text/javascript" src="~/js/EzLayer.js"></script>
 <script type="text/javascript">
-	//# 取得圖層資料連結
-	if (typeof (GetLayerApi) === 'undefined') 
-		function GetLayerApi() {
-			return '@Url.Action("GetLayerData", "Layer")';
-		}
+    //# 取得圖層資料連結
+    if (typeof (GetLayerApi) === 'undefined')
+        function GetLayerApi() {
+            return '@Url.Action("GetLayerData", "Layer")';
+        }
 
-	//# 取得圖層目錄連結
-	if (typeof (GetDirApi) === 'undefined') 
-		function GetDirApi(){
-			return '@Url.Action("GetDirectoryData", "Layer")';
-		}
+    //# 取得圖層目錄連結
+    if (typeof (GetDirApi) === 'undefined')
+        function GetDirApi(){
+            return '@Url.Action("GetDirectoryData", "Layer")';
+        }
 
-	//# 取得底圖連結
-	if (typeof (GetBaseMapApi) === 'undefined') 
-		function GetBaseMapApi(){
-			return '@Url.Action("GetBaseMapData", "Layer")';
-		}
+    //# 取得底圖連結
+    if (typeof (GetBaseMapApi) === 'undefined')
+        function GetBaseMapApi(){
+            return '@Url.Action("GetBaseMapData", "Layer")';
+        }
 
-	//# 取得圖層清單連結
-	if (typeof (GetLayerListApi) === 'undefined') 
-		function GetLayerListApi(folderSn){
-			var param = (folderSn != undefined && folderSn != null ? '?folderRootSn=' + folderSn : '');
-			return '@Url.Action("GetLayerJsonData", "Layer")' + param;
-		}
+    //# 取得圖層清單連結
+    if (typeof (GetLayerListApi) === 'undefined')
+        function GetLayerListApi(folderSn){
+            var param = (folderSn != undefined && folderSn != null ? '?folderRootSn=' + folderSn : '');
+            return '@Url.Action("GetLayerJsonData", "Layer")' + param;
+        }
 
-	//# 取得 Proxy 連結
-	if (typeof (GetFileProxyApi) === 'undefined') 
-		function GetFileProxyApi(dataUrl, encoding){
-			var param = (dataUrl != undefined && dataUrl != null ? '?dataUrl=' + dataUrl : '');
-			param += (encoding != undefined && encoding != null ? ((param == '' ? '?' : '&') + 'ezEncoding=' + encoding) : '');
-			return '@Url.Action("ProxyData", "Layer")' + param;
-		}
+    //# 取得 Proxy 連結
+    if (typeof (GetFileProxyApi) === 'undefined')
+        function GetFileProxyApi(dataUrl, encoding){
+            var param = (dataUrl != undefined && dataUrl != null ? '?dataUrl=' + dataUrl : '');
+            param += (encoding != undefined && encoding != null ? ((param == '' ? '?' : '&') + 'ezEncoding=' + encoding) : '');
+            return '@Url.Action("ProxyData", "Layer")' + param;
+        }
 
-	var itemLayer = {
-		map: map,       // 圖臺物件
-		useRole: false, // 是否依據使用者權限(暫時無作用)
-		folderId: 0,    // 圖層根目錄識別碼
-	}
-	LayerMenuInit1(itemLayer);  // 圖臺目錄初始化
+    var itemLayer = {
+        map: map,       // 圖臺物件
+        useRole: false, // 是否依據使用者權限(暫時無作用)
+        folderId: 0,    // 圖層根目錄識別碼
+    }
+    LayerMenuInit1(itemLayer);  // 圖臺目錄初始化
 </script>

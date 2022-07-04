@@ -4,6 +4,7 @@
  * Layer1.highLight(lon, lat)           // 標註坐標
  * Layer1.locateGps()                   // 標註及定位至使用者坐標
  * Layer1.hideBtn(name)                 // 隱藏按鈕(gps: 定位按鈕、layer: 圖層按鈕) e.g. Layer1.hideBtn('gps')、Layer1.hideBtn('layer')
+ * Layer1.getAddressCoordinate(address) // 地址轉坐標服務
  * 
  */
 
@@ -74,7 +75,7 @@ function LayerMap() {
         boxLayer = boxLayer[0];
         boxLayer.className.indexOf('open') < 0 ? boxLayer.classList.add('open') : boxLayer.classList.remove('open');
     }           // 開關圖層視窗
-    this.hideBtn = (name) => {
+    this.hideBtn = name => {
         var btnClass = '';
         switch (name) {
             case 'gps': btnClass = 'layerSettingBtn'; break;
@@ -86,7 +87,10 @@ function LayerMap() {
             return;
         }
         btn[0].parentElement.style.display = 'none';
-    }              // 隱藏按鈕
+    }                // 隱藏按鈕
+    this.getAddressCoordinate = address => {
+        return getJsonData(GetAddressCoordinate(address), 'GET', null, '無地址轉坐標資料', '地址轉坐標資料錯誤');
+    }   // 取得地址轉坐標服務
     //# Private Function
     var MapSelf = this;
     var GpsInit = () => {
@@ -114,6 +118,30 @@ function LayerMap() {
                 alert('GPS 定位失敗');
             }
         }          // 定位失敗
+    let getJsonData = (dataUrl, type, obj, noneMsg, errMsg, callback) => {
+        let data = null,
+            ajax = $.ajax({
+                url: dataUrl,
+                type: type,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                data: obj == null ? null : JSON.stringify(obj),
+                success(result) {
+                    if (!result == '') {
+                        let l = JSON.parse(result);
+                        if (typeof (callBack) != 'undefined') callBack.apply(l);
+                        else data = l;
+                    }
+                    else console.log(noneMsg);
+                },
+                error(error) {
+                    console.log(errMsg);
+                }
+            });
+        ajax.always(function () { });
+        return data != null ? data : [];
+    }   // 取得 Json 資料
     return this;
 }
 

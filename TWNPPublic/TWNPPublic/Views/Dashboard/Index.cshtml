@@ -13,7 +13,8 @@
 <link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
 <script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script><style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+<style>
 
 </style>
 <script>
@@ -135,8 +136,8 @@
         $.each(obj,function(index,value){
             $("#tbB_Message > tbody").append('<tr>' +
                                             '<td class="width15">'+value.Time+'</td>' +
-                                            '<td>'+ value.Message +'</td>' +
-                                            '<td class="width15"><a class="btn-green-o" href="javascript:;" onclick="OpenExceptionModal()"><i class="bi bi-window"></i>查看</a></td>'+
+                                            '<td id="alerttablemsg'+index+'">'+ value.Message +'</td>' +
+                                            '<td class="width15"><a class="btn-green-o" href="javascript:;" data-rowid='+index+' onclick="OpenExceptionModal(this)"><i class="bi bi-window"></i>查看</a></td>'+
                                             '</tr>');
 
         });
@@ -395,7 +396,11 @@
         return y + '/' + mm + '/' + dd;
     }
 
-    function OpenExceptionModal(){
+    function OpenExceptionModal(obj){
+        let rowId = $(obj).data('rowid');
+        let msgtext = $("#alerttablemsg" + rowId).text();
+        $("#modalalertmsgbody").empty();
+        $("#modalalertmsgbody").text(msgtext);
         $("#ModalException").modal('show');
     }
 
@@ -531,12 +536,12 @@
     $(function () {
         $(".menuList > a:nth-child(1)").addClass("active").siblings().removeClass("active");
 
-		$(".open-mapArea").click(function() {
-			$(".mapArea").addClass("active");
-		});
-		$(".close-mapArea").click(function() {
-			$(".mapArea").removeClass("active");
-		});
+        $(".open-mapArea").click(function() {
+            $(".mapArea").addClass("active");
+        });
+        $(".close-mapArea").click(function() {
+            $(".mapArea").removeClass("active");
+        });
         $(".open-configureGroup").click(function () {
             $(".configureGroup").addClass("active");
         });
@@ -546,10 +551,10 @@
     });
 
     $(function(){
-		var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
-		var total = unitTitleHeight;
-		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));   
-	});
+        var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
+        var total = unitTitleHeight;
+        $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
+    });
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -689,7 +694,7 @@
                         用水情形比較
                     </div>
                     <div class="chartBox">
-                        <div id="ChartCompareWaterUse"  class="chartSVG" style="width:100%; height:83%;"></div>
+                        <div id="ChartCompareWaterUse" class="chartSVG" style="width:100%; height:83%;"></div>
                     </div>
                 </div>
                 <div class="chartItem" style="">
@@ -748,7 +753,7 @@
         <partial name="~/Views/Dashboard/_EzMapPartial.cshtml" />
     </div>
     <div class="configureGroup">
-        <div class="toggleMapGroup">
+        <div class="toggleMapArea">
             <a class="btn-green-o close-configureGroup" href="javascript:;" title="關閉圖台">
                 <i class="bi bi-x"></i>
             </a>
@@ -759,28 +764,7 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="ModalNode" tabindex="-1" aria-labelledby="ModalNodeLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="exampleModalLabel">用水記事</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <br />您的水號:7D762461969 於111年5月 超過上個月50% 請注意
-                <br />
-                <br />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-primary">確定</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
+<!-- 異常狀態 Modal -->
 <div class="modal fade" id="ModalException" tabindex="-1" aria-labelledby="ModalExceptionLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -788,14 +772,10 @@
                 <h2 class="modal-title" id="exampleModalLabel">異常狀態</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <br />您的水號:7D762461969 於111年5月 超過上個月50% 請注意
-                <br />
-                <br />
+            <div class="modal-body" id="modalalertmsgbody">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-primary">確定</button>
             </div>
         </div>
     </div>

@@ -160,7 +160,7 @@
                                 <td>@item.APERCENT</td>
                                 <td class="text-red">
                                     <div class="tdflex" id="textNote@(TimeSource)">
-                                        <div class="info">
+                                        <div class="info col-lg-6">
                                             <span>@item.NOTE</span>
                                             <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
                                         </div>
@@ -270,11 +270,16 @@
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('last')"><i class="bi bi-chevron-left"></i></a>
-                        <div class="name"
+                        <div class="name row"
                              id="divWaterUserSearchChartTitle"
                              data-themeswitchchart="@Cdate.ToString("yyyy/MM/dd")">
                             @* @(RocTime)*@
-                            <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" style="width:110px" onchange="btnJumpTime(this)" id="tbJumpTime" />當日用水量
+                            <div class="col-lg-6" style="text-align: center;">
+                                <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" style="width:110px" onchange="btnJumpTime(this)" id="tbJumpTime" />
+                            </div>
+                            <div class="col-lg-6" style="text-align: center;">
+                                <span>當日用水量</span>
+                            </div>
                         </div>
                         <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('next')"><i class="bi bi-chevron-right"></i></a>
                     </div>

@@ -21,4 +21,11 @@
             callback.apply();
         }, 500);
     }
+
+    //# 取得地址轉坐標服務
+	if (typeof (GetAddressCoordinate) === 'undefined') 
+		function GetAddressCoordinate(address){
+            var param = (address != undefined && address != null ? '?address=' + address : '');
+            return '@Url.Action("GetAddressCoordinate", "Layer")' + param;
+		}
 </script>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>流量計</name>
+	<Style id="0" ><IconStyle>
+		<scale>0.8</scale>
+		<Icon>
+			<href>https://map.gis.tw/TWN/uploadFiles/EzLayer/icon/流量計_正常.png</href>
+		</Icon>
+		<hotSpot x="0.5" xunits="fraction" y="0" yunits="fraction"/>
+	   </IconStyle>
+	   <ListStyle/>
+	</Style>
+	<Style id="1" ><IconStyle>
+		<scale>0.8</scale>
+		<Icon>
+			<href>https://map.gis.tw/TWN/uploadFiles/EzLayer/icon/流量計_警戒.png</href>
+		</Icon>
+		<hotSpot x="0.5" xunits="fraction" y="0" yunits="fraction"/>
+	   </IconStyle>
+	   <ListStyle/>
+	</Style>
+	<Style id="2" ><IconStyle>
+		<scale>0.8</scale>
+		<Icon>
+			<href>https://map.gis.tw/TWN/uploadFiles/EzLayer/icon/流量計_異常.png</href>
+		</Icon>
+		<hotSpot x="0.5" xunits="fraction" y="0" yunits="fraction"/>
+	   </IconStyle>
+	   <ListStyle/>
+	</Style>
+	<Style id="3" ><IconStyle>
+		<scale>1</scale>
+		<Icon>
+			<href>https://map.gis.tw/TWN/uploadFiles/EzLayer/icon/流量計_斷訊.png</href>
+		</Icon>
+		<hotSpot x="0.5" xunits="fraction" y="0" yunits="fraction"/>
+	   </IconStyle>
+	   <ListStyle/>
+	</Style>    
+    <Placemark GISLOOP="">
+	  <name>$STATIONNAME@</name>
+      <description>
+      &lt;div style='width:320px;padding:5px;' &gt;
+        &lt;table style='width:350px;border: 1px solid #AA9;' &gt;
+            
+            &lt;tr &gt;
+                &lt;td&gt; 瞬間值 &lt;/td&gt; 
+                &lt;td&gt; $FLOWVALUE@&lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;tr style='background-color:#C8EBFA'&gt;
+                &lt;td&gt; 2標準差 &lt;/td&gt; 
+                &lt;td&gt; $VALUERANGE@ &lt;/td&gt;
+            &lt;/tr&gt;
+
+            &lt;tr &gt;
+                &lt;td&gt; 30日平均值 &lt;/td&gt; 
+                &lt;td&gt; $AVG@ &lt;/td&gt;
+
+            &lt;tr style='background-color:#C8EBFA'&gt;
+                &lt;td&gt; 傳訊時間 &lt;/td&gt; 
+                &lt;td&gt; $DATATIME@ &lt;/td&gt;
+            &lt;/tr&gt;
+
+        &lt;/table&gt;
+     &lt;/ div &gt;   
+      </description>
+      <styleUrl>#$SS@</styleUrl>
+      <Point>
+        <coordinates>$LON@,$LAT@,0</coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

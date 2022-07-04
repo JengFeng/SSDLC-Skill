@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Globalization;
@@ -42,13 +43,67 @@ namespace TWNPPublic.Controllers
         /// 詳細資料
         /// </summary>
         /// <returns></returns>
-        public IActionResult Fancybox_detailsTable()
+        public IActionResult Fancybox_detailsTable(DateTime? Cdate)
         {
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
-            ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月份", culture);
-            //ViewBag.DetailResult = dashboardService.GetWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
-            ViewBag.VDetailResult = dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.ToString("yyyMMdd", culture));
+            DateTime QueryTime = new DateTime();
+            if (Cdate == null)
+            {
+                QueryTime = DateTime.Now;
+            }
+            else
+            {
+                QueryTime = Cdate.Value;
+            }
+
+            if (QueryTime.Month % 2 == 0)
+            {
+                QueryTime = QueryTime.AddMonths(-1);
+            }
+
+            ViewBag.CurrentTime = QueryTime.ToString("yyy年MM月份", culture);
+            var result = dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, QueryTime.ToString("yyyMM", culture) + "01");
+
+            if (result != null)
+            {
+                double fee = 0, tax = 0;
+                int basicfee = 0;
+                if (result.FEE.HasValue)
+                {
+                    fee = result.FEE.Value;
+                }
+                if (result.TAX.HasValue)
+                {
+                    tax = result.TAX.Value;
+                }
+                if (result.BASICFEE.HasValue)
+                {
+                    basicfee = result.BASICFEE.Value;
+                }
+                result.WaterBillSubtotal = fee + tax + basicfee;
+            }
+
+            ViewBag.VDetailResult = result;
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+            DateTime nowtime = DateTime.Now;
+
+            if (nowtime.Month % 2 == 0)
+            {
+                nowtime = nowtime.AddMonths(-1);
+            }
+            for (int i = 0; i <= 12; i = i + 2)
+            {
+                selectListItems.Add(new SelectListItem
+                {
+                    Text = nowtime.AddMonths(0 - i).ToString("yyy年MM月", culture),
+                    Value = nowtime.AddMonths(0 - i).ToString("yyyy-MM-dd")
+                });
+            }
+
+            selectListItems.First(c => c.Value == QueryTime.ToString("yyyy-MM-dd")).Selected = true;
+
+            ViewBag.ddlYear = selectListItems;
             return View();
         }
 
@@ -274,7 +329,7 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> ListedExceptionState(int? page)
         {
             int pager = (page ?? 1) - 1;
-            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager , 3);
+            var reuslt = dashboardService.LitedExceptionItem(aspNetUser.CurrentWaterNo, pager, 3);
             List<ExceptionItem> ExceptionItems = new List<ExceptionItem>();
 
             CultureInfo culture = new CultureInfo("zh-TW");
@@ -572,25 +627,35 @@ namespace TWNPPublic.Controllers
             var reuslt = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
             var (increase, decrease) = dashboardService.GetIncreaseAndDecrease(aspNetUser.CurrentWaterNo);
 
-            if (increase != null)
+            //取上一期水費
+            var STQTY = dashboardService.GetA_WATERFEE_BILLDATE(aspNetUser.CurrentWaterNo);
+            float? IncreaseValue = 0;
+            float? DecreaseValue = 0;
+
+            if (STQTY.STQTY != null)
             {
+                if (increase != null)
+                {
+                    IncreaseValue = (STQTY.STQTY / 60) * (100 + increase.Value);
+                }
 
-            }
-
-            if (decrease != null)
-            {
-
+                if (decrease != null)
+                {
+                    DecreaseValue = (STQTY.STQTY / 60) * decrease.Value;
+                }
             }
 
             //要計算前兩個月的平均
-            //var increase = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
-            //var decrease = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
+
             var Xray = reuslt.Select(c => DateTime.Parse(c.X).ToString("HH:mm"));
             return Json(Success(new
             {
                 X = Xray,
                 Y = reuslt.Select(c => c.Y).ToArray(),
-                Rotate
+                Increase = $"突減{increase.Value}% \n 轉換為度數{IncreaseValue}度",
+                Decrease = $"突減{decrease.Value}% \n 轉換為度數{DecreaseValue}度",
+                IncreaseValue,
+                DecreaseValue
             }));
         }
 

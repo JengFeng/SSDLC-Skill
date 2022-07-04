@@ -56,5 +56,7 @@
         public string M_SHSQTY { get; set; }
         public string READING { get; set; } = String.Empty;
         public string LASTREAD { get; set; } = String.Empty;
+        //這個不在資料庫裏面，不應該在這邊
+        public double WaterBillSubtotal { get; set; }
     }
 }

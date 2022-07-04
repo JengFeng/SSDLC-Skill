@@ -15,7 +15,7 @@ str.Close();
 
 foreach (var item in result)
 {
-    var setContext = MailText.Replace("{AlertMessage}", item.NOTE);
+    var setContext = MailText.Replace("{AlertMessage}", item.NOTE).Replace("{AlertType}", item.CODE_NAME);
     object obj = new
     {
         mailreceiver = item.VALUE,
