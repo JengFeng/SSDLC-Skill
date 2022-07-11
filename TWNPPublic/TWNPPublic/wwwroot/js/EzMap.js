@@ -36,7 +36,7 @@ function LayerMap() {
     //# Public Function
     this.init = () => {
         this.map = new Easymap(this.mapId);
-        this.map.zoomToXY(new dgXY(119.46938925595306, 23.58302998317896), 11.666);
+        this.map.zoomToXY(new dgXY(119.56938925595306, 23.58302998317896), 11.666);
         //map.switchMapType('google');
 
         GpsInit();
