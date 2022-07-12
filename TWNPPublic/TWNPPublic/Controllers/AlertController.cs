@@ -19,6 +19,10 @@ namespace TWNPPublic.Controllers
             this.aspNetUser = aspNetUser;
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <returns></returns>
         public IActionResult AlertSettings()
         {
             if (aspNetUser.UserId == null)
@@ -28,6 +32,10 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 載入這個使用者的警示設定
+        /// </summary>
+        /// <returns></returns>
         public IActionResult LoadAlertSet()
         {
             if (aspNetUser.UserId == null)
@@ -36,6 +44,11 @@ namespace TWNPPublic.Controllers
             return Json(Success<object>(result));
         }
 
+        /// <summary>
+        /// 更新警示設定
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult SaveAlertSet(SaveAlertSetViewModel model)
         {

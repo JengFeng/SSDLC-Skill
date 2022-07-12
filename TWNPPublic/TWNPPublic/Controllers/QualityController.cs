@@ -24,6 +24,10 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 用水指針查詢頁面，call 下面那個Ajax 叫圖表
+        /// </summary>
+        /// <returns></returns>
         [Menu("用水指針查詢")]
         public IActionResult UseWaterQuery()
         {
@@ -31,6 +35,10 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 唯一的圖表查資料
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult UseWaterChart(DateTime? StartTime, DateTime? EndTime)
         {
@@ -87,14 +95,6 @@ namespace TWNPPublic.Controllers
                                 });
             }
 
-
-
-            //foreach (var item in result.AmountChartData)
-            //{
-            //    Amountdatas.Add(new JObject {
-            //                     new JProperty("value", new Object[] { item.X, item.Y})
-            //                });
-            //}
 
             JObject option = new JObject()
             {

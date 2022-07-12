@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SqlData;
+using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace TWNPPublic.Controllers.Api
+namespace twn.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,11 +24,11 @@ namespace TWNPPublic.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetLayerData")]
-        public JsonResult GetLayerData()
+        public JsonResult GetLayerData(string? folderRootSn = "0")
         {
             try
             {
-                DataTable dt = GetDtLayer("0");
+                DataTable dt = GetDtLayer(folderRootSn);
                 string strJson = JsonConvert.SerializeObject(dt);
                 return new JsonResult(strJson);
             }
@@ -42,11 +43,11 @@ namespace TWNPPublic.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetDirectoryData")]
-        public JsonResult GetDirectoryData()
+        public JsonResult GetDirectoryData(string? folderRootSn = "0")
         {
             try
             {
-                DataTable dt = GetDtDirectory("0");
+                DataTable dt = GetDtDirectory(folderRootSn);
                 string strJson = JsonConvert.SerializeObject(dt);
                 return new JsonResult(strJson);
             }
@@ -119,7 +120,6 @@ namespace TWNPPublic.Controllers.Api
             List<ItemFolder> list = new();
             for (int i = 0; i < dtD.Rows.Count; i++)
             {
-                bool ISEXPAND = dtD.Rows[i]["ISEXPAND"].ToString() == "1";
                 List<ItemLayer> listChild = GetLayers(dtL, dtD.Rows[i]["LAYERDIR_SN"].ToString());
                 string PARENT_SN = dtD.Rows[i]["PARENT_SN"].ToString().Trim();
                 ItemFolder f = new ItemFolder
@@ -129,6 +129,7 @@ namespace TWNPPublic.Controllers.Api
                     state = new ItemState()
                 };
                 f.li_attr.classes = "folder-node";
+                f.state.opened = dtD.Rows[i]["ISEXPAND"].ToString() == "1";
                 if (listChild.Count > 0) f.children = listChild;
                 list.Add(f);
             }
@@ -227,7 +228,7 @@ namespace TWNPPublic.Controllers.Api
                       (  -- 不變成員(Anchor Member)
                          SELECT *, 1 AS 'DIR_LEVEL'
                          FROM DIR_TREE
-                         WHERE ISVALID=1 AND ((PARENT_SN=@PARENT_SN AND @PARENT_SN=0) OR LAYERDIR_SN=@PARENT_SN)
+                         WHERE ((PARENT_SN=@PARENT_SN AND @PARENT_SN=0) OR LAYERDIR_SN=@PARENT_SN)
                          UNION ALL
                          -- 遞迴成員(Recursive Member)
                          SELECT L2.*, DIR_LEVEL+1
@@ -496,6 +497,38 @@ namespace TWNPPublic.Controllers.Api
                     Content = "@GISMM_EASYMAP_KML_PROXY_TIMEOUT (" + System.Web.HttpUtility.HtmlEncode(ex.ToString()) + ")",
                     StatusCode = 200
                 };
+            }
+        }
+
+        /// <summary>
+        /// 取得地址轉坐標
+        /// </summary>
+        /// <param name="address">地址</param>
+        /// <returns></returns>
+        [HttpGet("GetAddressCoordinate")]
+        public JsonResult GetAddressCoordinate(string? address = "")
+        {
+            string result = "";
+            try
+            {
+                string dataUrl = string.Format("https://map.gis.tw/identify/where.aspx?t={0}", address);
+
+                //# 讀取資料
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(CheckValidationResult);
+                System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)3072;// SecurityProtocolType.Tls1.2;
+                System.Net.HttpWebRequest req = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(dataUrl);
+
+                System.Net.HttpWebResponse res;
+                req.Timeout = 5000;
+                res = (System.Net.HttpWebResponse)req.GetResponse();
+                System.IO.Stream responseStream = res.GetResponseStream();
+                System.IO.StreamReader reader1 = new System.IO.StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
+                result = reader1.ReadToEnd();
+                return new JsonResult(result);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult("");
             }
         }
 
