@@ -9,7 +9,11 @@
 <script type="text/javascript">
     var map = null;
     (function(){
-        MapInit(map, 'map'); 
+        MapInit(map, 'map');
+        LayerMapInit1(() => { 
+            Layer1.hideBtn('layer');            // 隱藏圖層按鈕
+            $(LayerTree1.elm.boxWindow).hide(); // 隱藏圖層視窗
+        });
     })();
 
     function LayerMapInit1(callback) {
