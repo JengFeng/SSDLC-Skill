@@ -25,6 +25,10 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
+        /// <summary>
+        /// 給業務版得後門 ( ¯ ﹃¯)
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index(string WaterNo)
         {
             HttpContext.Session.SetString("UserName", WaterNo);
@@ -32,22 +36,23 @@ namespace TWNPPublic.Controllers
             HttpContext.Session.SetString("WaterNo", WaterNo);
             HttpContext.Session.SetString("UserId", "0");
 
-
-            //var sqlexecute = "SELECT * FROM [B_NEWS]";
-            //var execute = dataAccess.Execute(sqlexecute);
-
-            //var sqlString = "SELECT * FROM [B_NEWS]";
-            //var result = dataAccess.Query<B_NEWS>(sqlString);
-
             return RedirectToAction("Index", "Dashboard");
         }
 
+        /// <summary>
+        /// 登出
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("UserName");
             return RedirectToAction("Login", "Home");
         }
 
+        /// <summary>
+        /// 登出
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Login()
         {
             string Host = Request.Host.Host;
@@ -66,6 +71,12 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// 登入
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
@@ -117,6 +128,10 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 驗證碼
+        /// </summary>
+        /// <returns></returns>
         public FileContentResult CreateValidate()
         {
             //驗證碼有用的 bitmap, bitmap 是 windows kernel 的東西,不能部屬到 linux 上 (◜◔。◔◝)~
@@ -128,7 +143,10 @@ namespace TWNPPublic.Controllers
             return File(bytes, "image/JPEG");
         }
 
-
+        /// <summary>
+        /// 錯誤頁 app.UseExceptionHandler("/Home/Error"); 有需要自己改
+        /// </summary>
+        /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
