@@ -15,10 +15,10 @@
     function LayerMapInit1(callback) {
         if (callback === undefined) return;
         var intervalLayer1 = setInterval(() => {
-            if (Layer1.map === null) return;
-            if($('#boxLayerWindow1').is(':visible') && !LayerTree1.isInited) return;
+            if (Layer1 === null) return;
+            if ($(Layer1.boxLayerId).length > 0 && (LayerTree1 === null || !LayerTree1.inited)) return;
             clearInterval(intervalLayer1);
-            callback.apply();
+            setTimeout(()=>{ callback.apply(); }, 500);
         }, 500);
     }
 
