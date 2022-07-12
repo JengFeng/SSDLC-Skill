@@ -33,7 +33,7 @@ function LayerMap() {
     //# Public Function
     this.init = () => {
         this.map = new Easymap(this.mapId);
-        this.map.zoomToXY(new dgXY(119.46938925595306, 23.58302998317896), 11.666);
+        this.map.zoomToXY(new dgXY(119.5715204969396, 23.631408207672038), 11.666);
         //# MMJS Easymap 設定
         switch (this.version) {
             case 1:
