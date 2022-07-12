@@ -5,14 +5,13 @@
  * LayerTree1.clear()                               // 清除所有圖層、圖徵
  *
  */
-var LayerTree1 = null,
-    LayerTree2 = null;
+var LayerTree1 = null, LayerTree2 = null;
 
 var LayerMenuTree = function () {
     //# Parameter
-    this.isInited = false;   // 是否初始化
+    this.inited = false;     // 是否初始化
     this.version = 0;        // 圖台版本
-    this.isInited = false;   // 是否初始化
+    this.easymap = null;     // Easynap
     this._instance = null;   // 目錄的 Instance
     this.useRole = false;    // 是否依據使用者權限
     this.folderId = '';      // 動態根目錄識別碼
@@ -22,6 +21,7 @@ var LayerMenuTree = function () {
     this._dirs = [];         // 目錄
     this._bgs = [];          // 底圖
     this.onSelect = null;    // 點選圖層之事件
+    this._preloadLayerCounter = 0;
     this.elm = {
         boxWindow: '',  // 視窗
         boxContent: '', // 視窗內容
@@ -29,10 +29,11 @@ var LayerMenuTree = function () {
         boxLayer: '',   // 圖層
         boxBasemap: '', // 底圖
         menuFolderCheckBox: 'li.folder-node > a > i.jstree-checkbox',
+        treeIcon: ''
     }
     //# Public Function
     this.start = () => {
-        var listLayer = getJsonData(GetLayerApi(), 'GET', null, '無圖層資料', '圖層資料錯誤');
+        var listLayer = getJsonData(GetLayerApi(this.folderId), 'GET', null, '無圖層資料', '圖層資料錯誤');
         listLayer.forEach(item => {
             item.id = item.LAYER_SN;
             item.status = '';
@@ -41,6 +42,9 @@ var LayerMenuTree = function () {
         //MM.easymap.items = listLayer;
         this._dirs = getJsonData(GetDirApi(), 'GET', null, '無圖層目錄資料', '圖層目錄資料錯誤');
         this._bgs = getJsonData(GetBaseMapApi(), 'GET', null, '無底圖資料', '底圖資料錯誤');
+
+        GetLayerMap().attachEvent('moveend', () => { CheckLayerInZoom(); });    // 設定移動圖台案件
+
         Tmpl.init();
         RenderInit();
         RunderTree();
@@ -48,7 +52,9 @@ var LayerMenuTree = function () {
         
         RenderScrollBar($(this.elm.boxLegend));
         RenderScrollBar($(this.elm.boxBasemap));
-        this.isInited = true;
+        if (this.isHide) $(this.elm.boxWindow).hide();
+        if ($(window).width() >= 768) $(`${this.elm.boxWindow} .layerBox`).addClass('open'); // 寬度以上自動開啟
+        this.inited = true;
     }                         // 開始(初始化圖層目錄)
     this.switchMap = (elm, name) => {
         if (name === undefined || name === '') return;
@@ -88,7 +94,7 @@ var LayerMenuTree = function () {
         return this._instance.get_node(sn).state.selected;
     }           // 取得圖層開關狀態(依據圖層識別碼)
     this.check = (layer, sw) => {
-        sw ? this._instance.check_node(layer.LAYER_SN) : this._instance.uncheck_node(layer.LAYER_SN);
+        sw ? this._instance.check_node('l_' + layer.LAYER_SN) : this._instance.uncheck_node('l_' + layer.LAYER_SN);
     }                // 開關圖層(依據圖層)
     this.checkByLAYER_SN = (layerSn, sw) => {
         layerSn = 'l_' + layerSn;
@@ -102,9 +108,9 @@ var LayerMenuTree = function () {
         });
     }           // 開關圖層(依據圖層名稱)
     this.uncheckAll = () => {
-        var layers = LayerSlef._instance.get_checked();
+        var layers = LayerSelf._instance.get_checked();
         layers.forEach(item => {
-            LayerSlef._instance.uncheck_node(item);
+            LayerSelf._instance.uncheck_node(item);
         });
     }                    // 關閉所有圖層
     this.clearFeature = list => {
@@ -117,26 +123,26 @@ var LayerMenuTree = function () {
     this.clear = () => {
         this.uncheckAll();
         //# 清除所有圖徵
-        while (MM.easymap.items.length > 0) {
-            MM.easymap.removeItem(MM.easymap.items[0]);
+        while (this.easymap.items.length > 0) {
+            this.easymap.removeItem(this.easymap.items[0]);
         }
     }                         // 清除所有圖層、圖徵
     //# Private Function
-    let LayerSlef = this;
+    let LayerSelf = this;
     let Tmpl = {
         legend: '', // 圖例
         bg: '',     // 底圖
         init() {
-            $(LayerSlef.elm.boxBasemap).mCustomScrollbar('destroy');    // 先把 Scrollbar 撤除，以便拿取底圖項目
-            this.legend = $(LayerSlef.elm.boxLegend).html().replace(/\n/g, '').replace(/\t/g, '').replace(/  /g, '');
-            this.bg = $(LayerSlef.elm.boxBasemap).html().replace(/\n/g, '').replace(/\t/g, '').replace(/  /g, '');
-            $(LayerSlef.elm.boxLegend).empty().removeClass('d-none');
-            $(LayerSlef.elm.boxBasemap).empty().removeClass('d-none');
+            $(LayerSelf.elm.boxBasemap).mCustomScrollbar('destroy');    // 先把 Scrollbar 撤除，以便拿取底圖項目
+            this.legend = $(LayerSelf.elm.boxLegend).html().replace(/\n/g, '').replace(/\t/g, '').replace(/  /g, '');
+            this.bg = $(LayerSelf.elm.boxBasemap).html().replace(/\n/g, '').replace(/\t/g, '').replace(/  /g, '');
+            $(LayerSelf.elm.boxLegend).empty().removeClass('d-none');
+            $(LayerSelf.elm.boxBasemap).empty().removeClass('d-none');
         }   // 初始化
-    }                            // 樣板
+    }                             // 樣板
     let RenderInit = () => {
         var _default = 0,
-            $block = $(LayerSlef.elm.boxContent),
+            $block = $(LayerSelf.elm.boxContent),
             $tabs = $block.find('.tabs'),
             $tabsLi = $tabs.find('li'),
             $tab_content = $block.find('.tab_content'),
@@ -170,28 +176,28 @@ var LayerMenuTree = function () {
         // 先把預設要顯示的頁籤加上 .active 樣式及顯示相對應的內容
         $tabsLi.eq(_default).addClass('active');
         $tab_contentLi.eq(_default).siblings().css({ left: _width });
-    }                // 渲染初始化
+    }                 // 渲染初始化
     let RenderBgMap = () => {
-        $(LayerSlef.elm.boxBasemap).empty();
-        $(LayerSlef.elm.boxBasemap).empty();
-        var clickElm = LayerSlef.version == 1 ? 'LayerTree1' : 'LayerTree2';
-        LayerSlef._bgs.forEach(item => {
+        $(LayerSelf.elm.boxBasemap).empty();
+        $(LayerSelf.elm.boxBasemap).empty();
+        var clickElm = LayerSelf.version == 1 ? 'LayerTree1' : 'LayerTree2';
+        LayerSelf._bgs.forEach(item => {
             var isActive = item.PRELOAD === '1' ? ' active' : '',
-                imgUrl = (location.href.indexOf('localhost') < 0 ? location.href : origin) + '/images/' + item.LEGEND,
+                imgUrl = GetWebsiteUrl() + '/images/' + item.LEGEND,
                 boxItem = Tmpl.bg
                     .replace('{isActive}', isActive)
                     .replace('{clickElm}', clickElm)
                     .replace('{item.LAYER}', item.LAYER)
                     .replace('//:0', imgUrl)
                     .replace(/{item.LAYER_NAME}/g, item.LAYER_NAME);
-            $(LayerSlef.elm.boxBasemap).append(boxItem);
+            $(LayerSelf.elm.boxBasemap).append(boxItem);
         });
-        $(LayerSlef.elm.boxBasemap).addClass('layerBoxScrollbar');
-        RenderScrollBar($(LayerSlef.elm.boxBasemap));
-    }               // 渲染底圖
+        $(LayerSelf.elm.boxBasemap).addClass('layerBoxScrollbar');
+        RenderScrollBar($(LayerSelf.elm.boxBasemap));
+    }                // 渲染底圖
     let RunderTree = () => {
-        var dataLayers = getJsonData(GetLayerListApi(LayerSlef.folderId), 'GET', null, '無圖層清單資料', '圖層清單資料錯誤'),
-            iconOrigin = location.href.indexOf('localhost') < 0 ? location.href : origin,
+        var dataLayers = getJsonData(GetLayerListApi(LayerSelf.folderId), 'GET', null, '無圖層清單資料', '圖層清單資料錯誤'),
+            iconOrigin = GetWebsiteUrl(),
             list = [];
         
         dataLayers.forEach(item => {
@@ -204,59 +210,61 @@ var LayerMenuTree = function () {
             list.push(item);
         });
 
-        $(LayerSlef.elm.boxLayer)
+        $(LayerSelf.elm.boxLayer)
             .on('loaded.jstree', function (e, data) {
-                LayerSlef._instance = data.instance;
-                HideFolderCheckBox();   // 隱藏 Folder 的 Checkbox
-                if (LayerSlef.onLoad != null) LayerSlef.onLoad(LayerSlef.getLayers(), LayerSlef.getDirectories());
-                RenderScrollBar($(LayerSlef.elm.boxLayer));
-            })
+                LayerSelf._instance = data.instance;
+                HideFolderCheckBox();                           // 隱藏 Folder 的 Checkbox
+                SwitchSpecificFolderMode();                     // 如果限定資料夾，排一下版面
+                setTimeout(() => { PreloadLayer(); }, 1000);    // 預載圖層
+                if (LayerSelf.onLoad != null) LayerSelf.onLoad(LayerSelf.getLayers(), LayerSelf.getDirectories());
+                RenderScrollBar($(LayerSelf.elm.boxLayer));     // 渲染滾軸
+            })  // loaded
             .on('open_node.jstree', function (e, data) {
                 HideFolderCheckBox();   // 隱藏 Folder 的 Checkbox
-            })     // Initial
+            })  // Initial
             .on('hover_node.jstree', function (e, data) {
                 $('li[role="treeitem"] a').each(function (index) { $(this).prop('title', $(this).text()) })
-            })
+            })  // hover_node
             .on('changed.jstree', function (e, data) {
                 if (data.node == undefined) return true;
                 //# 資料夾
                 if (data.node.children.length >= 1) {
-                    LayerSlef._instance.toggle_node(data.node.id);
+                    LayerSelf._instance.toggle_node(data.node.id);
                     return true;
                 }
                 //# 圖層
                 var layerId = parseInt(data.node.id.replace('l_', '')),
-                    layer = LayerSlef._layers.getById(layerId),
+                    layer = LayerSelf._layers.getById(layerId),
                     selected = data.node.state.selected;
                 if (layer == undefined) return;
 
                 RenderLayerItem(data.node, selected);    // 渲染圖層
-                if (LayerSlef.onSelect != null) LayerSlef.onSelect(layer, selected); // 選擇圖層額外事件
+                if (LayerSelf.onSelect != null) LayerSelf.onSelect(layer, selected); // 選擇圖層額外事件
 
                 //# 是否顯示可視階層
-                //if (MM.easymap.in_zoom(layer) == false && selected) {
-                //    layer.status = 'not_in_zoom';
-                //    LayerSlef._gray(layer.id);
-                //    return;
-                //}
+                if (!GetInZoom(layer) && selected) {
+                    layer.status = 'not_in_zoom';
+                    RenderCheckboxGray(layer.LAYER_SN, true);
+                    return;
+                }
 
                 if (selected) {
-                    MM.easymap.addItem(layer);
+                    LayerSelf.easymap.addItem(layer);
                     layer.status = 'added';
                 }
                 else {
-                    if (layer.status != '') MM.easymap.removeItem(layer);
+                    if (layer.status != '') LayerSelf.easymap.removeItem(layer);
                     layer.status = '';
+                    RenderCheckboxGray(layer.LAYER_SN, false);
                 }
-
                 //# 連動圖層設定 todo
-            })       // 圖層開/關時
-            .on('load_all.jstree', function (e, data) {   
-            })
+            })  // changed: 圖層開/關時
+            .on('load_all.jstree', function (e, data) {
+            })  // load_all
             .on('after_open.jstree', function (e, data) {
-            })    // 開啟 Folder 之後
+            })  // after_open: 開啟 Folder 之後
             .on('dehover_node.jstree', function (e, data) {
-            })  // 
+            })  // dehover_node:  Hover 至節點
             .jstree({
                 plugins: ['wholerow', 'checkbox'],
                 checkbox: {
@@ -282,35 +290,33 @@ var LayerMenuTree = function () {
                     //        //return {
                     //        //    id: '',
                     //        //    ROLE_SN: '',
-                    //        //    iconpath: escape(LayerSlef.iconpath),
+                    //        //    iconpath: escape(LayerSelf.iconpath),
                     //        //    userole: false,
-                    //        //    foldersn: LayerSlef.folderId
+                    //        //    foldersn: LayerSelf.folderId
                     //        //};
                     //        //return JSON.parse(data);
                     //        }
                     //}
                 }
             });
-    }                // 排序圖層目錄
+    }                 // 排序圖層目錄
     let RenderLayerItem = (item, sw) => {
         if (sw) {
             RenderLayerLegend(item);
             $('#' + item.id).click(function () {
                 if (this.checked) return;
-                LayerSlef._instance.uncheck_node(this.id);
+                LayerSelf._instance.uncheck_node(this.id);
             });
         }
-        else {
-            document.getElementById(item.id).parentNode.parentNode.parentNode.parentNode.remove();
-        }
-    }   // 渲染圖層
+        else document.getElementById(item.id).parentNode.parentNode.parentNode.parentNode.remove();
+    }    // 渲染圖層
     let RenderLayerLegend = item => {
-        var div = Tmpl.legend
+        let div = Tmpl.legend
             .replace('{checkBoxId}', item.id)
             .replace(/{name}/g, item.text)
             .replace('//:0', item.original.legend);
-        $(LayerSlef.elm.boxLegend + ' .mCSB_container').append(div);
-    }       // 渲染圖例
+        $(LayerSelf.elm.boxLegend + ' .mCSB_container').append(div);
+    }        // 渲染圖例
     let RenderScrollBar = elm => {
         elm.mCustomScrollbar({
             autoHideScrollbar: true,
@@ -318,11 +324,50 @@ var LayerMenuTree = function () {
                 updateOnContentResize: true,
                 updateOnImageLoad: false
             },
-            theme: "minimal-dark",
+            theme: 'minimal-dark',
             mouseWheel: { preventDefault: true }
         });
-        elm.mCustomScrollbar("update");
-    }          // 渲染滾軸
+        elm.mCustomScrollbar('update');
+    }           // 渲染滾軸
+    let PreloadLayer = () => {
+        let list = [];
+        this._layers.forEach(item => {
+            if (item.PRELOAD === '1') list.push(item.LAYER_SN);
+        });
+        // 分時段載入 解決 Eeasymap 同時處裡多個 Kml Cluster 問題
+        let _intervalInstance = setInterval(function () {
+            LayerSelf._instance.check_node('l_' + this[LayerSelf._preloadLayerCounter]);
+            if (LayerSelf._preloadLayerCounter >= this.length) {
+                clearInterval(_intervalInstance);
+                CheckLayerInZoom();
+            }
+            LayerSelf._preloadLayerCounter++;
+        }.bind(list), 200);
+    }               // 預載圖層
+    let CheckLayerInZoom = () => {
+        this._layers.forEach(layer => {
+            if (layer.status == undefined || layer.status == '') return;
+            let isInZoom = GetInZoom(layer);
+            if (isInZoom && layer.status != 'added') {
+                LayerSelf.easymap.addItem(layer);
+                layer.status = 'added';
+                RenderCheckboxGray(layer.LAYER_SN, false);   // 解除變灰
+            }
+            if (!isInZoom && layer.status != 'not_in_zoom') {
+                LayerSelf.easymap.removeItem(layer);
+                layer.status = 'not_in_zoom';
+                RenderCheckboxGray(layer.LAYER_SN, true);   // 變灰
+            }
+        });
+    }           // 檢查圖層之階層
+    let GetInZoom = layer => {
+        let z = GetLayerMap().getZoom(),
+            zMax = layer.MAXZ,
+            zMin = layer.MINZ;
+        if (zMax <= 0) zMax = 999;
+        if (zMin < 0) zMin = 0;
+        return z >= zMin && z <= zMax ? true : false;
+    }               // 確認圖層層起是否於範圍內
     let getJsonData = (dataUrl, type, obj, noneMsg, errMsg, callback) => {
         let data = null,
             ajax = $.ajax({
@@ -348,53 +393,53 @@ var LayerMenuTree = function () {
         return data != null ? data : [];
     }   // 取得 Json 資料
     let GetLayerMap = () => {
-        return LayerSlef.version == 1 ? Layer1.map : Layer2.map;
-    }               // 取得圖台
+        return this.version == 1 ? Layer1.map : Layer2.map;
+    }                // 取得圖台
+    let GetWebsiteUrl = () => {
+        return location.href.indexOf('localhost') < 0 ? location.href.replace('#', '') : origin;
+    }              // 取得本網站連結
     //# JsTree
+    let SwitchSpecificFolderMode = () => {
+        $(`${this.elm.boxWindow} .jstree`).css('marginLeft', '-30px');
+        if (this.folderId === '' || parseInt(this.folderId) === 0) return;
+        $(`${this.elm.boxWindow} .jstree-icon`).eq(0).hide();
+        $(`${this.elm.boxWindow} .jstree-anchor`).eq(0).hide();
+    }        // 如果限定資料夾，排一下版面
+    let RenderCheckboxGray = (layerSn, sw) => {
+        let a = $(`${LayerSelf.elm.boxLayer} ul li`).find(`#l_${layerSn}`).find('a');
+        sw ? a.addClass('jstree-disabled') : a.removeClass('jstree-disabled');
+    }   // 將 CheckBox 渲染/解除變灰
     let HideFolderCheckBox = () => {
-        $(LayerSlef.elm.menuFolderCheckBox).hide();
-    }        // 隱藏 Folder 的 Checkbox
+        $(this.elm.menuFolderCheckBox).hide();
+    }              // 隱藏 Folder 的 Checkbox
     return this;
 }
 
-function LayerMenuInit1(item) {
-    console.log('圖臺目錄 1 初始化');
-    //# MMJS Easymap 設定
-    MM.easymap.map = item.map;
-    MM.easymap.proxy = GetFileProxyApi() + '?dataUrl=';
-    MM.easymap.uploadpath = item.uploadPath != undefined ?
-        item.uploadPath :
-        ((location.href.indexOf('localhost') < 0 ? location.href : origin) + '/uploadFiles/EzLayer/');   // 檔案路徑
+function LayerTreeInit(version, item) {
+    let interval = setInterval(() => {
+        if (window[`Layer${version}`] === null || !window[`Layer${version}`].inited) return;
+        clearInterval(interval);
+        console.log(`圖臺目錄 ${version} 初始化`);
+        let LayerTree = new LayerMenuTree();
+        LayerTree.version = version;
+        LayerTree.folderId = item.folderId !== undefined ? item.folderId : '0';    // 無設定，預設根目錄
+        LayerTree.elm.boxWindow = `#boxLayerWindow${version}`;
+        LayerTree.elm.boxContent = `#boxLayerAbgne${version}`;
+        LayerTree.elm.boxLegend = `#boxLegend${version}`;
+        LayerTree.elm.boxLayer = `#boxLayer${version}`;
+        LayerTree.elm.boxBasemap = `#boxBg${version}`;
+        LayerTree.onSelect = item.onSelect != undefined ? item.onSelect : null;  // 選擇圖層事件
+        LayerTree.easymap = MM[`easymap${version === 1 ? '' : version}`];
+        LayerTree.isHide = item.isHide === undefined ? false : item.isHide;      // 是否隱藏
+        LayerTree.start();
+        window[`LayerTree${version}`] = LayerTree;
+    }, 500);
+}
 
-    LayerTree1 = new LayerMenuTree();
-    LayerTree1.folderId = item.folderId !== undefined ? item.folderId : '0';    // 無設定，預設根目錄
-    LayerTree1.version = 1;
-    LayerTree1.elm.boxWindow = '#boxLayerWindow1';
-    LayerTree1.elm.boxContent = '#boxLayerAbgne1';
-    LayerTree1.elm.boxLegend = '#boxLegend1';
-    LayerTree1.elm.boxLayer = '#boxLayer1';
-    LayerTree1.elm.boxBasemap = '#boxBg1'
-    LayerTree1.onSelect = item.onSelect != undefined ? item.onSelect : null;  // 選擇圖層事件
-    LayerTree1.start();
+function LayerMenuInit1(item) {
+    LayerTreeInit(1, item);
 }
 
 function LayerMenuInit2(item) {
-    console.log('圖臺目錄 2 初始化');
-    //# MMJS Easymap 設定
-    MM.easymap.map = item.map;
-    MM.easymap.proxy = GetFileProxyApi() + '?dataUrl=';
-    MM.easymap.uploadpath = item.uploadPath != undefined ?
-        item.uploadPath :
-        ((location.href.indexOf('localhost') < 0 ? location.href : origin) + '/uploadFiles/EzLayer/');   // 檔案路徑
-
-    LayerTree2 = new LayerMenuTree();
-    LayerTree2.version = 2;
-    LayerTree2.folderId = item.folderId !== undefined ? item.folderId : '0';    // 無設定，預設根目錄
-    LayerTree2.elm.boxWindow = '#boxLayerWindow2';
-    LayerTree2.elm.boxContent = '#boxLayerAbgne2';
-    LayerTree2.elm.boxLegend = '#boxLegend2';
-    LayerTree2.elm.boxLayer = '#boxLayer2';
-    LayerTree2.elm.boxBasemap = '#boxBg2'
-    LayerTree2.onSelect = item.onSelect != undefined ? item.onSelect : null;  // 選擇圖層事件
-    LayerTree2.start();
+    LayerTreeInit(2, item);
 }
