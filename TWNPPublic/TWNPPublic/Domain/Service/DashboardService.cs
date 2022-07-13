@@ -245,6 +245,23 @@ namespace TWNPPublic.Domain.Service
             };
             return dataAccess.Query<A_WATERFEE_BILLDATE>(mainsql, obj).FirstOrDefault();
         }
+
+        /// <summary>
+        /// 給水號取地址
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
+        public string GetAddressByWaterNos(string WaterNo)
+        {
+            string mainsql = @"SELECT TOP (1) ADDRESS_DAES FROM [V_A_WATERFEE] Where WATERNO = @WaterNO";
+            object obj = new
+            {
+                WaterNo
+            };
+            if (dataAccess.Query<Addresses>(mainsql, obj).FirstOrDefault() == null)
+                return "";
+            return dataAccess.Query<Addresses>(mainsql, obj).FirstOrDefault().ADDRESS_DAES;
+        }
     }
 
     public interface IDashboardService
@@ -264,5 +281,6 @@ namespace TWNPPublic.Domain.Service
         public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo);
         public V_A_WATERFEE? GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
         public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo);
+        public string GetAddressByWaterNos(string WaterNo);
     }
 }

@@ -138,4 +138,12 @@ namespace TWNPPublic.ViewModels.Dashboard
         public int Id { get; set; }
         public string Message { get; set; }
     }
+
+    /// <summary>
+    /// 就地址
+    /// </summary>
+    public class Addresses
+    {
+        public string ADDRESS_DAES { get; set; }
+    }
 }

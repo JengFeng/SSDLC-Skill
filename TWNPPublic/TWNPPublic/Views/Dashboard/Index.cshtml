@@ -104,6 +104,15 @@
             $("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
             $('#btngofbox').trigger('click');
         });
+
+        $.get("@Url.Action("GetCurrentAddress","Dashboard")",function(data){
+            if(data.Success){
+               console.log(data.Message +data.Data);
+            }
+            else{
+               console.log(data.Message);
+            }
+        });
     });
 
     function SetArrowCompareTHISMONTH_MONEYAndLASTYEAR_MONEY(thismonth,lastyear){
