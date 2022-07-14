@@ -93,6 +93,24 @@ function LayerMap() {
         }
         btn.parentElement.style.display = 'none';
     }                // 隱藏按鈕
+    this.renderCurrentAddress = () => {
+        let address = this.getCurrentAddress();
+        if (address === '') return;
+        let list = this.getAddressCoordinate(address);
+        if (list.length == 0) return;
+        let lonlat = new dgXY(list[0].x, list[0].y),
+            imgUrl = 'Images/point_red.png',
+            iconSize = 16,
+            div = `<img src="${imgUrl}" style="width:${iconSize}px; height: auto; position:absolute;left: -${iconSize / 2}px;top:-${iconSize / 2}px;" \>`,
+            marker = new dgMarker(lonlat, div, false);
+            MapSelf.map.addItem(marker);
+    }        // 套疊目前地址位置
+    this.getCurrentAddress = () => {
+        let list = '',
+            res = getJsonData(GetCurrentAddressUrl(), 'GET', null, '', '');
+        if (res.Success) list = res.Data;
+        return list;
+    }           // 取得目前水號空間資料
     this.getAddressCoordinate = address => {
         return getJsonData(GetAddressCoordinate(address), 'GET', null, '無地址轉坐標資料', '地址轉坐標資料錯誤');
     }   // 取得地址轉坐標服務
@@ -147,7 +165,9 @@ function LayerMap() {
                 data: obj == null ? null : JSON.stringify(obj),
                 success(result) {
                     if (!result == '') {
-                        let l = JSON.parse(result);
+                        let l = null;
+                        if (typeof (result) === 'string') l = JSON.parse(result);
+                        else l = result;
                         if (typeof (callBack) != 'undefined') callBack.apply(l);
                         else data = l;
                     }

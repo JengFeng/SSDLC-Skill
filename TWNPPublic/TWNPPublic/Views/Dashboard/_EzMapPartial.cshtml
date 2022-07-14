@@ -13,6 +13,7 @@
         LayerMapInit1(() => { 
             Layer1.hideBtn('layer');            // 隱藏圖層按鈕
             $(LayerTree1.elm.boxWindow).hide(); // 隱藏圖層視窗
+            Layer1.renderCurrentAddress();      // 顯示目前水號位置
         });
     })();
 
@@ -32,4 +33,8 @@
             var param = (address != undefined && address != null ? '?address=' + address : '');
             return '@Url.Action("GetAddressCoordinate", "Layer")' + param;
 		}
+
+    function GetCurrentAddressUrl() { 
+        return '@Url.Action("GetCurrentAddress","Dashboard")';
+    }   // 取得目前水號地址 Api
 </script>
