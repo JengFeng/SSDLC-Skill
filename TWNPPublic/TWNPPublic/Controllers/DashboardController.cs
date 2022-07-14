@@ -813,6 +813,21 @@ namespace TWNPPublic.Controllers
             return Json(Success(message: $"已切換至{WaterNos}"));
         }
 
+        public async Task<IActionResult> GetCurrentAddress()
+        {
+
+            var address = dashboardService.GetAddressByWaterNos(aspNetUser.CurrentWaterNo);
+
+            if(string.IsNullOrEmpty(address))
+            {
+                return Json(Failed("無相關地址資訊"));
+            }
+            else
+            {
+                return Json(Success<string>(address));
+            }
+        }
+
         ///// <summary>
         ///// 用水情形分析資料來源(棄用)
         ///// </summary>
