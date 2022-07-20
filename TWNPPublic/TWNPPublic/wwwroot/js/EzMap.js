@@ -99,7 +99,7 @@ function LayerMap() {
         let list = this.getAddressCoordinate(address);
         if (list.length == 0) return;
         let lonlat = new dgXY(list[0].x, list[0].y),
-            imgUrl = 'Images/point_red.png',
+            imgUrl = GetWebsiteUrl() + '/Images/point_red.png',
             iconSize = 16,
             div = `<img src="${imgUrl}" style="width:${iconSize}px; height: auto; position:absolute;left: -${iconSize / 2}px;top:-${iconSize / 2}px;" \>`,
             marker = new dgMarker(lonlat, div, false);
@@ -154,6 +154,9 @@ function LayerMap() {
                 alert('GPS 定位失敗');
             }
         }          // 定位失敗
+    let GetWebsiteUrl = () => {
+        return location.href.indexOf('localhost') < 0 ? location.href.replace('#', '') : origin;
+    }              // 取得本網站連結
     let getJsonData = (dataUrl, type, obj, noneMsg, errMsg, callback) => {
         let data = null,
             ajax = $.ajax({
