@@ -670,121 +670,128 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public async Task<IActionResult> GetDashWaterAnalyer(string timespilt, DateTime Cdate)
         {
-            Dictionary<string, float?> dic = new Dictionary<string, float?>();
-            var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
-
-            if (result == null)
+            try
             {
-                return Json(Failed(message: "查無資料"));
-            }
+                Dictionary<string, float?> dic = new Dictionary<string, float?>();
+                var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
 
-            if (result.Count() <= 0)
-            {
-                return Json(Failed(message: "查無資料"));
-            }
+                if (result == null)
+                {
+                    return Json(Failed(message: "查無資料"));
+                }
+
+                if (result.Count() <= 0)
+                {
+                    return Json(Failed(message: "查無資料"));
+                }
 
 
-            string XrayUnit = "";
-            switch (timespilt)
-            {
-                case "day":
+                string XrayUnit = "";
+                switch (timespilt)
+                {
+                    case "day":
 
-                    for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
-                    {
-                        dic.Add(item.ToString("HH:mm"), null);
-                    }
-
-                    foreach (var item in result)
-                    {
-                        dic[item.X.Substring(11, 5)] = item.Y;
-                    }
-                    XrayUnit = "時間(小時)";
-
-                    break;
-                case "week":
-                    #region 已棄用
-
-                    //dic.Add("一", null);
-                    //dic.Add("二", null);
-                    //dic.Add("三", null);
-                    //dic.Add("四", null);
-                    //dic.Add("五", null);
-                    //dic.Add("六", null);
-                    //dic.Add("日", null);
-
-                    //foreach (var item in result)
-                    //{
-                    //    switch (item.X)
-                    //    {
-                    //        case "1":
-                    //            dic["一"] = item.Y;
-                    //            break;
-                    //        case "2":
-                    //            dic["二"] = item.Y;
-                    //            break;
-                    //        case "3":
-                    //            dic["三"] = item.Y;
-                    //            break;
-                    //        case "4":
-                    //            dic["四"] = item.Y;
-                    //            break;
-                    //        case "5":
-                    //            dic["五"] = item.Y;
-                    //            break;
-                    //        case "6":
-                    //            dic["六"] = item.Y;
-                    //            break;
-                    //        case "7":
-                    //            dic["日"] = item.Y;
-                    //            break;
-                    //    }
-                    //}
-
-                    #endregion
-                    DateTime dt = Cdate.StartOfWeek(DayOfWeek.Monday);
-
-                    for (int i = 0; i < 7; i++)
-                    {
-                        dic.Add(dt.AddDays(i).ToString("MM/dd"), null);
-                    }
-
-                    int rollnumber = 0;
-                    if (result != null && result.Count() != 0)
-                    {
-                        foreach (var cell in dic)
+                        for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
                         {
-                            dic[cell.Key] = result.OrderBy(c => c.X).ElementAt(rollnumber).Y;
-                            rollnumber++;
+                            dic.Add(item.ToString("HH:mm"), null);
                         }
-                    }
 
-                    XrayUnit = "時間(日期)";
-                    break;
+                        foreach (var item in result)
+                        {
+                            dic[item.X.Substring(11, 5)] = item.Y;
+                        }
+                        XrayUnit = "時間(小時)";
 
-                case "month":
-                    int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
-                    for (int i = 1; i <= days; i++)
-                    {
-                        dic.Add(i.ToString(), null);
-                    }
+                        break;
+                    case "week":
+                        #region 已棄用
 
-                    foreach (var item in result)
-                    {
-                        dic[item.X.ToString()] = item.Y;
-                    }
+                        //dic.Add("一", null);
+                        //dic.Add("二", null);
+                        //dic.Add("三", null);
+                        //dic.Add("四", null);
+                        //dic.Add("五", null);
+                        //dic.Add("六", null);
+                        //dic.Add("日", null);
 
-                    XrayUnit = $"時間({Cdate.Month}月/號)";
+                        //foreach (var item in result)
+                        //{
+                        //    switch (item.X)
+                        //    {
+                        //        case "1":
+                        //            dic["一"] = item.Y;
+                        //            break;
+                        //        case "2":
+                        //            dic["二"] = item.Y;
+                        //            break;
+                        //        case "3":
+                        //            dic["三"] = item.Y;
+                        //            break;
+                        //        case "4":
+                        //            dic["四"] = item.Y;
+                        //            break;
+                        //        case "5":
+                        //            dic["五"] = item.Y;
+                        //            break;
+                        //        case "6":
+                        //            dic["六"] = item.Y;
+                        //            break;
+                        //        case "7":
+                        //            dic["日"] = item.Y;
+                        //            break;
+                        //    }
+                        //}
 
-                    break;
+                        #endregion
+                        DateTime dt = Cdate.StartOfWeek(DayOfWeek.Monday);
+
+                        for (int i = 0; i < 7; i++)
+                        {
+                            dic.Add(dt.AddDays(i).ToString("MM/dd"), null);
+                        }
+
+                        int rollnumber = 0;
+                        if (result != null && result.Count() != 0)
+                        {
+                            foreach (var cell in dic)
+                            {
+                                dic[cell.Key] = result.OrderBy(c => c.X).ElementAt(rollnumber).Y;
+                                rollnumber++;
+                            }
+                        }
+
+                        XrayUnit = "時間(日期)";
+                        break;
+
+                    case "month":
+                        int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
+                        for (int i = 1; i <= days; i++)
+                        {
+                            dic.Add(i.ToString(), null);
+                        }
+
+                        foreach (var item in result)
+                        {
+                            dic[item.X.ToString()] = item.Y;
+                        }
+
+                        XrayUnit = $"時間({Cdate.Month}月/號)";
+
+                        break;
+                }
+
+                object obj = new
+                {
+                    X = dic.Select(c => c.Key).ToArray(),
+                    Y = dic.Select(c => c.Value).ToArray(),
+                    XrayUnit = XrayUnit
+                };
+                return Json(Success(obj));
             }
-
-            object obj = new
+            catch(Exception ex)
             {
-                X = dic.Select(c => c.Key).ToArray(),
-                Y = dic.Select(c => c.Value).ToArray(),
-                XrayUnit = XrayUnit
-            };
-            return Json(Success(obj));
+                return Json(Failed(message: ex.Message));
+            }
         }
 
         /// <summary>
