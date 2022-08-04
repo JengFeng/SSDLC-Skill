@@ -161,17 +161,36 @@ namespace TWNPPublic.Controllers
         public IActionResult Fancybox_tableChart(DateTime Cdate)
         {
             ViewBag.Cdate = Cdate;
+            Dictionary<decimal, B_NOTE_HOUR> TempBNoteHour = new Dictionary<decimal, B_NOTE_HOUR>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                TempBNoteHour.Add(i, new B_NOTE_HOUR
+                {
+                    B_NODE_SN = 0,
+                    AMOUNT = null,
+                    APERCENT = null,
+                    A_HOUR = i,
+                    NOTE = "",
+                });
+            }
 
             var Note = dashboardService.GetB_NOTEbyWaterNoAndDate(aspNetUser.CurrentWaterNo, Cdate);
             if (Note != null)
             {
                 var HourNotes = dashboardService.ListedB_NOTE_HOURBySN(Note.B_NOTE_SN);
-                ViewBag.HourNotes = HourNotes;
+
+                foreach (var item in HourNotes)
+                {
+                    TempBNoteHour[item.A_HOUR] = item;
+                }
+
+                ViewBag.HourNotes = TempBNoteHour.Select(c => c.Value).ToList();
                 ViewBag.NoteSN = Note.B_NOTE_SN;
             }
             else
             {
-                ViewBag.HourNotes = new List<B_NOTE_HOUR>();
+                ViewBag.HourNotes = TempBNoteHour.Select(c => c.Value).ToList();
                 ViewBag.NoteSN = 0;
             }
             return View();
@@ -243,7 +262,7 @@ namespace TWNPPublic.Controllers
 
             return Json(Success(calendarData.ToArray()));
 
-            #region Test
+            #region TestCase
             //int Year = 0, Month = 0;
 
             //DateTime starttime;
@@ -298,14 +317,18 @@ namespace TWNPPublic.Controllers
             #endregion
         }
 
-        public async Task<IActionResult> UpdateHourNote(int NoteSN, string Hour, string Msg)
+        public async Task<IActionResult> UpdateHourNote(int NoteSN, string Hour, string Msg, DateTime ADate)
         {
+            //這邊測試機跟正式機的資料庫不同步
+
             if (NoteSN == 0)
             {
-                return Json(Failed("尚未核許得記事編號"));
+                // 改成去 Note 裡面新增一筆資料給 Hour 用
+                //return Json(Failed("尚未核許得記事編號"));
+                NoteSN = dashboardService.InsertBNote(aspNetUser.CurrentWaterNo, "1", "事件", ADate);
             }
 
-            var result = dashboardService.UpdateNoteHour(NoteSN, Convert.ToInt32(Hour), Msg);
+            var result = dashboardService.UpdateOrInsertNoteHour(NoteSN, Convert.ToInt32(Hour), Msg);
 
             if (result >= 1)
             {
@@ -788,7 +811,7 @@ namespace TWNPPublic.Controllers
                 };
                 return Json(Success(obj));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(Failed(message: ex.Message));
             }
@@ -825,7 +848,7 @@ namespace TWNPPublic.Controllers
 
             var address = dashboardService.GetAddressByWaterNos(aspNetUser.CurrentWaterNo);
 
-            if(string.IsNullOrEmpty(address))
+            if (string.IsNullOrEmpty(address))
             {
                 return Json(Failed("無相關地址資訊"));
             }

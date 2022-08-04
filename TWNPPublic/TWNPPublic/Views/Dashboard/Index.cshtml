@@ -20,6 +20,7 @@
 <script>
 
     $(function () {
+        //版本 FullCalendar 5.10.1 注意一下
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'zh-tw',             // 地區設台灣就顯示'週一', '週二', '週三', '週四', '週五'
@@ -29,11 +30,14 @@
             selectable: true,               // 是否可以選取月曆
             slotEventOverlap: false,        // 事件使否重疊覆蓋
             dayMaxEvents: false,            // 當行程太多是否用 more 檢視完整
-            weekends: true,                // 顯示星期六跟星期日
+            weekends: true,                 // 顯示星期六跟星期日
             allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
             contentHeight: 300,
             dayHeaderFormat: {
                 weekday: 'narrow'
+            },
+            dateClick: function(date) {
+              OpenNotesModal(date.dateStr);
             },
             eventContent: function (arg) {
                 var customHtml = '';
@@ -76,15 +80,15 @@
                 //名稱
                 $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
                 //目前指針度數
-                $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER) + '<span>度</span>');
+                $('#NEWMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.NEW_METER)));
                 //本期累積度數
-                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_METER) + '<span>度</span>');
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_METER)) + '<span>度</span>');
                 //上期水費
-                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_METER) + '<span>元</span>');
+                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(parseInt(result.Data.LASTMONTH_METER)) + '<span>元</span>');
                 //本期預估
-                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(parseInt(result.Data.THISMONTHEND_METER)) + '<span>元</span>');
                 //去年同期水費
-                $('#LASTYEARMONEY').html('<i class="bi bi-arrow-up text-red"></i>' + setNodataifNullOrEmpty(result.Data.LASTYEAR_MONEY) + '<span>元</span>');
+                $('#LASTYEARMONEY').html('<i class="bi bi-arrow-up text-red"></i>' + setNodataifNullOrEmpty(parseInt(result.Data.LASTYEAR_MONEY)) + '<span>元</span>');
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 //InitTableB_Message(result.Data.DashMainBMessage);
@@ -157,11 +161,11 @@
         var xAxisDataLASTYEAR_METER = "無資料",xAxisDataLASTMONTH_METER = "無資料",xAxisDataTHISMONTH_METER = "無資料";
 
         if(LASTYEAR_METER != null)
-           xAxisDataLASTYEAR_METER = '去年當月\n' + LASTYEAR_METER +'度';
+           xAxisDataLASTYEAR_METER = '去年當月\n' + parseInt(LASTYEAR_METER) +'度';
         if(LASTMONTH_METER != null)
-           xAxisDataLASTMONTH_METER = '上個月\n'+LASTMONTH_METER+'度'
+           xAxisDataLASTMONTH_METER = '上個月\n'+ parseInt(LASTMONTH_METER) +'度'
         if(THISMONTH_METER != null)
-           xAxisDataTHISMONTH_METER = '本月已用\n'+THISMONTH_METER+'度';
+           xAxisDataTHISMONTH_METER = '本月已用\n'+ parseInt(THISMONTH_METER) +'度';
         option = {
             color: colors,
             legend:{
@@ -209,7 +213,7 @@
             series: [
             {
                 name: '度數',
-                data: [LASTYEAR_METER, LASTMONTH_METER, THISMONTH_METER],
+                data: [parseInt(LASTYEAR_METER), parseInt(LASTMONTH_METER), parseInt(THISMONTH_METER)],
                 type: 'bar',
                 itemStyle:{
                         color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -318,6 +322,7 @@
         };
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
+                result.Data.Y = result.Data.Y.map(function(item){ return parseInt(item);})
                 option = {
                     color: colors,
                     legend:{
@@ -712,9 +717,9 @@
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
+                        @*                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
                             <i class="bi bi-window"></i> 用水分析預測
-                        </a>
+                            </a>*@
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line"

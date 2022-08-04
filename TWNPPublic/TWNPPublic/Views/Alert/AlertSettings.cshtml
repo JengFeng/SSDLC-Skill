@@ -3,10 +3,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var ListofWaterNO = (List<string>)ViewBag.WaterNo;
     //var MMcode = (Dictionary<string, Tuple<int, string>>)ViewBag.MMcode;
+    //Toggle Button 放在 css 裡，有需要更動的再注意一下
 }
 @section validation{
+<link rel="stylesheet" href=~/css/Switcher.css />
 <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<style>
+    .form-check {
+        margin: 10px 0px;
+    }
+</style>
 }
 <script>
     $(function(){
@@ -170,7 +177,7 @@
                     <div class="mb-3 row">
                         <label for="inputText" class="col-sm-3 col-form-label">
                             <span style="color:red">*</span>
-                            <i class="bi bi-phone"></i> 手機簡訊設定
+                            <i class="bi bi-phone"></i> 聯繫電話設定
                         </label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="AlertPhone" placeholder="0901001001" autocomplete="off">
@@ -193,136 +200,265 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="unitTitle">
                     <i class="bi bi-exclamation-triangle-fill"></i>
                     警訊設定管理
                 </div>
-                <div class="row">
+                @*<div class="row">
                     <div class="col-sm-6 col-lg-6">
+                    <div class="formGroup">
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio1" id="radio1" value="0">
+                    <label class="form-check-label" for="radio1">
+                    無警示
+                    </label>
+                    </div>
+                    <!--#region 連續24小時累積用水量-->
+                    <div class="title">連續24小時累積用水量</div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio4" id="radio10" value="51">
+                    <label class="form-check-label" for="radio10">
+                    較去年同期突增30%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio4" id="radio11" value="52">
+                    <label class="form-check-label" for="radio11">
+                    較去年同期突增50%(含)以上
+                    </label>
+                    </div>
+                    <!--#endregion -->
+                    <!--#region 連續七天累積用水量-->
+                    <div class="title">連續七天累積用水量</div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio2" value="4">
+                    <label class="form-check-label" for="radio2">
+                    較上週增加30%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio3" value="9">
+                    <label class="form-check-label" for="radio3">
+                    較上週增加50%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio4" value="10">
+                    <label class="form-check-label" for="radio4">
+                    較最近一月的週平均用水量突增30%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio5" value="11">
+                    <label class="form-check-label" for="radio5">
+                    較最近一月的週平均用水量突增50%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio5" value="12">
+                    <label class="row m-0" for="radio5">
+                    較上週增加
+                    <div class="col-auto">
+                    <input type="text" class="form-control" id="AlertExtion2">
+                    <span class="text-danger" id="dangerAlertExtion2" autocomplete="off"></span>
+                    </div>
+                    度(含)以上(可自行輸入，惟至少50度以上)
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio6" value="13">
+                    <label class="form-check-label" for="radio6">
+                    較去年同期突增30%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="radio7" value="14">
+                    <label class="form-check-label" for="radio7">
+                    較去年同期突增50%(含)以上
+                    </label>
+                    </div>
+                    <!--#endregion -->
+                    </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-6">
+                    <div class="formGroup">
+                    <!--#region 用水量上下限值設定(可自行輸入比較突增及突減得上下限值百分比(%))-->
+                    <div class="title">用水量上下限值設定(可自行輸入比較突增及突減得上下限值百分比(%))</div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio5" id="radio12" value="53">
+                    <label class="form-check-label row" for="radio12">
+                    較前期比較突增(上限值)
+                    <div class="col-auto">
+                    <input type="text" class="form-control" id="AlertExtion3" style="width:80px">
+                    <span class="text-danger" id="dangerAlertExtion3" autocomplete="off"></span>
+                    </div>
+                    %，突減(下限值)
+                    <div class="col-auto">
+                    <input type="text" class="form-control" id="AlertExtion4" style="width:80px">
+                    <span class="text-danger" id="dangerAlertExtion4" autocomplete="off"></span>
+                    </div>
+                    %
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio5" id="radio13" value="54">
+                    <label class="form-check-label row" for="radio13">
+                    較去年同期比較突增(上限值)
+                    <div class="col-auto">
+                    <input type="text" class="form-control" id="AlertExtion5" style="width:80px">
+                    <span class="text-danger" id="dangerAlertExtion5" autocomplete="off"></span>
+                    </div>
+                    %，突減(下限值)
+                    <div class="col-auto">
+                    <input type="text" class="form-control" id="AlertExtion6" style="width:80px">
+                    <span class="text-danger" id="dangerAlertExtion6" autocomplete="off"></span>
+                    </div>
+                    %
+                    </label>
+                    </div>
+                    <!--#endregion -->
+                    <!--#region 連續三十天累積用水量-->
+                    <div class="title">連續三十天累積用水量</div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio3" id="radio8" value="7">
+                    <label class="form-check-label" for="radio8">
+                    較去年同期突增30%(含)以上
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio3" id="radio9" value="8">
+                    <label class="form-check-label" for="radio9">
+                    較去年同期突增50%(含)以上
+                    </label>
+                    </div>
+                    <!--#endregion -->
+                    </div>
+                    </div>
+                    </div>*@
+                <div class="row">
+                    <div class="col-sm-8 col-lg-8">
                         <div class="formGroup">
+                            <!--#region 日用水量-->
+                            <div class="title row">
+                                開啟
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                                關閉
+                                &nbsp;&nbsp;
+                                日用水量(前日24:00至昨日23:00)
+                            </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio1" id="radio1" value="0">
-                                <label class="form-check-label" for="radio1">
-                                    無警示
+                                <input class="form-check-input" type="radio">
+                                <label class="form-check-label row">
+                                    較前期比較突增
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" style="width:80px">
+                                        <span class="text-danger" autocomplete="off"></span>
+                                    </div>
+                                    %(含以上)，用水突減
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" style="width:80px">
+                                        <span class="text-danger" autocomplete="off"></span>
+                                    </div>
+                                    %(含以下)
                                 </label>
                             </div>
-                            <!--#region 連續24小時累積用水量-->
-                            <div class="title">連續24小時累積用水量</div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio4" id="radio10" value="51">
-                                <label class="form-check-label" for="radio10">
-                                    較去年同期突增30%(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio4" id="radio11" value="52">
-                                <label class="form-check-label" for="radio11">
-                                    較去年同期突增50%(含)以上
+                                <input class="form-check-input" type="radio">
+                                <label class="form-check-label row">
+                                    較上月日平均用水突增
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" style="width:80px">
+                                        <span class="text-danger" autocomplete="off"></span>
+                                    </div>
+                                    %(含)以上，用水突減
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" style="width:80px">
+                                        <span class="text-danger" autocomplete="off"></span>
+                                    </div>
+                                    %(含)以下
                                 </label>
                             </div>
                             <!--#endregion -->
-                            <!--#region 連續七天累積用水量-->
-                            <div class="title">連續七天累積用水量</div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio2" value="4">
-                                <label class="form-check-label" for="radio2">
-                                    較上週增加30%(含)以上
-                                </label>
+                            <!--#region 日用水量 -->
+                            <div class="title row">
+                                開啟
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                                關閉
+                                &nbsp;&nbsp;
+                                上月用水量
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio3" value="9">
-                                <label class="form-check-label" for="radio3">
-                                    較上週增加50%(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio4" value="10">
-                                <label class="form-check-label" for="radio4">
-                                    較最近一月的週平均用水量突增30%(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio5" value="11">
-                                <label class="form-check-label" for="radio5">
-                                    較最近一月的週平均用水量突增50%(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio5" value="12">
-                                <label class="row m-0" for="radio5">
-                                    較上週增加
+                                <input class="form-check-input" type="radio">
+                                <label class="form-check-label row" for="radio12">
+                                    較前月用水突增
                                     <div class="col-auto">
-                                        <input type="text" class="form-control" id="AlertExtion2">
-                                        <span class="text-danger" id="dangerAlertExtion2" autocomplete="off"></span>
+                                        <input type="text" class="form-control" style="width:80px">
+                                        <span class="text-danger" autocomplete="off"></span>
                                     </div>
-                                    度(含)以上(可自行輸入，惟至少50度以上)
+                                    %(含)以上
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio6" value="13">
-                                <label class="form-check-label" for="radio6">
-                                    較去年同期突增30%(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" id="radio7" value="14">
-                                <label class="form-check-label" for="radio7">
-                                    較去年同期突增50%(含)以上
+                                <input class="form-check-input" type="radio">
+                                <label class="form-check-label row">
+                                    較去年同期用水突增
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" style="width:80px">
+                                        <span class="text-danger" autocomplete="off"></span>
+                                    </div>
+                                    %(含)以上
                                 </label>
                             </div>
                             <!--#endregion -->
                         </div>
                     </div>
-                    <div class="col-sm-6 col-lg-6">
+                    <div class="col-sm-4 col-lg-4">
                         <div class="formGroup">
                             <!--#region 用水量上下限值設定(可自行輸入比較突增及突減得上下限值百分比(%))-->
-                            <div class="title">用水量上下限值設定(可自行輸入比較突增及突減得上下限值百分比(%))</div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio5" id="radio12" value="53">
-                                <label class="form-check-label row" for="radio12">
-                                    較前期比較突增(上限值)
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" id="AlertExtion3" style="width:80px">
-                                        <span class="text-danger" id="dangerAlertExtion3" autocomplete="off"></span>
-                                    </div>
-                                    %，突減(下限值)
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" id="AlertExtion4" style="width:80px">
-                                        <span class="text-danger" id="dangerAlertExtion4" autocomplete="off"></span>
-                                    </div>
-                                    %
-                                </label>
+                            <div class="title row">
+                                開啟
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                                關閉
+                                &nbsp;&nbsp;
+                                連續三日無用水
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio5" id="radio13" value="54">
-                                <label class="form-check-label row" for="radio13">
-                                    較去年同期比較突增(上限值)
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" id="AlertExtion5" style="width:80px">
-                                        <span class="text-danger" id="dangerAlertExtion5" autocomplete="off"></span>
-                                    </div>
-                                    %，突減(下限值)
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" id="AlertExtion6" style="width:80px">
-                                        <span class="text-danger" id="dangerAlertExtion6" autocomplete="off"></span>
-                                    </div>
-                                    %
-                                </label>
                             </div>
                             <!--#endregion -->
                             <!--#region 連續三十天累積用水量-->
-                            <div class="title">連續三十天累積用水量</div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio3" id="radio8" value="7">
-                                <label class="form-check-label" for="radio8">
-                                    較去年同期突增30%(含)以上
-                                </label>
+                            <div class="title row">
+                                開啟
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                                關閉
+                                &nbsp;&nbsp;
+                                連續三日用水
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio3" id="radio9" value="8">
-                                <label class="form-check-label" for="radio9">
-                                    較去年同期突增50%(含)以上
-                                </label>
                             </div>
                             <!--#endregion -->
                         </div>
