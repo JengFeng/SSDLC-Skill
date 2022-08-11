@@ -8,6 +8,13 @@ namespace TWNPPublic.Common.Extension
 
         static string defaultkey = "t3n9u6lic";
 
+        /// <summary>
+        /// AES加密
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static string AesEncryptExtened(this string text, string key)
         {
             if (string.IsNullOrEmpty(text))

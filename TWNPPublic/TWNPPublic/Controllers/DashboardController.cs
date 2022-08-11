@@ -126,7 +126,7 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> GetDashMainData()
         {
             //當前資料更新時間
-            DateTime GetDataDate = new DateTime(2022, 4, 22);
+            DateTime GetDataDate = DateTime.Now.AddDays(-1);
             //愈查詢的使用者
             string SetUser = "";
             //有水號跟帳號兩種有問題問SA
@@ -790,7 +790,7 @@ namespace TWNPPublic.Controllers
                         int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
                         for (int i = 1; i <= days; i++)
                         {
-                            dic.Add(i.ToString(), null);
+                            dic.Add(new DateTime(Cdate.Year, Cdate.Month,i).ToString("yyyy-MM-dd"), null);
                         }
 
                         foreach (var item in result)

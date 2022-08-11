@@ -45,39 +45,6 @@
             history.go(0);
         }
 
-        function btnSave(){
-            var Url = "@Url.Action("CreatUserInfo","UserManage")";
-            var Data ={
-                Account : $("#Account").val(),
-                Password : $("#Password").val(),
-                PhoneNumber : $("#PhoneNumber").val(),
-                Email : $("#Email").val()
-            };
-            var Validator = $("#FormAccount").validate();
-            $.ajax({
-                type: 'POST',
-                url: Url,
-                data: Data,
-                success: function (data) {
-                    if (data.Success) {
-                        alert(data.Message);
-                    }
-                    else {
-                        if (data.ModelStateErrors != null) {
-                            Validator.showErrors(data.ModelStateErrors);
-                        }
-                        else {
-                            alert(data.Message);
-                        }
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError){
-                    alert("伺服器繁忙，請稍後再試");
-                }
-            });
-        }
-
-
     @if (!ViewBag.IsSignAccount)
     {
         @*無帳號創建帳號*@
@@ -138,6 +105,7 @@
                                                 success: function (data) {
                                                     if (data.Success) {
                                                         alert(data.Message);
+                                                        history.go(0);
                                                     }
                                                     else {
                                                         if (data.ModelStateErrors != null) {

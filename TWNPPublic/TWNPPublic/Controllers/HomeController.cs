@@ -31,8 +31,8 @@ namespace TWNPPublic.Controllers
     }
     public class DenyAppAcounntVm
     {
-        [Required(ErrorMessage = "AccountNo App會員編號 為必填")]
-        public string AccountNo { get; set; } = string.Empty;
+        [Required(ErrorMessage = "WaterNo 水號 為必填")]
+        public string WaterNo { get; set; } = string.Empty;
         [Required(ErrorMessage = "AccessToken 為必填")]
         public string AccessToken { get; set; } = string.Empty;
     }
@@ -52,6 +52,11 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
+        private string FixBase64FromQueryString(string b)
+        {
+            return b.Replace(" ", "+");
+        }
+
         /// <summary>
         /// APP用
         /// </summary>
@@ -59,6 +64,7 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public IActionResult LoginAPP(LoginAppVm model)
         {
+
             if (!ModelState.IsValid)
             {
                 var ErrorMessages = ModelState.Values.Where(c => c.Errors.Count() != 0).Select(c => string.Join(",", c.Errors.Select(x => x.ErrorMessage))).ToArray();
@@ -71,6 +77,8 @@ namespace TWNPPublic.Controllers
                     "欄位錯誤"
                     ));
             }
+
+            model.AccessToken = FixBase64FromQueryString(model.AccessToken);
 
             //檢查偸肯
             if (string.IsNullOrEmpty(model.AccessToken))
@@ -116,7 +124,7 @@ namespace TWNPPublic.Controllers
             }
 
             //在系統裡面有了就直接登入 而且帳號尚未被取消
-            var getAccount = homeService.CheckAccountNoIsApp(model.AccountNo);
+            var getAccount = homeService.CheckAccountNoIsApp(model.WaterNo);
             //兩種情況一個真的沒有 一個被取消
             if (getAccount != null && getAccount.VALID != 0)
             {
@@ -156,7 +164,20 @@ namespace TWNPPublic.Controllers
             {
                 try
                 {
-                    homeService.CreateAppUser(AccountNo, WaterNo);
+                    AccessToken = FixBase64FromQueryString(AccessToken);
+
+                    var tokenPaser = AccessToken.AesDecryptExtened(KingErrandYours);
+                    var tokenWaterNo = tokenPaser.Split('_');
+
+                    if (tokenWaterNo[0] != WaterNo)
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenError.ToString(),
+                        }, "Token Error,未合法的 Token 非澎湖水號"));
+                    }
+
+                    homeService.CreateAppUser(WaterNo, WaterNo, AccessToken);
                     //寫一個帳密到資料庫
                     // UserName = AccountNo,Pwd = AccountNo
                     // 然後導去登入自動登入
@@ -169,7 +190,10 @@ namespace TWNPPublic.Controllers
                 }
                 catch (Exception e)
                 {
-                    return RedirectToAction("Login", "Home");
+                    return Json(Failed(new
+                    {
+                        ErrorCode = ApiErrorCode.TokenError.ToString(),
+                    }, "Token Error,解析錯誤"));
                 }
             }
             else
@@ -184,10 +208,41 @@ namespace TWNPPublic.Controllers
         /// APP用 取得 AccessToken
         /// </summary>
         /// <returns></returns>
-        public IActionResult AccessToken()
+        public IActionResult AccessToken(string WaterNo)
         {
+            if (string.IsNullOrEmpty(WaterNo))
+            {
+                return Json(Failed(
+                    new
+                    {
+                        ErrorCode = ApiErrorCode.Valid.ToString(),
+                        ErrorObj = "WaterNo 水號為必填"
+                    },
+                    "欄位錯誤"
+                    ));
+            }
+
+            //檢查澎湖水號
+            if (WaterNo.Substring(0, 2) != "7D")
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token 非澎湖水號"));
+            }
+
+            //檢查是否為智慧水表
+            if (!homeService.CheckWaterNoIsAutoMeter(WaterNo))
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.NoSource.ToString(),
+                }, "此水號非智慧水表"));
+            }
+
+
             string TimeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            string Token = @"7D" + TimeStamp;
+            string Token = WaterNo + "_" + TimeStamp;
             object TokenObh = new
             {
                 Token = Token.AesEncryptExtened(KingErrandYours),
@@ -213,6 +268,8 @@ namespace TWNPPublic.Controllers
                     ));
             }
 
+            model.AccessToken = FixBase64FromQueryString(model.AccessToken);
+
             //檢查偸肯
             if (string.IsNullOrEmpty(model.AccessToken))
             {
@@ -229,7 +286,9 @@ namespace TWNPPublic.Controllers
                 {
                     var RealToken = model.AccessToken.AesDecryptExtened(KingErrandYours);
 
-                    if (RealToken.Substring(0, 2) != "7D")
+                    var WaterNoToken = RealToken.Split('_');
+
+                    if (WaterNoToken[0] != model.WaterNo)
                     {
                         return Json(Failed(new
                         {
@@ -246,7 +305,7 @@ namespace TWNPPublic.Controllers
                 }
             }
 
-            var result = homeService.DenyAccountFromApp(model.AccountNo);
+            var result = homeService.DenyAccountFromApp(model.WaterNo);
 
             if (result > 0)
             {
@@ -258,7 +317,7 @@ namespace TWNPPublic.Controllers
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
                     ErrorObj = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
-                }, 
+                },
                  "操作失敗，此使用者尚未在系統中"));
             }
 

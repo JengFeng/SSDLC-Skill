@@ -76,7 +76,7 @@ namespace TWNPPublic.Domain.Service
         /// </summary>
         /// <param name="AccountNo"></param>
         /// <param name="WaterNo"></param>
-        public void CreateAppUser(string AccountNo, string WaterNo)
+        public void CreateAppUser(string AccountNo, string WaterNo,string Token)
         {
 
             //string mainsql = @"INSERT INTO [dbo].[B_ACCOUNT]
@@ -97,7 +97,8 @@ namespace TWNPPublic.Domain.Service
             string mainsql = @"If exists(Select Top(1) [B_ACCOUNT_SN] From [TWN].[dbo].[B_ACCOUNT] Where B_ACCOUNT=@B_ACCOUNT And [LOGIN_TYPE] = 1)            
                                 Begin            
 	                                Update [TWN].[dbo].[B_ACCOUNT] 
-	                                Set VALID = 1 
+	                                Set VALID = 1, 
+                                        PWD = @PWD
 	                                Where B_ACCOUNT=@B_ACCOUNT And [LOGIN_TYPE] = 1  
                                 End                    
                                 Else            
@@ -122,7 +123,7 @@ namespace TWNPPublic.Domain.Service
             {
                 B_ACCOUNT = AccountNo,
                 WATER_NO = WaterNo,
-                PWD = AccountNo.AesEncryptExtened(),
+                PWD = Token,
                 CREATE_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                 LAST_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                 VALID = 1,
@@ -195,7 +196,7 @@ namespace TWNPPublic.Domain.Service
 
         public List<string> CheckWaterNoNoIsApp(int AccountSN, string WaterNo);
 
-        public void CreateAppUser(string AccountNo, string WaterNo);
+        public void CreateAppUser(string AccountNo, string WaterNo,string Token);
 
         public int DenyAccountFromApp(string AccountNo);
     }
