@@ -17,4 +17,14 @@ namespace TWNPPublic.ViewModels.Home
         [Required(ErrorMessage = "驗證碼為必填")]
         public string CapthCode { get; set; } = string.Empty;
     }
+
+    public class GetIsAutoMeter
+    {
+        public int? PH_METER_LIST_SN { get; set; }
+    }
+
+    public class GetBACCOUNT
+    {
+        public int B_ACCOUNT_SN { get; set; }
+    }
 }

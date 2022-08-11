@@ -150,7 +150,6 @@
                 <tbody>
                     @if (HourNotes != null)
                     {
-
                         foreach (var item in HourNotes)
                         {
                             var TimeSource = String.Format("{0:00}", item.A_HOUR);
@@ -164,7 +163,7 @@
                                             <span>@item.NOTE</span>
                                             <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
                                         </div>
-                                        <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
+                                        <a class="btn-green-o btnsave" href="javascript:;"  onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
                                         <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
                                         <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
                                     </div>
@@ -324,7 +323,8 @@
         let model = {
             NoteSN : @ViewBag.NoteSN,
             Hour : obj,
-            Msg : getNoteArea.find('textarea').val()
+            Msg : getNoteArea.find('textarea').val(),
+            ADate : $("#tbJumpTime").val()
         };
         $.post(url,model,function(data){
             if(data.Success){
@@ -335,6 +335,7 @@
                 getNoteArea.find('.btnsave').hide();
                 getNoteArea.find('.btncancel').hide();
                 getNoteArea.find('.btnUpdate').show();
+                history.go(0);
             }
             else{
                 alert(data.Message);

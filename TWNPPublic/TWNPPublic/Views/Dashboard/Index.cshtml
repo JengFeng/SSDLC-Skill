@@ -3,6 +3,7 @@
     ViewData["Title"] = "首頁";
     CultureInfo culture = new CultureInfo("zh-TW");
     culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+    DateTime current = DateTime.Now;
     string RocTime = DateTime.Now.ToString("yyy/MM/dd", culture);
 }
 @section echart{
@@ -20,6 +21,7 @@
 <script>
 
     $(function () {
+        //版本 FullCalendar 5.10.1 注意一下
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'zh-tw',             // 地區設台灣就顯示'週一', '週二', '週三', '週四', '週五'
@@ -29,11 +31,14 @@
             selectable: true,               // 是否可以選取月曆
             slotEventOverlap: false,        // 事件使否重疊覆蓋
             dayMaxEvents: false,            // 當行程太多是否用 more 檢視完整
-            weekends: true,                // 顯示星期六跟星期日
+            weekends: true,                 // 顯示星期六跟星期日
             allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
             contentHeight: 300,
             dayHeaderFormat: {
                 weekday: 'narrow'
+            },
+            dateClick: function(date) {
+              OpenNotesModal(date.dateStr);
             },
             eventContent: function (arg) {
                 var customHtml = '';
@@ -60,12 +65,14 @@
 </script>
 <!-- Easymap -->
 <script type="text/javascript" src="https://easymap.gis.tw/easymap/Easymap/easymap.js"></script>
+<script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
 <script type="text/javascript">
     //兩個圖表全域
     var chartWaterUseMonitor;
     var chartCompareWaterUse;
     let barchatpopurl = "@Url.Action("Fancybox_modalBarchart","Dashboard")";
     let waternotepopurl = "@Url.Action("Fancybox_tableChart","Dashboard")";
+    let AbnormalList;
     $(function () {
        //圖表初始化
        chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
@@ -75,19 +82,45 @@
             if(result.Success){
                 //名稱
                 $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
+
                 //目前指針度數
-                $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER) + '<span>度</span>');
+                $('#NEWMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.NEW_METER)));
+                if(result.Data.NEW_METER == null){
+                    $("#NEWMETER").toggleClass('totalUsage updateItem');
+                }
+
                 //本期累積度數
-                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_METER) + '<span>度</span>');
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_METER)) + '<span>度</span>');
+                if(result.Data.THISMONTH_METER == null){
+                    $("#THISMONTHMETER").toggleClass('totalUsage updateItem');
+                }
+
                 //上期水費
-                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_METER) + '<span>元</span>');
+                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.LASTMONTH_MONEY)) + '<span>元</span>');
+                if(result.Data.LASTMONTH_METER == null){
+                    $("#LASTMONTHMONEY").css("font-size", "1.0rem");
+                    $("#LASTMONTHMONEY").css("color", "#B7B9C0");
+                }
+
                 //本期預估
-                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTHEND_METER)) + '<span>元</span>');
+                if(result.Data.THISMONTHEND_METER == null){
+                    $("#THISMONTHENDMONEY").css("font-size", "1.0rem");
+                    $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
+                }
+
                 //去年同期水費
-                $('#LASTYEARMONEY').html('<i class="bi bi-arrow-up text-red"></i>' + setNodataifNullOrEmpty(result.Data.LASTYEAR_MONEY) + '<span>元</span>');
+                $('#LASTYEARMONEY').html(/*'<i class="bi bi-arrow-up text-red"></i>' + */setNodataifNullOrEmpty(Math.round(result.Data.LASTYEAR_MONEY)) + '<span>元</span>');
+                if(result.Data.LASTYEAR_MONEY == null){
+                    $("#LASTYEARMONEY").css("font-size", "1.0rem");
+                    $("#LASTYEARMONEY").css("color", "#B7B9C0");
+                }
+
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 //InitTableB_Message(result.Data.DashMainBMessage);
+                AbnormalList = result.Data.DashMainBMessage;
+                ReloadTable();
                 //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                 //<!-- <i class="bi bi-dash"></i> 持平-->
                 //<!-- <i class="bi bi-arrow-up"></i> 上-->
@@ -95,7 +128,6 @@
             }
         });
         InitWaterUseSearchChart();
-        ReloadTable();
 
         chartWaterUseMonitor.on('click', function (params) {
             //jquery 算日期太陰間了 調後端==
@@ -126,7 +158,7 @@
     //判斷為空就回傳上無資料
     function setNodataifNullOrEmpty(obj){
         if(obj == null)
-            return '尚無資料';
+            return '尚無資料 ';
         if(obj == '')
             return '尚無資料';
         return obj;
@@ -144,8 +176,8 @@
         $("#tbB_Message > tbody").empty();
         $.each(obj,function(index,value){
             $("#tbB_Message > tbody").append('<tr>' +
-                                            '<td class="width15">'+value.Time+'</td>' +
-                                            '<td id="alerttablemsg'+index+'">'+ value.Message +'</td>' +
+                                            '<td class="width15">'+moment(new Date(value.INP_DATE)).format('yyyy/MM/DD')+'</td>' +
+                                            '<td id="alerttablemsg'+index+'">'+ value.NOTE +'</td>' +
                                             '<td class="width15"><a class="btn-green-o" href="javascript:;" data-rowid='+index+' onclick="OpenExceptionModal(this)"><i class="bi bi-window"></i>查看</a></td>'+
                                             '</tr>');
 
@@ -157,11 +189,11 @@
         var xAxisDataLASTYEAR_METER = "無資料",xAxisDataLASTMONTH_METER = "無資料",xAxisDataTHISMONTH_METER = "無資料";
 
         if(LASTYEAR_METER != null)
-           xAxisDataLASTYEAR_METER = '去年當月\n' + LASTYEAR_METER +'度';
+           xAxisDataLASTYEAR_METER = '去年當月\n' + parseInt(LASTYEAR_METER) +'度';
         if(LASTMONTH_METER != null)
-           xAxisDataLASTMONTH_METER = '上個月\n'+LASTMONTH_METER+'度'
+           xAxisDataLASTMONTH_METER = '上個月\n'+ parseInt(LASTMONTH_METER) +'度'
         if(THISMONTH_METER != null)
-           xAxisDataTHISMONTH_METER = '本月已用\n'+THISMONTH_METER+'度';
+           xAxisDataTHISMONTH_METER = '本月已用\n'+ parseInt(THISMONTH_METER) +'度';
         option = {
             color: colors,
             legend:{
@@ -209,7 +241,7 @@
             series: [
             {
                 name: '度數',
-                data: [LASTYEAR_METER, LASTMONTH_METER, THISMONTH_METER],
+                data: [parseInt(LASTYEAR_METER), parseInt(LASTMONTH_METER), parseInt(THISMONTH_METER)],
                 type: 'bar',
                 itemStyle:{
                         color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -318,6 +350,7 @@
         };
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
+                result.Data.Y = result.Data.Y.map(function(item){ return parseInt(item);})
                 option = {
                     color: colors,
                     legend:{
@@ -400,7 +433,7 @@
     function DataFormatPaser(origindate){
         var odate = new Date(origindate);
         var dd = (odate.getDate() + 1 <= 10 ? '0' : '') + (odate.getDate());
-        var mm = (odate.getMonth() + 1 <= 10 ? '0' : '') + (odate.getMonth() + 1);
+        var mm = (odate.getMonth() + 1 < 10 ? '0' : '') + (odate.getMonth() + 1);
         var y = odate.getFullYear();
         return y + '/' + mm + '/' + dd;
     }
@@ -424,28 +457,33 @@
     }
 
     function ReloadTable(){
-         var Url = GetTableQueryString() + '?page=' + currentpage;
-          $.ajax({
-            type: 'Get',
-            url: Url,
-            dataType: "json",
-            success: function (data) {
-                if (data.Success) {
-                    InitTableB_Message(data.Data.ExceptionItems);
-                    LoadPaginate(data.Data.Max, 3);
-                    $("#tbB_Message").footable();
-                }
-                else {
-                    alert(data.Message);
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-            }
-        });
+        
+        let pagesize = 3;
+        LoadPaginate(AbnormalList.length, 3);
+        InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
+        // var Url = GetTableQueryString() + '?page=' + currentpage;
+        //  $.ajax({
+        //    type: 'Get',
+        //    url: Url,
+        //    dataType: "json",
+        //    success: function (data) {
+        //        if (data.Success) {
+        //            InitTableB_Message(data.Data.ExceptionItems);
+        //            LoadPaginate(data.Data.Max, 3);
+        //            $("#tbB_Message").footable();
+        //        }
+        //        else {
+        //            alert(data.Message);
+        //        }
+        //    },
+        //    error: function (xhr, ajaxOptions, thrownError) {
+        //    }
+        //});
+        $("#tbB_Message").footable();
     }
 
     /* 現在頁數 */
-    var currentpage = 1;
+    let currentpage = 1;
     /* 總頁簽方法*/
     function LoadPaginate(TotalCount,ItemPerPage) {
         //$("#PageCount").html("共 " + TotalCount + " 筆");
@@ -618,7 +656,7 @@
                         <div class="costItem">
                             <div class="name">
                                 預估水費
-                                <span class="date">計費期間：@DateTime.Now.ToString("yyyMMdd", culture)~@DateTime.Now.ToString("yyyMMdd", culture)</span>
+                                <span class="date">計費期間：@(new DateTime(current.Year,current.Month,1).ToString("yyyMMdd", culture))~@current.ToString("yyyMMdd", culture)</span>
                             </div>
                             <div class="costTotal" id="THISMONTHENDMONEY">
                                 <i class="bi bi-arrow-up text-red"></i>
@@ -712,9 +750,9 @@
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
+                        @*                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
                             <i class="bi bi-window"></i> 用水分析預測
-                        </a>
+                            </a>*@
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line"

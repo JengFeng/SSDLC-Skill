@@ -15,9 +15,10 @@ namespace TWNPPublic.Domain.Service
             this.dataAccess = dataAccess;
         }
 
-        public DashMainViewModel GetDashMain(string WaterNo, string Account, DateTime Theday)
+        public DashMainViewModel GetDashMain(string WaterNo, string Account, DateTime dayText)
         {
             string mainsql = @"select * From dbo.F_B_HOME(@WaterNo,@Account,@Theday)";
+            string Theday = dayText.ToString("yyyy/MM/dd");
             object obj = new { Account, WaterNo, Theday };
             return dataAccess.Query<DashMainViewModel>(mainsql, obj).FirstOrDefault();
         }
@@ -127,11 +128,43 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
+        /// <summary>
+        /// 更新 BNoteHour 資料
+        /// </summary>
+        /// <param name="SN"></param>
+        /// <param name="Hour"></param>
+        /// <param name="Note"></param>
+        /// <returns></returns>
         public int UpdateNoteHour(int SN, int Hour, string Note)
         {
             string mainsql = @"UPDATE [dbo].[B_NOTE_HOUR]
                                SET [NOTE] = @Note
                                WHERE B_NODE_SN = @SN And A_HOUR = @Hour";
+            object obj = new
+            {
+                Note,
+                SN,
+                Hour
+            };
+            return dataAccess.Execute(mainsql, obj);
+        }
+
+        /// <summary>
+        /// 更新或新增  BNoteHour 資料
+        /// </summary>
+        /// <param name="SN"></param>
+        /// <param name="Hour"></param>
+        /// <param name="Note"></param>
+        /// <returns></returns>
+        public int UpdateOrInsertNoteHour(int SN, int Hour, string Note)
+        {
+            string mainsql = @"Update [dbo].[B_NOTE_HOUR] SET [NOTE] = @Note WHERE B_NODE_SN = @SN And A_HOUR = @Hour
+                                IF @@ROWCOUNT = 0
+                                    INSERT INTO [dbo].[B_NOTE_HOUR]([B_NODE_SN]
+                                                                   ,[A_HOUR]
+                                                                   ,[AMOUNT]
+                                                                   ,[APERCENT]
+                                                                   ,[NOTE]) VALUES (@SN,@Hour,0,0,@Note)";
             object obj = new
             {
                 Note,
@@ -262,6 +295,33 @@ namespace TWNPPublic.Domain.Service
                 return "";
             return dataAccess.Query<Addresses>(mainsql, obj).FirstOrDefault().ADDRESS_DAES;
         }
+
+        public int InsertBNote(string WaterNo, string PROPERTY_NO, string NOTE, DateTime ADate)
+        {
+            string mainsql = @"INSERT INTO [dbo].[B_NOTE]
+                                       ([WATER_NO]
+                                       ,[PROPERTY_NO]
+                                       ,[NOTE]
+                                       ,[INP_DATE]
+                                       ,[A_DATE])
+                                 OUTPUT INSERTED.B_NOTE_SN
+                                 VALUES
+                                       (@WATER_NO
+                                       ,@PROPERTY_NO
+                                       ,@NOTE
+                                       ,@INP_DATE
+                                       ,@A_DATE)";
+            object obj = new
+            {
+                WATER_NO = WaterNo,
+                PROPERTY_NO = "1",
+                NOTE = "事件",
+                INP_DATE = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                A_DATE = ADate.ToString("yyyy-MM-dd")
+            };
+
+            return dataAccess.Query<B_Note_ReuturnSN>(mainsql, obj).First().B_NOTE_SN;
+        }
     }
 
     public interface IDashboardService
@@ -275,7 +335,34 @@ namespace TWNPPublic.Domain.Service
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
+
+        /// <summary>
+        /// 更新 BNoteHour 資料
+        /// </summary>
+        /// <param name="SN"></param>
+        /// <param name="Hour"></param>
+        /// <param name="Note"></param>
+        /// <returns></returns>
         public int UpdateNoteHour(int SN, int Hour, string Note);
+
+        /// <summary>
+        /// 新增或更新 BNoteHour
+        /// </summary>
+        /// <param name="SN"></param>
+        /// <param name="Hour"></param>
+        /// <param name="Note"></param>
+        /// <returns></returns>
+        public int UpdateOrInsertNoteHour(int SN, int Hour, string Note);
+
+        /// <summary>
+        /// 當NOTE空白時新增NOTE
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="PROPERTY_NO"></param>
+        /// <param name="NOTE"></param>
+        /// <param name="ADate"></param>
+        /// <returns></returns>
+        public int InsertBNote(string WaterNo, string PROPERTY_NO, string NOTE, DateTime ADate);
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
         public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo);

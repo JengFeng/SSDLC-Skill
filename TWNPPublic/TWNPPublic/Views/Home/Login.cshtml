@@ -47,7 +47,7 @@
                         <label>驗證碼</label>
                         <div class="codeGroup">
                             <div>
-                                @Html.PasswordFor(m=>m.CapthCode , new {@class="form-control width100",@placeholder="驗證碼"})
+                                @Html.TextBoxFor(m=>m.CapthCode , new {@class="form-control width100",@placeholder="驗證碼"})
                                 @Html.ValidationMessageFor(m=>m.CapthCode, "", new { @class = "text-danger" })
                             </div>
                             <div>

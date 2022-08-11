@@ -88,6 +88,16 @@
     var myChart = echarts.init(document.getElementById('divpagechartGroup'));
     function LoadChartMethod(obj){
         let fakerMount = obj.Amountdatas.map((_,value) => value * 5);
+
+        obj.Amountdatas.forEach((elem,index)=>{
+            console.log(obj.Amountdatas[index][1]);
+            obj.Amountdatas[index].value[1] = parseInt(obj.Amountdatas[index].value[1]);
+        });
+
+        obj.Pindatas.forEach((elem,index)=>{
+            obj.Pindatas[index].value[1] = parseInt(obj.Pindatas[index].value[1]);
+        });
+
         var option;
         const colors = ['#ffb1c1', '#5391C7'];
         option = {
