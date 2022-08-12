@@ -4,7 +4,8 @@
     CultureInfo culture = new CultureInfo("zh-TW");
     culture.DateTimeFormat.Calendar = new TaiwanCalendar();
     DateTime current = DateTime.Now;
-    string RocTime = DateTime.Now.ToString("yyy/MM/dd", culture);
+    string RocTime = DateTime.Now.AddDays(-1).ToString("yyy/MM/dd", culture);
+    string BillDateText = ViewBag.billdate;
 }
 @section echart{
 <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
@@ -73,6 +74,8 @@
     let barchatpopurl = "@Url.Action("Fancybox_modalBarchart","Dashboard")";
     let waternotepopurl = "@Url.Action("Fancybox_tableChart","Dashboard")";
     let AbnormalList;
+    let LASTMONTH_METER = 0;
+    let THISMONTH_METER = 0;
     $(function () {
        //圖表初始化
        chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
@@ -109,16 +112,13 @@
                     $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
                 }
 
-                //去年同期水費
-                $('#LASTYEARMONEY').html(/*'<i class="bi bi-arrow-up text-red"></i>' + */setNodataifNullOrEmpty(Math.round(result.Data.LASTYEAR_MONEY)) + '<span>元</span>');
-                if(result.Data.LASTYEAR_MONEY == null){
-                    $("#LASTYEARMONEY").css("font-size", "1.0rem");
-                    $("#LASTYEARMONEY").css("color", "#B7B9C0");
-                }
+                $('#AccumulateBilldate').text($('#AccumulateBilldate').text().replace("{0}",result.Data.BILLDATE));
+                $('#LastBilldate').text($('#LastBilldate').text().replace("{0}",result.Data.BILLDATE));
 
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
-                //InitTableB_Message(result.Data.DashMainBMessage);
+                LASTMONTH_METER = result.Data.LASTMONTH_METER;
+                THISMONTH_METER = result.Data.THISMONTH_METER
                 AbnormalList = result.Data.DashMainBMessage;
                 ReloadTable();
                 //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
@@ -130,22 +130,23 @@
         InitWaterUseSearchChart();
 
         chartWaterUseMonitor.on('click', function (params) {
-            //jquery 算日期太陰間了 調後端==
-            //動態填入Fancybox Uri路徑
             let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
             $("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
             $('#btngofbox').trigger('click');
         });
 
-        $.get("@Url.Action("GetCurrentAddress","Dashboard")",function(data){
+        DashSlowQuery();
+    });
+
+    async function DashSlowQuery(){
+
+        $.get("@Url.Action("GetWaterFee2","Dashboard")",function(data){
             if(data.Success){
-               console.log(data.Message +data.Data);
-            }
-            else{
-               console.log(data.Message);
+                $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>")
+                InitCompareChart(data.Data.TOQTY,LASTMONTH_METER,THISMONTH_METER);
             }
         });
-    });
+    }
 
     function SetArrowCompareTHISMONTH_MONEYAndLASTYEAR_MONEY(thismonth,lastyear){
         if(thismonth == null || thismonth == '')
@@ -214,12 +215,6 @@
                     type: 'shadow'
                 }
             },
-            //grid: {
-            //    left: '10%',
-            //    right: '10%',
-            //    top: '10%',
-            //    bottom: 60
-            //},
             xAxis: {
                 type: 'category',
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
@@ -457,28 +452,9 @@
     }
 
     function ReloadTable(){
-        
         let pagesize = 3;
         LoadPaginate(AbnormalList.length, 3);
         InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
-        // var Url = GetTableQueryString() + '?page=' + currentpage;
-        //  $.ajax({
-        //    type: 'Get',
-        //    url: Url,
-        //    dataType: "json",
-        //    success: function (data) {
-        //        if (data.Success) {
-        //            InitTableB_Message(data.Data.ExceptionItems);
-        //            LoadPaginate(data.Data.Max, 3);
-        //            $("#tbB_Message").footable();
-        //        }
-        //        else {
-        //            alert(data.Message);
-        //        }
-        //    },
-        //    error: function (xhr, ajaxOptions, thrownError) {
-        //    }
-        //});
         $("#tbB_Message").footable();
     }
 
@@ -611,7 +587,7 @@
             <div class="stateGroup">
                 <div class="toggleMapArea">
                     <a class="btn-green-o open-mapArea" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
-                    <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>
+                    @* <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>*@
                 </div>
                 <div class="userName" id="divNAME"></div>
                 <!-- 六個狀態色碼
@@ -640,7 +616,7 @@
                     <div class="totalUsageGroup">
                         <div class="name">本期累積度數</div>
                         <div class="totalUsage" id="THISMONTHMETER"><span>度</span></div>
-                        <div class="updateItem">計算期間@(RocTime)</div>
+                        <div class="updateItem" id="AccumulateBilldate">計算期間{0}~@(RocTime)</div>
                     </div>
                 </div>
 
@@ -655,8 +631,8 @@
                     <div class="costItemRow">
                         <div class="costItem">
                             <div class="name">
-                                預估水費
-                                <span class="date">計費期間：@(new DateTime(current.Year,current.Month,1).ToString("yyyMMdd", culture))~@current.ToString("yyyMMdd", culture)</span>
+                                試算水費
+                                <span class="date" id="LastBilldate">計費期間：{0}~@(RocTime)</span>
                             </div>
                             <div class="costTotal" id="THISMONTHENDMONEY">
                                 <i class="bi bi-arrow-up text-red"></i>
@@ -668,7 +644,7 @@
                                 去年同期水費
                                 <span class="date">帳單年月：@DateTime.Now.AddYears(-1).ToString("yyy/MM", culture)</span>
                             </div>
-                            <div class="costTotal" id="LASTYEARMONEY"><span>元</span></div>
+                            <div class="costTotal" id="LASTYEARMONEY">載入中<span>元</span></div>
                         </div>
                     </div>
                     <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
@@ -763,8 +739,8 @@
                         </a>
                         <div class="name"
                              id="divWaterUserSearchChartTitle"
-                             data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                            @DateTime.Now.ToString("yyyy/MM/dd")當週用水量
+                             data-themeswitchchart="@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")">
+                            @DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")當週用水量
                         </div>
                         <a class="btn-green-o-line"
                            href="javascript:;"

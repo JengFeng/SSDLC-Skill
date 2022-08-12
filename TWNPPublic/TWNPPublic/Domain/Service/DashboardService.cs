@@ -1,5 +1,7 @@
-﻿using SqlData;
+﻿using Newtonsoft.Json;
+using SqlData;
 using System.Data.SqlClient;
+using System.Globalization;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Dashboard;
@@ -9,9 +11,11 @@ namespace TWNPPublic.Domain.Service
     public class DashboardService : IDashboardService
     {
         private readonly IDapperDataAccess dataAccess;
+        private readonly IHttpClientFactory httpClientFactory;
 
-        public DashboardService(IDapperDataAccess dataAccess)
+        public DashboardService(IDapperDataAccess dataAccess, IHttpClientFactory HttpClientFactory)
         {
+            this.httpClientFactory = HttpClientFactory;
             this.dataAccess = dataAccess;
         }
 
@@ -196,17 +200,47 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
-        public V_A_WATERFEE? GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time)
+        //AP主機網址/TWN_Transfer/WebService/OracleForTWN_WATERNO.ashx?Table=V_A_WATERFEE&WATERNO=7D76026501K
+
+
+        public async Task<V_A_WATERFEE?> GetVWaterFee2ByWaterNoAndTime(string WaterNo, DateTime cTime)
         {
-            string mainsql = @"SELECT TOP (1) *
-                             FROM [TWN].[dbo].[V_A_WATERFEE] 
-                             Where WATERNO = @WaterNo And BILLDATE = @Time";
-            object obj = new
+            var httpClient = httpClientFactory.CreateClient();
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+            string F1 = "T" + cTime.ToString("yyyMM", culture);
+            string F2 = WaterNo;
+
+            try
             {
-                WaterNo,
-                Time
-            };
-            return dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
+                var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=67&key=57D22AF765176213&F1={F1}&F2={F2}");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string responseBody = await responseMessage.Content.ReadAsStringAsync();
+                    var root = JsonConvert.DeserializeObject<Root>(responseBody);
+                    if (root != null)
+                        return root.DataRoot.DataLoop.Data;
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+
+            //string mainsql = @"SELECT TOP (1) *
+            //                 FROM [TWN].[dbo].[V_A_WATERFEE] 
+            //                 Where WATERNO = @WaterNo And BILLDATE = @Time";
+            //object obj = new
+            //{
+            //    WaterNo,
+            //    Time
+            //};
+            //return dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
         }
 
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate)
@@ -366,7 +400,7 @@ namespace TWNPPublic.Domain.Service
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
         public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo);
-        public V_A_WATERFEE? GetVWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
+        public Task<V_A_WATERFEE?> GetVWaterFee2ByWaterNoAndTime(string WaterNo, DateTime CTime);
         public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo);
         public string GetAddressByWaterNos(string WaterNo);
     }
