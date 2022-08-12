@@ -49,6 +49,10 @@ namespace TWNPPublic
             services.AddTransient<IAlertService, AlertService>();
             services.AddTransient<IUserManageService, UserManageService>();
             services.AddTransient<IQualityService, QualityService>();
+
+            // httpclient factory 工廠模式
+
+            services.AddHttpClient();
         }
     }
 }

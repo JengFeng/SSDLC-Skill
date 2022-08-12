@@ -72,6 +72,8 @@ namespace TWNPPublic.ViewModels.Dashboard
         /// 預估本月水費(此為系統計算，非實際繳費金額)
         /// </summary>
         public int? THISMONTHEND_MONEY { get; set; } = 0;
+
+        public string BILLDATE { get; set; }
     }
 
     /// <summary>

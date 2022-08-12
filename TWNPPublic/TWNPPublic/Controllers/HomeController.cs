@@ -358,6 +358,25 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
+        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public IActionResult DetailsTable(string WaterNo, DateTime dt)
+        {
+            SetLoginSession(
+                        HttpContext,
+                        WaterNo,
+                        WaterNo,
+                        WaterNo,
+                        "0");
+
+            return RedirectToAction("Fancybox_detailsTable", "Dashboard", new { Cdate = dt });
+        }
+
+
+        /// <summary>
         /// 登出
         /// </summary>
         /// <returns></returns>

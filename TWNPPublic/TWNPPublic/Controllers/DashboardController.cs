@@ -18,7 +18,6 @@ namespace TWNPPublic.Controllers
         private readonly IAspNetUser aspNetUser;
         private readonly IDashboardService dashboardService;
 
-        //好醜...寫得好醜,我真醜 ┏( .-. ┏ ) ┓
         public DashboardController(IAspNetUser aspNetUser, IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
@@ -43,7 +42,7 @@ namespace TWNPPublic.Controllers
         /// 詳細資料
         /// </summary>
         /// <returns></returns>
-        public IActionResult Fancybox_detailsTable(DateTime? Cdate)
+        public async Task<IActionResult> Fancybox_detailsTable(DateTime? Cdate)
         {
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
@@ -62,26 +61,27 @@ namespace TWNPPublic.Controllers
                 QueryTime = QueryTime.AddMonths(-1);
             }
 
-            ViewBag.CurrentTime = QueryTime.ToString("yyy年MM月份", culture);
-            var result = dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, QueryTime.ToString("yyyMM", culture) + "01");
+            ViewBag.CurrentTime = QueryTime.ToString("yyy年MM月", culture);
+
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, QueryTime);
 
             if (result != null)
             {
-                double fee = 0, tax = 0;
-                int basicfee = 0;
-                if (result.FEE.HasValue)
-                {
-                    fee = result.FEE.Value;
-                }
-                if (result.TAX.HasValue)
-                {
-                    tax = result.TAX.Value;
-                }
-                if (result.BASICFEE.HasValue)
-                {
-                    basicfee = result.BASICFEE.Value;
-                }
-                result.WaterBillSubtotal = fee + tax + basicfee;
+                //double fee = 0, tax = 0;
+                //int basicfee = 0;
+                //if (result.FEE.HasValue)
+                //{
+                //    fee = result.FEE.Value;
+                //}
+                //if (result.TAX.HasValue)
+                //{
+                //    tax = result.TAX.Value;
+                //}
+                //if (result.BASICFEE.HasValue)
+                //{
+                //    basicfee = result.BASICFEE.Value;
+                //}
+                //result.WaterBillSubtotal = fee + tax + basicfee;
             }
 
             ViewBag.VDetailResult = result;
@@ -101,7 +101,7 @@ namespace TWNPPublic.Controllers
                 });
             }
 
-            selectListItems.First(c => c.Value == QueryTime.ToString("yyyy-MM-dd")).Selected = true;
+            //selectListItems.First(c => c.Value == QueryTime.ToString("yyyy-MM-dd")).Selected = true;
 
             ViewBag.ddlYear = selectListItems;
             return View();
@@ -146,6 +146,17 @@ namespace TWNPPublic.Controllers
             {
                 result.NAME = aspNetUser.CurrentWaterNo;
             }
+
+            string billdatetext = "無試算";
+            if (!string.IsNullOrEmpty(result.BILLDATE))
+            {
+                var billdate = DateTime.Parse(result.BILLDATE);
+                CultureInfo culture = new CultureInfo("zh-TW");
+                culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+                billdatetext = billdate.ToString("yyy/MM/dd", culture);
+            }
+
+            result.BILLDATE = billdatetext;
 
             return Json(Success(result));
         }
@@ -693,19 +704,31 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public async Task<IActionResult> GetDashWaterAnalyer(string timespilt, DateTime Cdate)
         {
+            var mondayOfLastWeek = Cdate.AddDays(-(int)Cdate.DayOfWeek - 6);
             try
             {
+                switch (timespilt)
+                {
+                    case "week":
+                        Cdate = mondayOfLastWeek.AddDays(7);
+                        break;
+                    case "month":
+                        Cdate = new DateTime(Cdate.Year, Cdate.Month, 1).AddMonths(1).AddDays(-1);
+                        break;
+                }
+
+
                 Dictionary<string, float?> dic = new Dictionary<string, float?>();
                 var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
 
                 if (result == null)
                 {
-                    return Json(Failed(message: "查無資料"));
+                    return Json(Failed(message: "資料尚未開放"));
                 }
 
                 if (result.Count() <= 0)
                 {
-                    return Json(Failed(message: "查無資料"));
+                    return Json(Failed(message: "查無尚未開放"));
                 }
 
 
@@ -728,49 +751,10 @@ namespace TWNPPublic.Controllers
                         break;
                     case "week":
                         #region 已棄用
-
-                        //dic.Add("一", null);
-                        //dic.Add("二", null);
-                        //dic.Add("三", null);
-                        //dic.Add("四", null);
-                        //dic.Add("五", null);
-                        //dic.Add("六", null);
-                        //dic.Add("日", null);
-
-                        //foreach (var item in result)
-                        //{
-                        //    switch (item.X)
-                        //    {
-                        //        case "1":
-                        //            dic["一"] = item.Y;
-                        //            break;
-                        //        case "2":
-                        //            dic["二"] = item.Y;
-                        //            break;
-                        //        case "3":
-                        //            dic["三"] = item.Y;
-                        //            break;
-                        //        case "4":
-                        //            dic["四"] = item.Y;
-                        //            break;
-                        //        case "5":
-                        //            dic["五"] = item.Y;
-                        //            break;
-                        //        case "6":
-                        //            dic["六"] = item.Y;
-                        //            break;
-                        //        case "7":
-                        //            dic["日"] = item.Y;
-                        //            break;
-                        //    }
-                        //}
-
-                        #endregion
-                        DateTime dt = Cdate.StartOfWeek(DayOfWeek.Monday);
-
+                        #endregion                      
                         for (int i = 0; i < 7; i++)
                         {
-                            dic.Add(dt.AddDays(i).ToString("MM/dd"), null);
+                            dic.Add(mondayOfLastWeek.AddDays(i).ToString("MM/dd"), null);
                         }
 
                         int rollnumber = 0;
@@ -790,7 +774,7 @@ namespace TWNPPublic.Controllers
                         int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
                         for (int i = 1; i <= days; i++)
                         {
-                            dic.Add(new DateTime(Cdate.Year, Cdate.Month,i).ToString("yyyy-MM-dd"), null);
+                            dic.Add(new DateTime(Cdate.Year, Cdate.Month, i).ToString("yyyy-MM-dd"), null);
                         }
 
                         foreach (var item in result)
@@ -843,6 +827,10 @@ namespace TWNPPublic.Controllers
             return Json(Success(message: $"已切換至{WaterNos}"));
         }
 
+        /// <summary>
+        /// 圖台用的地址訊息
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetCurrentAddress()
         {
 
@@ -856,6 +844,20 @@ namespace TWNPPublic.Controllers
             {
                 return Json(Success<string>(address));
             }
+        }
+
+        /// <summary>
+        /// 取得 WaterFee2 目前用在 去年同期水費 和 用水情形比較 去年當月
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetWaterFee2()
+        {
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
+            return Json(Success(new
+            {
+                result.SUBTOTAL,
+                result.TOQTY
+            }));
         }
 
         ///// <summary>
