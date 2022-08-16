@@ -75,7 +75,7 @@ namespace TWNPPublic.Controllers
                         ErrorObj = ErrorMessages
                     },
                     "欄位錯誤"
-                    ));
+                    ), 1002);
             }
 
             model.AccessToken = FixBase64FromQueryString(model.AccessToken);
@@ -86,7 +86,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Empty Token Error"));
+                }, "Empty Token Error"), 1001);
             }
 
             //檢查偸肯
@@ -101,7 +101,7 @@ namespace TWNPPublic.Controllers
                         return Json(Failed(new
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token"));
+                        }, "Token Error,未合法的 Token", 1001));
                     }
                 }
                 catch (Exception e)
@@ -109,7 +109,7 @@ namespace TWNPPublic.Controllers
                     return Json(Failed(new
                     {
                         ErrorCode = ApiErrorCode.TokenError.ToString(),
-                    }, "Token Error,解析錯誤"));
+                    }, "Token Error,解析錯誤", 1001));
                 }
             }
 
@@ -120,7 +120,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.NoSource.ToString(),
-                }, "此水號非智慧水表"));
+                }, "此水號非智慧水表", 1003));
             }
 
             //在系統裡面有了就直接登入 而且帳號尚未被取消
@@ -174,7 +174,7 @@ namespace TWNPPublic.Controllers
                         return Json(Failed(new
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token 非澎湖水號"));
+                        }, "Token Error,未合法的 Token 非澎湖水號", 1001));
                     }
 
                     homeService.CreateAppUser(WaterNo, WaterNo, AccessToken);
@@ -193,7 +193,7 @@ namespace TWNPPublic.Controllers
                     return Json(Failed(new
                     {
                         ErrorCode = ApiErrorCode.TokenError.ToString(),
-                    }, "Token Error,解析錯誤"));
+                    }, "Token Error,解析錯誤", 1001));
                 }
             }
             else
@@ -218,7 +218,7 @@ namespace TWNPPublic.Controllers
                         ErrorCode = ApiErrorCode.Valid.ToString(),
                         ErrorObj = "WaterNo 水號為必填"
                     },
-                    "欄位錯誤"
+                    "欄位錯誤",1002
                     ));
             }
 
@@ -228,7 +228,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Token Error,未合法的 Token 非澎湖水號"));
+                }, "Token Error,未合法的 Token 非澎湖水號",1001));
             }
 
             //檢查是否為智慧水表
@@ -237,7 +237,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.NoSource.ToString(),
-                }, "此水號非智慧水表"));
+                }, "此水號非智慧水表",1003));
             }
 
 
@@ -264,7 +264,7 @@ namespace TWNPPublic.Controllers
                         ErrorCode = ApiErrorCode.Valid.ToString(),
                         ErrorObj = ErrorMessages
                     },
-                    "欄位錯誤"
+                    "欄位錯誤",1002
                     ));
             }
 
@@ -276,7 +276,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Empty Token Error"));
+                }, "Empty Token Error",1001));
             }
 
             //檢查偸肯
@@ -293,7 +293,7 @@ namespace TWNPPublic.Controllers
                         return Json(Failed(new
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token"));
+                        }, "Token Error,未合法的 Token",1001));
                     }
                 }
                 catch (Exception e)
@@ -301,7 +301,7 @@ namespace TWNPPublic.Controllers
                     return Json(Failed(new
                     {
                         ErrorCode = ApiErrorCode.TokenError.ToString(),
-                    }, "Token Error,解析錯誤"));
+                    }, "Token Error,解析錯誤",1001));
                 }
             }
 
@@ -318,7 +318,7 @@ namespace TWNPPublic.Controllers
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
                     ErrorObj = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
                 },
-                 "操作失敗，此使用者尚未在系統中"));
+                 "操作失敗，此使用者尚未在系統中",1001));
             }
 
         }

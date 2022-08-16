@@ -11,17 +11,16 @@ namespace TWNPPublic.ViewModels.Alert
         public string AlertPhone { get; set; }
         public string AlertEmail { get; set; }
         public string[] AlertEmails { get; set; }
-        public string AlertValueStraight7Day { get; set; }
-        public string ExtendValueStraight7Day { get; set; }
-        public string AlertValueStraight30Day { get; set; }
-        public string ExtendValueStraight30Day { get; set; }
-        public string AlertValueStraight24HR { get; set; }
-        public string ExtendValueStraight24HR { get; set; }
-        public string AlertValueStraightLimitGate { get; set; }
-        public string ExtendValueStraightLimitMaxGate { get; set; }
-        public string ExtendValueStraightLimitMinGate { get; set; }
 
         public List<string> WaterNos { get; set; }
+        public string AlertValueYesterday { get; set; }
+        public string ExtendValue1Yesterday { get; set; }
+        public string ExtendValue2Yesterday { get; set; }
+        public string AlertValueLastMonth { get; set; }
+        public string ExtendValueLastMonth { get; set; }
+        public string AlertValueThreedayWaterUse { get; set; }
+        public string AlertValueThreedayWaterNonUse { get; set; }
+
     }
 
     public class SaveAlertSetViewModel
@@ -36,15 +35,17 @@ namespace TWNPPublic.ViewModels.Alert
         public string? AlertEmail2 { get; set; } = string.Empty;
         [EmailAddress(ErrorMessage = "請確定您的信箱格式")]
         public string? AlertEmail3 { get; set; } = string.Empty;
-        public string AlertValue1 { get; set; } = string.Empty; //無警示 
-        public string AlertValue2 { get; set; } = string.Empty; //連續七天累積用水量
-        public string AlertValue3 { get; set; } = string.Empty; //連續三十天累積用水量
-        public string AlertValue4 { get; set; } = string.Empty; //連續24小時累積用水量
-        public string AlertValue5 { get; set; } = string.Empty; //用水量上下限值設定
-        public int? AlertExtion2 { get; set; } // 較上週增加 Text
-        public int? AlertExtion3 { get; set; } //用水量上下限值 不要問我為什麼要寫那麼醜問SA
-        public int? AlertExtion4 { get; set; }  //用水量上下限值
-        public int? AlertExtion5 { get; set; }  //用水量上下限值
-        public int? AlertExtion6 { get; set; }  //用水量上下限值
+        public string? onoffswitch1 { get; set; } = string.Empty; //日用水量(前日24:00至昨日23:00) 
+        public string? onoffswitch2 { get; set; } = string.Empty; //上月用水量
+        public string? onoffswitch3 { get; set; } = string.Empty; //連續三日無用水
+        public string? onoffswitch4 { get; set; } = string.Empty; //連續三日用水
+        public string? AlertValue1 { get; set; } = string.Empty; //較前期比較突增 & 較上月日平均用水突增
+        public string? AlertValue2 { get; set; } = string.Empty; //較前月用水突增 & 較去年同期用水突增
+        public string? AlertExtion10010301 { get; set; } = string.Empty; // %(含以上)
+        public string? AlertExtion10010302 { get; set; } = string.Empty; // %(含以下)
+        public string? AlertExtion10010401 { get; set; } = string.Empty; // %(含)以上
+        public string? AlertExtion10010402 { get; set; } = string.Empty; // %(含)以下
+        public string? AlertExtion10110501 { get; set; } = string.Empty; // %(含)以上
+        public string? AlertExtion10110601 { get; set; } = string.Empty; // %(含)以上
     }
 }

@@ -79,7 +79,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     alert = "此時間段尚無資料"
-                })); ;
+                }, "此時間段尚無資料")); ;
 
             foreach (var item in result.PinChartData)
             {

@@ -6,6 +6,11 @@ IDapperDataAccess dapperDataAccess = new DapperDataAccess("http://59.120.223.172
 string mainsql = @"SELECT *
                     FROM [TWN].[dbo].[V_B_MESSAGE_MAIL]
                     Where IS_SEND = 0";
+
+string updatessq = @"Update [dbo].[B_MESSAGE]
+                    Set [IS_SEND] = 1
+                    Where B_MESSAGE_SN = @B_MESSAGE_SN";
+
 var result = dapperDataAccess.Query<V_B_MESSAGE_MAIL>(mainsql).ToList();
 string sendmailsql = @"EXEC spSEND_MAIL @mailreceiver,@context,@title";
 string FilePath = Directory.GetCurrentDirectory() + "\\AlertMailTemplate.html";
@@ -23,4 +28,5 @@ foreach (var item in result)
         title = "台灣自來水公司-智慧水網用戶用水提醒通知"
     };
     dapperDataAccess.Execute(sendmailsql, obj);
+    dapperDataAccess.Execute(updatessq, new { B_MESSAGE_SN = item.B_MESSAGE_SN });
 }
