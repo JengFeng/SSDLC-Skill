@@ -69,7 +69,7 @@ namespace TWNPPublic.Controllers
                 //先檢查手機是不是必填
                 //在檢查信箱格式
                 //在檢查 惟至少50度以上 有選這個就要填 要填就要50度以上
-                //好醜 Not like this
+                //資料設計好醜 Not like this
                 #region 額外判斷
                 if (!ModelState.IsValid)
                 {
@@ -79,52 +79,52 @@ namespace TWNPPublic.Controllers
                          ), "欄位錯誤"));
                 }
 
-                if (model.AlertValue2 == "12")
-                {
-                    if (!model.AlertExtion2.HasValue)
-                    {
-                        ModelState.AddModelError("AlertExtion2", "您需填寫克制化度數");
-                        return Json(ValidationFailed(
-                        ModelState.Where(x => x.Value.Errors.Count > 0)
-                        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                        ), "欄位錯誤"));
-                    }
+                //if (model.AlertValue2 == "12")
+                //{
+                //    if (!model.AlertExtion2.HasValue)
+                //    {
+                //        ModelState.AddModelError("AlertExtion2", "您需填寫克制化度數");
+                //        return Json(ValidationFailed(
+                //        ModelState.Where(x => x.Value.Errors.Count > 0)
+                //        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                //        ), "欄位錯誤"));
+                //    }
 
-                    if (model.AlertExtion2 < 50)
-                    {
-                        ModelState.AddModelError("AlertExtion2", "至少50度以上");
-                        return Json(ValidationFailed(
-                          ModelState.Where(x => x.Value.Errors.Count > 0)
-                          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                          ), "欄位錯誤"));
-                    }
-                }
+                //    if (model.AlertExtion2 < 50)
+                //    {
+                //        ModelState.AddModelError("AlertExtion2", "至少50度以上");
+                //        return Json(ValidationFailed(
+                //          ModelState.Where(x => x.Value.Errors.Count > 0)
+                //          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                //          ), "欄位錯誤"));
+                //    }
+                //}
 
-                if (model.AlertValue5 == "53")
-                {
-                    if (!model.AlertExtion3.HasValue || !model.AlertExtion4.HasValue)
-                    {
-                        ModelState.AddModelError("AlertExtion3", "您需填寫限制值");
-                        ModelState.AddModelError("AlertExtion4", "您需填寫限制值");
-                        return Json(ValidationFailed(
-                        ModelState.Where(x => x.Value.Errors.Count > 0)
-                        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                        ), "欄位錯誤"));
-                    }
-                }
+                //if (model.AlertValue5 == "53")
+                //{
+                //    if (!model.AlertExtion3.HasValue || !model.AlertExtion4.HasValue)
+                //    {
+                //        ModelState.AddModelError("AlertExtion3", "您需填寫限制值");
+                //        ModelState.AddModelError("AlertExtion4", "您需填寫限制值");
+                //        return Json(ValidationFailed(
+                //        ModelState.Where(x => x.Value.Errors.Count > 0)
+                //        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                //        ), "欄位錯誤"));
+                //    }
+                //}
 
-                if (model.AlertValue5 == "54")
-                {
-                    if (!model.AlertExtion5.HasValue || !model.AlertExtion6.HasValue)
-                    {
-                        ModelState.AddModelError("AlertExtion5", "您需填寫限制值");
-                        ModelState.AddModelError("AlertExtion6", "您需填寫限制值");
-                        return Json(ValidationFailed(
-                        ModelState.Where(x => x.Value.Errors.Count > 0)
-                        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                        ), "欄位錯誤"));
-                    }
-                }
+                //if (model.AlertValue5 == "54")
+                //{
+                //    if (!model.AlertExtion5.HasValue || !model.AlertExtion6.HasValue)
+                //    {
+                //        ModelState.AddModelError("AlertExtion5", "您需填寫限制值");
+                //        ModelState.AddModelError("AlertExtion6", "您需填寫限制值");
+                //        return Json(ValidationFailed(
+                //        ModelState.Where(x => x.Value.Errors.Count > 0)
+                //        .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                //        ), "欄位錯誤"));
+                //    }
+                //}
 
                 #endregion
 
@@ -164,67 +164,82 @@ namespace TWNPPublic.Controllers
                     };
                     alertsetitems.Add(PhoneItem);
 
-                    if (!string.IsNullOrEmpty(model.AlertValue2))
+
+                    #region 其他選項
+                    //其他選項
+
+                    if (model.onoffswitch1 == "on")
                     {
-                        B_ALART_SETTING MMcode3Item = new B_ALART_SETTING()
+                        var value2 = "";
+                        if (model.AlertValue1 == "103")
                         {
-                            B_ALART_CODE_SN = 3,
+                            value2 = model.AlertExtion10010301 + "," + model.AlertExtion10010302;
+                        }
+                        else if (model.AlertValue2 == "104")
+                        {
+                            value2 = model.AlertExtion10010401 + "," + model.AlertExtion10010402;
+                        }
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 100,
+                            WATER_NO = item,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue1,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
+                    if (model.onoffswitch2 == "on")
+                    {
+                        var value2 = "";
+                        if(model.AlertValue2 == "105")
+                        {
+                            value2 = model.AlertExtion10110501;
+                        }
+                        else if(model.AlertValue2 == "106")
+                        {
+                            value2 = model.AlertExtion10110601;
+                        }
+
+
+                        B_ALART_SETTING MMcode2Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 101,
                             WATER_NO = item,
                             B_ACCOUNT_SN = aspNetUser.UserId.Value,
                             VALUE = model.AlertValue2,
-                            VALUE1 = model.AlertExtion2.ToString()
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode2Item);
+                    }
+
+                    if (model.onoffswitch3 == "on")
+                    {
+                        B_ALART_SETTING MMcode3Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 102,
+                            WATER_NO = item,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = "107",
                         };
                         alertsetitems.Add(MMcode3Item);
                     }
 
-                    if (!string.IsNullOrEmpty(model.AlertValue3))
+                    if (model.onoffswitch4 == "on")
                     {
-                        B_ALART_SETTING MMcode5Item = new B_ALART_SETTING()
+                        B_ALART_SETTING MMcode4Item = new B_ALART_SETTING()
                         {
-                            B_ALART_CODE_SN = 5,
+                            B_ALART_CODE_SN = 102,
                             WATER_NO = item,
                             B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = model.AlertValue3
+                            VALUE = "108",
                         };
-                        alertsetitems.Add(MMcode5Item);
+                        alertsetitems.Add(MMcode4Item);
                     }
 
-
-                    if (!string.IsNullOrEmpty(model.AlertValue4))
-                    {
-                        B_ALART_SETTING MMcode49Item = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 49,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = model.AlertValue4
-                        };
-                        alertsetitems.Add(MMcode49Item);
-                    }
-
-                    if (!string.IsNullOrEmpty(model.AlertValue5))
-                    {
-                        var temp = "";
-                        if(model.AlertValue5 == "53")
-                        {
-                            temp = model.AlertExtion3.ToString() + ',' + model.AlertExtion4.ToString();
-                        }
-
-                        if (model.AlertValue5 == "54")
-                        {
-                            temp = model.AlertExtion5.ToString() + ',' + model.AlertExtion6.ToString();
-                        }
-
-                        B_ALART_SETTING MMcode50Item = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 50,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = model.AlertValue5,
-                            VALUE1 = temp
-                        };
-                        alertsetitems.Add(MMcode50Item);
-                    }
+                    #endregion
                 }
 
                 alertService.UpdateAlertServiceBySN(aspNetUser.UserId.Value, alertsetitems);

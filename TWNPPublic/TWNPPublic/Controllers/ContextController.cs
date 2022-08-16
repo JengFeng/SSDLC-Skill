@@ -38,6 +38,26 @@ namespace TWNPPublic.Controllers
             };
         }
 
+
+        /// <summary>
+        /// 回應失敗(自訂狀態碼)
+        /// </summary>
+        /// <param name="message">提示</param>
+        /// <returns></returns>
+        [NonAction]
+        public MessageAPI<T> Failed<T>(T data, string message = "操作失敗", int Status = 200)
+        {
+            return new MessageAPI<T>()
+            {
+                Status = Status,
+                Success = false,
+                Message = message,
+                Data = data
+            };
+        }
+
+
+
         /// <summary>
         /// 回應失敗(無物件)
         /// </summary>
