@@ -671,7 +671,7 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public async Task<IActionResult> GetDashWaterAnalyer(string timespilt, DateTime Cdate)
         {
-            var mondayOfLastWeek = Cdate.AddDays(-(int)Cdate.DayOfWeek - 6);
+            //var mondayOfLastWeek = Cdate.AddDays(-(int)Cdate.DayOfWeek - 6);
             try
             {
 
@@ -680,7 +680,7 @@ namespace TWNPPublic.Controllers
                 switch (timespilt)
                 {
                     case "week":
-                        Cdate = mondayOfLastWeek.AddDays(7);
+                        //Cdate = mondayOfLastWeek.AddDays(7);
                         break;
                     case "month":
                         Cdate = new DateTime(Cdate.Year, Cdate.Month, 1).AddMonths(1).AddDays(-1);
@@ -742,6 +742,8 @@ namespace TWNPPublic.Controllers
 
                         if (weekresult == null) return Json(Failed(message: "資料尚未開放"));
                         if (weekresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                        var mondayOfLastWeek = Cdate.AddDays(-7);
 
                         for (int i = 0; i < 7; i++)
                         {
