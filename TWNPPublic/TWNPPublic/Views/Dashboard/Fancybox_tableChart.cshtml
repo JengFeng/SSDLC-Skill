@@ -250,15 +250,16 @@
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('last')"><i class="bi bi-chevron-left"></i></a>
-                        <div class="name row"
+                        <div class="row p-2 align-items-center"
                              id="divWaterUserSearchChartTitle"
                              data-themeswitchchart="@Cdate.ToString("yyyy/MM/dd")">
                             @* @(RocTime)*@
-                            <div class="col-lg-6" style="text-align: center;">
-                                <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" style="width:110px" onchange="btnJumpTime(this)" id="tbJumpTime" />
+                            <div class="col-auto">
+                                <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" onchange="btnJumpTime(this)" 
+                                    id="tbJumpTime" class="form-control" />
                             </div>
-                            <div class="col-lg-6" style="text-align: center;">
-                                <span>當日用水量</span>
+                            <div class="name col-auto">
+                                當日用水量
                             </div>
                         </div>
                         <a class="btn-green-o-line" href="javascript:;" onclick="ChangePage('next')"><i class="bi bi-chevron-right"></i></a>
