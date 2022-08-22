@@ -768,7 +768,7 @@ A HORIZONTAL event
     }
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
       position: relative; /* for containing abs positioned event harnesses */
-      min-height: 2em; /* in addition to being a min-height during natural height, equalizes the heights a little bit */
+      min-height: 0em; /* in addition to being a min-height during natural height, equalizes the heights a little bit */
     }
 .fc .fc-daygrid-body-natural { /* can coexist with -unbalanced */
   }
