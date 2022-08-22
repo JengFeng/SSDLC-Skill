@@ -220,6 +220,7 @@ namespace TWNPPublic.Controllers
 
             return Json(Success(new
             {
+                result.NAME_DAES,
                 result.AREA,
                 result.SUBTOTAL,
                 result.TOQTY

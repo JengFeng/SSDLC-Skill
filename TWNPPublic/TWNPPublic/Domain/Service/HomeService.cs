@@ -137,7 +137,6 @@ namespace TWNPPublic.Domain.Service
             string mainsql = @" Select * 
                                 From [TWN].[dbo].[B_ACCOUNT] 
                                 Where VALID = 1 And 
-                                      [LOGIN_TYPE] = 1 And
                                       B_ACCOUNT = @AcountName";
             object obj = new { AcountName };
             var result = dataAccess.Query<b_ACCOUNT>(mainsql, obj).ToList().FirstOrDefault();
@@ -218,15 +217,20 @@ namespace TWNPPublic.Domain.Service
                                        ,@FROM_TABLE
                                        ,@FRON_SN)";
 
+            var setContext = MailText.Replace("{pwd}", pwd).Replace("{currenttime}", Current);
 
-            dataAccess.Execute(UpdateSql, new {});
-            dataAccess.Execute(InsertSql, new { });
             //改密碼
             //寄信
 
-            var setContext = MailText.Replace("{pwd}", pwd).Replace("{currenttime}", Current);
-
-            throw new NotImplementedException();
+            dataAccess.Execute(UpdateSql, new { PWD = pwd, BAccount = B_ACCOUNT, EMail = Email });
+            return dataAccess.Execute(InsertSql, new SEND_MAIL_LIST
+            {
+                TITLE = "台灣自來水公司-密碼發送通知",
+                CONTENTS = setContext,
+                IS_SEND = 0,
+                INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                EMAIL = Email,
+            });
         }
 
 
@@ -290,6 +294,6 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public int DenyAccountFromApp(string AccountNo);
 
-        public int SendMailUsingSendMailList();
+        public int SendMailUsingSendMailList(string B_ACCOUNT, string Email);
     }
 }

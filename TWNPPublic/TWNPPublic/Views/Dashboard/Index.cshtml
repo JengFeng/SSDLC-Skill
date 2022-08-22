@@ -87,7 +87,7 @@
         $.get("@Url.Action("GetDashMainData","Dashboard")", function(result){
             if(result.Success){
                 //名稱
-                $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
+                $('#divNAME').html('歡迎  載入中！');
 
                 //目前指針度數
                 $('#NEWMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.NEW_METER)));
@@ -156,7 +156,8 @@
 
         $.get("@Url.Action("GetWaterFee2","Dashboard")",function(data){
             if(data.Success){
-                $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>")
+                $('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
+                $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
                 InitCompareChart(data.Data.TOQTY,LASTMONTH_METER,THISMONTH_METER);
             }
         });
