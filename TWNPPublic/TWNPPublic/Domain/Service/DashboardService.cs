@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Dapper;
+using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
+using NLog;
+using NLog.Extensions.Logging;
 using SqlData;
-using System.Data.SqlClient;
 using System.Globalization;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
@@ -12,9 +15,12 @@ namespace TWNPPublic.Domain.Service
     {
         private readonly IDapperDataAccess dataAccess;
         private readonly IHttpClientFactory httpClientFactory;
-
-        public DashboardService(IDapperDataAccess dataAccess, IHttpClientFactory HttpClientFactory)
+        private readonly IConfiguration configuration;
+        private Logger logger = LogManager.GetCurrentClassLogger();
+        public DashboardService(IDapperDataAccess dataAccess, IHttpClientFactory HttpClientFactory, IConfiguration configuration)
         {
+            NLog.LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
+            this.configuration = configuration;
             this.httpClientFactory = HttpClientFactory;
             this.dataAccess = dataAccess;
         }
@@ -227,20 +233,10 @@ namespace TWNPPublic.Domain.Service
                     return null;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
-
-            //string mainsql = @"SELECT TOP (1) *
-            //                 FROM [TWN].[dbo].[V_A_WATERFEE] 
-            //                 Where WATERNO = @WaterNo And BILLDATE = @Time";
-            //object obj = new
-            //{
-            //    WaterNo,
-            //    Time
-            //};
-            //return dataAccess.Query<V_A_WATERFEE>(mainsql, obj).FirstOrDefault();
         }
 
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate)
@@ -356,10 +352,77 @@ namespace TWNPPublic.Domain.Service
 
             return dataAccess.Query<B_Note_ReuturnSN>(mainsql, obj).First().B_NOTE_SN;
         }
+
+        public List<A_PH_METER_RECORD_LIST>? LitedPhMeterRecordList(DateTime QueryTime, string WaterNo)
+        {
+            string FilePathTemp = configuration["MeterRecordSqllite"];
+            //string FilePathTemp = "D:\\WEB\\DataTransferWeb\\UploadFile\\A_PH_METER_RECORD_LIST\\{0}.sqlite";
+            string FilePath = string.Format(FilePathTemp, QueryTime.ToString("yyyy_MM_dd"));
+
+            if (!File.Exists(FilePath))
+            {
+                return null;
+            }
+
+            string mainsql = @"Select Distinct * 
+                                From A_PH_METER_RECORD_LIST 
+                                Where 1=1 And @et > REC_DATE_TIME And REC_DATE_TIME >= @st And WATER_NO = @WaterNo
+                                Order by REC_DATE_TIME asc";
+
+            var start = new DateTime(QueryTime.Year, QueryTime.Month, QueryTime.Day);
+            var end = new DateTime(QueryTime.Year, QueryTime.Month, QueryTime.Day + 1);
+
+            string sqliteconn = "Data Source= " + FilePath;
+            using (var connection = new SqliteConnection(sqliteconn))
+            {
+                //logger.Debug(sqliteconn + mainsql);
+                var result = connection.Query<A_PH_METER_RECORD_LIST>(mainsql, new { st = start, et = end, WaterNo }).ToList();
+
+                //找前一天最後一筆
+                string FilePathYesterday = string.Format(FilePathTemp, QueryTime.ToString("yyyy_MM_dd"));
+
+                float? yesterdayAoumt = null;
+
+                if (File.Exists(FilePathYesterday))
+                {
+                    var yesterdaystart = start.AddDays(-1);
+                    var yesterdaysend = end.AddDays(-1);
+
+                    var yesterdayresult = connection.Query<A_PH_METER_RECORD_LIST>(mainsql, new { st = yesterdaystart, et = yesterdaysend, WaterNo }).ToList();
+
+                    yesterdayAoumt = yesterdayresult.Last().AMOUNT;
+                }
+
+                var counter = result.Count;
+                float?[] miner = new float?[24];
+
+                if(yesterdayAoumt != null)
+                {
+                    miner[0] = result[0].AMOUNT - yesterdayAoumt.Value;
+                }
+
+                if (counter > 1)
+                {
+                    for (int i = 1; i < counter; i++)
+                    {
+                        miner[i] = result[i].AMOUNT - result[i - 1].AMOUNT;
+                    }
+
+                    for (int i = 0; i < miner.Length; i++)
+                    {
+                        result[i].AMOUNT = miner[i];
+                    }
+                }
+
+
+                return result;
+            }
+        }
     }
 
     public interface IDashboardService
     {
+        //public Tuple<string, int> TestSqlite(DateTime QueryTime, string WaterNo);
         public DashMainViewModel GetDashMain(string WATER_NO, string ACCOUNT, DateTime THEDAY);
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate);
         public List<B_NEWSViewModel> ListedNews();
@@ -369,6 +432,7 @@ namespace TWNPPublic.Domain.Service
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
+        public List<A_PH_METER_RECORD_LIST> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo);
 
         /// <summary>
         /// 更新 BNoteHour 資料

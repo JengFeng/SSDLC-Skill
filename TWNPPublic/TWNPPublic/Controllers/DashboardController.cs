@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Globalization;
+using System.Web;
 using TWNPPublic.Common.Attributes;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Domain.Service;
@@ -42,68 +44,111 @@ namespace TWNPPublic.Controllers
         /// 詳細資料
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Fancybox_detailsTable(DateTime? Cdate)
+        public async Task<IActionResult> Fancybox_detailsTable(DateTime? Cdate, string billType = "none")
         {
-            CultureInfo culture = new CultureInfo("zh-TW");
-            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
-            DateTime QueryTime = new DateTime();
+
+            V_A_WATERFEE? CurrentResult = new V_A_WATERFEE();
+
             if (Cdate == null)
             {
-                QueryTime = DateTime.Now;
+                Cdate = DateTime.Now;
             }
-            else
+
+
+            //不管了 用惰性載入模板 看得懂就看得懂 看不懂我也沒辦法 佛度有緣人
+
+            switch (billType)
             {
-                QueryTime = Cdate.Value;
+                case "single":
+                case "double":
+                    CurrentResult = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, Cdate.Value);
+                    break;
+
+                default:
+
+                    var CurrentResultAsync = dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, Cdate.Value);
+                    var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, Cdate.Value.AddMonths(-1));
+
+                    CurrentResult = CurrentResultAsync.Result;
+                    if (result == null || CurrentResult == null)
+                    {
+                        if (Cdate.Value.Month % 2 == 0)
+                            Cdate = Cdate.Value.AddMonths(-1);
+
+                        if (result != null)
+                            CurrentResult = result;
+
+                        billType = "double";
+                    }
+                    else
+                    {
+                        billType = "single";
+                    }
+
+                    break;
             }
 
-            if (QueryTime.Month % 2 == 0)
-            {
-                QueryTime = QueryTime.AddMonths(-1);
-            }
+            #region 先移除
+            //if (result != null)
+            //{
+            //    double fee = 0, tax = 0;
+            //    int basicfee = 0;
+            //    if (result.FEE.HasValue)
+            //    {
+            //        fee = result.FEE.Value;
+            //    }
+            //    if (result.TAX.HasValue)
+            //    {
+            //        tax = result.TAX.Value;
+            //    }
+            //    if (result.BASICFEE.HasValue)
+            //    {
+            //        basicfee = result.BASICFEE.Value;
+            //    }
+            //    result.WaterBillSubtotal = fee + tax + basicfee;
+            //}
+            #endregion
 
-            ViewBag.CurrentTime = QueryTime.ToString("yyy年MM月", culture);
+            ViewBag.Type = billType;
+            ViewBag.VDetailResult = CurrentResult;
 
-            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, QueryTime);
+            CultureInfo culture = new CultureInfo("zh-TW");
+            culture.DateTimeFormat.Calendar = new TaiwanCalendar();
 
-            if (result != null)
-            {
-                //double fee = 0, tax = 0;
-                //int basicfee = 0;
-                //if (result.FEE.HasValue)
-                //{
-                //    fee = result.FEE.Value;
-                //}
-                //if (result.TAX.HasValue)
-                //{
-                //    tax = result.TAX.Value;
-                //}
-                //if (result.BASICFEE.HasValue)
-                //{
-                //    basicfee = result.BASICFEE.Value;
-                //}
-                //result.WaterBillSubtotal = fee + tax + basicfee;
-            }
-
-            ViewBag.VDetailResult = result;
             List<SelectListItem> selectListItems = new List<SelectListItem>();
             DateTime nowtime = DateTime.Now;
 
-            if (nowtime.Month % 2 == 0)
+            if (billType == "double")
             {
-                nowtime = nowtime.AddMonths(-1);
-            }
-            for (int i = 0; i <= 12; i = i + 2)
-            {
-                selectListItems.Add(new SelectListItem
+                if (nowtime.Month % 2 == 0)
                 {
-                    Text = nowtime.AddMonths(0 - i).ToString("yyy年MM月", culture),
-                    Value = nowtime.AddMonths(0 - i).ToString("yyyy-MM-dd")
-                });
+                    nowtime = nowtime.AddMonths(-1);
+                }
+                for (int i = 0; i <= 12; i = i + 2)
+                {
+                    selectListItems.Add(new SelectListItem
+                    {
+                        Text = nowtime.AddMonths(0 - i).ToString("yyy年MM月", culture),
+                        Value = nowtime.AddMonths(0 - i).ToString("yyyy-MM-dd")
+                    });
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 6; i = i + 1)
+                {
+                    selectListItems.Add(new SelectListItem
+                    {
+                        Text = nowtime.AddMonths(0 - i).ToString("yyy年MM月", culture),
+                        Value = nowtime.AddMonths(0 - i).ToString("yyyy-MM-dd")
+                    });
+                }
             }
 
-            //selectListItems.First(c => c.Value == QueryTime.ToString("yyyy-MM-dd")).Selected = true;
+            ViewBag.CurrentTime = Cdate.Value.ToString("yyy年MM月", culture);
 
             ViewBag.ddlYear = selectListItems;
+
             return View();
         }
 
@@ -161,6 +206,26 @@ namespace TWNPPublic.Controllers
             return Json(Success(result));
         }
 
+        /// <summary>
+        /// 取得 WaterFee2 目前用在 去年同期水費 和 用水情形比較 去年當月
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetWaterFee2()
+        {
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
+            if (result == null)
+            {
+                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1));
+            }
+
+            return Json(Success(new
+            {
+                result.AREA,
+                result.SUBTOTAL,
+                result.TOQTY
+            }));
+        }
+
         #endregion
 
         #region 左下角用水記事
@@ -187,6 +252,7 @@ namespace TWNPPublic.Controllers
             }
 
             var Note = dashboardService.GetB_NOTEbyWaterNoAndDate(aspNetUser.CurrentWaterNo, Cdate);
+
             if (Note != null)
             {
                 var HourNotes = dashboardService.ListedB_NOTE_HOURBySN(Note.B_NOTE_SN);
@@ -208,43 +274,59 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 點擊用戶記事後右邊的圖表(裡面還有固定資料記得刪掉)
+        /// 點擊用戶記事後右邊的圖表
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
         public IActionResult WaterNoteTableChart(DateTime Cdate)
         {
-            //3/21
-            var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day");
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
-            List<int> faker = new List<int>();
-            if (result == null)
+
+            if (Cdate.Date == DateTime.Now.AddDays(-1).Date)
             {
-                return Json(Failed(message: "查無資料"));
+                //前天去撈資料庫
+                var dayresult2 = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day".ToUpper()).OrderBy(c => c.X).ToList();
+
+                if (dayresult2 == null) return Json(Failed(message: "資料尚未開放"));
+                if (dayresult2.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                DateTime current = new DateTime(2000, 4, 1);
+
+                for (int i = 0; i < 24; i++)
+                {
+                    dic.Add(current.AddHours(i).ToString("HH:mm"), null);
+                }
+
+                foreach (var item in dayresult2)
+                {
+                    var temp0 = item.X.Substring(11, 5);
+                    if (dic.ContainsKey(item.X.Substring(11, 5)))
+                    {
+                        var temp = item.X.Substring(11, 5);
+                        dic[item.X.Substring(11, 5)] = item.Y;
+                    }
+                }
             }
-
-            if (result.Count() <= 0)
+            else
             {
-                return Json(Failed(message: "查無資料"));
-            }
+
+                var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
 
-            for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
-            {
-                dic.Add(item.ToString("yyyy-MM-dd HH:mm:ss"), null);
-            }
+                if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+                if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
 
-            foreach (var item in result)
-            {
-                dic[item.X.ToString()] = item.Y;
+                foreach (var item in dayresult)
+                {
+                    dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                }
+
             }
 
             object obj = new
             {
-                X = dic.Select(c => c.Key.Substring(11, 5)).ToArray(),
-                Y = dic.Select(c => c.Value).ToArray(),
-                Ymax = dic.Select(c => c.Value + 1).ToArray(),
-                Ymin = dic.Select(c => c.Value - 1).ToArray(),
+                X = dic.Select(c => c.Key).ToArray(),
+                Y = dic.Select(c => c.Value).ToArray()
             };
             return Json(Success(obj));
         }
@@ -273,59 +355,6 @@ namespace TWNPPublic.Controllers
 
             return Json(Success(calendarData.ToArray()));
 
-            #region TestCase
-            //int Year = 0, Month = 0;
-
-            //DateTime starttime;
-            //DateTime endtime;
-            //if (Year == 0 && Month == 0)
-            //{
-            //    starttime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            //    endtime = new DateTime(DateTime.Now.AddMonths(1).Year, DateTime.Now.AddMonths(1).Month, 1).AddDays(-1);
-            //}
-            //else
-            //{
-            //    DateTime Setdate = new DateTime(Year, Month, 1);
-            //    starttime = new DateTime(Setdate.Year, Setdate.Month, 1);
-            //    endtime = new DateTime(Setdate.AddMonths(1).Year, Setdate.AddMonths(1).Month, 1).AddDays(-1);
-            //}
-
-            //Random Rnd = new Random();
-
-            //calendarData.Add(new fullcalendar
-            //{
-            //    id = "1",
-            //    title = "測試事件1",
-            //    start = start.AddDays(Rnd.Next(1, 11)).ToString("yyyy-MM-dd"),
-            //    NoteDate = start.AddDays(Rnd.Next(1, 11)).ToString("yyyy-MM-dd")
-            //});
-
-            //calendarData.Add(new fullcalendar
-            //{
-            //    id = "2",
-            //    title = "測試事件2",
-            //    start = start.AddDays(Rnd.Next(1, 11)).ToString("yyyy-MM-dd"),
-            //    NoteDate = start.AddDays(Rnd.Next(1, 11)).ToString("yyyy-MM-dd")
-            //});
-
-
-            //calendarData.Add(new fullcalendar
-            //{
-            //    id = "3",
-            //    title = "測試事件3",
-            //    start = end.AddDays(0 - (Rnd.Next(1, 11))).ToString("yyyy-MM-dd"),
-            //    NoteDate = start.AddDays(Rnd.Next(1, 11)).ToString("yyyy-MM-dd")
-            //});
-
-
-            //calendarData.Add(new fullcalendar
-            //{
-            //    id = "4",
-            //    title = "測試事件4",
-            //    start = end.AddDays(0 - (Rnd.Next(1, 11))).ToString("yyyy-MM-dd"),
-            //    NoteDate = start.AddDays(Rnd.Next(1, 11)).ToString("yyyy-MM-dd")
-            //});
-            #endregion
         }
 
         public async Task<IActionResult> UpdateHourNote(int NoteSN, string Hour, string Msg, DateTime ADate)
@@ -447,6 +476,7 @@ namespace TWNPPublic.Controllers
             switch (timespilt)
             {
                 case "day":
+
                     for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
                     {
                         dicthisyear.Add(item.ToString("HH:mm"), null);
@@ -481,23 +511,7 @@ namespace TWNPPublic.Controllers
                         dicthisyear.Add(dt.AddDays(i).ToString("MM/dd"), null);
                         dictnextyear.Add(dt.AddDays(i).ToString("MM/dd"), null);
                     }
-                    #region 嚴重譴責這種改了又改的行為==
-                    //dicthisyear.Add("一", null);
-                    //dicthisyear.Add("二", null);
-                    //dicthisyear.Add("三", null);
-                    //dicthisyear.Add("四", null);
-                    //dicthisyear.Add("五", null);
-                    //dicthisyear.Add("六", null);
-                    //dicthisyear.Add("日", null);
 
-                    //dictnextyear.Add("一", null);
-                    //dictnextyear.Add("二", null);
-                    //dictnextyear.Add("三", null);
-                    //dictnextyear.Add("四", null);
-                    //dictnextyear.Add("五", null);
-                    //dictnextyear.Add("六", null);
-                    //dictnextyear.Add("日", null);
-                    #endregion
 
                     int rollnumber = 0;
                     if (thisyear != null && thisyear.Count() != 0)
@@ -518,67 +532,6 @@ namespace TWNPPublic.Controllers
                             rollnumber++;
                         }
                     }
-
-                    #region
-                    //foreach (var item in thisyear)
-                    //{
-
-                    //    switch (item.X)
-                    //    {
-                    //        case "1":
-                    //            dicthisyear["一"] = item.Y;
-                    //            break;
-                    //        case "2":
-                    //            dicthisyear["二"] = item.Y;
-                    //            break;
-                    //        case "3":
-                    //            dicthisyear["三"] = item.Y;
-                    //            break;
-                    //        case "4":
-                    //            dicthisyear["四"] = item.Y;
-                    //            break;
-                    //        case "5":
-                    //            dicthisyear["五"] = item.Y;
-                    //            break;
-                    //        case "6":
-                    //            dicthisyear["六"] = item.Y;
-                    //            break;
-                    //        case "7":
-                    //            dicthisyear["日"] = item.Y;
-                    //            break;
-                    //    }
-
-                    //}
-                    #endregion
-                    #region
-                    //foreach (var item in nextyear)
-                    //{
-                    //switch (item.X)
-                    //{
-                    //    case "1":
-                    //        dictnextyear["一"] = item.Y;
-                    //        break;
-                    //    case "2":
-                    //        dictnextyear["二"] = item.Y;
-                    //        break;
-                    //    case "3":
-                    //        dictnextyear["三"] = item.Y;
-                    //        break;
-                    //    case "4":
-                    //        dictnextyear["四"] = item.Y;
-                    //        break;
-                    //    case "5":
-                    //        dictnextyear["五"] = item.Y;
-                    //        break;
-                    //    case "6":
-                    //        dictnextyear["六"] = item.Y;
-                    //        break;
-                    //    case "7":
-                    //        dictnextyear["日"] = item.Y;
-                    //        break;
-                    //}
-                    //}
-                    #endregion
 
                     alert.Add("週查詢不提供觀光人次");
                     xAayUnit = "時間(日期)";
@@ -655,41 +608,54 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public async Task<IActionResult> ModalBarchart(DateTime Cdate)
         {
-            int Rotate = 10;
-            DateTime start = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 0, 0, 0);
-            DateTime end = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 23, 0, 0);
-            var reuslt = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
-            var (increase, decrease) = dashboardService.GetIncreaseAndDecrease(aspNetUser.CurrentWaterNo);
+            //int Rotate = 10;
+            //DateTime start = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 0, 0, 0);
+            //DateTime end = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 23, 0, 0);
+            //var reuslt = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "pin", start, end);
+            //var (increase, decrease) = dashboardService.GetIncreaseAndDecrease(aspNetUser.CurrentWaterNo);
 
-            //取上一期水費
-            var STQTY = dashboardService.GetA_WATERFEE_BILLDATE(aspNetUser.CurrentWaterNo);
-            float? IncreaseValue = 0;
-            float? DecreaseValue = 0;
+            ////取上一期水費
+            //var STQTY = dashboardService.GetA_WATERFEE_BILLDATE(aspNetUser.CurrentWaterNo);
+            //float? IncreaseValue = 0;
+            //float? DecreaseValue = 0;
 
-            if (STQTY.STQTY != null)
+            //if (STQTY.STQTY != null)
+            //{
+            //    if (increase != null)
+            //    {
+            //        IncreaseValue = (STQTY.STQTY / 60) * (100 + increase.Value);
+            //    }
+
+            //    if (decrease != null)
+            //    {
+            //        DecreaseValue = (STQTY.STQTY / 60) * decrease.Value;
+            //    }
+            //}
+
+            ////要計算前兩個月的平均
+
+            //var Xray = reuslt.Select(c => DateTime.Parse(c.X).ToString("HH:mm"));
+
+            Dictionary<string, float?> dic = new Dictionary<string, float?>();
+            var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+
+            if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+            if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+            foreach (var item in dayresult)
             {
-                if (increase != null)
-                {
-                    IncreaseValue = (STQTY.STQTY / 60) * (100 + increase.Value);
-                }
-
-                if (decrease != null)
-                {
-                    DecreaseValue = (STQTY.STQTY / 60) * decrease.Value;
-                }
+                dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
             }
 
-            //要計算前兩個月的平均
-
-            var Xray = reuslt.Select(c => DateTime.Parse(c.X).ToString("HH:mm"));
             return Json(Success(new
             {
-                X = Xray,
-                Y = reuslt.Select(c => c.Y).ToArray(),
-                Increase = $"突減{increase.Value}% \n 轉換為度數{IncreaseValue}度",
-                Decrease = $"突減{decrease.Value}% \n 轉換為度數{DecreaseValue}度",
-                IncreaseValue,
-                DecreaseValue
+                X = dic.Select(c => c.Key).ToArray(),
+                Y = dic.Select(c => c.Value).ToArray(),
+                xAayUnit = "時間(小時)"
+                //Increase = $"突減{increase.Value}% \n 轉換為度數{IncreaseValue}度",
+                //Decrease = $"突減{decrease.Value}% \n 轉換為度數{DecreaseValue}度",
+                //IncreaseValue,
+                //DecreaseValue
             }));
         }
 
@@ -707,6 +673,9 @@ namespace TWNPPublic.Controllers
             var mondayOfLastWeek = Cdate.AddDays(-(int)Cdate.DayOfWeek - 6);
             try
             {
+
+                Dictionary<string, float?> dic = new Dictionary<string, float?>();
+
                 switch (timespilt)
                 {
                     case "week":
@@ -718,51 +687,72 @@ namespace TWNPPublic.Controllers
                 }
 
 
-                Dictionary<string, float?> dic = new Dictionary<string, float?>();
-                var result = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
-
-                if (result == null)
-                {
-                    return Json(Failed(message: "資料尚未開放"));
-                }
-
-                if (result.Count() <= 0)
-                {
-                    return Json(Failed(message: "查無尚未開放"));
-                }
-
-
                 string XrayUnit = "";
+
                 switch (timespilt)
                 {
                     case "day":
 
-                        for (DateTime item = Cdate; item < Cdate.AddDays(1); item = item.AddHours(1))
+                        if (Cdate.Date == DateTime.Now.AddDays(-1).Date)
                         {
-                            dic.Add(item.ToString("HH:mm"), null);
+                            //前天去撈資料庫
+                            var dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X).ToList();
+
+                            if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+                            if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                            DateTime current = new DateTime(2000, 4, 1);
+
+                            for (int i = 0; i < 24; i++)
+                            {
+                                dic.Add(current.AddHours(i).ToString("HH:mm"), null);
+                            }
+
+                            foreach (var item in dayresult)
+                            {
+                                var temp0 = item.X.Substring(11, 5);
+                                if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                {
+                                    var temp = item.X.Substring(11, 5);
+                                    dic[item.X.Substring(11, 5)] = item.Y;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //大前天之前去找SQLite
+                            var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+
+                            if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+                            if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                            foreach (var item in dayresult)
+                            {
+                                dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                            }
                         }
 
-                        foreach (var item in result)
-                        {
-                            dic[item.X.Substring(11, 5)] = item.Y;
-                        }
                         XrayUnit = "時間(小時)";
-
                         break;
+
                     case "week":
-                        #region 已棄用
-                        #endregion                      
+
+                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
+
+                        if (weekresult == null) return Json(Failed(message: "資料尚未開放"));
+                        if (weekresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
                         for (int i = 0; i < 7; i++)
                         {
                             dic.Add(mondayOfLastWeek.AddDays(i).ToString("MM/dd"), null);
                         }
 
                         int rollnumber = 0;
-                        if (result != null && result.Count() != 0)
+                        if (weekresult != null && weekresult.Count() != 0)
                         {
                             foreach (var cell in dic)
                             {
-                                dic[cell.Key] = result.OrderBy(c => c.X).ElementAt(rollnumber).Y;
+                                dic[cell.Key] = weekresult.OrderBy(c => c.X).ElementAt(rollnumber).Y;
                                 rollnumber++;
                             }
                         }
@@ -771,13 +761,19 @@ namespace TWNPPublic.Controllers
                         break;
 
                     case "month":
+
+                        var monthresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
+
+                        if (monthresult == null) return Json(Failed(message: "資料尚未開放"));
+                        if (monthresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
                         int days = DateTime.DaysInMonth(Cdate.Year, Cdate.Month);
                         for (int i = 1; i <= days; i++)
                         {
                             dic.Add(new DateTime(Cdate.Year, Cdate.Month, i).ToString("yyyy-MM-dd"), null);
                         }
 
-                        foreach (var item in result)
+                        foreach (var item in monthresult)
                         {
                             dic[item.X.ToString()] = item.Y;
                         }
@@ -844,20 +840,6 @@ namespace TWNPPublic.Controllers
             {
                 return Json(Success<string>(address));
             }
-        }
-
-        /// <summary>
-        /// 取得 WaterFee2 目前用在 去年同期水費 和 用水情形比較 去年當月
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IActionResult> GetWaterFee2()
-        {
-            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
-            return Json(Success(new
-            {
-                result.SUBTOTAL,
-                result.TOQTY
-            }));
         }
 
         ///// <summary>

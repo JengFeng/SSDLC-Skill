@@ -1,0 +1,117 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using TWNPPublic.ViewModels.Home
+@model ResetPwVm
+@{
+    ViewData["Title"] = "忘記密碼";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<link rel="stylesheet" href="~/css/Login.css">
+
+<div class="wrap_login">
+    <div class="loginGroup animated fadeInDown">
+        <div class="InputBox">
+            <div class="logo">
+                <div class="systemTitle">台灣自來水公司澎湖地區</div>
+                <div class="companyName">忘記密碼</div>
+            </div>
+            <div class="formBox">
+                <form id="FormResetPw" autocomplete="off">
+                    <span class="text-danger" id="Other">
+
+                    </span>
+                    <div class="form-group">
+                        <label>帳號</label>
+                        <div>
+                            @Html.TextBoxFor(m=>m.Account , new {@class="form-control",@placeholder="請輸入您的帳號"})
+                            @Html.ValidationMessageFor(m=>m.Account, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>信箱</label>
+                        <div>
+                            @Html.TextBoxFor(m=>m.Email , new {@class="form-control",@placeholder="請輸入您的註冊信箱"})
+                            @Html.ValidationMessageFor(m=>m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>驗證碼</label>
+                        <div class="codeGroup">
+                            <div>
+                                @Html.TextBoxFor(m=>m.CapthCode , new {@class="form-control width100",@placeholder="驗證碼"})
+                                @Html.ValidationMessageFor(m=>m.CapthCode, "", new { @class = "text-danger" })
+                            </div>
+                            <div>
+                                <img id="CapthCodes" src="@Url.Action("CreateValidate","Home")" style="width: 40%;">
+                                <a class="btn-grey-o" href="javascript:ReloadCapth();">重新整理</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btnGroup">
+                        <a class="btn-green-o" href="javascript:;" onclick="submitForm()">送出</a>
+                        <a class="btn-lightGrey-o" href="javascript:;" onclick="clearFrom()">清除</a>
+                    </div>
+                </form>
+            </div>
+            <div style="display:flex;justify-content:end;margin-right:15px">
+                <div>
+                    <a href="@Url.Action("Login","Home")">返回登入</a>
+                </div>
+            </div>
+        </div><!-- InputBox -->
+    </div><!-- loginGroup end -->
+</div><!-- wrap_login end-->
+<script>
+
+    function submitForm(){
+
+        let url = "@Url.Action("ResetPw","Home")";
+        let model = {
+            Account : $("#Account").val(),
+            Email : $("#Email").val(),
+            CapthCode : $("#CapthCode").val()
+        };
+
+        let Validator = $("#FormResetPw").validate();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: model,
+            success: function (data) {
+                if (data.Success) {
+                    alert(data.Message);
+                    history.go(0);
+                }
+                else {
+                     $("#Other").empty();
+                    if(data.ModelStateErrors["Other"] != null){
+                        $("#Other").text(data.ModelStateErrors["Other"]);
+                    }
+                    else if (data.ModelStateErrors != null) {
+                        Validator.showErrors(data.ModelStateErrors);
+                    }
+                    else {
+                        alert(data.Message);
+                    }
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError){
+                alert("伺服器繁忙，請稍後再試");
+            }
+        });
+    }
+
+    function clearFrom(){
+        history.go(0);
+    }
+
+    function ReloadCapth() {
+        $("#CapthCodes").attr("src", "@Url.Action("CreateValidate", "Home")" + "?" + Math.random());;
+    }
+</script>

@@ -76,6 +76,9 @@
     let AbnormalList;
     let LASTMONTH_METER = 0;
     let THISMONTH_METER = 0;
+    //雙月或單月判斷
+    let TwiceOrSingle = "none";
+
     $(function () {
        //圖表初始化
        chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
@@ -106,14 +109,24 @@
                 }
 
                 //本期預估
-                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTHEND_METER)) + '<span>元</span>');
-                if(result.Data.THISMONTHEND_METER == null){
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_MONEY)) + '<span>元</span>');
+                if(result.Data.THISMONTH_MONEY == null){
                     $("#THISMONTHENDMONEY").css("font-size", "1.0rem");
                     $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
                 }
 
                 $('#AccumulateBilldate').text($('#AccumulateBilldate').text().replace("{0}",result.Data.BILLDATE));
                 $('#LastBilldate').text($('#LastBilldate').text().replace("{0}",result.Data.BILLDATE));
+
+                $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
+
+                if(result.Data.BILLDATE1 != null && result.Data.BILLDATE1 != "")
+                {
+                    let yearparse = parseInt(result.Data.BILLDATE1.substring(0,3)) - 1;
+                    $('#billdate1lastyear').text("帳單年月：" + yearparse + result.Data.BILLDATE1.substring(3));
+                }
+
+
 
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
@@ -131,8 +144,9 @@
 
         chartWaterUseMonitor.on('click', function (params) {
             let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
-            $("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
-            $('#btngofbox').trigger('click');
+            OpenNotesModal(middledate);
+            //$("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
+            //$('#btngofbox').trigger('click');
         });
 
         DashSlowQuery();
@@ -248,7 +262,7 @@
                     }])
                 },
                 label: {
-                    show: true,
+                    show: false,
                     position: 'top',
                     textStyle: {
                         color: colors[0],
@@ -401,7 +415,7 @@
                             }])
                             },
                             label: {
-                                show: true,
+                                show: false,
                                 position: 'top',
                                 textStyle: {
                                     color: colors[1],
@@ -453,9 +467,15 @@
 
     function ReloadTable(){
         let pagesize = 3;
-        LoadPaginate(AbnormalList.length, 3);
-        InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
-        $("#tbB_Message").footable();
+
+        if(AbnormalList == null){
+            $("#tbB_Message").footable();
+        }
+        else{
+            LoadPaginate(AbnormalList.length, 3);
+            InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
+            $("#tbB_Message").footable();
+        }
     }
 
     /* 現在頁數 */
@@ -600,7 +620,7 @@
                 -->
                 <div class="circularChart circularRed">
                     <div class="name">用水情形</div>
-                    <a class="btn-green-o-line fbox_View" href="@Url.Action("Fancybox_chart","Dashboard")">
+                    <a class="btn-green-o-line fbox_View" href="@Url.Action("Fancybox_tableChart","Dashboard",new {cdate = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")})">
                         用水分析 <i class="bi bi-chevron-right"></i>
                     </a>
                 </div>
@@ -624,7 +644,7 @@
                     <div class="costItem">
                         <div class="name">
                             上期水費
-                            <div class="date">帳單年月：@DateTime.Now.AddMonths(-1).ToString("yyy/MM", culture)</div>
+                            <div class="date" id="billdate1">帳單年月：</div>
                         </div>
                         <div class="costTotal" id="LASTMONTHMONEY"><span>元</span></div>
                     </div>
@@ -642,7 +662,7 @@
                         <div class="costItem">
                             <div class="name">
                                 去年同期水費
-                                <span class="date">帳單年月：@DateTime.Now.AddYears(-1).ToString("yyy/MM", culture)</span>
+                                <span class="date" id="billdate1lastyear">帳單年月：</span>
                             </div>
                             <div class="costTotal" id="LASTYEARMONEY">載入中<span>元</span></div>
                         </div>
@@ -680,11 +700,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="paginationGroup">

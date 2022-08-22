@@ -16,7 +16,7 @@ namespace TWNPPublic.Controllers
     public enum ApiErrorCode
     {
         TokenError,
-        Valid,
+        Invalid,
         NoSource,
         Other
     }
@@ -71,7 +71,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(
                     new
                     {
-                        ErrorCode = ApiErrorCode.Valid.ToString(),
+                        ErrorCode = ApiErrorCode.Invalid.ToString(),
                         ErrorObj = ErrorMessages
                     },
                     "欄位錯誤"
@@ -215,10 +215,10 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(
                     new
                     {
-                        ErrorCode = ApiErrorCode.Valid.ToString(),
+                        ErrorCode = ApiErrorCode.Invalid.ToString(),
                         ErrorObj = "WaterNo 水號為必填"
                     },
-                    "欄位錯誤",1002
+                    "欄位錯誤", 1002
                     ));
             }
 
@@ -228,7 +228,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Token Error,未合法的 Token 非澎湖水號",1001));
+                }, "Token Error,未合法的 Token 非澎湖水號", 1001));
             }
 
             //檢查是否為智慧水表
@@ -237,7 +237,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.NoSource.ToString(),
-                }, "此水號非智慧水表",1003));
+                }, "此水號非智慧水表", 1003));
             }
 
 
@@ -261,10 +261,10 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(
                     new
                     {
-                        ErrorCode = ApiErrorCode.Valid.ToString(),
+                        ErrorCode = ApiErrorCode.Invalid.ToString(),
                         ErrorObj = ErrorMessages
                     },
-                    "欄位錯誤",1002
+                    "欄位錯誤", 1002
                     ));
             }
 
@@ -276,7 +276,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Empty Token Error",1001));
+                }, "Empty Token Error", 1001));
             }
 
             //檢查偸肯
@@ -293,7 +293,7 @@ namespace TWNPPublic.Controllers
                         return Json(Failed(new
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token",1001));
+                        }, "Token Error,未合法的 Token", 1003));
                     }
                 }
                 catch (Exception e)
@@ -301,7 +301,7 @@ namespace TWNPPublic.Controllers
                     return Json(Failed(new
                     {
                         ErrorCode = ApiErrorCode.TokenError.ToString(),
-                    }, "Token Error,解析錯誤",1001));
+                    }, "Token Error,解析錯誤", 1001));
                 }
             }
 
@@ -318,7 +318,7 @@ namespace TWNPPublic.Controllers
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
                     ErrorObj = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
                 },
-                 "操作失敗，此使用者尚未在系統中",1001));
+                 "操作失敗，此使用者尚未在系統中", 1001));
             }
 
         }
@@ -480,6 +480,60 @@ namespace TWNPPublic.Controllers
             byte[] bytes = vCode.CreateValidateGraphic(code);
 
             return File(bytes, "image/JPEG");
+        }
+
+        /// <summary>
+        /// 忘記密碼
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ResetPw()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPw(ResetPwVm vm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(ValidationFailed(
+                      ModelState.Where(x => x.Value.Errors.Count > 0)
+                          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                          ), "欄位錯誤"));
+                }
+
+                if (vm.CapthCode != HttpContext.Session.GetString("ValidateCode"))
+                {
+                    ModelState.AddModelError("CapthCode", "驗證碼錯誤");
+                    return Json(ValidationFailed(
+                      ModelState.Where(x => x.Value.Errors.Count > 0)
+                          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                          ), "欄位錯誤"));
+                }
+
+                var b_ACCOUNT = homeService.GetBAccountByAccount(vm.Account);
+
+                if (b_ACCOUNT == null || b_ACCOUNT.EMAIL != vm.Email)
+                {
+                    ModelState.AddModelError("Other", "查無此帳號與電子信箱資料");
+                    return Json(ValidationFailed(
+                      ModelState.Where(x => x.Value.Errors.Count > 0)
+                          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                          ), "欄位錯誤"));
+                }
+
+                homeService.
+
+                return Json(Success("系統信件已寄送至您的信箱"));
+
+            }
+            catch (Exception e)
+            {
+                return Json(Failed("系統錯誤"));
+            }
+
         }
 
         /// <summary>

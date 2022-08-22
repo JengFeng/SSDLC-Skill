@@ -33,7 +33,13 @@ namespace TWNPPublic.ViewModels.Dashboard
 
         public List<DashBMessage> DashMainBMessage
         {
-            get { return JsonConvert.DeserializeObject<List<DashBMessage>>(this.B_MESSAGE); }
+            get
+            {
+                if (this.B_MESSAGE == null)
+                    return null;
+                else
+                    return JsonConvert.DeserializeObject<List<DashBMessage>>(this.B_MESSAGE);
+            }
         }
 
         /// <summary>
@@ -74,6 +80,8 @@ namespace TWNPPublic.ViewModels.Dashboard
         public int? THISMONTHEND_MONEY { get; set; } = 0;
 
         public string BILLDATE { get; set; }
+
+        public string BILLDATE1 { get; set; }
     }
 
     /// <summary>
