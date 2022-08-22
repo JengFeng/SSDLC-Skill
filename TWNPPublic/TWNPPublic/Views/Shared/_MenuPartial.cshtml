@@ -9,6 +9,16 @@
         <div class="tipGroup">
             <div class="menuGroup">
                 <div class="updateTime" id="areaUpdateTime">
+                    @if (HttpContextAccessor.HttpContext != null)
+                    {
+                        var UserName = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+                        if (UserName != null)
+                        {
+                            @UserName
+                        }
+                    }
+                    &nbsp;
+
                     <i class="bi bi-clock"></i> 登入時間 @DateTime.Now.ToString("HH:mm:ss")
                 </div>
                 <div class="menuList">
