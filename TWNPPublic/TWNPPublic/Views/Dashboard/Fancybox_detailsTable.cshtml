@@ -33,8 +33,16 @@
     });
 
     function QueryTableWithYear(obj){
+
+        let data = {
+          Cdate: obj,
+          billType: '@ViewBag.Type'
+        };
+
+        let searchParams = new URLSearchParams(data);
+
         $("#fbversion").busyLoad("show");
-        window.location.href = "@Url.Action("Fancybox_detailsTable","Dashboard")?Cdate=" + obj;
+        window.location.href = "@Url.Action("Fancybox_detailsTable","Dashboard")?" + searchParams;
     }
 </script>
 <div class="wrap-page">

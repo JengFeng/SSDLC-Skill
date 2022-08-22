@@ -42,6 +42,7 @@
         $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model ,function(result){
             $("#spanError").text('');
             if(result.Success){
+                let parserY = result.Data.Y.map(item => Math.floor(item));
                 const colors = ['#5391C7'];
                 var option;
                 option = {
@@ -91,42 +92,24 @@
                         {
                             name: '用水量趨勢',
                             type: 'line',
-                            data:  result.Data.Y
+                            // detail: {
+                            //    formatter: function (value) {
+                            //        return Math.round(value *100)/100;
+                            //    }
+                            //},
+                            data: parserY 
                         }
-                        //,{
-                        //  name: '移動上界',
-                        //  type: 'line',
-                        //  data: result.Data.Ymax,
-                        //  lineStyle: {
-                        //    opacity: 0
-                        //  },
-                        //  areaStyle: {
-                        //    color: '#ccc'
-                        //  },
-                        //  stack: 'confidence-band',
-                        //  symbol: 'none'
-                        //},
-                        //{
-                        //  name: '移動下界',
-                        //  type: 'line',
-                        //  data: result.Data.Ymin,
-                        //  lineStyle: {
-                        //    opacity: 0
-                        //  },
-                        //  areaStyle: {
-                        //    color: '#ccc'
-                        //  },
-                        //  stack: 'confidence-band',
-                        //  symbol: 'none'
-                        //}
-                        ]
+                    ]
                 };
+
+                result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq('+index+') td:eq(1)').html(Math.floor(item)));
                 option && myChart.setOption(option);
             }
             else{
                 $("#spanError").text('此時間段尚無資料');
                 myChart.clear();
             }
+            $(".footable").footable();
         });
     }
 </script>
@@ -138,12 +121,11 @@
     </div><!-- searchAreaInline end -->
     <div class="chartTableGroup">
         <div class="main videoScroll">
-            <table class="footable green" data-empty="尚無資料">
+            <table class="footable green" data-empty="尚無資料" id="maintable">
                 <thead>
                     <tr>
                         <th>時間</th>
                         <th>估算用水量(度)</th>
-                        <th data-breakpoints="xs sm">較前日突增減(%)</th>
                         <th data-breakpoints="xs sm">用水記事</th>
                     </tr>
                 </thead>
@@ -155,15 +137,14 @@
                             var TimeSource = String.Format("{0:00}", item.A_HOUR);
                             <tr>
                                 <td>@(TimeSource):00</td>
-                                <td>@item.AMOUNT</td>
-                                <td>@item.APERCENT</td>
+                                <td></td>
                                 <td class="text-red">
                                     <div class="tdflex" id="textNote@(TimeSource)">
                                         <div class="info col-lg-6">
                                             <span>@item.NOTE</span>
                                             <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
                                         </div>
-                                        <a class="btn-green-o btnsave" href="javascript:;"  onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
+                                        <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
                                         <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
                                         <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
                                     </div>
