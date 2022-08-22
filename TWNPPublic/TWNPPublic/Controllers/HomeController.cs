@@ -524,7 +524,7 @@ namespace TWNPPublic.Controllers
                           ), "欄位錯誤"));
                 }
 
-                homeService.
+                //homeService.
 
                 return Json(Success("系統信件已寄送至您的信箱"));
 

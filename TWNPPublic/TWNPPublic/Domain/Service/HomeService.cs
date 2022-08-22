@@ -241,6 +241,11 @@ namespace TWNPPublic.Domain.Service
                 return Convert.ToBase64String(bytesarray);
             }
         }
+
+        public int SendMailUsingSendMailList()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
