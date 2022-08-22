@@ -600,6 +600,16 @@
         $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
     });
 </script>
+    
+<script>
+    //Bootstrap tip
+	$(function () {
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl)
+		})
+	});
+</script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
     <partial name="_MenuPartial" />
@@ -655,7 +665,8 @@
                                 試算水費
                                 <span class="date" id="LastBilldate">計費期間：{0}~@(RocTime)</span>
                             </div>
-                            <div class="costTotal" id="THISMONTHENDMONEY">
+                            <div class="costTotal" id="THISMONTHENDMONEY" data-bs-toggle="tooltip" data-bs-placement="top"
+									title="本水費試算結果僅供參考,實際應繳總額以本公司各服務(營運)所所存為準">
                                 <i class="bi bi-arrow-up text-red"></i>
                                 <span>元</span>
                             </div>
@@ -665,7 +676,9 @@
                                 去年同期水費
                                 <span class="date" id="billdate1lastyear">帳單年月：</span>
                             </div>
-                            <div class="costTotal" id="LASTYEARMONEY">載入中<span>元</span></div>
+                            <div class="costTotal" id="LASTYEARMONEY">
+                                載入中<span>元</span>
+                            </div>
                         </div>
                     </div>
                     <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
