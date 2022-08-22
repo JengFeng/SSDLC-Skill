@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="station_distribute" id="station_distribute">
+	<SimpleField name="fid" type="string"></SimpleField>
+	<SimpleField name="gid" type="int"></SimpleField>
+	<SimpleField name="angle" type="float"></SimpleField>
+	<SimpleField name="finish_id" type="string"></SimpleField>
+	<SimpleField name="system_id" type="string"></SimpleField>
+	<SimpleField name="unific_id" type="string"></SimpleField>
+	<SimpleField name="ps_no" type="string"></SimpleField>
+	<SimpleField name="ps_name" type="string"></SimpleField>
+	<SimpleField name="admin_unit" type="string"></SimpleField>
+	<SimpleField name="oper_phase" type="string"></SimpleField>
+	<SimpleField name="type" type="string"></SimpleField>
+	<SimpleField name="ps_length" type="float"></SimpleField>
+	<SimpleField name="ps_size" type="float"></SimpleField>
+	<SimpleField name="ps_high" type="float"></SimpleField>
+	<SimpleField name="quant" type="int"></SimpleField>
+	<SimpleField name="hwl" type="float"></SimpleField>
+	<SimpleField name="lwl" type="float"></SimpleField>
+	<SimpleField name="proj_date" type="string"></SimpleField>
+	<SimpleField name="proj_code" type="string"></SimpleField>
+	<SimpleField name="proj_name" type="string"></SimpleField>
+	<SimpleField name="ud_date" type="string"></SimpleField>
+	<SimpleField name="use_stat" type="string"></SimpleField>
+	<SimpleField name="remark" type="string"></SimpleField>
+	<SimpleField name="monitor_mode" type="string"></SimpleField>
+	<SimpleField name="coord_97x" type="float"></SimpleField>
+	<SimpleField name="coord_97y" type="float"></SimpleField>
+	<SimpleField name="coord_97z" type="float"></SimpleField>
+	<SimpleField name="data_stat" type="string"></SimpleField>
+	<SimpleField name="stan_type" type="string"></SimpleField>
+</Schema>
+<Folder><name>station_distribute</name>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.0</SimpleData>
+		<SimpleData name="gid">1</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">451</SimpleData>
+		<SimpleData name="unific_id">0762009306961479730002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">城前加壓站配水池 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">310978.071</SimpleData>
+		<SimpleData name="coord_97y">2614212.451</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597640410547,23.6303368760975</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.1</SimpleData>
+		<SimpleData name="gid">2</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1111</SimpleData>
+		<SimpleData name="unific_id">0749002310961849730003</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">310932.794</SimpleData>
+		<SimpleData name="coord_97y">2618468.577</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59737113697,23.6687692545898</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.2</SimpleData>
+		<SimpleData name="gid">9</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="system_id">820</SimpleData>
+		<SimpleData name="unific_id">0749002314360519730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">314330.788</SimpleData>
+		<SimpleData name="coord_97y">2605122.993</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.63010651924,23.5481334642551</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.3</SimpleData>
+		<SimpleData name="gid">11</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">880</SimpleData>
+		<SimpleData name="unific_id">0749002303259849730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">303211.689</SimpleData>
+		<SimpleData name="coord_97y">2598441.835</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.520963712712,23.4882071990329</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.4</SimpleData>
+		<SimpleData name="gid">12</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">881</SimpleData>
+		<SimpleData name="unific_id">0749002303259849730002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">303220.562</SimpleData>
+		<SimpleData name="coord_97y">2598396.082</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.521048959167,23.4877937741922</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.5</SimpleData>
+		<SimpleData name="gid">13</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">993</SimpleData>
+		<SimpleData name="unific_id">0749002301258419730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">301203.380</SimpleData>
+		<SimpleData name="coord_97y">2584144.283</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.500815773389,23.3591661689714</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.6</SimpleData>
+		<SimpleData name="gid">14</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1075</SimpleData>
+		<SimpleData name="unific_id">0749002308760759730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">308749.706</SimpleData>
+		<SimpleData name="coord_97y">2607565.251</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.575539280215,23.5703979937606</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.7</SimpleData>
+		<SimpleData name="gid">17</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1198</SimpleData>
+		<SimpleData name="unific_id">0749002315260679730004</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">315287.659</SimpleData>
+		<SimpleData name="coord_97y">2606738.709</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.639549017664,23.5626843851851</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.8</SimpleData>
+		<SimpleData name="gid">19</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">877</SimpleData>
+		<SimpleData name="unific_id">0749002302459819730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">馬公虎井里飲水改善配管_4</SimpleData>
+		<SimpleData name="remark">WQ-87-0729-01 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">302480.886</SimpleData>
+		<SimpleData name="coord_97y">2598142.610</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.513798611863,23.4855290120636</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.9</SimpleData>
+		<SimpleData name="gid">21</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1177</SimpleData>
+		<SimpleData name="unific_id">0749002311060609730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">馬公海軍眷區用水設備工程</SimpleData>
+		<SimpleData name="remark">WQ-79-0729-01 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">311078.596</SimpleData>
+		<SimpleData name="coord_97y">2606025.574</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.598290254525,23.5564091870687</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.10</SimpleData>
+		<SimpleData name="gid">22</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1178</SimpleData>
+		<SimpleData name="unific_id">0749002311060609730002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">馬公海軍眷區用水設備工程</SimpleData>
+		<SimpleData name="remark">WQ-79-0729-01 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">311052.654</SimpleData>
+		<SimpleData name="coord_97y">2606007.854</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.59803543494,23.5562501612954</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.11</SimpleData>
+		<SimpleData name="gid">23</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1179</SimpleData>
+		<SimpleData name="unific_id">0749002311060609730003</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">馬公海軍眷區用水設備工程</SimpleData>
+		<SimpleData name="remark">WQ-79-0729-01 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">311021.338</SimpleData>
+		<SimpleData name="coord_97y">2606057.919</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.597730730989,23.5567034100477</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.12</SimpleData>
+		<SimpleData name="gid">24</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1180</SimpleData>
+		<SimpleData name="unific_id">0749002310960609730001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">馬公海軍眷區用水設備工程</SimpleData>
+		<SimpleData name="remark">WQ-79-0729-01 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">310939.274</SimpleData>
+		<SimpleData name="coord_97y">2606044.601</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.596926368631,23.5565862357233</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.13</SimpleData>
+		<SimpleData name="gid">25</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1191</SimpleData>
+		<SimpleData name="unific_id">0749002316360899730003</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">澎湖本島未供水社區~紅蘿供水站土建及配管工程_1</SimpleData>
+		<SimpleData name="remark">WP-79-0757-03 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">316339.596</SimpleData>
+		<SimpleData name="coord_97y">2608982.975</SimpleData>
+		<SimpleData name="stan_type">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.649952871623,23.5829062412348</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.14</SimpleData>
+		<SimpleData name="gid">3</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1149</SimpleData>
+		<SimpleData name="unific_id">0749002311261749740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">311223.661</SimpleData>
+		<SimpleData name="coord_97y">2617489.427</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.600182247353,23.6599170276109</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.15</SimpleData>
+		<SimpleData name="gid">4</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1150</SimpleData>
+		<SimpleData name="unific_id">0749002311261669740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">311220.440</SimpleData>
+		<SimpleData name="coord_97y">2616640.126</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.600115681867,23.6522483989044</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.16</SimpleData>
+		<SimpleData name="gid">5</SimpleData>
+		<SimpleData name="angle">0.79</SimpleData>
+		<SimpleData name="system_id">667</SimpleData>
+		<SimpleData name="unific_id">0749002967858469740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">301283.144</SimpleData>
+		<SimpleData name="coord_97y">2583958.082</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.501589586566,23.3574822795354</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.17</SimpleData>
+		<SimpleData name="gid">6</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="system_id">566</SimpleData>
+		<SimpleData name="unific_id">0749002106060339740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">310240.076</SimpleData>
+		<SimpleData name="coord_97y">2602792.919</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.58994671507,23.5272508865158</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.18</SimpleData>
+		<SimpleData name="gid">7</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="system_id">621</SimpleData>
+		<SimpleData name="unific_id">0749002103861819740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">307863.840</SimpleData>
+		<SimpleData name="coord_97y">2617536.816</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.567248688742,23.66046896239</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.19</SimpleData>
+		<SimpleData name="gid">8</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">732</SimpleData>
+		<SimpleData name="unific_id">0749002311760539740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">311740.726</SimpleData>
+		<SimpleData name="coord_97y">2605378.570</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.604749084204,23.5505419140586</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.20</SimpleData>
+		<SimpleData name="gid">10</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="system_id">1078</SimpleData>
+		<SimpleData name="unific_id">0749002103460799740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">1000T水塔 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">307618.093</SimpleData>
+		<SimpleData name="coord_97y">2607360.283</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.56444599473,23.5685878542612</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.21</SimpleData>
+		<SimpleData name="gid">15</SimpleData>
+		<SimpleData name="angle">0.80</SimpleData>
+		<SimpleData name="system_id">1183</SimpleData>
+		<SimpleData name="unific_id">0749002101560499740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">305798.427</SimpleData>
+		<SimpleData name="coord_97y">2604298.433</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.546506249565,23.5410040093473</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.22</SimpleData>
+		<SimpleData name="gid">16</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1190</SimpleData>
+		<SimpleData name="unific_id">0749002316260899740001</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">316296.741</SimpleData>
+		<SimpleData name="coord_97y">2608988.157</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.649533259458,23.5829547849128</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.23</SimpleData>
+		<SimpleData name="gid">18</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1278</SimpleData>
+		<SimpleData name="unific_id">0749002318360819740002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="remark">設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">318372.046</SimpleData>
+		<SimpleData name="coord_97y">2608147.664</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.66982619625,23.5752792715724</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#station_distribute">
+		<SimpleData name="fid">sql_statement.24</SimpleData>
+		<SimpleData name="gid">20</SimpleData>
+		<SimpleData name="angle">0.00</SimpleData>
+		<SimpleData name="system_id">1168</SimpleData>
+		<SimpleData name="unific_id">0749002312462699740002</SimpleData>
+		<SimpleData name="admin_unit">07</SimpleData>
+		<SimpleData name="oper_phase">2</SimpleData>
+		<SimpleData name="proj_name">吉貝淨水場-土建</SimpleData>
+		<SimpleData name="remark">WT-85-0753-09 ，設置日期(empl_date)為19120101者待滾動式修正</SimpleData>
+		<SimpleData name="coord_97x">312491.001</SimpleData>
+		<SimpleData name="coord_97y">2626922.811</SimpleData>
+		<SimpleData name="stan_type">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.613003291115,23.7450462930363</coordinates></Point>
+  </Placemark>
+</Folder>
+</Document></kml>

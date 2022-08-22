@@ -3,18 +3,10 @@
     ViewData["Title"] = "目前指針詳細資料";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
     var DetailResult = (V_A_WATERFEE)ViewBag.VDetailResult;
-
-    double fee = 0, tax = 0;
-    if (DetailResult.FEE.HasValue)
-    {
-        fee = DetailResult.FEE.Value;
-    }
-    if (DetailResult.TAX.HasValue)
-    {
-        tax = DetailResult.TAX.Value;
-    }
-    var WaterBillSubtotal = fee + tax + DetailResult.BASICFEE;
+    var ddYear = (List<SelectListItem>)ViewBag.ddlYear;
 }
+<script src="https://cdn.jsdelivr.net/npm/busy-load/dist/app.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/busy-load/dist/app.min.css" rel="stylesheet">
 <script>
     $(function(){
         var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
@@ -32,7 +24,26 @@
                 mouseWheel:{ preventDefault:true }
         });
         $(".videoScroll").mCustomScrollbar("update");
+
+        let selectText = '@Html.Raw(ViewBag.CurrentTime)';
+        $("select option").filter(function() {
+          return $(this).text() == selectText;
+        }).attr('selected', true);
+
     });
+
+    function QueryTableWithYear(obj){
+
+        let data = {
+          Cdate: obj,
+          billType: '@ViewBag.Type'
+        };
+
+        let searchParams = new URLSearchParams(data);
+
+        $("#fbversion").busyLoad("show");
+        window.location.href = "@Url.Action("Fancybox_detailsTable","Dashboard")?" + searchParams;
+    }
 </script>
 <div class="wrap-page">
 
@@ -40,53 +51,67 @@
         <div class="unitTitle">
             @ViewBag.CurrentTime
         </div>
+        <span id="spanAlert" style="position: absolute;right: 0px;"></span>
+        <div class="cycleGroup" style="margin:5px 0px">
+            <span style="margin:0 5px">選擇月份</span>
+            @Html.DropDownList("dllYear",ddYear,new{@class = "form-SelectWaterNos",id="ddlyear",@onchange="QueryTableWithYear(this.value)"})
+            <span style="margin:0 5px">提供範圍本月往前6期</span>
+        </div>
     </div><!-- searchAreaInline end -->
 
-    <div class="version1">
+    <div class="version1" id="fbversion">
         <div class="main videoScroll">
             <div class="container">
                 <div class="row detailsTable">
-                    <div class="col-sm-6" data-field="name">用戶名稱：@DetailResult.NAME_DAES.Substring(0,10)OOOOOO</div>
-                    <div class="col-sm-6">水表情況：*</div>
-                    <div class="col-sm-12" data-field="address">用水地址：@DetailResult.ADDRESS</div>
-                    <div class="col-sm-12" data-field="address">通訊地址：@DetailResult.ADDRESS</div>
-                    <div class="col-sm-4" data-field="batchno">開單檔號：@DetailResult.BATCHNO</div>
-                    <div class="col-sm-8">計費期限：@DetailResult.LASTMETERED ~ @DetailResult.METERED</div>
-                    <div class="col-sm-4" data-field="waterno">水　號：@DetailResult.WATERNO</div>
-                    <div class="col-sm-4" data-field="type">用水種別：@DetailResult.TYPE</div>
-                    <div class="col-sm-4" data-field="diameter">口　徑：@DetailResult.DIAMETER</div>
-                    <div class="col-sm-4" data-field="toqty">實用度數：@DetailResult.TOQTY</div>
-                    <div class="col-sm-4" data-feild="mshsqty">分攤度數：@DetailResult.M_SHSQTY</div>
-                    <div class="col-sm-4">合計度數：@WaterBillSubtotal</div>
-                    <div class="col-sm-4" data-field="contract">契約度數：@DetailResult.CONTRACT</div>
-                    <div class="col-sm-4" data-feild="reading">本期指針：@DetailResult.READING</div>
-                    <div class="col-sm-4" data-feild="lastread">上期指針：@DetailResult.LASTREAD</div>
-                    <div class="col-sm-4" data-feild="stqty">總表度數：@DetailResult.STQTY</div>
-                    <div class="col-sm-8" data-feild="scnt">分攤戶數：@DetailResult.SCNT</div>
-                    <div class="col-sm-4" data-field="fee">使用水費：@DetailResult.FEE</div>
-                    <div class="col-sm-4" data-field="pefee">加退水費：@DetailResult.PBFEE</div>
-                    <div class="col-sm-4" data-field="basicfee">基本費：@DetailResult.BASICFEE</div>
-                    <div class="col-sm-4" data-field="subtotal">合計水費：@DetailResult.SUBTOTAL</div>
-                    <div class="col-sm-4" data-feild="nextmetered">下期抄表日：@DetailResult.NEXTMETERED</div>
-                    <div class="col-sm-4" data-feild="nextbill">下期收費日：@DetailResult.NEXTBILL</div>
-                    <div class="col-sm-4" data-feild="custom">水費項目小計：@WaterBillSubtotal</div>
-                    <div class="col-sm-4" data-field="allowance">固定補助費小計：@DetailResult.ALLOWANCE</div>
-                    <div class="col-sm-4" data-field="allow2">臨時補助費小計：@DetailResult.ALLOW2</div>
-                    <div class="col-sm-4" data-field="tax">營業稅：@DetailResult.TAX</div>
-                    <div class="col-sm-4" data-field="serv">清除處理費：@DetailResult.SERV</div>
-                    <div class="col-sm-4" data-field="pbserv">加退清除處理費：@DetailResult.PBSERV</div>
-                    <div class="col-sm-4" data-feild="foulamt2">汙水下水道使用費(含加退)：@DetailResult.FOUL_AMT2</div>
-                    <div class="col-sm-4" data-field="feedback">保護區優惠水費(含加退)@DetailResult.FEEDBACK</div>
-                    <div class="col-sm-4" data-field="preserve">水源保育與回饋費(含加退)：@DetailResult.PRESERVE</div>
-                    <div class="col-sm-12" data-feild="allow33">補助代徵費用：@DetailResult.ALLOW33</div>
-                    <div class="col-sm-8" data-field="total">應繳總金額：@DetailResult.TOTAL</div>
-                    <div class="col-sm-4">用水排放CO2約8公斤:*</div>
-                    <div class="col-sm-4">本期預繳餘額：*</div>
-                    <div class="col-sm-4" data-field="lastfee">上期預繳餘額：@DetailResult.LASTFEE</div>
-                    <div class="col-sm-4" data-field="delayfee">補收延遲繳付費：@DetailResult.DELAYFEE</div>
-                    <div class="col-sm-4" data-feild="billdate">本期收費日：@DetailResult.BILLDATE</div>
-                    <div class="col-sm-4" data-field="duedate">繳費期限：@DetailResult.DUEDATE</div>
-                    <div class="col-sm-4" data-field="deduct">預定扣繳日期：@DetailResult.DEDUCT</div>
+                    @if (DetailResult == null)
+                    {
+                        <div class="col-sm-12">此時間段尚無資料</div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-6" data-field="name">用戶名稱：@DetailResult.NAME_DAES</div>
+                        <div class="col-sm-6">水表情況：*</div>
+                        <div class="col-sm-12" data-field="address">用水地址：@DetailResult.ADDRESS_DAES</div>
+                        <div class="col-sm-12" data-field="address">通訊地址：@DetailResult.ADDRESS_DAES</div>
+                        <div class="col-sm-4" data-field="batchno">開單檔號：@DetailResult.BATCHNO</div>
+                        <div class="col-sm-8">計費期限：@DetailResult.LASTMETERED ~ @DetailResult.METERED</div>
+                        <div class="col-sm-4" data-field="waterno">水　號：@DetailResult.WATERNO</div>
+                        <div class="col-sm-4" data-field="type">用水種別：@DetailResult.TYPE</div>
+                        <div class="col-sm-4" data-field="diameter">口　徑：@DetailResult.DIAMETER</div>
+                        <div class="col-sm-4" data-field="toqty">實用度數：@DetailResult.TOQTY</div>
+                        <div class="col-sm-4" data-feild="mshsqty">分攤度數：@DetailResult.M_SHSQTY</div>
+                        //<div class="col-sm-4">合計度數：@DetailResult.WaterBillSubtotal</div>
+                        <div class="col-sm-4" data-field="contract">契約度數：@DetailResult.CONTRACT</div>
+                        <div class="col-sm-4" data-feild="reading">本期指針：@DetailResult.READING</div>
+                        <div class="col-sm-4" data-feild="lastread">上期指針：@DetailResult.LASTREAD</div>
+                        <div class="col-sm-4" data-feild="stqty">總表度數：@DetailResult.STQTY</div>
+                        <div class="col-sm-8" data-feild="scnt">分攤戶數：@DetailResult.SCNT</div>
+                        <div class="col-sm-4" data-field="fee">使用水費：@DetailResult.FEE</div>
+                        <div class="col-sm-4" data-field="pefee">加退水費：@DetailResult.PBFEE</div>
+                        <div class="col-sm-4" data-field="basicfee">基本費：@DetailResult.BASICFEE</div>
+                        <div class="col-sm-4" data-field="subtotal">合計水費：@DetailResult.SUBTOTAL</div>
+                        <div class="col-sm-4" data-feild="nextmetered">下期抄表日：@DetailResult.NEXTMETERED</div>
+                        <div class="col-sm-4" data-feild="nextbill">下期收費日：@DetailResult.NEXTBILL</div>
+                        //<div class="col-sm-4" data-feild="custom">水費項目小計：@DetailResult.WaterBillSubtotal</div>
+                        <div class="col-sm-4" data-field="allowance">固定補助費小計：@DetailResult.ALLOWANCE</div>
+                        <div class="col-sm-4" data-field="allow2">臨時補助費小計：@DetailResult.ALLOW2</div>
+                        <div class="col-sm-4" data-field="tax">營業稅：@DetailResult.TAX</div>
+                        <div class="col-sm-4" data-field="serv">清除處理費：@DetailResult.SERV</div>
+                        <div class="col-sm-4" data-field="pbserv">加退清除處理費：@DetailResult.PBSERV</div>
+                        <div class="col-sm-4" data-feild="foulamt2">汙水下水道使用費(含加退)：@DetailResult.FOUL_AMT2</div>
+                        <div class="col-sm-4" data-field="feedback">保護區優惠水費(含加退)@DetailResult.FEEDBACK</div>
+                        <div class="col-sm-4" data-field="preserve">水源保育與回饋費(含加退)：@DetailResult.PRESERVE</div>
+                        <div class="col-sm-12" data-feild="allow33">補助代徵費用：@DetailResult.ALLOW33</div>
+                        <div class="col-sm-8" data-field="total">應繳總金額：@DetailResult.TOTAL</div>
+                        <div class="col-sm-4">用水排放CO2約8公斤:*</div>
+                        <div class="col-sm-4">本期預繳餘額：*</div>
+                        <div class="col-sm-4" data-field="lastfee">上期預繳餘額：@DetailResult.LASTFEE</div>
+                        <div class="col-sm-4" data-field="delayfee">補收延遲繳付費：@DetailResult.DELAYFEE</div>
+                        <div class="col-sm-4" data-feild="billdate">本期收費日：@DetailResult.BILLDATE</div>
+                        <div class="col-sm-4" data-field="duedate">繳費期限：@DetailResult.DUEDATE</div>
+                        <div class="col-sm-4" data-field="deduct">預定扣繳日期：@DetailResult.DEDUCT</div>
+                        <div class="col-sm-4" data-field="deduct">預定扣繳日期：@DetailResult.DEDUCT</div>
+                    }
                 </div>
             </div>
         </div>

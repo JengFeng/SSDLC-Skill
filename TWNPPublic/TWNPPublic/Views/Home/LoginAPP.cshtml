@@ -1,0 +1,56 @@
+﻿@using TWNPPublic.ViewModels.Home
+@model LoginViewModel
+@{
+    ViewData["Title"] = "登入頁面";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+<link rel="stylesheet" href="~/css/Login.css">
+
+<div class="wrap_login">
+    <div class="loginGroup animated fadeInDown">
+        <div class="InputBox">
+            <div class="logo">
+                <div class="systemTitle">台灣自來水公司澎湖地區</div>
+                <div class="companyName">智慧水表用戶用水查詢平台</div>
+            </div>
+            <form id="loginFrom" method="post">
+                <input type="hidden" name="AccountNo" value="@ViewBag.AccountNo" />
+                <input type="hidden" name="WaterNo" value="@ViewBag.WaterNo" />
+                <input type="hidden" name="AccessToken" value="@ViewBag.AccessToken" />
+                <input type="hidden" name="LoginType" id="tbhLoginType" />
+            </form>
+            <div class="formBox">
+                <div class="btnGroup">
+                    <input type="checkbox" id="cbAgree" value="true" checked/>&nbsp;<label for="cbAgree">您是否同意，App 以您的帳號進行登入</label>
+                </div>
+                <div class="btnGroup">
+                    <a class="btn-green-o" href="javascript:;" onclick="LoginWithModel('app')">確定</a>
+                    <a class="btn-lightGrey-o" href="javascript:;" onclick="LoginWithModel('host')">取消</a>
+                </div>
+            </div>
+        </div><!-- InputBox -->
+    </div><!-- loginGroup end -->
+</div><!-- wrap_login end-->
+
+<script>
+    function LoginWithModel(obj){
+        switch(obj){
+            case "app":
+                let cbAgree = $('#cbAgree:checked').val();
+                if(cbAgree == null){
+                    alert("請勾選同意，後進行確認");
+                    return;
+                }
+                $("#tbhLoginType").val(1);
+            break;
+            case "host":
+                $("#tbhLoginType").val(0);
+            break;
+        }
+        $("#loginFrom").submit();
+    }
+</script>

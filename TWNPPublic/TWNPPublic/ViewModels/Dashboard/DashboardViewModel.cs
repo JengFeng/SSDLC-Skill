@@ -33,7 +33,13 @@ namespace TWNPPublic.ViewModels.Dashboard
 
         public List<DashBMessage> DashMainBMessage
         {
-            get { return JsonConvert.DeserializeObject<List<DashBMessage>>(this.B_MESSAGE); }
+            get
+            {
+                if (this.B_MESSAGE == null)
+                    return null;
+                else
+                    return JsonConvert.DeserializeObject<List<DashBMessage>>(this.B_MESSAGE);
+            }
         }
 
         /// <summary>
@@ -72,6 +78,10 @@ namespace TWNPPublic.ViewModels.Dashboard
         /// 預估本月水費(此為系統計算，非實際繳費金額)
         /// </summary>
         public int? THISMONTHEND_MONEY { get; set; } = 0;
+
+        public string BILLDATE { get; set; }
+
+        public string BILLDATE1 { get; set; }
     }
 
     /// <summary>
@@ -137,5 +147,13 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string Time { get; set; }
         public int Id { get; set; }
         public string Message { get; set; }
+    }
+
+    /// <summary>
+    /// 就地址
+    /// </summary>
+    public class Addresses
+    {
+        public string ADDRESS_DAES { get; set; }
     }
 }

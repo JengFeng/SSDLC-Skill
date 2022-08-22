@@ -4,8 +4,13 @@
     {
         public int B_NODE_SN { get; set; }
         public decimal A_HOUR { get; set; }
-        public double AMOUNT { get; set; }
-        public int APERCENT { get; set; }
+        public double? AMOUNT { get; set; }
+        public int? APERCENT { get; set; }
         public string NOTE { get; set; }
+    }
+
+    public class B_Note_ReuturnSN
+    {
+        public int B_NOTE_SN { get; set; }
     }
 }

@@ -47,7 +47,7 @@
                         <label>驗證碼</label>
                         <div class="codeGroup">
                             <div>
-                                @Html.PasswordFor(m=>m.CapthCode , new {@class="form-control width100",@placeholder="驗證碼"})
+                                @Html.TextBoxFor(m=>m.CapthCode , new {@class="form-control width100",@placeholder="驗證碼"})
                                 @Html.ValidationMessageFor(m=>m.CapthCode, "", new { @class = "text-danger" })
                             </div>
                             <div>
@@ -61,6 +61,11 @@
                         <a class="btn-lightGrey-o" href="javascript:;" onclick="clearFrom()">清除</a>
                     </div>
                 </form>
+            </div>
+            <div style="display:flex;justify-content:end;margin-right:15px">
+                <div>
+                    <a href="@Url.Action("ResetPw","Home")">忘記密碼</a>
+                </div>
             </div>
         </div><!-- InputBox -->
     </div><!-- loginGroup end -->

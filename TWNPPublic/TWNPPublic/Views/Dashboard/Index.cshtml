@@ -3,7 +3,9 @@
     ViewData["Title"] = "首頁";
     CultureInfo culture = new CultureInfo("zh-TW");
     culture.DateTimeFormat.Calendar = new TaiwanCalendar();
-    string RocTime = DateTime.Now.ToString("yyy/MM/dd", culture);
+    DateTime current = DateTime.Now;
+    string RocTime = DateTime.Now.AddDays(-1).ToString("yyy/MM/dd", culture);
+    string BillDateText = ViewBag.billdate;
 }
 @section echart{
 <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
@@ -13,12 +15,14 @@
 <link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
 <script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script><style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+<style>
 
 </style>
 <script>
 
     $(function () {
+        //版本 FullCalendar 5.10.1 注意一下
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'zh-tw',             // 地區設台灣就顯示'週一', '週二', '週三', '週四', '週五'
@@ -28,11 +32,14 @@
             selectable: true,               // 是否可以選取月曆
             slotEventOverlap: false,        // 事件使否重疊覆蓋
             dayMaxEvents: false,            // 當行程太多是否用 more 檢視完整
-            weekends: true,                // 顯示星期六跟星期日
+            weekends: true,                 // 顯示星期六跟星期日
             allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
             contentHeight: 300,
             dayHeaderFormat: {
                 weekday: 'narrow'
+            },
+            dateClick: function(date) {
+              OpenNotesModal(date.dateStr);
             },
             eventContent: function (arg) {
                 var customHtml = '';
@@ -59,12 +66,19 @@
 </script>
 <!-- Easymap -->
 <script type="text/javascript" src="https://easymap.gis.tw/easymap/Easymap/easymap.js"></script>
+<script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
 <script type="text/javascript">
     //兩個圖表全域
     var chartWaterUseMonitor;
     var chartCompareWaterUse;
     let barchatpopurl = "@Url.Action("Fancybox_modalBarchart","Dashboard")";
     let waternotepopurl = "@Url.Action("Fancybox_tableChart","Dashboard")";
+    let AbnormalList;
+    let LASTMONTH_METER = 0;
+    let THISMONTH_METER = 0;
+    //雙月或單月判斷
+    let TwiceOrSingle = "none";
+
     $(function () {
        //圖表初始化
        chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
@@ -74,19 +88,52 @@
             if(result.Success){
                 //名稱
                 $('#divNAME').html('歡迎  ' + result.Data.NAME + '！');
+
                 //目前指針度數
-                $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER) + '<span>度</span>');
+                $('#NEWMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.NEW_METER)));
+                if(result.Data.NEW_METER == null){
+                    $("#NEWMETER").toggleClass('totalUsage updateItem');
+                }
+
                 //本期累積度數
-                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_METER) + '<span>度</span>');
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_METER)) + '<span>度</span>');
+                if(result.Data.THISMONTH_METER == null){
+                    $("#THISMONTHMETER").toggleClass('totalUsage updateItem');
+                }
+
                 //上期水費
-                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_METER) + '<span>元</span>');
+                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.LASTMONTH_MONEY)) + '<span>元</span>');
+                if(result.Data.LASTMONTH_METER == null){
+                    $("#LASTMONTHMONEY").css("font-size", "1.0rem");
+                    $("#LASTMONTHMONEY").css("color", "#B7B9C0");
+                }
+
                 //本期預估
-                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_METER) + '<span>元</span>');
-                //去年同期水費
-                $('#LASTYEARMONEY').html('<i class="bi bi-arrow-up text-red"></i>' + setNodataifNullOrEmpty(result.Data.LASTYEAR_MONEY) + '<span>元</span>');
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_MONEY)) + '<span>元</span>');
+                if(result.Data.THISMONTH_MONEY == null){
+                    $("#THISMONTHENDMONEY").css("font-size", "1.0rem");
+                    $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
+                }
+
+                $('#AccumulateBilldate').text($('#AccumulateBilldate').text().replace("{0}",result.Data.BILLDATE));
+                $('#LastBilldate').text($('#LastBilldate').text().replace("{0}",result.Data.BILLDATE));
+
+                $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
+
+                if(result.Data.BILLDATE1 != null && result.Data.BILLDATE1 != "")
+                {
+                    let yearparse = parseInt(result.Data.BILLDATE1.substring(0,3)) - 1;
+                    $('#billdate1lastyear').text("帳單年月：" + yearparse + result.Data.BILLDATE1.substring(3));
+                }
+
+
+
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
-                //InitTableB_Message(result.Data.DashMainBMessage);
+                LASTMONTH_METER = result.Data.LASTMONTH_METER;
+                THISMONTH_METER = result.Data.THISMONTH_METER
+                AbnormalList = result.Data.DashMainBMessage;
+                ReloadTable();
                 //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                 //<!-- <i class="bi bi-dash"></i> 持平-->
                 //<!-- <i class="bi bi-arrow-up"></i> 上-->
@@ -94,16 +141,26 @@
             }
         });
         InitWaterUseSearchChart();
-        ReloadTable();
 
         chartWaterUseMonitor.on('click', function (params) {
-            //jquery 算日期太陰間了 調後端==
-            //動態填入Fancybox Uri路徑
             let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
-            $("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
-            $('#btngofbox').trigger('click');
+            OpenNotesModal(middledate);
+            //$("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
+            //$('#btngofbox').trigger('click');
         });
+
+        DashSlowQuery();
     });
+
+    async function DashSlowQuery(){
+
+        $.get("@Url.Action("GetWaterFee2","Dashboard")",function(data){
+            if(data.Success){
+                $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>")
+                InitCompareChart(data.Data.TOQTY,LASTMONTH_METER,THISMONTH_METER);
+            }
+        });
+    }
 
     function SetArrowCompareTHISMONTH_MONEYAndLASTYEAR_MONEY(thismonth,lastyear){
         if(thismonth == null || thismonth == '')
@@ -116,7 +173,7 @@
     //判斷為空就回傳上無資料
     function setNodataifNullOrEmpty(obj){
         if(obj == null)
-            return '尚無資料';
+            return '尚無資料 ';
         if(obj == '')
             return '尚無資料';
         return obj;
@@ -134,9 +191,9 @@
         $("#tbB_Message > tbody").empty();
         $.each(obj,function(index,value){
             $("#tbB_Message > tbody").append('<tr>' +
-                                            '<td class="width15">'+value.Time+'</td>' +
-                                            '<td>'+ value.Message +'</td>' +
-                                            '<td class="width15"><a class="btn-green-o" href="javascript:;" onclick="OpenExceptionModal()"><i class="bi bi-window"></i>查看</a></td>'+
+                                            '<td class="width15">'+moment(new Date(value.INP_DATE)).format('yyyy/MM/DD')+'</td>' +
+                                            '<td id="alerttablemsg'+index+'">'+ value.NOTE +'</td>' +
+                                            '<td class="width15"><a class="btn-green-o" href="javascript:;" data-rowid='+index+' onclick="OpenExceptionModal(this)"><i class="bi bi-window"></i>查看</a></td>'+
                                             '</tr>');
 
         });
@@ -147,11 +204,11 @@
         var xAxisDataLASTYEAR_METER = "無資料",xAxisDataLASTMONTH_METER = "無資料",xAxisDataTHISMONTH_METER = "無資料";
 
         if(LASTYEAR_METER != null)
-           xAxisDataLASTYEAR_METER = '去年當月\n' + LASTYEAR_METER +'度';
+           xAxisDataLASTYEAR_METER = '去年當月\n' + parseInt(LASTYEAR_METER) +'度';
         if(LASTMONTH_METER != null)
-           xAxisDataLASTMONTH_METER = '上個月\n'+LASTMONTH_METER+'度'
+           xAxisDataLASTMONTH_METER = '上個月\n'+ parseInt(LASTMONTH_METER) +'度'
         if(THISMONTH_METER != null)
-           xAxisDataTHISMONTH_METER = '本月已用\n'+THISMONTH_METER+'度';
+           xAxisDataTHISMONTH_METER = '本月已用\n'+ parseInt(THISMONTH_METER) +'度';
         option = {
             color: colors,
             legend:{
@@ -172,12 +229,6 @@
                     type: 'shadow'
                 }
             },
-            //grid: {
-            //    left: '10%',
-            //    right: '10%',
-            //    top: '10%',
-            //    bottom: 60
-            //},
             xAxis: {
                 type: 'category',
                 data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
@@ -199,7 +250,7 @@
             series: [
             {
                 name: '度數',
-                data: [LASTYEAR_METER, LASTMONTH_METER, THISMONTH_METER],
+                data: [parseInt(LASTYEAR_METER), parseInt(LASTMONTH_METER), parseInt(THISMONTH_METER)],
                 type: 'bar',
                 itemStyle:{
                         color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -211,7 +262,7 @@
                     }])
                 },
                 label: {
-                    show: true,
+                    show: false,
                     position: 'top',
                     textStyle: {
                         color: colors[0],
@@ -308,6 +359,7 @@
         };
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
+                result.Data.Y = result.Data.Y.map(function(item){ return parseInt(item);})
                 option = {
                     color: colors,
                     legend:{
@@ -363,7 +415,7 @@
                             }])
                             },
                             label: {
-                                show: true,
+                                show: false,
                                 position: 'top',
                                 textStyle: {
                                     color: colors[1],
@@ -390,12 +442,16 @@
     function DataFormatPaser(origindate){
         var odate = new Date(origindate);
         var dd = (odate.getDate() + 1 <= 10 ? '0' : '') + (odate.getDate());
-        var mm = (odate.getMonth() + 1 <= 10 ? '0' : '') + (odate.getMonth() + 1);
+        var mm = (odate.getMonth() + 1 < 10 ? '0' : '') + (odate.getMonth() + 1);
         var y = odate.getFullYear();
         return y + '/' + mm + '/' + dd;
     }
 
-    function OpenExceptionModal(){
+    function OpenExceptionModal(obj){
+        let rowId = $(obj).data('rowid');
+        let msgtext = $("#alerttablemsg" + rowId).text();
+        $("#modalalertmsgbody").empty();
+        $("#modalalertmsgbody").text(msgtext);
         $("#ModalException").modal('show');
     }
 
@@ -410,28 +466,20 @@
     }
 
     function ReloadTable(){
-         var Url = GetTableQueryString() + '?page=' + currentpage;
-          $.ajax({
-            type: 'Get',
-            url: Url,
-            dataType: "json",
-            success: function (data) {
-                if (data.Success) {
-                    InitTableB_Message(data.Data.ExceptionItems);
-                    LoadPaginate(data.Data.Max, 3);
-                    $("#tbB_Message").footable();
-                }
-                else {
-                    alert(data.Message);
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-            }
-        });
+        let pagesize = 3;
+
+        if(AbnormalList == null){
+            $("#tbB_Message").footable();
+        }
+        else{
+            LoadPaginate(AbnormalList.length, 3);
+            InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
+            $("#tbB_Message").footable();
+        }
     }
 
     /* 現在頁數 */
-    var currentpage = 1;
+    let currentpage = 1;
     /* 總頁簽方法*/
     function LoadPaginate(TotalCount,ItemPerPage) {
         //$("#PageCount").html("共 " + TotalCount + " 筆");
@@ -531,12 +579,12 @@
     $(function () {
         $(".menuList > a:nth-child(1)").addClass("active").siblings().removeClass("active");
 
-		$(".open-mapArea").click(function() {
-			$(".mapArea").addClass("active");
-		});
-		$(".close-mapArea").click(function() {
-			$(".mapArea").removeClass("active");
-		});
+        $(".open-mapArea").click(function() {
+            $(".mapArea").addClass("active");
+        });
+        $(".close-mapArea").click(function() {
+            $(".mapArea").removeClass("active");
+        });
         $(".open-configureGroup").click(function () {
             $(".configureGroup").addClass("active");
         });
@@ -546,10 +594,10 @@
     });
 
     $(function(){
-		var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
-		var total = unitTitleHeight;
-		$('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));   
-	});
+        var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
+        var total = unitTitleHeight;
+        $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
+    });
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -559,7 +607,7 @@
             <div class="stateGroup">
                 <div class="toggleMapArea">
                     <a class="btn-green-o open-mapArea" href="javascript:;" title="開啟圖台"><i class="bi bi-geo-alt-fill"></i> </a>
-                    <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>
+                    @* <a class="btn-green-o open-configureGroup" href="javascript:;" title="開啟水錶地圖"><i class="bi bi-map"></i></a>*@
                 </div>
                 <div class="userName" id="divNAME"></div>
                 <!-- 六個狀態色碼
@@ -572,7 +620,7 @@
                 -->
                 <div class="circularChart circularRed">
                     <div class="name">用水情形</div>
-                    <a class="btn-green-o-line fbox_View" href="@Url.Action("Fancybox_chart","Dashboard")">
+                    <a class="btn-green-o-line fbox_View" href="@Url.Action("Fancybox_tableChart","Dashboard",new {cdate = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")})">
                         用水分析 <i class="bi bi-chevron-right"></i>
                     </a>
                 </div>
@@ -588,7 +636,7 @@
                     <div class="totalUsageGroup">
                         <div class="name">本期累積度數</div>
                         <div class="totalUsage" id="THISMONTHMETER"><span>度</span></div>
-                        <div class="updateItem">計算期間@(RocTime)</div>
+                        <div class="updateItem" id="AccumulateBilldate">計算期間{0}~@(RocTime)</div>
                     </div>
                 </div>
 
@@ -596,15 +644,15 @@
                     <div class="costItem">
                         <div class="name">
                             上期水費
-                            <div class="date">帳單年月：@DateTime.Now.AddMonths(-1).ToString("yyy/MM", culture)</div>
+                            <div class="date" id="billdate1">帳單年月：</div>
                         </div>
                         <div class="costTotal" id="LASTMONTHMONEY"><span>元</span></div>
                     </div>
                     <div class="costItemRow">
                         <div class="costItem">
                             <div class="name">
-                                預估水費
-                                <span class="date">計費期間：@DateTime.Now.ToString("yyyMMdd", culture)~@DateTime.Now.ToString("yyyMMdd", culture)</span>
+                                試算水費
+                                <span class="date" id="LastBilldate">計費期間：{0}~@(RocTime)</span>
                             </div>
                             <div class="costTotal" id="THISMONTHENDMONEY">
                                 <i class="bi bi-arrow-up text-red"></i>
@@ -614,9 +662,9 @@
                         <div class="costItem">
                             <div class="name">
                                 去年同期水費
-                                <span class="date">帳單年月：@DateTime.Now.AddYears(-1).ToString("yyy/MM", culture)</span>
+                                <span class="date" id="billdate1lastyear">帳單年月：</span>
                             </div>
-                            <div class="costTotal" id="LASTYEARMONEY"><span>元</span></div>
+                            <div class="costTotal" id="LASTYEARMONEY">載入中<span>元</span></div>
                         </div>
                     </div>
                     <!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
@@ -652,11 +700,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="width15">2022/02/09 12:00</td>
-                                <td>一號水錶水壓超過5kg / cm2 ，異常警示</td>
-                                <td class="width15"><a class="btn-green-o" href="javascript:;"><i class="bi bi-window"></i> 查看</a></td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="paginationGroup">
@@ -689,7 +732,7 @@
                         用水情形比較
                     </div>
                     <div class="chartBox">
-                        <div id="ChartCompareWaterUse"  class="chartSVG" style="width:100%; height:83%;"></div>
+                        <div id="ChartCompareWaterUse" class="chartSVG" style="width:100%; height:83%;"></div>
                     </div>
                 </div>
                 <div class="chartItem" style="">
@@ -698,9 +741,9 @@
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
+                        @*                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
                             <i class="bi bi-window"></i> 用水分析預測
-                        </a>
+                            </a>*@
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line"
@@ -711,8 +754,8 @@
                         </a>
                         <div class="name"
                              id="divWaterUserSearchChartTitle"
-                             data-themeswitchchart="@DateTime.Now.ToString("yyyy/MM/dd")">
-                            @DateTime.Now.ToString("yyyy/MM/dd")當週用水量
+                             data-themeswitchchart="@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")">
+                            @DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")當週用水量
                         </div>
                         <a class="btn-green-o-line"
                            href="javascript:;"
@@ -748,7 +791,7 @@
         <partial name="~/Views/Dashboard/_EzMapPartial.cshtml" />
     </div>
     <div class="configureGroup">
-        <div class="toggleMapGroup">
+        <div class="toggleMapArea">
             <a class="btn-green-o close-configureGroup" href="javascript:;" title="關閉圖台">
                 <i class="bi bi-x"></i>
             </a>
@@ -759,28 +802,7 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="ModalNode" tabindex="-1" aria-labelledby="ModalNodeLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="exampleModalLabel">用水記事</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <br />您的水號:7D762461969 於111年5月 超過上個月50% 請注意
-                <br />
-                <br />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-primary">確定</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
+<!-- 異常狀態 Modal -->
 <div class="modal fade" id="ModalException" tabindex="-1" aria-labelledby="ModalExceptionLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -788,14 +810,10 @@
                 <h2 class="modal-title" id="exampleModalLabel">異常狀態</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <br />您的水號:7D762461969 於111年5月 超過上個月50% 請注意
-                <br />
-                <br />
+            <div class="modal-body" id="modalalertmsgbody">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-primary">確定</button>
             </div>
         </div>
     </div>

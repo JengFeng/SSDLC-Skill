@@ -14,7 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
@@ -214,6 +218,21 @@
     <None Include="wwwroot\js\mmLayer\jsTree\jquery-1.9.1.js" />
     <None Include="wwwroot\js\mmLayer\jsTree\jstree.js" />
     <None Include="wwwroot\js\mmLayer\jsTree\jstree.min.js" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\leak.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\meter.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\pipecover.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\pipehat.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\plant.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\regionnet.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\regionnetm.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\stationl.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\station_distribute.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\station_intake.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\water_area.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\WF.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\WL.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\WP.kml" />
+    <None Include="wwwroot\uploadFiles\EzLayer\kml\WQ.kml" />
   </ItemGroup>
 
   <ItemGroup>

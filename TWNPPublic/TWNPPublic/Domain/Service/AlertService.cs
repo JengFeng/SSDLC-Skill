@@ -46,32 +46,20 @@ namespace TWNPPublic.Domain.Service
             var result = dataAccess.Query<B_ALART_SETTING>(mainsql, obj);
 
             //那一長串奇怪的參數來自 MMcode 
-            string AlertValueStraight7Day = "";
-            string AlertValueStraight30Day = "";
-            string AlertValueStraight24HR = "";
-            //額外參數 這設計應該是有點問題""
-            string ExtendValueStraight7Day = "";
-            string ExtendValueStraight30Day = "";
-            string AlertValueStraightLimitGate = "";
-            string ExtendValueStraightLimitMaxGate = "";
-            string ExtendValueStraightLimitMinGate = "";
+            string AlertValueYesterday = "";
+            string ExtendValue1Yesterday = "";
+            string ExtendValue2Yesterday = "";
+            //額外參數 這設計應該是有點問題...
+            string AlertValueLastMonth = "";
+            string ExtendValueLastMonth = "";
+            string AlertValueThreedayWaterUse = "";
+            string AlertValueThreedayWaterNonUse = "";
             //聯絡信箱
             string AlertEmail = "";
             //連絡電話
             string AlertPhone = "";
+            //水號
             List<string> WaterNo = new List<string>();
-
-            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 3) != null)
-            {
-                AlertValueStraight7Day = result.First(c => c.B_ALART_CODE_SN == 3).VALUE;
-                ExtendValueStraight7Day = result.First(c => c.B_ALART_CODE_SN == 3).VALUE1;
-            }
-
-            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 5) != null)
-            {
-                AlertValueStraight30Day = result.First(c => c.B_ALART_CODE_SN == 5).VALUE;
-                ExtendValueStraight30Day = result.First(c => c.B_ALART_CODE_SN == 5).VALUE1;
-            }
 
             if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 15) != null)
             {
@@ -88,22 +76,24 @@ namespace TWNPPublic.Domain.Service
                 WaterNo = result.Where(c => c.B_ALART_CODE_SN == 16).Select(c => c.WATER_NO).ToList();
             }
 
-
-            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 49) != null)
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 100) != null)
             {
-                AlertValueStraight24HR = result.First(c => c.B_ALART_CODE_SN == 49).VALUE;
+                AlertValueYesterday = result.First(c => c.B_ALART_CODE_SN == 100).VALUE;
+                ExtendValue1Yesterday = result.First(c => c.B_ALART_CODE_SN == 100).VALUE1;
             }
 
-            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 50) != null)
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 101) != null)
             {
-                AlertValueStraightLimitGate = result.First(c => c.B_ALART_CODE_SN == 50).VALUE;
-                var temp = result.First(c => c.B_ALART_CODE_SN == 50).VALUE1;
-                if (!string.IsNullOrEmpty(temp))
-                {
-                    var array = temp.Split(',');
-                    ExtendValueStraightLimitMaxGate = array[0];
-                    ExtendValueStraightLimitMinGate = array[1];
-                }
+                AlertValueLastMonth = result.First(c => c.B_ALART_CODE_SN == 101).VALUE;
+                ExtendValueLastMonth = result.First(c => c.B_ALART_CODE_SN == 101).VALUE1;
+            }
+
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102) != null)
+            {
+                var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
+                AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
+                var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
+                AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
             }
 
             return new ListedAlertSetViewModel()
@@ -111,15 +101,14 @@ namespace TWNPPublic.Domain.Service
                 AlertEmail = AlertEmail,
                 AlertEmails = AlertEmail.Split(','),
                 AlertPhone = AlertPhone,
-                AlertValueStraight7Day = AlertValueStraight7Day,
-                ExtendValueStraight7Day = ExtendValueStraight7Day,
-                AlertValueStraight30Day = AlertValueStraight30Day,
-                ExtendValueStraight30Day = ExtendValueStraight30Day,
                 WaterNos = WaterNo,
-                AlertValueStraight24HR = AlertValueStraight24HR,
-                AlertValueStraightLimitGate = AlertValueStraightLimitGate,
-                ExtendValueStraightLimitMaxGate = ExtendValueStraightLimitMaxGate,
-                ExtendValueStraightLimitMinGate = ExtendValueStraightLimitMinGate
+                AlertValueYesterday = AlertValueYesterday,
+                ExtendValue1Yesterday = ExtendValue1Yesterday,
+                ExtendValue2Yesterday = ExtendValue1Yesterday,
+                AlertValueLastMonth = AlertValueLastMonth,
+                ExtendValueLastMonth = ExtendValueLastMonth,
+                AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUse,
+                AlertValueThreedayWaterUse = AlertValueThreedayWaterUse
             };
 
         }

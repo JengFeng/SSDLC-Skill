@@ -27,7 +27,7 @@
             <div class="name"
                  id="divWaterUserSearchChartTitle"
                  data-themeswitchchart="@ViewBag.Cdate">
-                @(ViewBag.Cdate)當周用水量
+                @(ViewBag.Cdate)當日用水量
             </div>
             <a class="btn-green-o-line"
                href="javascript:;"
@@ -60,6 +60,7 @@
     };
 
     var myChart = echarts.init(document.getElementById('mychart'));
+
     function LoadChart(){
          var model = {
             Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart")
@@ -84,29 +85,28 @@
                         }
                     },
                     grid: {
-                        bottom:80
+                        right:'5%',
+                        left:'5%',
+                        bottom:'15%'
                     },
                     legend: {
                         orient: 'horizontal',
                         top: 10,
-                        data: ["用水量趨勢","突增","突減"]
+                        data: ["用水量分析"]
                     },
                     xAxis: {
-                        name: '時間(小時)',
+                        name: result.Data.XrayUnit,
                         type: 'category',
                         data: result.Data.X,
-                        nameGap: 25,
-                        nameLocation : 'center',
                         nameTextStyle: {
-                            fontSize: 20,
-                            padding: 0
-                        }
+                             fontSize: 20,
+                             padding: 0
+                        },
+                        nameLocation: 'middle',
+                        nameGap: 50
                     },
                     yAxis: {
-                        nameLocation : 'center',
-                        nameGap: 45,
-                        nameRotate : 360,
-                        name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                        name:' 用水量(度)',
                         type: 'value',
                         axisLine: {
                             show: true,
@@ -114,53 +114,23 @@
                                 color: colors[0]
                             }
                         },
-                        axisLabel: {formatter: '{value}'},
                         nameTextStyle: {
-                            fontSize: 20,
-                            padding: 0
+                             fontSize: 20
+                        },
+                        nameLocation: 'center',
+                        nameGap: 45,
+                        nameRotate : 360,
+                        name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                        axisLabel: {
+                            fontSize: 18,
+                            formatter: '{value}'
                         }
                     },
-                    series: [
-                        {
-                            name: '用水量趨勢',
-                            type: 'line',
-                            data:  result.Data.Y
-                        },
-                        {
-                            name: '突增',
-                            type: 'line',
-                            markLine:{
-                                itemStyle: {
-                                    normal: { lineStyle: { type: 'solid' }, label: { show: true, position: 'end' } },
-                                },
-                                data:[{
-                                    name: '突增20%，轉換為度數120度',
-                                    yAxis: 70000,
-                                    label: {formatter: '突增20%，\n 轉換為度數120度'},
-                                    lineStyle: {
-                                        color: 'red'
-                                    }
-                                }]
-                            }
-                        },
-                        {
-                            name: '突減',
-                            type: 'line',
-                            markLine:{
-                                itemStyle: {
-                                    normal: { lineStyle: { type: 'solid' }, label: { show: true, position: 'end' } },
-                                },
-                                data:[{
-                                    name: '突減10%，轉換為度數82度',
-                                    yAxis: 10000,
-                                    label: {formatter: '突減10%，\n 轉換為度數82度'},
-                                    lineStyle: {
-                                        color: 'blue'
-                                    }
-                                }]
-                            }
-                        }
-                    ]
+                    series: [{
+                        name: '用水量分析',
+                        type: 'line',
+                        data:  result.Data.Y
+                    }]
                 };
                 option && myChart.setOption(option);
             }

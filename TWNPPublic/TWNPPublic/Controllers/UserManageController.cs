@@ -89,8 +89,12 @@ namespace TWNPPublic.Controllers
                     }
 
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
+
                     if (result >= 1)
+                    {
+                        HttpContext.Session.SetString("WaterNo", string.Join(',', model.WaterNO));
                         return Json(Success(@$"更新成功"));
+                    }
                     else
                         return Json(Failed(message: "更新失敗"));
                 }

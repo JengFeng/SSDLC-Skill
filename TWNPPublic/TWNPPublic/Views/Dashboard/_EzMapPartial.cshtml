@@ -9,16 +9,32 @@
 <script type="text/javascript">
     var map = null;
     (function(){
-        MapInit(map, 'map'); 
+        MapInit(map, 'map');
+        LayerMapInit1(() => { 
+            Layer1.hideBtn('layer');            // 隱藏圖層按鈕
+            $(LayerTree1.elm.boxWindow).hide(); // 隱藏圖層視窗
+            Layer1.renderCurrentAddress();      // 顯示目前水號位置
+        });
     })();
 
     function LayerMapInit1(callback) {
         if (callback === undefined) return;
         var intervalLayer1 = setInterval(() => {
-            if (Layer1.map === null) return;
-            if($('#boxLayerWindow1').is(':visible') && !LayerTree1.isInited) return;
+            if (Layer1 === null) return;
+            if ($(Layer1.boxLayerId).length > 0 && (LayerTree1 === null || !LayerTree1.inited)) return;
             clearInterval(intervalLayer1);
-            callback.apply();
+            setTimeout(()=>{ callback.apply(); }, 500);
         }, 500);
     }
+
+    //# 取得地址轉坐標服務
+	if (typeof (GetAddressCoordinate) === 'undefined') 
+		function GetAddressCoordinate(address){
+            var param = (address != undefined && address != null ? '?address=' + address : '');
+            return '@Url.Action("GetAddressCoordinate", "Layer")' + param;
+		}
+
+    function GetCurrentAddressUrl() { 
+        return '@Url.Action("GetCurrentAddress","Dashboard")';
+    }   // 取得目前水號地址 Api
 </script>
