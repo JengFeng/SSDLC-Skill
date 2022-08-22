@@ -26,7 +26,7 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'zh-tw',             // 地區設台灣就顯示'週一', '週二', '週三', '週四', '週五'
-            contentHeight: 250,
+            //contentHeight: 250,
             initialDate: new Date(),        // 設定預設顯示日期
             editable: false,                // 月曆是否允許手動編輯(拖移)
             selectable: true,               // 是否可以選取月曆
@@ -34,7 +34,7 @@
             dayMaxEvents: false,            // 當行程太多是否用 more 檢視完整
             weekends: true,                 // 顯示星期六跟星期日
             allDaySlot: false,              // 顯示 all day 欄位(週、日檢視最上方出現，若有整日的行程時則會顯示在此)
-            contentHeight: 300,
+            //contentHeight: 300,
             dayHeaderFormat: {
                 weekday: 'narrow'
             },

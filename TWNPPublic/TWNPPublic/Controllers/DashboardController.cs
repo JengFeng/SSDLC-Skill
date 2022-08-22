@@ -743,7 +743,7 @@ namespace TWNPPublic.Controllers
                         if (weekresult == null) return Json(Failed(message: "資料尚未開放"));
                         if (weekresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
 
-                        var mondayOfLastWeek = DateTime.Now.AddDays(-7);
+                        var mondayOfLastWeek = Cdate.AddDays(-7);
 
                         for (int i = 0; i < 7; i++)
                         {
