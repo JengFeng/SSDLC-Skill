@@ -239,4 +239,10 @@
     <ProjectReference Include="..\..\SqlData\SqlData.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ResetPw.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
