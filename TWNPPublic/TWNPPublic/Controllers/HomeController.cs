@@ -524,7 +524,7 @@ namespace TWNPPublic.Controllers
                           ), "欄位錯誤"));
                 }
 
-                //homeService.
+                homeService.SendMailUsingSendMailList(b_ACCOUNT.B_ACCOUNT, b_ACCOUNT.EMAIL);
 
                 return Json(Success("系統信件已寄送至您的信箱"));
 
