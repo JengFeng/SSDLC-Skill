@@ -72,16 +72,29 @@ namespace TWNPPublic.Controllers
                     CurrentResult = CurrentResultAsync.Result;
                     if (result == null || CurrentResult == null)
                     {
-                        if (Cdate.Value.Month % 2 == 0)
-                            Cdate = Cdate.Value.AddMonths(-1);
 
                         if (result != null)
                             CurrentResult = result;
 
                         billType = "double";
+
+                        if (CurrentResult != null)
+                        {
+                            var billdate = CurrentResult.BILLDATE;
+                            var monthText = billdate.Substring(3, 4);
+
+                            DateTime pdate = DateTime.ParseExact(monthText, "MMdd", null);
+                            Cdate = pdate;
+                        }
+                        else
+                        {
+                            Cdate = DateTime.Now;
+                        }
+
                     }
                     else
                     {
+                        Cdate = DateTime.Now;
                         billType = "single";
                     }
 
@@ -120,10 +133,47 @@ namespace TWNPPublic.Controllers
 
             if (billType == "double")
             {
-                if (nowtime.Month % 2 == 0)
+                DateTime pdate = DateTime.Now;
+                if (CurrentResult != null)
                 {
-                    nowtime = nowtime.AddMonths(-1);
+                    var billdate = CurrentResult.BILLDATE;
+                    var monthText = billdate.Substring(3, 4);
+                    pdate = DateTime.ParseExact(monthText, "MMdd", null);
                 }
+
+                // 1 3 5 7  9 11 
+                // 2 4 6 8 10 12
+
+                if (pdate.Month % 2 == 0)
+                {
+                    // 偶數帳單
+                    // 偶數月
+                    // 基數月
+                    if(nowtime.Month % 2 == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        nowtime = nowtime.AddMonths(-1);
+                    }
+                }
+                else
+                {
+                    // 基數帳單
+                    // 偶數月
+                    // 基數月
+
+                    if (nowtime.Month % 2 == 0)
+                    {
+                        nowtime = nowtime.AddMonths(-1);
+                    }
+                    else
+                    {
+
+                    }
+                }
+
                 for (int i = 0; i <= 12; i = i + 2)
                 {
                     selectListItems.Add(new SelectListItem
