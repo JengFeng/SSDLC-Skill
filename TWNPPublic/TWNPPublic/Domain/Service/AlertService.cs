@@ -99,7 +99,7 @@ namespace TWNPPublic.Domain.Service
             return new ListedAlertSetViewModel()
             {
                 AlertEmail = AlertEmail,
-                AlertEmails = AlertEmail.Split(','),
+                AlertEmails = AlertEmail.Split(';'),
                 AlertPhone = AlertPhone,
                 WaterNos = WaterNo,
                 AlertValueYesterday = AlertValueYesterday,

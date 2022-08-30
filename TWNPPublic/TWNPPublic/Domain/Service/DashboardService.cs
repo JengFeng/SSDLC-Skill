@@ -5,6 +5,7 @@ using NLog;
 using NLog.Extensions.Logging;
 using SqlData;
 using System.Globalization;
+using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Dashboard;
@@ -225,7 +226,12 @@ namespace TWNPPublic.Domain.Service
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
                     var root = JsonConvert.DeserializeObject<Root>(responseBody);
                     if (root != null)
+                    {
+                        root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
+                        root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
                         return root.DataRoot.DataLoop.Data;
+                    }
+ 
                     return null;
                 }
                 else
