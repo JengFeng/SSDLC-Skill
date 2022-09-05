@@ -251,8 +251,20 @@ namespace TWNPPublic.Controllers
                 billdatetext = billdate.ToString("yyy/MM/dd", culture);
             }
 
-            result.BILLDATE = billdatetext;
+            string NewMeterDateText = "未取得更新時間";
 
+            if (!string.IsNullOrEmpty(result.NEW_METER_DATE))
+            {
+                var NewMeterDate = DateTime.Parse(result.NEW_METER_DATE);
+                CultureInfo culture = new CultureInfo("zh-TW");
+                culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+                NewMeterDateText = NewMeterDate.ToString("yyy/MM/dd", culture);
+            }
+
+            result.BILLDATE = billdatetext;
+            result.NEW_METER_DATE = NewMeterDateText;
+
+            //result.LASTMONTH_MONEY = 0;
             return Json(Success(result));
         }
 
@@ -329,7 +341,7 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public IActionResult WaterNoteTableChart(DateTime Cdate)
+        public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate)
         {
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
 
@@ -361,7 +373,7 @@ namespace TWNPPublic.Controllers
             else
             {
 
-                var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+                var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
 
                 if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
@@ -688,7 +700,7 @@ namespace TWNPPublic.Controllers
             //var Xray = reuslt.Select(c => DateTime.Parse(c.X).ToString("HH:mm"));
 
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
-            var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+            var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
             if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
             if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -772,7 +784,7 @@ namespace TWNPPublic.Controllers
                         else
                         {
                             //大前天之前去找SQLite
-                            var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+                            var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
                             if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                             if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));

@@ -82,6 +82,8 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string BILLDATE { get; set; }
 
         public string BILLDATE1 { get; set; }
+
+        public string NEW_METER_DATE { get; set; }
     }
 
     /// <summary>

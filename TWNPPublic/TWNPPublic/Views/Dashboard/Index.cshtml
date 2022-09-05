@@ -90,33 +90,33 @@
                 $('#divNAME').html('歡迎  載入中！');
 
                 //目前指針度數
-                $('#NEWMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.NEW_METER)));
+                $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER));
                 if(result.Data.NEW_METER == null){
                     $("#NEWMETER").toggleClass('totalUsage updateItem');
                 }
 
                 //本期累積度數
-                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_METER)) + '<span>度</span>');
+                $('#THISMONTHMETER').html(setNodataifNullOrEmpty(result.Data.THISMONTH_METER) + '<span>度</span>');
                 if(result.Data.THISMONTH_METER == null){
                     $("#THISMONTHMETER").toggleClass('totalUsage updateItem');
                 }
 
                 //上期水費
-                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.LASTMONTH_MONEY)) + '<span>元</span>');
+                $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_MONEY) + '<span>元</span>');
                 if(result.Data.LASTMONTH_METER == null){
                     $("#LASTMONTHMONEY").css("font-size", "1.0rem");
                     $("#LASTMONTHMONEY").css("color", "#B7B9C0");
                 }
 
                 //本期預估
-                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(Math.round(result.Data.THISMONTH_MONEY)) + '<span>元</span>');
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
                 if(result.Data.THISMONTH_MONEY == null){
                     $("#THISMONTHENDMONEY").css("font-size", "1.0rem");
                     $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
                 }
 
-                $('#AccumulateBilldate').text($('#AccumulateBilldate').text().replace("{0}",result.Data.BILLDATE));
-                $('#LastBilldate').text($('#LastBilldate').text().replace("{0}",result.Data.BILLDATE));
+                $('#AccumulateBilldate').text(result.Data.BILLDATE);
+                $('#LastBilldate').text(result.Data.BILLDATE);
 
                 $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
 
@@ -126,14 +126,14 @@
                     $('#billdate1lastyear').text("帳單年月：" + yearparse + result.Data.BILLDATE1.substring(3));
                 }
 
-
-
+                $('.NewMeterDateText').text(result.Data.NEW_METER_DATE);
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 LASTMONTH_METER = result.Data.LASTMONTH_METER;
                 THISMONTH_METER = result.Data.THISMONTH_METER
                 AbnormalList = result.Data.DashMainBMessage;
                 ReloadTable();
+
                 //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                 //<!-- <i class="bi bi-dash"></i> 持平-->
                 //<!-- <i class="bi bi-arrow-up"></i> 上-->
@@ -173,11 +173,13 @@
 
     //判斷為空就回傳上無資料
     function setNodataifNullOrEmpty(obj){
+        if(obj == 0)
+            return 0;
         if(obj == null)
-            return '尚無資料 ';
+            return '尚無資料';
         if(obj == '')
             return '尚無資料';
-        return obj;
+        return Math.round(obj);
     }
 
     //右下角開窗重新載入url
@@ -205,11 +207,11 @@
         var xAxisDataLASTYEAR_METER = "無資料",xAxisDataLASTMONTH_METER = "無資料",xAxisDataTHISMONTH_METER = "無資料";
 
         if(LASTYEAR_METER != null)
-           xAxisDataLASTYEAR_METER = '去年當月\n' + parseInt(LASTYEAR_METER) +'度';
+           xAxisDataLASTYEAR_METER = '去年當月\n' /*+ parseInt(LASTYEAR_METER) +'度'*/;
         if(LASTMONTH_METER != null)
-           xAxisDataLASTMONTH_METER = '上個月\n'+ parseInt(LASTMONTH_METER) +'度'
+           xAxisDataLASTMONTH_METER = '上個月\n'/*+ parseInt(LASTMONTH_METER) +'度'*/;
         if(THISMONTH_METER != null)
-           xAxisDataTHISMONTH_METER = '本月已用\n'+ parseInt(THISMONTH_METER) +'度';
+           xAxisDataTHISMONTH_METER = '本月已用\n'/*+ parseInt(THISMONTH_METER) +'度'*/;
         option = {
             color: colors,
             legend:{
@@ -263,7 +265,7 @@
                     }])
                 },
                 label: {
-                    show: false,
+                    show: true,
                     position: 'top',
                     textStyle: {
                         color: colors[0],
@@ -600,15 +602,15 @@
         $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
     });
 </script>
-    
+
 <script>
     //Bootstrap tip
-	$(function () {
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new bootstrap.Tooltip(tooltipTriggerEl)
-		})
-	});
+    $(function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
 </script>
 <div class="wrap">
     <partial name="_FadeModalPartial" />
@@ -629,6 +631,8 @@
                 .circularGreen{ border-color: #089BAB; }
                 .circularLightGreen{ border-color: #85F9B6; }
                 -->
+                <input type="hidden" id="tbhBILLDATE"/>
+                <input type="hidden" id="tbhNewMeterDateText"/>
                 <div class="circularChart circularRed">
                     <div class="name">用水情形</div>
                     <a class="btn-green-o-line fbox_View" href="@Url.Action("Fancybox_tableChart","Dashboard",new {cdate = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")})">
@@ -642,12 +646,17 @@
                     <div class="totalUsageGroup">
                         <div class="name">現行指針</div>
                         <div class="totalUsage" id="NEWMETER"></div>
-                        <div class="updateItem">水表更新時間@(RocTime)</div>
+                        <div class="updateItem">水表更新時間 <text class="NewMeterDateText"></text></div>
                     </div>
                     <div class="totalUsageGroup">
                         <div class="name">本期累積度數</div>
                         <div class="totalUsage" id="THISMONTHMETER"><span>度</span></div>
-                        <div class="updateItem" id="AccumulateBilldate">計算期間{0}~@(RocTime)</div>
+                        <div class="updateItem">
+                            計算期間
+                            <text id="AccumulateBilldate"></text>
+                            ~
+                            <text class="NewMeterDateText"></text>
+                        </div>
                     </div>
                 </div>
 
@@ -663,12 +672,18 @@
                         <div class="costItem">
                             <div class="name">
                                 試算水費
-                                <span class="date" id="LastBilldate">計費期間：{0}~@(RocTime)</span>
+                                <span class="date">
+                                    計費期間：<text id="LastBilldate"></text>
+                                    ~
+                                    <text class="NewMeterDateText"></text>
+                                </span>
                             </div>
                             <div class="costTotal" id="THISMONTHENDMONEY" data-bs-toggle="tooltip" data-bs-placement="top"
-									title="本水費試算結果僅供參考,實際應繳總額以本公司各服務(營運)所所存為準">
-@*                                <i class="bi bi-arrow-up text-red"></i>
-                                <span>元</span>*@
+                                 title="本水費試算金額僅供參考，應以台水公司水費通知單應繳總金額為準">
+                                @*
+                                    <i class="bi bi-arrow-up text-red"></i>
+                                    <span>元</span>
+                                *@
                             </div>
                         </div>
                         <div class="costItem">
