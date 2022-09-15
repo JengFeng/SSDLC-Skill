@@ -33,7 +33,7 @@ function LayerMap() {
     //# Public Function
     this.init = () => {
         this.map = new Easymap(this.mapId);
-        this.map.zoomToXY(new dgXY(119.5715204969396, 23.631408207672038), 11.666);
+        this.map.zoomToXY(new dgXY(119.5715204969396, 23.631408207672038), 16);
         //# MMJS Easymap 設定
         switch (this.version) {
             case 1:
@@ -94,16 +94,16 @@ function LayerMap() {
         btn.parentElement.style.display = 'none';
     }                // 隱藏按鈕
     this.renderCurrentAddress = () => {
-        let address = this.getCurrentAddress();
-        if (address === '') return;
-        let list = this.getAddressCoordinate(address);
-        if (list.length == 0) return;
-        let lonlat = new dgXY(list[0].x, list[0].y),
+        let coord = this.getCurrentLonLar();
+        console.log(coord)
+        if (coord === null || coord === '') return;
+        let lonlat = new dgXY(coord.Lot, coord.Lat),
             imgUrl = GetWebsiteUrl() + '/Images/point_red.png',
             iconSize = 16,
             div = `<img src="${imgUrl}" style="width:${iconSize}px; height: auto; position:absolute;left: -${iconSize / 2}px;top:-${iconSize / 2}px;" \>`,
             marker = new dgMarker(lonlat, div, false);
-            MapSelf.map.addItem(marker);
+        MapSelf.map.addItem(marker);
+        MapSelf.map.zoomToXY(lonlat, MapSelf.map.getZoom());
     }        // 套疊目前地址位置
     this.getCurrentAddress = () => {
         let list = '',
@@ -111,6 +111,12 @@ function LayerMap() {
         if (res.Success) list = res.Data;
         return list;
     }           // 取得目前水號空間資料
+    this.getCurrentLonLar = () => {
+        let list = '',
+            res = getJsonData(GetCurrentLatAndLonUrl(), 'GET', null, '', '');
+        if (res.Success) list = res.Data;
+        return list;
+    }            // 取得目前水號經緯度
     this.getAddressCoordinate = address => {
         return getJsonData(GetAddressCoordinate(address), 'GET', null, '無地址轉坐標資料', '地址轉坐標資料錯誤');
     }   // 取得地址轉坐標服務
