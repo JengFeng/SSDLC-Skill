@@ -24,7 +24,9 @@ namespace TWNPPublic.ViewModels.Dashboard
         /// </summary>
         public List<DashMainNEWS> DashMainNEWS
         {
-            get { return JsonConvert.DeserializeObject<List<DashMainNEWS>>(this.NEWS); }
+            // get { return JsonConvert.DeserializeObject<List<DashMainNEWS>>(this.NEWS); }
+            get;
+            set;
         }
         /// <summary>
         /// 警告訊息
@@ -157,5 +159,12 @@ namespace TWNPPublic.ViewModels.Dashboard
     public class Addresses
     {
         public string ADDRESS_DAES { get; set; }
+    }
+
+
+    public class Location
+    {
+        public string LAT { get; set; }
+        public string LON { get; set; }
     }
 }

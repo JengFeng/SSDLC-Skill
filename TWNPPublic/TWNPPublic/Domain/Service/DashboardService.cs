@@ -367,6 +367,22 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<Addresses>(mainsql, obj).FirstOrDefault().ADDRESS_DAES;
         }
 
+        public (string Lat, string Lon) GetLatLotByWaterNos(string WaterNo)
+        {
+            string mainsql = @"SELECT TOP (1) LAT,LON FROM [V_A_WATERFEE]  Where WATERNO = @WaterNO";
+            object obj = new
+            {
+                WaterNo
+            };
+            var result = dataAccess.Query<Location>(mainsql, obj).FirstOrDefault();
+            if (result == null)
+                return ("", "");
+            else
+            {
+                return (Lat: result.LAT, Lon: result.LON);
+            }
+        }
+
         public int InsertBNote(string WaterNo, string PROPERTY_NO, string NOTE, DateTime ADate)
         {
             string mainsql = @"INSERT INTO [dbo].[B_NOTE]
@@ -497,17 +513,73 @@ namespace TWNPPublic.Domain.Service
     public interface IDashboardService
     {
         //public Tuple<string, int> TestSqlite(DateTime QueryTime, string WaterNo);
+        /// <summary>
+        /// 取儀錶板
+        /// </summary>
+        /// <param name="WATER_NO"></param>
+        /// <param name="ACCOUNT"></param>
+        /// <param name="THEDAY"></param>
+        /// <returns></returns>
         public DashMainViewModel GetDashMain(string WATER_NO, string ACCOUNT, DateTime THEDAY);
+        /// <summary>
+        /// 取右下角圖
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate);
+        /// <summary>
+        /// 取最新消息
+        /// </summary>
+        /// <returns></returns>
         public List<B_NEWSViewModel> ListedNews();
+        /// <summary>
+        /// 取用水記事
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime);
+        /// <summary>
+        /// page 警示訊息 沒用到
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <returns></returns>
         public (List<V_B_MESSAGE> items, int Count) LitedExceptionItem(string WaterNo, int page, int itemsPerPage);
+        /// <summary>
+        /// 圖 fn chart
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <param name="Timesplit"></param>
+        /// <returns></returns>
         public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit);
+        /// <summary>
+        /// 圖 fn chart1
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="ChartTpye"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
+        /// <summary>
+        /// 用水記事每小時
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
+        /// <summary>
+        /// 用水記事每筆
+        /// </summary>
+        /// <param name="SN"></param>
+        /// <returns></returns>
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
         public Task<List<A_PH_METER_RECORD_LIST>> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo);
-
         /// <summary>
         /// 更新 BNoteHour 資料
         /// </summary>
@@ -516,7 +588,6 @@ namespace TWNPPublic.Domain.Service
         /// <param name="Note"></param>
         /// <returns></returns>
         public int UpdateNoteHour(int SN, int Hour, string Note);
-
         /// <summary>
         /// 新增或更新 BNoteHour
         /// </summary>
@@ -525,7 +596,6 @@ namespace TWNPPublic.Domain.Service
         /// <param name="Note"></param>
         /// <returns></returns>
         public int UpdateOrInsertNoteHour(int SN, int Hour, string Note);
-
         /// <summary>
         /// 當NOTE空白時新增NOTE
         /// </summary>
@@ -535,11 +605,49 @@ namespace TWNPPublic.Domain.Service
         /// <param name="ADate"></param>
         /// <returns></returns>
         public int InsertBNote(string WaterNo, string PROPERTY_NO, string NOTE, DateTime ADate);
+        /// <summary>
+        /// 取 Db WaterFee2
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Time"></param>
+        /// <returns></returns>
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
+        /// <summary>
+        /// 取觀光人次
+        /// </summary>
+        /// <param name="cdate"></param>
+        /// <returns></returns>
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
+        /// <summary>
+        /// 判斷單數月單或雙數月單
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
         public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo);
+        /// <summary>
+        /// 取 View_WaterFee
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="CTime"></param>
+        /// <returns></returns>
         public Task<V_A_WATERFEE?> GetVWaterFee2ByWaterNoAndTime(string WaterNo, DateTime CTime);
+        /// <summary>
+        /// 取繳費日期
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
         public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo);
+        /// <summary>
+        /// 取使用者地址
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
         public string GetAddressByWaterNos(string WaterNo);
+        /// <summary>
+        /// 取使用者經緯度
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
+        public (string Lat, string Lon) GetLatLotByWaterNos(string WaterNo);
     }
 }

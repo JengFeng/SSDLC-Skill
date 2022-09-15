@@ -62,6 +62,10 @@
             //}
         });
         calendar.render();
+
+        $.get("@Url.Action("GetCurrentLatAndLon","Dashboard")",function(data){
+            console.log(`This.${data.Data.Lot},${data.Data.Lat}`)
+        })
     });
 </script>
 <!-- Easymap -->

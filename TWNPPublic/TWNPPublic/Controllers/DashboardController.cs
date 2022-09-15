@@ -907,6 +907,19 @@ namespace TWNPPublic.Controllers
             }
         }
 
+        public async Task<IActionResult> GetCurrentLatAndLon()
+        {
+
+            var location = dashboardService.GetLatLotByWaterNos(aspNetUser.CurrentWaterNo);
+            return Json(Success(data: new
+            {
+                Lot = location.Lon,
+                Lat = location.Lat
+            }));
+        }
+
+        #region 沒用
+
         ///// <summary>
         ///// 用水情形分析資料來源(棄用)
         ///// </summary>
@@ -962,6 +975,8 @@ namespace TWNPPublic.Controllers
 
         //    return Json(Success(Data));
         //}
+
+        #endregion
     }
 
     /// <summary>
