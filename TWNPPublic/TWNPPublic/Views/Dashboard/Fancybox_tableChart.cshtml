@@ -102,7 +102,8 @@
                     ]
                 };
 
-                result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq('+index+') td:eq(1)').html(Math.floor(item)));
+                result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq('+index+') td:eq(2)').html(Math.floor(item)));
+                result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq('+index+') td:eq(1)').html(Math.floor(item)));
                 option && myChart.setOption(option);
             }
             else{

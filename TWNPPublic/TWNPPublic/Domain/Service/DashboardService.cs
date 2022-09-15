@@ -420,13 +420,44 @@ namespace TWNPPublic.Domain.Service
             var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
             try
             {
+                // 拿前一的最後一筆來相減，所有原始會有 25 筆，輸出資料時會pop 第一筆 輸出24筆資料
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
                     var root = JsonConvert.DeserializeObject<PhMeterRecordRoot>(responseBody);
                     if (root != null)
                     {
-                        return root.Root.Data;
+                        List<A_PH_METER_RECORD_LIST> TimeSerailList = new List<A_PH_METER_RECORD_LIST>();
+
+                        for (var i = QueryTime.Date.AddHours(-1); i < QueryTime.Date.AddDays(1); i = i.AddHours(1))
+                        {
+                            var getUseFulData = root.Root.Data.FirstOrDefault(c => c.REC_DATE_TIME == i);
+                            if (getUseFulData != null)
+                            {
+                                getUseFulData.AMOUNTO = getUseFulData.AMOUNT;
+                                TimeSerailList.Add(getUseFulData);
+                            }
+                            else
+                            {
+                                TimeSerailList.Add(new A_PH_METER_RECORD_LIST { REC_DATE_TIME = i });
+                            }
+                        }
+
+                        for (int i = 1; i <= 24; i++)
+                        {
+                            if (TimeSerailList[i].AMOUNTO != null && TimeSerailList[i - 1].AMOUNTO != null)
+                            {
+                                TimeSerailList[i].AMOUNT = TimeSerailList[i].AMOUNTO - TimeSerailList[i - 1].AMOUNTO;
+                            }
+                            else
+                            {
+                                TimeSerailList[i].AMOUNT = null;
+                            }
+                        }
+
+                        TimeSerailList.RemoveAt(0);
+
+                        return TimeSerailList;
                     }
 
                     return null;
