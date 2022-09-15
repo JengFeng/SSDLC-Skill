@@ -149,7 +149,7 @@ namespace TWNPPublic.Controllers
                     // 偶數帳單
                     // 偶數月
                     // 基數月
-                    if(nowtime.Month % 2 == 0)
+                    if (nowtime.Month % 2 == 0)
                     {
 
                     }
@@ -344,6 +344,7 @@ namespace TWNPPublic.Controllers
         public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate)
         {
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
+            List<A_PH_METER_RECORD_LIST> result = new List<A_PH_METER_RECORD_LIST>();
 
             if (Cdate.Date == DateTime.Now.AddDays(-1).Date)
             {
@@ -374,7 +375,9 @@ namespace TWNPPublic.Controllers
             {
 
                 var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
-
+                //又亂寫，這個動作很浪費記憶體空間不過算了==
+                result = dayresult;
+                dayresult = dayresult.OrderBy(c => c.REC_DATE_TIME).ToList();
 
                 if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                 if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -389,7 +392,8 @@ namespace TWNPPublic.Controllers
             object obj = new
             {
                 X = dic.Select(c => c.Key).ToArray(),
-                Y = dic.Select(c => c.Value).ToArray()
+                Y = dic.Select(c => c.Value).ToArray(),
+                O = result.Select(c => c.AMOUNTO).ToArray()
             };
             return Json(Success(obj));
         }
@@ -422,7 +426,7 @@ namespace TWNPPublic.Controllers
 
         public async Task<IActionResult> UpdateHourNote(int NoteSN, string Hour, string Msg, DateTime ADate)
         {
-            //這邊測試機跟正式機的資料庫不同步
+            //這邊測試機跟正式機的資料庫不同步(已修正)
 
             if (NoteSN == 0)
             {
