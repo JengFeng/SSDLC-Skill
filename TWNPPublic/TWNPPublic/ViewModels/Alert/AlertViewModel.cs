@@ -25,7 +25,8 @@ namespace TWNPPublic.ViewModels.Alert
 
     public class SaveAlertSetViewModel
     {
-        public string[]? WaterNo { get; set; }
+        [Required(ErrorMessage = "水號為必選項")]
+        public string WaterNo { get; set; }
         [Required(ErrorMessage = "手機號碼為必填")]
         [RegularExpression("^[0-9]{10}$", ErrorMessage = "請確定電話號碼格式")]
         public string? AlertPhone { get; set; } = string.Empty;

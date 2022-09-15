@@ -20,6 +20,13 @@ namespace TWNPPublic.Controllers
         }
         public IActionResult UserSettings()
         {
+            ViewBag.IsTestUser = false;
+
+            if(aspNetUser.UserId == 1)
+            {
+                ViewBag.IsTestUser = true;
+            }
+
             ViewBag.IsSignAccount = false;
             if (aspNetUser.UserId != null)
             {

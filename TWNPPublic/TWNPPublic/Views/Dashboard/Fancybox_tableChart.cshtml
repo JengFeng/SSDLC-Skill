@@ -125,7 +125,8 @@
                 <thead>
                     <tr>
                         <th>時間</th>
-                        <th>估算用水量(度)</th>
+                        <th>指針數讀值</th>
+                        <th>用水量</th>
                         <th data-breakpoints="xs sm">用水記事</th>
                     </tr>
                 </thead>
@@ -137,6 +138,7 @@
                             var TimeSource = String.Format("{0:00}", item.A_HOUR);
                             <tr>
                                 <td>@(TimeSource):00</td>
+                                <td></td>
                                 <td></td>
                                 <td class="text-red">
                                     <div class="tdflex" id="textNote@(TimeSource)">
@@ -161,86 +163,6 @@
                     }
                 </tbody>
             </table>
-            @* <table class="footable green">
-                <thead>
-                <tr>
-                <th>時間</th>
-                <th>估算用水量(度)</th>
-                <th data-breakpoints="xs sm">較前日突增減(%)</th>
-                <th data-breakpoints="xs sm">用水記事</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td>9:00</td>
-                <td>154</td>
-                <td>7</td>
-                <td class="text-red">
-                <div class="tdflex">
-                <div class="info">用水異常</div>
-                <a class="btn-green-o" href="javascript:;">修改</a>
-                </div>
-                </td>
-                </tr>
-                <tr>
-                <td>9:15</td>
-                <td>154</td>
-                <td class="text-red">-50</td>
-                <td>
-                <div class="tdflex">
-                <div class="info">
-                <textarea class="form-control">用水異常</textarea>
-                </div>
-                <a class="btn-green-o" href="javascript:;">確認</a>
-                </div>
-                </td>
-                </tr>
-                <tr>
-                <td>9:90</td>
-                <td>154</td>
-                <td class="text-red">7</td>
-                <td class="text-red">
-                <div class="tdflex">
-                <div class="info">用水異常</div>
-                <a class="btn-green-o" href="javascript:;">修改</a>
-                </div>
-                </td>
-                </tr>
-                <tr>
-                <td>9:00</td>
-                <td>154</td>
-                <td>7</td>
-                <td>
-                <div class="tdflex">
-                <div class="info"></div>
-                <a class="btn-green-o" href="javascript:;">修改</a>
-                </div>
-                </td>
-                </tr>
-                <tr>
-                <td>9:00</td>
-                <td>154</td>
-                <td>7</td>
-                <td>
-                <div class="tdflex">
-                <div class="info"></div>
-                <a class="btn-green-o" href="javascript:;">修改</a>
-                </div>
-                </td>
-                </tr>
-                <tr>
-                <td>9:00</td>
-                <td>154</td>
-                <td>7</td>
-                <td>
-                <div class="tdflex">
-                <div class="info"></div>
-                <a class="btn-green-o" href="javascript:;">修改</a>
-                </div>
-                </td>
-                </tr>
-                </tbody>
-                </table>*@
         </div>
         <div class="main">
             <div class="chartBlock">

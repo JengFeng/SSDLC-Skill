@@ -5,6 +5,7 @@ using NLog;
 using NLog.Extensions.Logging;
 using SqlData;
 using System.Globalization;
+using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Dashboard;
@@ -25,6 +26,13 @@ namespace TWNPPublic.Domain.Service
             this.dataAccess = dataAccess;
         }
 
+        /// <summary>
+        /// 取得 F_B_HOME
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Account"></param>
+        /// <param name="dayText"></param>
+        /// <returns></returns>
         public DashMainViewModel GetDashMain(string WaterNo, string Account, DateTime dayText)
         {
             string mainsql = @"select * From dbo.F_B_HOME(@WaterNo,@Account,@Theday)";
@@ -33,6 +41,12 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<DashMainViewModel>(mainsql, obj).FirstOrDefault();
         }
 
+        /// <summary>
+        /// 取得 F_B_CHART Week 
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate)
         {
             string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,'WEEK',@Cdate) Order by X";
@@ -40,6 +54,13 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<DashMainWaterUseSearchViewModel>(mainsql, obj);
         }
 
+        /// <summary>
+        /// 取得 F_B_CHART 自帶參數
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <param name="Timesplit"></param>
+        /// <returns></returns>
         public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit)
         {
             string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,@Timesplit,@Cdate) Order by X";
@@ -54,6 +75,13 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<B_NEWSViewModel>(mainsql);
         }
 
+        /// <summary>
+        /// 給水號與時間取 B_NOTE 
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime)
         {
             string mainsql = @"Select * From B_NOTE Where WATER_NO = @WaterNo And A_DATE Between @StartTime And @EndTime";
@@ -100,6 +128,14 @@ namespace TWNPPublic.Domain.Service
             return (result, counter.First().Counter);
         }
 
+        /// <summary>
+        /// 取F_B_CHART1
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="ChartTpye"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime)
         {
             string mainsql = @"SELECT * FROM [dbo].[F_B_CHART1]('7D762461969','pin','2022/4/4 00:00:00','2022/4/4 23:00:00')";
@@ -225,7 +261,12 @@ namespace TWNPPublic.Domain.Service
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
                     var root = JsonConvert.DeserializeObject<Root>(responseBody);
                     if (root != null)
+                    {
+                        root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
+                        root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
                         return root.DataRoot.DataLoop.Data;
+                    }
+
                     return null;
                 }
                 else
@@ -326,6 +367,22 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<Addresses>(mainsql, obj).FirstOrDefault().ADDRESS_DAES;
         }
 
+        public (string Lat, string Lon) GetLatLotByWaterNos(string WaterNo)
+        {
+            string mainsql = @"SELECT TOP (1) LAT,LON FROM [V_A_WATERFEE]  Where WATERNO = @WaterNO";
+            object obj = new
+            {
+                WaterNo
+            };
+            var result = dataAccess.Query<Location>(mainsql, obj).FirstOrDefault();
+            if (result == null)
+                return ("", "");
+            else
+            {
+                return (Lat: result.LAT, Lon: result.LON);
+            }
+        }
+
         public int InsertBNote(string WaterNo, string PROPERTY_NO, string NOTE, DateTime ADate)
         {
             string mainsql = @"INSERT INTO [dbo].[B_NOTE]
@@ -353,87 +410,176 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<B_Note_ReuturnSN>(mainsql, obj).First().B_NOTE_SN;
         }
 
-        public List<A_PH_METER_RECORD_LIST>? LitedPhMeterRecordList(DateTime QueryTime, string WaterNo)
+        public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo)
         {
-            string FilePathTemp = configuration["MeterRecordSqllite"];
-            //string FilePathTemp = "D:\\WEB\\DataTransferWeb\\UploadFile\\A_PH_METER_RECORD_LIST\\{0}.sqlite";
-            string FilePath = string.Format(FilePathTemp, QueryTime.ToString("yyyy_MM_dd"));
+            // https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1=7D762347523&F2=2022-08-15
+            // https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1=XXX&F2=XXX
+            string qt = QueryTime.ToString("yyyy-MM-dd");
+            // 這裡要改成從API拿
+            var httpClient = httpClientFactory.CreateClient();
+            var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            try
+            {
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string responseBody = await responseMessage.Content.ReadAsStringAsync();
+                    var root = JsonConvert.DeserializeObject<PhMeterRecordRoot>(responseBody);
+                    if (root != null)
+                    {
+                        return root.Root.Data;
+                    }
 
-            if (!File.Exists(FilePath))
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e) // 不知道資料多髒全部 Catch 住..
             {
                 return null;
             }
 
-            string mainsql = @"Select Distinct * 
-                                From A_PH_METER_RECORD_LIST 
-                                Where 1=1 And @et > REC_DATE_TIME And REC_DATE_TIME >= @st And WATER_NO = @WaterNo
-                                Order by REC_DATE_TIME asc";
+            #region 這裡都沒用，但是留下來
 
-            var start = new DateTime(QueryTime.Year, QueryTime.Month, QueryTime.Day);
-            var end = new DateTime(QueryTime.Year, QueryTime.Month, QueryTime.Day + 1);
+            //string FilePathTemp = configuration["MeterRecordSqllite"];
+            ////string FilePathTemp = "D:\\WEB\\DataTransferWeb\\UploadFile\\A_PH_METER_RECORD_LIST\\{0}.sqlite";
+            //string FilePath = string.Format(FilePathTemp, QueryTime.ToString("yyyy_MM_dd"));
 
-            string sqliteconn = "Data Source= " + FilePath;
-            using (var connection = new SqliteConnection(sqliteconn))
-            {
-                //logger.Debug(sqliteconn + mainsql);
-                var result = connection.Query<A_PH_METER_RECORD_LIST>(mainsql, new { st = start, et = end, WaterNo }).ToList();
+            //if (!File.Exists(FilePath))
+            //{
+            //    return null;
+            //}
 
-                //找前一天最後一筆
-                string FilePathYesterday = string.Format(FilePathTemp, QueryTime.ToString("yyyy_MM_dd"));
+            //string mainsql = @"Select Distinct * 
+            //                    From A_PH_METER_RECORD_LIST 
+            //                    Where 1=1 And @et > REC_DATE_TIME And REC_DATE_TIME >= @st And WATER_NO = @WaterNo
+            //                    Order by REC_DATE_TIME asc";
 
-                float? yesterdayAoumt = null;
+            //var start = new DateTime(QueryTime.Year, QueryTime.Month, QueryTime.Day);
+            //var end = new DateTime(QueryTime.Year, QueryTime.Month, QueryTime.Day + 1);
 
-                if (File.Exists(FilePathYesterday))
-                {
-                    var yesterdaystart = start.AddDays(-1);
-                    var yesterdaysend = end.AddDays(-1);
+            //string sqliteconn = "Data Source= " + FilePath;
+            //using (var connection = new SqliteConnection(sqliteconn))
+            //{
+            //    //logger.Debug(sqliteconn + mainsql);
+            //    var result = connection.Query<A_PH_METER_RECORD_LIST>(mainsql, new { st = start, et = end, WaterNo }).ToList();
 
-                    var yesterdayresult = connection.Query<A_PH_METER_RECORD_LIST>(mainsql, new { st = yesterdaystart, et = yesterdaysend, WaterNo }).ToList();
+            //    //找前一天最後一筆
+            //    string FilePathYesterday = string.Format(FilePathTemp, QueryTime.ToString("yyyy_MM_dd"));
 
-                    yesterdayAoumt = yesterdayresult.Last().AMOUNT;
-                }
+            //    float? yesterdayAoumt = null;
 
-                var counter = result.Count;
-                float?[] miner = new float?[24];
+            //    if (File.Exists(FilePathYesterday))
+            //    {
+            //        var yesterdaystart = start.AddDays(-1);
+            //        var yesterdaysend = end.AddDays(-1);
 
-                if(yesterdayAoumt != null)
-                {
-                    miner[0] = result[0].AMOUNT - yesterdayAoumt.Value;
-                }
+            //        var yesterdayresult = connection.Query<A_PH_METER_RECORD_LIST>(mainsql, new { st = yesterdaystart, et = yesterdaysend, WaterNo }).ToList();
 
-                if (counter > 1)
-                {
-                    for (int i = 1; i < counter; i++)
-                    {
-                        miner[i] = result[i].AMOUNT - result[i - 1].AMOUNT;
-                    }
+            //        yesterdayAoumt = yesterdayresult.Last().AMOUNT;
+            //    }
 
-                    for (int i = 0; i < miner.Length; i++)
-                    {
-                        result[i].AMOUNT = miner[i];
-                    }
-                }
+            //    var counter = result.Count;
+            //    float?[] miner = new float?[24];
+
+            //    if(yesterdayAoumt != null)
+            //    {
+            //        miner[0] = result[0].AMOUNT - yesterdayAoumt.Value;
+            //    }
+
+            //    if (counter > 1)
+            //    {
+            //        for (int i = 1; i < counter; i++)
+            //        {
+            //            miner[i] = result[i].AMOUNT - result[i - 1].AMOUNT;
+            //        }
+
+            //        for (int i = 0; i < miner.Length; i++)
+            //        {
+            //            result[i].AMOUNT = miner[i];
+            //        }
+            //    }
 
 
-                return result;
-            }
+            //    return result;
+            //}
+
+            #endregion
         }
     }
 
     public interface IDashboardService
     {
         //public Tuple<string, int> TestSqlite(DateTime QueryTime, string WaterNo);
+        /// <summary>
+        /// 取儀錶板
+        /// </summary>
+        /// <param name="WATER_NO"></param>
+        /// <param name="ACCOUNT"></param>
+        /// <param name="THEDAY"></param>
+        /// <returns></returns>
         public DashMainViewModel GetDashMain(string WATER_NO, string ACCOUNT, DateTime THEDAY);
+        /// <summary>
+        /// 取右下角圖
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
         public List<DashMainWaterUseSearchViewModel> GetDashWaterUse(string WaterNo, DateTime Cdate);
+        /// <summary>
+        /// 取最新消息
+        /// </summary>
+        /// <returns></returns>
         public List<B_NEWSViewModel> ListedNews();
+        /// <summary>
+        /// 取用水記事
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
         public List<B_NOTEViewModel> ListedNotes(string WaterNo, DateTime StartTime, DateTime EndTime);
+        /// <summary>
+        /// page 警示訊息 沒用到
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <returns></returns>
         public (List<V_B_MESSAGE> items, int Count) LitedExceptionItem(string WaterNo, int page, int itemsPerPage);
+        /// <summary>
+        /// 圖 fn chart
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <param name="Timesplit"></param>
+        /// <returns></returns>
         public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit);
+        /// <summary>
+        /// 圖 fn chart1
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="ChartTpye"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
+        /// <summary>
+        /// 用水記事每小時
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date);
+        /// <summary>
+        /// 用水記事每筆
+        /// </summary>
+        /// <param name="SN"></param>
+        /// <returns></returns>
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
-        public List<A_PH_METER_RECORD_LIST> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo);
-
+        public Task<List<A_PH_METER_RECORD_LIST>> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo);
         /// <summary>
         /// 更新 BNoteHour 資料
         /// </summary>
@@ -442,7 +588,6 @@ namespace TWNPPublic.Domain.Service
         /// <param name="Note"></param>
         /// <returns></returns>
         public int UpdateNoteHour(int SN, int Hour, string Note);
-
         /// <summary>
         /// 新增或更新 BNoteHour
         /// </summary>
@@ -451,7 +596,6 @@ namespace TWNPPublic.Domain.Service
         /// <param name="Note"></param>
         /// <returns></returns>
         public int UpdateOrInsertNoteHour(int SN, int Hour, string Note);
-
         /// <summary>
         /// 當NOTE空白時新增NOTE
         /// </summary>
@@ -461,11 +605,49 @@ namespace TWNPPublic.Domain.Service
         /// <param name="ADate"></param>
         /// <returns></returns>
         public int InsertBNote(string WaterNo, string PROPERTY_NO, string NOTE, DateTime ADate);
+        /// <summary>
+        /// 取 Db WaterFee2
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Time"></param>
+        /// <returns></returns>
         public A_WATERFEE2 GetWaterFee2ByWaterNoAndTime(string WaterNo, string Time);
+        /// <summary>
+        /// 取觀光人次
+        /// </summary>
+        /// <param name="cdate"></param>
+        /// <returns></returns>
         public (int? startPeople, int? enderPeople) Listedpeople(DateTime cdate);
+        /// <summary>
+        /// 判斷單數月單或雙數月單
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
         public (float? Increase, float? Decrease) GetIncreaseAndDecrease(string WaterNo);
+        /// <summary>
+        /// 取 View_WaterFee
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="CTime"></param>
+        /// <returns></returns>
         public Task<V_A_WATERFEE?> GetVWaterFee2ByWaterNoAndTime(string WaterNo, DateTime CTime);
+        /// <summary>
+        /// 取繳費日期
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
         public A_WATERFEE_BILLDATE GetA_WATERFEE_BILLDATE(string WaterNo);
+        /// <summary>
+        /// 取使用者地址
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
         public string GetAddressByWaterNos(string WaterNo);
+        /// <summary>
+        /// 取使用者經緯度
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
+        public (string Lat, string Lon) GetLatLotByWaterNos(string WaterNo);
     }
 }
