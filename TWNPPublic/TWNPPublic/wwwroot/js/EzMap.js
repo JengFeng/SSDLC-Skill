@@ -33,7 +33,7 @@ function LayerMap() {
     //# Public Function
     this.init = () => {
         this.map = new Easymap(this.mapId);
-        this.map.zoomToXY(new dgXY(119.5715204969396, 23.631408207672038), 11.666);
+        this.map.zoomToXY(new dgXY(119.5715204969396, 23.631408207672038), 16);
         //# MMJS Easymap 設定
         switch (this.version) {
             case 1:
@@ -103,7 +103,7 @@ function LayerMap() {
             iconSize = 16,
             div = `<img src="${imgUrl}" style="width:${iconSize}px; height: auto; position:absolute;left: -${iconSize / 2}px;top:-${iconSize / 2}px;" \>`,
             marker = new dgMarker(lonlat, div, false);
-            MapSelf.map.addItem(marker);
+        MapSelf.map.addItem(marker);
     }        // 套疊目前地址位置
     this.getCurrentAddress = () => {
         let list = '',
