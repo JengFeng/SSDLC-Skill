@@ -24,9 +24,18 @@ namespace TWNPPublic.ViewModels.Dashboard
         /// </summary>
         public List<DashMainNEWS> DashMainNEWS
         {
-            // get { return JsonConvert.DeserializeObject<List<DashMainNEWS>>(this.NEWS); }
-            get;
-            set;
+            get
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<List<DashMainNEWS>>(this.NEWS);
+                }
+                catch (Exception e)
+                {
+                    return new List<DashMainNEWS>();
+                }
+            }
+
         }
         /// <summary>
         /// 警告訊息
@@ -161,10 +170,22 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string ADDRESS_DAES { get; set; }
     }
 
-
     public class Location
     {
         public string LAT { get; set; }
         public string LON { get; set; }
+    }
+    public class fullcalendar
+    {
+        public string id { get; set; }
+        public string title { get; set; }
+        public string start { get; set; }
+        public string NoteDate { get; set; }
+    }
+
+    public class ListedTable
+    {
+        public int Max { get; set; }
+        public List<ExceptionItem> PageData { get; set; }
     }
 }

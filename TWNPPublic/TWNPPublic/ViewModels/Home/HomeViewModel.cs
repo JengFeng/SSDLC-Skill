@@ -39,5 +39,28 @@ namespace TWNPPublic.ViewModels.Home
         [Required(ErrorMessage = "驗證碼為必填")]
         public string CapthCode { get; set; } = string.Empty;
     }
+    public class LoginAppVm
+    {
+        [Required(ErrorMessage = "AccountNo App會員編號 為必填")]
+        public string AccountNo { get; set; } = string.Empty;
+        [Required(ErrorMessage = "WaterNo 水號 為必填")]
+        public string WaterNo { get; set; } = string.Empty;
+        [Required(ErrorMessage = "AccessToken 為必填")]
+        public string AccessToken { get; set; } = string.Empty;
+    }
+    public class DenyAppAcounntVm
+    {
+        [Required(ErrorMessage = "WaterNo 水號 為必填")]
+        public string WaterNo { get; set; } = string.Empty;
+        [Required(ErrorMessage = "AccessToken 為必填")]
+        public string AccessToken { get; set; } = string.Empty;
+    }
+    public enum ApiErrorCode
+    {
+        TokenError,
+        Invalid,
+        NoSource,
+        Other
+    }
 
 }

@@ -18,11 +18,12 @@ namespace TWNPPublic.Controllers
             this.aspNetUser = aspNetUser;
             this.userManageService = userManageService;
         }
+
         public IActionResult UserSettings()
         {
             ViewBag.IsTestUser = false;
 
-            if(aspNetUser.UserId == 1)
+            if (aspNetUser.UserId == 1)
             {
                 ViewBag.IsTestUser = true;
             }
@@ -172,5 +173,15 @@ namespace TWNPPublic.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult DeleteUserWaterNo(string WaterNo)
+        {
+            if (aspNetUser.UserId.HasValue)
+            {
+                userManageService.DeleteWateNoByUserSN(aspNetUser.UserId.Value, WaterNo);
+            }
+
+            return Json(Success());
+        }
     }
 }

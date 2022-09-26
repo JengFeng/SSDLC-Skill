@@ -66,6 +66,7 @@ namespace TWNPPublic.Controllers
             //有選水號
             else
             {
+                var reuslt = alertService.DeleteAllAlertSetBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo);
                 //先檢查手機是不是必填
                 //在檢查信箱格式
                 //在檢查 惟至少50度以上 有選這個就要填 要填就要50度以上

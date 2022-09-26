@@ -228,7 +228,7 @@ namespace TWNPPublic.Domain.Service
         public int DeleteAllAlertSetBySNAndWaterNo(int AccountSN, string WaterNo)
         {
             string mainsql = @"DELETE FROM B_ALART_SETTING
-                                WHERE B_ACCOUNT_SN = @SN And @WaterNo";
+                                WHERE B_ACCOUNT_SN = @SN And WATER_NO = @WaterNo";
             object obj = new { SN = AccountSN, WaterNo };
             return dataAccess.Execute(mainsql, obj);
         }

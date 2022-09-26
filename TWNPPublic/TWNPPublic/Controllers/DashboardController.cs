@@ -30,11 +30,26 @@ namespace TWNPPublic.Controllers
         /// 首頁
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
             ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月dd日", culture);
+            #region 這個邏輯只是為了澎科大寫的其他都沒用到
+            ViewBag.ShowRealMap = false;
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
+            if (result == null)
+            {
+                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1));
+            }
+
+            if (result != null)
+            {
+                if (result.NAME_DAES == "國立澎湖科技大學")
+                    ViewBag.ShowRealMap = true;
+            }
+            #endregion
+
             return View();
         }
 
@@ -345,11 +360,15 @@ namespace TWNPPublic.Controllers
         {
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
             List<A_PH_METER_RECORD_LIST> result = new List<A_PH_METER_RECORD_LIST>();
+            List<float?> pins = new List<float?>();
 
             if (Cdate.Date == DateTime.Now.AddDays(-1).Date)
             {
-                //前天去撈資料庫
+                //前天去撈資料庫 zz..ZZ..
                 var dayresult2 = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day".ToUpper()).OrderBy(c => c.X).ToList();
+                var yesterdayPin = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", Cdate.Date, Cdate.Date.AddDays(1).AddSeconds(-1));
+
+                pins = yesterdayPin.Select(c => (float?)c.Y).ToList();
 
                 if (dayresult2 == null) return Json(Failed(message: "資料尚未開放"));
                 if (dayresult2.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -377,6 +396,8 @@ namespace TWNPPublic.Controllers
                 var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
                 //又亂寫，這個動作很浪費記憶體空間不過算了==
                 result = dayresult;
+                pins = result.Select(c => c.AMOUNTO).ToList();
+
                 dayresult = dayresult.OrderBy(c => c.REC_DATE_TIME).ToList();
 
                 if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
@@ -393,8 +414,9 @@ namespace TWNPPublic.Controllers
             {
                 X = dic.Select(c => c.Key).ToArray(),
                 Y = dic.Select(c => c.Value).ToArray(),
-                O = result.Select(c => c.AMOUNTO).ToArray()
+                O = pins.ToArray()
             };
+
             return Json(Success(obj));
         }
 
@@ -984,19 +1006,6 @@ namespace TWNPPublic.Controllers
     }
 
     /// <summary>
-    /// 需求不明確先放這裡
+    /// 需求不明確先放這裡 已經整理到View Model
     /// </summary>
-    public class fullcalendar
-    {
-        public string id { get; set; }
-        public string title { get; set; }
-        public string start { get; set; }
-        public string NoteDate { get; set; }
-    }
-
-    public class ListedTable
-    {
-        public int Max { get; set; }
-        public List<ExceptionItem> PageData { get; set; }
-    }
 }

@@ -136,19 +136,44 @@ namespace TWNPPublic.Domain.Service
         /// <param name="StartTime"></param>
         /// <param name="EndTime"></param>
         /// <returns></returns>
-        public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime)
+        public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartType, DateTime StartTime, DateTime EndTime)
         {
-            string mainsql = @"SELECT * FROM [dbo].[F_B_CHART1]('7D762461969','pin','2022/4/4 00:00:00','2022/4/4 23:00:00')";
+            string mainsql = @"SELECT * FROM [dbo].[F_B_CHART1](@WaterNo, @pin, @StartTime, @EndTime)";
+            EndTime = EndTime.Date.AddDays(1).AddSeconds(-1);
+            object obj = new
+            {
+                WaterNo,
+                pin = ChartType,
+                StartTime = StartTime.Date,
+                EndTime = EndTime
+            };
 
-            //object obj = new
-            //{
-            //    WaterNo = "7D762461969",
-            //    ChartTpye,
-            //    StartTimes = StartTime.ToString("yyyy/MM/dd HH:mm:ss"),
-            //    EndTimes = EndTime.ToString("yyyy/MM/dd HH:mm:ss")
-            //};
-            var result = dataAccess.Query<F_B_CHART1>(mainsql);
-            return result;
+            var result = dataAccess.Query<F_B_CHART1>(mainsql, obj);
+            List<F_B_CHART1> fbchart1 = new List<F_B_CHART1>();
+            for (var i = StartTime.Date; i < EndTime; i = i.AddHours(1))
+            {
+                var compareResult = result.FirstOrDefault(c => c.X == i.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                if (compareResult == null)
+                {
+                    fbchart1.Add(new F_B_CHART1
+                    {
+                        X = i.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Y = 0
+                    });
+                }
+                else
+                {
+                    fbchart1.Add(new F_B_CHART1
+                    {
+                        X = i.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Y = compareResult.Y
+                    });
+                }
+
+            }
+
+            return fbchart1;
         }
 
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date)
@@ -243,8 +268,6 @@ namespace TWNPPublic.Domain.Service
         }
 
         //AP主機網址/TWN_Transfer/WebService/OracleForTWN_WATERNO.ashx?Table=V_A_WATERFEE&WATERNO=7D76026501K
-
-
         public async Task<V_A_WATERFEE?> GetVWaterFee2ByWaterNoAndTime(string WaterNo, DateTime cTime)
         {
             var httpClient = httpClientFactory.CreateClient();
@@ -469,7 +492,7 @@ namespace TWNPPublic.Domain.Service
             }
             catch (Exception e) // 不知道資料多髒全部 Catch 住..
             {
-                return null;
+                return new List<A_PH_METER_RECORD_LIST>();
             }
 
             #region 這裡都沒用，但是留下來
