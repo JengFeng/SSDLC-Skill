@@ -59,28 +59,32 @@ namespace TWNPPublic.Domain.Service
                 SN = SN
             };
 
-            string deleteWaterNo5sql = @"Delete 
+            if(model.WaterNO != null)
+            {
+
+                string deleteWaterNo5sql = @"Delete 
                                           From B_ACCOUNT_WATER_NO
                                           Where B_ACCOUNT_SN = @SN";
-            object deleteobj = new
-            {
-                SN = SN
-            };
-            this.dapperDataAccess.Execute(deleteWaterNo5sql, deleteobj);
+                object deleteobj = new
+                {
+                    SN = SN
+                };
+                this.dapperDataAccess.Execute(deleteWaterNo5sql, deleteobj);
 
-            foreach (var item in model.WaterNO)
-            {
-                string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
+                foreach (var item in model.WaterNO)
+                {
+                    string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
                                                    (B_ACCOUNT_SN,WATER_NO,VALID)
                                              VALUES
                                                    (@SN,@WaterNo,@Valid)";
-                object waterobj = new
-                {
-                    SN = SN,
-                    WaterNo = item,
-                    Valid = 1
-                };
-                this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
+                    object waterobj = new
+                    {
+                        SN = SN,
+                        WaterNo = item,
+                        Valid = 1
+                    };
+                    this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
+                }
             }
 
             return this.dapperDataAccess.Execute(mainsql, obj); ;

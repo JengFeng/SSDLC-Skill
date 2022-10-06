@@ -84,25 +84,27 @@ namespace TWNPPublic.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    foreach (var item in model.WaterNO)
-                    {
-                        if (string.IsNullOrEmpty(item))
-                        {
-                            ModelState.AddModelError("WaterNO", "水號不能為空");
-                            return Json(ValidationFailed(
-                            ModelState.Where(x => x.Value.Errors.Count > 0)
-                                .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                                ), "欄位錯誤"));
-                        }
-                    }
+                    //foreach (var item in model.WaterNO)
+                    //{
+                    //    if (string.IsNullOrEmpty(item))
+                    //    {
+                    //        ModelState.AddModelError("WaterNO", "水號不能為空");
+                    //        return Json(ValidationFailed(
+                    //        ModelState.Where(x => x.Value.Errors.Count > 0)
+                    //            .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    //            ), "欄位錯誤"));
+                    //    }
+                    //}
 
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
 
-                    if (result >= 1)
+                    if (result >= 1 && model.WaterNO != null)
                     {
                         HttpContext.Session.SetString("WaterNo", string.Join(',', model.WaterNO));
                         return Json(Success(@$"更新成功"));
                     }
+                    else if (result >= 1)
+                        return Json(Success(@$"更新成功"));
                     else
                         return Json(Failed(message: "更新失敗"));
                 }

@@ -99,7 +99,7 @@
                         legend: {
                             y: 'top',
                             x: 'middle',
-                            data: ["用水量趨勢"]
+                            data: ["用水量趨勢", "用水指針"]
                         },
                         xAxis: {
                             nameGap: 25,
@@ -108,7 +108,7 @@
                             type: 'category',
                             data: result.Data.X
                         },
-                        yAxis: {
+                        yAxis: [{
                             nameLocation: 'center',
                             nameGap: 25,
                             nameRotate: 360,
@@ -117,21 +117,47 @@
                             axisLine: {
                                 show: true,
                                 lineStyle: {
-                                    color: colors[0]
+                                    color: '#5391C7'
                                 }
                             },
                             axisLabel: { formatter: '{value}' }
                         },
+                        {
+                            nameLocation: 'center',
+                            nameGap: 45,
+                            nameRotate: 360,
+                            name: '用 \n水 \n指 \n針 \n',
+                            type: 'value',
+                            position: 'right',
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: '#ffb1c1'
+                                },
+                                splitLine: {
+                                    show: false
+                                },
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            },
+                            nameTextStyle: {
+                                fontSize: 18
+                            }
+                        }],
                         series: [
                             {
                                 name: '用水量趨勢',
-                                type: 'line',
-                                // detail: {
-                                //    formatter: function (value) {
-                                //        return Math.round(value *100)/100;
-                                //    }
-                                //},
+                                type: 'bar',
                                 data: parserY
+                            },
+                            {
+                                name: '用水指針',
+                                type: 'line',
+                                yAxisIndex: 1,
+                                itemStyle: { color: '#ffb1c1', lineStyle: { color: '#ffb1c1' } },
+                                data: result.Data.O
                             }
                         ]
                     };
@@ -144,116 +170,116 @@
             });
         }
 
-        //var myChart = echarts.init(document.getElementById('divpagechartGroup'));
-        //function LoadChartMethod(obj){
-        //    let fakerMount = obj.Amountdatas.map((_,value) => value * 5);
+                                        //var myChart = echarts.init(document.getElementById('divpagechartGroup'));
+                                        //function LoadChartMethod(obj){
+                                        //    let fakerMount = obj.Amountdatas.map((_,value) => value * 5);
 
-        //    obj.Amountdatas.forEach((elem,index)=>{
-        //        console.log(obj.Amountdatas[index][1]);
-        //        obj.Amountdatas[index].value[1] = parseInt(obj.Amountdatas[index].value[1]);
-        //    });
+                                        //    obj.Amountdatas.forEach((elem,index)=>{
+                                        //        console.log(obj.Amountdatas[index][1]);
+                                        //        obj.Amountdatas[index].value[1] = parseInt(obj.Amountdatas[index].value[1]);
+                                        //    });
 
-        //    obj.Pindatas.forEach((elem,index)=>{
-        //        obj.Pindatas[index].value[1] = parseInt(obj.Pindatas[index].value[1]);
-        //    });
+                                        //    obj.Pindatas.forEach((elem,index)=>{
+                                        //        obj.Pindatas[index].value[1] = parseInt(obj.Pindatas[index].value[1]);
+                                        //    });
 
-        //    var option;
-        //    const colors = ['#ffb1c1', '#5391C7'];
-        //    option = {
-        //        color:colors,
-        //        tooltip: {
-        //            trigger: 'axis',
-        //            axisPointer: {
-        //                type: 'cross'
-        //            }
-        //        },
-        //        legend: {
-        //            data: ['用水量','水費']
-        //        },
-        //        toolbox: {
-        //            show: true,
-        //            feature: {
-        //                saveAsImage: {}
-        //            }
-        //        },
-        //        xAxis: [{
-        //            name: '時間(小時)',
-        //            type: 'time',
-        //            axisTick: {
-        //                alignWithLabel: true
-        //            }
-        //        }],
-        //        dataZoom: [
-        //            {
-        //                minSpan: 0.01,
-        //                type: 'slider',
-        //                start: 0,
-        //                end: 50
-        //            }
-        //        ],
-        //        yAxis: [
-        //            {
-        //                nameLocation : 'center',
-        //                nameGap: 45,
-        //                nameRotate : 360,
-        //                type: 'value',
-        //                name: ' 水 \n 費 \n ︵ \n 元 \n ︶ \n',
-        //                position: 'right',
-        //                alignTicks: true,
-        //                axisLine: {
-        //                    show: true,
-        //                    lineStyle: {
-        //                      color: '#ffb1c1'
-        //                    }
-        //                },
-        //                axisLabel: {
-        //                    formatter: '{value}'
-        //                },
-        //                nameTextStyle: {
-        //                    fontSize: 18
-        //                }
-        //            },
-        //            {
-        //                nameLocation : 'center',
-        //                nameGap: 45,
-        //                nameRotate : 360,
-        //                name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
-        //                type: 'value',
-        //                position: 'left',
-        //                alignTicks: true,
-        //                axisLine: {
-        //                    show: true,
-        //                    lineStyle: {
-        //                        color: '#5391C7'
-        //                    },
-        //                    splitLine: {
-        //                        show: false
-        //                    },
-        //                },
-        //                axisLabel: {
-        //                    formatter: '{value}'
-        //                },
-        //                nameTextStyle: {
-        //                    fontSize: 18
-        //                }
-        //            }],
-        //      series: [
-        //        {
-        //          name: '水費',
-        //          type: 'bar',
-        //          data: null,
-        //          lineStyle: {color: '#ffb1c1'},
-        //          data: obj.Amountdatas
-        //        },
-        //        {
-        //          name: '用水量',
-        //          type: 'line',
-        //          yAxisIndex: 1,
-        //          lineStyle: {color: '#5391C7'},
-        //          data: obj.Pindatas
-        //        }
-        //      ]
-        //    };
-        //    option && myChart.setOption(option);
-        //}
+                                        //    var option;
+                                        //    const colors = ['#ffb1c1', '#5391C7'];
+                                        //    option = {
+                                        //        color:colors,
+                                        //        tooltip: {
+                                        //            trigger: 'axis',
+                                        //            axisPointer: {
+                                        //                type: 'cross'
+                                        //            }
+                                        //        },
+                                        //        legend: {
+                                        //            data: ['用水量','水費']
+                                        //        },
+                                        //        toolbox: {
+                                        //            show: true,
+                                        //            feature: {
+                                        //                saveAsImage: {}
+                                        //            }
+                                        //        },
+                                        //        xAxis: [{
+                                        //            name: '時間(小時)',
+                                        //            type: 'time',
+                                        //            axisTick: {
+                                        //                alignWithLabel: true
+                                        //            }
+                                        //        }],
+                                        //        dataZoom: [
+                                        //            {
+                                        //                minSpan: 0.01,
+                                        //                type: 'slider',
+                                        //                start: 0,
+                                        //                end: 50
+                                        //            }
+                                        //        ],
+                                        //        yAxis: [
+                                        //            {
+                                        //                nameLocation : 'center',
+                                        //                nameGap: 45,
+                                        //                nameRotate : 360,
+                                        //                type: 'value',
+                                        //                name: ' 水 \n 費 \n ︵ \n 元 \n ︶ \n',
+                                        //                position: 'right',
+                                        //                alignTicks: true,
+                                        //                axisLine: {
+                                        //                    show: true,
+                                        //                    lineStyle: {
+                                        //                      color: '#ffb1c1'
+                                        //                    }
+                                        //                },
+                                        //                axisLabel: {
+                                        //                    formatter: '{value}'
+                                        //                },
+                                        //                nameTextStyle: {
+                                        //                    fontSize: 18
+                                        //                }
+                                        //            },
+                                        //            {
+                                        //                nameLocation : 'center',
+                                        //                nameGap: 45,
+                                        //                nameRotate : 360,
+                                        //                name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                                        //                type: 'value',
+                                        //                position: 'left',
+                                        //                alignTicks: true,
+                                        //                axisLine: {
+                                        //                    show: true,
+                                        //                    lineStyle: {
+                                        //                        color: '#5391C7'
+                                        //                    },
+                                        //                    splitLine: {
+                                        //                        show: false
+                                        //                    },
+                                        //                },
+                                        //                axisLabel: {
+                                        //                    formatter: '{value}'
+                                        //                },
+                                        //                nameTextStyle: {
+                                        //                    fontSize: 18
+                                        //                }
+                                        //            }],
+                                        //      series: [
+                                        //        {
+                                        //          name: '水費',
+                                        //          type: 'bar',
+                                        //          data: null,
+                                        //          lineStyle: {color: '#ffb1c1'},
+                                        //          data: obj.Amountdatas
+                                        //        },
+                                        //        {
+                                        //          name: '用水量',
+                                        //          type: 'line',
+                                        //          yAxisIndex: 1,
+                                        //          lineStyle: {color: '#5391C7'},
+                                        //          data: obj.Pindatas
+                                        //        }
+                                        //      ]
+                                        //    };
+                                        //    option && myChart.setOption(option);
+                                        //}
     </script>

@@ -71,8 +71,9 @@ namespace TWNPPublic.Domain.Service
 
         public List<B_NEWSViewModel> ListedNews()
         {
-            string mainsql = @"SELECT TOP 5 * FROM B_NEWS WHERE VALID=1";
-            return dataAccess.Query<B_NEWSViewModel>(mainsql);
+            string mainsql = @"SELECT * FROM B_NEWS WHERE VALID=1 And INP_DATE > @INPDATE Order by INP_DATE desc";
+            //string mainsql = @"SELECT TOP 5 * FROM B_NEWS WHERE VALID=1";
+            return dataAccess.Query<B_NEWSViewModel>(mainsql, new { INPDATE = DateTime.Now.AddDays(-3).ToString("yyyy/MM/dd") });
         }
 
         /// <summary>
@@ -443,7 +444,7 @@ namespace TWNPPublic.Domain.Service
             var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
             try
             {
-                // 拿前一的最後一筆來相減，所有原始會有 25 筆，輸出資料時會pop 第一筆 輸出24筆資料
+                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop 第最後一筆筆 輸出24筆資料
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
@@ -452,7 +453,7 @@ namespace TWNPPublic.Domain.Service
                     {
                         List<A_PH_METER_RECORD_LIST> TimeSerailList = new List<A_PH_METER_RECORD_LIST>();
 
-                        for (var i = QueryTime.Date.AddHours(-1); i < QueryTime.Date.AddDays(1); i = i.AddHours(1))
+                        for (var i = QueryTime.Date; i < QueryTime.Date.AddDays(1).AddHours(1); i = i.AddHours(1))
                         {
                             var getUseFulData = root.Root.Data.FirstOrDefault(c => c.REC_DATE_TIME == i);
                             if (getUseFulData != null)
@@ -466,11 +467,11 @@ namespace TWNPPublic.Domain.Service
                             }
                         }
 
-                        for (int i = 1; i <= 24; i++)
+                        for (int i = 0; i < 24; i++)
                         {
-                            if (TimeSerailList[i].AMOUNTO != null && TimeSerailList[i - 1].AMOUNTO != null)
+                            if (TimeSerailList[i].AMOUNTO != null && TimeSerailList[i + 1].AMOUNTO != null)
                             {
-                                TimeSerailList[i].AMOUNT = TimeSerailList[i].AMOUNTO - TimeSerailList[i - 1].AMOUNTO;
+                                TimeSerailList[i].AMOUNT = TimeSerailList[i + 1].AMOUNTO - TimeSerailList[i].AMOUNTO;
                             }
                             else
                             {
@@ -478,7 +479,7 @@ namespace TWNPPublic.Domain.Service
                             }
                         }
 
-                        TimeSerailList.RemoveAt(0);
+                        TimeSerailList.RemoveAt(TimeSerailList.Count() - 1);
 
                         return TimeSerailList;
                     }

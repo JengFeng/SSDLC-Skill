@@ -809,6 +809,18 @@ namespace TWNPPublic.Controllers
                         }
                         else
                         {
+                            //大前天還要取資料庫裡面的一筆去比對前天的SQLite，很多邊緣條件那有辦法嗎?沒辦法
+                            float? geYesterdayLastAMOUNT = null;
+                            if (Cdate.Date == DateTime.Now.AddDays(-2).Date)
+                            {
+                                var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper()).OrderBy(c => c.X).ToList();
+                                var getYesterdayLastValue = dayresultGetLast.FirstOrDefault();
+                                if(getYesterdayLastValue != null)
+                                {
+                                    geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
+                                }
+                            }
+
                             //大前天之前去找SQLite
                             var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
@@ -818,6 +830,12 @@ namespace TWNPPublic.Controllers
                             foreach (var item in dayresult)
                             {
                                 dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                            }
+
+                            //大前天還要取資料庫裡面的一筆去比對前天的SQLite，很多邊緣條件那有辦法嗎?沒辦法
+                            if (geYesterdayLastAMOUNT != null)
+                            {
+                                dic["23:00"] = geYesterdayLastAMOUNT;
                             }
                         }
 
