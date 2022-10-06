@@ -38,7 +38,6 @@ namespace TWNPPublic.Controllers
             };
         }
 
-
         /// <summary>
         /// 回應失敗(自訂狀態碼)
         /// </summary>
@@ -55,8 +54,6 @@ namespace TWNPPublic.Controllers
                 Data = data
             };
         }
-
-
 
         /// <summary>
         /// 回應失敗(無物件)

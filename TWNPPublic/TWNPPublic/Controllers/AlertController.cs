@@ -36,11 +36,11 @@ namespace TWNPPublic.Controllers
         /// 載入這個使用者的警示設定
         /// </summary>
         /// <returns></returns>
-        public IActionResult LoadAlertSet()
+        public IActionResult LoadAlertSet(string WaterNo)
         {
             if (aspNetUser.UserId == null)
                 return Json(Failed(message: "尚未註冊帳號"));
-            var result = alertService.GetAertSetByAccountSN(aspNetUser.UserId.Value);
+            var result = alertService.GetAertSetByAccountSNAndWaterNo(aspNetUser.UserId.Value, WaterNo);
             return Json(Success<object>(result));
         }
 
@@ -66,6 +66,7 @@ namespace TWNPPublic.Controllers
             //有選水號
             else
             {
+                var reuslt = alertService.DeleteAllAlertSetBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo);
                 //先檢查手機是不是必填
                 //在檢查信箱格式
                 //在檢查 惟至少50度以上 有選這個就要填 要填就要50度以上
@@ -139,110 +140,109 @@ namespace TWNPPublic.Controllers
                     Mails.Add(model.AlertEmail3);
 
                 //Set處理
-                foreach (var item in model.WaterNo)
+
+                if (Mails.Count() > 0)
                 {
-                    if (Mails.Count() > 0)
+                    B_ALART_SETTING MailItem = new B_ALART_SETTING()
                     {
-                        B_ALART_SETTING MailItem = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 15,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = string.Join(',', Mails)
-                        };
-                        alertsetitems.Add(MailItem);
-                    }
-                    //信箱
-
-                    //手機
-                    B_ALART_SETTING PhoneItem = new B_ALART_SETTING()
-                    {
-                        B_ALART_CODE_SN = 16,
-                        WATER_NO = item,
+                        B_ALART_CODE_SN = 15,
+                        WATER_NO = model.WaterNo,
                         B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = model.AlertPhone
+                        VALUE = string.Join(';', Mails)
                     };
-                    alertsetitems.Add(PhoneItem);
+                    alertsetitems.Add(MailItem);
+                }
+                //信箱
+
+                //手機
+                B_ALART_SETTING PhoneItem = new B_ALART_SETTING()
+                {
+                    B_ALART_CODE_SN = 16,
+                    WATER_NO = model.WaterNo,
+                    B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                    VALUE = model.AlertPhone
+                };
+                alertsetitems.Add(PhoneItem);
 
 
-                    #region 其他選項
-                    //其他選項
+                #region 其他選項
+                //其他選項
 
-                    if (model.onoffswitch1 == "on")
+                if (model.onoffswitch1 == "on")
+                {
+                    var value2 = "";
+                    if (model.AlertValue1 == "103")
                     {
-                        var value2 = "";
-                        if (model.AlertValue1 == "103")
-                        {
-                            value2 = model.AlertExtion10010301 + "," + model.AlertExtion10010302;
-                        }
-                        else if (model.AlertValue2 == "104")
-                        {
-                            value2 = model.AlertExtion10010401 + "," + model.AlertExtion10010402;
-                        }
-
-                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 100,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = model.AlertValue1,
-                            VALUE1 = value2
-                        };
-                        alertsetitems.Add(MMcode1Item);
+                        value2 = model.AlertExtion10010301 + "," + model.AlertExtion10010302;
+                    }
+                    else if (model.AlertValue1 == "104")
+                    {
+                        value2 = model.AlertExtion10010401 + "," + model.AlertExtion10010402;
                     }
 
-                    if (model.onoffswitch2 == "on")
+                    B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
                     {
-                        var value2 = "";
-                        if(model.AlertValue2 == "105")
-                        {
-                            value2 = model.AlertExtion10110501;
-                        }
-                        else if(model.AlertValue2 == "106")
-                        {
-                            value2 = model.AlertExtion10110601;
-                        }
-
-
-                        B_ALART_SETTING MMcode2Item = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 101,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = model.AlertValue2,
-                            VALUE1 = value2
-                        };
-                        alertsetitems.Add(MMcode2Item);
-                    }
-
-                    if (model.onoffswitch3 == "on")
-                    {
-                        B_ALART_SETTING MMcode3Item = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 102,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = "107",
-                        };
-                        alertsetitems.Add(MMcode3Item);
-                    }
-
-                    if (model.onoffswitch4 == "on")
-                    {
-                        B_ALART_SETTING MMcode4Item = new B_ALART_SETTING()
-                        {
-                            B_ALART_CODE_SN = 102,
-                            WATER_NO = item,
-                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                            VALUE = "108",
-                        };
-                        alertsetitems.Add(MMcode4Item);
-                    }
-
-                    #endregion
+                        B_ALART_CODE_SN = 100,
+                        WATER_NO = model.WaterNo,
+                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                        VALUE = model.AlertValue1,
+                        VALUE1 = value2
+                    };
+                    alertsetitems.Add(MMcode1Item);
                 }
 
-                alertService.UpdateAlertServiceBySN(aspNetUser.UserId.Value, alertsetitems);
+                if (model.onoffswitch2 == "on")
+                {
+                    var value2 = "";
+                    if (model.AlertValue2 == "105")
+                    {
+                        value2 = model.AlertExtion10110501;
+                    }
+                    else if (model.AlertValue2 == "106")
+                    {
+                        value2 = model.AlertExtion10110601;
+                    }
+
+
+                    B_ALART_SETTING MMcode2Item = new B_ALART_SETTING()
+                    {
+                        B_ALART_CODE_SN = 101,
+                        WATER_NO = model.WaterNo,
+                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                        VALUE = model.AlertValue2,
+                        VALUE1 = value2
+                    };
+                    alertsetitems.Add(MMcode2Item);
+                }
+
+                if (model.onoffswitch3 == "on")
+                {
+                    B_ALART_SETTING MMcode3Item = new B_ALART_SETTING()
+                    {
+                        B_ALART_CODE_SN = 102,
+                        WATER_NO = model.WaterNo,
+                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                        VALUE = "107",
+                    };
+                    alertsetitems.Add(MMcode3Item);
+                }
+
+                if (model.onoffswitch4 == "on")
+                {
+                    B_ALART_SETTING MMcode4Item = new B_ALART_SETTING()
+                    {
+                        B_ALART_CODE_SN = 102,
+                        WATER_NO = model.WaterNo,
+                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                        VALUE = "108",
+                    };
+                    alertsetitems.Add(MMcode4Item);
+                }
+
+                #endregion
+
+
+                alertService.UpdateAlertServiceBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo, alertsetitems);
 
                 //最簡單刪掉所有在加回去
                 return Json(Success("更新成功"));

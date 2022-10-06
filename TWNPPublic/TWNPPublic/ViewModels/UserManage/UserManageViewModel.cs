@@ -16,7 +16,7 @@ namespace TWNPPublic.ViewModels.UserManage
         [Required(ErrorMessage = "信箱為必填")]
         public string Email { get; set; }
         //[ListWaterNoUnNull]
-        public List<string> WaterNO { get; set; }
+        public List<string>? WaterNO { get; set; }
     }
 
     public class CreateUserManageViewModel

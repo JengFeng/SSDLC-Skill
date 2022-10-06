@@ -67,6 +67,7 @@
             //老馬燈AJAX
              $.get("@Url.Action("ListedNews","Dashboard")", function(result){
                 if(result.Success){
+                    $("#marquee1").empty();
                     $.each(result.Data,function(index,value){
                         var $ul = $("#marquee1").append("<li>" + value.TITLE + "</li>");
                         // update the marquee

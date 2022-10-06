@@ -59,28 +59,32 @@ namespace TWNPPublic.Domain.Service
                 SN = SN
             };
 
-            string deleteWaterNo5sql = @"Delete 
+            if(model.WaterNO != null)
+            {
+
+                string deleteWaterNo5sql = @"Delete 
                                           From B_ACCOUNT_WATER_NO
                                           Where B_ACCOUNT_SN = @SN";
-            object deleteobj = new
-            {
-                SN = SN
-            };
-            this.dapperDataAccess.Execute(deleteWaterNo5sql, deleteobj);
+                object deleteobj = new
+                {
+                    SN = SN
+                };
+                this.dapperDataAccess.Execute(deleteWaterNo5sql, deleteobj);
 
-            foreach (var item in model.WaterNO)
-            {
-                string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
+                foreach (var item in model.WaterNO)
+                {
+                    string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
                                                    (B_ACCOUNT_SN,WATER_NO,VALID)
                                              VALUES
                                                    (@SN,@WaterNo,@Valid)";
-                object waterobj = new
-                {
-                    SN = SN,
-                    WaterNo = item,
-                    Valid = 1
-                };
-                this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
+                    object waterobj = new
+                    {
+                        SN = SN,
+                        WaterNo = item,
+                        Valid = 1
+                    };
+                    this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
+                }
             }
 
             return this.dapperDataAccess.Execute(mainsql, obj); ;
@@ -172,6 +176,24 @@ namespace TWNPPublic.Domain.Service
             object obj = new { SN, WaterNO };
             return this.dapperDataAccess.Execute(mainsql, obj);
         }
+
+        public int DeleteWateNoByUserSN(int SN, string WaterNo)
+        {
+            string mainsql = @"DELETE FROM [TWN].[dbo].[B_ACCOUNT_WATER_NO]
+                                Where B_ACCOUNT_SN = @SN And WATER_NO = @WaterNo";
+
+            string mainsqlext = @"Delete From [TWN].[dbo].[B_ALART_SETTING]
+                                Where B_ACCOUNT_SN = @SN And WATER_NO = @WaterNo";
+
+            object obj = new
+            {
+                SN,
+                WaterNo
+            };
+
+            this.dapperDataAccess.Execute(mainsqlext, obj);
+            return this.dapperDataAccess.Execute(mainsql, obj);
+        }
     }
     public interface IUserManageService
     {
@@ -182,5 +204,7 @@ namespace TWNPPublic.Domain.Service
         public int GetSNByAccount(string Account);
         public (bool IsExist, string Message) IsThisAccountCanUsed(string Account);
         public int CreateWaterNosBySN(int SN, string WaterNO);
+
+        public int DeleteWateNoByUserSN(int SN, string WaterNo);
     }
 }

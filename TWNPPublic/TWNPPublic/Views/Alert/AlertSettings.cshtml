@@ -13,24 +13,95 @@
     .form-check {
         margin: 10px 0px;
     }
+
+    .btn-green-o-hover {
+        color: #fff;
+        background-color: #089BAB;
+        border-color: #089BAB;
+    }
+
+    .onoffswitch-inner-on {
+        margin-left: 0;
+    }
+
+    .onoffswitch-switch-on {
+        right: 0px;
+    }
+
 </style>
 }
+
 <script>
     $(function(){
         $(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
-        $.get("@Url.Action("LoadAlertSet","Alert")",function(result){
+        let gettest = $(".btn-alertsetSwithch").attr('id');
+        btnSwitchSetAlertWaterNo($('#' + gettest));
+        GetAlertSetFromWaterNo($('#' + gettest).data('waterno'));
+
+        $(".onoffswitch-checkbox").on('click', function(){
+            let isChecked = this.checked;
+            let $label = $("label[for='" + $(this).attr('id') + "']");
+            if (isChecked) {
+                $label.find('.onoffswitch-inner').addClass('onoffswitch-inner-on');
+                $label.find('.onoffswitch-switch').addClass('onoffswitch-switch-on');
+            } else {
+                $label.find('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
+                $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
+            }
+        });
+    });
+
+    function SetOnOffswitch(obj){
+        let isChecked = $('#' + obj)[0].checked;
+        let $label = $("label[for='" + obj + "']");
+        if (isChecked) {
+            $label.find('.onoffswitch-inner').addClass('onoffswitch-inner-on');
+            $label.find('.onoffswitch-switch').addClass('onoffswitch-switch-on');
+        } else {
+            $label.find('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
+            $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
+        }
+    }
+
+    function ResetAllSet(){
+
+        $("#AlertPhone").val('');
+        $("#AlertEmail1").val('');
+        $("#AlertEmail2").val('');
+        $("#AlertEmail3").val('');
+
+        $("#myonoffswitch1").prop('checked', false);
+        $("#myonoffswitch2").prop('checked', false);
+        $("#myonoffswitch3").prop('checked', false);
+        $("#myonoffswitch4").prop('checked', false);
+
+        $('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
+        $('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
+
+        $('input.form-check-input[value="103"]').prop('checked', false);
+        $('input.form-check-input[value="104"]').prop('checked', false);
+        $('input.form-check-input[value="105"]').prop('checked', false);
+        $('input.form-check-input[value="106"]').prop('checked', false);
+
+        $("#Code100Alert103Extion01").val('');
+        $("#Code100Alert103Extion02").val('');
+        $("#Code100Alert104Extion01").val('');
+        $("#Code100Alert104Extion02").val('');
+        $("#Code101Alert105Extion01").val('');
+        $("#Code101Alert106Extion01").val('');
+    }
+
+    function GetAlertSetFromWaterNo(obj){
+        let model = {
+            WaterNo : obj
+            };
+         $.get("@Url.Action("LoadAlertSet","Alert")",model,function(result){
             if(result.Success){
                 $("#AlertPhone").val(result.Data.AlertPhone);
 
                 $("#AlertEmail1").val(result.Data.AlertEmails[0]);
                 $("#AlertEmail2").val(result.Data.AlertEmails[1]);
                 $("#AlertEmail3").val(result.Data.AlertEmails[2]);
-
-                if(result.Data.WaterNos.length > 0){
-                    $.each(result.Data.WaterNos,function(index,value){
-                          $("input[name=\"WaterNo\"][value=" + value + "]").prop('checked',true);
-                    });
-                }
 
                 if(result.Data.AlertValueYesterday != null && result.Data.AlertValueYesterday != ''){
                     let EVYesterday = "";
@@ -40,7 +111,8 @@
                          strAry = EVYesterday.split(',');
                     }
 
-                    $("#myonoffswitch1").attr("checked","checked");
+                    $("#myonoffswitch1").prop("checked",true);
+                    SetOnOffswitch('myonoffswitch1');
                     if(result.Data.AlertValueYesterday == '103'){
                         $("#Code100Alert103Extion01").val(strAry[0]);
                         $("#Code100Alert103Extion02").val(strAry[1]);
@@ -61,7 +133,8 @@
                         AVeLastMonth = result.Data.ExtendValueLastMonth;
                     }
 
-                    $("#myonoffswitch2").attr("checked","checked");
+                    $("#myonoffswitch2").prop("checked",true);
+                    SetOnOffswitch('myonoffswitch2');
                     if(result.Data.AlertValueLastMonth == '105'){
                         $('input.form-check-input[value="105"]').prop('checked', true);
                         $("#Code101Alert105Extion01").val(AVeLastMonth);
@@ -72,21 +145,23 @@
                 }
 
                 if(result.Data.AlertValueThreedayWaterUse != null && result.Data.AlertValueThreedayWaterUse != ''){
-                    $("#myonoffswitch3").attr("checked","checked");
+                    $("#myonoffswitch3").prop("checked",true);
+                    SetOnOffswitch('myonoffswitch3');
                 }
 
                 if(result.Data.AlertValueThreedayWaterNonUse != null && result.Data.AlertValueThreedayWaterNonUse != ''){
-                    $("#myonoffswitch4").attr("checked","checked");
+                    $("#myonoffswitch4").prop("checked",true);
+                    SetOnOffswitch('myonoffswitch4');
                 }
 
-                debugger;
             }
         });
-    });
+    }
 
     function BtnSave(){
         var model = {
-            WaterNo : $("input[name='WaterNo']:checked").map(function(){return $(this).val();}).get(),
+            WaterNo: $('.btn-green-o-hover').data('waterno'),
+            //WaterNo : $("input[name='WaterNo']:checked").map(function(){return $(this).val();}).get(),
             AlertPhone:$("#AlertPhone").val(),
             AlertEmail1:$("input[name='AlertEmail1']").val(),
             AlertEmail2:$("input[name='AlertEmail2']").val(),
@@ -129,7 +204,7 @@
                 success: function (data) {
                     if (data.Success) {
                         alert(data.Message);
-                        history.go(0);
+                        //history.go(0);
                     } else {
                         if (data.ModelStateErrors != null) {
                             for (var key in data.ModelStateErrors) {
@@ -142,6 +217,13 @@
                 },
                 traditional: true
             });
+    }
+
+    function btnSwitchSetAlertWaterNo(obj){
+        $(".btn-alertsetSwithch").removeClass("btn-green-o-hover");
+        $(obj).addClass("btn-green-o-hover");
+        ResetAllSet();
+        GetAlertSetFromWaterNo($(obj).data('waterno'));
     }
 
     function BtnReset(){
@@ -165,18 +247,15 @@
                     <i class="bi bi-droplet"></i>
                     選擇水號
                 </div>
-                <div class="formGroup">
-                    <div class="row">
-                        @if (ListofWaterNO.Count() > 0)
+                <div class="formGroup" style="display:flow-root">
+                    @if (ListofWaterNO.Count() > 0)
+                    {
+                        foreach (var item in ListofWaterNO)
                         {
-                            foreach (var item in ListofWaterNO)
-                            {
-                                <div class="col-sm-3">
-                                    <input type="checkbox" value="@item" id="WaterNo@(item)" name="WaterNo"><label for="WaterNo@(item)">@item</label>
-                                </div>
-                            }
+                            @*<input type="checkbox" value="@item" id="WaterNo@(item)" name="WaterNo"><label for="WaterNo@(item)">@item</label>*@
+                            <button type="button" class="btn-alertsetSwithch btn-green-o" style="margin:5px" onclick="btnSwitchSetAlertWaterNo(this)" id="WaterNo@(item)" data-waterno="@item">@item</button>
                         }
-                    </div>
+                    }
                 </div>
                 <div class="unitTitle">
                     <i class="bi bi-person-square"></i>
@@ -221,8 +300,8 @@
                             <div class="title row">
                                 開啟
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1">
-                                    <label class="onoffswitch-label" for="myonoffswitch1">
+                                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" @*onclick="btnonoffswitch(this)"*@>
+                                    <label class="onoffswitch-label" for="myonoffswitch1" id="lbmyonoffswitch1">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
                                     </label>
@@ -234,7 +313,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="radio1" value="103">
                                 <label class="form-check-label row">
-                                    較前期比較突增
+                                    較前日比較突增
                                     <div class="col-auto">
                                         <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion01">
                                         <span class="text-danger" autocomplete="off"></span>

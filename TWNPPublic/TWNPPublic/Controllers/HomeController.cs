@@ -13,48 +13,16 @@ using TWNPPublic.ViewModels.Home;
 namespace TWNPPublic.Controllers
 {
 
-    public enum ApiErrorCode
-    {
-        TokenError,
-        Invalid,
-        NoSource,
-        Other
-    }
-    public class LoginAppVm
-    {
-        [Required(ErrorMessage = "AccountNo App會員編號 為必填")]
-        public string AccountNo { get; set; } = string.Empty;
-        [Required(ErrorMessage = "WaterNo 水號 為必填")]
-        public string WaterNo { get; set; } = string.Empty;
-        [Required(ErrorMessage = "AccessToken 為必填")]
-        public string AccessToken { get; set; } = string.Empty;
-    }
-    public class DenyAppAcounntVm
-    {
-        [Required(ErrorMessage = "WaterNo 水號 為必填")]
-        public string WaterNo { get; set; } = string.Empty;
-        [Required(ErrorMessage = "AccessToken 為必填")]
-        public string AccessToken { get; set; } = string.Empty;
-    }
-
     public class HomeController : ContextController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IDapperDataAccess dataAccess;
         private readonly IHomeService homeService;
         private readonly string KingErrandYours = "H3ll0TWN9A99";
         public HomeController(ILogger<HomeController> logger,
-            IDapperDataAccess dataAccess,
             IHomeService homeService)
         {
             _logger = logger;
-            this.dataAccess = dataAccess;
             this.homeService = homeService;
-        }
-
-        private string FixBase64FromQueryString(string b)
-        {
-            return b.Replace(" ", "+");
         }
 
         /// <summary>
@@ -62,6 +30,7 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [HttpPost]
         public IActionResult LoginAPP(LoginAppVm model)
         {
 
@@ -145,11 +114,30 @@ namespace TWNPPublic.Controllers
             ViewBag.WaterNo = model.WaterNo;
             ViewBag.AccessToken = model.AccessToken;
 
+            TempData["AccountNo"] = model.AccountNo;
+            TempData["WaterNo"] = model.WaterNo;
+            TempData["AccessToken"] = model.AccessToken;
+
+            return RedirectToAction("LoginAPPs", "Home");
+        }
+
+        /// <summary>
+        /// APP用 驗證頁
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult LoginAPPs()
+        {
+            ViewBag.AccountNo = TempData["AccountNo"] as string;
+            ViewBag.WaterNo = TempData["WaterNo"] as string;
+            var at = TempData["AccessToken"] as string;
+            ViewBag.AccessToken = at;
+            TempData["AccessToken"] = at;
+
             return View();
         }
 
         /// <summary>
-        /// APP用
+        /// APP用 驗證頁
         /// </summary>
         /// <param name="AccountNo"></param>
         /// <param name="WaterNo"></param>
@@ -157,7 +145,7 @@ namespace TWNPPublic.Controllers
         /// <param name="LoginType"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult LoginAPP(string AccountNo, string WaterNo, string AccessToken, int LoginType)
+        public IActionResult LoginAPPs(string AccountNo, string WaterNo, string AccessToken, int LoginType)
         {
 
             if (LoginType == 1)
@@ -181,12 +169,38 @@ namespace TWNPPublic.Controllers
                     //寫一個帳密到資料庫
                     // UserName = AccountNo,Pwd = AccountNo
                     // 然後導去登入自動登入
-                    return RedirectToAction("LoginAPP", "Home", new
+                    //return RedirectToAction("LoginAPP", "Home", new
+                    //{
+                    //    AccountNo,
+                    //    WaterNo,
+                    //    AccessToken
+                    //});
+
+                    // 不去自動登入了 因為去不了
+                    var getAccount = homeService.CheckAccountNoIsApp(WaterNo);
+                    //兩種情況一個真的沒有 一個被取消
+                    if (getAccount != null && getAccount.VALID != 0)
                     {
-                        AccountNo,
-                        WaterNo,
-                        AccessToken
-                    });
+                        //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
+                        List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
+
+                        SetLoginSession(
+                                    HttpContext,
+                                    getAccount.B_ACCOUNT,
+                                    WaterNo,
+                                    string.Join(',', WaterNos),
+                                    getAccount.B_ACCOUNT_SN.ToString());
+
+                        return RedirectToAction("Index", "Dashboard");
+                    }
+                    else
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenError.ToString(),
+                        }, "Token Error,解析錯誤", 1001));
+                    }
+
                 }
                 catch (Exception e)
                 {
@@ -203,11 +217,11 @@ namespace TWNPPublic.Controllers
             }
         }
 
-
         /// <summary>
         /// APP用 取得 AccessToken
         /// </summary>
         /// <returns></returns>
+        [HttpPost]
         public IActionResult AccessToken(string WaterNo)
         {
             if (string.IsNullOrEmpty(WaterNo))
@@ -251,7 +265,11 @@ namespace TWNPPublic.Controllers
             return Json(Success(TokenObh, "操作成功"));
         }
 
-
+        /// <summary>
+        /// 註銷使用者登入，注意不是註銷Token
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult DenyAppAcounnt(DenyAppAcounntVm model)
         {
@@ -375,7 +393,6 @@ namespace TWNPPublic.Controllers
             return RedirectToAction("Fancybox_detailsTable", "Dashboard", new { Cdate = dt });
         }
 
-
         /// <summary>
         /// 登出
         /// </summary>
@@ -387,7 +404,7 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 登出
+        /// 登入
         /// </summary>
         /// <returns></returns>
         public IActionResult Login()
@@ -491,6 +508,11 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 忘記密碼
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ResetPw(ResetPwVm vm)
         {
@@ -545,7 +567,10 @@ namespace TWNPPublic.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        private string FixBase64FromQueryString(string b)
+        {
+            return b.Replace(" ", "+");
+        }
         private void SetLoginSession(HttpContext httpContext, string UserName, string CurrentWaterNo, string WaterNo, string UserId)
         {
             httpContext.Session.SetString("UserName", UserName);

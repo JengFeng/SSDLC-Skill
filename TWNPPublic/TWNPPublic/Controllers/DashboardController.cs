@@ -30,11 +30,26 @@ namespace TWNPPublic.Controllers
         /// 首頁
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
             ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月dd日", culture);
+            #region 這個邏輯只是為了澎科大寫的其他都沒用到
+            ViewBag.ShowRealMap = false;
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
+            if (result == null)
+            {
+                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1));
+            }
+
+            if (result != null)
+            {
+                if (result.NAME_DAES == "國立澎湖科技大學")
+                    ViewBag.ShowRealMap = true;
+            }
+            #endregion
+
             return View();
         }
 
@@ -72,16 +87,29 @@ namespace TWNPPublic.Controllers
                     CurrentResult = CurrentResultAsync.Result;
                     if (result == null || CurrentResult == null)
                     {
-                        if (Cdate.Value.Month % 2 == 0)
-                            Cdate = Cdate.Value.AddMonths(-1);
 
                         if (result != null)
                             CurrentResult = result;
 
                         billType = "double";
+
+                        if (CurrentResult != null)
+                        {
+                            var billdate = CurrentResult.BILLDATE;
+                            var monthText = billdate.Substring(3, 4);
+
+                            DateTime pdate = DateTime.ParseExact(monthText, "MMdd", null);
+                            Cdate = pdate;
+                        }
+                        else
+                        {
+                            Cdate = DateTime.Now;
+                        }
+
                     }
                     else
                     {
+                        Cdate = DateTime.Now;
                         billType = "single";
                     }
 
@@ -120,10 +148,47 @@ namespace TWNPPublic.Controllers
 
             if (billType == "double")
             {
-                if (nowtime.Month % 2 == 0)
+                DateTime pdate = DateTime.Now;
+                if (CurrentResult != null)
                 {
-                    nowtime = nowtime.AddMonths(-1);
+                    var billdate = CurrentResult.BILLDATE;
+                    var monthText = billdate.Substring(3, 4);
+                    pdate = DateTime.ParseExact(monthText, "MMdd", null);
                 }
+
+                // 1 3 5 7  9 11 
+                // 2 4 6 8 10 12
+
+                if (pdate.Month % 2 == 0)
+                {
+                    // 偶數帳單
+                    // 偶數月
+                    // 基數月
+                    if (nowtime.Month % 2 == 0)
+                    {
+
+                    }
+                    else
+                    {
+                        nowtime = nowtime.AddMonths(-1);
+                    }
+                }
+                else
+                {
+                    // 基數帳單
+                    // 偶數月
+                    // 基數月
+
+                    if (nowtime.Month % 2 == 0)
+                    {
+                        nowtime = nowtime.AddMonths(-1);
+                    }
+                    else
+                    {
+
+                    }
+                }
+
                 for (int i = 0; i <= 12; i = i + 2)
                 {
                     selectListItems.Add(new SelectListItem
@@ -201,8 +266,20 @@ namespace TWNPPublic.Controllers
                 billdatetext = billdate.ToString("yyy/MM/dd", culture);
             }
 
-            result.BILLDATE = billdatetext;
+            string NewMeterDateText = "未取得更新時間";
 
+            if (!string.IsNullOrEmpty(result.NEW_METER_DATE))
+            {
+                var NewMeterDate = DateTime.Parse(result.NEW_METER_DATE);
+                CultureInfo culture = new CultureInfo("zh-TW");
+                culture.DateTimeFormat.Calendar = new TaiwanCalendar();
+                NewMeterDateText = NewMeterDate.ToString("yyy/MM/dd", culture);
+            }
+
+            result.BILLDATE = billdatetext;
+            result.NEW_METER_DATE = NewMeterDateText;
+
+            //result.LASTMONTH_MONEY = 0;
             return Json(Success(result));
         }
 
@@ -279,14 +356,19 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public IActionResult WaterNoteTableChart(DateTime Cdate)
+        public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate)
         {
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
+            List<A_PH_METER_RECORD_LIST> result = new List<A_PH_METER_RECORD_LIST>();
+            List<float?> pins = new List<float?>();
 
             if (Cdate.Date == DateTime.Now.AddDays(-1).Date)
             {
-                //前天去撈資料庫
+                //前天去撈資料庫 zz..ZZ..
                 var dayresult2 = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day".ToUpper()).OrderBy(c => c.X).ToList();
+                var yesterdayPin = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", Cdate.Date, Cdate.Date.AddDays(1).AddSeconds(-1));
+
+                pins = yesterdayPin.Select(c => (float?)c.Y).ToList();
 
                 if (dayresult2 == null) return Json(Failed(message: "資料尚未開放"));
                 if (dayresult2.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -311,8 +393,12 @@ namespace TWNPPublic.Controllers
             else
             {
 
-                var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+                var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+                //又亂寫，這個動作很浪費記憶體空間不過算了==
+                result = dayresult;
+                pins = result.Select(c => c.AMOUNTO).ToList();
 
+                dayresult = dayresult.OrderBy(c => c.REC_DATE_TIME).ToList();
 
                 if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                 if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -327,8 +413,10 @@ namespace TWNPPublic.Controllers
             object obj = new
             {
                 X = dic.Select(c => c.Key).ToArray(),
-                Y = dic.Select(c => c.Value).ToArray()
+                Y = dic.Select(c => c.Value).ToArray(),
+                O = pins.ToArray()
             };
+
             return Json(Success(obj));
         }
 
@@ -360,7 +448,7 @@ namespace TWNPPublic.Controllers
 
         public async Task<IActionResult> UpdateHourNote(int NoteSN, string Hour, string Msg, DateTime ADate)
         {
-            //這邊測試機跟正式機的資料庫不同步
+            //這邊測試機跟正式機的資料庫不同步(已修正)
 
             if (NoteSN == 0)
             {
@@ -638,7 +726,7 @@ namespace TWNPPublic.Controllers
             //var Xray = reuslt.Select(c => DateTime.Parse(c.X).ToString("HH:mm"));
 
             Dictionary<string, float?> dic = new Dictionary<string, float?>();
-            var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+            var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
             if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
             if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -721,8 +809,20 @@ namespace TWNPPublic.Controllers
                         }
                         else
                         {
+                            //大前天還要取資料庫裡面的一筆去比對前天的SQLite，很多邊緣條件那有辦法嗎?沒辦法
+                            float? geYesterdayLastAMOUNT = null;
+                            if (Cdate.Date == DateTime.Now.AddDays(-2).Date)
+                            {
+                                var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper()).OrderBy(c => c.X).ToList();
+                                var getYesterdayLastValue = dayresultGetLast.FirstOrDefault();
+                                if(getYesterdayLastValue != null)
+                                {
+                                    geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
+                                }
+                            }
+
                             //大前天之前去找SQLite
-                            var dayresult = dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
+                            var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
 
                             if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                             if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -730,6 +830,12 @@ namespace TWNPPublic.Controllers
                             foreach (var item in dayresult)
                             {
                                 dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                            }
+
+                            //大前天還要取資料庫裡面的一筆去比對前天的SQLite，很多邊緣條件那有辦法嗎?沒辦法
+                            if (geYesterdayLastAMOUNT != null)
+                            {
+                                dic["23:00"] = geYesterdayLastAMOUNT;
                             }
                         }
 
@@ -845,6 +951,19 @@ namespace TWNPPublic.Controllers
             }
         }
 
+        public async Task<IActionResult> GetCurrentLatAndLon()
+        {
+
+            var location = dashboardService.GetLatLotByWaterNos(aspNetUser.CurrentWaterNo);
+            return Json(Success(data: new
+            {
+                Lot = location.Lon,
+                Lat = location.Lat
+            }));
+        }
+
+        #region 沒用
+
         ///// <summary>
         ///// 用水情形分析資料來源(棄用)
         ///// </summary>
@@ -900,22 +1019,11 @@ namespace TWNPPublic.Controllers
 
         //    return Json(Success(Data));
         //}
+
+        #endregion
     }
 
     /// <summary>
-    /// 需求不明確先放這裡
+    /// 需求不明確先放這裡 已經整理到View Model
     /// </summary>
-    public class fullcalendar
-    {
-        public string id { get; set; }
-        public string title { get; set; }
-        public string start { get; set; }
-        public string NoteDate { get; set; }
-    }
-
-    public class ListedTable
-    {
-        public int Max { get; set; }
-        public List<ExceptionItem> PageData { get; set; }
-    }
 }

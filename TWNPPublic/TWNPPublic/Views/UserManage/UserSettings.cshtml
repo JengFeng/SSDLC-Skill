@@ -34,7 +34,21 @@
 
         function btnDeleteWaterNo(obj){
             var Id = $(obj).data('id');
+            let waterno = $(obj).data('waterno');
             $("#WaterNoItem" + Id).remove();
+            let url = "@Url.Action("DeleteUserWaterNo","UserManage")";
+            let model = {
+                WaterNo : waterno
+            };
+
+            $.post(url,model,function(data){
+                if(data.Success){
+                    //alert("刪除成功");
+                    btnSave();
+                }
+            });
+
+
         }
         function btnAddWaterNo(){
             var item = { Index : WaterNoIndex};
@@ -192,7 +206,7 @@
                         </div>
                     </div>
                 </div>
-                @if (ViewBag.IsSignAccount)
+                @if (ViewBag.IsSignAccount && ViewBag.IsTestUser)
                 {
                     <div class="unitTitle justify-content-between">
                         <div class="name">
@@ -222,7 +236,7 @@
             <input type="text" class="form-control" autocomplete="off" value="${WATER_NO}" name="WaterNo[]">
         </div>
         <div class="col-sm-1 col-md-1 col-lg-1">
-            <button class="btn btn-danger" type="button" data-id="${Index}" onclick="btnDeleteWaterNo(this)">x</button>
+            <button class="btn btn-danger" type="button" data-id="${Index}" data-waterno="${WATER_NO}" onclick="btnDeleteWaterNo(this)">x</button>
         </div>
     </div>
 </script>
