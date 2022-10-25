@@ -1,5 +1,7 @@
 ﻿@using TWNPPublic.Models.Entity
 @using System.Globalization;
+@using TWNPPublic.Common.Extension
+@inject IAspNetUser aspNetUser
 @{
     ViewData["Title"] = "目前指針詳細資料";
     Layout = "~/Views/Shared/_Layout_Fancybox.cshtml";
@@ -10,98 +12,124 @@
     var HourNotes = (List<B_NOTE_HOUR>)ViewBag.HourNotes;
 }
 @section echart{
-<script type="text/javascript" src="~/js/echarts/echarts.js"></script>
+    <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
 }
-<script>
-    $(function(){
-        var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
-        var total = searchAreaInlineHeight;
-        $('.chartTableGroup').css('height','calc(100% - {total}px)'.replace('{total}',total));
-    });
-    $(function(){
-        var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
-        var total = chartsTitleHeightHeight;
-        $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
-    });
-    $(function(){
-        $(".videoScroll,.chartsScroll").mCustomScrollbar({
-            autoHideScrollbar:true,
-            advanced:{
-                updateOnContentResize: true,
-                updateOnImageLoad: false
-            },
-            theme:"minimal-dark",
-                mouseWheel:{ preventDefault:true }
+    <script>
+        $(function () {
+            var searchAreaInlineHeight = $(".searchAreaInline")[0].clientHeight;
+            var total = searchAreaInlineHeight;
+            $('.chartTableGroup').css('height', 'calc(100% - {total}px)'.replace('{total}', total));
         });
-        $(".videoScroll,.chartsScroll").mCustomScrollbar("update");
-    });
-    function LoadChart(){
-        var model = {
-            Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart")
+        $(function () {
+            var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
+            var total = chartsTitleHeightHeight;
+            $('.chartBox').css('height', 'calc(100% - {total}px)'.replace('{total}', total));
+        });
+        $(function () {
+            $(".videoScroll,.chartsScroll").mCustomScrollbar({
+                autoHideScrollbar: true,
+                advanced: {
+                    updateOnContentResize: true,
+                    updateOnImageLoad: false
+                },
+                theme: "minimal-dark",
+                mouseWheel: { preventDefault: true }
+            });
+            $(".videoScroll,.chartsScroll").mCustomScrollbar("update");
+        });
+
+        roundDown = function (num, decimal) { return Math.floor((num + Number.EPSILON) * Math.pow(10, decimal)) / Math.pow(10, decimal); }
+
+        function LoadChart() {
+            var model = {
+                Cdate: $("#divWaterUserSearchChartTitle").data("themeswitchchart")
             };
-        $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model ,function(result){
-            $("#spanError").text('');
-            if(result.Success){
-                let parserY = result.Data.Y.map(item => Math.floor(item));
-                const colors = ['#5391C7'];
-                var option;
-                option = {
-                    color: colors,
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross'
-                        }
-                    },
-                    grid: {
-                        bottom:80
-                    },
-                    toolbox: {
-                        show: true,
-                        feature: {
-                            saveAsImage: {title: "另存圖片"}
-                        }
-                    },
-                    legend: {
-                        y:'top',
-                        x:'middle',
-                        data: ["用水量趨勢"]
-                    },
-                    xAxis: {
-                        nameGap: 25,
-                        nameLocation : 'center',
-                        name: '時間(小時)',
-                        type: 'category',
-                        data: result.Data.X
-                    },
-                    yAxis: {
-                        nameLocation : 'center',
-                        nameGap: 25,
-                        nameRotate : 360,
-                        name:'用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
-                        type: 'value',
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: colors[0]
+
+            let total = 0;
+
+            $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
+                $("#spanError").text('');
+                if (result.Success) {
+                    const colors = ['#5391C7'];
+                    var option;
+                    option = {
+                        color: colors,
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross'
                             }
                         },
-                        axisLabel: {formatter: '{value}'}
-                    },
-                    series: [
-                        {
-                            name: '用水量趨勢',
-                            type: 'line',
-                            data: parserY 
-                        }
-                    ]
-                };
+                        grid: {
+                            bottom: 80
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                saveAsImage: { title: "另存圖片" }
+                            }
+                        },
+                        legend: {
+                            y: 'top',
+                            x: 'middle',
+                            data: ["用水量趨勢"]
+                        },
+                        xAxis: {
+                            nameGap: 25,
+                            nameLocation: 'center',
+                            name: '時間(小時)',
+                            type: 'category',
+                            data: result.Data.X
+                        },
+                        yAxis: {
+                            nameLocation: 'center',
+                            nameGap: 25,
+                            nameRotate: 360,
+                            name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                            type: 'value',
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[0]
+                                }
+                            },
+                            axisLabel: { formatter: '{value}' }
+                        },
+                        series: [
+                            {
+                                name: '用水量趨勢',
+                                type: 'line',
+                                data: result.Data.Y
+                            }
+                        ]
+                    };
 
-                result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq('+index+') td:eq(2)').html(Math.floor(item)));
-                result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq('+index+') td:eq(1)').html(Math.floor(item)));
+    @if (aspNetUser.UserId == 0)
+    {
+        <text>
+                        result.Data.Y.forEach((item, i, self) => self[i] = roundDown(item, 2));
+                    result.Data.O.forEach((item, i, self) => self[i] = roundDown(item, 2));
+        </text>
+    }
+    else
+    {
+        <text>
+                        result.Data.Y.forEach((item, i, self) => self[i] = Math.floor(item));
+                    result.Data.O.forEach((item, i, self) => self[i] = Math.floor(item));
+        </text>
+    }
+
+                    result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(2)').html(item));
+                result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(1)').html(item));
+                result.Data.Y.forEach((item) => { total += item });
+
+                total = roundDown(total, 2);
+
+                $("#totalCounter").text(`總計共${total}`);
+
                 option && myChart.setOption(option);
             }
-            else{
+            else {
                 $("#spanError").text('此時間段尚無資料');
                 myChart.clear();
             }
@@ -148,17 +176,20 @@
                                     </div>
                                 </td>
                                 @* <td class="text-red" id="textNote@(TimeSource)">
-                                    <span>@item.NOTE</span>
-                                    <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
-                                    <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
-                                    <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
-                                    <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
-                                    </td>*@
+                        <span>@item.NOTE</span>
+                        <textarea class="form-control" style="display: none;">@item.NOTE</textarea>
+                        <a class="btn-green-o btnsave" href="javascript:;" onclick="SaveNote('@(TimeSource)')" style="display: none;">確認</a>
+                        <a class="btn-green-o btncancel" href="javascript:;" onclick="Cancel('@(TimeSource)')" style="display: none;">取消</a>
+                        <a class="btn-green-o btnUpdate" href="javascript:;" onclick="UpdateNote('@(TimeSource)')">修改</a>
+                        </td>*@
                             </tr>
                         }
                     }
                 </tbody>
             </table>
+            <div>
+                <span id="totalCounter"></span>
+            </div>
         </div>
         <div class="main">
             <div class="chartBlock">
@@ -173,8 +204,8 @@
                              data-themeswitchchart="@Cdate.ToString("yyyy/MM/dd")">
                             @* @(RocTime)*@
                             <div class="col-auto">
-                                <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" onchange="btnJumpTime(this)" 
-                                    id="tbJumpTime" class="form-control" />
+                                <input type="date" value="@Cdate.ToString("yyyy-MM-dd")" onchange="btnJumpTime(this)"
+                                       id="tbJumpTime" class="form-control" />
                             </div>
                             <div class="name col-auto">
                                 當日用水量
@@ -191,15 +222,14 @@
             </div>
         </div><!-- main end -->
     </div>
-
 </div><!-- wrap end -->
 <script>
-    function btnJumpTime(obj){
+    function btnJumpTime(obj) {
         let Jempdata = $(obj).val();
         window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard")?Cdate=" + Jempdata;
     }
 
-    function UpdateNote(obj){
+    function UpdateNote(obj) {
         var getNoteArea = $('#textNote' + obj);
         getNoteArea.find('.info>span').hide();
         getNoteArea.find('.info>textarea').show();
@@ -208,7 +238,7 @@
         getNoteArea.find('.btnUpdate').hide();
     }
 
-    function Cancel(obj){
+    function Cancel(obj) {
         var getNoteArea = $('#textNote' + obj);
         getNoteArea.find('span').show();
         getNoteArea.find('textarea').hide();
@@ -217,17 +247,17 @@
         getNoteArea.find('.btnUpdate').show();
     }
 
-    function SaveNote(obj){
+    function SaveNote(obj) {
         var getNoteArea = $('#textNote' + obj);
         let url = "@Url.Action("UpdateHourNote","Dashboard")";
         let model = {
-            NoteSN : @ViewBag.NoteSN,
-            Hour : obj,
-            Msg : getNoteArea.find('textarea').val(),
-            ADate : $("#tbJumpTime").val()
+            NoteSN: @ViewBag.NoteSN,
+            Hour: obj,
+            Msg: getNoteArea.find('textarea').val(),
+            ADate: $("#tbJumpTime").val()
         };
-        $.post(url,model,function(data){
-            if(data.Success){
+        $.post(url, model, function (data) {
+            if (data.Success) {
                 alert(data.Message);
                 getNoteArea.find('span').text(model.Msg);
                 getNoteArea.find('span').show();
@@ -237,31 +267,30 @@
                 getNoteArea.find('.btnUpdate').show();
                 history.go(0);
             }
-            else{
+            else {
                 alert(data.Message);
             }
         });
     }
 
-    function ChangePage(obj){
-        switch(obj)
-        {
+    function ChangePage(obj) {
+        switch (obj) {
             case 'last':
                 window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(-1).ToString("yyyy-MM-dd") })";
-            break;
+                break;
             case 'next':
                 window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(1).ToString("yyyy-MM-dd") })";
-            break;
+                break;
         }
     }
 
     var myChart = echarts.init(document.getElementById('mychart'));
 
-        window.onresize = function() {
+    window.onresize = function () {
         myChart.resize();
     };
 
-    $(function(){
-         LoadChart();
+    $(function () {
+        LoadChart();
     });
 </script>

@@ -1,4 +1,6 @@
 ﻿@using System.Globalization;
+@using TWNPPublic.Common.Extension
+@inject IAspNetUser aspNetUser
 @{
     ViewData["Title"] = "首頁";
     CultureInfo culture = new CultureInfo("zh-TW");
@@ -12,13 +14,10 @@
 }
 
 <!-- 月曆套件 -->
-<link href='~/js/fullcalendar-5.10.1/main.css' rel='stylesheet' />
+<link href='~/js/fullcalendar-5.10.1/main.css?v=202210161129' rel='stylesheet' />
 <script src='~/js/fullcalendar-5.10.1/main.js'></script>
 <script src='~/js/fullcalendar-5.10.1/locales/zh-tw.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
-<style>
-
-</style>
 <script>
 
     $(function () {
@@ -338,6 +337,9 @@
         InitWaterUseSearchChart();
     }
 
+
+
+    roundDown = function (num, decimal) { return Math.floor((num + Number.EPSILON) * Math.pow(10, decimal)) / Math.pow(10, decimal); }
     //用水量查詢圖表
     function InitWaterUseSearchChart(){
         $("#spanError").text('');
@@ -366,7 +368,17 @@
         };
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
-                result.Data.Y = result.Data.Y.map(function(item){ return parseInt(item);})
+
+                @if(aspNetUser.UserId != 0)
+                {
+                    @*給業務版的邏輯*@
+                    <text>result.Data.Y = result.Data.Y.map(function(item){ return parseInt(item);})</text>
+                }
+                else
+                {
+                    <text>result.Data.Y = result.Data.Y.map(function(item){ return roundDown(item,2);})</text>
+                }
+
                 option = {
                     color: colors,
                     legend:{

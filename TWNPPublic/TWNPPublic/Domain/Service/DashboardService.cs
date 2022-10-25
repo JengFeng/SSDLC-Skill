@@ -17,11 +17,17 @@ namespace TWNPPublic.Domain.Service
         private readonly IDapperDataAccess dataAccess;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IConfiguration configuration;
+        private readonly IAspNetUser _aspNetUser;
         private Logger logger = LogManager.GetCurrentClassLogger();
-        public DashboardService(IDapperDataAccess dataAccess, IHttpClientFactory HttpClientFactory, IConfiguration configuration)
+        public DashboardService(
+            IDapperDataAccess dataAccess,
+            IHttpClientFactory HttpClientFactory,
+            IConfiguration configuration,
+            IAspNetUser aspNetUser)
         {
             NLog.LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
             this.configuration = configuration;
+            this._aspNetUser = aspNetUser;
             this.httpClientFactory = HttpClientFactory;
             this.dataAccess = dataAccess;
         }
@@ -236,7 +242,13 @@ namespace TWNPPublic.Domain.Service
                                                                    ,[A_HOUR]
                                                                    ,[AMOUNT]
                                                                    ,[APERCENT]
-                                                                   ,[NOTE]) VALUES (@SN,@Hour,0,0,@Note)";
+                                                                    ,[NOTE]) VALUES (@SN,@Hour,0,0,@Note)";
+
+            if (Note == null)
+            {
+                Note = String.Empty;
+            }
+
             object obj = new
             {
                 Note,
@@ -458,7 +470,17 @@ namespace TWNPPublic.Domain.Service
                             var getUseFulData = root.Root.Data.FirstOrDefault(c => c.REC_DATE_TIME == i);
                             if (getUseFulData != null)
                             {
-                                getUseFulData.AMOUNTO = getUseFulData.AMOUNT;
+                                //區分業務版與民眾版的小數點規則...
+                                if (_aspNetUser.UserId == 0)
+                                {
+                                    getUseFulData.AMOUNTO = Math.Round(getUseFulData.AMOUNT.Value, 2);
+
+                                }
+                                else
+                                {
+                                    getUseFulData.AMOUNTO = Math.Truncate(getUseFulData.AMOUNT.Value);
+                                }
+
                                 TimeSerailList.Add(getUseFulData);
                             }
                             else

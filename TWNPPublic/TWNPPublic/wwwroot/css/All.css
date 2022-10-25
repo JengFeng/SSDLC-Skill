@@ -1,10 +1,10 @@
 @import "bootstrap.css?v=202208220213";
 @import "reset.css";
-@import "layout.css";
+@import "layout.css?v=202210060213";
 
 @import "layerBox.css";
 @import "menu.css";
-@import "main.css?v=202208220213";
+@import "main.css?v=202210060213";
 @import "tab.css";
 @import "ionicons.css";
 @import "font-awesome.css";

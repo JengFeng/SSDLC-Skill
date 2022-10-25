@@ -396,7 +396,7 @@ namespace TWNPPublic.Controllers
                 var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
                 //又亂寫，這個動作很浪費記憶體空間不過算了==
                 result = dayresult;
-                pins = result.Select(c => c.AMOUNTO).ToList();
+                pins = result.Select(c => (float?)c.AMOUNTO).ToList();
 
                 dayresult = dayresult.OrderBy(c => c.REC_DATE_TIME).ToList();
 
@@ -405,7 +405,7 @@ namespace TWNPPublic.Controllers
 
                 foreach (var item in dayresult)
                 {
-                    dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                    dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
                 }
 
             }
@@ -733,7 +733,7 @@ namespace TWNPPublic.Controllers
 
             foreach (var item in dayresult)
             {
-                dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
             }
 
             return Json(Success(new
@@ -829,7 +829,7 @@ namespace TWNPPublic.Controllers
 
                             foreach (var item in dayresult)
                             {
-                                dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), item.AMOUNT);
+                                dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
                             }
 
                             //大前天還要取資料庫裡面的一筆去比對前天的SQLite，很多邊緣條件那有辦法嗎?沒辦法
