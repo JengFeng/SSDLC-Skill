@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web;
@@ -10,6 +11,7 @@ using TWNPPublic.Common.Extension;
 using TWNPPublic.Domain.Service;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.Dashboard;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TWNPPublic.Controllers
 {
@@ -358,66 +360,141 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate)
         {
-            Dictionary<string, float?> dic = new Dictionary<string, float?>();
-            List<A_PH_METER_RECORD_LIST> result = new List<A_PH_METER_RECORD_LIST>();
-            List<float?> pins = new List<float?>();
+            //回應25筆
+            // 2022/11/13 00:00:00 - 2022/11/14 00:00:00
+            // 先做 Hash 25 筆
+
+            Dictionary<string, decimal?> dic = new Dictionary<string, decimal?>();
+            DateTime StartTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day, 0, 0, 0);
+            DateTime EnderTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day + 1, 0, 0, 0);
+            List<decimal?> NewWaterUser = new List<decimal?>();
+
+            for (DateTime i = StartTime; i <= EnderTime; i = i.AddHours(1))
+            {
+                dic.Add(i.ToString("yyyy/MM/dd HH:mm"), null);
+            }
 
             if (Cdate.Date == DateTime.Now.AddDays(-1).Date)
             {
-                //前天去撈資料庫 zz..ZZ..
-                var dayresult2 = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day".ToUpper()).OrderBy(c => c.X).ToList();
-                var yesterdayPin = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", Cdate.Date, Cdate.Date.AddDays(1).AddSeconds(-1));
+                // 前天去撈資料庫 zz..ZZ..
+                // var dayresult2 = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, "day".ToUpper()).OrderBy(c => c.X).ToList();
+                // Cdata =     2022/11/13
+                // StartTime = 2022/11/13 00:00:00
+                // EndTime =   2022/11/14 00:00:00
+                // 測試 SELECT * FROM [dbo].[F_B_CHART1]('7D762461969','PIN','2022/4/4 13:00:00','2022/4/6 13:00:00')
 
-                pins = yesterdayPin.Select(c => (float?)c.Y).ToList();
-
-                if (dayresult2 == null) return Json(Failed(message: "資料尚未開放"));
-                if (dayresult2.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
-
-                DateTime current = new DateTime(2000, 4, 1);
-
-                for (int i = 0; i < 24; i++)
+                //var temp = dashboardService.ListedChart1("7D762461969", "PIN", new DateTime(2022, 4, 4), new DateTime(2022, 4, 6));
+                var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", StartTime, EnderTime);
+                //這裡要去重複
+                foreach (var item in dic)
                 {
-                    dic.Add(current.AddHours(i).ToString("HH:mm"), null);
-                }
-
-                foreach (var item in dayresult2)
-                {
-                    var temp0 = item.X.Substring(11, 5);
-                    if (dic.ContainsKey(item.X.Substring(11, 5)))
+                    
+                    var cell = temp.FirstOrDefault(c => c.X.ToString("yyyy/MM/dd HH:mm") == item.Key);
+                    if (cell == null)
                     {
-                        var temp = item.X.Substring(11, 5);
-                        dic[item.X.Substring(11, 5)] = item.Y;
+                        dic[item.Key] = null;
+                    }
+                    else
+                    {
+                        dic[item.Key] = cell.Y;
                     }
                 }
             }
             else
             {
-
-                var dayresult = await dashboardService.LitedPhMeterRecordList(Cdate, aspNetUser.CurrentWaterNo);
-                //又亂寫，這個動作很浪費記憶體空間不過算了==
-                result = dayresult;
-                pins = result.Select(c => (float?)c.AMOUNTO).ToList();
-
-                dayresult = dayresult.OrderBy(c => c.REC_DATE_TIME).ToList();
+                var dayresultTask = dashboardService.LitedPhMeterRecordListNew(Cdate, aspNetUser.CurrentWaterNo);
+                var day2result = await dashboardService.LitedPhMeterRecordListNew(Cdate.AddDays(1), aspNetUser.CurrentWaterNo);
+                var dayresult = await dayresultTask;
 
                 if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                 if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
 
-                foreach (var item in dayresult)
+                foreach (var item in dic)
                 {
-                    dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                    var takeone = dayresult.FirstOrDefault(c => c.REC_DATE_TIME.ToString("yyyy/MM/dd HH:mm") == item.Key);
+                    if (takeone != null)
+                    {
+                        dic[item.Key] = takeone.AMOUNT;
+                    }
                 }
 
+                foreach (var item in dic)
+                {
+                    var takeone = day2result.FirstOrDefault(c => c.REC_DATE_TIME.ToString("yyyy/MM/dd HH:mm") == item.Key);
+                    if (takeone != null)
+                    {
+                        dic[item.Key] = takeone.AMOUNT;
+                    }
+                }
             }
 
-            object obj = new
+            //補業務版的洞
+            if (aspNetUser.UserId == 0)
             {
-                X = dic.Select(c => c.Key).ToArray(),
-                Y = dic.Select(c => c.Value).ToArray(),
-                O = pins.ToArray()
-            };
+                foreach (var item in dic)
+                {
+                    if (item.Value.HasValue)
+                    {
+                        dic[item.Key] = Math.Floor(item.Value.Value * 100) / 100;
+                    }
+                }
 
-            return Json(Success(obj));
+                for (int i = 0; i <= 24; i++)
+                {
+                    if (dic.ElementAt(i).Value.HasValue && dic.ElementAt(i + 1).Value.HasValue)
+                    {
+                        NewWaterUser.Add(dic.ElementAt(i + 1).Value.Value - dic.ElementAt(i).Value.Value);
+                    }
+                    else
+                    {
+                        NewWaterUser.Add(null);
+                    }
+                }
+
+                dic.Remove(EnderTime.ToString("yyyy/MM/dd HH:mm"));
+
+                object obj = new
+                {
+                    X = dic.Select(c => c.Key).ToArray(),
+                    Y = NewWaterUser.ToArray(),
+                    O = dic.Select(c => c.Value).ToArray()
+                };
+
+                return Json(Success(obj));
+            }
+            else
+            {
+                foreach (var item in dic)
+                {
+                    if (item.Value.HasValue)
+                    {
+                        dic[item.Key] = Math.Floor(item.Value.Value);
+                    }
+                }
+
+                for (int i = 0; i < 24; i++)
+                {
+                    if (dic.ElementAt(i).Value.HasValue && dic.ElementAt(i + 1).Value.HasValue)
+                    {
+                        NewWaterUser.Add(dic.ElementAt(i + 1).Value.Value - dic.ElementAt(i).Value.Value);
+                    }
+                    else
+                    {
+                        NewWaterUser.Add(null);
+                    }
+                }
+
+                dic.Remove(EnderTime.ToString("yyyy/MM/dd HH:mm"));
+
+                object obj = new
+                {
+                    X = dic.Select(c => c.Key).ToArray(),
+                    Y = NewWaterUser.ToArray(),
+                    O = dic.Select(c => c.Value).ToArray()
+                };
+
+                return Json(Success(obj));
+            }
         }
 
         /// <summary>
@@ -815,7 +892,7 @@ namespace TWNPPublic.Controllers
                             {
                                 var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper()).OrderBy(c => c.X).ToList();
                                 var getYesterdayLastValue = dayresultGetLast.FirstOrDefault();
-                                if(getYesterdayLastValue != null)
+                                if (getYesterdayLastValue != null)
                                 {
                                     geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
                                 }

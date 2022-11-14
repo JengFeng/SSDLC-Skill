@@ -104,57 +104,42 @@
                         ]
                     };
 
-    @if (aspNetUser.UserId == 0)
-    {
-        <text>
-                        result.Data.Y.forEach((item, i, self) => self[i] = roundDown(item, 2));
-                    result.Data.O.forEach((item, i, self) => self[i] = roundDown(item, 2));
-        </text>
-    }
-    else
-    {
-        <text>
-                        result.Data.Y.forEach((item, i, self) => self[i] = Math.floor(item));
-                    result.Data.O.forEach((item, i, self) => self[i] = Math.floor(item));
-        </text>
-    }
-
                     result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(2)').html(item));
-                result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(1)').html(item));
-                result.Data.Y.forEach((item) => { total += item });
+                    result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(1)').html(item));
+                    result.Data.Y.forEach((item) => { total += item });
 
-                total = roundDown(total, 2);
+                    total = roundDown(total, 2);
 
-                $("#totalCounter").text(`總計共${total}`);
+                    $("#totalCounter").text(`${total}`);
 
-                option && myChart.setOption(option);
-            }
-            else {
-                $("#spanError").text('此時間段尚無資料');
-                myChart.clear();
-            }
-            $(".footable").footable();
-        });
-    }
-</script>
-<div class="wrap-page">
-    <div class="searchAreaInline">
-        <div class="unitTitle">
-            用戶記事
-        </div>
-    </div><!-- searchAreaInline end -->
-    <div class="chartTableGroup">
-        <div class="main videoScroll">
-            <table class="footable green" data-empty="尚無資料" id="maintable">
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>指針數讀值</th>
-                        <th>用水量</th>
-                        <th data-breakpoints="xs sm">用水記事</th>
-                    </tr>
-                </thead>
-                <tbody>
+                    option && myChart.setOption(option);
+                }
+                else {
+                    $("#spanError").text('此時間段尚無資料');
+                    myChart.clear();
+                }
+                $(".footable").footable();
+            });
+        }
+    </script>
+    <div class="wrap-page">
+        <div class="searchAreaInline">
+            <div class="unitTitle">
+                用戶記事
+            </div>
+        </div><!-- searchAreaInline end -->
+        <div class="chartTableGroup">
+            <div class="main videoScroll">
+                <table class="footable green" data-empty="尚無資料" id="maintable">
+                    <thead>
+                        <tr>
+                            <th>時間</th>
+                            <th>指針數讀值</th>
+                            <th>用水量</th>
+                            <th data-breakpoints="xs sm">用水記事</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     @if (HourNotes != null)
                     {
                         foreach (var item in HourNotes)
@@ -186,10 +171,23 @@
                         }
                     }
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center">
+                            合計共
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            <span id="totalCounter"></span>
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
-            <div>
-                <span id="totalCounter"></span>
-            </div>
         </div>
         <div class="main">
             <div class="chartBlock">
@@ -215,7 +213,7 @@
                     </div>
                 </div>
                 <div class="chartBox">
-                    <span id="spanError">此時間段尚無資料</span>
+                    <span id="spanError">資料載入中</span>
                     <div class="pagechartGroup" id="mychart" style="width:100%;height:600px">
                     </div>
                 </div>

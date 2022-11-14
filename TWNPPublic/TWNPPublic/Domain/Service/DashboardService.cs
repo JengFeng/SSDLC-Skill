@@ -146,7 +146,6 @@ namespace TWNPPublic.Domain.Service
         public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartType, DateTime StartTime, DateTime EndTime)
         {
             string mainsql = @"SELECT * FROM [dbo].[F_B_CHART1](@WaterNo, @pin, @StartTime, @EndTime)";
-            EndTime = EndTime.Date.AddDays(1).AddSeconds(-1);
             object obj = new
             {
                 WaterNo,
@@ -156,31 +155,8 @@ namespace TWNPPublic.Domain.Service
             };
 
             var result = dataAccess.Query<F_B_CHART1>(mainsql, obj);
-            List<F_B_CHART1> fbchart1 = new List<F_B_CHART1>();
-            for (var i = StartTime.Date; i < EndTime; i = i.AddHours(1))
-            {
-                var compareResult = result.FirstOrDefault(c => c.X == i.ToString("yyyy-MM-dd HH:mm:ss"));
-
-                if (compareResult == null)
-                {
-                    fbchart1.Add(new F_B_CHART1
-                    {
-                        X = i.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Y = 0
-                    });
-                }
-                else
-                {
-                    fbchart1.Add(new F_B_CHART1
-                    {
-                        X = i.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Y = compareResult.Y
-                    });
-                }
-
-            }
-
-            return fbchart1;
+ 
+            return result;
         }
 
         public B_NOTE GetB_NOTEbyWaterNoAndDate(string WaterNo, DateTime date)
@@ -446,6 +422,39 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<B_Note_ReuturnSN>(mainsql, obj).First().B_NOTE_SN;
         }
 
+
+        public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew(DateTime QueryTime, string WaterNo)
+        {
+            string qt = QueryTime.ToString("yyyy-MM-dd");
+            // 這裡要改成從API拿
+            var httpClient = httpClientFactory.CreateClient();
+            var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            try
+            {
+                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string responseBody = await responseMessage.Content.ReadAsStringAsync();
+                    var root = JsonConvert.DeserializeObject<PhMeterRecordRoot>(responseBody);
+                    if (root != null)
+                    {
+                        return root.Root.Data;
+                    }
+
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e) // 不知道資料多髒全部 Catch 住..
+            {
+                return new List<A_PH_METER_RECORD_LIST>();
+            }
+
+        }
+
         public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo)
         {
             // https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1=7D762347523&F2=2022-08-15
@@ -456,7 +465,7 @@ namespace TWNPPublic.Domain.Service
             var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
             try
             {
-                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop 第最後一筆筆 輸出24筆資料
+                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
@@ -642,7 +651,7 @@ namespace TWNPPublic.Domain.Service
         /// <param name="StartTime"></param>
         /// <param name="EndTime"></param>
         /// <returns></returns>
-        public List<F_B_CHART1> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
+        public List<F_B_CHART1?> ListedChart1(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
         /// <summary>
         /// 用水記事每小時
         /// </summary>
@@ -656,6 +665,9 @@ namespace TWNPPublic.Domain.Service
         /// <param name="SN"></param>
         /// <returns></returns>
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
+
+        public Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew(DateTime QueryTime, string WaterNo);
+
         public Task<List<A_PH_METER_RECORD_LIST>> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo);
         /// <summary>
         /// 更新 BNoteHour 資料

@@ -2,7 +2,7 @@
 {
     public class F_B_CHART1
     {
-        public string X { get; set; }
+        public DateTime X { get; set; }
         public decimal Y { get; set; }
     }
 }
