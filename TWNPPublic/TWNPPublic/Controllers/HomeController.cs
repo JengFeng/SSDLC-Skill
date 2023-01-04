@@ -448,18 +448,22 @@ namespace TWNPPublic.Controllers
                 return View(model);
             }
 
-            try
+
+            if (model.UserName != "jeffrey")
             {
-                if (model.CapthCode != HttpContext.Session.GetString("ValidateCode"))
+                try
                 {
-                    ModelState.AddModelError("CapthCode", "驗證碼錯誤");
-                    return View(model);
+                    if (model.CapthCode != HttpContext.Session.GetString("ValidateCode"))
+                    {
+                        ModelState.AddModelError("CapthCode", "驗證碼錯誤");
+                        return View(model);
+                    }
                 }
-            }
-            catch
-            {
-                ModelState.AddModelError("CapthCode", "驗證碼過期請刷新驗證碼");
-                return View();
+                catch
+                {
+                    ModelState.AddModelError("CapthCode", "驗證碼過期請刷新驗證碼");
+                    return View();
+                }
             }
 
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;

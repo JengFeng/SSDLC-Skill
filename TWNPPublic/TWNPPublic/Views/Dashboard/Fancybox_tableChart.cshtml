@@ -38,7 +38,20 @@
             $(".videoScroll,.chartsScroll").mCustomScrollbar("update");
         });
 
-        roundDown = function (num, decimal) { return Math.floor((num + Number.EPSILON) * Math.pow(10, decimal)) / Math.pow(10, decimal); }
+        function FloatAdd(arg1, arg2) {
+            var r1, r2, m;
+            try { r1 = arg1.toString().split(".")[1].length; } catch (e) { r1 = 0; }
+            try { r2 = arg2.toString().split(".")[1].length; } catch (e) { r2 = 0; }
+            m = Math.pow(10, Math.max(r1, r2));
+            return (FloatMul(arg1, m) + FloatMul(arg2, m)) / m;
+        }
+
+        function FloatMul(arg1, arg2) {
+            var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+            try { m += s1.split(".")[1].length; } catch (e) { }
+            try { m += s2.split(".")[1].length; } catch (e) { }
+            return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+        }
 
         function LoadChart() {
             var model = {
@@ -106,9 +119,7 @@
 
                     result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(2)').html(item));
                     result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(1)').html(item));
-                    result.Data.Y.forEach((item) => { total += item });
-
-                    total = roundDown(total, 2);
+                    result.Data.Y.forEach((item) => { total = FloatAdd(total, item) });
 
                     $("#totalCounter").text(`${total}`);
 

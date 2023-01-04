@@ -53,6 +53,13 @@ namespace TWNPPublic.ViewModels.Dashboard
             }
         }
 
+        public DateTime CurrentTime { get; set; }
+
+        public string CurrentTimeText
+        {
+            get { return CurrentTime.ToString("yyyy/MM/dd"); }
+        }
+
         /// <summary>
         /// 去年同期使用度數
         /// </summary>
