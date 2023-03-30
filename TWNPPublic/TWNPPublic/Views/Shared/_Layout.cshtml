@@ -69,11 +69,11 @@
                 if(result.Success){
                     $("#marquee1").empty();
                     $.each(result.Data,function(index,value){
-                        var $ul = $("#marquee1").append("<li>" + value.TITLE + "</li>");
+                        $("#marquee1").append("<li>" + value.TITLE + "</li>").ready(function(){});
                         // update the marquee
-                        $ul.marquee("update");
                     });
                 }
+                $("#marquee1").marquee();
              });
 
 

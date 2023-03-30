@@ -124,12 +124,12 @@
                     $("#totalCounter").text(`${total}`);
 
                     option && myChart.setOption(option);
+                    $(".footable").footable();
                 }
                 else {
                     $("#spanError").text('此時間段尚無資料');
                     myChart.clear();
                 }
-                $(".footable").footable();
             });
         }
     </script>
