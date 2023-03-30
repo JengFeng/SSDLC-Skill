@@ -39,17 +39,25 @@ namespace TWNPPublic.Controllers
             ViewBag.CurrentTime = DateTime.Now.ToString("yyy年MM月dd日", culture);
             #region 這個邏輯只是為了澎科大寫的其他都沒用到
             ViewBag.ShowRealMap = false;
-            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
-            if (result == null)
+            try
             {
-                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1));
+                var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
+                if (result == null)
+                {
+                    result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1));
+                }
+
+                if (result != null)
+                {
+                    if (result.NAME_DAES == "國立澎湖科技大學")
+                        ViewBag.ShowRealMap = true;
+                }
+            }
+            catch (Exception e)
+            {
+
             }
 
-            if (result != null)
-            {
-                if (result.NAME_DAES == "國立澎湖科技大學")
-                    ViewBag.ShowRealMap = true;
-            }
             #endregion
 
             return View();
@@ -846,6 +854,7 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public async Task<IActionResult> GetDashWaterAnalyer(string timespilt, DateTime Cdate)
         {
+
             //var mondayOfLastWeek = Cdate.AddDays(-(int)Cdate.DayOfWeek - 6);
             try
             {
@@ -932,7 +941,8 @@ namespace TWNPPublic.Controllers
 
                     case "week":
 
-                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
+                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X).ToList();
+                        //return Json(Success(weekresult));
 
                         if (weekresult == null) return Json(Failed(message: "資料尚未開放"));
                         if (weekresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -941,16 +951,20 @@ namespace TWNPPublic.Controllers
 
                         for (int i = 0; i < 7; i++)
                         {
-                            dic.Add(mondayOfLastWeek.AddDays(i).ToString("MM/dd"), null);
+                            dic.Add(mondayOfLastWeek.AddDays(i).ToString("MM-dd"), null);
                         }
 
-                        int rollnumber = 0;
                         if (weekresult != null && weekresult.Count() != 0)
                         {
                             foreach (var cell in dic)
                             {
-                                dic[cell.Key] = weekresult.OrderBy(c => c.X).ElementAt(rollnumber).Y;
-                                rollnumber++;
+                                // 2022-10-10
+                                var getOneWeekResult = weekresult.FirstOrDefault(c => c.X.Substring(5, 5) == cell.Key);
+
+                                if (getOneWeekResult != null)
+                                {
+                                    dic[cell.Key] = getOneWeekResult.Y;
+                                }
                             }
                         }
 
@@ -990,7 +1004,7 @@ namespace TWNPPublic.Controllers
             }
             catch (Exception ex)
             {
-                return Json(Failed(message: ex.Message));
+                return Json(Failed(message: ex.Message + ex.StackTrace));
             }
         }
 
