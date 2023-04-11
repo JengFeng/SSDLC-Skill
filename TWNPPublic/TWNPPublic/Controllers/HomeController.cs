@@ -64,6 +64,7 @@ namespace TWNPPublic.Controllers
                 try
                 {
                     var RealToken = model.AccessToken.AesDecryptExtened(KingErrandYours);
+                    var tokenWaterNoAndTime = RealToken.Split('_');
 
                     if (RealToken.Substring(0, 2) != "7D")
                     {
@@ -72,6 +73,17 @@ namespace TWNPPublic.Controllers
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
                         }, "Token Error,未合法的 Token", 1001));
                     }
+
+                    string formatString = "yyyyMMddHHmmss";
+                    string tokenDateTime = tokenWaterNoAndTime[1].ToString();
+                    DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
+
+                    //檢查偸肯超過6個月
+                    if (DateTime.Now > dt.AddMonths(6))
+                    {
+                        homeService.DenyAccountFromApp(tokenWaterNoAndTime[0].ToString());
+                    }
+
                 }
                 catch (Exception e)
                 {
@@ -163,6 +175,19 @@ namespace TWNPPublic.Controllers
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
                         }, "Token Error,未合法的 Token 非澎湖水號", 1001));
+                    }
+
+                    string formatString = "yyyyMMddHHmmss";
+                    string tokenDateTime= tokenWaterNo[1].ToString();
+                    DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
+
+                    //檢查偸肯超過6個月
+                    if (DateTime.Now > dt.AddMonths(6))
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenError.ToString(),
+                        }, "Token Error,未合法的 Token 逾時", 1001));
                     }
 
                     homeService.CreateAppUser(WaterNo, WaterNo, AccessToken);
