@@ -206,7 +206,7 @@ namespace TWNPPublic.Domain.Service
                                        ,[INP_DATE]
                                        ,[EMAIL]
                                        ,[FROM_TABLE]
-                                       ,[FRON_SN])
+                                       ,[FROM_SN])
                                  VALUES
                                        (@TITLE
                                        ,@CONTENTS
@@ -215,7 +215,7 @@ namespace TWNPPublic.Domain.Service
                                        ,@INP_DATE
                                        ,@EMAIL
                                        ,@FROM_TABLE
-                                       ,@FRON_SN)";
+                                       ,@FROM_SN)";
 
             var setContext = MailText.Replace("{pwd}", pwd).Replace("{currenttime}", Current);
 
@@ -230,6 +230,8 @@ namespace TWNPPublic.Domain.Service
                 IS_SEND = 0,
                 INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                 EMAIL = Email,
+                FROM_TABLE = "B_ACCOUNT",
+                FROM_SN = B_ACCOUNT,
             });
         }
 

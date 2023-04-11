@@ -9,6 +9,6 @@
         public string INP_DATE { get; set; }
         public string EMAIL { get; set; }
         public string FROM_TABLE { get; set; }
-        public string FRON_SN { get; set; }
+        public string FROM_SN { get; set; }
     }
 }
