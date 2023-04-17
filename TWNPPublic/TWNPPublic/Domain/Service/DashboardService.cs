@@ -474,7 +474,7 @@ namespace TWNPPublic.Domain.Service
                     {
                         List<A_PH_METER_RECORD_LIST> TimeSerailList = new List<A_PH_METER_RECORD_LIST>();
 
-                        for (var i = QueryTime.Date; i < QueryTime.Date.AddDays(1).AddHours(1); i = i.AddHours(1))
+                        for (var i = QueryTime.Date.AddHours(-1); i < QueryTime.Date.AddDays(1).AddHours(1); i = i.AddHours(1))
                         {
                             var getUseFulData = root.Root.Data.FirstOrDefault(c => c.REC_DATE_TIME == i);
                             if (getUseFulData != null)
@@ -483,7 +483,6 @@ namespace TWNPPublic.Domain.Service
                                 if (_aspNetUser.UserId == 0)
                                 {
                                     getUseFulData.AMOUNTO = Math.Round(getUseFulData.AMOUNT.Value, 2);
-
                                 }
                                 else
                                 {
@@ -503,14 +502,19 @@ namespace TWNPPublic.Domain.Service
                             if (TimeSerailList[i].AMOUNTO != null && TimeSerailList[i + 1].AMOUNTO != null)
                             {
                                 TimeSerailList[i].AMOUNT = TimeSerailList[i + 1].AMOUNTO - TimeSerailList[i].AMOUNTO;
+                                TimeSerailList[i].REC_DATE_TIME = TimeSerailList[i + 1].REC_DATE_TIME;
                             }
                             else
                             {
                                 TimeSerailList[i].AMOUNT = null;
+                                TimeSerailList[i].REC_DATE_TIME = TimeSerailList[i + 1].REC_DATE_TIME;
                             }
                         }
 
+      
                         TimeSerailList.RemoveAt(TimeSerailList.Count() - 1);
+                        TimeSerailList.RemoveAt(TimeSerailList.Count() - 1);
+
 
                         return TimeSerailList;
                     }

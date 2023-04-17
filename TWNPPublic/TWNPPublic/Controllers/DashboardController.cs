@@ -373,8 +373,18 @@ namespace TWNPPublic.Controllers
             // 先做 Hash 25 筆
 
             Dictionary<string, decimal?> dic = new Dictionary<string, decimal?>();
-            DateTime StartTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day - 1, 23, 0, 0);
-            DateTime EnderTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.Day + 1, 0, 0, 0);
+            DateTime StartTime = DateTime.Now;
+            //每月的1號，開始日期的月需要減1
+            if ( Cdate.Day == 1)
+            {
+                StartTime = new DateTime(Cdate.Year, Cdate.AddDays(-1).Month, Cdate.AddDays(-1).Day, 23, 0, 0);
+            }
+            else
+            {
+                StartTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.AddDays(-1).Day, 23, 0, 0);
+            }
+            
+            DateTime EnderTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.AddDays(1).Day, 0, 0, 0);
             List<decimal?> NewWaterUser = new List<decimal?>();
 
             try

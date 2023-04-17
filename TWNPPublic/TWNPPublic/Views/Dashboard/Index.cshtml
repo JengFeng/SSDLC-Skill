@@ -369,9 +369,9 @@
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
 
+                 @*給業務版的邏輯*@
                 @if(aspNetUser.UserId != 0)
-                {
-                    @*給業務版的邏輯*@
+                {                  
                     <text>result.Data.Y = result.Data.Y.map(function(item){ return parseInt(item);})</text>
                 }
                 else

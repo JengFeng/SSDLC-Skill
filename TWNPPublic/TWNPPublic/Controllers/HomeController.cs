@@ -55,7 +55,7 @@ namespace TWNPPublic.Controllers
                 return Json(Failed(new
                 {
                     ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Empty Token Error"), 1001);
+                }, "Empty Token Error", 1001));
             }
 
             //檢查偸肯
@@ -367,11 +367,56 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 給業務版得後門 ( ¯ ﹃¯)
+        /// 給業務版得後門 ( ¯ ﹃¯)  參數之後要調整只留下Token
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index(string WaterNo)
+        public IActionResult Index(string WaterNo, string Token)
         {
+            //檢查偸肯
+            if (string.IsNullOrEmpty(Token))
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Empty Token Error", 1001));
+            }
+
+           string verifyToken = Token.AesDecryptExtenedToGet(KingErrandYours);
+
+           var verifyTokenList = verifyToken.Split('_');
+
+            if (verifyTokenList[0] != WaterNo)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+           
+            string formatString = "yyyyMMddHHmmss";
+            string time = verifyTokenList[1].ToString();
+            DateTime dt_ = DateTime.ParseExact(time, formatString, null);
+
+            //判斷時間是否差10秒內
+            if ( (DateTime.Now - dt_).TotalSeconds > 10)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+        
+            if (verifyTokenList[2] != "H3ll0TWNWINDEX9A99")
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+
             SetLoginSession(
                         HttpContext,
                         WaterNo,
@@ -383,13 +428,64 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)
+        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)  參數之後要調整只留下Token
         /// </summary>
         /// <param name="WaterNo"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public IActionResult Note(string WaterNo, DateTime dt)
+        public IActionResult Note(string WaterNo, DateTime dt, string Token)
         {
+
+            //檢查偸肯
+            if (string.IsNullOrEmpty(Token))
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Empty Token Error", 1001));
+            }
+
+            string verifyToken = Token.AesDecryptExtenedToGet(KingErrandYours);
+
+            var verifyTokenList = verifyToken.Split('_');
+
+            if (verifyTokenList[0] != WaterNo)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+            //if (verifyTokenList[1] != dt.ToString("yyyy-MM-dd"))
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+            //    }, "Token Error,未合法的 Token", 1001));
+            //}
+
+            string formatString = "yyyyMMddHHmmss";
+            string time = verifyTokenList[1].ToString();
+            DateTime dt_ = DateTime.ParseExact(time, formatString, null);
+
+            //判斷時間是否差10秒內
+            if ((DateTime.Now - dt_).TotalSeconds > 10)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+            if (verifyTokenList[2] != "H3ll0TWNWATERNOTE9A99")
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
             SetLoginSession(
                         HttpContext,
                         WaterNo,
@@ -401,13 +497,63 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)
+        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)  參數之後要調整只留下Token
         /// </summary>
         /// <param name="WaterNo"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public IActionResult DetailsTable(string WaterNo, DateTime dt)
+        public IActionResult DetailsTable(string WaterNo, DateTime dt, string Token)
         {
+            //檢查偸肯
+            if (string.IsNullOrEmpty(Token))
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Empty Token Error", 1001));
+            }
+
+            string verifyToken = Token.AesDecryptExtenedToGet(KingErrandYours);
+
+            var verifyTokenList = verifyToken.Split('_');
+
+            if (verifyTokenList[0] != WaterNo)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+            //if (verifyTokenList[1] !=  dt.ToString("yyyy-MM-dd"))
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+            //    }, "Token Error,未合法的 Token", 1001));
+            //}
+
+            string formatString = "yyyyMMddHHmmss";
+            string time = verifyTokenList[1].ToString();
+            DateTime dt_ = DateTime.ParseExact(time, formatString, null);
+
+            //判斷時間是否差10秒內
+            if ((DateTime.Now - dt_).TotalSeconds > 10)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
+            if (verifyTokenList[2] != "H3ll0TWNWATERBIll9A99")
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,未合法的 Token", 1001));
+            }
+
             SetLoginSession(
                         HttpContext,
                         WaterNo,
@@ -598,7 +744,7 @@ namespace TWNPPublic.Controllers
         }
         private string FixBase64FromQueryString(string b)
         {
-            return b.Replace(" ", "+");
+            return b.Replace(" ", "@@");
         }
         private void SetLoginSession(HttpContext httpContext, string UserName, string CurrentWaterNo, string WaterNo, string UserId)
         {

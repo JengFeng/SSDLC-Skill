@@ -63,6 +63,7 @@
             $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
                 $("#spanError").text('');
                 if (result.Success) {
+                    //console.log(result.Data.Y);
                     const colors = ['#5391C7'];
                     var option;
                     option = {

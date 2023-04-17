@@ -57,6 +57,16 @@ namespace TWNPPublic.Common.Extension
             return DecryptStringAes(text, defaultkey);
         }
 
+        public static string AesDecryptExtenedToGet(this string text, string key)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            return DecryptStringAesGet(text, defaultkey);
+        }
+
 
 
         static string EncryptStringAes(string plainText, string Key)
@@ -96,6 +106,58 @@ namespace TWNPPublic.Common.Extension
             aes.Key = keyIv.Key;
             aes.IV = keyIv.IV;
             var encData = Convert.FromBase64String(cipherText);
+            byte[] buffer = new byte[8192];
+            using (var ms = new MemoryStream(encData))
+            {
+                using (var cs = new CryptoStream(ms, aes.CreateDecryptor(aes.Key, aes.IV), CryptoStreamMode.Read))
+                {
+                    using (var sr = new StreamReader(cs))
+                    {
+                        using (var dec = new MemoryStream())
+                        {
+                            cs.CopyTo(dec);
+                            return Encoding.UTF8.GetString(dec.ToArray());
+                        }
+                    }
+                }
+            }
+        }
+
+
+        static string DecryptStringAesGet(string cipherText, string Key)
+        {
+            // Check arguments.
+            if (cipherText == null || cipherText.Length <= 0)
+                throw new ArgumentNullException("cipherText");
+            if (Key == null || Key.Length <= 0)
+                throw new ArgumentNullException("Key");
+
+            var keyIv = new AesKeyIV(Key);
+            var aes = Aes.Create();
+            aes.Key = keyIv.Key;
+            aes.IV = keyIv.IV;
+
+            //網址關鍵字還原
+            var cipherText_ = cipherText;
+            cipherText_ = cipherText_.Replace('-', '+'); // 62nd char of encoding
+            cipherText_ = cipherText_.Replace('_', '/'); // 63rd char of encoding
+
+            switch (cipherText_.Length % 4) // Pad with trailing '='s
+            {
+                case 0:
+                    break; // No pad chars in this case
+                case 2:
+                    cipherText_ += "==";
+                    break; // Two pad chars
+                case 3:
+                    cipherText_ += "=";
+                    break; // One pad char
+                default:
+                    throw new ArgumentOutOfRangeException(
+                    nameof(cipherText), "Illegal base64url string!");
+            }
+
+            var encData = Convert.FromBase64String(cipherText_);
             byte[] buffer = new byte[8192];
             using (var ms = new MemoryStream(encData))
             {
