@@ -643,8 +643,8 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public IActionResult LoadWaterUseAnalyzer(string timespilt, DateTime Cdate)
         {
-            var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt).OrderBy(c => c.X).ToList();//今年
-            var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt).OrderBy(c => c.X).ToList();//去年同期
+            var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt,"1").OrderBy(c => c.X).ToList();//今年
+            var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt,"1").OrderBy(c => c.X).ToList();//去年同期
             //單位
             string xAayUnit = "";
 
@@ -887,32 +887,65 @@ namespace TWNPPublic.Controllers
                 switch (timespilt)
                 {
                     case "day":
-
+                        // 前六天都要取資料庫
                         var ts = Cdate.Date - DateTime.Now;
                         if (ts.Days >= -6)
                         {
-                            //前天去撈資料庫
-                            var dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X).ToList();
-
-                            if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
-                            if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
-
-                            DateTime current = new DateTime(2000, 4, 1);
-
-                            for (int i = 0; i < 24; i++)
+                            //補業務版的洞
+                            if (aspNetUser.UserId == 0)
                             {
-                                dic.Add(current.AddHours(i).ToString("HH:mm"), null);
-                            }
+                                //前天去撈資料庫
+                                var dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"0").OrderBy(c => c.X).ToList();
 
-                            foreach (var item in dayresult)
-                            {
-                                var temp0 = item.X.Substring(11, 5);
-                                if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+                                if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                                DateTime current = new DateTime(2000, 4, 1);
+
+                                for (int i = 0; i < 24; i++)
                                 {
-                                    var temp = item.X.Substring(11, 5);
-                                    dic[item.X.Substring(11, 5)] = item.Y;
+                                    dic.Add(current.AddHours(i).ToString("HH:mm"), null);
                                 }
+
+                                foreach (var item in dayresult)
+                                {
+                                    var temp0 = item.X.Substring(11, 5);
+                                    if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                    {
+                                        var temp = item.X.Substring(11, 5);
+                                        dic[item.X.Substring(11, 5)] = item.Y;
+                                    }
+                                }
+
                             }
+                            else
+                            {
+                                //前天去撈資料庫
+                                var dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
+
+                                if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+                                if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                                DateTime current = new DateTime(2000, 4, 1);
+
+                                for (int i = 0; i < 24; i++)
+                                {
+                                    dic.Add(current.AddHours(i).ToString("HH:mm"), null);
+                                }
+
+                                foreach (var item in dayresult)
+                                {
+                                    var temp0 = item.X.Substring(11, 5);
+                                    if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                    {
+                                        var temp = item.X.Substring(11, 5);
+                                        dic[item.X.Substring(11, 5)] = item.Y;
+                                    }
+                                }
+
+
+                            }
+                           
                         }
                         else
                         {
@@ -920,7 +953,7 @@ namespace TWNPPublic.Controllers
                             float? geYesterdayLastAMOUNT = null;
                             if (Cdate.Date == DateTime.Now.AddDays(-2).Date)
                             {
-                                var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper()).OrderBy(c => c.X).ToList();
+                                var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
                                 var getYesterdayLastValue = dayresultGetLast.FirstOrDefault();
                                 if (getYesterdayLastValue != null)
                                 {
@@ -951,7 +984,7 @@ namespace TWNPPublic.Controllers
 
                     case "week":
 
-                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X).ToList();
+                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
                         //return Json(Success(weekresult));
 
                         if (weekresult == null) return Json(Failed(message: "資料尚未開放"));
@@ -983,7 +1016,7 @@ namespace TWNPPublic.Controllers
 
                     case "month":
 
-                        var monthresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper()).OrderBy(c => c.X);
+                        var monthresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X);
 
                         if (monthresult == null) return Json(Failed(message: "資料尚未開放"));
                         if (monthresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));

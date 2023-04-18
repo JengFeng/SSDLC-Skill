@@ -75,6 +75,22 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
+        /// <summary>
+        /// 取得 F_B_CHART 自帶參數
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <param name="Timesplit"></param>
+        /// <param name="Type"></param>
+        /// <returns></returns>
+        public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit,string Type)
+        {
+            string mainsql = @"Select * From [dbo].[F_B_CHART](@WaterNo,@Timesplit,@Cdate,@Type) Order by X";
+            object obj = new { WaterNo, Cdate, Timesplit, Type};
+            var result = dataAccess.Query<F_B_CHART>(mainsql, obj);
+            return result;
+        }
+
         public List<B_NEWSViewModel> ListedNews()
         {
             string mainsql = @"SELECT * FROM B_NEWS WHERE VALID=1 And INP_DATE > @INPDATE Order by INP_DATE desc";
@@ -482,11 +498,13 @@ namespace TWNPPublic.Domain.Service
                                 //區分業務版與民眾版的小數點規則...
                                 if (_aspNetUser.UserId == 0)
                                 {
-                                    getUseFulData.AMOUNTO = Math.Round(getUseFulData.AMOUNT.Value, 2);
+                                    //getUseFulData.AMOUNTO = Math.Round(getUseFulData.AMOUNT.Value, 2);
+                                    getUseFulData.AMOUNTO = Math.Floor(getUseFulData.AMOUNT.Value * 100) / 100;
                                 }
                                 else
                                 {
-                                    getUseFulData.AMOUNTO = Math.Truncate(getUseFulData.AMOUNT.Value);
+                                    //getUseFulData.AMOUNTO = Math.Truncate(getUseFulData.AMOUNT.Value);
+                                    getUseFulData.AMOUNTO = Math.Floor(getUseFulData.AMOUNT.Value);
                                 }
 
                                 TimeSerailList.Add(getUseFulData);
@@ -647,6 +665,15 @@ namespace TWNPPublic.Domain.Service
         /// <param name="Timesplit"></param>
         /// <returns></returns>
         public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit);
+        /// <summary>
+        /// 圖 fn chart
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Cdate"></param>
+        /// <param name="Timesplit"></param>
+        /// <param name="Type"></param>
+        /// <returns></returns>
+        public List<F_B_CHART> ListedChart(string WaterNo, DateTime Cdate, string Timesplit,string Type);
         /// <summary>
         /// 圖 fn chart1
         /// </summary>

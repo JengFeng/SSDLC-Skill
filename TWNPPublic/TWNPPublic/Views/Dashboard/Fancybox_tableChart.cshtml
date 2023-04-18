@@ -47,7 +47,7 @@
         }
 
         function FloatMul(arg1, arg2) {
-            var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+            var m = 0, s1 = arg1+'', s2 = arg2+'';
             try { m += s1.split(".")[1].length; } catch (e) { }
             try { m += s2.split(".")[1].length; } catch (e) { }
             return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
@@ -63,7 +63,7 @@
             $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
                 $("#spanError").text('');
                 if (result.Success) {
-                    //console.log(result.Data.Y);
+                    console.log(result.Data.Y);
                     const colors = ['#5391C7'];
                     var option;
                     option = {
@@ -119,8 +119,10 @@
                     };
 
                     result.Data.Y.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(2)').html(item));
+                    //result.Data.Y.forEach((item, index) => { $('#maintable tbody tr:eq(' + index + ') td:eq(2)').html(item);console.log(item) });
                     result.Data.O.forEach((item, index) => $('#maintable tbody tr:eq(' + index + ') td:eq(1)').html(item));
-                    result.Data.Y.forEach((item) => { total = FloatAdd(total, item) });
+                    //result.Data.O.forEach((item, index) =>{ $('#maintable tbody tr:eq(' + index + ') td:eq(1)').html(item);console.log(item) });
+                    result.Data.Y.forEach((item) => { total = FloatAdd(total, ( item == null ? 0 : item)) });  //console.log(total)
 
                     $("#totalCounter").text(`${total}`);
 
