@@ -102,7 +102,19 @@
                     type: 'iframe',
                     autoSize: false,
                     width: '80%',
-                    height: '98%'
+                    height: '98%',
+                    beforeLoad: function () {                            
+                           let model = {
+                                 Cdate : @DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")
+                            };
+                            $.get("@Url.Action("Fancybox_tableChart","Dashboard")",model,function(result){
+                    
+                                if ( result.includes('忘記密碼') )
+                                {
+                                    window.location.href = "@Url.Action("Login","Home")";
+                                }
+                             });
+                        }
                 });
             }
 
