@@ -407,6 +407,7 @@ namespace TWNPPublic.Controllers
 
                     //var temp = dashboardService.ListedChart1("7D762461969", "PIN", new DateTime(2022, 4, 4), new DateTime(2022, 4, 6));
                     var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", StartTime, EnderTime);
+                    if (temp.Count() <= 0 || temp==null) return Json(Failed(message: "資料尚未開放"));
                     //這裡要去重複
                     foreach (var item in dic)
                     {
@@ -421,12 +422,15 @@ namespace TWNPPublic.Controllers
                             dic[item.Key] = cell.Y;
                         }
                     }
+
+                    bool allValues = dic.Values.All(value => value == null);
+                    if ( allValues ) return Json(Failed(message: "資料尚未開放"));
                 }
                 else
                 {
-                    var dayresultTask = dashboardService.LitedPhMeterRecordListNew(Cdate, aspNetUser.CurrentWaterNo);
+                    var dayresultTask = await dashboardService.LitedPhMeterRecordListNew(Cdate, aspNetUser.CurrentWaterNo);
                     var day2result = await dashboardService.LitedPhMeterRecordListNew(Cdate.AddDays(-1), aspNetUser.CurrentWaterNo);
-                    var dayresult = await dayresultTask;
+                    var dayresult =  dayresultTask;
 
                     if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                     if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));

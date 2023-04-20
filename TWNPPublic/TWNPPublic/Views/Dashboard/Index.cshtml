@@ -369,7 +369,7 @@
         $.post("@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
             if(result.Success){
                 console.log(result)
-                 @*給業務版的邏輯*@
+                @*給業務版的邏輯(有小數)*@
                 @if(aspNetUser.UserId != 0)
                 {                  
                     <text>result.Data.Y = result.Data.Y.map(function(item){ return Math.round(item);})</text>

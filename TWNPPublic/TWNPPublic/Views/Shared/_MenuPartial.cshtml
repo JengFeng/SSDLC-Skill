@@ -33,9 +33,13 @@
                             {
                                 <a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a>
                             }
+
+                            if( UserId != "0")
+                            {
+                               <a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>帳號設定</a>
+                            }
                         }
-                    }
-                    <a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>帳號設定</a>
+                    }                    
                     <select id="SelectWaterNos" class="form-SelectWaterNos" onchange="SelectWaterNosChange()">
                     </select>
                 </div>
@@ -72,8 +76,21 @@
         <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
         @*<li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>*@
         <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
-        <li tabindex="-1"><a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a></li>
-        <li tabindex="-1"><a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>密碼設定</a></li>
+        @{
+              if (HttpContextAccessor.HttpContext != null)
+              {
+                  var UserId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
+                  if (!string.IsNullOrEmpty(UserId))
+                  {
+                    <li tabindex="-1"><a class="" href="@Url.Action("AlertSettings","Alert")"><i class="bi bi-gear-fill"></i>警示設定</a></li>
+                  }
+
+                  if( UserId != "0")
+                  {
+                     <li tabindex="-1"><a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>帳號設定</a></li>
+                  }
+            }
+        }       
         <li>
             <a tabindex="-1" id="closeMobile" href="javascript:;"><i class="ion-android-close"></i><span class="sr-only">關閉手機選單</span></a>
         </li>
