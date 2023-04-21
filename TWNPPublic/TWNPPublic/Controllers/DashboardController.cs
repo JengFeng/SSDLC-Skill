@@ -895,61 +895,46 @@ namespace TWNPPublic.Controllers
                         var ts = Cdate.Date - DateTime.Now;
                         if (ts.Days >= -6)
                         {
+
+                            List<Models.SqlFunctions.F_B_CHART> dayresult = new List<Models.SqlFunctions.F_B_CHART>();
+
                             //補業務版的洞
                             if (aspNetUser.UserId == 0)
                             {
                                 //前天去撈資料庫
-                                var dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"0").OrderBy(c => c.X).ToList();
-
-                                if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
-                                if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
-
-                                DateTime current = new DateTime(2000, 4, 1);
-
-                                for (int i = 0; i < 24; i++)
-                                {
-                                    dic.Add(current.AddHours(i).ToString("HH:mm"), null);
-                                }
-
-                                foreach (var item in dayresult)
-                                {
-                                    var temp0 = item.X.Substring(11, 5);
-                                    if (dic.ContainsKey(item.X.Substring(11, 5)))
-                                    {
-                                        var temp = item.X.Substring(11, 5);
-                                        dic[item.X.Substring(11, 5)] = item.Y;
-                                    }
-                                }
-
+                                dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"0").OrderBy(c => c.X).ToList();
                             }
                             else
                             {
                                 //前天去撈資料庫
-                                var dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
-
-                                if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
-                                if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
-
-                                DateTime current = new DateTime(2000, 4, 1);
-
-                                for (int i = 0; i < 24; i++)
-                                {
-                                    dic.Add(current.AddHours(i).ToString("HH:mm"), null);
-                                }
-
-                                foreach (var item in dayresult)
-                                {
-                                    var temp0 = item.X.Substring(11, 5);
-                                    if (dic.ContainsKey(item.X.Substring(11, 5)))
-                                    {
-                                        var temp = item.X.Substring(11, 5);
-                                        dic[item.X.Substring(11, 5)] = item.Y;
-                                    }
-                                }
-
-
+                                dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
                             }
-                           
+
+                            if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
+                            if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
+
+                            DateTime current = new DateTime(2000, 4, 1);
+
+                            for (int i = 0; i < 24; i++)
+                            {
+                                dic.Add(current.AddHours(i).ToString("HH:mm"), null);
+                            }
+
+                            foreach (var item in dayresult)
+                            {
+                                var temp0 = item.X.Substring(11, 5);
+                                if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                {
+                                    var temp = item.X.Substring(11, 5);
+                                    dic[item.X.Substring(11, 5)] = item.Y;
+                                }
+                                else
+                                {
+                                    var temp = item.X.Substring(11, 5);
+                                    dic[item.X.Substring(11, 5)] = null;
+                                }
+                            }
+
                         }
                         else
                         {
