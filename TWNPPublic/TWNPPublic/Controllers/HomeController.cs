@@ -367,10 +367,10 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 給業務版得後門 ( ¯ ﹃¯)  參數之後要調整只留下Token
+        /// 給業務版得後門 ( ¯ ﹃¯)
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index(string WaterNo, string Token)
+        public IActionResult Index(string Token)
         {
             //檢查偸肯
             if (string.IsNullOrEmpty(Token))
@@ -384,8 +384,9 @@ namespace TWNPPublic.Controllers
            string verifyToken = Token.AesDecryptExtenedToGet(KingErrandYours);
 
            var verifyTokenList = verifyToken.Split('_');
+           string WaterNo = verifyTokenList[0];
 
-            if (verifyTokenList[0] != WaterNo)
+            if (verifyTokenList[0].Substring(0, 2) != "7D")
             {
                 return Json(Failed(new
                 {
@@ -428,12 +429,12 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)  參數之後要調整只留下Token
+        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)
         /// </summary>
         /// <param name="WaterNo"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public IActionResult Note(string WaterNo, DateTime dt, string Token)
+        public IActionResult Note( string Token)
         {
 
             //檢查偸肯
@@ -448,8 +449,10 @@ namespace TWNPPublic.Controllers
             string verifyToken = Token.AesDecryptExtenedToGet(KingErrandYours);
 
             var verifyTokenList = verifyToken.Split('_');
+            string WaterNo = verifyTokenList[0];
+            DateTime dt = DateTime.Parse( verifyTokenList[1] );
 
-            if (verifyTokenList[0] != WaterNo)
+            if (verifyTokenList[0].Substring(0, 2) != "7D")
             {
                 return Json(Failed(new
                 {
@@ -466,7 +469,7 @@ namespace TWNPPublic.Controllers
             //}
 
             string formatString = "yyyyMMddHHmmss";
-            string time = verifyTokenList[1].ToString();
+            string time = verifyTokenList[2].ToString();
             DateTime dt_ = DateTime.ParseExact(time, formatString, null);
 
             //判斷時間是否差10秒內
@@ -478,7 +481,7 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
-            if (verifyTokenList[2] != "H3ll0TWNWATERNOTE9A99")
+            if (verifyTokenList[3] != "H3ll0TWNWATERNOTE9A99")
             {
                 return Json(Failed(new
                 {
@@ -497,12 +500,12 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// 給用水記事的後門，怎麼一堆後門  ( ¯ ﹃¯)  參數之後要調整只留下Token
+        /// 給詳細資料的後門，怎麼一堆後門  ( ¯ ﹃¯)
         /// </summary>
         /// <param name="WaterNo"></param>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public IActionResult DetailsTable(string WaterNo, DateTime dt, string Token)
+        public IActionResult DetailsTable( string Token )
         {
             //檢查偸肯
             if (string.IsNullOrEmpty(Token))
@@ -516,8 +519,10 @@ namespace TWNPPublic.Controllers
             string verifyToken = Token.AesDecryptExtenedToGet(KingErrandYours);
 
             var verifyTokenList = verifyToken.Split('_');
+            string WaterNo = verifyTokenList[0];
+            DateTime dt = DateTime.Parse(verifyTokenList[1]);
 
-            if (verifyTokenList[0] != WaterNo)
+            if (verifyTokenList[0].Substring(0, 2) != "7D")
             {
                 return Json(Failed(new
                 {
@@ -534,7 +539,7 @@ namespace TWNPPublic.Controllers
             //}
 
             string formatString = "yyyyMMddHHmmss";
-            string time = verifyTokenList[1].ToString();
+            string time = verifyTokenList[2].ToString();
             DateTime dt_ = DateTime.ParseExact(time, formatString, null);
 
             //判斷時間是否差10秒內
@@ -546,7 +551,7 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
-            if (verifyTokenList[2] != "H3ll0TWNWATERBIll9A99")
+            if (verifyTokenList[3] != "H3ll0TWNWATERBIll9A99")
             {
                 return Json(Failed(new
                 {
