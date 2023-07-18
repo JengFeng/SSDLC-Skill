@@ -340,6 +340,7 @@
 
 
     roundDown = function (num, decimal) { return Math.floor((num + Number.EPSILON) * Math.pow(10, decimal)) / Math.pow(10, decimal); }
+    //roundDown = function (num, decimal) { return Math.round(num * Math.pow(10, decimal)) / Math.pow(10, decimal); }
     //用水量查詢圖表
     function InitWaterUseSearchChart(){
         $("#spanError").text('');

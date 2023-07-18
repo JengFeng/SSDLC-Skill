@@ -39,7 +39,9 @@
                                <a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>帳號設定</a>
                             }
                         }
-                    }                    
+                    }
+                    <a class="" href="" id="CustomerSurvey"><i class="bi bi-bar-chart-line"></i>滿意度調查</a>
+
                     <select id="SelectWaterNos" class="form-SelectWaterNos" onchange="SelectWaterNosChange()">
                     </select>
                 </div>
@@ -116,5 +118,15 @@
             }
         });
     });
+
+    //滿意度調查
+   $("#CustomerSurvey").click(function() {
+    var iframeUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfppMYd7h5TCkhkULUrL1FByjnCb_KI_TAF6kX-E2sfT3Pt5w/viewform?embedded=true"; // 替換為實際的 <iframe> 網址
+    var width = 1500; // 視窗寬度
+    var height =1000; // 視窗高度
+    var left = (screen.width - width) / 2; // 視窗左上角 X 座標
+    var top = (screen.height - height) / 2; // 視窗左上角 Y 座標
+      window.open(iframeUrl, "_blank", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
+  });
 
 </script>
