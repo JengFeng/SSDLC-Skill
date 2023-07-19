@@ -40,7 +40,7 @@
                             }
                         }
                     }
-                    <a class="" href="" id="CustomerSurvey"><i class="bi bi-bar-chart-line"></i>滿意度調查</a>
+                    <a class="CustomerSurvey" href="" id=""><i class="bi bi-bar-chart-line"></i>滿意度調查</a>
 
                     <select id="SelectWaterNos" class="form-SelectWaterNos" onchange="SelectWaterNosChange()">
                     </select>
@@ -91,8 +91,11 @@
                   {
                      <li tabindex="-1"><a class="" href="@Url.Action("UserSettings","UserManage")"><i class="bi bi-gear-fill"></i>帳號設定</a></li>
                   }
-            }
-        }       
+              }
+        } 
+        <li>
+            <a tabindex="-1" class="CustomerSurvey" id="" href="javascript:;" ><i class="bi bi-bar-chart-line"></i>滿意度調查</a>
+        </li>
         <li>
             <a tabindex="-1" id="closeMobile" href="javascript:;"><i class="ion-android-close"></i><span class="sr-only">關閉手機選單</span></a>
         </li>
@@ -120,7 +123,7 @@
     });
 
     //滿意度調查
-   $("#CustomerSurvey").click(function() {
+   $('.CustomerSurvey').click(function() {
     var iframeUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfppMYd7h5TCkhkULUrL1FByjnCb_KI_TAF6kX-E2sfT3Pt5w/viewform?embedded=true"; // 替換為實際的 <iframe> 網址
     var width = 1500; // 視窗寬度
     var height =1000; // 視窗高度
