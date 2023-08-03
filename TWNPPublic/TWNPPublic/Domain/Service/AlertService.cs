@@ -1,4 +1,5 @@
 ﻿using SqlData;
+using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.Alert;
 
@@ -7,10 +8,13 @@ namespace TWNPPublic.Domain.Service
     public class AlertService : IAlertService
     {
         private readonly IDapperDataAccess dataAccess;
+        private readonly IAspNetUser aspNetUser;
 
-        public AlertService(IDapperDataAccess dataAccess)
+        public AlertService(IDapperDataAccess dataAccess, IAspNetUser aspNetUser)
         {
             this.dataAccess = dataAccess;
+            this.aspNetUser = aspNetUser;
+            this.dataAccess.SetHttpContextAccessor(aspNetUser.Name.ToString(), aspNetUser.ClientIP.ToString());
         }
 
         public int UpdateAlertServiceBySN(int AccountSN, List<B_ALART_SETTING> obj)

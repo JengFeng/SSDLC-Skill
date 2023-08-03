@@ -9,6 +9,8 @@
 
         public string CurrentWaterNo => GetCurrentWaterNo();
 
+        public string ClientIP => GetClientIP();
+
         public List<string> WaterNo => GetWaterNo();
 
         public AspNetUser(IHttpContextAccessor accessor)
@@ -66,6 +68,20 @@
 
             return CurrentWaterNo;
         }
+
+        private string GetClientIP()
+        {
+            if (accessor.HttpContext == null)
+                return string.Empty;
+
+            var ClientIP = accessor.HttpContext.Request.Headers["X-Forwarded-For"].Count == 0 ? "" : accessor.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault().ToString().Trim();
+
+            if (string.IsNullOrEmpty(ClientIP))
+                return string.Empty;
+
+            return ClientIP;
+
+        }
     }
 
     public interface IAspNetUser
@@ -74,5 +90,7 @@
         public string CurrentWaterNo { get; }
         public List<string> WaterNo { get; }
         public string Name { get; }
+
+        public string ClientIP { get; }
     }
 }

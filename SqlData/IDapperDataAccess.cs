@@ -13,5 +13,7 @@ namespace SqlData
         public List<T> Query<T>(string sql, object parameters = null);
         public int Execute(string sql, object parameters = null);
         public int ExecuteList(string sql, object parameters = null);
+
+        public void SetHttpContextAccessor(string Name,string ClientIP);
     }
 }

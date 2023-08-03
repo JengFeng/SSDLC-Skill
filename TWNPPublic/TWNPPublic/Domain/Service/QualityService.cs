@@ -15,6 +15,7 @@ namespace TWNPPublic.Domain.Service
         {
             this.dapperDataAccess = dapperDataAccess;
             this.aspNetUser = aspNetUser;
+            this.dapperDataAccess.SetHttpContextAccessor(aspNetUser.Name.ToString(), aspNetUser.ClientIP.ToString());
         }
 
         public QualityChartViewModel GetWaterUseChart(DateTime? StartTime, DateTime? EndTime)

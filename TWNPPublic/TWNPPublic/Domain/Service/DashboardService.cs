@@ -30,6 +30,7 @@ namespace TWNPPublic.Domain.Service
             this._aspNetUser = aspNetUser;
             this.httpClientFactory = HttpClientFactory;
             this.dataAccess = dataAccess;
+            this.dataAccess.SetHttpContextAccessor(aspNetUser.Name.ToString(), aspNetUser.ClientIP.ToString());
         }
 
         /// <summary>

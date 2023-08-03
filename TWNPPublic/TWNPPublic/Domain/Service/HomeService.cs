@@ -10,10 +10,13 @@ namespace TWNPPublic.Domain.Service
     public class HomeService : IHomeService
     {
         private readonly IDapperDataAccess dataAccess;
+        private readonly IAspNetUser _aspNetUser;
 
-        public HomeService(IDapperDataAccess dataAccess)
+        public HomeService(IDapperDataAccess dataAccess, IAspNetUser aspNetUser)
         {
             this.dataAccess = dataAccess;
+            this._aspNetUser = aspNetUser;
+            this.dataAccess.SetHttpContextAccessor(aspNetUser.Name.ToString(), aspNetUser.ClientIP.ToString());
         }
 
         public b_ACCOUNT? CheckAccountNoIsApp(string AccountNo)

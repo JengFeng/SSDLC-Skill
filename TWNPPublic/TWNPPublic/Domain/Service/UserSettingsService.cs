@@ -1,4 +1,5 @@
 ﻿using SqlData;
+using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.UserManage;
 
@@ -7,10 +8,13 @@ namespace TWNPPublic.Domain.Service
     public class UserManageService : IUserManageService
     {
         private readonly IDapperDataAccess dapperDataAccess;
+        private readonly IAspNetUser aspNetUser;
 
-        public UserManageService(IDapperDataAccess dapperDataAccess)
+        public UserManageService(IDapperDataAccess dapperDataAccess, IAspNetUser aspNetUser)
         {
             this.dapperDataAccess = dapperDataAccess;
+            this.aspNetUser = aspNetUser;
+            this.dapperDataAccess.SetHttpContextAccessor(aspNetUser.Name.ToString(), aspNetUser.ClientIP.ToString());
         }
 
         /// <summary>

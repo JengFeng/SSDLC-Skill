@@ -66,6 +66,87 @@
                 if (result.Success) {
                     const colors = ['#5391C7', '#91CC75'];
                     var option;
+                    //option = {
+                    //    color: colors,
+                    //    tooltip: {
+                    //        trigger: 'axis',
+                    //        axisPointer: {
+                    //            type: 'cross'
+                    //        }
+                    //    },
+                    //    grid: {
+                    //        right: '12%',
+                    //        bottom: 80
+                    //    },
+                    //    toolbox: {
+                    //        show: true,
+                    //        feature: {
+                    //            saveAsImage: { title: "另存圖片" }
+                    //        }
+                    //    },
+                    //    legend: {
+                    //        y: 'top',
+                    //        x: 'middle',
+                    //        top:'15',
+                    //        data: ["用水量趨勢","指針數"]
+                    //    },
+                    //    xAxis: {
+                    //        nameGap: 25,
+                    //        nameLocation: 'center',
+                    //        name: '時間(小時)',
+                    //        type: 'category',
+                    //        data: result.Data.X
+                    //    },
+                    //    yAxis:[ 
+                    //        {
+                    //            nameLocation: 'center',
+                    //            nameGap: 25,
+                    //            nameRotate: 360,
+                    //            alignTicks: true,
+                    //            //splitNumber : 4,
+                    //            name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                    //            type: 'value',
+                    //            axisLine: {
+                    //                show: true,
+                    //                lineStyle: {
+                    //                    color: colors[0]
+                    //                }
+                    //            },
+                    //            axisLabel: { formatter: '{value}' }
+                    //        },
+                    //        {
+                    //            nameLocation: 'center',
+                    //            nameGap: 45,
+                    //            nameRotate: 360,
+                    //            alignTicks: true,
+                    //            //splitNumber : 2,
+                    //            position: 'right',
+                    //            name: ' 指 \n 針 \n 數 \n ︵ \n 度 \n ︶ \n',
+                    //            type: 'value',
+                    //            axisLine: {
+                    //                show: true,
+                    //                lineStyle: {
+                    //                    color: colors[1]
+                    //                }
+                    //            },
+                    //            axisLabel: { formatter: '{value}' }
+                    //        },
+                    //    ],
+                    //    series: [
+                    //        {
+                    //            name: '用水量趨勢',
+                    //            type: 'line',
+                    //            data: result.Data.Y
+                    //        },
+                    //        {
+                    //            name: '指針數',
+                    //            type: 'line',
+                    //            yAxisIndex: 1,
+                    //            data: result.Data.O
+                    //        }
+                    //    ]
+                    //};
+
                     option = {
                         color: colors,
                         tooltip: {
@@ -75,7 +156,6 @@
                             }
                         },
                         grid: {
-                            right: '12%',
                             bottom: 80
                         },
                         toolbox: {
@@ -87,8 +167,7 @@
                         legend: {
                             y: 'top',
                             x: 'middle',
-                            top:'15',
-                            data: ["用水量趨勢","指針數"]
+                            data: ["用水量趨勢"]
                         },
                         xAxis: {
                             nameGap: 25,
@@ -97,52 +176,25 @@
                             type: 'category',
                             data: result.Data.X
                         },
-                        yAxis:[ 
-                            {
-                                nameLocation: 'center',
-                                nameGap: 25,
-                                nameRotate: 360,
-                                alignTicks: true,
-                                //splitNumber : 4,
-                                name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
-                                type: 'value',
-                                axisLine: {
-                                    show: true,
-                                    lineStyle: {
-                                        color: colors[0]
-                                    }
-                                },
-                                axisLabel: { formatter: '{value}' }
+                        yAxis: {
+                            nameLocation: 'center',
+                            nameGap: 25,
+                            nameRotate: 360,
+                            name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                            type: 'value',
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[0]
+                                }
                             },
-                            {
-                                nameLocation: 'center',
-                                nameGap: 45,
-                                nameRotate: 360,
-                                alignTicks: true,
-                                //splitNumber : 2,
-                                position: 'right',
-                                name: ' 指 \n 針 \n 數 \n ︵ \n 度 \n ︶ \n',
-                                type: 'value',
-                                axisLine: {
-                                    show: true,
-                                    lineStyle: {
-                                        color: colors[1]
-                                    }
-                                },
-                                axisLabel: { formatter: '{value}' }
-                            },
-                        ],
+                            axisLabel: { formatter: '{value}' }
+                        },
                         series: [
                             {
                                 name: '用水量趨勢',
                                 type: 'line',
                                 data: result.Data.Y
-                            },
-                            {
-                                name: '指針數',
-                                type: 'line',
-                                yAxisIndex: 1,
-                                data: result.Data.O
                             }
                         ]
                     };
@@ -257,7 +309,7 @@
                 </div>
                 <div class="chartBox">
                     <span id="spanError">資料載入中</span>
-                    <div class="pagechartGroup" id="mychart" style="width:100%;height:450px">
+                    <div class="pagechartGroup" id="mychart" style="width:100%;height:600px">
                     </div>
                 </div>
             </div>
