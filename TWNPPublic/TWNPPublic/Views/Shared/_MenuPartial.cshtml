@@ -42,7 +42,7 @@
                     }
                     <a class="CustomerSurvey" href="" id=""><i class="bi bi-bar-chart-line"></i>滿意度調查</a>
 
-                    <select id="SelectWaterNos" class="form-SelectWaterNos" onchange="SelectWaterNosChange()">
+                    <select id="SelectWaterNos" class="form-SelectWaterNos SelectWaterNoslist" onchange="SelectWaterNosChange()">
                     </select>
                 </div>
             </div>
@@ -71,9 +71,7 @@
             </div>
         </li>
         <li tabindex="-1">
-            <select id="SelectWaterNos">
-                <option value="7D76026501K">7D76026501K</option>
-            </select>
+           <select id="SelectWaterNos2" class="form-SelectWaterNos SelectWaterNoslist" onchange="SelectWaterNosChange()"></select>
         </li>
         <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
         @*<li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>*@
@@ -105,7 +103,24 @@
     function btnLogout(){
        window.location.href = "@Url.Action("Logout","Home")";
     }
-    $('#SelectWaterNos').change(function(){
+    //$('#SelectWaterNos').change(function(){
+    //    var value = $(this).val();
+    //    var model = {
+    //        WaterNos : value
+    //    };
+    //    $.post("@Url.Action("ChangeUserWaterNos","Dashboard")",model,function(result){
+    //        if(result.Success)
+    //        {
+    //            history.go(0);
+    //        }
+    //        else
+    //        {
+    //            alert('一片空白');
+    //        }
+    //    });
+    //});
+
+    $('.SelectWaterNoslist').change(function(){
         var value = $(this).val();
         var model = {
             WaterNos : value

@@ -56,12 +56,20 @@
 
         //fancybox 小頁面
         $(document).ready(function () {
-            //水號選單
+            ////水號選單
+            //$.get("@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
+            //    $.each(result.Data.WaterNos,function(index,value){
+            //        $("#SelectWaterNos").append('<option value=' + value + '>' + value + '</option>');
+            //    });
+            //    $("#SelectWaterNos option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
+            //});
+
+             //水號選單
             $.get("@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
                 $.each(result.Data.WaterNos,function(index,value){
-                    $("#SelectWaterNos").append('<option value=' + value + '>' + value + '</option>');
+                    $(".SelectWaterNoslist").append('<option value=' + value + '>' + value + '</option>');
                 });
-                $("#SelectWaterNos option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
+                $(".SelectWaterNoslist option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
             });
 
             //老馬燈AJAX
