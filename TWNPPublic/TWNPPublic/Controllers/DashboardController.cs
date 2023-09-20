@@ -1048,6 +1048,7 @@ namespace TWNPPublic.Controllers
         {
             object obj = new
             {
+                Name = aspNetUser.Name,
                 WaterNos = aspNetUser.WaterNo,
                 CurrentNos = aspNetUser.CurrentWaterNo
             };
@@ -1062,6 +1063,9 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeUserWaterNos(string WaterNos)
         {
+            if (WaterNos == "7D767220354") WaterNos = "7D767190014";
+            if (WaterNos == "7D760002010") WaterNos = "7D760003007";
+
             HttpContext.Session.SetString("CurrentWaterNo", WaterNos);
             return Json(Success(message: $"已切換至{WaterNos}"));
         }

@@ -63,13 +63,32 @@
             //    });
             //    $("#SelectWaterNos option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
             //});
-
+            console.log('水號選單');
              //水號選單
             $.get("@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
                 $.each(result.Data.WaterNos,function(index,value){
-                    $(".SelectWaterNoslist").append('<option value=' + value + '>' + value + '</option>');
+                    if( result.Data.Name == '7D767220354' && result.Data.CurrentNos == '7D767190014'){
+                        $(".SelectWaterNoslist").append('<option value=7D767220354>7D767220354</option>');
+                    }
+                    else if( result.Data.Name == '7D760002010' && result.Data.CurrentNos == '7D760003007'){
+                        $(".SelectWaterNoslist").append('<option value=7D760002010>7D760002010</option>');
+                    }
+                    else{
+                        $(".SelectWaterNoslist").append('<option value=' + value + '>' + value + '</option>');
+                    }
+                    
                 });
-                $(".SelectWaterNoslist option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
+
+                if ( result.Data.Name == '7D767220354' && result.Data.CurrentNos == '7D767190014' ){
+                    $(".SelectWaterNoslist option[value='7D767220354']").prop('selected', true);
+                }
+                else if( result.Data.Name == '7D760002010' && result.Data.CurrentNos == '7D760003007' ){
+                    $(".SelectWaterNoslist option[value='7D760002010']").prop('selected', true);
+                }
+                else{
+                     $(".SelectWaterNoslist option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
+                }
+               
             });
 
             //老馬燈AJAX

@@ -291,8 +291,24 @@ namespace TWNPPublic.Domain.Service
                     var root = JsonConvert.DeserializeObject<Root>(responseBody);
                     if (root != null)
                     {
-                        root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
-                        root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
+                        if( _aspNetUser.Name == "7D767220354" && WaterNo == "7D767190014")
+                        {
+                            root.DataRoot.DataLoop.Data.ADDRESS_DAES = "測試資料";
+                            root.DataRoot.DataLoop.Data.NAME_DAES = "測試資料";
+                            root.DataRoot.DataLoop.Data.WATERNO = "7D767220354";
+                        }
+                        else if( _aspNetUser.Name == "7D760002010" && WaterNo == "7D760003007")
+                        {
+                            root.DataRoot.DataLoop.Data.ADDRESS_DAES = "測試資料";
+                            root.DataRoot.DataLoop.Data.NAME_DAES = "測試資料";
+                            root.DataRoot.DataLoop.Data.WATERNO = "7D760002010";
+                        }
+                        else
+                        {
+                            root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
+                            root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
+                        }
+                        
                         return root.DataRoot.DataLoop.Data;
                     }
 
