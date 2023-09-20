@@ -181,14 +181,14 @@ namespace TWNPPublic.Controllers
                     string tokenDateTime= tokenWaterNo[1].ToString();
                     DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
 
-                    //檢查偸肯超過6個月
-                    if (DateTime.Now > dt.AddMonths(6))
-                    {
-                        return Json(Failed(new
-                        {
-                            ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token 逾時", 1001));
-                    }
+                    ////檢查偸肯超過6個月(不需要，多寫的 1120920)
+                    //if (DateTime.Now > dt.AddMonths(6))
+                    //{
+                    //    return Json(Failed(new
+                    //    {
+                    //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+                    //    }, "Token Error,未合法的 Token 逾時", 1001));
+                    //} //(不需要，多寫的 1120920)
 
                     homeService.CreateAppUser(WaterNo, WaterNo, AccessToken);
                     //寫一個帳密到資料庫

@@ -63,7 +63,8 @@
             //    });
             //    $("#SelectWaterNos option[value='"+result.Data.CurrentNos+"']").prop('selected', true);
             //});
-            console.log('水號選單');
+
+            //console.log('水號選單');
              //水號選單
             $.get("@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
                 $.each(result.Data.WaterNos,function(index,value){
