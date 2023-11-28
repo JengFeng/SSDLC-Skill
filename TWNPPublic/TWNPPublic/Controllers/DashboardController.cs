@@ -314,6 +314,28 @@ namespace TWNPPublic.Controllers
             }));
         }
 
+
+        /// <summary>
+        /// 取得 WaterFee2 為了撈取最新的用戶名稱
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetWaterFee3()
+        {
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now);
+            if (result == null)
+            {
+                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddMonths(-1));
+            }
+
+            return Json(Success(new
+            {
+                result.NAME_DAES,
+                result.AREA,
+                result.SUBTOTAL,
+                result.TOQTY
+            }));
+        }
+
         #endregion
 
         #region 左下角用水記事

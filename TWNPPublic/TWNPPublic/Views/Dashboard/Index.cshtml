@@ -153,6 +153,7 @@
         });
 
         DashSlowQuery();
+        DashSlowQuery2();
     });
 
     //async function DashSlowQuery(){
@@ -180,14 +181,41 @@
             });
         };
 
-       try {
+            try {
+            // 使用 await 等待異步操作完成，並獲取取结果
+            const data = await getData();
+
+            // 在獲取到數據後執行以下操作
+            //$('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
+            $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
+            InitCompareChart(data.Data.TOQTY, LASTMONTH_METER, THISMONTH_METER);
+            } catch (error) {
+                // 處理錯誤
+                console.error(error);
+            }
+    }
+
+     async function DashSlowQuery2() {
+        // 創建一個 Promise 對象，包裝 $.get 方法
+        const getData = () => {
+            return new Promise((resolve, reject) => {
+                $.get("@Url.Action("GetWaterFee3","Dashboard")", function(data) {
+                    if (data.Success) {
+                        resolve(data);
+                    } else {
+                        reject(new Error("資料取得失敗"));
+                    }
+                });
+            });
+        };
+
+            try {
             // 使用 await 等待異步操作完成，並獲取取结果
             const data = await getData();
 
             // 在獲取到數據後執行以下操作
             $('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
-            $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
-            InitCompareChart(data.Data.TOQTY, LASTMONTH_METER, THISMONTH_METER);
+           
             } catch (error) {
                 // 處理錯誤
                 console.error(error);

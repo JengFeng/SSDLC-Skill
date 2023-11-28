@@ -140,7 +140,7 @@ namespace TWNPPublic.Domain.Service
             string mainsql = @" Select * 
                                 From [TWN].[dbo].[B_ACCOUNT] 
                                 Where VALID = 1 And 
-                                      B_ACCOUNT = @AcountName";
+                                      B_ACCOUNT = @AcountName And ( LOGIN_TYPE !=1 or LOGIN_TYPE is null)";
             object obj = new { AcountName };
             var result = dataAccess.Query<b_ACCOUNT>(mainsql, obj).ToList().FirstOrDefault();
             return result;
