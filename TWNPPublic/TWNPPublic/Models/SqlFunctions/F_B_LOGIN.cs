@@ -12,6 +12,11 @@ namespace TWNPPublic.Models.SqlFunctions
             get { return JsonConvert.DeserializeObject<List<F_B_LOGIN_WaterNo>>(this.WATER_NO); }
         }
         public int? B_ACCOUNT_SN { get; set; }
+
+        public decimal? INITIAL_LOGIN { get; set; }
+
+        public DateTime? ST_DATE { get; set; }
+        public DateTime? EN_DATE { get; set; }
     }
 
     public class F_B_LOGIN_WaterNo

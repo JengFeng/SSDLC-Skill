@@ -184,7 +184,7 @@
             try {
             // 使用 await 等待異步操作完成，並獲取取结果
             const data = await getData();
-
+            console.log(data);
             // 在獲取到數據後執行以下操作
             //$('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
             $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
@@ -212,9 +212,9 @@
             try {
             // 使用 await 等待異步操作完成，並獲取取结果
             const data = await getData();
-
+            console.log(data);
             // 在獲取到數據後執行以下操作
-            $('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
+            $('#divNAME').html('歡迎  ' + data.Data.NAME);
            
             } catch (error) {
                 // 處理錯誤

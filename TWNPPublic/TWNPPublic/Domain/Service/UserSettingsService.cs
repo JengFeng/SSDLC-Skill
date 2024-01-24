@@ -156,7 +156,7 @@ namespace TWNPPublic.Domain.Service
         /// <exception cref="NotImplementedException"></exception>
         public int GetSNByAccount(string Account)
         {
-            string mainsql = @"SELECT * FROM B_ACCOUNT Where B_ACCOUNT = @Account";
+            string mainsql = @"SELECT * FROM B_ACCOUNT Where B_ACCOUNT = @Account And Valid=1";
             object obj = new { Account };
             var result = this.dapperDataAccess.Query<b_ACCOUNT>(mainsql, obj).FirstOrDefault();
             if (result == null)

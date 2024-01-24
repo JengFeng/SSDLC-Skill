@@ -76,7 +76,24 @@ namespace SyncDataBase
                 return JsonConvert.SerializeObject(result);
             }
         }
+        public string QueryAsync(string sql, string parameters = null)
+        {
+            var parameter = new DynamicParameters();
+            if (parameters != "null")
+            {
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(parameters);
+                foreach (var item in obj)
+                {
+                    parameter.Add(item.Key, item.Value);
+                }
+            }
 
+            using (var connection = CreateConnection())
+            {
+                var result = connection.Query<object>(sql, parameter).ToList();
+                return JsonConvert.SerializeObject(result);
+            }
+        }
         private IDbConnection CreateConnection()
         {
             var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);

@@ -104,10 +104,20 @@ namespace TWNPPublic.Controllers
                 }, "此水號非智慧水表", 1003));
             }
 
-            //在系統裡面有了就直接登入 而且帳號尚未被取消
+            //檢查是否存在B_ACCOUNT裡、VAILD是否=1
+            if (!homeService.CheckWaterNoIsValid(model.WaterNo))
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.NoSource.ToString(),
+                }, "此帳號未開通或是暫停使用", 1004));
+            }
+
+
+            //在系統裡面有了就直接登入 而且帳號尚未被取消(VALID=1)、Token未被註銷(LOGIN_TYPE=1) 不是首次登入(INITIAL_APPLOGIN=0)、直接app登入(DIRECT_APPLOGIN=1)
             var getAccount = homeService.CheckAccountNoIsApp(model.WaterNo);
             //兩種情況一個真的沒有 一個被取消
-            if (getAccount != null && getAccount.VALID != 0)
+            if (getAccount != null && getAccount.LOGIN_TYPE == 1 && getAccount.VALID == 1 && getAccount.INITIAL_APPLOGIN == 0 && getAccount.DIRECT_APPLOGIN == 1 )
             {
                 //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
                 List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, model.WaterNo);
@@ -117,9 +127,18 @@ namespace TWNPPublic.Controllers
                             getAccount.B_ACCOUNT,
                             model.WaterNo,
                             string.Join(',', WaterNos),
-                            getAccount.B_ACCOUNT_SN.ToString());
+                            getAccount.B_ACCOUNT_SN.ToString(),
+                            "",
+                            "");
 
-                return RedirectToAction("Index", "Dashboard");
+                if(getAccount.INITIAL_LOGIN == 1)
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                else
+                {
+                    return RedirectToAction("UpdatePw", "Dashboard");
+                }
             }
 
             ViewBag.AccountNo = model.AccountNo;
@@ -203,8 +222,8 @@ namespace TWNPPublic.Controllers
 
                     // 不去自動登入了 因為去不了
                     var getAccount = homeService.CheckAccountNoIsApp(WaterNo);
-                    //兩種情況一個真的沒有 一個被取消
-                    if (getAccount != null && getAccount.VALID != 0)
+                    //兩種情況一個真的沒有 一個被取消→修改 沒有被取消、正常(VALID == 1)、非首次登入(INITIAL_APPLOGIN = 0)、是app直接登入(DIRECT_APPLOGIN=1)
+                    if (getAccount != null && getAccount.LOGIN_TYPE == 1 && getAccount.VALID == 1 && getAccount.INITIAL_APPLOGIN == 0 && getAccount.DIRECT_APPLOGIN == 1)
                     {
                         //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
                         List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
@@ -214,9 +233,18 @@ namespace TWNPPublic.Controllers
                                     getAccount.B_ACCOUNT,
                                     WaterNo,
                                     string.Join(',', WaterNos),
-                                    getAccount.B_ACCOUNT_SN.ToString());
+                                    getAccount.B_ACCOUNT_SN.ToString(), 
+                                    getAccount.ST_DATE.ToString(),
+                                    getAccount.EN_DATE.ToString());
 
-                        return RedirectToAction("Index", "Dashboard");
+                        if (getAccount.INITIAL_LOGIN == 1)
+                        {
+                            return RedirectToAction("Index", "Dashboard");
+                        }
+                        else
+                        {
+                            return RedirectToAction("UpdatePw", "Dashboard");
+                        }
                     }
                     else
                     {
@@ -237,6 +265,8 @@ namespace TWNPPublic.Controllers
             }
             else
             {
+                //更新DIRECT_APPLOGIN = 0 不直接app登入
+                homeService.UpdateAppUser(WaterNo, WaterNo, AccessToken);
                 //自己去登入頁面
                 return RedirectToAction("Login", "Home");
             }
@@ -279,6 +309,14 @@ namespace TWNPPublic.Controllers
                 }, "此水號非智慧水表", 1003));
             }
 
+            //檢查是否存在B_ACCOUNT裡、VAILD是否=1
+            if (!homeService.CheckWaterNoIsValid(WaterNo))
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.NoSource.ToString(),
+                }, "此帳號未開通或是暫停使用", 1004));
+            }
 
             string TimeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
             string Token = WaterNo + "_" + TimeStamp;
@@ -423,7 +461,9 @@ namespace TWNPPublic.Controllers
                         WaterNo,
                         WaterNo,
                         WaterNo,
-                        "0");
+                        "0",
+                        "",
+                        "");
 
             return RedirectToAction("Index", "Dashboard");
         }
@@ -494,7 +534,9 @@ namespace TWNPPublic.Controllers
                         WaterNo,
                         WaterNo,
                         WaterNo,
-                        "0");
+                        "0",
+                        "",
+                        "");
 
             return RedirectToAction("Fancybox_tableChart", "Dashboard", new { Cdate = dt });
         }
@@ -564,7 +606,9 @@ namespace TWNPPublic.Controllers
                         WaterNo,
                         WaterNo,
                         WaterNo,
-                        "0");
+                        "0",
+                        "",
+                        "");
 
             return RedirectToAction("Fancybox_detailsTable", "Dashboard", new { Cdate = dt });
         }
@@ -643,8 +687,9 @@ namespace TWNPPublic.Controllers
             }
 
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
-
-            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Password, remoteIpAddress.ToString());
+            CommonFunc comm = new();
+            string EncryptPWD = comm.AesEncrypt(model.Password);
+            var result = homeService.LoginByUserNameAndPassWord(model.UserName, EncryptPWD, remoteIpAddress.ToString());   // model.Password
             if (result.IsSuccess)
             {
                 SetLoginSession(
@@ -652,9 +697,19 @@ namespace TWNPPublic.Controllers
                     model.UserName,
                     result.UserInfo.F_B_LOGIN_WaterNos.First().WATER_NO.ToString(),
                     string.Join(',', result.UserInfo.F_B_LOGIN_WaterNos.Select(c => c.WATER_NO)),
-                    result.UserInfo.B_ACCOUNT_SN.ToString() ?? "0");
+                    result.UserInfo.B_ACCOUNT_SN.ToString() ?? "0",
+                    result.UserInfo.ST_DATE.ToString(),
+                    result.UserInfo.EN_DATE.ToString());
 
-                return RedirectToAction("Index", "Dashboard");
+                if (result.UserInfo.INITIAL_LOGIN == 1)
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                else
+                {
+                    return RedirectToAction("UpdatePw", "Dashboard");
+                }
+                
             }
             else
             {
@@ -751,12 +806,14 @@ namespace TWNPPublic.Controllers
         {
             return b.Replace(" ", "@@");
         }
-        private void SetLoginSession(HttpContext httpContext, string UserName, string CurrentWaterNo, string WaterNo, string UserId)
+        private void SetLoginSession(HttpContext httpContext, string UserName, string CurrentWaterNo, string WaterNo, string UserId,string? StartDate, string? EndDate)
         {
             httpContext.Session.SetString("UserName", UserName);
             httpContext.Session.SetString("CurrentWaterNo", CurrentWaterNo);
             httpContext.Session.SetString("WaterNo", WaterNo);
             httpContext.Session.SetString("UserId", UserId);
+            httpContext.Session.SetString("StartDate", StartDate);
+            httpContext.Session.SetString("EndDate", EndDate);
         }
     }
 }

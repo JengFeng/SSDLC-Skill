@@ -10,5 +10,14 @@
         public string EMAIL { get; set; }
         public string CELL_PHONE { get; set; }
         public decimal VALID { get; set; }
+        public string APWD { get; set; }
+        public decimal? LOGIN_TYPE { get; set; }
+        public decimal? INITIAL_LOGIN { get; set; }
+        public decimal? INITIAL_APPLOGIN { get; set; }
+        public decimal? DIRECT_APPLOGIN { get; set; }
+        public DateTime? ST_DATE { get; set; }
+        public DateTime? EN_DATE { get; set; }
+        public string ?USERNAME { get; set; }
+
     }
 }

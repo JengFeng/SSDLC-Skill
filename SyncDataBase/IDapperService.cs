@@ -21,6 +21,9 @@ namespace SyncDataBase
 
         [OperationContract]
         int ExecuteList(string sql, string parameters = null);
+
+        [OperationContract]
+        string QueryAsync(string sql, string parameters = null);
     }
 
 

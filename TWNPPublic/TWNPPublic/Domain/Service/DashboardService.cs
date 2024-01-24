@@ -49,6 +49,21 @@ namespace TWNPPublic.Domain.Service
         }
 
         /// <summary>
+        /// 取得 F_B_HOME_SN
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="AccountSn"></param>
+        /// <param name="dayText"></param>
+        /// <returns></returns>
+        public DashMainViewModel GetDashMain2(string WaterNo, int AccountSn, DateTime dayText)
+        {
+            string mainsql = @"select * From dbo.F_B_HOME_SN(@WaterNo,@AccountSn,@Theday)";
+            string Theday = dayText.ToString("yyyy/MM/dd");
+            object obj = new { AccountSn, WaterNo, Theday };
+            return dataAccess.Query<DashMainViewModel>(mainsql, obj).FirstOrDefault();
+        }
+
+        /// <summary>
         /// 取得 F_B_CHART Week 
         /// </summary>
         /// <param name="WaterNo"></param>
@@ -633,6 +648,96 @@ namespace TWNPPublic.Domain.Service
 
             #endregion
         }
+
+
+        /// <summary>
+        /// 使用SN取得使用者資料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public b_ACCOUNT? GetAccountBySN(int Id)
+        {
+            string mainsql = "Select * From B_ACCOUNT Where B_ACCOUNT_SN = @Id";
+            object obj = new { Id };
+            return this.dataAccess.Query<b_ACCOUNT>(mainsql, obj).FirstOrDefault();
+        }
+        /// <summary>
+        /// 使用SN取得使用者資料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<b_ACCOUNT>? GetAccountByWaterNo(string WaterNo)
+        {
+            string mainsql = "Select * From B_ACCOUNT Where B_ACCOUNT = @WaterNo And Valid=1";
+            object obj = new { WaterNo };
+            var result = await this.dataAccess.QueryAsync<b_ACCOUNT>(mainsql, obj).ConfigureAwait(false);
+            return result.FirstOrDefault();
+        }
+        /// <summary>
+        /// 更新使用者資料
+        /// </summary>
+        /// <param name="model">本身不會使用帳號進行查詢或更新帳號</param>
+        /// <param name="SN">用SN更新</param>
+        /// <returns></returns>
+        public int UpdateAccountInfo(UpdatePwVm model, int SN)
+        {
+
+            string mainsql = @"Update B_ACCOUNT
+                               SET APWD = @Pwd, INITIAL_LOGIN = @Initial_login
+                               Where B_ACCOUNT_SN = @SN";
+            object obj = new
+            {
+                Pwd = model.PasswordNew2,
+                SN = SN,
+                Initial_login = 1,
+                //Email = model.Email,
+                //CellPhone = model.PhoneNumber,
+
+            };
+
+            //if (model.WaterNO != null)
+            //{
+
+            //    string deleteWaterNo5sql = @"Delete 
+            //                              From B_ACCOUNT_WATER_NO
+            //                              Where B_ACCOUNT_SN = @SN";
+            //    object deleteobj = new
+            //    {
+            //        SN = SN
+            //    };
+            //    this.dapperDataAccess.Execute(deleteWaterNo5sql, deleteobj);
+
+            //    foreach (var item in model.WaterNO)
+            //    {
+            //        string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
+            //                                       (B_ACCOUNT_SN,WATER_NO,VALID)
+            //                                 VALUES
+            //                                       (@SN,@WaterNo,@Valid)";
+            //        object waterobj = new
+            //        {
+            //            SN = SN,
+            //            WaterNo = item,
+            //            Valid = 1
+            //        };
+            //        this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
+            //    }
+            //}
+
+            return this.dataAccess.Execute(mainsql, obj);
+        }
+
+        /// <summary>
+        /// 使用者SN 取得這個使用者下的水號之開始和結束時間
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
+        public B_ACCOUNT_WATER_NO? ListedWaterNOBySN(int Id,string WaterNo)
+        {
+            string mainsql = "Select * From B_ACCOUNT_WATER_NO Where B_ACCOUNT_SN = @Id And WATER_NO=@WaterNo";
+            object obj = new { Id , WaterNo };
+            return this.dataAccess.Query<B_ACCOUNT_WATER_NO>(mainsql, obj).FirstOrDefault();
+        }
     }
 
     public interface IDashboardService
@@ -646,6 +751,14 @@ namespace TWNPPublic.Domain.Service
         /// <param name="THEDAY"></param>
         /// <returns></returns>
         public DashMainViewModel GetDashMain(string WATER_NO, string ACCOUNT, DateTime THEDAY);
+        /// <summary>
+        /// 取儀錶板-過戶
+        /// </summary>
+        /// <param name="WATER_NO"></param>
+        /// <param name="ACCOUNT"></param>
+        /// <param name="THEDAY"></param>
+        /// <returns></returns>
+        public DashMainViewModel GetDashMain2(string WATER_NO, int AccountSn, DateTime THEDAY);
         /// <summary>
         /// 取右下角圖
         /// </summary>
@@ -786,5 +899,24 @@ namespace TWNPPublic.Domain.Service
         /// <param name="WaterNo"></param>
         /// <returns></returns>
         public (string Lat, string Lon) GetLatLotByWaterNos(string WaterNo);
+        /// <summary>
+        /// 取使用者資料
+        /// </summary>
+        /// <returns></returns>
+        public b_ACCOUNT? GetAccountBySN(int Id);
+        /// <summary>
+        /// 取使用者資料
+        /// </summary>
+        /// <returns></returns>
+        public Task<b_ACCOUNT>? GetAccountByWaterNo(string WaterNo);
+        /// <summary>
+        /// 更新使用者資料
+        /// </summary>
+        /// <param name="model">本身不會使用帳號進行查詢或更新帳號</param>
+        /// <param name="SN">用SN更新</param>
+        /// <returns></returns>
+        public int UpdateAccountInfo(UpdatePwVm model, int SN);
+
+        public B_ACCOUNT_WATER_NO ListedWaterNOBySN(int Id,string WaterNo);
     }
 }

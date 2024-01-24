@@ -1,0 +1,109 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using TWNPPublic.ViewModels.Dashboard
+@model UpdatePwVm
+@{
+    ViewData["Title"] = "修改密碼";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<link rel="stylesheet" href="~/css/Login.css">
+
+<div class="wrap_login">
+    <div class="loginGroup animated fadeInDown">
+        <div class="InputBox">
+            <div class="logo">
+                <div class="systemTitle">台灣自來水公司澎湖地區</div>
+                <div class="companyName">修改密碼</div>
+            </div>
+            <div class="formBox">
+                <form id="FormUpdatePw" autocomplete="off">
+                    <span class="text-danger" id="Other">
+
+                    </span>
+                    <div class="form-group">
+                        <label>目前密碼</label>
+                        <div>
+                            @Html.PasswordFor(m=>m.Password , new {@class="form-control",@placeholder="請輸入您的目前密碼"})
+                            @Html.ValidationMessageFor(m=>m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>新密碼</label>
+                        <div>
+                            @Html.PasswordFor(m=>m.PasswordNew1 , new {@class="form-control",@placeholder="請輸入您的新密碼"})
+                            @Html.ValidationMessageFor(m=>m.PasswordNew1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>再確認新密碼</label>
+                        <div>
+                            @Html.PasswordFor(m=>m.PasswordNew2 , new {@class="form-control",@placeholder="請輸入您的再確認新密碼"})
+                            @Html.ValidationMessageFor(m=>m.PasswordNew2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="btnGroup">
+                        <a class="btn-green-o" href="javascript:;" onclick="submitForm()">送出</a>
+                        <a class="btn-lightGrey-o" href="javascript:;" onclick="clearFrom()">清除</a>
+                    </div>
+                </form>
+            </div>
+            <div style="display:flex;justify-content:end;margin-right:15px">
+                <div>
+                    <a href="@Url.Action("Login","Home")">返回登入</a>
+                </div>
+            </div>
+        </div><!-- InputBox -->
+    </div><!-- loginGroup end -->
+</div><!-- wrap_login end-->
+<script>
+
+  function submitForm(){
+
+        let url = "@Url.Action("UpdatePw","Dashboard")";
+        let model = {
+            Password : $("#Password").val(),
+            PasswordNew1 : $("#PasswordNew1").val(),
+            PasswordNew2 : $("#PasswordNew2").val()
+        };
+
+        let Validator = $("#FormUpdatePw").validate();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: model,
+            success: function (data) {
+                if (data.Success) {
+                    alert(data.Message);
+                    window.location.href = "@Url.Action("Index","Dashboard")";
+                }
+                else {
+                     $("#Other").empty();
+                    if(data.ModelStateErrors["Other"] != null){
+                        $("#Other").text(data.ModelStateErrors["Other"]);
+                    }
+                    else if (data.ModelStateErrors != null) {
+                        Validator.showErrors(data.ModelStateErrors);
+                    }
+                    else {
+                        alert(data.Message);
+                    }
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError){
+                alert("伺服器繁忙，請稍後再試");
+            }
+        });
+    }
+
+    function clearFrom(){
+        history.go(0);
+    }
+
+
+</script>

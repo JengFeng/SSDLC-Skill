@@ -15,5 +15,8 @@ namespace SqlData
         public int ExecuteList(string sql, object parameters = null);
 
         public void SetHttpContextAccessor(string Name,string ClientIP);
+
+        public Task<IEnumerable<T>> QueryAsync<T>(string sql, object parameters = null);
+
     }
 }

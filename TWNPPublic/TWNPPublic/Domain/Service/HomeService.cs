@@ -50,23 +50,42 @@ namespace TWNPPublic.Domain.Service
             return false;
         }
 
+        /// <summary>
+        /// 檢查是否存在B_ACCOUNT裡、VAILD是否=1
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
+        public bool CheckWaterNoIsValid(string WaterNo)
+        {
+            string mainsql = @"Select Top (1) [B_ACCOUNT] From [B_ACCOUNT] Where B_ACCOUNT = @WaterNo And VALID = 1";
+            object obj = new { WaterNo };
+            var result = dataAccess.Query<b_ACCOUNT>(mainsql, obj).ToList().FirstOrDefault();
+
+            if (result != null && result.B_ACCOUNT != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public List<string> CheckWaterNoNoIsApp(int AccountSN, string WaterNo)
         {
-            string mainsql = @"Insert Into [dbo].[B_ACCOUNT_WATER_NO]            
-			                                ([B_ACCOUNT_SN]
-			                                ,[WATER_NO]
-			                                ,[VALID])
-                                Select @B_ACCOUNT_SN,@WATER_NO,@VALID
-                                Where Not Exists
-	                                (Select 1 From 
-	                                [B_ACCOUNT_WATER_NO] Where [B_ACCOUNT_SN] = @B_ACCOUNT_SN And [WATER_NO] = @WATER_NO )";
-            object obj = new
-            {
-                B_ACCOUNT_SN = AccountSN,
-                WATER_NO = WaterNo,
-                VALID = 1
-            };
-            dataAccess.Execute(mainsql, obj);
+            //string mainsql = @"Insert Into [dbo].[B_ACCOUNT_WATER_NO]            
+			         //                       ([B_ACCOUNT_SN]
+			         //                       ,[WATER_NO]
+			         //                       ,[VALID])
+            //                    Select @B_ACCOUNT_SN,@WATER_NO,@VALID
+            //                    Where Not Exists
+	           //                     (Select 1 From 
+	           //                     [B_ACCOUNT_WATER_NO] Where [B_ACCOUNT_SN] = @B_ACCOUNT_SN And [WATER_NO] = @WATER_NO )";
+            //object obj = new
+            //{
+            //    B_ACCOUNT_SN = AccountSN,
+            //    WATER_NO = WaterNo,
+            //    VALID = 1
+            //};
+            //dataAccess.Execute(mainsql, obj);
 
             string querysql = @"SELECT *
                                 FROM [TWN].[dbo].[B_ACCOUNT_WATER_NO]
@@ -87,50 +106,101 @@ namespace TWNPPublic.Domain.Service
         /// <param name="WaterNo"></param>
         public void CreateAppUser(string AccountNo, string WaterNo, string Token)
         {
-            string mainsql = @"If exists(Select Top(1) [B_ACCOUNT_SN] From [TWN].[dbo].[B_ACCOUNT] Where B_ACCOUNT=@B_ACCOUNT And [LOGIN_TYPE] = 1)            
+            //string mainsql = @"If exists(Select Top(1) [B_ACCOUNT_SN] From [TWN].[dbo].[B_ACCOUNT] Where B_ACCOUNT=@B_ACCOUNT And [LOGIN_TYPE] = 1)            
+            //                    Begin            
+	           //                     Update [TWN].[dbo].[B_ACCOUNT] 
+	           //                     Set VALID = 1, 
+            //                            PWD = @PWD
+	           //                     Where B_ACCOUNT=@B_ACCOUNT And [LOGIN_TYPE] = 1  
+            //                    End                    
+            //                    Else            
+            //                    Begin  
+	           //                     Insert Into [TWN].[dbo].[B_ACCOUNT] 
+				        //                        ([B_ACCOUNT]
+            //                                    ,[PWD]
+            //                                    ,[CREATE_DATE]
+            //                                    ,[LAST_DATE]
+            //                                    ,[VALID]
+            //                                    ,[LOGIN_TYPE])
+	           //                     Values
+            //                           (@B_ACCOUNT,
+            //                            @PWD,
+            //                            @CREATE_DATE,
+            //                            @LAST_DATE,
+            //                            @VALID,
+            //                            @LOGIN_TYPE)  
+            //                    End ";
+
+            //object obj = new
+            //{
+            //    B_ACCOUNT = AccountNo,
+            //    WATER_NO = WaterNo,
+            //    PWD = Token,
+            //    CREATE_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+            //    LAST_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+            //    VALID = 1,
+            //    LOGIN_TYPE = 1
+            //};
+
+
+            string mainsql = @"If exists(Select Top(1) [B_ACCOUNT_SN] From [TWN].[dbo].[B_ACCOUNT] Where B_ACCOUNT=@B_ACCOUNT And VALID = 1 )            
                                 Begin            
 	                                Update [TWN].[dbo].[B_ACCOUNT] 
-	                                Set VALID = 1, 
-                                        PWD = @PWD
-	                                Where B_ACCOUNT=@B_ACCOUNT And [LOGIN_TYPE] = 1  
-                                End                    
-                                Else            
-                                Begin  
-	                                Insert Into [TWN].[dbo].[B_ACCOUNT] 
-				                                ([B_ACCOUNT]
-                                                ,[PWD]
-                                                ,[CREATE_DATE]
-                                                ,[LAST_DATE]
-                                                ,[VALID]
-                                                ,[LOGIN_TYPE])
-	                                Values
-                                       (@B_ACCOUNT,
-                                        @PWD,
-                                        @CREATE_DATE,
-                                        @LAST_DATE,
-                                        @VALID,
-                                        @LOGIN_TYPE)  
-                                End ";
+	                                Set LOGIN_TYPE = 1, 
+                                        PWD = @PWD,
+                                        INITIAL_APPLOGIN = 0,
+                                        DIRECT_APPLOGIN  =1 
+	                                Where B_ACCOUNT=@B_ACCOUNT And VALID = 1
+                                End";
 
             object obj = new
             {
                 B_ACCOUNT = AccountNo,
-                WATER_NO = WaterNo,
+                //WATER_NO = WaterNo,
                 PWD = Token,
-                CREATE_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                LAST_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                VALID = 1,
-                LOGIN_TYPE = 1
+                //CREATE_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                //LAST_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                //VALID = 1,
+                //LOGIN_TYPE = 1
             };
+
+
+
+            dataAccess.Execute(mainsql, obj);
+
+        }
+
+
+        /// <summary>
+        /// 更新DIRECT_APPLOGIN = 0 不直接app登入
+        /// </summary>
+        /// <param name="AccountNo"></param>
+        /// <param name="WaterNo"></param>
+        public void UpdateAppUser(string AccountNo, string WaterNo, string Token)
+        {
+           
+            string mainsql = @"Update [TWN].[dbo].[B_ACCOUNT] 
+	                                Set DIRECT_APPLOGIN = 0 
+	                                Where B_ACCOUNT=@B_ACCOUNT And Valid=1";
+
+            object obj = new
+            {
+                B_ACCOUNT = AccountNo,
+            };
+
             dataAccess.Execute(mainsql, obj);
 
         }
 
         public int DenyAccountFromApp(string AccountNo)
         {
+            //string mainsql = @"Update [dbo].[B_ACCOUNT]
+            //                   Set [VALID] = 0
+            //                   Where  B_ACCOUNT = @AccountNo And [LOGIN_TYPE] = 1";
+
             string mainsql = @"Update [dbo].[B_ACCOUNT]
-                               Set [VALID] = 0
-                               Where  B_ACCOUNT = @AccountNo And [LOGIN_TYPE] = 1";
+                               Set [LOGIN_TYPE] = 0
+                               Where  B_ACCOUNT = @AccountNo And Valid=1";
 
             return dataAccess.Execute(mainsql, new { AccountNo });
         }
@@ -139,8 +209,7 @@ namespace TWNPPublic.Domain.Service
         {
             string mainsql = @" Select * 
                                 From [TWN].[dbo].[B_ACCOUNT] 
-                                Where VALID = 1 And 
-                                      B_ACCOUNT = @AcountName And ( LOGIN_TYPE !=1 or LOGIN_TYPE is null)";
+                                Where B_ACCOUNT = @AcountName And Valid=1";
             object obj = new { AcountName };
             var result = dataAccess.Query<b_ACCOUNT>(mainsql, obj).ToList().FirstOrDefault();
             return result;
@@ -199,7 +268,7 @@ namespace TWNPPublic.Domain.Service
 
             string UpdateSql = @"UPDATE [dbo].[B_ACCOUNT]
                                    SET [PWD] = @PWD
-                                WHERE B_ACCOUNT = @BAccount And EMAIL = @EMail ";
+                                WHERE B_ACCOUNT = @BAccount And EMAIL = @EMail And Valid=1";
 
             string InsertSql = @"INSERT INTO [dbo].[SEND_MAIL_LIST]
                                        ([TITLE]
@@ -228,7 +297,7 @@ namespace TWNPPublic.Domain.Service
             dataAccess.Execute(UpdateSql, new { PWD = pwd, BAccount = B_ACCOUNT, EMail = Email });
             return dataAccess.Execute(InsertSql, new SEND_MAIL_LIST
             {
-                TITLE = "台灣自來水公司-密碼發送通知",
+                TITLE = "台灣自來水公司-澎湖智慧水網密碼發送通知",
                 CONTENTS = setContext,
                 IS_SEND = 0,
                 INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
@@ -300,5 +369,15 @@ namespace TWNPPublic.Domain.Service
         public int DenyAccountFromApp(string AccountNo);
 
         public int SendMailUsingSendMailList(string B_ACCOUNT, string Email);
+
+        public bool CheckWaterNoIsValid(string WaterNo);
+
+        /// <summary>
+        /// APP用
+        /// </summary>
+        /// <param name="AccountNo"></param>
+        /// <param name="WaterNo"></param>
+        /// <param name="Token"></param>
+        public void UpdateAppUser(string AccountNo, string WaterNo, string Token);
     }
 }

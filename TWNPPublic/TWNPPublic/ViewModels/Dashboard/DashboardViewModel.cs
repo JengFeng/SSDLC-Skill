@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace TWNPPublic.ViewModels.Dashboard
 {
@@ -194,5 +195,20 @@ namespace TWNPPublic.ViewModels.Dashboard
     {
         public int Max { get; set; }
         public List<ExceptionItem> PageData { get; set; }
+    }
+
+    /// <summary>
+    /// 登入後若INITIAL_LOGIN =0時需要修改密碼
+    /// </summary>
+    public class UpdatePwVm
+    {
+        [Required(ErrorMessage = "目前密碼為必填欄位")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "新密碼為必填欄位")]
+        public string PasswordNew1 { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "再確認新密碼為必填")]
+        public string PasswordNew2 { get; set; } = string.Empty;
     }
 }

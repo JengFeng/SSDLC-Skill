@@ -99,6 +99,18 @@ namespace SqlData
             return JsonConvert.DeserializeObject<List<T>>(ChannelService.Query(sql, steamparameters));
         }
 
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object parameters = null)
+        {
+            //TODO:記錄使用者操作
+            SYS_LOG(sql, parameters, 1, "QueryAsync", 5);
+
+            var steamparameters = JsonConvert.SerializeObject(parameters);
+            return await Task.Run(() =>
+            {
+                var result = ChannelService.Query(sql, steamparameters);
+                return JsonConvert.DeserializeObject<List<T>>(result);
+            }).ConfigureAwait(false);
+        }
         public void SetHttpContextAccessor(string AccountName, string ClientIP)
         {
             AccountName_ = AccountName;

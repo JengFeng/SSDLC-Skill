@@ -13,6 +13,10 @@
 
         public List<string> WaterNo => GetWaterNo();
 
+        public DateTime? StartDate => GetStartDate();
+
+        public DateTime? EndDate => GetEndDate();
+
         public AspNetUser(IHttpContextAccessor accessor)
         {
             this.accessor = accessor;
@@ -82,6 +86,33 @@
             return ClientIP;
 
         }
+
+        private DateTime? GetStartDate()
+        {
+            if (accessor.HttpContext == null)
+                return null;
+
+            var StartDate = accessor.HttpContext.Session.GetString("StartDate");
+
+            if (string.IsNullOrEmpty(StartDate))
+                return null;
+
+            return (StartDate == null ? null : DateTime.Parse(StartDate) );
+        }
+
+        private DateTime? GetEndDate()
+        {
+            if (accessor.HttpContext == null)
+                return null;
+
+            var EndDate = accessor.HttpContext.Session.GetString("EndDate");
+
+            if (string.IsNullOrEmpty(EndDate))
+                return null;
+
+            return (EndDate == null ? null : DateTime.Parse(EndDate));
+        }
+
     }
 
     public interface IAspNetUser
@@ -92,5 +123,10 @@
         public string Name { get; }
 
         public string ClientIP { get; }
+
+        public DateTime? StartDate { get; }
+
+        public DateTime? EndDate { get; }
+
     }
 }
