@@ -89,7 +89,7 @@ namespace TWNPPublic.Domain.Service
 
             string querysql = @"SELECT *
                                 FROM [TWN].[dbo].[B_ACCOUNT_WATER_NO]
-                                Where B_ACCOUNT_SN = @B_ACCOUNT_SN";
+                                Where B_ACCOUNT_SN = @B_ACCOUNT_SN And VALID=1";
 
             var result = dataAccess.Query<B_ACCOUNT_WATER_NO>(querysql, new
             {

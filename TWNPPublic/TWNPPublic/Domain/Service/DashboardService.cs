@@ -668,7 +668,7 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public async Task<b_ACCOUNT>? GetAccountByWaterNo(string WaterNo)
         {
-            string mainsql = "Select * From B_ACCOUNT Where B_ACCOUNT = @WaterNo And Valid=1";
+            string mainsql = "Select Top 1 * From B_ACCOUNT Where B_ACCOUNT = @WaterNo And EN_DATE IS NULL Order by B_ACCOUNT_SN DESC";
             object obj = new { WaterNo };
             var result = await this.dataAccess.QueryAsync<b_ACCOUNT>(mainsql, obj).ConfigureAwait(false);
             return result.FirstOrDefault();
@@ -727,15 +727,15 @@ namespace TWNPPublic.Domain.Service
         }
 
         /// <summary>
-        /// 使用者SN 取得這個使用者下的水號之開始和結束時間
+        /// 水號 取得這個使用者下的水號之開始和結束時間
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="WaterNo"></param>
         /// <returns></returns>
-        public B_ACCOUNT_WATER_NO? ListedWaterNOBySN(int Id,string WaterNo)
+        public B_ACCOUNT_WATER_NO? ListedWaterNOBySN(string WaterNo)
         {
-            string mainsql = "Select * From B_ACCOUNT_WATER_NO Where B_ACCOUNT_SN = @Id And WATER_NO=@WaterNo";
-            object obj = new { Id , WaterNo };
+            string mainsql = "Select Top 1 * From B_ACCOUNT Where B_ACCOUNT=@WaterNo And EN_DATE IS NULL Order by B_ACCOUNT_SN DESC";
+            object obj = new { WaterNo };
             return this.dataAccess.Query<B_ACCOUNT_WATER_NO>(mainsql, obj).FirstOrDefault();
         }
     }
@@ -917,6 +917,6 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public int UpdateAccountInfo(UpdatePwVm model, int SN);
 
-        public B_ACCOUNT_WATER_NO ListedWaterNOBySN(int Id,string WaterNo);
+        public B_ACCOUNT_WATER_NO ListedWaterNOBySN(string WaterNo);
     }
 }

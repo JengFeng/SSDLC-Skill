@@ -36,7 +36,7 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public List<B_ACCOUNT_WATER_NO> ListedWaterNOBySN(int Id)
         {
-            string mainsql = "Select * From B_ACCOUNT_WATER_NO Where B_ACCOUNT_SN = @Id";
+            string mainsql = "Select * From B_ACCOUNT_WATER_NO Where B_ACCOUNT_SN = @Id And VALID=1";
             object obj = new { Id };
             return this.dapperDataAccess.Query<B_ACCOUNT_WATER_NO>(mainsql, obj);
         }

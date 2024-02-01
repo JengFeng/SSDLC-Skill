@@ -149,7 +149,7 @@ namespace TWNPPublic.Controllers
 
             //將費用名字改成帳號的名稱
             var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
-            var NAME = result2.USERNAME == null ? CurrentResult.NAME_DAES : result2.USERNAME == "" ? CurrentResult.NAME_DAES : result2.USERNAME;
+            var NAME = result2 == null ? CurrentResult.NAME_DAES : result2.USERNAME == null ? CurrentResult.NAME_DAES : result2.USERNAME == "" ? CurrentResult.NAME_DAES : result2.USERNAME;
             CurrentResult.NAME_DAES = NAME;
             if (aspNetUser.UserId > 0)
             {
@@ -237,22 +237,36 @@ namespace TWNPPublic.Controllers
             #region 水號過戶判斷
             if (aspNetUser.UserId != 0)
             {
-                if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                {
+                //if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //{
 
-                    if ( !( Cdate >= aspNetUser.StartDate) )
-                    {
-                        ViewBag.VDetailResult = null;
-                    }
+                //    if ( !( Cdate >= aspNetUser.StartDate) )
+                //    {
+                //        ViewBag.VDetailResult = null;
+                //    }
 
-                }
-                else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //}
+                //else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //{
+                //    if ( !(Cdate >= aspNetUser.StartDate) || !(Cdate <= aspNetUser.EndDate) )
+                //    {
+                //        ViewBag.VDetailResult = null;
+                //    }
+                //}
+
+
+                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate >= aspNetUser.StartDate && Cdate <= aspNetUser.EndDate)
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate >= aspNetUser.StartDate)
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate <= aspNetUser.EndDate))
                 {
-                    if ( !(Cdate >= aspNetUser.StartDate) || !(Cdate <= aspNetUser.EndDate) )
-                    {
-                        ViewBag.VDetailResult = null;
-                    }
+                    //
                 }
+                else
+                {
+                    ViewBag.VDetailResult = null;
+                }
+
             }
             #endregion
 
@@ -296,14 +310,23 @@ namespace TWNPPublic.Controllers
             #region  水號過戶判斷
             if (aspNetUser.UserId != 0)
             {
-                if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                //if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                //{
+                //    result = dashboardService.GetDashMain2(aspNetUser.CurrentWaterNo, aspNetUser.UserId.Value, GetDataDate);
+                //}
+                //else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                //{
+                //    result = dashboardService.GetDashMain2(aspNetUser.CurrentWaterNo, aspNetUser.UserId.Value, GetDataDate);
+                //}
+
+                if (  (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())  )
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) ))
                 {
+
                     result = dashboardService.GetDashMain2(aspNetUser.CurrentWaterNo, aspNetUser.UserId.Value, GetDataDate);
                 }
-                else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
-                {
-                    result = dashboardService.GetDashMain2(aspNetUser.CurrentWaterNo, aspNetUser.UserId.Value, GetDataDate);
-                }
+               
             }
             #endregion
 
@@ -354,35 +377,49 @@ namespace TWNPPublic.Controllers
             #region 水號過戶判斷
             if (aspNetUser.UserId != 0)
             {
-                if ( !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //if ( !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //{
+                //    if (!(DateTime.Now.AddYears(-1) >= aspNetUser.StartDate) )
+                //    {
+                //        result.SUBTOTAL = (0).ToString();
+                //        result.TOQTY = (0).ToString();
+                //    }
+
+                //    if (!(DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate) )
+                //    {
+                //        result.SUBTOTAL = (0).ToString();
+                //        result.TOQTY = (0).ToString();
+                //    }
+
+                //}
+                //else if ( !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                //{
+                //    if (!(DateTime.Now.AddYears(-1) >= aspNetUser.StartDate) || !(DateTime.Now.AddYears(-1) <= aspNetUser.EndDate))
+                //    {
+                //        result.SUBTOTAL = (0).ToString();
+                //        result.TOQTY = (0).ToString();
+                //    }
+
+                //    if (!(DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate) || !(DateTime.Now.AddYears(-1).AddMonths(-1) <= aspNetUser.EndDate))
+                //    {
+                //        result.SUBTOTAL = (0).ToString();
+                //        result.TOQTY = (0).ToString();
+                //    }
+
+                //}
+
+
+                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate && DateTime.Now.AddYears(-1).AddMonths(-1) <= aspNetUser.EndDate)
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate)
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Now.AddYears(-1).AddMonths(-1) <= aspNetUser.EndDate))
                 {
-                    if (!(DateTime.Now.AddYears(-1) >= aspNetUser.StartDate) )
-                    {
-                        result.SUBTOTAL = (0).ToString();
-                        result.TOQTY = (0).ToString();
-                    }
-
-                    if (!(DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate) )
-                    {
-                        result.SUBTOTAL = (0).ToString();
-                        result.TOQTY = (0).ToString();
-                    }
-
+                   
                 }
-                else if ( !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                else
                 {
-                    if (!(DateTime.Now.AddYears(-1) >= aspNetUser.StartDate) || !(DateTime.Now.AddYears(-1) <= aspNetUser.EndDate))
-                    {
-                        result.SUBTOTAL = (0).ToString();
-                        result.TOQTY = (0).ToString();
-                    }
-
-                    if (!(DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate) || !(DateTime.Now.AddYears(-1).AddMonths(-1) <= aspNetUser.EndDate))
-                    {
-                        result.SUBTOTAL = (0).ToString();
-                        result.TOQTY = (0).ToString();
-                    }
-
+                    result.SUBTOTAL = (0).ToString();
+                    result.TOQTY = (0).ToString();
                 }
 
             }
@@ -411,7 +448,7 @@ namespace TWNPPublic.Controllers
             }
 
             var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
-            var NAME = result2.USERNAME == null ? result.NAME_DAES : result2.USERNAME == "" ? result.NAME_DAES : result2.USERNAME;
+            var NAME = result2 == null ? result.NAME_DAES : result2.USERNAME == null ? result.NAME_DAES : result2.USERNAME == "" ? result.NAME_DAES : result2.USERNAME;
 
             return Json(Success(new
             {
@@ -454,21 +491,35 @@ namespace TWNPPublic.Controllers
             #region 水號過戶判斷
             if (aspNetUser.UserId != 0)
             {
-                if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                {
-                    if ( !( Cdate >= aspNetUser.StartDate)  )
-                    {
-                        Note = null;
-                    }
+                //if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //{
+                //    if ( !( Cdate >= aspNetUser.StartDate)  )
+                //    {
+                //        Note = null;
+                //    }
 
-                }
-                else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //}
+                //else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //{
+                //    if (!(Cdate >= aspNetUser.StartDate) || !(Cdate <= aspNetUser.EndDate))
+                //    {
+                //        Note = null;
+                //    }
+                //}
+
+
+                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate >= aspNetUser.StartDate && Cdate <= aspNetUser.EndDate)
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate >= aspNetUser.StartDate)
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate <= aspNetUser.EndDate))
                 {
-                    if (!(Cdate >= aspNetUser.StartDate) || !(Cdate <= aspNetUser.EndDate))
-                    {
-                        Note = null;
-                    }
+                   
                 }
+                else
+                {
+                    Note = null;
+                }
+
             }
             #endregion
 
@@ -520,8 +571,26 @@ namespace TWNPPublic.Controllers
             {
                 StartTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.AddDays(-1).Day, 23, 0, 0);
             }
+
+            DateTime EnderTime = DateTime.Now;
+
+            // 取得下個月的第一天
+            DateTime firstDayOfNextMonth = new DateTime(Cdate.Year, Cdate.Month, 1).AddMonths(1);
+            // 減去一天，即為當前月份的最後一天
+            DateTime lastDayOfCurrentMonth = firstDayOfNextMonth.AddDays(-1);
+            // 判斷今天是否是最後一天
+            bool isLastDayOfMonth = Cdate.Date == lastDayOfCurrentMonth.Date;
+
+            if ( isLastDayOfMonth )
+            {
+                EnderTime = new DateTime(Cdate.Year, Cdate.AddDays(1).Month, Cdate.AddDays(1).Day, 0, 0, 0);
+            }
+            else
+            {
+                EnderTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.AddDays(1).Day, 0, 0, 0);
+            }
+
             
-            DateTime EnderTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.AddDays(1).Day, 0, 0, 0);
             List<decimal?> NewWaterUser = new List<decimal?>();
 
             try
@@ -572,76 +641,105 @@ namespace TWNPPublic.Controllers
                         var cell = temp.FirstOrDefault(c => c.X.ToString("yyyy/MM/dd HH:mm") == item.Key);
 
                         #region 水號過戶判斷
+                        //if (aspNetUser.UserId != 0)
+                        //{
+                        //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                        //    {
+                        //        if (cell == null)
+                        //        {
+                        //            dic[item.Key] = null;
+                        //        }
+                        //        else
+                        //        {
+                        //            if (!(cell.X >= aspNetUser.StartDate))
+                        //            {
+                        //                dic[item.Key] = null;
+                        //            }
+                        //            else
+                        //            {
+                        //                dic[item.Key] = cell.Y;
+                        //            }
+                        //        }
+
+
+                        //    }
+                        //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                        //    {
+
+                        //        if (cell == null)
+                        //        {
+                        //            dic[item.Key] = null;
+                        //        }
+                        //        else
+                        //        {
+                        //            if (!(cell.X >= aspNetUser.StartDate) || !(cell.X <= aspNetUser.EndDate))
+                        //            {
+                        //                dic[item.Key] = null;
+                        //            }
+                        //            else
+                        //            {
+                        //                dic[item.Key] = cell.Y;
+                        //            }
+
+                        //        }
+
+                        //    }
+                        //    else
+                        //    {
+                        //        //非過戶
+                        //        if (cell == null)
+                        //        {
+                        //            dic[item.Key] = null;
+                        //        }
+                        //        else
+                        //        {
+                        //            dic[item.Key] = cell.Y;
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    //業務版
+                        //    if (cell == null)
+                        //    {
+                        //        dic[item.Key] = null;
+                        //    }
+                        //    else
+                        //    {
+                        //        dic[item.Key] = cell.Y;
+                        //    }
+
+                        //}
+
                         if (aspNetUser.UserId != 0)
                         {
-                            if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                            {
-                                if(cell == null)
-                                {
-                                    dic[item.Key] = null;
-                                }
-                                else
-                                {
-                                    if (!(cell.X >= aspNetUser.StartDate))
-                                    {
-                                        dic[item.Key] = null;
-                                    }
-                                    else
-                                    {
-                                        dic[item.Key] = cell.Y;
-                                    }
-                                }
-                                
-
-                            }
-                            else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                            {
-
-                                if (cell == null)
-                                {
-                                    dic[item.Key] = null;
-                                }
-                                else
-                                {
-                                    if (!( cell.X >= aspNetUser.StartDate) || !(cell.X <= aspNetUser.EndDate))
-                                    {
-                                        dic[item.Key] = null;
-                                    }
-                                    else
-                                    {
-                                        dic[item.Key] = cell.Y;
-                                    }
-
-                                }
-                               
-                            }
-                            else
-                            {
-                                //非過戶
-                                if (cell == null)
-                                {
-                                    dic[item.Key] = null;
-                                }
-                                else
-                                {
-                                    dic[item.Key] = cell.Y;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //業務版
                             if (cell == null)
                             {
                                 dic[item.Key] = null;
                             }
                             else
                             {
-                                dic[item.Key] = cell.Y;
+                                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && cell.X >= aspNetUser.StartDate && cell.X <= aspNetUser.EndDate)
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && cell.X >= aspNetUser.StartDate)
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && cell.X <= aspNetUser.EndDate))
+                                {
+                                    dic[item.Key] = (cell == null) ? null : cell.Y;
+                                }
+                                else
+                                {
+                                    dic[item.Key] = null;
+                                }
                             }
-
                         }
+                        else
+                        {
+                            dic[item.Key] = (cell == null) ? null : cell.Y;
+                        }
+
                         #endregion
+
+
 
                     }
 
@@ -683,49 +781,68 @@ namespace TWNPPublic.Controllers
                         var takeone = dayresult.FirstOrDefault(c => c.REC_DATE_TIME.ToString("yyyy/MM/dd HH:mm") == item.Key);
 
                         #region 水號過戶判斷
-                        if (aspNetUser.UserId != 0)
+                        //if (aspNetUser.UserId != 0)
+                        //{
+                        //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                        //    {
+                        //        if (takeone != null)
+                        //        {
+                        //            if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate))
+                        //            {
+                        //                dic[item.Key] = takeone.AMOUNT;
+                        //            }
+
+                        //        }
+
+
+                        //    }
+                        //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                        //    {
+                        //        if (takeone != null)
+                        //        {
+                        //            if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate) && (takeone.REC_DATE_TIME <= aspNetUser.EndDate))
+                        //            {
+                        //                dic[item.Key] = takeone.AMOUNT;
+                        //            }
+                        //        }
+
+                        //    }
+                        //    else
+                        //    {
+                        //        //非過戶
+                        //        if (takeone != null)
+                        //        {
+                        //            dic[item.Key] = takeone.AMOUNT;
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    //業務版
+                        //    if (takeone != null)
+                        //    {
+                        //        dic[item.Key] = takeone.AMOUNT;
+                        //    }
+
+                        //}
+
+                        if (takeone != null)
                         {
-                            if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                            if (aspNetUser.UserId != 0)
                             {
-                                if (takeone != null)
-                                {
-                                    if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate))
-                                    {
-                                        dic[item.Key] = takeone.AMOUNT;
-                                    }
-                                   
-                                }
-                                 
-                               
-                            }
-                            else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                            {
-                                if (takeone != null)
-                                {
-                                    if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate) && (takeone.REC_DATE_TIME <= aspNetUser.EndDate))
-                                    {
-                                        dic[item.Key] = takeone.AMOUNT;
-                                    }
-                                }
-                                   
-                            }
-                            else
-                            {
-                                //非過戶
-                                if (takeone != null)
+                                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME >= aspNetUser.StartDate && takeone.REC_DATE_TIME <= aspNetUser.EndDate)
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME >= aspNetUser.StartDate)
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME <= aspNetUser.EndDate))
                                 {
                                     dic[item.Key] = takeone.AMOUNT;
                                 }
                             }
-                        }
-                        else
-                        {
-                            //業務版
-                            if (takeone != null)
+                            else
                             {
+                                //業務版
                                 dic[item.Key] = takeone.AMOUNT;
                             }
-
                         }
                         #endregion
 
@@ -736,49 +853,68 @@ namespace TWNPPublic.Controllers
                         var takeone = day2result.FirstOrDefault(c => c.REC_DATE_TIME.ToString("yyyy/MM/dd HH:mm") == item.Key);
 
                         #region 水號過戶判斷
-                        if (aspNetUser.UserId != 0)
+                        //if (aspNetUser.UserId != 0)
+                        //{
+                        //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                        //    {
+                        //        if (takeone != null)
+                        //        {
+                        //            if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate))
+                        //            {
+                        //                dic[item.Key] = takeone.AMOUNT;
+                        //            }
+
+                        //        }
+
+
+                        //    }
+                        //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                        //    {
+                        //        if (takeone != null)
+                        //        {
+                        //            if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate) && (takeone.REC_DATE_TIME <= aspNetUser.EndDate))
+                        //            {
+                        //                dic[item.Key] = takeone.AMOUNT;
+                        //            }
+                        //        }
+
+                        //    }
+                        //    else
+                        //    {
+                        //        //非過戶
+                        //        if (takeone != null)
+                        //        {
+                        //            dic[item.Key] = takeone.AMOUNT;
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    //業務版
+                        //    if (takeone != null)
+                        //    {
+                        //        dic[item.Key] = takeone.AMOUNT;
+                        //    }
+
+                        //}
+
+                        if (takeone != null)
                         {
-                            if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                            if (aspNetUser.UserId != 0)
                             {
-                                if (takeone != null)
-                                {
-                                    if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate))
-                                    {
-                                        dic[item.Key] = takeone.AMOUNT;
-                                    }
-
-                                }
-
-
-                            }
-                            else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                            {
-                                if (takeone != null)
-                                {
-                                    if ((takeone.REC_DATE_TIME >= aspNetUser.StartDate) && (takeone.REC_DATE_TIME <= aspNetUser.EndDate))
-                                    {
-                                        dic[item.Key] = takeone.AMOUNT;
-                                    }
-                                }
-
-                            }
-                            else
-                            {
-                                //非過戶
-                                if (takeone != null)
+                                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME >= aspNetUser.StartDate && takeone.REC_DATE_TIME <= aspNetUser.EndDate)
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME >= aspNetUser.StartDate)
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME <= aspNetUser.EndDate))
                                 {
                                     dic[item.Key] = takeone.AMOUNT;
                                 }
                             }
-                        }
-                        else
-                        {
-                            //業務版
-                            if (takeone != null)
+                            else
                             {
+                                //業務版
                                 dic[item.Key] = takeone.AMOUNT;
                             }
-
                         }
                         #endregion
 
@@ -876,37 +1012,84 @@ namespace TWNPPublic.Controllers
             foreach (var item in result)
             {
                 #region 水號過戶判斷
-                if (aspNetUser.UserId != 0)
-                {
-                    if ( !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                    {
-                        if ( item.A_DATE  >=  aspNetUser.StartDate )
-                        {
-                            calendarData.Add(new fullcalendar
-                            {
-                                id = item.B_NOTE_SN.ToString(),
-                                title = item.NOTE,
-                                start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
-                                NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
-                            });
-                        }
+                //if (aspNetUser.UserId != 0)
+                //{
+                //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //    {
+                //        if (item.A_DATE >= aspNetUser.StartDate)
+                //        {
+                //            calendarData.Add(new fullcalendar
+                //            {
+                //                id = item.B_NOTE_SN.ToString(),
+                //                title = item.NOTE,
+                //                start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
+                //                NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
+                //            });
+                //        }
 
-                    }
-                    else if ( !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
+                //    }
+                //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //    {
+                //        if ((item.A_DATE >= aspNetUser.StartDate) && (item.A_DATE <= aspNetUser.EndDate))
+                //        {
+                //            calendarData.Add(new fullcalendar
+                //            {
+                //                id = item.B_NOTE_SN.ToString(),
+                //                title = item.NOTE,
+                //                start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
+                //                NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
+                //            });
+                //        }
+                //    }
+                //    else
+                //    {
+                //        calendarData.Add(new fullcalendar
+                //        {
+                //            id = item.B_NOTE_SN.ToString(),
+                //            title = item.NOTE,
+                //            start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
+                //            NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
+                //        });
+
+                //    }
+                //}
+                //else
+                //{
+                //    //業務版
+                //    calendarData.Add(new fullcalendar
+                //    {
+                //        id = item.B_NOTE_SN.ToString(),
+                //        title = item.NOTE,
+                //        start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
+                //        NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
+                //    });
+                //}
+
+                //if ( (aspNetUser.UserId != 0 && string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                //    || (aspNetUser.UserId != 0 && !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.A_DATE >= aspNetUser.StartDate)
+                //    || (aspNetUser.UserId != 0 && !string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.A_DATE >= aspNetUser.StartDate && item.A_DATE <= aspNetUser.EndDate)
+                //    || (aspNetUser.UserId != 0 && string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.A_DATE <= aspNetUser.EndDate)
+                //    || (aspNetUser.UserId == 0))
+                //{
+                //    calendarData.Add(new fullcalendar
+                //    {
+                //        id = item.B_NOTE_SN.ToString(),
+                //        title = item.NOTE,
+                //        start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
+                //        NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
+                //    });
+                //}
+
+
+                if(aspNetUser.UserId != 0)
+                {
+
+                    if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                              || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.A_DATE >= aspNetUser.StartDate && item.A_DATE <= aspNetUser.EndDate)
+                              || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.A_DATE >= aspNetUser.StartDate)
+                              || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.A_DATE <= aspNetUser.EndDate))
                     {
-                        if ((item.A_DATE >= aspNetUser.StartDate) && (item.A_DATE <= aspNetUser.EndDate))
-                        {
-                            calendarData.Add(new fullcalendar
-                            {
-                                id = item.B_NOTE_SN.ToString(),
-                                title = item.NOTE,
-                                start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
-                                NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
-                            });
-                        }
-                    }
-                    else
-                    {
+
                         calendarData.Add(new fullcalendar
                         {
                             id = item.B_NOTE_SN.ToString(),
@@ -914,8 +1097,8 @@ namespace TWNPPublic.Controllers
                             start = item.A_DATE.Value.ToString("yyyy-MM-dd"),
                             NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
                         });
-
                     }
+
                 }
                 else
                 {
@@ -928,8 +1111,9 @@ namespace TWNPPublic.Controllers
                         NoteDate = item.A_DATE.Value.ToString("yyyy-MM-dd")
                     });
                 }
+
                 #endregion
-              
+
             }
 
             return Json(Success(calendarData.ToArray()));
@@ -1325,58 +1509,99 @@ namespace TWNPPublic.Controllers
                             foreach (var item in dayresult)
                             {
                                 #region 水號過戶判斷
+                                //if (aspNetUser.UserId != 0)
+                                //{
+                                //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                //    {
+                                //        if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate))
+                                //        {
+                                //            var temp = item.X.Substring(11, 5);
+                                //            dic[item.X.Substring(11, 5)] = null;
+                                //        }
+                                //        else
+                                //        {
+                                //            var temp0 = item.X.Substring(11, 5);
+                                //            if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                //            {
+                                //                var temp = item.X.Substring(11, 5);
+                                //                dic[item.X.Substring(11, 5)] = item.Y;
+                                //            }
+                                //            else
+                                //            {
+                                //                var temp = item.X.Substring(11, 5);
+                                //                dic[item.X.Substring(11, 5)] = null;
+                                //            }
+                                //        }
+
+                                //    }
+                                //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                //    {
+                                //        if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate) || !(DateTime.Parse(item.X) <= aspNetUser.EndDate))
+                                //        {
+                                //            var temp = item.X.Substring(11, 5);
+                                //            dic[item.X.Substring(11, 5)] = null;
+                                //        }
+                                //        else
+                                //        {
+                                //            var temp0 = item.X.Substring(11, 5);
+                                //            if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                //            {
+                                //                var temp = item.X.Substring(11, 5);
+                                //                dic[item.X.Substring(11, 5)] = item.Y;
+                                //            }
+                                //            else
+                                //            {
+                                //                var temp = item.X.Substring(11, 5);
+                                //                dic[item.X.Substring(11, 5)] = null;
+                                //            }
+
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        //非過戶
+                                //        var temp0 = item.X.Substring(11, 5);
+                                //        if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                //        {
+                                //            var temp = item.X.Substring(11, 5);
+                                //            dic[item.X.Substring(11, 5)] = item.Y;
+                                //        }
+                                //        else
+                                //        {
+                                //            var temp = item.X.Substring(11, 5);
+                                //            dic[item.X.Substring(11, 5)] = null;
+                                //        }
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //業務版
+                                //var temp0 = item.X.Substring(11, 5);
+                                //if (dic.ContainsKey(item.X.Substring(11, 5)))
+                                //{
+                                //    var temp = item.X.Substring(11, 5);
+                                //    dic[item.X.Substring(11, 5)] = item.Y;
+                                //}
+                                //else
+                                //{
+                                //    var temp = item.X.Substring(11, 5);
+                                //    dic[item.X.Substring(11, 5)] = null;
+                                //}
+
+                                //}
+
+
                                 if (aspNetUser.UserId != 0)
                                 {
-                                    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                                    {
-                                        if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate))
-                                        {
-                                            var temp = item.X.Substring(11, 5);
-                                            dic[item.X.Substring(11, 5)] = null;
-                                        }
-                                        else
-                                        {
-                                            var temp0 = item.X.Substring(11, 5);
-                                            if (dic.ContainsKey(item.X.Substring(11, 5)))
-                                            {
-                                                var temp = item.X.Substring(11, 5);
-                                                dic[item.X.Substring(11, 5)] = item.Y;
-                                            }
-                                            else
-                                            {
-                                                var temp = item.X.Substring(11, 5);
-                                                dic[item.X.Substring(11, 5)] = null;
-                                            }
-                                        }
+            
+                                    bool isInDateRange =
+                                        string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                        || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) >= aspNetUser.StartDate)
+                                        || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) >= aspNetUser.StartDate && DateTime.Parse(item.X) <= aspNetUser.EndDate)
+                                        || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) <= aspNetUser.EndDate);
 
-                                    }
-                                    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                    if (isInDateRange)
                                     {
-                                        if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate) || !(DateTime.Parse(item.X) <= aspNetUser.EndDate))
-                                        {
-                                            var temp = item.X.Substring(11, 5);
-                                            dic[item.X.Substring(11, 5)] = null;
-                                        }
-                                        else
-                                        {
-                                            var temp0 = item.X.Substring(11, 5);
-                                            if (dic.ContainsKey(item.X.Substring(11, 5)))
-                                            {
-                                                var temp = item.X.Substring(11, 5);
-                                                dic[item.X.Substring(11, 5)] = item.Y;
-                                            }
-                                            else
-                                            {
-                                                var temp = item.X.Substring(11, 5);
-                                                dic[item.X.Substring(11, 5)] = null;
-                                            }
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //非過戶
-                                        var temp0 = item.X.Substring(11, 5);
                                         if (dic.ContainsKey(item.X.Substring(11, 5)))
                                         {
                                             var temp = item.X.Substring(11, 5);
@@ -1387,6 +1612,11 @@ namespace TWNPPublic.Controllers
                                             var temp = item.X.Substring(11, 5);
                                             dic[item.X.Substring(11, 5)] = null;
                                         }
+                                    }
+                                    else
+                                    {
+                                        var temp = item.X.Substring(11, 5);
+                                        dic[item.X.Substring(11, 5)] = null;
                                     }
                                 }
                                 else
@@ -1403,7 +1633,6 @@ namespace TWNPPublic.Controllers
                                         var temp = item.X.Substring(11, 5);
                                         dic[item.X.Substring(11, 5)] = null;
                                     }
-
                                 }
                                 #endregion
                             }
@@ -1413,13 +1642,45 @@ namespace TWNPPublic.Controllers
                         {
                             //大前天還要取資料庫裡面的一筆去比對前天的SQLite，很多邊緣條件那有辦法嗎?沒辦法
                             float? geYesterdayLastAMOUNT = null;
+                            //if (Cdate.Date == DateTime.Now.AddDays(-2).Date)
+                            //{
+                            //    var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
+                            //    var getYesterdayLastValue = dayresultGetLast.FirstOrDefault();
+                            //    if (getYesterdayLastValue != null)
+                            //    {
+                            //        geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
+                            //    }
+                            //}
+
                             if (Cdate.Date == DateTime.Now.AddDays(-2).Date)
                             {
-                                var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
+                                var dayresultGetLast = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddDays(1), timespilt.ToUpper(), "1").OrderBy(c => c.X).ToList();
                                 var getYesterdayLastValue = dayresultGetLast.FirstOrDefault();
                                 if (getYesterdayLastValue != null)
                                 {
-                                    geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
+
+                                    #region 水號過戶判斷
+                                    if (aspNetUser.UserId != 0)
+                                    {
+
+                                        if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                         || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(getYesterdayLastValue.X) >= aspNetUser.StartDate && DateTime.Parse(getYesterdayLastValue.X) <= aspNetUser.EndDate)
+                                         || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(getYesterdayLastValue.X) >= aspNetUser.StartDate)
+                                         || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(getYesterdayLastValue.X) <= aspNetUser.EndDate))
+                                        {
+                                            geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
+                                        }
+                                        else
+                                        {
+                                            //不用給值
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // 業務版
+                                        geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
+                                    } 
+                                    #endregion
                                 }
                             }
 
@@ -1432,43 +1693,87 @@ namespace TWNPPublic.Controllers
                             foreach (var item in dayresult)
                             {
                                 #region 水號過戶判斷
+                                //if (aspNetUser.UserId != 0)
+                                //{
+                                //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                //    {
+                                //        if (!(item.REC_DATE_TIME >= aspNetUser.StartDate))
+                                //        {
+                                //            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)null);
+                                //        }
+                                //        else
+                                //        {
+                                //            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                                //        }
+
+                                //    }
+                                //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                //    {
+                                //        if (!(item.REC_DATE_TIME >= aspNetUser.StartDate) || !(item.REC_DATE_TIME <= aspNetUser.EndDate))
+                                //        {
+                                //            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)null);
+                                //        }
+                                //        else
+                                //        {
+                                //            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        //非過戶
+                                //        dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    //業務版
+                                //    dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+
+                                //}
+
+                                //if (aspNetUser.UserId != 0)
+                                //{
+      
+                                //    bool isTransfer = aspNetUser.StartDate.HasValue || aspNetUser.EndDate.HasValue;
+
+                                //    if (!isTransfer || (aspNetUser.StartDate.HasValue && item.REC_DATE_TIME >= aspNetUser.StartDate.Value) &&
+                                //                       (aspNetUser.EndDate.HasValue && item.REC_DATE_TIME <= aspNetUser.EndDate.Value))
+                                //    {
+                                //        dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                                //    }
+                                //    else
+                                //    {
+                                //        dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)null);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    // 業務版
+                                //    dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                                //}
+
+
                                 if (aspNetUser.UserId != 0)
                                 {
-                                    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                                    {
-                                        if (!(item.REC_DATE_TIME >= aspNetUser.StartDate))
-                                        {
-                                            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)null);
-                                        }
-                                        else
-                                        {
-                                            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
-                                        }
 
-                                    }
-                                    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                    if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.REC_DATE_TIME >= aspNetUser.StartDate && item.REC_DATE_TIME <= aspNetUser.EndDate)
+                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.REC_DATE_TIME >= aspNetUser.StartDate)
+                                     || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.REC_DATE_TIME <= aspNetUser.EndDate))
                                     {
-                                        if (!(item.REC_DATE_TIME >= aspNetUser.StartDate) || !(item.REC_DATE_TIME <= aspNetUser.EndDate))
-                                        {
-                                            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)null);
-                                        }
-                                        else
-                                        {
-                                            dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
-                                        }
+                                        dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
                                     }
                                     else
                                     {
-                                        //非過戶
-                                        dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
+                                        dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)null);
                                     }
                                 }
                                 else
                                 {
-                                    //業務版
+                                    // 業務版
                                     dic.Add(item.REC_DATE_TIME.ToString("HH:mm"), (float?)item.AMOUNT);
-
                                 }
+
                                 #endregion
 
                             }
@@ -1477,29 +1782,31 @@ namespace TWNPPublic.Controllers
                             if (geYesterdayLastAMOUNT != null)
                             {
                                 #region 水號過戶判斷
-                                if (aspNetUser.UserId != 0)
-                                {
-                                    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                                    {
-                                        dic["23:00"] = null;
-                                    }
-                                    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                                    {
-                                        dic["23:00"] = null;
-                                    }
-                                    else
-                                    {
-                                        //非過戶
-                                        dic["23:00"] = geYesterdayLastAMOUNT;
-                                    }
-                                }
-                                else
-                                {
-                                    //業務版
-                                    dic["23:00"] = geYesterdayLastAMOUNT;
+                                //if (aspNetUser.UserId != 0)
+                                //{
+                                //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                //    {
+                                //        dic["23:00"] = null;
+                                //    }
+                                //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                //    {
+                                //        dic["23:00"] = null;
+                                //    }
+                                //    else
+                                //    {
+                                //        //非過戶
+                                //        dic["23:00"] = geYesterdayLastAMOUNT;
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    //業務版
+                                //    dic["23:00"] = geYesterdayLastAMOUNT;
 
-                                }
+                                //}
                                 #endregion
+
+                                dic["23:00"] = geYesterdayLastAMOUNT;
 
                             }
                         }
@@ -1532,36 +1839,89 @@ namespace TWNPPublic.Controllers
                                 if (getOneWeekResult != null)
                                 {
                                     #region 水號過戶判斷
+                                    //if (aspNetUser.UserId != 0)
+                                    //{
+                                    //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                    //    {
+                                    //        if (!(DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate))
+                                    //        {
+                                    //            dic[cell.Key] = null;
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            dic[cell.Key] = getOneWeekResult.Y;
+                                    //        }
+
+                                    //    }
+                                    //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                    //    {
+                                    //        if (!(DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate) || !(DateTime.Parse(getOneWeekResult.X) <= aspNetUser.EndDate))
+                                    //        {
+                                    //            dic[cell.Key] = null;
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            dic[cell.Key] = getOneWeekResult.Y;
+                                    //        }
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        //非過戶
+                                    //        dic[cell.Key] = getOneWeekResult.Y;
+                                    //    }
+                                    //}
+                                    //else
+                                    //{
+                                    //    //業務版
+                                    //    dic[cell.Key] = getOneWeekResult.Y;
+
+                                    //}
+
+
                                     if (aspNetUser.UserId != 0)
                                     {
-                                        if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                                        {
-                                            if (!(DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate))
-                                            {
-                                                dic[cell.Key] = null;
-                                            }
-                                            else
-                                            {
-                                                dic[cell.Key] = getOneWeekResult.Y;
-                                            }
+                                        //if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                        //{
+                                        //    if (!(DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate))
+                                        //    {
+                                        //        dic[cell.Key] = null;
+                                        //    }
+                                        //    else
+                                        //    {
+                                        //        dic[cell.Key] = getOneWeekResult.Y;
+                                        //    }
 
-                                        }
-                                        else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                        //}
+                                        //else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                        //{
+                                        //    if (!(DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate) || !(DateTime.Parse(getOneWeekResult.X) <= aspNetUser.EndDate))
+                                        //    {
+                                        //        dic[cell.Key] = null;
+                                        //    }
+                                        //    else
+                                        //    {
+                                        //        dic[cell.Key] = getOneWeekResult.Y;
+                                        //    }
+                                        //}
+                                        //else
+                                        //{
+                                        //    //非過戶
+                                        //    dic[cell.Key] = getOneWeekResult.Y;
+                                        //}
+
+
+                                        if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate && DateTime.Parse(getOneWeekResult.X) <= aspNetUser.EndDate)
+                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate)
+                                     || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(getOneWeekResult.X) <= aspNetUser.EndDate))
                                         {
-                                            if (!(DateTime.Parse(getOneWeekResult.X) >= aspNetUser.StartDate) || !(DateTime.Parse(getOneWeekResult.X) <= aspNetUser.EndDate))
-                                            {
-                                                dic[cell.Key] = null;
-                                            }
-                                            else
-                                            {
-                                                dic[cell.Key] = getOneWeekResult.Y;
-                                            }
+                                            dic[cell.Key] = getOneWeekResult.Y;
                                         }
                                         else
                                         {
-                                            //非過戶
-                                            dic[cell.Key] = getOneWeekResult.Y;
+                                            dic[cell.Key] = null;
                                         }
+
                                     }
                                     else
                                     {
@@ -1571,7 +1931,7 @@ namespace TWNPPublic.Controllers
                                     }
                                     #endregion
 
-                                    
+
                                 }
                             }
                         }
@@ -1594,35 +1954,57 @@ namespace TWNPPublic.Controllers
                         foreach (var item in monthresult)
                         {
                             #region 水號過戶判斷
+                            //if (aspNetUser.UserId != 0)
+                            //{
+                            //    if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                            //    {
+                            //        if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate))
+                            //        {
+                            //            dic[item.X.ToString()] = null;
+                            //        }
+                            //        else
+                            //        {
+                            //            dic[item.X.ToString()] = item.Y;
+                            //        }
+
+                            //    }
+                            //    else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                            //    {
+                            //        if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate) || !(DateTime.Parse(item.X) <= aspNetUser.EndDate))
+                            //        {
+                            //            dic[item.X.ToString()] = null;
+                            //        }
+                            //        else
+                            //        {
+                            //            dic[item.X.ToString()] = item.Y;
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        //非過戶
+                            //        dic[item.X.ToString()] = item.Y;
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //業務版
+                            //    dic[item.X.ToString()] = item.Y;
+
+                            //}
+
+
                             if (aspNetUser.UserId != 0)
                             {
-                                if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) >= aspNetUser.StartDate && DateTime.Parse(item.X) <= aspNetUser.EndDate)
+                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) >= aspNetUser.StartDate)
+                                     || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) <= aspNetUser.EndDate))
                                 {
-                                    if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate))
-                                    {
-                                        dic[item.X.ToString()] = null;
-                                    }
-                                    else
-                                    {
-                                        dic[item.X.ToString()] = item.Y;
-                                    }
-
-                                }
-                                else if (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
-                                {
-                                    if (!(DateTime.Parse(item.X) >= aspNetUser.StartDate) || !(DateTime.Parse(item.X) <= aspNetUser.EndDate))
-                                    {
-                                        dic[item.X.ToString()] = null;
-                                    }
-                                    else
-                                    {
-                                        dic[item.X.ToString()] = item.Y;
-                                    }
+                                    dic[item.X.ToString()] = item.Y;
                                 }
                                 else
                                 {
-                                    //非過戶
-                                    dic[item.X.ToString()] = item.Y;
+                                    dic[item.X.ToString()] = null;
                                 }
                             }
                             else
@@ -1683,7 +2065,7 @@ namespace TWNPPublic.Controllers
 
             if(aspNetUser.UserId != null)
             {
-                var result = dashboardService.ListedWaterNOBySN(aspNetUser.UserId.Value, WaterNos);
+                var result = dashboardService.ListedWaterNOBySN(WaterNos);
                 HttpContext.Session.SetString("StartDate", result.ST_DATE.ToString() );
                 HttpContext.Session.SetString("EndDate", result.EN_DATE.ToString() );
             }
