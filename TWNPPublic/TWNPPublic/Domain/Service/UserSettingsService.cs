@@ -51,13 +51,16 @@ namespace TWNPPublic.Domain.Service
         {
 
             string mainsql = @"Update B_ACCOUNT
-                               SET PWD = @Pwd
+                               SET APWD = @Pwd
                                   ,EMAIL = @Email
                                   ,CELL_PHONE = @CellPhone 
                                Where B_ACCOUNT_SN = @SN";
+
+            CommonFunc comm = new();
+            string EncryptPWD = comm.AesEncrypt(model.Password);  //加密
             object obj = new
             {
-                Pwd = model.Password,
+                Pwd = EncryptPWD,
                 Email = model.Email,
                 CellPhone = model.PhoneNumber,
                 SN = SN
@@ -104,7 +107,7 @@ namespace TWNPPublic.Domain.Service
             //這裡沒原子性耶 併發量不大應該可以吧 ._.!?
             string mainsql = @"Insert Into B_ACCOUNT
                                        ([B_ACCOUNT]
-                                       ,[PWD]
+                                       ,[APWD]
                                        ,[CREATE_DATE]
                                        ,[LAST_DATE]
                                        ,[EMAIL]
@@ -118,10 +121,12 @@ namespace TWNPPublic.Domain.Service
                                        ,@EMAIL
                                        ,@CELL_PHONE
                                        ,@VALID)";
+            CommonFunc comm = new();
+            string EncryptPWD = comm.AesEncrypt(model.Password);  //加密
             object obj = new
             {
                 B_ACCOUNT = model.Account,
-                PWD = model.Password,
+                PWD = EncryptPWD,
                 CREATE_DATE = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 LAST_DATE = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 EMAIL = model.Email,

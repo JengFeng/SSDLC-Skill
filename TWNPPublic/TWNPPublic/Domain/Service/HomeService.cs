@@ -258,6 +258,14 @@ namespace TWNPPublic.Domain.Service
 
         public int SendMailUsingSendMailList(string B_ACCOUNT, string Email)
         {
+            //取得水號資訊
+            string mainsql = @" Select * 
+                                From [TWN].[dbo].[B_ACCOUNT] 
+                                Where B_ACCOUNT = @B_ACCOUNT And Valid=1";
+            object obj = new { B_ACCOUNT };
+            var result = dataAccess.Query<b_ACCOUNT>(mainsql, obj).ToList().FirstOrDefault();
+
+
             string FilePath = Directory.GetCurrentDirectory() + "\\ResetPw.html";
             StreamReader str = new StreamReader(FilePath);
             string MailText = str.ReadToEnd();
@@ -265,9 +273,11 @@ namespace TWNPPublic.Domain.Service
 
             var pwd = CryptoGen(6);
             var Current = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+            CommonFunc comm = new();
+            string EncryptPWD = comm.AesEncrypt(pwd);  //加密
 
             string UpdateSql = @"UPDATE [dbo].[B_ACCOUNT]
-                                   SET [PWD] = @PWD
+                                   SET [APWD] = @APWD
                                 WHERE B_ACCOUNT = @BAccount And EMAIL = @EMail And Valid=1";
 
             string InsertSql = @"INSERT INTO [dbo].[SEND_MAIL_LIST]
@@ -289,12 +299,12 @@ namespace TWNPPublic.Domain.Service
                                        ,@FROM_TABLE
                                        ,@FROM_SN)";
 
-            var setContext = MailText.Replace("{pwd}", pwd).Replace("{currenttime}", Current);
+            var setContext = MailText.Replace("{pwd}", pwd).Replace("{currenttime}", Current).Replace("{name}", result.USERNAME );
 
             //改密碼
             //寄信
 
-            dataAccess.Execute(UpdateSql, new { PWD = pwd, BAccount = B_ACCOUNT, EMail = Email });
+            dataAccess.Execute(UpdateSql, new { APWD = EncryptPWD, BAccount = B_ACCOUNT, EMail = Email });
             return dataAccess.Execute(InsertSql, new SEND_MAIL_LIST
             {
                 TITLE = "台灣自來水公司-澎湖智慧水網密碼發送通知",
