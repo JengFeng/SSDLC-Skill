@@ -1,0 +1,57 @@
+﻿body {
+}
+.cursor_googlestreet {
+    cursor: url('http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png'),     /* Modern browsers    */
+            url('http://www.useragentman.com/examples/cursor/canvasPainter/canvas_painter_v0.1/images/gimpBrush.png'),        /* Internet Explorer  */
+            move;                                       /* Older browsers     */
+}
+
+.mapController > .controller-btn {
+    position: absolute;
+    border: none;
+    background-image: url('images/pan-panel.png');
+    background-size: 50px 50px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    left: 25px;
+    top: 25px;
+}
+
+.mapController > .reset {
+    background-image: url('images/zoom-world.png');
+    background-size: 25px 25px;
+}
+
+.mapController > .moveUp {
+    background-position: -125px 0px;
+    transform: translateY(-25px);
+    background-position: 0px 0px;
+}
+
+.mapController > .moveDown {
+    background-position: -125px 0px;
+    transform: translateY(25px);
+    background-position: 25px 0px;
+}
+
+.mapController > .moveLeft {
+    background-position: -125px 0px;
+    transform: translateX(-25px);
+    background-position: 0px 25px;
+}
+
+.mapController > .moveRight {
+    background-position: -125px 0px;
+    transform: translateX(25px);
+    background-position: 25px 25px;
+}
+
+.mapController {
+    position: absolute;
+    background-image: url('images/pan-bg.png');
+    background-size: 75px 75px;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}

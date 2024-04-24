@@ -1,0 +1,207 @@
+﻿/* reset */
+/*html {
+    font-size: 62.5%;
+    font-family: "微軟正黑體";
+}
+
+body {
+    font-size: 62.5%;
+    line-height: 1.75;
+}
+
+body, div, span, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, ins, select, strong {
+    margin: 0;
+    padding: 0;
+    font-family: "微軟正黑體",Arial,Verdana, Geneva, sans-serif;
+    -webkit-font-family: "微軟正黑體","Noto Sans T Chinese Thin",Arial,Verdana, Geneva, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}*/
+/* fontcolor */
+.text-pink {
+    color: #FF6363;
+
+}
+
+.text-green {
+    color: #28FF00;
+
+}
+
+.text-gray {
+    color: #86909E;
+}
+
+.btn-pink {
+    display: inline-block;
+    padding: 0 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    overflow: hidden;
+    color: #fff;
+    background: #FF6363;
+    transition: all 0.3s;
+}
+
+    .btn-pink:hover {
+        color: #fff;
+        background: rgb(184, 71, 71);
+    }
+/* style */
+.jsPanel .jsPanel-hdr {
+    border: 0;
+    box-sizing: border-box;
+    vertical-align: baseline;
+    font-family: Roboto,"Open Sans",Lato,"Helvetica Neue",Arial,sans-serif;
+    font-weight: normal;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    color: #000;
+    background-color: #fff;
+    line-height: 1.1;
+}
+    .jsPanel .jsPanel-hdr .jsPanel-title{
+        color:#000;
+    }
+    .jsPanel-controlbar {
+        color: #000;
+    }
+    .jsPanel-content {
+        width: 450px;
+    }
+
+    .jsPanel-content .identify {
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+        box-shadow: 0 0 30px rgba(0,0,0,.2);
+    }
+
+        .jsPanel-content .identify > .title {
+            padding: 0 10px;
+            color: #000;
+            background: #fff;
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+
+.jsPanel-titlebar {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    flex: 1 1 0px;
+    cursor: move;
+    height: 100%;
+    padding: 10px 4px;
+    font-weight: bolder;
+    overflow: hidden;
+}
+    .jsPanel-titlebar .jsPanel-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-variant: small-caps;
+        font-weight: normal;
+        margin: 0 5px 0 8px;
+        min-width: 0;
+        font-size: 1.8rem;
+        font-weight: 900;
+    }
+
+.jsPanel-content .identify .mm-window {
+    min-height: 150px;
+    background: rgba(3,0,78,1);
+    color: #fff;
+}
+
+.mm-window .column {
+    font-size: 1.6rem;
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.column > .title {
+    font-size: 1.6rem;
+}
+
+.column div {
+    line-height: 18px;
+}
+
+.column > div {
+    margin-bottom: 4px;
+}
+
+.column > span {
+    padding: 0 4px;
+}
+
+.twoColumn > .info {
+    display: flex;
+}
+
+.name {
+    flex: 2;
+}
+
+.total {
+    flex: 1;
+    text-align: right;
+}
+
+    .total b {
+        font-size: 1.2rem;
+    }
+
+.tip {
+    padding: 0 0 4px 0;
+    font-size: 1.4rem;
+    /* border-top: 1px dashed rgba(255,255,255,.2);
+    border-bottom: 1px dashed rgba(255,255,255,.2); */
+}
+
+.column div.tip:nth-last-child(1) {
+    border-bottom: 0px dashed rgba(255,255,255,.2);
+}
+
+.btnBox {
+    text-align: center;
+    padding: 10px 0;
+}
+/* table */
+.tableBox {
+    padding: 10px 10px;
+}
+/*
+.common-TB > tbody > tr > th {
+    width: 36%;
+    line-height: 22px;
+    padding: 4px 4px;
+    border-bottom: 1px solid #1d548f;
+    color: #4C80BD;
+    text-align: right;
+}
+
+    .common-TB > tbody > tr > th a {
+        color: #fff;
+    }
+
+.common-TB > tbody > tr > td {
+    padding: 4px 4px;
+    border-bottom: 1px solid #1d548f;
+    text-align: left;
+}
+
+.common-TB > tbody > tr:hover {
+    background: rgba(38, 41, 85, 0.5);
+}
+
+.common-TB > tbody > tr > td > span {
+    font-weight: 900;
+}
+    */

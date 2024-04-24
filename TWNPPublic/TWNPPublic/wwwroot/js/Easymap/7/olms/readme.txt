@@ -1,0 +1,1 @@
+From: https://unpkg.com/ol-mapbox-style@3.1.0/dist/olms.js

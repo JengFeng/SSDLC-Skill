@@ -1,0 +1,160 @@
+﻿
+fix: 2015/10/06 /MM/mine/ol.js 			remove MM variable	
+fix: 2015/10/21 /MM/mine/EasyKML.js 	enable multi-kml added callback function workable
+fix: 2015/10/23 /MM/mine/ol.js          added dgSource: Bing map
+fix: 2015/10/29 /MM/mine/Control/MeasureToolbar.js          
+                                        fix polyline result bug
+fix: 2015/10/23 /MM/mine/Control/LayerSwitcher.js       
+                                        for twin map workable
+fix: 2015/11/16 /MM/mine/ol.js          let popup upon dggmarker
+fix: 2016/01/17 /MM/mine/ol.js          polygon line width not able to work
+fix: 2016/01/22 /MM/mine/Control/MeasureToolbar.js
+                                        let every click of draw record result object
+fix: 2016/01/26 /MM/mine/ol.js          addItem: name is not identical
+fix: 2016/01/26 /MM/mine/ol.js          add right click event im attachEvent method
+6.1.8 fix: 2016/02/02 /MM/mine/EasyKML.js     popup window iframe add proxy
+6.1.9 fix: 2016/02/18 /MM/mine/Conrol/MeasureToolbar.js
+                                        length and area calculation is error
+6.1.10 fix: 2016/02/18 /MM/mine/Conrol/MeasureToolbar.js
+                                        remove result when drawing line or polygon, and changes the css.
+6.1.11 fix: 2016/02/18 /MM/mine/ol.js	
+	1. map.removeItem() bug: when remove one group of items, it delete part of items too.
+	2. popup top									
+	
+6.1.12 2016/03/17		/services/proxy.aspx  uri = new Uri(url); bug 加上try catch
+6.1.13 2016/03/29		/mm/mine/easykml.js   raise pupop always on top
+6.1.14 2016/04/06		將/easymap/modules/ 移出去
+6.1.15 2016/04/26		/mm/mine/control/measureToolbar.js	1. polyline polygon的getDrawResult()方法修正
+															2. 增加isActive(),getControlName() 方法
+6.1.16 2016/04/27		//mm/mine/ol.js						wms圖層參數修改
+						//mm/mine/Layer/EZWMS.js		
+6.1.17 2016/04/29		//mm/mine/ol.js				removeItem的 可以分別刪除array裡的item
+6.1.18 2016/05/3		//mm/mine/ol.js			讓比例尺的寬不要太大，不然會遮到
+6.1.19 2016/05/11		//mm/mine/ol.js			function revXY() 自動扣除map的div的位置
+6.1.20 2016/05/16		//mm/mine/format/kml.js	function linestring() 增加try()catch() 防止kml的coordinate空白
+6.1.21 2016/05/19		//mm/mine/format/kml.js	function linestring() 防止coordinate tag的內容非點位字串
+6.1.22 2016/05/20		//mm/OpenLayers.light.js OpenLayers.light.debug.js
+												解決WMS/WMTS載入圖片錯誤時，img.src出現缺圖的現象
+6.1.23 2016/05/27		//mm/mine/ol.js		擴充一下wmts的參數
+6.1.24 2016/05/30		//mm/mine/ol.js		擴充一下wms的參數
+6.1.25 2016/06/01		//mm/mine/ol.js		fix:dgMarker的html格式的事件
+6.1.26 2016/07/13		//mm/mine/ol.js		add:wms參數完整一點		
+6.1.27 2016/07/20		//mm/easymap_instance.js
+											fix:修改右鍵
+6.1.28 2016/08/23		//mm/mine/ol.js		add: 加入arcgis的dynamic layer
+6.1.29 2016/08/30		//mm/mine/control/LayerSwitcher.js	fix:切換底圖的下拉動畫class .animated => .easymap-animated
+6.1.30 2016/09/13		修改大小寫問題，部分主機(LINUX)會出錯
+							easymap.js 裡的 mm --> MM
+							digimap4.js 裡的 mm--> MM
+							MM\light.lib\light.js button.js -> Button.js
+							MM\light.lib\light.js panZoom.js -> PanZoom.js
+							MM\light.lib\light.js panzoombar.js -> PanZoomBar.js
+							MM\light.lib\light.js xml.min.js -> XML.min.js
+							MM\light.lib\light.js kml.min.js -> KML.min.js
+							thumbs.db 全移除
+6.1.31 2016/09/14		fix: //mm/mine/layer/ArcGIS93Rest.js	
+6.1.32 2016/09/22		fix: override ZoomBox.js 增加zoom結束的事件afterzoom
+						add: easymap_instance.js cancelDrawMode();
+						fix: easymap_instance.js isDrawMode() 
+						add: dgkml add method: useUpperZoomByBoundary() 載入kml可以針對點位zoom到最適位置
+6.1.33 2016/10/03		add: EzMap.Tools.isFireFox() method 
+						fix: Openlayers.light.debug.js and
+							 Openlayers.light.js	
+								inValidRange() method
+								if the browser is not firefox,then OpenLayers.Renderer.SVG.MAX_PIXEL no longer necessary to use.
+6.1.34 2016/10/27		add: dgkml() add function updateStyle() 
+						fix: mm/mine/Format/kml.js  labelVisible改成 fontSize="0px";\
+6.1.35 2016/11/02		fix: mm/mine/Control/StatusBar.js	loading圖示改成文字
+6.1.36 2016/11/04		fix: mm/OpenLayers.light.debug.js   kml顯示label移除html tag, OpenLayers.light.js 也跟著壓縮
+6.1.37 2016/11/24		add: easymap.js		dgKml().setIconVisible 同時也改了
+								/MM/mine/EasyKml.js addBasicKml()
+								/MM/mine/Format/Kml.js	parseFeatures()
+6.1.38 2016/12/02		add: easymap_instance.js setScaleLineVisible();		開關ScaleLine
+6.1.39 2016/12/09		add: map.getMapControlV() map.getMapTypeSelectorV();
+6.1.40 2016/12/16		fix: EasyKML.js > processKml() > GISMM_EASYMAP_KML_PROXY_TIMEOUT add added layer event
+						fix:			> 讓一個feature可以連續點
+6.1.41 2016/12/22		fix: EasyKML.js > onFeatureSelect() > ezType=iframe的descrption不判斷網址
+6.1.42 2016/12/23	    add: popup always on top
+6.1.43 2017/01/11		fix: easymap.js 拿掉if(window._ezmap_ini_filename) 判斷
+							 easymap.js 動態載入js改寫
+6.1.44 2017/01/12		fix: EasyKML.js > popupAlwaysOnTop >把jquery拿掉
+6.1.45 2017/01/20		fix: MM\light.lib\format\kml.js 預設style strokeWidth改為1
+							 MM\ol.js	removeItem() > dgsource > this.map.layers.getById 再多判斷是有已經有這個id的layer
+6.1.46 2017/02/02		fix: MM\MM1.js	bug of mobile-device的css 由file.push()改成 document.write()
+6.1.47 2017/02/03		fix: MM\ol.js	removeItem() > this.map.getLayersByName() 接收的變數，沒加前置詞，覆蓋了公用變數
+6.1.48 2017/02/07		fix: MM\EasyKML.js > onFeatureSelect() > if content is emtpy, then it dosen't have to popup
+						fix: MM\ol.js	getMaxZIndex() 沒有算到layer的zIndex
+6.1.49 2017/02/17		fix: ie8無法使用 > MM.js已經沒用
+6.1.52 2017/04/07		fix: processKml() let without <?xml tag start also can fit
+6.1.53 2017/04/14		fix: MM\EasyKML.js useUpperZoomByBoundary bug
+6.1.54 2017/04/17		fix: easymap.讀相對路徑不要限制在modules
+6.1.55 2017/05/12		fix: WMTS加上zoomOffset的參數，可以設定從哪一層當最小zoom
+6.1.56 2017/05/24		add: MM\mine\control\panzoombar.js  function zoomBarUp()
+						fix: MM\mine\control\panzoombar.js  function zoomBarDrag()
+6.1.57 2017/05/25		fix: MM\mine\EasyKML.js	href 如果是null時 圖台會掛掉
+6.1.58 2017/05/26		fix: MM\mine\Strategy\cluster.js  調整icon的位置不會因為zoom 變換
+6.1.59 2017/06/15		fix: MM\mine\Layer\EZWMS.js	getURL() 修正轉換座標後~~把this.bounds也改了
+6.1.60 2017/06/16		fix: MM\mine\EasyKML.js eztype加上blank 跳出視窗
+6.1.61 2017/07/20		fix: MM\theme\default\style.tidy.css	修改olFramedCloudPopupContent>padding:5px =>0px
+6.1.62 2017/08/03		fix: MM\mine\Layer\EZWMS.js getURL() 把JQuery拿掉了
+6.1.63 2017/08/05		fix: 1. proxy.aspx 加上相對路徑../
+							 2. MM\mine\EasyKML.js addGroundOverlay加上opacity
+6.1.64 2017/08/08		fix: 1. proxy.aspx 輸出加上HttpUtility.HtmlEncode
+							 2. MM\mine\EasyKML.js this.parser.fetchLink() 接收加上HtmlDecode
+6.1.65 2017/08/18		fix: MM\mine\EasyKML.js formatCrossdomain return this.proxy+escape(newHref) escape() 拿掉
+6.1.66 2017/08/21		fix: 1. MM\mine\EasyKML.js addGroundOverlay() addBasicKml() layer加上dgkml的參數
+							 2. MM\mine\EasyKML.js onFeatureSelect() 增加ezIsShowTitle
+6.1.67 2017/08/22		fix: MM\mine\EasyKML.js processKml() 加上沒有設定proxy就不用unescape
+6.1.68 2017/08/23		fix: 1. MM\MM1.js	dgKml() edit setOpacity() to adapted img
+							 2. MM\MM1.js	dgKMl() add getOpacity()
+6.1.69 2017/09/01		add: 讓kml feature可以關閉click event
+							 1. MM\MM1.js dgKml() add setFeatureSelectDisabled()
+							 2. MM\mine\EasyKML.js addBasicKml
+6.1.70 2017/09/12		add: dgPolygon增加addAttributes 
+						     1. easymap_instance.js new dgPolygon()
+							 2. MM\ol.js polygon()
+							 3. MM\ol.js addDraws() 開啟 rendererOptions: { zIndexing: true } 
+6.1.71 2017/09/27		fix: MM\mine\EasyKML.js onFeatureSelect() width height可以通用
+6.1.72 2017/11/22		fix: easymap_instance.js 不自動給寬高
+							 MM\mine\EasyKML.js formatCrossdomain() 讓沒有proxy也可以使用
+6.1.73 2017/11/30		add: MM1.js
+							 EasyKML.js dgKml 加上 async 參數 與 setAsynchronous() 方法
+6.1.74 2017/12/07		fix: ol.js getDgSource() wmts style='default' 改成 style=''
+6.1.75 2018/01/08		fix: ol.js removeItem() dgsource switch比對時不用getById 這是外掛api
+6.1.76 2018/02/27		fix: EasyKML.js支援EPSG:3826|EPSG:3828 [getURL();]
+6.1.77 2018/04/24		fix: ol.js attachEvent 事件array 全部清空問題
+6.1.78 2018/07/13		fix: 1.easymap_instance.js 加了兩個method setStatusBarVisible/setNavigation
+							 2.					   加了一個變數this.olmap = tt.map;
+6.1.79 2018/07/15		fix: EasyKML.js 讓kml有attributes[id]的過濾
+6.1.80 2018/09/03		fix: format/kml.js	parseFeatures() 讓就算沒有 feature.attributes.name 也可以展開
+6.1.81 2018/10/18		fix: ol.js	curve() 半徑長單位為公尺為轉換為EPSG:900913
+6.1.82 2018/11/09		fix: light.lib/format/xml.js	讓支援沒有namespace的tag也可以
+6.1.83 2018/11/17		fix: 1. easymap_instance.js 讓options.layers可以支援多圖台同時
+							 2. /css/map.css MM/theme/default/style.tidy.css 讓.olMap !important拿掉  讓別人可以複寫
+							 3. ol.js	讓layers變數一開始 reset this.layers = []; , 可以支援多圖台同時
+							 4. easykml.js	initialize讓所有array new 一次，多個圖台才不會出錯
+6.1.84 2018/12/11		fix: 1. EasyKML  加上dgkml.onFail 事件
+6.1.85 2019/1/08		fix: 1. EasyKML  onFeatureSelect() 多點位查詢bug修改
+6.1.86 2019/1/11		fix: ol.js	attachEvent, moveend事件時，判斷掉沒有xy的問題
+6.1.87 2019/1/15		fix: ol.js addDraws() _dragmarker() reposMark(), 讓marker支援drag
+6.1.88 2019/1/29		fix: EasyKML.js 取消HtmlDecode() 同步 service/proxy.aspx
+6.1.89 2019/1/30		fix: ol.js wmts radio default=0
+							 theme/default/style.css .olImageLoadError set opacity = 0
+6.1.90 2019/2/14		fix: ol.js 讓Vectortile 不會錯
+
+6.1.91  2019/2/20		fix: 1. ol.js attachEvent bug修改‧事件回傳原本是event，這裡改掉了
+							 2. _dragmarker 加上 console.log('Easymap6: dgMarker的html模式不支援 拖曳，請使用dgIcon');
+6.1.92  2019/2/23		fix: 把6.1.91 事件改回來
+6.1.93  2019/3/15		fix: ol.js attachEvent 沒註冊到轉接的事件bug
+6.1.94	2019/3/19		fix: 
+							1.把 dgKml.ondblclick拿掉
+							2. dgkml 增加setFeatureClick() 方法
+							3. dgkml 增加enableLineStringArrow() disalbeLineStringArrow() 方法 配合第七版
+6.1.95 2019/3/25		fix: addItem:dgmarker.drag onDragEnd回傳同一個事件
+						add: dgkml 增加setFeatureHover() 方法
+6.1.96 2019/4/19		fix: Openlayer.light.debug.js
+							 Openlayer.light.js
+								chrome 更新修正 Unable to preventDefault inside passive event listener 
+	   2019/4/26		fix: ol.js setZIndexTop 沒辦法修改順序問題
+	   2019/5/9			fix: EasyKML.js onFeatureSelect() 馬上反選
+	   2019/07/04		fix:加上version變數

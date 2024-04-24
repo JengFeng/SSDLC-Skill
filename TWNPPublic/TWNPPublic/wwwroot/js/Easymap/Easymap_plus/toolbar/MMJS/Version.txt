@@ -1,0 +1,7 @@
+﻿///////////////////////////////////
+//mmjs 修該歷程
+///////////////////////////////////
+
+2016/09/23	start recording
+2016/09/29	fix:MM.validate.empty ruturn true false exchanged
+			add:tip.js

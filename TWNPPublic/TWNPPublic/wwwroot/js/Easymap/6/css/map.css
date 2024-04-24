@@ -1,0 +1,444 @@
+/*************************************************
+ *	jquery UI Popup
+ *
+ *************************************************/
+body {
+
+}
+
+/*************************************************
+ *	tile load error
+ *
+ *************************************************/
+.olImageLoadError {
+    background-image: url('../imgs/onerror.png');
+
+}
+/*************************************************
+ *	KML Popup
+ *
+ *************************************************/
+table.popup-table{
+	border: 1px solid #000000;
+}
+table.popup-table td{
+	border: 1px solid #000000;
+	padding: 2px;
+}
+
+
+/*************************************************
+ *	Control
+ *
+ *************************************************/
+ /**
+  * ScaleLine
+  **/
+.MMControlScaleLine {
+   display: block;
+   position: absolute;
+   left: 10px;
+   bottom: 15px;
+   font-size: xx-small;
+   width:300px;
+}
+.MMControlScaleLineBottom {
+   border: solid 2px black;
+   border-bottom: none;
+   margin-top:-2px;
+   text-align: center;
+   width:300px;
+}
+.MMControlScaleLineTop {
+   border: solid 2px black;
+   border-top: none;
+   text-align: center;
+   width:300px;
+}
+ /* *
+  *	popup close
+  * */
+ .olPopupCloseBox {
+  background: url("../imgs/close.gif") no-repeat;
+  cursor: pointer;
+}
+ /**
+  *
+  *
+  */
+  .MMControlcreateDiv{
+    top: 0px;
+    left: 0px;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: smaller;
+	z-index: 999999999;
+	width:0px;
+	height:0px;
+  }
+ /* *
+  *	LayerSwitcher 
+  *  地圖切換
+  * */
+  .MMControlLayerSwitcher{
+    top: 10px;
+    right: 95px;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: smaller;
+	z-index: 99999;
+  }
+  .olControlLayerSwitcher .layersDiv {
+	
+    padding-top: 10px; 
+    padding-left: 10px; 
+    padding-bottom: 13px; 
+    padding-right: 35px; 
+    background-color: "#DFE0E0"; //new color 
+    
+    width: 1250px; 
+    height: 100%; 
+	filter:alpha(opacity=80);   /* old IE */
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80,FinishOpacity=15, Style=3, StartX=0, FinishX=100, StartY=0,FinishY=16); /*supported by current IE*/
+	-moz-opacity:0.8;          /* Moz + FF */
+	opacity:0.8;               /* 支持新版瀏覽器 */
+	/* For IE 8 (and 9, 10, 11?). Don't miss the added quotes */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=8)";
+
+	/* support Safari, Chrome */
+	-webkit-border-radius: 5px;
+	/* support firefox */
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+  } 
+
+ /* *
+ *	ScaleLine:比列尺
+ *	重新修改UI的位置
+ * */
+ .olControlScaleLine {
+   display: block;
+   position: absolute;
+   left: 10px;
+   bottom: 25px;
+   font-size: xx-small;
+}
+
+
+/* *
+ *	StatusBar
+ * */
+.MMControlStatusBar{
+    bottom: 0;
+    right: 0;
+    display: block;
+	width: 100%;
+}
+.MMControlStatusBar .background{
+    bottom: 0;
+    right: 0;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: smaller;
+	color: #ffffff;
+	background-color:#000000;
+	filter:alpha(opacity=10);   /* old IE */
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=10,FinishOpacity=15, Style=3, StartX=0, FinishX=100, StartY=0,FinishY=16); /*supported by current IE*/
+	-moz-opacity:0.1;          /* Moz + FF */
+	opacity:0.1;               /* 支持新版瀏覽器 */
+	/* For IE 8 (and 9, 10, 11?). Don't miss the added quotes */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+	padding-top: 1px;
+	padding-bottom: 5px;
+	padding-right: 3px;
+	width: 100%;
+	height: 15px;
+}
+.MMControlStatusBar .background_full{
+    bottom: 0;
+    right: 0;
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: smaller;
+	color: #ffffff;
+	background-color:#000000;
+	filter:alpha(opacity=10);   /* old IE */
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=10,FinishOpacity=15, Style=3, StartX=0, FinishX=100, StartY=0,FinishY=16); /*supported by current IE*/
+	-moz-opacity:0.1;          /* Moz + FF */
+	opacity:0.1;               /* 支持新版瀏覽器 */
+	/* For IE 8 (and 9, 10, 11?). Don't miss the added quotes */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+	padding-top: 1px;
+	padding-bottom: 5px;
+	padding-right: 3px;
+	width: 100%;
+	height: 2000px;
+}
+/* mousePosition */
+.MMControlStatusBar .mousePosition{
+	float: right;
+	font-size: 13px;
+	color: #343434;
+	margin-right:3px;
+
+}
+/* loading */
+.MMControlStatusBar .loadingStart{
+	display:inline;
+	float: right;
+	margin-right: 5px;
+	color:#000000;
+	font-size:13px;
+
+}
+.MMControlStatusBar .loadingEnd{
+	display:none;
+}
+.MMControlStatusBar .loadingText{
+	
+	font-size:18px;
+    font-weight:bold;
+    font-family: Microsoft JhengHei;
+    color: #2C2C2C; 
+    text-shadow: #ececec 0px 1px, #ececec 1px 0px, #ececec -1px 0px, 
+    #ececec 0px -1px, #ececec -1px -1px, #ececec 1px 1px, 
+    #ececec 1px -1px, #ececec -1px 1px; 
+}
+
+
+
+
+/**
+ * MMControlPanZoomBar
+ */
+.MMControlPanZoomBar olControlNoSelect{
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+/*panzoombar slider*/
+div.panzoombar_slider_div:hover:before {
+    content: attr(title);
+    position: absolute;
+    padding: 2px 8px;
+    margin: -3px 0 0 32px;
+    background: #333;
+    color: white;
+    border-radius: 3px;
+    font-family: Microsoft JhengHei;
+}
+
+div.panzoombar_slider_div:hover:after {
+    content: '';
+    position: absolute;
+    margin: 6px 0 0 3px;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-right: 10px solid #333;
+	border-bottom: 5px solid transparent;
+    font-family: Microsoft JhengHei;
+}
+div.panzoombar_slider_div:before {
+    content: attr(title);
+    position: absolute;
+    padding: 2px 8px;
+    margin: -3px 0 0 32px;
+    background: #333;
+    color: white;
+    border-radius: 3px;
+    font-family: Microsoft JhengHei;
+}
+div.panzoombar_slider_div:after {
+    content: '';
+    position: absolute;
+    margin: 6px 0 0 3px;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-right: 10px solid #333;
+	border-bottom: 5px solid transparent;
+    font-family: Microsoft JhengHei;
+}
+/* *
+ *	MeasureToolbar
+ * */
+.MMControlMeasureToolbar div {
+
+    float: left;
+}
+.MMControlMeasureToolbar {
+    left: 0;
+    top: 0;
+	margin: 10px 0px 50px 70px;
+}
+
+
+.MMControlMeasureToolbar div { 
+	background-image: url("../imgs/editing_tool_bar.png");
+	background-repeat: no-repeat;
+	margin: 0 0 5px 5px;
+	width: 24px;
+	height: 22px;
+	cursor: pointer
+}
+
+
+@media print
+.MMControlMeasureToolbar div { 
+	background-image: url("../imgs/editing_tool_bar.png");
+	background-repeat: no-repeat;
+	margin: 0 0 5px 5px;
+	width: 24px;
+	height: 22px;
+	cursor: pointer
+}
+
+.MMControlMeasureToolbar .MMControlPrintItemInactive {
+    background-position: -153px -1px;
+}
+
+
+.olControlNavToolbar .olControlNavigationItemInactive,
+.MMControlMeasureToolbar .olControlNavigationItemInactive {
+    background-position: -103px -1px;
+}
+.olControlNavToolbar .olControlNavigationItemActive ,
+.MMControlMeasureToolbar .olControlNavigationItemActive  {
+    background-position: -103px -24px;
+}
+
+.MMControlMeasureToolbar .olControlDrawFeaturePointItemInactive {
+    background-position: -77px -1px;
+}
+.MMControlMeasureToolbar .olControlDrawFeaturePointItemActive {
+    background-position: -77px -24px;
+}
+
+.MMControlMeasureToolbar .olControlDrawFeaturePathItemInactive {
+    background-position: -51px -1px;
+}
+.MMControlMeasureToolbar .olControlDrawFeaturePathItemActive {
+    background-position: -51px -24px;
+}		
+
+.MMControlMeasureToolbar .olControlDrawFeaturePolygonItemInactive{
+    background-position: -26px -1px;
+}
+.MMControlMeasureToolbar .olControlDrawFeaturePolygonItemActive {
+    background-position: -26px -24px;
+}
+
+
+.MMControlMeasureToolbar .olControlZoomBoxItemInactive {
+    background-position: -128px -1px;
+}
+.MMControlMeasureToolbar .olControlZoomBoxItemActive  {
+    background-position: -128px -24px;
+}
+
+.MMControlMeasureToolbar .olControlZoomToMaxExtentItemInactive {
+
+    background-position: -1px -1px;
+}
+.MMControlMeasureToolbar .olControlZoomToMaxExtentItemActive {
+
+    background-position: -1px -24px;
+}
+
+
+
+/*
+        .olControlPanel .olControlZoomBoxItemInactive { 
+          width:  22px;  
+          height: 22px;
+          background-color: orange;
+          background-image: url("imgs/drag-rectangle-off.png");
+        }
+        .olControlPanel .olControlZoomBoxItemActive { 
+          width:  22px;  
+          height: 22px;
+          background-color: blue;
+          background-image: url("imgs/drag-rectangle-on.png");
+        }*/
+
+
+
+/*************************************************
+ *	OverviewMap
+ *
+ *************************************************/
+.MMControlLTOverviewMapContainer {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+	background-color: #FFFFFF;
+}
+.MMControlLTOverviewMapElement {
+    border-left:1px solid #999999 !important;
+	border-top:1px solid #999999 !important;
+	padding-top: 3px !important;
+	padding-left: 3px !important;
+	/*border:1px solid #000000 !important;
+	
+	padding: 4px 4px 4px 4px !important;
+	padding: 1px 1px 1px 1px;
+	background-color: #ffffff !important;
+	background-color: #ffffff;
+	-moz-border-radius: 1em 0 0 0;
+	border:1px solid #000000;*/
+	
+}
+
+.MMControlLTOverviewMapMinimizeButton {
+	right: 0px;
+	bottom: 0px !important;
+	bottom: 0px;
+}    
+
+.MMControlLTOverviewMapMaximizeButton {
+	right: 0px;
+	bottom: 0px !important;
+	bottom: 0px;
+}
+
+.MMControlLTOverviewMapExtentRectangle {
+	overflow: hidden;
+	background-image: url("rect.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: move;
+	border: 2px ridge  blue !important;
+	border: 2px ridge  blue;
+	background:#D8DDE9;/*background:#69F;*/
+	filter:alpha(opacity=50);/* IE */ 
+	-moz-opacity:0.5;/* Moz + FF */ 
+	opacity: 0.5; /* */
+}
+.MMControlLTOverviewMapRectReplacement {
+	overflow: hidden;
+	cursor: move;
+	background-image: url("overview_replacement.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	
+} 
+.olMap {
+    z-index: 0;
+    padding: 0;
+    margin: 0;
+    cursor: default;
+	border:0px solid #999999;
+}
+
+.EzMapEasyKMLAtSamePosition {
+            -webkit-transform-origin: 0px 0px;
+
+            -webkit-transition-property: -webkit-transform, -webkit-transform-origin;
+            -webkit-transition-duration: 1s;
+}

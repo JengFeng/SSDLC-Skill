@@ -1,0 +1,19 @@
+﻿
+
+.jsPanel {
+    padding: 4px;
+    border-radius: 6px;
+    background-color: #3e516d;
+}
+.jsPanel-titlebar .jsPanel-title {
+    color: white;
+    font-size: 15px;
+    font-family: Microsoft JhengHei;
+}
+.jsPanel-controlbar .jsPanel-btn.jsPanel-btn-sm svg:not(.svg-inline--fa), .jsPanel-controlbar .jsPanel-btn.jsPanel-btn-sm span:not(.material-icons) {
+    width: 1rem;
+}
+.jsPanel-controlbar .jsPanel-btn svg.jsPanel-icon, .jsPanel-controlbar .jsPanel-btn span, .jsPanel-controlbar .jsPanel-btn i {
+
+    color: white;
+}
