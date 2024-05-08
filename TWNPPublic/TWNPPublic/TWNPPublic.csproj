@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Domain\Common\" />
     <Folder Include="Models\Model\" />
+    <Folder Include="Middleware\" />
     <Folder Include="Script\" />
     <Folder Include="wwwroot\js\fancyBox\helpers\" />
   </ItemGroup>
