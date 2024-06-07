@@ -45,6 +45,11 @@
         //$(document).ready(function () {
         //    $(".footable").footable();
         //});
+        //區分是直接從民眾版進入，還是從業務版進入
+        var params = new URLSearchParams(window.location.search);
+        if (params.has('fromtwn')) {
+            sessionStorage.setItem('fromtwn',params.get('fromtwn'));
+        }
     </script>
 
 </head>

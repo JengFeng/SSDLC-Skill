@@ -119,7 +119,7 @@
             timespilt:$(".timesplit.btn-green-o.active").data("timesplit"),
             Cdate:$("#divWaterUserSearchChartTitle").data('themeswitchchart')
         };
-        let url = "@Url.Action("LoadWaterUseAnalyzer","Dashboard")";
+        let url = "@Context.Items["urlPrefix"]@Url.Action("LoadWaterUseAnalyzer","Dashboard")";
         var option
         $.get(url,model,function(data){
             $("#spanAlert").text('');

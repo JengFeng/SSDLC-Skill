@@ -188,6 +188,7 @@ var LayerMenuTree = function () {
                     .replace('{isActive}', isActive)
                     .replace('{clickElm}', clickElm)
                     .replace('{item.LAYER}', item.LAYER)
+                     .replace('/swns//:0', imgUrl)
                     .replace('//:0', imgUrl)
                     .replace(/{item.LAYER_NAME}/g, item.LAYER_NAME);
             $(LayerSelf.elm.boxBasemap).append(boxItem);
@@ -314,6 +315,7 @@ var LayerMenuTree = function () {
         let div = Tmpl.legend
             .replace('{checkBoxId}', item.id)
             .replace(/{name}/g, item.text)
+            .replace('/swns//:0', item.original.legend)
             .replace('//:0', item.original.legend);
         $(LayerSelf.elm.boxLegend + ' .mCSB_container').append(div);
     }        // 渲染圖例

@@ -13,7 +13,7 @@
         var WaterNoIndex = 1;
         $(function(){
             $(".menuList > a:nth-child(4)").addClass("active").siblings().removeClass("active");
-            $.get("@Url.Action("GetUserInfo","UserManage")",function(result){
+            $.get("@Context.Items["urlPrefix"]@Url.Action("GetUserInfo","UserManage")",function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
                     $("#Password").val(result.Data.PWD);
@@ -21,7 +21,7 @@
                     $("#Email").val(result.Data.EMAIL);
                 }
             });
-            $.get("@Url.Action("ListedUserWaterNo","UserManage")",function(result){
+            $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNo","UserManage")",function(result){
                 if(result.Success){
                     $.each(result.Data,function(index,value){
                         value["Index"] = WaterNoIndex;
@@ -36,7 +36,7 @@
             var Id = $(obj).data('id');
             let waterno = $(obj).data('waterno');
             $("#WaterNoItem" + Id).remove();
-            let url = "@Url.Action("DeleteUserWaterNo","UserManage")";
+            let url = "@Context.Items["urlPrefix"]@Url.Action("DeleteUserWaterNo","UserManage")";
             let model = {
                 WaterNo : waterno
             };
@@ -64,7 +64,7 @@
         @*無帳號創建帳號*@
         <text>
                                             function btnSave(){
-                                                var Url = "@Url.Action("CreatUserInfo","UserManage")";
+                                                var Url = "@Context.Items["urlPrefix"]@Url.Action("CreatUserInfo","UserManage")";
                                                 var Data ={
                                                     Account : $("#Account").val(),
                                                     Password : $("#Password").val(),
@@ -102,7 +102,7 @@
         @*有帳號更新資料*@
         <text>
                                         function btnSave(){
-                                            var Url = "@Url.Action("UpdateUserInfo","UserManage")";
+                                            var Url = "@Context.Items["urlPrefix"]@Url.Action("UpdateUserInfo","UserManage")";
                                             var Data ={
                                                 Account : $("#Account").val(),
                                                 Password : $("#Password").val(),

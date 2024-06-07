@@ -63,27 +63,27 @@
 	if (typeof (GetLayerApi) === 'undefined') 
 		function GetLayerApi(folderSn) {
 			var param = (folderSn != undefined && folderSn != null ? '?folderRootSn=' + folderSn : '');
-			return '@Url.Action("GetLayerData", "Layer")' + param;
+			return '@Context.Items["urlPrefix"]@Url.Action("GetLayerData", "Layer")' + param;
 		}
 
 	//# 取得圖層目錄連結
 	if (typeof (GetDirApi) === 'undefined') 
 		function GetDirApi(folderSn){
 			var param = (folderSn != undefined && folderSn != null ? '?folderRootSn=' + folderSn : '');
-			return '@Url.Action("GetDirectoryData", "Layer")' + param;
+			return '@Context.Items["urlPrefix"]@Url.Action("GetDirectoryData", "Layer")' + param;
 		}
 
 	//# 取得底圖連結
 	if (typeof (GetBaseMapApi) === 'undefined') 
 		function GetBaseMapApi(){
-			return '@Url.Action("GetBaseMapData", "Layer")';
+			return '@Context.Items["urlPrefix"]@Url.Action("GetBaseMapData", "Layer")';
 		}
 
 	//# 取得圖層清單連結
 	if (typeof (GetLayerListApi) === 'undefined') 
 		function GetLayerListApi(folderSn){
 			var param = (folderSn != undefined && folderSn != null ? '?folderRootSn=' + folderSn : '');
-			return '@Url.Action("GetLayerJsonData", "Layer")' + param;
+			return '@Context.Items["urlPrefix"]@Url.Action("GetLayerJsonData", "Layer")' + param;
 		}
 
 	//# 取得 Proxy 連結
@@ -91,7 +91,7 @@
 		function GetFileProxyApi(dataUrl, encoding){
 			var param = (dataUrl != undefined && dataUrl != null ? '?dataUrl=' + dataUrl : '');
 			param += (encoding != undefined && encoding != null ? ((param == '' ? '?' : '&') + 'ezEncoding=' + encoding) : '');
-			return '@Url.Action("ProxyData", "Layer")' + param;
+			return '@Context.Items["urlPrefix"]@Url.Action("ProxyData", "Layer")' + param;
 		}
 
 	var itemLayer = {

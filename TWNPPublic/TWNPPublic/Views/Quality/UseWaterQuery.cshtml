@@ -61,13 +61,13 @@
 
         function btnSearch() {
             $("#spanError").text('');
-            let url = "@Url.Action("WaterNoteTableChart","Dashboard")";
+            let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart","Dashboard")";
             let model = {
                 Cdate: $("#inputStartTime").val()
             };
 
 
-            $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
+            $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
                 $("#spanError").text('');
                 if (result.Success) {
 

@@ -465,7 +465,7 @@ namespace TWNPPublic.Controllers
                         "",
                         "");
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Dashboard", new { fromtwn = "true" });
         }
 
         /// <summary>

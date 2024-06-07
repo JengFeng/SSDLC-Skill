@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace twn.Middleware
+namespace TWNPPublic.Middleware
 {
     public class GlobalDataMiddleware
     {
@@ -18,7 +18,7 @@ namespace twn.Middleware
         public async Task Invoke(HttpContext context)
         {
             // 取得 appsettings.json 中的設置值
-            var yourSettingValue = _configuration["PrevURLName"];
+            var yourSettingValue = _configuration["urlPrefix"];
 
             // 將設置值放置到 HttpContext 中
             context.Items["urlPrefix"] = yourSettingValue;

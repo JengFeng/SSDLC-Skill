@@ -31,14 +31,14 @@
 	if (typeof (GetAddressCoordinate) === 'undefined') 
 		function GetAddressCoordinate(address){
             var param = (address != undefined && address != null ? '?address=' + address : '');
-            return '@Url.Action("GetAddressCoordinate", "Layer")' + param;
+            return '@Context.Items["urlPrefix"]@Url.Action("GetAddressCoordinate", "Layer")' + param;
 		}
 
     function GetCurrentAddressUrl() { 
-        return '@Url.Action("GetCurrentAddress","Dashboard")';
+        return '@Context.Items["urlPrefix"]@Url.Action("GetCurrentAddress","Dashboard")';
     }   // 取得目前水號地址 Api
 
     function GetCurrentLatAndLonUrl() { 
-        return '@Url.Action("GetCurrentLatAndLon","Dashboard")';
+        return '@Context.Items["urlPrefix"]@Url.Action("GetCurrentLatAndLon","Dashboard")';
     }
 </script>

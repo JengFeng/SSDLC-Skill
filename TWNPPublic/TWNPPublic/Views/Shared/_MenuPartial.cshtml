@@ -101,7 +101,7 @@
 </nav>
 <script>
     function btnLogout(){
-       window.location.href = "@Url.Action("Logout","Home")";
+       window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Logout","Home")";
     }
     //$('#SelectWaterNos').change(function(){
     //    var value = $(this).val();
@@ -125,7 +125,7 @@
         var model = {
             WaterNos : value
         };
-        $.post("@Url.Action("ChangeUserWaterNos","Dashboard")",model,function(result){
+        $.post("@Context.Items["urlPrefix"]@Url.Action("ChangeUserWaterNos","Dashboard")",model,function(result){
             if(result.Success)
             {
                 history.go(0);

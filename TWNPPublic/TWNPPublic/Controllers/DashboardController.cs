@@ -548,7 +548,7 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate)
+        public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate,bool Fromtwn)
         {
             //回應25筆
             // 2022/11/13 00:00:00 - 2022/11/14 00:00:00
@@ -711,7 +711,7 @@ namespace TWNPPublic.Controllers
 
                         //}
 
-                        if (aspNetUser.UserId != 0)
+                        if (aspNetUser.UserId != 0 && !Fromtwn)
                         {
                             if (cell == null)
                             {
@@ -828,7 +828,7 @@ namespace TWNPPublic.Controllers
 
                         if (takeone != null)
                         {
-                            if (aspNetUser.UserId != 0)
+                            if (aspNetUser.UserId != 0 && !Fromtwn)
                             {
                                 if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME >= aspNetUser.StartDate && takeone.REC_DATE_TIME <= aspNetUser.EndDate)
@@ -900,7 +900,7 @@ namespace TWNPPublic.Controllers
 
                         if (takeone != null)
                         {
-                            if (aspNetUser.UserId != 0)
+                            if (aspNetUser.UserId != 0 && !Fromtwn)
                             {
                                 if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && takeone.REC_DATE_TIME >= aspNetUser.StartDate && takeone.REC_DATE_TIME <= aspNetUser.EndDate)
@@ -924,7 +924,7 @@ namespace TWNPPublic.Controllers
                 }
 
                 //補業務版的洞
-                if (aspNetUser.UserId == 0)
+                if (aspNetUser.UserId == 0 && Fromtwn)
                 {
                     foreach (var item in dic)
                     {

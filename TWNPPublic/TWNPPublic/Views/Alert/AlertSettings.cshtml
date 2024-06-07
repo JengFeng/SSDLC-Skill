@@ -95,7 +95,7 @@
         let model = {
             WaterNo : obj
             };
-         $.get("@Url.Action("LoadAlertSet","Alert")",model,function(result){
+         $.get("@Context.Items["urlPrefix"]@Url.Action("LoadAlertSet","Alert")",model,function(result){
             if(result.Success){
                 $("#AlertPhone").val(result.Data.AlertPhone);
 
@@ -196,7 +196,7 @@
 
         $(".text-danger").text('');
         var Validator = $("#FormAlertSet").validate();
-        var url = "@Url.Action("SaveAlertSet", "Alert")"
+        var url = "@Context.Items["urlPrefix"]@Url.Action("SaveAlertSet", "Alert")"
             $.ajax({
             url: url,
                 type: "Post",

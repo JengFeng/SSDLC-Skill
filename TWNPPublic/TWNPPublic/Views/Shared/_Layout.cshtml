@@ -66,7 +66,8 @@
 
             //console.log('水號選單');
              //水號選單
-            $.get("@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
+            $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
+                if( result.Data == undefined ) return ;
                 $.each(result.Data.WaterNos,function(index,value){
                     if( result.Data.Name == '7D767220354' && result.Data.CurrentNos == '7D767190014'){
                         $(".SelectWaterNoslist").append('<option value=7D767220354>7D767220354</option>');
@@ -93,7 +94,7 @@
             });
 
             //老馬燈AJAX
-             $.get("@Url.Action("ListedNews","Dashboard")", function(result){
+             $.get("@Context.Items["urlPrefix"]@Url.Action("ListedNews","Dashboard")", function(result){
                 if(result.Success){
                     $("#marquee1").empty();
                     $.each(result.Data,function(index,value){
@@ -135,11 +136,11 @@
                            let model = {
                                  Cdate : @DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")
                             };
-                            $.get("@Url.Action("Fancybox_tableChart","Dashboard")",model,function(result){
+                            $.get("@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard")",model,function(result){
                     
                                 if ( result.includes('忘記密碼') )
                                 {
-                                    window.location.href = "@Url.Action("Login","Home")";
+                                    window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Login","Home")";
                                 }
                              });
                         }
@@ -170,9 +171,15 @@
             timer2 = minutes + ':' + seconds;
             if (timer2 == "0:00") {
                 alert("網頁已閒置超過15分鐘，請從新登入");
-                window.location = "@Url.Action("Logout", "Home")";
+                window.location = "@Context.Items["urlPrefix"]@Url.Action("Logout", "Home")";
             }
         }, 1000);
+
+        //區分是直接從民眾版進入，還是從業務版進入
+        var params = new URLSearchParams(window.location.search);
+        if (params.has('fromtwn')) {
+            sessionStorage.setItem('fromtwn', params.get('fromtwn'));
+        }
     </script>
 </head>
 <body>

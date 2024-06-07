@@ -55,12 +55,13 @@
 
         function LoadChart() {
             var model = {
-                Cdate: $("#divWaterUserSearchChartTitle").data("themeswitchchart")
+                Cdate: $("#divWaterUserSearchChartTitle").data("themeswitchchart"),
+                Fromtwn:sessionStorage.getItem('fromtwn')
             };
 
             let total = 0;
 
-            $.post("@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
+            $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart","Dashboard")", model, function (result) {
                 $("#spanError").text('');
                 console.log(result);
                 if (result.Success) {
@@ -319,7 +320,7 @@
 <script>
     function btnJumpTime(obj) {
         let Jempdata = $(obj).val();
-        window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard")?Cdate=" + Jempdata;
+        window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard")?Cdate=" + Jempdata;
     }
 
     function UpdateNote(obj) {
@@ -342,7 +343,7 @@
 
     function SaveNote(obj) {
         var getNoteArea = $('#textNote' + obj);
-        let url = "@Url.Action("UpdateHourNote","Dashboard")";
+        let url = "@Context.Items["urlPrefix"]@Url.Action("UpdateHourNote","Dashboard")";
         let model = {
             NoteSN: @ViewBag.NoteSN,
             Hour: obj,
@@ -369,10 +370,10 @@
     function ChangePage(obj) {
         switch (obj) {
             case 'last':
-                window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(-1).ToString("yyyy-MM-dd") })";
+                window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(-1).ToString("yyyy-MM-dd") })";
                 break;
             case 'next':
-                window.location.href = "@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(1).ToString("yyyy-MM-dd") })";
+                window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard",new{ Cdate =  Cdate.AddDays(1).ToString("yyyy-MM-dd") })";
                 break;
         }
     }
