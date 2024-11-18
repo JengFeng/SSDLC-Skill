@@ -2066,8 +2066,16 @@ namespace TWNPPublic.Controllers
             if(aspNetUser.UserId != null)
             {
                 var result = dashboardService.ListedWaterNOBySN(WaterNos);
-                HttpContext.Session.SetString("StartDate", result.ST_DATE.ToString() );
-                HttpContext.Session.SetString("EndDate", result.EN_DATE.ToString() );
+                //HttpContext.Session.SetString("StartDate", result.ST_DATE.ToString());
+                //HttpContext.Session.SetString("EndDate", result.EN_DATE.ToString());
+                if (result != null && string.IsNullOrEmpty(result.ST_DATE.ToString()))
+                {
+                    HttpContext.Session.SetString("StartDate", result.ST_DATE.ToString());
+                }
+                if (result != null && string.IsNullOrEmpty(result.EN_DATE.ToString()))
+                {
+                    HttpContext.Session.SetString("EndDate", result.EN_DATE.ToString());
+                }
             }
             
             HttpContext.Session.SetString("CurrentWaterNo", WaterNos);
