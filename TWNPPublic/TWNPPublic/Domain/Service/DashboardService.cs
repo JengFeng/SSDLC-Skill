@@ -299,7 +299,7 @@ namespace TWNPPublic.Domain.Service
 
             try
             {
-                var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=67&key=57D22AF765176213&F1={F1}&F2={F2}");
+                var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=67&key=57D22AF765176213&F1={F1}&F2={F2}");
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
@@ -476,7 +476,7 @@ namespace TWNPPublic.Domain.Service
             string qt = QueryTime.ToString("yyyy-MM-dd");
             // 這裡要改成從API拿
             var httpClient = httpClientFactory.CreateClient();
-            var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
             try
             {
                 // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
@@ -510,7 +510,7 @@ namespace TWNPPublic.Domain.Service
             string qt = QueryTime.ToString("yyyy-MM-dd");
             // 這裡要改成從API拿
             var httpClient = httpClientFactory.CreateClient();
-            var responseMessage = await httpClient.GetAsync($"https://swns.water.gov.tw/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
             try
             {
                 // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
@@ -738,6 +738,30 @@ namespace TWNPPublic.Domain.Service
             object obj = new { WaterNo };
             return this.dataAccess.Query<B_ACCOUNT_WATER_NO>(mainsql, obj).FirstOrDefault();
         }
+
+        /// <summary>
+        /// 取F_B_CHART2
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="ChartTpye"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
+        public List<F_B_CHART2> ListedChart2(string WaterNo, string ChartType, DateTime StartTime, DateTime EndTime)
+        {
+            string mainsql = @"SELECT * FROM [dbo].[F_B_CHART2](@WaterNo, @pin, @StartTime, @EndTime)";
+            object obj = new
+            {
+                WaterNo,
+                pin = ChartType,
+                StartTime = StartTime.Date,
+                EndTime = EndTime
+            };
+
+            var result = dataAccess.Query<F_B_CHART2>(mainsql, obj);
+
+            return result;
+        }
     }
 
     public interface IDashboardService
@@ -918,5 +942,15 @@ namespace TWNPPublic.Domain.Service
         public int UpdateAccountInfo(UpdatePwVm model, int SN);
 
         public B_ACCOUNT_WATER_NO ListedWaterNOBySN(string WaterNo);
+
+        /// <summary>
+        /// 圖 fn chart2
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="ChartTpye"></param>
+        /// <param name="StartTime"></param>
+        /// <param name="EndTime"></param>
+        /// <returns></returns>
+        public List<F_B_CHART2?> ListedChart2(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
     }
 }

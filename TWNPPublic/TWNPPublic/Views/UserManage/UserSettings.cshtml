@@ -12,7 +12,7 @@
 <script>
         var WaterNoIndex = 1;
         $(function(){
-            $(".menuList > a:nth-child(4)").addClass("active").siblings().removeClass("active");
+            $(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
             $.get("@Context.Items["urlPrefix"]@Url.Action("GetUserInfo","UserManage")",function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);

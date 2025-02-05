@@ -103,6 +103,16 @@ namespace TWNPPublic.Controllers
             };
             return Json(Success<string>(JsonConvert.SerializeObject(option)));
         }
+
+        /// <summary>
+        /// 用水量查詢(meun)
+        /// </summary>
+        /// <returns></returns>
+        [Menu("用水量查詢")]
+        public IActionResult UseWaterQueryNew()
+        {
+            return View();
+        }
     }
 
 }

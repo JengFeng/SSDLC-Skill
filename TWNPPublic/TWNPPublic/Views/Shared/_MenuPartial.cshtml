@@ -23,6 +23,7 @@
                 </div>
                 <div class="menuList">
                     <a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a>
+                    <a class="" href="@Url.Action("UseWaterQueryNew","Quality")"><i class="bi bi-columns-gap"></i>用水量查詢</a>
                     @*<a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a>*@
                     <a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a>
                     @{
@@ -74,6 +75,7 @@
            <select id="SelectWaterNos2" class="form-SelectWaterNos SelectWaterNoslist" onchange="SelectWaterNosChange()"></select>
         </li>
         <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
+        <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQueryNew","Quality")"><i class="bi bi-columns-gap"></i>用水量查詢</a></li>
         @*<li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>*@
         <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
         @{

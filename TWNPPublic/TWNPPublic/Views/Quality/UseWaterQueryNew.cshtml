@@ -1,0 +1,253 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "用水量查詢";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section echart {
+    <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
+}
+<script>
+    $(function () {
+        $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");
+        $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");
+        $(".menuList > a:nth-child(2)").addClass("active").siblings().removeClass("active");
+        // 預設顯示小時對應的 checkbox
+        $("#checkbox-group-day, #checkbox-group-month, #checkbox-group-year").show();
+        console.log("ready!");
+        // 頁面載入時，根據預設值更新 checkbox 顯示
+        updateCheckboxVisibility($("#form-name").val());
+
+        // 監聽 select 選單變更
+        $("#form-name").change(function () {
+            updateCheckboxVisibility($(this).val());
+        });
+    });
+</script>
+
+<div class="pageWrap">
+    <partial name="_MenuPartial" />
+    <div class="pageArea">
+        <partial name="_NewsBoxPartial" />
+        <div class="mainGroup">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">用水量查詢</li>
+                </ol>
+            </nav>
+            <div class="search-inline row">
+                <div class="mb-3 col-lg-3">
+                    <label for="form-name" class="form-label">X軸維度</label>
+                    <select class="form-select" id="form-name" aria-label="請選擇值">
+                        <option value="hour">小時</option>
+                        <option value="day">日</option>
+                        <option value="week">週</option>
+                        <option value="month">月</option>
+                        <option value="year">年</option>
+                    </select>
+                </div>
+                <div class="mb-3 col-lg-4">
+                    <label class="form-label"><i class="bi bi-search"></i>日期起</label>
+                    <input type="date" id="inputStartTime" class="form-control mb-3 col-xs-6 col-lg-6">
+                </div>
+                <!-- 日期分隔符號和日期迄 -->
+                <div class="d-flex align-items-center col-lg-5">
+                    <div class="col-auto">
+                        <span>~</span>
+                    </div>
+                    <div class="col">
+                        <input type="date" id="inputEndTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3 col-lg-6 checkbox-all">
+                    <label class="form-label"><i class="bi bi-search"></i> 套疊</label>
+                    <div class="d-flex">
+                        <div class="form-check me-3 checkbox-group" id="checkbox-group-day">
+                            <input class="form-check-input" type="checkbox" id="checkbox-day" value="option1">
+                            <label class="form-check-label" for="checkbox-day">
+                                前一日同期
+                            </label>
+                        </div>
+
+                        <div class="form-check me-3 checkbox-group" id="checkbox-group-month">
+                            <input class="form-check-input" type="checkbox" id="checkbox-month" value="option1">
+                            <label class="form-check-label" for="checkbox-month">
+                                前一月同期
+                            </label>
+                        </div>
+
+                        <div class="form-check me-3 checkbox-group" id="checkbox-group-year">
+                            <input class="form-check-input" type="checkbox" id="checkbox-year" value="option1">
+                            <label class="form-check-label" for="checkbox-year">
+                                去年同期
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 col-lg-6 checkbox-all">
+                    <label class="form-label"><i class="bi bi-search"></i>同用水種別比較</label>
+                    <div class="form-check me-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-type" value="option1">
+                        <label class="form-check-label" for="checkbox-type">
+                            同用水種別前一年度平均用水量
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
+                <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
+                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重製</a>
+            </div>
+            <span id="spanError">此時間段尚無資料</span>
+            <div class="pagechartGroup" id="mychart" style="width:100%;height:500px;margin-top:15px">
+            </div>
+        </div>
+    </div>
+</div><!-- wrap end -->
+
+<script>
+
+    function updateCheckboxVisibility(selectedValue) {
+        // 先隱藏所有 checkbox
+        $(".checkbox-group").hide();
+        $(".checkbox-all").show();
+
+        // 根據不同選擇顯示對應的 checkbox
+        switch (selectedValue) {
+            case "hour":
+                $("#checkbox-group-day, #checkbox-group-month, #checkbox-group-year").show();
+                break;
+            case "day":
+                $("#checkbox-group-month, #checkbox-group-year").show();
+                break;
+            case "week":
+                $("#checkbox-group-year").show();
+                break;
+            case "month":
+                $("#checkbox-group-month").show();
+                break;
+            case "year":
+                $(".checkbox-all").hide();
+                break;
+        }
+    }
+
+    function btnSearch() {
+
+        let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart", "Dashboard")";
+        let model = {
+            Cdate: $("#inputStartTime").val()
+        };
+
+
+        $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart", "Dashboard")", model, function (result) {
+            $("#spanError").text('');
+            if (result.Success) {
+
+                if (result.Data.Length == 0) {
+                    $("#spanError").text('此時間段尚無資料');
+                    myChart.clear();
+                }
+
+                let parserY = result.Data.Y.map(item => Math.floor(item));
+                const colors = ['#5391C7'];
+                var option;
+                option = {
+                    color: colors,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+                    grid: {
+                        bottom: 80
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: { title: "另存圖片" }
+                        }
+                    },
+                    legend: {
+                        y: 'top',
+                        x: 'middle',
+                        data: ["用水量趨勢", "用水指針"]
+                    },
+                    xAxis: {
+                        nameGap: 25,
+                        nameLocation: 'center',
+                        name: '時間(小時)',
+                        type: 'category',
+                        data: result.Data.X
+                    },
+                    yAxis: [{
+                        nameLocation: 'center',
+                        nameGap: 25,
+                        nameRotate: 360,
+                        name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                        type: 'value',
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#5391C7'
+                            }
+                        },
+                        axisLabel: { formatter: '{value}' }
+                    },
+                    {
+                        nameLocation: 'center',
+                        nameGap: 45,
+                        nameRotate: 360,
+                        name: '用 \n水 \n指 \n針 \n',
+                        type: 'value',
+                        position: 'right',
+                        alignTicks: true,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#ffb1c1'
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                        },
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        nameTextStyle: {
+                            fontSize: 18
+                        }
+                    }],
+                    series: [
+                        {
+                            name: '用水量趨勢',
+                            type: 'bar',
+                            data: parserY
+                        },
+                        {
+                            name: '用水指針',
+                            type: 'line',
+                            yAxisIndex: 1,
+                            itemStyle: { color: '#ffb1c1', lineStyle: { color: '#ffb1c1' } },
+                            data: result.Data.O
+                        }
+                    ]
+                };
+                option && myChart.setOption(option);
+            }
+            else {
+                $("#spanError").text('此時間段尚無資料');
+                myChart.clear();
+            }
+        });
+    }
+
+
+
+
+</script>
