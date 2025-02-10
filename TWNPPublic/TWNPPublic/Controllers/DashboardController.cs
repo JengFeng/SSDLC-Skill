@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Web;
+using System.Xml.Linq;
 using TWNPPublic.Common.Attributes;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Domain.Service;
 using TWNPPublic.Models.Entity;
+using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Dashboard;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -2204,6 +2208,356 @@ namespace TWNPPublic.Controllers
             }));
         }
 
+        /// <summary>
+        /// 點擊用戶記事後右邊的圖表
+        /// </summary>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> WaterNoteTableChart2(DateTime Sdate, DateTime Edate,string Type,string TimeType )
+        {
+            // 注意：這裡使用的「補上」固定日期或調整後的邏輯，
+            // 都是依照您所提供的例子（固定日期 2025/02/05 或 2025/02）來寫，實際上可能需依業務邏輯改寫。
+
+            if (Type.ToLower() == "hour")
+            {
+                // 當 Type 為 hour 時，不論傳入 Sdate/Edate 為何，最後都補上 2025/02/05 00:00:00 ~ 23:59:59
+                if (string.IsNullOrEmpty(TimeType))
+                {
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
+                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                }
+                else if (TimeType.ToLower() == "day")
+                {
+                    // 先減一天（依傳入的 Sdate/Edate），接著補上固定日期
+                    Sdate = Sdate.AddDays(-1);
+                    Edate = Edate.AddDays(-1);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
+                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                }
+                else if (TimeType.ToLower() == "month")
+                {
+                    // 先減一個月，再補上固定日期
+                    Sdate = Sdate.AddMonths(-1);
+                    Edate = Edate.AddMonths(-1);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
+                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                }
+                else if (TimeType.ToLower() == "year")
+                {
+                    // 先減一年，再補上固定日期
+                    Sdate = Sdate.AddYears(-1);
+                    Edate = Edate.AddYears(-1);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
+                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                }
+            }
+            else if (Type.ToLower() == "day")
+            {
+                // 當 Type 為 day 時：
+                if (string.IsNullOrEmpty(TimeType))
+                {
+                    // 若 TimeType 為空，依您例子表示 Sdate 與 Edate 保持原狀
+                    // 例如傳入的為 2025/02/05（日期不含時間）就保持不變
+                    // 若您有其他需求，可在此處做調整
+                }
+                else if (TimeType.ToLower() == "month")
+                {
+                    // 將 Sdate 與 Edate 減一個月（保留日期部分）
+                    Sdate = Sdate.AddMonths(-1);
+                    Edate = Edate.AddMonths(-1);
+                }
+                else if (TimeType.ToLower() == "year")
+                {
+                    // 將 Sdate 與 Edate 減一年
+                    Sdate = Sdate.AddYears(-1);
+                    Edate = Edate.AddYears(-1);
+                }
+
+                //// 若希望在「日」型查詢時，也能依據月份補上該月的第一天與最後一天，
+                //// 可依下列邏輯判斷（例如當傳入 Sdate 與 Edate 只指定了月份）
+                //// 假設您希望：若 Sdate 與 Edate 分別為 2025/02（無特定日），則補上 2025/02/01 ~ 2025/02/28
+                //// 這裡以判斷傳入的日期是否為該月的第一天與最後一天來示意
+                //if (Sdate.Day != 1 || Edate.Day != DateTime.DaysInMonth(Edate.Year, Edate.Month))
+                //{
+                //    // 如需要補上「月初」與「月尾」的情況，可加上此判斷（請根據實際需求啟用或移除此段）
+                //    // 範例：假設若查詢條件為某個月份的查詢，就以該月第一天與最後一天為範圍
+                //    // 這裡僅示範如何取出該月的第一、最後一天
+                //    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                //    Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
+                //    Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
+                //}
+            }
+            else if (Type.ToLower() == "week")
+            {
+                // 當 Type 為 week 時：
+                if (string.IsNullOrEmpty(TimeType))
+                {
+                    // 假設傳入 Sdate 與 Edate的年份與月份代表欲查詢的月份，
+                    // 補上該月的第一天與最後一天
+                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
+                    Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
+                }
+                else if (TimeType.ToLower() == "year")
+                {
+                    // 先減一年，再取出該月的第一天與最後一天
+                    Sdate = Sdate.AddYears(-1);
+                    Edate = Edate.AddYears(-1);
+                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
+                    Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
+                }
+            }
+            else if (Type.ToLower() == "month")
+            {
+                // 當 Type 為 week 時：
+                if (string.IsNullOrEmpty(TimeType))
+                {
+                    // 假設傳入 Sdate 與 Edate的年份與月份代表欲查詢的月份，
+                    // 補上該月的第一天與最後一天
+                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
+                    Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
+                }
+                else if (TimeType.ToLower() == "year")
+                {
+                    // 先減一年，再取出該月的第一天與最後一天
+                    Sdate = Sdate.AddYears(-1);
+                    Edate = Edate.AddYears(-1);
+                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
+                    Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
+                }
+
+            }
+            else if (Type.ToLower() == "year")
+            {
+                Sdate = new DateTime(Sdate.Year, 1, 1);
+                Edate = new DateTime(Edate.Year,12, 31);
+            }
+
+            try
+            {
+
+                // 先建立一個 Dictionary 來存放時間點
+                Dictionary<string, decimal?> dic = new Dictionary<string, decimal?>();
+                List<F_B_CHART2> lastSixDaysData = new List<F_B_CHART2>();
+                List<A_PH_METER_RECORD_LIST> historyData = new List<A_PH_METER_RECORD_LIST>();
+                List<F_B_CHART2> finalResult = new List<F_B_CHART2>();
+
+                switch (Type.ToLower())
+                {
+                    case "hour":
+                        // 讀取數據
+                        if ((DateTime.Now - Sdate).Days <= 6)
+                        {
+                            lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate);
+                            if (lastSixDaysData != null && lastSixDaysData.Count > 0)
+                            {
+                                foreach (var item in lastSixDaysData)
+                                {
+                                    string timeKey = item.X.ToString("HH:mm");
+                                    dic[timeKey] = item.Y;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            decimal? geYesterdayLastAMOUNT = null;
+
+                            if (Sdate.Date == DateTime.Now.AddDays(-2).Date)
+                            {
+                                var lastDayData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate.AddDays(1), Edate.AddDays(1)).OrderBy(x => x.X).ToList();
+                                var getLastValue = lastDayData.FirstOrDefault();
+                                if (getLastValue != null)
+                                {
+                                    geYesterdayLastAMOUNT = getLastValue.Y;
+                                }
+                            }
+
+                            historyData = await dashboardService.LitedPhMeterRecordList(Sdate, aspNetUser.CurrentWaterNo);
+                            if (historyData != null && historyData.Count > 0)
+                            {
+                                foreach (var item in historyData)
+                                {
+                                    string timeKey = item.REC_DATE_TIME.ToString("HH:mm");
+                                    dic[timeKey] = item.AMOUNT;
+                                }
+                            }
+
+                            if (geYesterdayLastAMOUNT != null)
+                            {
+                                dic["23:00"] = geYesterdayLastAMOUNT;
+                            }
+                        }
+
+                        // 產生完整的時間點範圍（24 小時，每小時一筆）
+                        for (int i = 0; i < 24; i++)
+                        {
+                            string timeKey = i.ToString("D2") + ":00"; // 00:00, 01:00, ..., 23:00
+                            if (!dic.ContainsKey(timeKey))
+                            {
+                                dic[timeKey] = 0;  // 預設為 0，確保有數據
+                            }
+                        }
+
+                        // 確保有基準時間格式
+                        List<F_B_CHART2> timeBaseSource = lastSixDaysData.Count > 0 ? lastSixDaysData :
+                                                          (historyData.Count > 0 ? historyData.Select(item => new F_B_CHART2
+                                                          {
+                                                              X = item.REC_DATE_TIME,
+                                                              Y = item.AMOUNT
+                                                          }).ToList() :
+                                                          Enumerable.Range(0, 24).Select(i => new F_B_CHART2
+                                                          {
+                                                              X = Sdate.Date.AddHours(i),
+                                                              Y = 0
+                                                          }).ToList());
+
+                        finalResult = timeBaseSource.Select(item => new F_B_CHART2
+                        {
+                            X = item.X,
+                            Y = dic.ContainsKey(item.X.ToString("HH:mm")) ? dic[item.X.ToString("HH:mm")] : item.Y
+                        }).OrderBy(c => c.X).ToList();
+
+                        foreach (var key in dic.Keys)
+                        {
+                            if (!finalResult.Any(x => x.X.ToString("HH:mm") == key))
+                            {
+                                finalResult.Add(new F_B_CHART2
+                                {
+                                    X = Sdate.Date.AddHours(int.Parse(key.Substring(0, 2))),
+                                    Y = dic[key]
+                                });
+                            }
+                        }
+                        break;
+                    case "day":
+                        //finalResult = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+
+                        lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+                        // 確保有基準時間格式
+                        List<F_B_CHART2> timeBaseSource2 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate,"1");
+                        finalResult = timeBaseSource2;
+                        break;
+                    case "week":
+                        //finalResult = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+
+                        lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+                        // 確保有基準時間格式
+                        List<F_B_CHART2> timeBaseSource3 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate,"1");
+                        finalResult = timeBaseSource3;
+                        break;
+                    case "month":
+                        lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+                        // 確保有基準時間格式
+                        List<F_B_CHART2> timeBaseSource4 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate, "1");
+                        finalResult = timeBaseSource4;
+                        break;
+                    case "year":
+                        //finalResult = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+
+                        //lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate)
+                        //.Select(x => new F_B_CHART2
+                        //{
+                        //    X = DateTime.TryParse(x.X.ToString(), out DateTime date) ? date : new DateTime(int.Parse(x.X.ToString()), 1, 1),
+                        //    Y = x.Y
+                        //}).OrderBy(x => x.X)
+                        //.ToList();
+                        lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
+                        // 確保有基準時間格式
+                        List<F_B_CHART2> timeBaseSource5 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate, "2");
+                        finalResult = timeBaseSource5;
+                        break;
+
+                }
+
+
+
+                finalResult = finalResult.OrderBy(x => x.X).ToList();
+
+                var minY = finalResult.Min(x => x.Y); // 找出最小的 Y 值
+                var minXValues = finalResult.Where(x => x.Y == minY).Select(x => FormatDateTime(x.X, Type)).ToList(); // 取得所有對應的 X 值
+                var maxY = finalResult.Max(x => x.Y); // 找出最大的 Y 值
+                var maxYValues = finalResult.Where(x => x.Y == maxY).Select(x => FormatDateTime(x.X, Type)).ToList(); // 取得所有對應的 X 值
+
+                object obj = new
+                {
+                    result = finalResult.Select(item => new F_B_CHART2
+                    {
+                        X = item.X.AddDays(TimeType?.ToLower() == "day" ? 1 : 0)
+                                  .AddMonths(TimeType?.ToLower() == "month" ? 1 : 0)
+                                  .AddYears(TimeType?.ToLower() == "year" ? 1 : 0),
+                        Y = item.Y
+                    }).OrderBy(c => c.X).ToList(),
+                    lowData= string.Join("、 ", minXValues),
+                    heighData= string.Join("、 ", maxYValues)
+                };
+
+                return Json(Success(obj));
+
+
+
+            }
+            catch (Exception e)
+            {
+                return Json(Success());
+            }
+        }
+
+        private List<F_B_CHART2> GetEmptyDateRange(DateTime startDate, DateTime endDate,string type)
+        {
+            List<F_B_CHART2> result = new List<F_B_CHART2>();
+
+            if(type == "1")
+            {
+                // 從 startDate 到 endDate 按小時填充日期
+                for (DateTime dt = startDate.Date; dt <= endDate; dt = dt.AddDays(1))
+                {
+                    result.Add(new F_B_CHART2
+                    {
+                        X = dt, // 日期時間
+                        Y = 0   // Y 值為 0
+                    });
+                }
+
+            }
+            else
+            {
+                // 從 startDate 到 endDate 按小時填充日期
+                for (DateTime dt = startDate.Date; dt <= endDate; dt = dt.AddYears(1))
+                {
+                    result.Add(new F_B_CHART2
+                    {
+                        X = dt, // 日期時間
+                        Y = 0   // Y 值為 0
+                    });
+                }
+
+            }
+
+            return result;
+        }
+
+        // 根據 Type 格式化日期時間
+        private string FormatDateTime(DateTime dateTime, string type)
+        {
+            switch (type.ToLower())
+            {
+                case "hour":
+                    return dateTime.ToString("HH:mm"); // 顯示時:分（例如 00:00）
+                case "day":
+                    return dateTime.ToString("yyyy/MM/dd"); // 顯示日（例如 2024/01/05）
+                case "week":
+                    return dateTime.ToString("yyyy/MM/dd"); // 顯示週（例如 2024/01/05）
+                case "month":
+                    return dateTime.ToString("yyyy/MM"); // 顯示月（例如 2024/01）
+                case "year":
+                    return dateTime.ToString("yyyy"); // 顯示年（例如 2024）
+                default:
+                    return dateTime.ToString("yyyy/MM/dd"); // 預設顯示日
+            }
+        }
         #region 沒用
 
         ///// <summary>

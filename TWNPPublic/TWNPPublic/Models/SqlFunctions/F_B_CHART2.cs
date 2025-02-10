@@ -2,7 +2,7 @@
 {
     public class F_B_CHART2
     {
-        public string X { get; set; } = string.Empty;
-        public float? Y { get; set; }
+        public DateTime X { get; set; }
+        public decimal? Y { get; set; }
     }
 }

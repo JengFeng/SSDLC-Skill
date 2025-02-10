@@ -749,7 +749,12 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public List<F_B_CHART2> ListedChart2(string WaterNo, string ChartType, DateTime StartTime, DateTime EndTime)
         {
-            string mainsql = @"SELECT * FROM [dbo].[F_B_CHART2](@WaterNo, @pin, @StartTime, @EndTime)";
+            string mainsql = @"SELECT 
+                                        CASE WHEN @pin = 'year' THEN CAST(X AS VARCHAR) + '-01-01'  -- 轉換 `X` 為 '2025-01-01'
+                                                ELSE X  -- 其他類型維持原本格式
+                                            END AS X,
+                                            Y
+                               FROM [dbo].[F_B_CHART2](@WaterNo, @pin, @StartTime, @EndTime)";
             object obj = new
             {
                 WaterNo,

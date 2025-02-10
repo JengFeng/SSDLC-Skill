@@ -113,6 +113,16 @@ namespace TWNPPublic.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 用水指針查詢(meun)
+        /// </summary>
+        /// <returns></returns>
+        [Menu("用水指針查詢")]
+        public IActionResult UseWaterQueryAmount()
+        {
+            return View();
+        }
     }
 
 }
