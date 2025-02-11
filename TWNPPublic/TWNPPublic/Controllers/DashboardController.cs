@@ -160,7 +160,7 @@ namespace TWNPPublic.Controllers
                 //民眾版
                 CurrentResult.NAME_DAES = NAME;
             }
-           
+
             ViewBag.Type = billType;
             ViewBag.VDetailResult = CurrentResult;
 
@@ -310,7 +310,7 @@ namespace TWNPPublic.Controllers
                 SetUser = aspNetUser.Name;
             }
             var result = dashboardService.GetDashMain(aspNetUser.CurrentWaterNo, SetUser, GetDataDate);
-            
+
             #region  水號過戶判斷
             if (aspNetUser.UserId != 0)
             {
@@ -323,14 +323,14 @@ namespace TWNPPublic.Controllers
                 //    result = dashboardService.GetDashMain2(aspNetUser.CurrentWaterNo, aspNetUser.UserId.Value, GetDataDate);
                 //}
 
-                if (  (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) )
-                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())  )
-                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) ))
+                if ((!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                    || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()))
+                                    || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString())))
                 {
 
                     result = dashboardService.GetDashMain2(aspNetUser.CurrentWaterNo, aspNetUser.UserId.Value, GetDataDate);
                 }
-               
+
             }
             #endregion
 
@@ -418,7 +418,7 @@ namespace TWNPPublic.Controllers
                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Now.AddYears(-1).AddMonths(-1) >= aspNetUser.StartDate)
                                     || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Now.AddYears(-1).AddMonths(-1) <= aspNetUser.EndDate))
                 {
-                   
+
                 }
                 else
                 {
@@ -488,7 +488,7 @@ namespace TWNPPublic.Controllers
                 });
             }
 
-            
+
 
             var Note = dashboardService.GetB_NOTEbyWaterNoAndDate(aspNetUser.CurrentWaterNo, Cdate);
 
@@ -517,7 +517,7 @@ namespace TWNPPublic.Controllers
                                     || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate >= aspNetUser.StartDate)
                                     || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && Cdate <= aspNetUser.EndDate))
                 {
-                   
+
                 }
                 else
                 {
@@ -552,7 +552,7 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate,bool Fromtwn)
+        public async Task<IActionResult> WaterNoteTableChart(DateTime Cdate, bool Fromtwn)
         {
             //回應25筆
             // 2022/11/13 00:00:00 - 2022/11/14 00:00:00
@@ -561,14 +561,14 @@ namespace TWNPPublic.Controllers
             Dictionary<string, decimal?> dic = new Dictionary<string, decimal?>();
             DateTime StartTime = DateTime.Now;
             //每月的1號，開始日期的月需要減1
-            if ( Cdate.Day == 1)
+            if (Cdate.Day == 1)
             {
                 StartTime = new DateTime(Cdate.Year, Cdate.AddDays(-1).Month, Cdate.AddDays(-1).Day, 23, 0, 0);
 
                 //若是12月的話，年要-1到去年的時間
-                if(Cdate.AddDays(-1).Month == 12)
+                if (Cdate.AddDays(-1).Month == 12)
                 {
-                   StartTime = new DateTime(Cdate.AddYears(-1).Year, Cdate.AddDays(-1).Month, Cdate.AddDays(-1).Day, 23, 0, 0);
+                    StartTime = new DateTime(Cdate.AddYears(-1).Year, Cdate.AddDays(-1).Month, Cdate.AddDays(-1).Day, 23, 0, 0);
                 }
             }
             else
@@ -585,7 +585,7 @@ namespace TWNPPublic.Controllers
             // 判斷今天是否是最後一天
             bool isLastDayOfMonth = Cdate.Date == lastDayOfCurrentMonth.Date;
 
-            if ( isLastDayOfMonth )
+            if (isLastDayOfMonth)
             {
                 EnderTime = new DateTime(Cdate.Year, Cdate.AddDays(1).Month, Cdate.AddDays(1).Day, 0, 0, 0);
             }
@@ -594,7 +594,7 @@ namespace TWNPPublic.Controllers
                 EnderTime = new DateTime(Cdate.Year, Cdate.Month, Cdate.AddDays(1).Day, 0, 0, 0);
             }
 
-            
+
             List<decimal?> NewWaterUser = new List<decimal?>();
 
             try
@@ -637,7 +637,7 @@ namespace TWNPPublic.Controllers
 
                     //var temp = dashboardService.ListedChart1("7D762461969", "PIN", new DateTime(2022, 4, 4), new DateTime(2022, 4, 6));
                     var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", StartTime, EnderTime);
-                    if (temp.Count() <= 0 || temp==null) return Json(Failed(message: "資料尚未開放"));
+                    if (temp.Count() <= 0 || temp == null) return Json(Failed(message: "資料尚未開放"));
                     //這裡要去重複
                     foreach (var item in dic)
                     {
@@ -748,7 +748,7 @@ namespace TWNPPublic.Controllers
                     }
 
                     bool allValues = dic.Values.All(value => value == null);
-                    if ( allValues ) return Json(Failed(message: "資料尚未開放"));
+                    if (allValues) return Json(Failed(message: "資料尚未開放"));
                 }
                 else
                 {
@@ -775,7 +775,7 @@ namespace TWNPPublic.Controllers
 
                     var dayresultTask = await dashboardService.LitedPhMeterRecordListNew(Cdate, aspNetUser.CurrentWaterNo);
                     var day2result = await dashboardService.LitedPhMeterRecordListNew(Cdate.AddDays(-1), aspNetUser.CurrentWaterNo);
-                    var dayresult =  dayresultTask;
+                    var dayresult = dayresultTask;
 
                     if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
                     if (dayresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -1085,7 +1085,7 @@ namespace TWNPPublic.Controllers
                 //}
 
 
-                if(aspNetUser.UserId != 0)
+                if (aspNetUser.UserId != 0)
                 {
 
                     if (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
@@ -1216,8 +1216,8 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public IActionResult LoadWaterUseAnalyzer(string timespilt, DateTime Cdate)
         {
-            var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt,"1").OrderBy(c => c.X).ToList();//今年
-            var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt,"1").OrderBy(c => c.X).ToList();//去年同期
+            var thisyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt, "1").OrderBy(c => c.X).ToList();//今年
+            var nextyear = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate.AddYears(-1), timespilt, "1").OrderBy(c => c.X).ToList();//去年同期
             //單位
             string xAayUnit = "";
 
@@ -1492,12 +1492,12 @@ namespace TWNPPublic.Controllers
                             if (aspNetUser.UserId == 0)
                             {
                                 //前天去撈資料庫
-                                dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"0").OrderBy(c => c.X).ToList();
+                                dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(), "0").OrderBy(c => c.X).ToList();
                             }
                             else
                             {
                                 //前天去撈資料庫
-                                dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
+                                dayresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(), "1").OrderBy(c => c.X).ToList();
                             }
 
                             if (dayresult == null) return Json(Failed(message: "資料尚未開放"));
@@ -1597,7 +1597,7 @@ namespace TWNPPublic.Controllers
 
                                 if (aspNetUser.UserId != 0)
                                 {
-            
+
                                     bool isInDateRange =
                                         string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
                                         || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && DateTime.Parse(item.X) >= aspNetUser.StartDate)
@@ -1683,7 +1683,7 @@ namespace TWNPPublic.Controllers
                                     {
                                         // 業務版
                                         geYesterdayLastAMOUNT = getYesterdayLastValue.Y;
-                                    } 
+                                    }
                                     #endregion
                                 }
                             }
@@ -1737,7 +1737,7 @@ namespace TWNPPublic.Controllers
 
                                 //if (aspNetUser.UserId != 0)
                                 //{
-      
+
                                 //    bool isTransfer = aspNetUser.StartDate.HasValue || aspNetUser.EndDate.HasValue;
 
                                 //    if (!isTransfer || (aspNetUser.StartDate.HasValue && item.REC_DATE_TIME >= aspNetUser.StartDate.Value) &&
@@ -1820,7 +1820,7 @@ namespace TWNPPublic.Controllers
 
                     case "week":
 
-                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X).ToList();
+                        var weekresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(), "1").OrderBy(c => c.X).ToList();
                         //return Json(Success(weekresult));
 
                         if (weekresult == null) return Json(Failed(message: "資料尚未開放"));
@@ -1944,7 +1944,7 @@ namespace TWNPPublic.Controllers
 
                     case "month":
 
-                        var monthresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(),"1").OrderBy(c => c.X);
+                        var monthresult = dashboardService.ListedChart(aspNetUser.CurrentWaterNo, Cdate, timespilt.ToUpper(), "1").OrderBy(c => c.X);
 
                         if (monthresult == null) return Json(Failed(message: "資料尚未開放"));
                         if (monthresult.Count() <= 0) return Json(Failed(message: "查無尚未開放"));
@@ -2067,7 +2067,7 @@ namespace TWNPPublic.Controllers
             if (WaterNos == "7D767220354") WaterNos = "7D767190014";
             if (WaterNos == "7D760002010") WaterNos = "7D760003007";
 
-            if(aspNetUser.UserId != null)
+            if (aspNetUser.UserId != null)
             {
                 var result = dashboardService.ListedWaterNOBySN(WaterNos);
                 //HttpContext.Session.SetString("StartDate", result.ST_DATE.ToString());
@@ -2081,7 +2081,7 @@ namespace TWNPPublic.Controllers
                     HttpContext.Session.SetString("EndDate", result.EN_DATE.ToString());
                 }
             }
-            
+
             HttpContext.Session.SetString("CurrentWaterNo", WaterNos);
             return Json(Success(message: $"已切換至{WaterNos}"));
         }
@@ -2142,15 +2142,15 @@ namespace TWNPPublic.Controllers
 
                     }
 
-                    if(!ModelState.IsValid)
+                    if (!ModelState.IsValid)
                     {
 
-                         return Json(ValidationFailed(
-                            ModelState.Where(x => x.Value.Errors.Count > 0)
-                           .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                           ), "欄位錯誤")); 
+                        return Json(ValidationFailed(
+                           ModelState.Where(x => x.Value.Errors.Count > 0)
+                          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                          ), "欄位錯誤"));
                     }
-  
+
                     vm.PasswordNew2 = comm.AesEncrypt(vm.PasswordNew2);
                     var result2 = dashboardService.UpdateAccountInfo(vm, aspNetUser.UserId.Value);
 
@@ -2213,7 +2213,7 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public async Task<IActionResult> WaterNoteTableChart2(DateTime Sdate, DateTime Edate,string Type,string TimeType )
+        public async Task<IActionResult> WaterNoteTableChart2(DateTime Sdate, DateTime Edate, string Type, string TimeType)
         {
             // 注意：這裡使用的「補上」固定日期或調整後的邏輯，
             // 都是依照您所提供的例子（固定日期 2025/02/05 或 2025/02）來寫，實際上可能需依業務邏輯改寫。
@@ -2333,7 +2333,7 @@ namespace TWNPPublic.Controllers
             else if (Type.ToLower() == "year")
             {
                 Sdate = new DateTime(Sdate.Year, 1, 1);
-                Edate = new DateTime(Edate.Year,12, 31);
+                Edate = new DateTime(Edate.Year, 12, 31);
             }
 
             try
@@ -2437,7 +2437,7 @@ namespace TWNPPublic.Controllers
 
                         lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
                         // 確保有基準時間格式
-                        List<F_B_CHART2> timeBaseSource2 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate,"1");
+                        List<F_B_CHART2> timeBaseSource2 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate, "1");
                         finalResult = timeBaseSource2;
                         break;
                     case "week":
@@ -2445,7 +2445,7 @@ namespace TWNPPublic.Controllers
 
                         lastSixDaysData = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
                         // 確保有基準時間格式
-                        List<F_B_CHART2> timeBaseSource3 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate,"1");
+                        List<F_B_CHART2> timeBaseSource3 = lastSixDaysData.Count > 0 ? lastSixDaysData : GetEmptyDateRange(Sdate, Edate, "1");
                         finalResult = timeBaseSource3;
                         break;
                     case "month":
@@ -2475,12 +2475,18 @@ namespace TWNPPublic.Controllers
 
 
                 finalResult = finalResult.OrderBy(x => x.X).ToList();
-
+                List<string> minXValues, maxYValues;
                 var minY = finalResult.Min(x => x.Y); // 找出最小的 Y 值
-                var minXValues = finalResult.Where(x => x.Y == minY).Select(x => FormatDateTime(x.X, Type)).ToList(); // 取得所有對應的 X 值
                 var maxY = finalResult.Max(x => x.Y); // 找出最大的 Y 值
-                var maxYValues = finalResult.Where(x => x.Y == maxY).Select(x => FormatDateTime(x.X, Type)).ToList(); // 取得所有對應的 X 值
-
+                if (minY == maxY && minY == 0)
+                {
+                    minXValues = maxYValues = new List<string>() { "無" };
+                }
+                else
+                {
+                    minXValues = finalResult.Where(x => x.Y == minY).Select(x => FormatDateTime(x.X, Type)).ToList(); // 取得所有對應的 X 值
+                    maxYValues = finalResult.Where(x => x.Y == maxY).Select(x => FormatDateTime(x.X, Type)).ToList(); // 取得所有對應的 X 值
+                }
                 object obj = new
                 {
                     result = finalResult.Select(item => new F_B_CHART2
@@ -2490,8 +2496,8 @@ namespace TWNPPublic.Controllers
                                   .AddYears(TimeType?.ToLower() == "year" ? 1 : 0),
                         Y = item.Y
                     }).OrderBy(c => c.X).ToList(),
-                    lowData= string.Join("、 ", minXValues),
-                    heighData= string.Join("、 ", maxYValues)
+                    lowData = string.Join("、 ", minXValues),
+                    heighData = string.Join("、 ", maxYValues)
                 };
 
                 return Json(Success(obj));
@@ -2505,11 +2511,11 @@ namespace TWNPPublic.Controllers
             }
         }
 
-        private List<F_B_CHART2> GetEmptyDateRange(DateTime startDate, DateTime endDate,string type)
+        private List<F_B_CHART2> GetEmptyDateRange(DateTime startDate, DateTime endDate, string type)
         {
             List<F_B_CHART2> result = new List<F_B_CHART2>();
 
-            if(type == "1")
+            if (type == "1")
             {
                 // 從 startDate 到 endDate 按小時填充日期
                 for (DateTime dt = startDate.Date; dt <= endDate; dt = dt.AddDays(1))
@@ -2557,6 +2563,72 @@ namespace TWNPPublic.Controllers
                 default:
                     return dateTime.ToString("yyyy/MM/dd"); // 預設顯示日
             }
+        }
+
+        /// <summary>
+        /// 點擊用戶記事後右邊的圖表
+        /// </summary>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> WaterNoteTableChart3(string Cdate )
+        {
+            try
+            {
+                // 假設 Cdate 格式為 '2025-02-04~2025-02-10'
+                string[] dateRange = Cdate.Split('~');
+
+                // 解析開始時間和結束時間
+                DateTime StartTime = DateTime.ParseExact(dateRange[0], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                DateTime EnderTime = DateTime.ParseExact(dateRange[1], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                //判斷是否完全在前六天內
+                var isInLastSixDays = (StartTime >= DateTime.Now.AddDays(-6).Date) && (EnderTime <= DateTime.Now.Date);
+                // 判斷是否部分在前六天內
+                var isPartiallyInLastSixDays = StartTime < DateTime.Now.Date && EnderTime >= DateTime.Now.AddDays(-6).Date;
+
+                if (isInLastSixDays)
+                {
+                    // 完全在前六天內，使用 dashboardService.ListedChart1
+                    var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", StartTime, EnderTime);
+                }
+                else if (isPartiallyInLastSixDays)
+                {
+                    // 區間有部分時間在前六天內，分開處理
+                    // 取得區間內的前六天內的部分，使用 ListedChart1
+                    var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", DateTime.Now.AddDays(-6).Date, EnderTime);
+
+                    // 取得區間內的前六天外的部分，使用 LitedPhMeterRecordListNew
+                    var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, DateTime.Now.AddDays(-6).Date, aspNetUser.CurrentWaterNo);
+                }
+                else
+                {
+                    // 完全不在前六天內，使用 dashboardService.LitedPhMeterRecordListNew
+                    var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
+
+
+                    // Group by 日期
+                    var result = dayresultTask
+                        .GroupBy(x => DateTime.Parse(x.REC_DATE_TIME.ToString()).ToString("yyyy/MM/dd"))
+                        .ToDictionary(
+                            group => group.Key, // 日期
+                            group => group
+                                .OrderBy(x => DateTime.Parse(x.REC_DATE_TIME.ToString()).Hour) // 按小時排序
+                                .ToDictionary(
+                                    x => DateTime.Parse(x.REC_DATE_TIME.ToString()).ToString("HH") + "時", // 時間
+                                    x => x.AMOUNT // 金額
+                                )
+                        );
+
+                }
+
+                return Json(Success());
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
         }
         #region 沒用
 

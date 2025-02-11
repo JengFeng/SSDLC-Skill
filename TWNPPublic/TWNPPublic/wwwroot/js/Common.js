@@ -1,5 +1,5 @@
 ﻿// 時間套件民國年(物件id,是否要顯示時分,是否使用月份日曆)
-function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = false, customPosition = "") {
+function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = false, isRange=false,customPosition = "") {
     const zh = {
         days: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
         daysShort: ['日', '一', '二', '三', '四', '五', '六'],
@@ -17,6 +17,8 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
         locale: zh,
         autoClose: true,
         timepicker: isTimepicker,
+        range: isRange,
+        multipleDatesSeparator: '~',
         buttons: [{
             content: isMonth ? '當月' : isYear ? '當年' : '今天'
             , onClick(dp) {

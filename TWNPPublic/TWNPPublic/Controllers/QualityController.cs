@@ -119,8 +119,15 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <returns></returns>
         [Menu("用水指針查詢")]
-        public IActionResult UseWaterQueryAmount()
+        public IActionResult UseWaterQueryPin()
         {
+            // 產生 00 ~ 24 的時段清單
+            List<string> hourList = Enumerable.Range(0, 25)
+                                              .Select(h => h.ToString("D2")) // 格式化為 00, 01, 02, ..., 24
+                                              .ToList();
+
+            ViewBag.HourList = hourList; // 傳遞到 View
+
             return View();
         }
     }

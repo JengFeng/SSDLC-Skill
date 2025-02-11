@@ -139,7 +139,7 @@
                     height: '98%',
                     beforeLoad: function () {                            
                            let model = {
-                                 Cdate : @DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")
+                                 Cdate : '@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")'
                             };
                             $.get("@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard")",model,function(result){
                     

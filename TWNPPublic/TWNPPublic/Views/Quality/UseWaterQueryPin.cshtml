@@ -1,0 +1,331 @@
+﻿@{
+    ViewData["Title"] = "用水指針查詢";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section echart {
+    <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
+    <script type="text/javascript" src="~/js/Common.js"></script>
+}
+<script>
+    $(function () {
+        var daytime = "@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")~@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")";
+        $("#inputStartTime").val(daytime);
+        $(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
+        SettingTxtDate();
+    });
+</script>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse; /* 確保邊框合併 */
+    }
+
+    th, td {
+        border: 1px solid black; /* 設定邊框顏色 */
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2; /* 表頭背景色 */
+    }
+</style>
+
+<div class="pageWrap">
+    <partial name="_MenuPartial" />
+    <div class="pageArea">
+        <partial name="_NewsBoxPartial" />
+        <div class="mainGroup">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">用水指針查詢</li>
+                </ol>
+            </nav>
+            <div class="search-inline row">
+                <div class="mb-3 col-xs-12 col-lg-12">
+                    <label class="form-label"><i class="bi bi-search"></i>日期區間</label>
+                    <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputStartTime">
+                </div>
+            </div>
+            <div class="search-inline row">
+                <div class="mb-3 col-xs-12 col-lg-12">
+                    <label class="form-label"><i class="bi bi-search"></i>顯示時段(請務必選擇6個時段不可超過)</label>
+                    <div class="d-flex flex-wrap">
+                        @foreach (var hour in ViewBag.HourList)
+                        {
+                            <div class="form-check me-3 checkbox-group">
+                                <input class="form-check-input" type="checkbox" id="checkbox-@hour" value="@hour">
+                                <label class="form-check-label" for="checkbox-@hour">
+                                    @hour 時
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
+                <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
+                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">下載</a>
+            </div>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>00:00～24:00 用水量</th>
+                        <th>較前一日增減</th>
+                        <th>回傳指計數</th>
+                        <th>00時</th>
+                        <th>03時</th>
+                        <th>06時</th>
+                        <th>09時</th>
+                        <th>12時</th>
+                        <th>15時</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>113/01/01</td>
+                        <td>5</td>
+                        <td>-17% ↓</td>
+                        <td>397</td>
+                        <td>397</td>
+                        <td>398</td>
+                        <td>400</td>
+                        <td>402</td>
+                        <td>402</td>
+                        <td>400</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/02</td>
+                        <td>3</td>
+                        <td>-40% ↓</td>
+                        <td>402</td>
+                        <td>402</td>
+                        <td>404</td>
+                        <td>405</td>
+                        <td>405</td>
+                        <td>407</td>
+                        <td>402</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/02</td>
+                        <td>2</td>
+                        <td>-33% ↓</td>
+                        <td>405</td>
+                        <td>405</td>
+                        <td>407</td>
+                        <td>409</td>
+                        <td>411</td>
+                        <td>414</td>
+                        <td>411</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/03</td>
+                        <td>7</td>
+                        <td>250% ↑</td>
+                        <td>407</td>
+                        <td>409</td>
+                        <td>411</td>
+                        <td>414</td>
+                        <td>419</td>
+                        <td>421</td>
+                        <td>419</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/04</td>
+                        <td>7</td>
+                        <td>0%</td>
+                        <td>414</td>
+                        <td>414</td>
+                        <td>417</td>
+                        <td>418</td>
+                        <td>421</td>
+                        <td>421</td>
+                        <td>421</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/05</td>
+                        <td>5</td>
+                        <td>-29% ↓</td>
+                        <td>421</td>
+                        <td>424</td>
+                        <td>426</td>
+                        <td>428</td>
+                        <td>428</td>
+                        <td>430</td>
+                        <td>428</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/06</td>
+                        <td>7</td>
+                        <td>40% ↑</td>
+                        <td>428</td>
+                        <td>428</td>
+                        <td>433</td>
+                        <td>433</td>
+                        <td>438</td>
+                        <td>438</td>
+                        <td>428</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/07</td>
+                        <td>5</td>
+                        <td>-29% ↓</td>
+                        <td>433</td>
+                        <td>433</td>
+                        <td>438</td>
+                        <td>438</td>
+                        <td>438</td>
+                        <td>438</td>
+                        <td>433</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/08</td>
+                        <td>3</td>
+                        <td>-40% ↓</td>
+                        <td>438</td>
+                        <td>439</td>
+                        <td>439</td>
+                        <td>439</td>
+                        <td>441</td>
+                        <td>441</td>
+                        <td>439</td>
+                    </tr>
+                    <tr>
+                        <td>113/01/09</td>
+                        <td>7</td>
+                        <td>-33% ↓</td>
+                        <td>441</td>
+                        <td>441</td>
+                        <td>441</td>
+                        <td>441</td>
+                        <td>443</td>
+                        <td>443</td>
+                        <td>441</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div><!-- wrap end -->
+<script>
+    const SettingTxtDate = () => {
+        ddlDateS = CreateRocDate('inputStartTime', false, false, false,true);
+    }
+
+    function btnSearch() {
+        $("#spanError").text('');
+        let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+        let model = {
+            Cdate: $("#inputStartTime").val()
+        };
+
+
+        $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")", model, function (result) {
+            $("#spanError").text('');
+            if (result.Success) {
+
+                if (result.Data.Length == 0) {
+                    $("#spanError").text('此時間段尚無資料');
+                    myChart.clear();
+                }
+
+                let parserY = result.Data.Y.map(item => Math.floor(item));
+                const colors = ['#5391C7'];
+                var option;
+                option = {
+                    color: colors,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+                    grid: {
+                        bottom: 80
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: { title: "另存圖片" }
+                        }
+                    },
+                    legend: {
+                        y: 'top',
+                        x: 'middle',
+                        data: ["用水量趨勢", "用水指針"]
+                    },
+                    xAxis: {
+                        nameGap: 25,
+                        nameLocation: 'center',
+                        name: '時間(小時)',
+                        type: 'category',
+                        data: result.Data.X
+                    },
+                    yAxis: [{
+                        nameLocation: 'center',
+                        nameGap: 25,
+                        nameRotate: 360,
+                        name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
+                        type: 'value',
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#5391C7'
+                            }
+                        },
+                        axisLabel: { formatter: '{value}' }
+                    },
+                    {
+                        nameLocation: 'center',
+                        nameGap: 45,
+                        nameRotate: 360,
+                        name: '用 \n水 \n指 \n針 \n',
+                        type: 'value',
+                        position: 'right',
+                        alignTicks: true,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#ffb1c1'
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                        },
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        nameTextStyle: {
+                            fontSize: 18
+                        }
+                    }],
+                    series: [
+                        {
+                            name: '用水量趨勢',
+                            type: 'bar',
+                            data: parserY
+                        },
+                        {
+                            name: '用水指針',
+                            type: 'line',
+                            yAxisIndex: 1,
+                            itemStyle: { color: '#ffb1c1', lineStyle: { color: '#ffb1c1' } },
+                            data: result.Data.O
+                        }
+                    ]
+                };
+                option && myChart.setOption(option);
+            }
+            else {
+                $("#spanError").text('此時間段尚無資料');
+                myChart.clear();
+            }
+        });
+    }
+
+</script>
+
+

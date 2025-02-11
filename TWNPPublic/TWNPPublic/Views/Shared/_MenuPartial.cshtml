@@ -25,7 +25,7 @@
                     <a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a>
                     <a class="" href="@Url.Action("UseWaterQueryNew","Quality")"><i class="bi bi-columns-gap"></i>用水量查詢</a>
                     @*<a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a>*@
-                    <a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a>
+                    <a class="" href="@Url.Action("UseWaterQueryPin","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a>
                     @{
                         if (HttpContextAccessor.HttpContext != null)
                         {
@@ -77,7 +77,7 @@
         <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
         <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQueryNew","Quality")"><i class="bi bi-columns-gap"></i>用水量查詢</a></li>
         @*<li tabindex="-1"><a class="" href="@Url.Action("WaterQuality","Quality")"><i class="bi bi-search"></i>水質查詢</a></li>*@
-        <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQuery","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
+        <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQueryPin","Quality")"><i class="bi bi-droplet"></i>用水指針查詢</a></li>
         @{
               if (HttpContextAccessor.HttpContext != null)
               {

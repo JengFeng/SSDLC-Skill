@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using NLog;
 using NLog.Extensions.Logging;
 using SqlData;
+using System;
 using System.Globalization;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
@@ -470,6 +471,38 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<B_Note_ReuturnSN>(mainsql, obj).First().B_NOTE_SN;
         }
 
+        public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew2(DateTime StartTime, DateTime EnderTime, string WaterNo)
+        {
+            string qt1 = StartTime.ToString("yyyy-MM-dd");
+            string qt2 = EnderTime.ToString("yyyy-MM-dd");
+            // 這裡要改成從API拿
+            var httpClient = httpClientFactory.CreateClient();
+            var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=232&key=57FC3CE441543E32&F1={WaterNo}&F2={qt1}&F3={qt2}");
+            try
+            {
+                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string responseBody = await responseMessage.Content.ReadAsStringAsync();
+                    var root = JsonConvert.DeserializeObject<PhMeterRecordRoot2>(responseBody);
+                    if (root != null)
+                    {
+                        return root.DataRoot.DataLoop.Data;
+                    }
+
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e) // 不知道資料多髒全部 Catch 住..
+            {
+                return new List<A_PH_METER_RECORD_LIST>();
+            }
+
+        }
 
         public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew(DateTime QueryTime, string WaterNo)
         {
@@ -856,6 +889,7 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
 
+        public Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew2(DateTime StartTime, DateTime EnderTime, string WaterNo);
         public Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew(DateTime QueryTime, string WaterNo);
 
         public Task<List<A_PH_METER_RECORD_LIST>> LitedPhMeterRecordList(DateTime QueryTime, string WaterNo);
