@@ -13,8 +13,8 @@
 
 <script>
     $(function () {
-        $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd")");
-        $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd")");
+        $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd")");
+        $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd")");
         $(".menuList > a:nth-child(2)").addClass("active").siblings().removeClass("active");
         // 預設顯示小時對應的 checkbox
         $("#checkbox-group-day, #checkbox-group-month, #checkbox-group-year").show();
@@ -28,7 +28,7 @@
             updateDateInput($(this).val());
         });
         $("#checkbox-day").prop("checked", true);
-        btnSearch();
+        //btnSearch();
     });
 </script>
 
@@ -173,8 +173,8 @@
             case "month":
                 ddlDateS = CreateRocDate('inputStartTime', false, true, false);
                 ddlDateE = CreateRocDate('inputEndTime', false, true, false);
-                $("#inputStartTime").val("@DateTime.Now.ToString("yyyy-MM")");
-                $("#inputEndTime").val("@DateTime.Now.ToString("yyyy-MM")");
+                $("#inputStartTime").val("@DateTime.Now.ToString("yyyy/MM")");
+                $("#inputEndTime").val("@DateTime.Now.ToString("yyyy/MM")");
                 break;
             case "year":
                 ddlDateS = CreateRocDate('inputStartTime', false, false, true);
@@ -185,8 +185,8 @@
             default:
                 ddlDateS = CreateRocDate('inputStartTime', false, false, false);
                 ddlDateE = CreateRocDate('inputEndTime', false, false, false);
-                $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");
-                $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")");
+                $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");
+                $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");
                 break;
         }
         

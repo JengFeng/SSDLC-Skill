@@ -8,10 +8,24 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
         monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
         today: '今天',
         clear: '清除',
-        dateFormat: isMonth ? 'yyyy-MM' : isYear ? 'yyyy' : 'yyyy-MM-dd',
-        timeFormat: 'HH:mm:00',
+        dateFormat: isMonth ? 'yyyy/MM' : isYear ? 'yyyy' : 'yyyy/MM/dd',
+        timeFormat: 'HH:00',
         firstDay: 1
     };
+    //let yyyy = date.getFullYear();
+    //let mm = String(date.getMonth()).padStart(2, '0'); // 月份補零
+    //let dd = String(date.getDate()-1).padStart(2, '0'); // 日期補零
+    //let hh = String(date.getHours()).padStart(2, '0'); // 時補零
+    //let min = String(date.getMinutes()).padStart(2, '0'); // 分補零
+    //let timeaaa = `${yyyy}-${mm}-${dd}T${hh}:${min}`; // 格式為 "YYYY-MM-DDTHH:MM"
+    //console.log(timeaaa);
+
+    let today = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate() - 0); // 減去 0 天
+
+    let threeYearsAgo = new Date();
+    threeYearsAgo.setFullYear(today.getFullYear() - 3); // 減去 3 年
 
     let options = {
         locale: zh,
@@ -19,6 +33,8 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
         timepicker: isTimepicker,
         range: isRange,
         multipleDatesSeparator: '~',
+        minDate: threeYearsAgo,
+        maxDate: yesterday,
         buttons: [{
             content: isMonth ? '當月' : isYear ? '當年' : '今天'
             , onClick(dp) {

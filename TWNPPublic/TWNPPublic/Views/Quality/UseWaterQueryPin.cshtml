@@ -6,15 +6,8 @@
     <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
     <script type="text/javascript" src="~/js/Common.js"></script>
 }
-<script>
-    $(function () {
-        var daytime = "@DateTime.Now.AddDays(-7).ToString("yyyy/MM/dd")~@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")";
-        $("#inputStartTime").val(daytime);
-        $(".menuList > a:nth-child(3)").addClass("active").siblings().removeClass("active");
-        SettingTxtDate();
-    });
-</script>
 
+<!-- CSS 區塊 -->
 <style>
     table {
         width: 100%;
@@ -30,8 +23,20 @@
     th {
         background-color: #f2f2f2; /* 表頭背景色 */
     }
+    /* 頁籤樣式 */
+    .tab {
+        cursor: pointer;
+        padding: 8px 16px;
+        margin-right: 10px;
+    }
+
+        .tab.active {
+            font-weight: bold;
+            border-bottom: 2px solid blue;
+        }
 </style>
 
+<!-- HTML 主區塊 -->
 <div class="pageWrap">
     <partial name="_MenuPartial" />
     <div class="pageArea">
@@ -39,19 +44,42 @@
         <div class="mainGroup">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index","Dashboard")">
+                            <i class="bi bi-house-door-fill"></i>首頁
+                        </a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">用水指針查詢</li>
                 </ol>
             </nav>
+
+            <!-- 頁籤切換區：水表指針比較(表格) 與 水表指針圖表 -->
+            <div class="tabContainer" style="margin-bottom:15px;">
+                <span id="tabComparison" class="tab active">水表指針比較</span>
+                <span id="tabChart" class="tab">水表指針圖表</span>
+            </div>
+
+            <!-- 搜尋區 -->
             <div class="search-inline row">
                 <div class="mb-3 col-xs-12 col-lg-12">
-                    <label class="form-label"><i class="bi bi-search"></i>日期區間</label>
+                    <label class="form-label">
+                        <i class="bi bi-search"></i>日期起
+                    </label>
                     <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputStartTime">
                 </div>
-            </div>
-            <div class="search-inline row">
                 <div class="mb-3 col-xs-12 col-lg-12">
-                    <label class="form-label"><i class="bi bi-search"></i>顯示時段(請務必選擇6個時段不可超過)</label>
+                    <label class="form-label">
+                        <i class="bi bi-search"></i>日期迄
+                    </label>
+                    <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputEndTime">
+                </div>
+            </div>
+            <!-- 包覆顯示時段的區塊 -->
+            <div id="hourSelection" class="search-inline row">
+                <div class="mb-3 col-xs-12 col-lg-12">
+                    <label class="form-label">
+                        <i class="bi bi-search"></i>顯示時段(請務必選擇6個時段不可超過)
+                    </label>
                     <div class="d-flex flex-wrap">
                         @foreach (var hour in ViewBag.HourList)
                         {
@@ -69,263 +97,630 @@
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
                 <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">下載</a>
             </div>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>日期</th>
-                        <th>00:00～24:00 用水量</th>
-                        <th>較前一日增減</th>
-                        <th>回傳指計數</th>
-                        <th>00時</th>
-                        <th>03時</th>
-                        <th>06時</th>
-                        <th>09時</th>
-                        <th>12時</th>
-                        <th>15時</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>113/01/01</td>
-                        <td>5</td>
-                        <td>-17% ↓</td>
-                        <td>397</td>
-                        <td>397</td>
-                        <td>398</td>
-                        <td>400</td>
-                        <td>402</td>
-                        <td>402</td>
-                        <td>400</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/02</td>
-                        <td>3</td>
-                        <td>-40% ↓</td>
-                        <td>402</td>
-                        <td>402</td>
-                        <td>404</td>
-                        <td>405</td>
-                        <td>405</td>
-                        <td>407</td>
-                        <td>402</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/02</td>
-                        <td>2</td>
-                        <td>-33% ↓</td>
-                        <td>405</td>
-                        <td>405</td>
-                        <td>407</td>
-                        <td>409</td>
-                        <td>411</td>
-                        <td>414</td>
-                        <td>411</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/03</td>
-                        <td>7</td>
-                        <td>250% ↑</td>
-                        <td>407</td>
-                        <td>409</td>
-                        <td>411</td>
-                        <td>414</td>
-                        <td>419</td>
-                        <td>421</td>
-                        <td>419</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/04</td>
-                        <td>7</td>
-                        <td>0%</td>
-                        <td>414</td>
-                        <td>414</td>
-                        <td>417</td>
-                        <td>418</td>
-                        <td>421</td>
-                        <td>421</td>
-                        <td>421</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/05</td>
-                        <td>5</td>
-                        <td>-29% ↓</td>
-                        <td>421</td>
-                        <td>424</td>
-                        <td>426</td>
-                        <td>428</td>
-                        <td>428</td>
-                        <td>430</td>
-                        <td>428</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/06</td>
-                        <td>7</td>
-                        <td>40% ↑</td>
-                        <td>428</td>
-                        <td>428</td>
-                        <td>433</td>
-                        <td>433</td>
-                        <td>438</td>
-                        <td>438</td>
-                        <td>428</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/07</td>
-                        <td>5</td>
-                        <td>-29% ↓</td>
-                        <td>433</td>
-                        <td>433</td>
-                        <td>438</td>
-                        <td>438</td>
-                        <td>438</td>
-                        <td>438</td>
-                        <td>433</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/08</td>
-                        <td>3</td>
-                        <td>-40% ↓</td>
-                        <td>438</td>
-                        <td>439</td>
-                        <td>439</td>
-                        <td>439</td>
-                        <td>441</td>
-                        <td>441</td>
-                        <td>439</td>
-                    </tr>
-                    <tr>
-                        <td>113/01/09</td>
-                        <td>7</td>
-                        <td>-33% ↓</td>
-                        <td>441</td>
-                        <td>441</td>
-                        <td>441</td>
-                        <td>441</td>
-                        <td>443</td>
-                        <td>443</td>
-                        <td>441</td>
-                    </tr>
-                </tbody>
-            </table>
+            <span id="spanError">資料查詢中.....</span>
+            <!-- 水表指針比較：表格顯示區 -->
+            <div id="comparisonView">
+                <table id="data-table" border="1">
+                    <thead>
+                        @* <tr>
+                            <th rowspan="2">日期</th>
+                            <th colspan="2">00:00～24:00 用水量</th>
+                            <th colspan="6">回傳指針數</th>
+                        </tr>
+                        <tr>
+                            <th>估算量 (度)</th>
+                            <th>較前一日增減</th>
+                            <th>00時</th>
+                            <th>03時</th>
+                            <th>06時</th>
+                            <th>09時</th>
+                            <th>12時</th>
+                            <th>15時</th>
+                        </tr> *@
+                    </thead>
+                    <tbody>
+                        @* <tr>
+                            <td>113/01/01</td>
+                            <td>5</td>
+                            <td>-17% ↓</td>
+                            <td>397</td>
+                            <td>397</td>
+                            <td>398</td>
+                            <td>400</td>
+                            <td>402</td>
+                            <td>402</td>
+                        </tr>
+                        <tr>
+                            <td>113/01/02</td>
+                            <td>3</td>
+                            <td>-40% ↓</td>
+                            <td>402</td>
+                            <td>402</td>
+                            <td>404</td>
+                            <td>405</td>
+                            <td>405</td>
+                            <td>407</td>
+                        </tr>
+                        <tr>
+                            <td>113/01/03</td>
+                            <td>2</td>
+                            <td>-33% ↓</td>
+                            <td>405</td>
+                            <td>405</td>
+                            <td>407</td>
+                            <td>409</td>
+                            <td>411</td>
+                            <td>414</td>
+                        </tr> *@
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 水表指針圖表：圖表顯示區 (預設隱藏) -->
+            <div id="chartView" style="">
+               
+                <div class="pagechartGroup" id="mychart" style="width:100%;height:500px;margin-top:15px"></div>
+            </div>
         </div>
     </div>
 </div><!-- wrap end -->
+<!-- JavaScript 區塊 -->
 <script>
-    const SettingTxtDate = () => {
-        ddlDateS = CreateRocDate('inputStartTime', false, false, false,true);
-    }
+    let ddlDateS = null, ddlDateE = null;
+    $(function () {
+        // 初始化日期選擇元件
+        SettingTxtDate();
+        // 預設為「水表指針比較」(表格)模式：
+        // 1. 設定日期為本月1號 ~ 本月月底 (格式：yyyy/MM/dd)
+        // 2. 預設勾選顯示時段中的 00,03,06,09,12,15
+        // 3. 顯示表格及顯示時段區塊
+        var now = new Date();
+        var firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        var lastDay = new Date(new Date().setDate(new Date().getDate() - 1)); // 先取得今天的日期//new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        var startDateStrTable = firstDay.getFullYear() + "/" +
+            (firstDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
+            firstDay.getDate().toString().padStart(2, "0");
+        var endDateStrTable = lastDay.getFullYear() + "/" +
+            (lastDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
+            lastDay.getDate().toString().padStart(2, "0");
+        $("#inputStartTime").val(startDateStrTable);
+        $("#inputEndTime").val(endDateStrTable);
+        // 預設勾選 00,03,06,09,12,15 的 checkbox
+        var defaultHours = ["00", "03", "06", "09", "12", "15"];
+        $("#hourSelection input[type='checkbox']").each(function () {
+            var val = $(this).val();
+            if (defaultHours.indexOf(val) != -1) {
+                $(this).prop("checked", true);
+            } else {
+                $(this).prop("checked", false);
+            }
+        });
+        // 顯示表格與顯示時段區塊，隱藏圖表
+        $("#tabComparison").addClass("active");
+        $("#tabChart").removeClass("active");
+        $("#comparisonView").show();
+        $("#chartView").hide();
+        $("#hourSelection").show();
 
+        // 初次查詢 (走表格查詢流程)
+        btnSearch();
+
+        // 頁籤點擊事件 -------------------------------------
+
+        // 切換到「水表指針比較」(表格)模式
+        $("#tabComparison").click(function () {
+            ddlDateS.destroy();
+            ddlDateE.destroy();
+
+            $(this).addClass("active");
+            $("#tabChart").removeClass("active");
+            $("#comparisonView").show();
+            $("#chartView").hide();
+            $("#hourSelection").show();
+
+            ddlDateS = CreateRocDate('inputStartTime', false, false, false, false);
+            ddlDateE = CreateRocDate('inputEndTime', false, false, false, false);
+
+            // 更新日期：本月1號 ~ 本月月底 (格式：yyyy/MM/dd)
+            var now = new Date();
+            var firstDay = new Date(new Date().setDate(new Date().getDate() - 6));//new Date(now.getFullYear(), now.getMonth(), 1);
+            var lastDay = new Date(new Date().setDate(new Date().getDate() - 1));//new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            var startDateStrTable = firstDay.getFullYear() + "/" +
+                (firstDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
+                firstDay.getDate().toString().padStart(2, "0");
+            var endDateStrTable = lastDay.getFullYear() + "/" +
+                (lastDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
+                lastDay.getDate().toString().padStart(2, "0");
+            $("#inputStartTime").val(startDateStrTable);
+            $("#inputEndTime").val(endDateStrTable);
+            // 重設勾選狀態：預設勾選 00,03,06,09,12,15
+            var defaultHours = ["00", "03", "06", "09", "12", "15"];
+            $("#hourSelection input[type='checkbox']").each(function () {
+                var val = $(this).val();
+                if (defaultHours.indexOf(val) != -1) {
+                    $(this).prop("checked", true);
+                } else {
+                    $(this).prop("checked", false);
+                }
+            });
+            // 呼叫查詢 (走表格查詢流程)
+            btnSearch();
+        });
+
+        // 切換到「水表指針圖表」模式
+        $("#tabChart").click(function () {
+            ddlDateS.destroy();
+            ddlDateE.destroy();
+
+            $(this).addClass("active");
+            $("#tabComparison").removeClass("active");
+            $("#chartView").show();
+            $("#comparisonView").hide();
+            // 圖表模式不顯示「顯示時段」區塊
+            $("#hourSelection").hide();
+
+            ddlDateS = CreateRocDate('inputStartTime', true, false, false, false);
+            ddlDateE = CreateRocDate('inputEndTime', true, false, false, false);
+
+            // 更新日期：本月1號加上 " 00:00" ~ 本月月底加上 " 24:00"
+            var now = new Date();
+            var firstDay = new Date(new Date().setDate(new Date().getDate() - 6));//new Date(now.getFullYear(), now.getMonth(), 1);
+            var lastDay = new Date(new Date().setDate(new Date().getDate() - 1));//new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            var startDateStrChart = firstDay.getFullYear() + "/" +
+                (firstDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
+                firstDay.getDate().toString().padStart(2, "0") + " 00:00";
+            var endDateStrChart = lastDay.getFullYear() + "/" +
+                (lastDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
+                lastDay.getDate().toString().padStart(2, "0") + " 23:00";
+            $("#inputStartTime").val(startDateStrChart);
+            $("#inputEndTime").val(endDateStrChart);
+            // 呼叫查詢 (走圖表查詢流程)
+            btnSearch();
+        });
+    });
+   
+    // 初始化日期選擇元件 (原有設定，如有需要請自行調整)
+    const SettingTxtDate = () => {
+        ddlDateS = CreateRocDate('inputStartTime', false, false, false, false);
+        ddlDateE = CreateRocDate('inputEndTime', false, false, false, false);
+    };
+
+    var myChart = echarts.init(document.getElementById('mychart'));
+    window.onresize = function () {
+        myChart.resize();
+    };
+
+    // 查詢按鈕點擊 (根據顯示模式走不同流程)
     function btnSearch() {
-        $("#spanError").text('');
-        let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+        $("#spanError").text('資料查詢中.....');
+        // 組合查詢網址
+        let url = "";
+        if ($("#tabChart").hasClass("active")) {
+            // 圖表模式下的查詢網址
+            url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart4", "Dashboard")";
+        } else {
+            //清除table
+            $("#data-table thead").empty();
+            $("#data-table tbody").empty();
+            // 表格模式下的查詢網址
+            url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+        }
+
+        // 收集所有被勾選的時段值 (僅對表格模式有作用)
+        var selectedHours = [];
+        $(".checkbox-group input:checked").each(function () {
+            selectedHours.push($(this).val());
+        });
+
         let model = {
-            Cdate: $("#inputStartTime").val()
+            StartDate: $("#inputStartTime").val(),
+            EndDate: $("#inputEndTime").val(),
+            HoursList: selectedHours
         };
 
-
-        $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")", model, function (result) {
+        $.post(url, model, function (result) {
             $("#spanError").text('');
             if (result.Success) {
-
-                if (result.Data.Length == 0) {
+                console.log(result);
+                if (result.Data.length == 0) {
+                    $("#spanError").text('此時間段尚無資料');
+                    if (typeof myChart !== 'undefined') {
+                        myChart.clear();
+                    }
+                } else {
+                    // 根據目前顯示的頁籤更新內容
+                    if ($("#tabChart").hasClass("active")) {
+                        // 圖表模式下：
+                        // TODO: 實作第二種水表指針圖表查詢方式（若有需要）
+                        updateChart(result.Data);
+                    } else {
+                        // 表格模式下更新表格
+                        updateTable(result.Data);
+                    }
+                }
+            } else {
+                if (result.Message != ''){
+                    alert(result.Message);
+                    $("#spanError").text('');
+                }
+                else if (typeof myChart !== 'undefined') {
                     $("#spanError").text('此時間段尚無資料');
                     myChart.clear();
                 }
-
-                let parserY = result.Data.Y.map(item => Math.floor(item));
-                const colors = ['#5391C7'];
-                var option;
-                option = {
-                    color: colors,
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross'
-                        }
-                    },
-                    grid: {
-                        bottom: 80
-                    },
-                    toolbox: {
-                        show: true,
-                        feature: {
-                            saveAsImage: { title: "另存圖片" }
-                        }
-                    },
-                    legend: {
-                        y: 'top',
-                        x: 'middle',
-                        data: ["用水量趨勢", "用水指針"]
-                    },
-                    xAxis: {
-                        nameGap: 25,
-                        nameLocation: 'center',
-                        name: '時間(小時)',
-                        type: 'category',
-                        data: result.Data.X
-                    },
-                    yAxis: [{
-                        nameLocation: 'center',
-                        nameGap: 25,
-                        nameRotate: 360,
-                        name: '用 \n 水 \n 量 \n ︵ \n 度 \n ︶ \n',
-                        type: 'value',
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#5391C7'
-                            }
-                        },
-                        axisLabel: { formatter: '{value}' }
-                    },
-                    {
-                        nameLocation: 'center',
-                        nameGap: 45,
-                        nameRotate: 360,
-                        name: '用 \n水 \n指 \n針 \n',
-                        type: 'value',
-                        position: 'right',
-                        alignTicks: true,
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#ffb1c1'
-                            },
-                            splitLine: {
-                                show: false
-                            },
-                        },
-                        axisLabel: {
-                            formatter: '{value}'
-                        },
-                        nameTextStyle: {
-                            fontSize: 18
-                        }
-                    }],
-                    series: [
-                        {
-                            name: '用水量趨勢',
-                            type: 'bar',
-                            data: parserY
-                        },
-                        {
-                            name: '用水指針',
-                            type: 'line',
-                            yAxisIndex: 1,
-                            itemStyle: { color: '#ffb1c1', lineStyle: { color: '#ffb1c1' } },
-                            data: result.Data.O
-                        }
-                    ]
-                };
-                option && myChart.setOption(option);
-            }
-            else {
-                $("#spanError").text('此時間段尚無資料');
-                myChart.clear();
             }
         });
     }
 
-</script>
+    // 根據返回的資料更新表格 (原有函式)
+    function updateTable(data) {
+        let tableBody = $("#data-table tbody");
+        let tableHeader = $("#data-table thead");
 
+        tableBody.empty();  // 清空現有表格內容
+        tableHeader.empty(); // 清空現有表格標題
+
+        if (data.length > 0 && data[0]._data && data[0]._data.length > 0) {
+            // 動態生成標題行
+            let headerRow = $("<tr>");
+            headerRow.append("<th rowspan='2'>日期</th>");
+            headerRow.append("<th colspan='2'>00:00～24:00 用水量</th>");
+
+            // 根據 _data 的時間動態生成回傳指針數的標題
+            let timeHeaders = "<th colspan='" + data[0]._data.length + "'>回傳指針數</th>";
+            headerRow.append(timeHeaders);
+            tableHeader.append(headerRow);
+
+            // 第二行標題
+            let subHeaderRow = $("<tr>");
+            subHeaderRow.append("<th>估算量 (度)</th>");
+            subHeaderRow.append("<th>較前一日增減</th>");
+
+            // 動態生成時間標題
+            data[0]._data.forEach(function (timeData) {
+                let timeHeader = $("<th>").text(timeData._time + '時');
+                subHeaderRow.append(timeHeader);
+            });
+            tableHeader.append(subHeaderRow);
+        }
+
+        // 遍歷每一筆資料並插入表格
+        data.forEach(function (item) {
+            let row = $("<tr>");
+            let dateCell = $("<td>").text(formatDate(item._date));
+            row.append(dateCell);
+
+            let estimateCell = $("<td>").text(item._estimate.toFixed(6));
+            let differenceText = '';
+            let differenceColor = 'black';
+
+            if (isNaN(item._difference)) {
+                differenceText = item._difference;
+            } else {
+                const differenceValue = Number(item._difference);
+                if (differenceValue > 0) {
+                    differenceText = differenceValue.toFixed(0) + " %↑";
+                    differenceColor = 'red';
+                } else if (differenceValue < 0) {
+                    differenceText = differenceValue.toFixed(0) + " %↓";
+                    differenceColor = 'green';
+                } else {
+                    differenceText = differenceValue.toFixed(0);
+                }
+            }
+            let differenceCell = $("<td>").text(differenceText).css('color', differenceColor);
+            row.append(estimateCell).append(differenceCell);
+
+            // 填充回傳指針數的時段數據
+            item._data.forEach(function (timeData) {
+                let amountCell = $("<td>").text(timeData._amount.toFixed(6));
+                row.append(amountCell);
+            });
+
+            tableBody.append(row);
+        });
+    }
+
+    // 格式化日期 (轉換為 yyyy/MM/dd 格式)
+    function formatDate(dateString) {
+        let date = new Date(dateString);
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+        return `${year}/${month}/${day}`;
+    }
+    var JsonDatas = [];//圖表資料
+    // 疊加1
+    let QueryDataItem = {
+        SeriesName: '查詢日期',//$('#form-name').val(),
+        DataID: '1',
+        StartDate: $("#inputStartTime").val(),
+        EndDate: $("#inputEndTime").val(),
+    };
+    // 更新圖表函式 (範例：請依照實際需求調整圖表設定)
+    function updateChart(data) {
+
+        JsonDatas = [];
+        QueryDataItem.Datas = data;
+        JsonDatas.push(QueryDataItem);
+
+        if (!JsonDatas || JsonDatas == null || JsonDatas.length < 1 || JsonDatas[0].Datas == null || JsonDatas[0].Datas.result == null || JsonDatas[0].Datas.result.length < 1)
+            return;
+
+        var divID = 'mychart';//div的ID
+        var colors = ['#5470C6', '#91CC75', '#EE6666'];//Y軸色彩
+        var Datasets = [];//所有資料及篩選功能
+        var yAxis_Array = [];//多個Y軸(這邊沒使用)
+        var Series = [];//所有序列
+
+        $('#' + divID).show();//顯示Chart圖區塊
+
+        var Source_Data = [["Date", "X", "Y", "DataID"]];//資料欄位設定
+
+        //每一組資料
+        for (var i = 0; i < JsonDatas.length; i++) {
+
+            var Item = JsonDatas[i];
+            var Datas = JsonDatas[i].Datas;//API取得的資料
+            //沒資料時跳過
+            if (Datas == undefined || Datas.result == null || Datas.result == undefined || Datas.result.length < 1)
+                continue;
+
+            //轉換資料
+            Datas.result.forEach(function (d) {
+                if (d.Y == null)
+                    return;//continue的效果
+                let X = d.X;
+                let Y = d.Y.toFixed(5);
+                let DataID = Item.DataID;
+                let strDate2 = new Date(d.X);
+                Source_Data.push([strDate2, X, Y, DataID]);
+            });
+
+            //塞入資料篩選條件
+            Datasets.push(
+                {
+                    id: Item.DataID,               //對應series中的datasetId
+                    fromDatasetId: "Datasets_",    //對應[Datasets陣列]中的id
+                    transform: {  //篩選資料
+                        type: "filter",
+                        config: { dimension: "DataID", value: Item.DataID }//要篩選Source_Data裡的哪個欄位以及哪個值
+
+                    }
+                }
+            );
+
+            //序列
+            Series.push(
+                {
+                    type: "line",
+                    name: Item.SeriesName, //序列顯示名稱
+                    datasetId: Item.DataID, //對應[Datasets陣列]中的id
+                    yAxisIndex: 0,//第幾個Y軸
+                    showSymbol: false,
+                    encode: {
+                        x: "X",
+                        y: "Y",
+                        itemName: "Date",
+                        tooltip: ["Y"]
+                    }
+                }
+            );
+
+            //設定Y軸樣式
+            if (i == 0) {
+                //設定Y軸樣式
+                yAxis_Array.push({
+                    type: 'value',
+                    // name: Datas.yAxisLabel.replace('cmd', 'CMD'),//Item.NODETYPE.replace('計', '') + '(' + Datas.yAxisLabel.replace('cmd', 'CMD') + ')',
+                    position: 'top',
+                    alignTicks: true,
+                    offset: 0,//Y軸水平位移
+                    //nameLocation: 'center',
+                    name: '水表指針',
+                    axisLine: {//Y軸垂直線
+                        show: true,
+                        lineStyle: {
+                            color: colors[i]
+                        }
+                    },
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                }
+                )//yAxis_Array.push END
+            }
+
+        }
+
+        //塞入所有資料集
+        Datasets.splice(0, 0, {
+            id: "Datasets_",
+            source: Source_Data
+        });
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+
+        myChart.clear();
+
+        //圖表設定
+        var option = {
+            grid: [
+                {
+                    show: true,
+                    bottom: 80,
+                    containLabel: true
+                }// { left: '7%',right: '7%', top: '7%',bottom: '7%', width: '38%', height: '38%' },
+            ],//Chart圖主體padding
+            dataset: Datasets,//
+            title: {
+                show: false,
+                padding: 10, //标题内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距
+                text: "1223",// 設定圖表的標題
+                left: 'center'
+
+            },     // 標題
+            //tooltip: {
+            //    trigger: 'axis'
+            //},//
+            xAxis: {
+                name: '時間(小時)',// 坐标轴名称
+                nameLocation: 'end', // 坐标轴名称显示位置。'start'、'middle'、'end'
+                type: 'category'  //'value' 数值轴，适用于连续数据。'category' 类目轴，适用于离散的类目数据。time' 时间轴，适用于连续的时序数据，与数值轴相比时间轴带有时间的格式化，在刻度计算上也有所不同，例如会根据跨度的范围来决定使用月，星期，日还是小时范围的刻度。'log' 对数轴。适用于对数数据。
+            },// X 軸
+            yAxis: yAxis_Array,// Y 軸
+            toolbox: {
+                show: true,           // 是否顯示工具欄套件
+                orient: 'horizontal', // 圖例方向 horizontal, vertical
+                feature: {
+                    //saveAsImage: {},  // 僅啟動，使用預設
+                    saveAsImage: {
+                        show: true,                 // 是否顯示
+                        type: 'png',                // 圖片格式(png, jpeg)
+                        title: '另存為圖片',         // 工具名稱
+                        name: '範例折線圖',          // 圖片名稱(預設 title.text)
+                        backgroundColor: '#ffffff'  // 圖片背景顏色(預設 BackgroundColor，無設定以白色為主)
+                    },  // 保存圖片
+                    restore: {
+                        show: false,     // 是否顯示
+                        title: "還原",  // 工具名稱
+                    },      // 還原配置
+                    dataView: {
+                        show: false,                         // 是否顯示
+                        title: '資料檢視',                   // 工具名稱
+                        readOnly: false,                    // 是否唯讀
+                        lang: ['資料顯示', '關閉', '更新'],
+                        backgroundColor: "#FFFFFF",         // 背景顏色
+                        textareaColor: "#D5D5D5",           // 輸入背景顏色
+                        textareaBorderColor: '#1E1E1E',     // 輸入邊框顏色
+                        textColor: "#000",                  // 文字顏色
+                        buttonColor: "#4472C4",             // 按鈕顏色
+                        buttonTextColor: "#fff",            // 按鈕文字顏色
+                    },     // 資料檢視(顯示統計圖之統計資料，編輯後可動態更新)
+                    magicType: {
+                        show: true, // 是否顯示
+                        title: {
+                            line: '切換為折線圖',
+                            bar: '切換為長條圖',
+                            //stack: '切換為堆疊模式',
+                            //tiled: '切換為平鋪模式'
+                        },  // 工具名稱
+                        type: ['line', 'bar']  // 切換類型(line:折線圖, bar:長條圖, stack:堆疊模式, tiled:平鋪模式）
+                    },    // 切換類型
+                    dataZoom: {
+                        show: false, // 是否顯示
+                        title: {
+                            zoom: '切換縮放模式',
+                            back: '還原上一步縮放動作'
+                        },    // 工具名稱
+                        emphasis: {
+                            iconStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 1)'
+                            }
+                        }
+                    }      // 縮放(僅供直角坐標系統)
+                },          // 工具類型
+                top: 'top',                // top, middle, bottom, y%
+                left: 'right',             // left, center, right, x%
+                padding: [0, 0, 0, 0],   // [上, 右, 下, 左]
+            },   // 工具
+            dataZoom: [
+                {
+                    type: 'slider',
+                    show: false,
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: 100,
+                    bottom: '10%' // 調整 dataZoom 到圖表下方 10%
+                },
+                // {
+                //     type: 'slider',
+                //     show: true,
+                //     yAxisIndex: [0],
+                //     left: '93%',
+                //     start: 0,
+                //     end: 100
+                // },
+                // //{
+                // //    type: 'inside',
+                // //    xAxisIndex: [0],
+                // //    start: 1,
+                // //    end: 35
+                // //},
+                // {
+                //     type: 'inside',
+                //     yAxisIndex: [0],
+                //     start: 29,
+                //     end: 36
+                // }
+            ],  // 縮放功能
+            tooltip: {
+                trigger: 'axis'    // item, axis
+                , axisPointer: {   // 坐标轴指示器，坐标轴触发有效
+                    type: 'cross'  //shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+
+                //,enterable: true, // 鼠标是否可进入提示框浮层中
+
+                //被計算過後a0的值就是標準差
+                , formatter: function (param) {
+                    var list = param.length == undefined ? [param] : param;
+                    var temp = '';
+                    for (var i = 0; i < list.length; i++) {
+
+                        if (i == 0) temp += list[i].axisValueLabel;
+                        var value = '{0}[{1}]：{2}'
+                            .replace('{0}', list[i].marker)
+                            .replace('{1}', list[i].seriesName)
+                            .replace('{2}', list[i].data[2]);
+
+                        temp += '<br />' + value;
+                    }
+                    return temp;
+                }
+            },//提示訊息
+            legend: {
+                type: 'scroll',             //圖例有scroll Bar 'plain'：普通图例。缺省就是普通图例。
+                orient: 'horizontal',       // 圖例方向 horizontal, vertical
+                top: 'bottom',              // top, middle, bottom, y%
+                left: 'center',             // left, center, right, x%
+                padding: [0, 0, 15, 0]       // [上, 右, 下, 左]
+                //,formatter: function (name) {
+                //        return  name;
+                //}
+            },    // 圖例
+            series: Series    // 序列內容
+
+        };//圖表設定 結束
+        //產出圖表
+        console.log(Series);
+        console.log(option);
+        myChart.setOption(option);
+
+        // // 假設 myChart 為全域 ECharts 實例
+        // // 例如：myChart = echarts.init(document.getElementById('mychart'));
+        // let option = {
+        //     title: {
+        //         text: '水表指針圖表'
+        //     },
+        //     tooltip: {},
+        //     xAxis: {
+        //         type: 'category',
+        //         data: data.map(item => formatDate(item._date))
+        //     },
+        //     yAxis: {
+        //         type: 'value'
+        //     },
+        //     series: [{
+        //         name: '估算量',
+        //         type: 'line',
+        //         data: data.map(item => item._estimate)
+        //     }]
+        // };
+        // myChart.setOption(option);
+    }
+</script>
 

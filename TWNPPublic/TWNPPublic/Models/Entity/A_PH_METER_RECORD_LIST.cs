@@ -20,7 +20,9 @@
         public List<A_PH_METER_RECORD_LIST> Data { get; set; }
     }
 
-
+    /// <summary>
+    /// ////////////////////////////////////////////////////
+    /// </summary>
     public class PhMeterRecordRoot2
     {
         public RootData2 DataRoot { get; set; }
@@ -36,6 +38,19 @@
         public string Result { get; set; }
         public string Message { get; set; }
         public List<A_PH_METER_RECORD_LIST> Data { get; set; }
+    }
+
+    // 
+    public class DailyChartData
+    {
+        public string datetime { get; set; }
+        public List<TimeData> time_data { get; set; }
+    }
+
+    public class TimeData
+    {
+        public string time { get; set; }
+        public decimal amount { get; set; }
     }
 
 }

@@ -2218,13 +2218,37 @@ namespace TWNPPublic.Controllers
             // 注意：這裡使用的「補上」固定日期或調整後的邏輯，
             // 都是依照您所提供的例子（固定日期 2025/02/05 或 2025/02）來寫，實際上可能需依業務邏輯改寫。
 
+            ////string input = "2025/02/12 00:00"; // 需要驗證的時間字串
+            ////string format = "yyyy/MM/dd HH:mm"; // 指定格式
+            ////CultureInfo culture = CultureInfo.InvariantCulture; // 使用不受地區影響的格式
+            ////DateTime parsedDate;
+
+            ////bool isValid = DateTime.TryParseExact(input, format, culture, DateTimeStyles.None, out parsedDate);
+
+            ////if (isValid)
+            ////{
+            ////    Console.WriteLine($"✅ 時間格式正確！解析後時間：{parsedDate}");
+            ////}
+            ////else
+            ////{
+            ////    Console.WriteLine("❌ 時間格式錯誤！");
+            ////}
+            ///
+
+            ////if (!DateTime.TryParseExact(StartDate, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime StartTime))
+            ////{
+            ////    return Json(Failed("開始日期格式錯誤，請使用 yyyy/MM/dd HH:mm 格式"));
+            ///out DateTime StartTime：如果解析成功，StartTime 會存入轉換後的 DateTime 物件。
+            ////}
+
+
             if (Type.ToLower() == "hour")
             {
                 // 當 Type 為 hour 時，不論傳入 Sdate/Edate 為何，最後都補上 2025/02/05 00:00:00 ~ 23:59:59
                 if (string.IsNullOrEmpty(TimeType))
                 {
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
                 }
                 else if (TimeType.ToLower() == "day")
                 {
@@ -2232,7 +2256,7 @@ namespace TWNPPublic.Controllers
                     Sdate = Sdate.AddDays(-1);
                     Edate = Edate.AddDays(-1);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
                 }
                 else if (TimeType.ToLower() == "month")
                 {
@@ -2240,7 +2264,7 @@ namespace TWNPPublic.Controllers
                     Sdate = Sdate.AddMonths(-1);
                     Edate = Edate.AddMonths(-1);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
                 }
                 else if (TimeType.ToLower() == "year")
                 {
@@ -2248,7 +2272,7 @@ namespace TWNPPublic.Controllers
                     Sdate = Sdate.AddYears(-1);
                     Edate = Edate.AddYears(-1);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 23, 59, 59);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
                 }
             }
             else if (Type.ToLower() == "day")
@@ -2294,7 +2318,7 @@ namespace TWNPPublic.Controllers
                 {
                     // 假設傳入 Sdate 與 Edate的年份與月份代表欲查詢的月份，
                     // 補上該月的第一天與最後一天
-                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    int daysInMonth = DateTime.DaysInMonth(Edate.Year, Edate.Month);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
                     Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
                 }
@@ -2303,7 +2327,7 @@ namespace TWNPPublic.Controllers
                     // 先減一年，再取出該月的第一天與最後一天
                     Sdate = Sdate.AddYears(-1);
                     Edate = Edate.AddYears(-1);
-                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    int daysInMonth = DateTime.DaysInMonth(Edate.Year, Edate.Month);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
                     Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
                 }
@@ -2315,7 +2339,7 @@ namespace TWNPPublic.Controllers
                 {
                     // 假設傳入 Sdate 與 Edate的年份與月份代表欲查詢的月份，
                     // 補上該月的第一天與最後一天
-                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    int daysInMonth = DateTime.DaysInMonth(Edate.Year, Edate.Month);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
                     Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
                 }
@@ -2570,58 +2594,190 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public async Task<IActionResult> WaterNoteTableChart3(string Cdate )
+        public async Task<IActionResult> WaterNoteTableChart3(string StartDate, string EndDate, List<string> HoursList)
         {
             try
             {
-                // 假設 Cdate 格式為 '2025-02-04~2025-02-10'
-                string[] dateRange = Cdate.Split('~');
+                if( HoursList.Count() < 6 || HoursList.Count() > 6)
+                {
+                    // 可依照您的錯誤回應機制回傳錯誤訊息
+                    return Json(Failed("顯示時段請選擇6個時段!!!"));
+                }
+
+                //// 解析開始時間和結束時間
+                //DateTime StartTime = DateTime.ParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                //DateTime EnderTime = DateTime.ParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+
+                // --- 加入日期格式與必要參數的檢查 ---
+                if (string.IsNullOrWhiteSpace(StartDate) || string.IsNullOrWhiteSpace(EndDate))
+                {
+                    // 可依照您的錯誤回應機制回傳錯誤訊息
+                    return Json(Failed("開始日期或結束日期不能為空"));
+                }
+
+                if (!DateTime.TryParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime StartTime))
+                {
+                    return Json(Failed("開始日期格式錯誤，請使用 yyyy/MM/dd 格式"));
+                }
+
+                if (!DateTime.TryParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime EnderTime))
+                {
+                    return Json(Failed("結束日期格式錯誤，請使用 yyyy/MM/dd 格式"));
+                }
+
+
+                // 如果 HoursList 為 null，避免後續產生 NullReferenceException，直接初始化為空集合
+                HoursList = HoursList ?? new List<string>();
 
                 // 解析開始時間和結束時間
-                DateTime StartTime = DateTime.ParseExact(dateRange[0], "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                DateTime EnderTime = DateTime.ParseExact(dateRange[1], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                StartTime = DateTime.ParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                EnderTime = DateTime.ParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
 
-                //判斷是否完全在前六天內
-                var isInLastSixDays = (StartTime >= DateTime.Now.AddDays(-6).Date) && (EnderTime <= DateTime.Now.Date);
-                // 判斷是否部分在前六天內
-                var isPartiallyInLastSixDays = StartTime < DateTime.Now.Date && EnderTime >= DateTime.Now.AddDays(-6).Date;
+                List<DailyChartData> dailyChartDatas = new List<DailyChartData>();
 
-                if (isInLastSixDays)
+               var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
+               dailyChartDatas = dayresultTask
+                   .GroupBy(item => item.REC_DATE_TIME.Date)
+                   .Select(g => new DailyChartData
+                   {
+                       datetime = g.Key.ToString("yyyy/MM/dd"),
+                       time_data = g.Select(item => new TimeData
+                       {
+                           time = item.REC_DATE_TIME.Hour.ToString("00"),
+                           amount = item.AMOUNT ?? 0m
+                       }).ToList()
+                   })
+                   .OrderBy(x=>x.datetime)
+                   .ToList();
+                // 在每個日期資料中補上24:00的資料
+                var tempDic2 = dailyChartDatas.ToDictionary(
+                               // 將日期字串轉為 DateTime 作為 key
+                               d => DateTime.Parse(d.datetime),
+                               d =>
+                               {
+                                   // 將每個日期裡的時間資料依照小時數（轉成數值）排序
+                                   var orderedData = d.time_data.OrderBy(t => int.Parse(t.time)).ToList();
+
+                                   // 根據目前日期計算下一天的日期
+                                   DateTime currentDate = DateTime.Parse(d.datetime);
+                                   DateTime nextDate = currentDate.AddDays(1);
+
+                                   // 嘗試從 dailyChartDatas 中尋找日期為 nextDate 的資料
+                                   var nextDayRecord = dailyChartDatas.FirstOrDefault(x => DateTime.Parse(x.datetime) == nextDate);
+                                   if (nextDayRecord != null)
+                                   {
+                                       // 若找得到，則從該天中找尋 "00" 時的資料
+                                       var nextDayData = nextDayRecord.time_data.FirstOrDefault(t => t.time == "00");
+                                       orderedData.Add(new TimeData
+                                       {
+                                           time = "24",
+                                           amount = nextDayData?.amount ?? 0m  // 若找不到則補 0
+                                       });
+                                   }
+                                   else
+                                   {
+                                       // 若無下一天資料，則直接補 0
+                                       orderedData.Add(new TimeData
+                                       {
+                                           time = "24",
+                                           amount = 0m
+                                       });
+                                   }
+
+                                   //// 計算 _estimate：排序後第 6 筆資料的 amount 減去第一筆的 amount
+                                   //// 若資料不足 6 筆，則預設 _estimate 為 0
+                                   decimal estimate = 0;
+                                   //if (orderedData.Count >= 6)
+                                   //{
+                                   //    estimate = orderedData[5].amount - orderedData[0].amount;
+                                   //}
+
+                                   return new
+                                   {
+                                       // 依照排序結果產生 _data 集合，每筆時間加上「時」字
+                                       _data = orderedData.Select(t => new
+                                       {
+                                           _time = t.time,
+                                           _amount = t.amount
+                                       }),
+                                       _estimate = estimate,
+                                       _min = orderedData.Min(t => t.amount)
+                                   };
+                               });
+
+                var tempResult = tempDic2.Select(x =>
                 {
-                    // 完全在前六天內，使用 dashboardService.ListedChart1
-                    var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", StartTime, EnderTime);
-                }
-                else if (isPartiallyInLastSixDays)
-                {
-                    // 區間有部分時間在前六天內，分開處理
-                    // 取得區間內的前六天內的部分，使用 ListedChart1
-                    var temp = dashboardService.ListedChart1(aspNetUser.CurrentWaterNo, "PIN", DateTime.Now.AddDays(-6).Date, EnderTime);
+                    // 根據 HoursList 依序產生新的 time_data 清單，
+                    // 若該時段在原始 _data 中沒有資料則補 0
+                    var newData = HoursList.Select(hour =>
+                    {
+                        var existing = x.Value._data.FirstOrDefault(td => td._time == hour);
+                        return new
+                        {
+                            _time = hour,
+                            _amount = existing != null ? existing._amount : 0m
+                        };
+                    }) 
+                    // 如果 HoursList 本身未排序或你希望再做依據 hour 值排序，
+                    // 這裡假設 hour 是可以轉換成 int 的字串
+                    .OrderBy(item => int.Parse(item._time))
+                    .ToList();
 
-                    // 取得區間內的前六天外的部分，使用 LitedPhMeterRecordListNew
-                    var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, DateTime.Now.AddDays(-6).Date, aspNetUser.CurrentWaterNo);
-                }
-                else
-                {
-                    // 完全不在前六天內，使用 dashboardService.LitedPhMeterRecordListNew
-                    var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
+                    // 根據 newData 第 6 筆與第 1 筆資料計算 _estimate
+                    decimal estimate = newData.Count >= 6 ? newData[5]._amount - newData[0]._amount : 0m;
 
+                    // 取得當天 00:00 資料
+                    decimal currentDayZeroAmount = 0m;
+                    if (tempDic2.ContainsKey(x.Key))
+                    {
+                        currentDayZeroAmount = tempDic2[x.Key]._data.FirstOrDefault(t => t._time == "00")?._amount ?? 0m;
+                    }
 
-                    // Group by 日期
-                    var result = dayresultTask
-                        .GroupBy(x => DateTime.Parse(x.REC_DATE_TIME.ToString()).ToString("yyyy/MM/dd"))
-                        .ToDictionary(
-                            group => group.Key, // 日期
-                            group => group
-                                .OrderBy(x => DateTime.Parse(x.REC_DATE_TIME.ToString()).Hour) // 按小時排序
-                                .ToDictionary(
-                                    x => DateTime.Parse(x.REC_DATE_TIME.ToString()).ToString("HH") + "時", // 時間
-                                    x => x.AMOUNT // 金額
-                                )
-                        );
+                    // 取得前一天 00:00 資料
+                    decimal prevDayZeroAmount = 0m;
+                    if (tempDic2.ContainsKey(x.Key.AddDays(-1)))
+                    {
+                        prevDayZeroAmount = tempDic2[x.Key.AddDays(-1)]._data.FirstOrDefault(t => t._time == "00")?._amount ?? 0m;
+                    }
 
-                }
+                    // 取得隔天 00:00 資料
+                    decimal nextDayZeroAmount = 0m;
+                    if (tempDic2.ContainsKey(x.Key.AddDays(1)))
+                    {
+                        nextDayZeroAmount = tempDic2[x.Key.AddDays(1)]._data.FirstOrDefault(t => t._time == "00")?._amount ?? 0m;
+                    }
 
-                return Json(Success());
+                    // 計算 A 和 B
+                    decimal A = currentDayZeroAmount - prevDayZeroAmount;
+                    decimal B = nextDayZeroAmount - currentDayZeroAmount;
+
+                    // 計算 _difference
+                    decimal difference = A != 0 ? (B - A) / A : 0m;
+
+                    // 檢查是否有任何變數為 0，如果是則回傳 "-"
+                    string _differenceDisplay = (currentDayZeroAmount == 0m || prevDayZeroAmount == 0m || nextDayZeroAmount == 0m)
+                        ? "-"
+                        : (difference * 100).ToString("F6"); // 顯示 6 位小數
+
+                    return new
+                    {
+                        _date = x.Key,       // 日期
+                        _data = newData,     // 依 HoursList 產生的新 time_data 清單
+                        _estimate = estimate, // 使用 newData 的第6筆與第1筆計算得出的估計值
+                        _min = x.Value._min,  // 最小值（來自 tempDic2）
+                        _difference = _differenceDisplay // 計算出的差值比例
+                    };
+                })
+                // 在這裡加入對日期部分的排序
+                .OrderBy(item => item._date)
+                .ToList();
+
+                // **最後再過濾，確保輸出範圍為 StartTime ~ EnderTime**
+                var result2 = tempResult
+                    .Where(x => x._date >= StartTime && x._date <= EnderTime)
+                    .ToList();
+
+                return Json(Success(result2));
 
             }
             catch (Exception ex)
@@ -2630,6 +2786,131 @@ namespace TWNPPublic.Controllers
             }
             
         }
+        /// <summary>
+        /// 點擊用戶記事後右邊的圖表
+        /// </summary>
+        /// <param name="Cdate"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> WaterNoteTableChart4(DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+
+                //// 解析開始時間和結束時間
+                //DateTime StartTime = DateTime.ParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                //DateTime EnderTime = DateTime.ParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+
+                //// --- 加入日期格式與必要參數的檢查 ---
+                //if (string.IsNullOrWhiteSpace(StartDate) || string.IsNullOrWhiteSpace(EndDate))
+                //{
+                //    // 可依照您的錯誤回應機制回傳錯誤訊息
+                //    return Json(Failed("開始日期或結束日期不能為空"));
+                //}
+
+                //if (!DateTime.TryParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime StartTime))
+                //{
+                //    return Json(Failed("開始日期格式錯誤，請使用 yyyy/MM/dd 格式"));
+                //}
+
+                //if (!DateTime.TryParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime EnderTime))
+                //{
+                //    return Json(Failed("結束日期格式錯誤，請使用 yyyy/MM/dd 格式"));
+                //}
+
+                // 解析開始時間和結束時間
+                var StartTime = StartDate;// DateTime.ParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                var EnderTime = EndDate;// DateTime.ParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+
+                List<F_B_CHART2> finalResult = new List<F_B_CHART2>();
+
+                var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
+                var dailyChartDatas = dayresultTask.OrderBy(x => x.REC_DATE_TIME).ToList();
+                var getAddData = dailyChartDatas.Where(s => s.REC_DATE_TIME.Hour == 0).Select(item => new F_B_CHART2
+                {
+                    X = DateTime.Parse(item.REC_DATE_TIME.AddDays(-1).ToString("yyyy-MM-dd 23:59:59")),
+                    Y = item.AMOUNT ?? 0m
+                }).ToList();
+
+                ////object obj = new
+                ////{
+                ////    result = dailyChartDatas.Select(item => new F_B_CHART2
+                ////    {
+                ////        X = item.REC_DATE_TIME,
+                ////        Y = item.AMOUNT
+                ////    }).Union(getAddData).OrderBy(c => c.X).ToList(),
+
+                ////};
+
+                //object obj = new
+                //{
+                //    result = dailyChartDatas
+                //            .Select(item => new F_B_CHART2
+                //            {
+                //                X = item.REC_DATE_TIME,
+                //                Y = item.AMOUNT
+                //            })                          
+                //            .Union(getAddData) // 假設 getAddData 也為 F_B_CHART2 集合且 X 為字串
+                //            .Select(item =>
+                //            {
+                //                // 將 DateTime 轉成 "HH:mm:ss" 格式的字串
+                //                string timeStr = item.X.ToString("HH:mm:ss");
+                //                // 若等於 23:59:59，則轉換成 24:00:00
+                //                if (timeStr == "23:59:59")
+                //                {
+                //                    timeStr = "24:00:00";
+                //                }
+                //                return new F_B_CHART3
+                //                {
+                //                    X = item.X.ToString("yyyy-MM-dd ")+timeStr,  // X 為字串格式的時間
+                //                    Y = item.Y
+                //                };
+                //            })
+                //            .OrderBy(c => c.X)
+                //            .ToList(),
+                // };
+
+                object obj = new
+                {
+                    result = dailyChartDatas
+                           .Select(item => new F_B_CHART2
+                           {
+                               X = item.REC_DATE_TIME,
+                               Y = item.AMOUNT
+                           })
+                           .Select(item =>
+                           {
+                               // 將 DateTime 轉成 "HH:mm:ss" 格式的字串
+                               string timeStr = item.X.ToString("HH:mm:ss");
+                               // 若等於 23:59:59，則轉換成 24:00:00
+                               if (timeStr == "23:59:59")
+                               {
+                                   timeStr = "24:00:00";
+                               }
+                               return new F_B_CHART3
+                               {
+                                   X = item.X.ToString("yyyy-MM-dd ") + timeStr,  // X 為字串格式的時間
+                                   Y = item.Y
+                               };
+                           })
+                           .OrderBy(c => c.X)
+                           .ToList(),
+                };
+
+                return Json(Success(obj));
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+        public class F_B_CHART3
+        {
+            public string X { get; set; } = string.Empty;
+            public decimal? Y { get; set; }
+        }
+
         #region 沒用
 
         ///// <summary>
