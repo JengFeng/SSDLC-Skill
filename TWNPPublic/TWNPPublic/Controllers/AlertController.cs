@@ -138,6 +138,10 @@ namespace TWNPPublic.Controllers
                     Mails.Add(model.AlertEmail2);
                 if (model.AlertEmail3 != null)
                     Mails.Add(model.AlertEmail3);
+                if (model.AlertEmail4 != null)
+                    Mails.Add(model.AlertEmail4);
+                if (model.AlertEmail5 != null)
+                    Mails.Add(model.AlertEmail5);
 
                 //Set處理
 
@@ -164,80 +168,253 @@ namespace TWNPPublic.Controllers
                 };
                 alertsetitems.Add(PhoneItem);
 
-
-                #region 其他選項
-                //其他選項
-
-                if (model.onoffswitch1 == "on")
+                //每日用水上限提醒
+                if (model.AlertCheckbox1 == "650")
                 {
                     var value2 = "";
-                    if (model.AlertValue1 == "103")
-                    {
-                        value2 = model.AlertExtion10010301 + "," + model.AlertExtion10010302;
-                    }
-                    else if (model.AlertValue1 == "104")
-                    {
-                        value2 = model.AlertExtion10010401 + "," + model.AlertExtion10010402;
-                    }
+                    value2 = model.AlertExtion10265001;
 
                     B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
                     {
-                        B_ALART_CODE_SN = 100,
+                        B_ALART_CODE_SN = 102,
                         WATER_NO = model.WaterNo,
                         B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = model.AlertValue1,
+                        VALUE = model.AlertCheckbox1,
                         VALUE1 = value2
                     };
                     alertsetitems.Add(MMcode1Item);
                 }
 
-                if (model.onoffswitch2 == "on")
+                //每期用水預算提醒
+                if (model.AlertCheckbox2 == "651")
                 {
                     var value2 = "";
-                    if (model.AlertValue2 == "105")
-                    {
-                        value2 = model.AlertExtion10110501;
-                    }
-                    else if (model.AlertValue2 == "106")
-                    {
-                        value2 = model.AlertExtion10110601;
-                    }
+                    value2 = model.AlertExtion10265101;
 
-
-                    B_ALART_SETTING MMcode2Item = new B_ALART_SETTING()
+                    B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
                     {
-                        B_ALART_CODE_SN = 101,
+                        B_ALART_CODE_SN = 102,
                         WATER_NO = model.WaterNo,
                         B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = model.AlertValue2,
+                        VALUE = model.AlertCheckbox2,
                         VALUE1 = value2
                     };
-                    alertsetitems.Add(MMcode2Item);
+                    alertsetitems.Add(MMcode1Item);
                 }
 
-                if (model.onoffswitch3 == "on")
+                #region 其他選項
+                if (model.onoffswitch1 == "on")
                 {
-                    B_ALART_SETTING MMcode3Item = new B_ALART_SETTING()
+                    //日用水量(前日24:00至昨日23:00)
+                    if (model.AlertCheckbox3 == "100")
                     {
-                        B_ALART_CODE_SN = 102,
-                        WATER_NO = model.WaterNo,
-                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = "107",
-                    };
-                    alertsetitems.Add(MMcode3Item);
+                        var value2 = "";
+                        if (model.AlertValue1 == "103")
+                        {
+                            value2 = model.AlertExtion10010301 + "," + model.AlertExtion10010302 + "," + model.AlertExtion10010303 + "," + model.AlertExtion10010304;
+                        }
+                        else if (model.AlertValue1 == "104")
+                        {
+                            value2 = model.AlertExtion10010401 + "," + model.AlertExtion10010402 + "," + model.AlertExtion10010403 + "," + model.AlertExtion10010404;
+                        }
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 100,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue1,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
+                    //週用水量警示
+                    if (model.AlertCheckbox4 == "646")
+                    {
+                        var value2 = "";
+                        if (model.AlertValue2 == "647")
+                        {
+                            value2 = model.AlertExtion64664701 + "," + model.AlertExtion64664702 + "," + model.AlertExtion64664703 + "," + model.AlertExtion64664704;
+                        }
+                        else if (model.AlertValue2 == "648")
+                        {
+                            value2 = model.AlertExtion64664801 + "," + model.AlertExtion64664802 + "," + model.AlertExtion64664803 + "," + model.AlertExtion64664804;
+                        }
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 646,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue2,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
+                    //月用水量警示
+                    if (model.AlertCheckbox5 == "101")
+                    {
+                        var value2 = "";
+                        if (model.AlertValue3 == "105")
+                        {
+                            value2 = model.AlertExtion10110501 + "," + model.AlertExtion10110502 + "," + model.AlertExtion10110503 + "," + model.AlertExtion10110504;
+                        }
+                        else if (model.AlertValue3 == "106")
+                        {
+                            value2 = model.AlertExtion10110601 + "," + model.AlertExtion10110602 + "," + model.AlertExtion10110603 + "," + model.AlertExtion10110604;
+                        }
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 101,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue3,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
+                    //連續水量警示
+                    if (model.AlertCheckbox6 == "108")
+                    {
+                        var value2 = "";
+                        if (model.AlertValue4 == "108")
+                        {
+                            value2 = model.AlertExtion10210801;
+                        }
+                       
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 102,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue4,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
+                    //連續無用水
+                    if (model.AlertCheckbox7 == "107")
+                    {
+                        var value2 = "";
+                        if (model.AlertValue5 == "107")
+                        {
+                            value2 = model.AlertExtion10210701;
+                        }
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 102,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue5,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
+                    //夜間用水增加警示
+                    if (model.AlertCheckbox8 == "649")
+                    {
+                        var value2 = "";
+                        if (model.AlertValue6 == "649")
+                        {
+                            value2 = model.AlertExtion10264901 + "," + model.AlertExtion10264902;
+                        }
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 102,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertValue6,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
+
                 }
 
-                if (model.onoffswitch4 == "on")
-                {
-                    B_ALART_SETTING MMcode4Item = new B_ALART_SETTING()
-                    {
-                        B_ALART_CODE_SN = 102,
-                        WATER_NO = model.WaterNo,
-                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = "108",
-                    };
-                    alertsetitems.Add(MMcode4Item);
-                }
+                #endregion
+
+
+                #region 其他選項
+                ////其他選項
+
+                //if (model.onoffswitch1 == "on")
+                //{
+                //    var value2 = "";
+                //    if (model.AlertValue1 == "103")
+                //    {
+                //        value2 = model.AlertExtion10010301 + "," + model.AlertExtion10010302;
+                //    }
+                //    else if (model.AlertValue1 == "104")
+                //    {
+                //        value2 = model.AlertExtion10010401 + "," + model.AlertExtion10010402;
+                //    }
+
+                //    B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                //    {
+                //        B_ALART_CODE_SN = 100,
+                //        WATER_NO = model.WaterNo,
+                //        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                //        VALUE = model.AlertValue1,
+                //        VALUE1 = value2
+                //    };
+                //    alertsetitems.Add(MMcode1Item);
+                //}
+
+                //if (model.onoffswitch2 == "on")
+                //{
+                //    var value2 = "";
+                //    if (model.AlertValue2 == "105")
+                //    {
+                //        value2 = model.AlertExtion10110501;
+                //    }
+                //    else if (model.AlertValue2 == "106")
+                //    {
+                //        value2 = model.AlertExtion10110601;
+                //    }
+
+
+                //    B_ALART_SETTING MMcode2Item = new B_ALART_SETTING()
+                //    {
+                //        B_ALART_CODE_SN = 101,
+                //        WATER_NO = model.WaterNo,
+                //        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                //        VALUE = model.AlertValue2,
+                //        VALUE1 = value2
+                //    };
+                //    alertsetitems.Add(MMcode2Item);
+                //}
+
+                //if (model.onoffswitch3 == "on")
+                //{
+                //    B_ALART_SETTING MMcode3Item = new B_ALART_SETTING()
+                //    {
+                //        B_ALART_CODE_SN = 102,
+                //        WATER_NO = model.WaterNo,
+                //        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                //        VALUE = "107",
+                //    };
+                //    alertsetitems.Add(MMcode3Item);
+                //}
+
+                //if (model.onoffswitch4 == "on")
+                //{
+                //    B_ALART_SETTING MMcode4Item = new B_ALART_SETTING()
+                //    {
+                //        B_ALART_CODE_SN = 102,
+                //        WATER_NO = model.WaterNo,
+                //        B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                //        VALUE = "108",
+                //    };
+                //    alertsetitems.Add(MMcode4Item);
+                //}
 
                 #endregion
 

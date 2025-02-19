@@ -49,6 +49,24 @@
                 $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
             }
         });
+
+        // 綁定 checkbox 變化事件
+        $("#checkbox1").on("change", function () {
+            if ($(this).is(":checked")) {
+                $("#waterLimit").show(); // 顯示用水上限度數
+            } else {
+                $("#waterLimit").hide(); // 隱藏用水上限度數
+            }
+        });
+
+        $("#checkbox2").on("change", function () {
+            if ($(this).is(":checked")) {
+                $("#budgetLimit").show(); // 顯示用水預算上限
+            } else {
+                $("#budgetLimit").hide(); // 隱藏用水預算上限
+            }
+        });
+
     });
 
     function SetOnOffswitch(obj){
@@ -69,26 +87,84 @@
         $("#AlertEmail1").val('');
         $("#AlertEmail2").val('');
         $("#AlertEmail3").val('');
+        $("#AlertEmail4").val('');
+        $("#AlertEmail5").val('');
 
         $("#myonoffswitch1").prop('checked', false);
-        $("#myonoffswitch2").prop('checked', false);
-        $("#myonoffswitch3").prop('checked', false);
-        $("#myonoffswitch4").prop('checked', false);
+        // $("#myonoffswitch2").prop('checked', false);
+        // $("#myonoffswitch3").prop('checked', false);
+        // $("#myonoffswitch4").prop('checked', false);
 
         $('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
         $('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
 
+        $('input[name="checkbox1"][value="650"]').prop('checked', false);
+        $('input[name="checkbox2"][value="651"]').prop('checked', false);
+        $("#waterLimit").hide(); // 隱藏用水上限度數
+        $("#budgetLimit").hide(); // 隱藏用水預算上限
+        $('input[name="checkbox3"][value="100"]').prop('checked', false);
+        $('input[name="checkbox4"][value="646"]').prop('checked', false);
+        $('input[name="checkbox5"][value="101"]').prop('checked', false);
+        $('input[name="checkbox6"][value="108"]').prop('checked', false);   //連續用水
+        $('input[name="checkbox7"][value="107"]').prop('checked', false);   //連續無用水
+        $('input[name="checkbox8"][value="649"]').prop('checked', false);  //夜間
+
+
         $('input.form-check-input[value="103"]').prop('checked', false);
         $('input.form-check-input[value="104"]').prop('checked', false);
+
+        $('input.form-check-input[value="647"]').prop('checked', false);
+        $('input.form-check-input[value="648"]').prop('checked', false);
+
         $('input.form-check-input[value="105"]').prop('checked', false);
         $('input.form-check-input[value="106"]').prop('checked', false);
 
+        $('input[name="radio4"][value="108"]').prop('checked', false);
+        $('input[name="radio5"][value="107"]').prop('checked', false);
+        $('input[name="radio6"][value="649"]').prop('checked', false);
+
+        //日用水量警示
         $("#Code100Alert103Extion01").val('');
         $("#Code100Alert103Extion02").val('');
+        $("#Code100Alert103Extion03").val('');
+        $("#Code100Alert103Extion04").val('');
+
         $("#Code100Alert104Extion01").val('');
         $("#Code100Alert104Extion02").val('');
+        $("#Code100Alert104Extion03").val('');
+        $("#Code100Alert104Extion04").val('');
+        //週用水量警示
+        $("#Code646Alert647Extion01").val('');
+        $("#Code646Alert647Extion02").val('');
+        $("#Code646Alert647Extion03").val('');
+        $("#Code646Alert647Extion04").val('');
+
+        $("#Code646Alert648Extion01").val('');
+        $("#Code646Alert648Extion02").val('');
+        $("#Code646Alert648Extion03").val('');
+        $("#Code646Alert648Extion04").val('');
+
+        //月用水量警示
         $("#Code101Alert105Extion01").val('');
+        $("#Code101Alert105Extion02").val('');
+        $("#Code101Alert105Extion03").val('');
+        $("#Code101Alert105Extion04").val('');
+
         $("#Code101Alert106Extion01").val('');
+        $("#Code101Alert106Extion02").val('');
+        $("#Code101Alert106Extion03").val('');
+        $("#Code101Alert106Extion04").val('');
+        //連續用水警示
+        $("#Code102Alert108Extion01").val('');
+        //連續無用水警示
+        $("#Code102Alert107Extion01").val('');
+        //夜間用水增加警示
+        $("#Code102Alert649Extion01").val('');
+        $("#Code102Alert649Extion02").val('');
+        //每日用水上限提醒
+        $("#Code102Alert650Extion01").val('');
+        //每期用水預算提醒
+        $("#Code102Alert651Extion01").val('');
     }
 
     function GetAlertSetFromWaterNo(obj){
@@ -97,6 +173,7 @@
             };
          $.get("@Context.Items["urlPrefix"]@Url.Action("LoadAlertSet","Alert")",model,function(result){
             if(result.Success){
+                console.log(result);
                 $("#AlertPhone").val(result.Data.AlertPhone);
 
                 $("#AlertEmail1").val(result.Data.AlertEmails[0]);
@@ -105,6 +182,20 @@
                 $("#AlertEmail4").val(result.Data.AlertEmails[3]);
                 $("#AlertEmail5").val(result.Data.AlertEmails[4]);
 
+                const alertValues = [
+                    result.Data.AlertValueYesterday,
+                    result.Data.AlertValueWeek,
+                    result.Data.AlertValueLastMonth,
+                    result.Data.AlertValueContinuousWaterUsage,
+                    result.Data.AlertValueContinuousIdleWaterUsage,
+                    result.Data.AlertValueNighttimeWaterIncrease
+                ];
+
+                if (alertValues.some(value => value != null && value != '')) {
+                    $("#myonoffswitch1").prop("checked", true);
+                    SetOnOffswitch('myonoffswitch1');
+                }
+
                 if(result.Data.AlertValueYesterday != null && result.Data.AlertValueYesterday != ''){
                     let EVYesterday = "";
                     let strAry = [];
@@ -112,49 +203,167 @@
                         EVYesterday = result.Data.ExtendValue1Yesterday;
                          strAry = EVYesterday.split(',');
                     }
-
-                    $("#myonoffswitch1").prop("checked",true);
-                    SetOnOffswitch('myonoffswitch1');
+                    $('input[name="checkbox3"][value="100"]').prop('checked', true);
                     if(result.Data.AlertValueYesterday == '103'){
                         $("#Code100Alert103Extion01").val(strAry[0]);
                         $("#Code100Alert103Extion02").val(strAry[1]);
+                        $("#Code100Alert103Extion03").val(strAry[2]);
+                        $("#Code100Alert103Extion04").val(strAry[3]);
                         $('input.form-check-input[value="103"]').prop('checked', true);
 
                     }else if(result.Data.AlertValueYesterday == '104'){
                         $("#Code100Alert104Extion01").val(strAry[0]);
                         $("#Code100Alert104Extion02").val(strAry[1]);
+                        $("#Code100Alert104Extion03").val(strAry[2]);
+                        $("#Code100Alert104Extion04").val(strAry[3]);
                         $('input.form-check-input[value="104"]').prop('checked', true);
 
                     }
                 }
 
+                if (result.Data.AlertValueWeek != null && result.Data.AlertValueWeek != '') {
+                    let EVWeekday = "";
+                    let strAry = [];
+                    if (result.Data.ExtendValue1Week != null && result.Data.ExtendValue1Week != '') {
+                        EVWeekday = result.Data.ExtendValue1Week;
+                        strAry = EVWeekday.split(',');
+                    }
 
-                if(result.Data.AlertValueLastMonth != null && result.Data.AlertValueLastMonth != ''){
+                    $('input[name="checkbox4"][value="646"]').prop('checked', true);
+                    if (result.Data.AlertValueWeek == '647') {
+                        $("#Code646Alert647Extion01").val(strAry[0]);
+                        $("#Code646Alert647Extion02").val(strAry[1]);
+                        $("#Code646Alert647Extion03").val(strAry[2]);
+                        $("#Code646Alert647Extion04").val(strAry[3]);
+                        $('input.form-check-input[value="647"]').prop('checked', true);
+
+                    } else if (result.Data.AlertValueWeek == '648') {
+                        $("#Code646Alert648Extion01").val(strAry[0]);
+                        $("#Code646Alert648Extion02").val(strAry[1]);
+                        $("#Code646Alert648Extion03").val(strAry[2]);
+                        $("#Code646Alert648Extion04").val(strAry[3]);
+                        $('input.form-check-input[value="648"]').prop('checked', true);
+
+                    }
+                }
+
+                if (result.Data.AlertValueLastMonth != null && result.Data.AlertValueLastMonth != '') {
                     let AVeLastMonth = "";
-                    if(result.Data.ExtendValueLastMonth != null && result.Data.ExtendValueLastMonth != ''){
+                    let strAry = [];
+                    if (result.Data.ExtendValueLastMonth != null && result.Data.ExtendValueLastMonth != '') {
                         AVeLastMonth = result.Data.ExtendValueLastMonth;
+                        strAry = AVeLastMonth.split(',');
                     }
-
-                    $("#myonoffswitch2").prop("checked",true);
-                    SetOnOffswitch('myonoffswitch2');
-                    if(result.Data.AlertValueLastMonth == '105'){
+                    $('input[name="checkbox5"][value="101"]').prop('checked', true);
+                    if (result.Data.AlertValueLastMonth == '105') {
+                        $("#Code101Alert105Extion01").val(strAry[0]);
+                        $("#Code101Alert105Extion02").val(strAry[1]);
+                        $("#Code101Alert105Extion03").val(strAry[2]);
+                        $("#Code101Alert105Extion04").val(strAry[3]);
                         $('input.form-check-input[value="105"]').prop('checked', true);
-                        $("#Code101Alert105Extion01").val(AVeLastMonth);
-                    }else if(result.Data.AlertValueLastMonth == '106'){
+                        
+                    } else if (result.Data.AlertValueLastMonth == '106') {
+                        $("#Code101Alert106Extion01").val(strAry[0]);
+                        $("#Code101Alert106Extion02").val(strAry[1]);
+                        $("#Code101Alert106Extion03").val(strAry[2]);
+                        $("#Code101Alert106Extion04").val(strAry[3]);
                         $('input.form-check-input[value="106"]').prop('checked', true);
-                        $("#Code101Alert106Extion01").val(AVeLastMonth);
                     }
                 }
 
-                if(result.Data.AlertValueThreedayWaterUse != null && result.Data.AlertValueThreedayWaterUse != ''){
-                    $("#myonoffswitch3").prop("checked",true);
-                    SetOnOffswitch('myonoffswitch3');
+                if (result.Data.AlertValueContinuousWaterUsage != null && result.Data.AlertValueContinuousWaterUsage != '') {
+                    let AVeContinuousWaterUsage = "";
+                    if (result.Data.ExtendValueContinuousWaterUsage != null && result.Data.ExtendValueContinuousWaterUsage != '') {
+                        AVeContinuousWaterUsage = result.Data.ExtendValueContinuousWaterUsage;
+                    }
+
+                    $('input[name="checkbox6"][value="108"]').prop('checked', true);
+                    if (result.Data.AlertValueContinuousWaterUsage == '108') {
+                        $('input[name="radio4"][value="108"]').prop('checked', true);
+                        $("#Code102Alert108Extion01").val(AVeContinuousWaterUsage);
+                    } 
                 }
 
-                if(result.Data.AlertValueThreedayWaterNonUse != null && result.Data.AlertValueThreedayWaterNonUse != ''){
-                    $("#myonoffswitch4").prop("checked",true);
-                    SetOnOffswitch('myonoffswitch4');
+                if (result.Data.AlertValueContinuousIdleWaterUsage != null && result.Data.AlertValueContinuousIdleWaterUsage != '') {
+                    let AVeContinuousIdleWaterUsage = "";
+                    if (result.Data.ExtendValueContinuousIdleWaterUsage != null && result.Data.ExtendValueContinuousIdleWaterUsage != ''){
+                        AVeContinuousIdleWaterUsage = result.Data.ExtendValueContinuousIdleWaterUsage;
+                    }
+
+                    $('input[name="checkbox7"][value="107"]').prop('checked', true);
+                    if (result.Data.AlertValueContinuousIdleWaterUsage == '107') {
+                        $('input[name="radio5"][value="107"]').prop('checked', true);
+                        $("#Code102Alert107Extion01").val(AVeContinuousIdleWaterUsage);
+                    }
                 }
+
+                if (result.Data.AlertValueNighttimeWaterIncrease != null && result.Data.AlertValueNighttimeWaterIncrease != '') {
+                    let AVeNighttimeWaterIncrease = "";
+                    let strAry = [];
+                    if (result.Data.ExtendValueNighttimeWaterIncrease != null && result.Data.ExtendValueNighttimeWaterIncrease != '') {
+                        AVeNighttimeWaterIncrease = result.Data.ExtendValueNighttimeWaterIncrease;
+                        strAry = AVeNighttimeWaterIncrease.split(',');
+                    }
+                    $('input[name="checkbox8"][value="649"]').prop('checked', true);
+                    if (result.Data.AlertValueNighttimeWaterIncrease == '649') {
+                        $('input[name="radio6"][value="649"]').prop('checked', true);
+                        $("#Code102Alert649Extion01").val(strAry[0]);
+                        $("#Code102Alert649Extion02").val(strAry[1]);
+                    }
+                }
+
+                if(result.Data.AlertValueDailyWaterUsageLimit != null && result.Data.AlertValueDailyWaterUsageLimit != '') {
+                    let AVeDailyWaterUsageLimit = "";
+                    if (result.Data.ExtendValueDailyWaterUsageLimit != null && result.Data.ExtendValueDailyWaterUsageLimit != '') {
+                        AVeDailyWaterUsageLimit = result.Data.ExtendValueDailyWaterUsageLimit;
+                    }
+
+                    $('input[name="checkbox1"][value="650"]').prop('checked', true);
+                    $("#waterLimit").show(); // 顯示用水上限度數
+                    if (result.Data.AlertValueDailyWaterUsageLimit == '650') {
+                        $("#Code102Alert650Extion01").val(AVeDailyWaterUsageLimit);
+                    }
+                }
+
+                if (result.Data.AlertValueWaterUsageBudget != null && result.Data.AlertValueWaterUsageBudget != '') {
+                    let AVeWaterUsageBudget = "";
+                    if (result.Data.ExtendValueWaterUsageBudget != null && result.Data.ExtendValueWaterUsageBudget != '') {
+                        AVeWaterUsageBudget = result.Data.ExtendValueWaterUsageBudget;
+                    }
+
+                    $('input[name="checkbox2"][value="651"]').prop('checked', true);
+                    $("#budgetLimit").show(); // 顯示用水預算上限
+                    if (result.Data.AlertValueWaterUsageBudget == '651') {
+                        $("#Code102Alert651Extion01").val(AVeWaterUsageBudget);
+                    }
+                }
+
+                // if(result.Data.AlertValueLastMonth != null && result.Data.AlertValueLastMonth != ''){
+                //     let AVeLastMonth = "";
+                //     if(result.Data.ExtendValueLastMonth != null && result.Data.ExtendValueLastMonth != ''){
+                //         AVeLastMonth = result.Data.ExtendValueLastMonth;
+                //     }
+
+                //     // $("#myonoffswitch2").prop("checked",true);
+                //     // SetOnOffswitch('myonoffswitch2');
+                //     if(result.Data.AlertValueLastMonth == '105'){
+                //         $('input.form-check-input[value="105"]').prop('checked', true);
+                //         $("#Code101Alert105Extion01").val(AVeLastMonth);
+                //     }else if(result.Data.AlertValueLastMonth == '106'){
+                //         $('input.form-check-input[value="106"]').prop('checked', true);
+                //         $("#Code101Alert106Extion01").val(AVeLastMonth);
+                //     }
+                // }
+
+                // if(result.Data.AlertValueThreedayWaterUse != null && result.Data.AlertValueThreedayWaterUse != ''){
+                //     $("#myonoffswitch3").prop("checked",true);
+                //     SetOnOffswitch('myonoffswitch3');
+                // }
+
+                // if(result.Data.AlertValueThreedayWaterNonUse != null && result.Data.AlertValueThreedayWaterNonUse != ''){
+                //     $("#myonoffswitch4").prop("checked",true);
+                //     SetOnOffswitch('myonoffswitch4');
+                // }
 
             }
         });
@@ -168,26 +377,71 @@
             AlertEmail1:$("input[name='AlertEmail1']").val(),
             AlertEmail2:$("input[name='AlertEmail2']").val(),
             AlertEmail3:$("input[name='AlertEmail3']").val(),
-            AlertEmail4: $("input[name='AlertEmail4']").val(),
-            AlertEmail5: $("input[name='AlertEmail5']").val(),
+            AlertEmail4:$("input[name='AlertEmail4']").val(),
+            AlertEmail5:$("input[name='AlertEmail5']").val(),
 
             //設定管理
             onoffswitch1:$("input[name='onoffswitch1']:checked").val(),
-            onoffswitch2:$("input[name='onoffswitch2']:checked").val(),
-            onoffswitch3:$("input[name='onoffswitch3']:checked").val(),
-            onoffswitch4:$("input[name='onoffswitch4']:checked").val(),
+            // onoffswitch2:$("input[name='onoffswitch2']:checked").val(),
+            // onoffswitch3:$("input[name='onoffswitch3']:checked").val(),
+            // onoffswitch4:$("input[name='onoffswitch4']:checked").val(),
+
+            AlertCheckbox1: $("input[name='checkbox1']:checked").val(),
+            AlertCheckbox2: $("input[name='checkbox2']:checked").val(),
+            AlertCheckbox3: $("input[name='checkbox3']:checked").val(),
+            AlertCheckbox4: $("input[name='checkbox4']:checked").val(),
+            AlertCheckbox5: $("input[name='checkbox5']:checked").val(),
+            AlertCheckbox6: $("input[name='checkbox6']:checked").val(),
+            AlertCheckbox7: $("input[name='checkbox7']:checked").val(),
+            AlertCheckbox8: $("input[name='checkbox8']:checked").val(),
 
             AlertValue1:$("input[name='radio1']:checked").val(),
             AlertValue2:$("input[name='radio2']:checked").val(),
-
+            AlertValue3: $("input[name='radio3']:checked").val(),
+            AlertValue4: $("input[name='radio4']:checked").val(),
+            AlertValue5: $("input[name='radio5']:checked").val(),
+            AlertValue6: $("input[name='radio6']:checked").val(),
+            //日用水量
             AlertExtion10010301:$("#Code100Alert103Extion01").val(),
             AlertExtion10010302:$("#Code100Alert103Extion02").val(),
+            AlertExtion10010303:$("#Code100Alert103Extion03").val(),
+            AlertExtion10010304:$("#Code100Alert103Extion04").val(),
+
             AlertExtion10010401:$("#Code100Alert104Extion01").val(),
             AlertExtion10010402:$("#Code100Alert104Extion02").val(),
+            AlertExtion10010403:$("#Code100Alert104Extion03").val(),
+            AlertExtion10010404:$("#Code100Alert104Extion04").val(),
+            //週用水量
+            AlertExtion64664701:$("#Code646Alert647Extion01").val(),
+            AlertExtion64664702:$("#Code646Alert647Extion02").val(),
+            AlertExtion64664703:$("#Code646Alert647Extion03").val(),
+            AlertExtion64664704:$("#Code646Alert647Extion04").val(),
 
+            AlertExtion64664801: $("#Code646Alert648Extion01").val(),
+            AlertExtion64664802: $("#Code646Alert648Extion02").val(),
+            AlertExtion64664803: $("#Code646Alert648Extion03").val(),
+            AlertExtion64664804: $("#Code646Alert648Extion04").val(),
+            //月用水量
             AlertExtion10110501:$("#Code101Alert105Extion01").val(),
-            AlertExtion10110601:$("#Code101Alert106Extion01").val()
+            AlertExtion10110502:$("#Code101Alert105Extion02").val(),
+            AlertExtion10110503:$("#Code101Alert105Extion03").val(),
+            AlertExtion10110504:$("#Code101Alert105Extion04").val(),
 
+            AlertExtion10110601:$("#Code101Alert106Extion01").val(),
+            AlertExtion10110602:$("#Code101Alert106Extion02").val(),
+            AlertExtion10110603:$("#Code101Alert106Extion03").val(),
+            AlertExtion10110604:$("#Code101Alert106Extion04").val(),
+            //連續用水
+            AlertExtion10210801:$("#Code102Alert108Extion01").val(),
+            //連續無用水
+            AlertExtion10210701:$("#Code102Alert107Extion01").val(),
+            //夜間用水增加
+            AlertExtion10264901:$("#Code102Alert649Extion01").val(),
+            AlertExtion10264902:$("#Code102Alert649Extion02").val(),
+            //每日用水上限提醒
+            AlertExtion10265001:$("#Code102Alert650Extion01").val(),
+            //每期用水預算提醒
+            AlertExtion10265101:$("#Code102Alert651Extion01").val()
         };
 
         if(model.WaterNo.length == 0)
@@ -278,27 +532,32 @@
                     </div>
                     <div class="mb-3 row">
                         <label for="inputEmail1" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i> 電子郵件設定</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail1" name="AlertEmail1" placeholder="some@mail.com" autocomplete="off">
-                            <span class="text-danger" id="dangerAlertEmail1"></span>
+                        <div class="col">
+                            <div class="row row-cols-1 row-cols-md-3">
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" id="AlertEmail1" name="AlertEmail1" placeholder="some@mail.com" autocomplete="off">
+                                    <span class="text-danger" id="dangerAlertEmail1"></span>
+                                </div>
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" id="AlertEmail2" name="AlertEmail2" placeholder="some@mail.com" autocomplete="off">
+                                    <span class="text-danger" id="dangerAlertEmail2"></span>
+                                </div>
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" id="AlertEmail3" name="AlertEmail3" placeholder="some@mail.com" autocomplete="off">
+                                    <span class="text-danger" id="dangerAlertEmail3"></span>
+                                </div>
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" id="AlertEmail4" name="AlertEmail4" placeholder="some@mail.com" autocomplete="off">
+                                    <span class="text-danger" id="dangerAlertEmail4"></span>
+                                </div>
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" id="AlertEmail5" name="AlertEmail5" placeholder="some@mail.com" autocomplete="off">
+                                    <span class="text-danger" id="dangerAlertEmail5"></span>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail2" name="AlertEmail2" placeholder="some@mail.com" autocomplete="off">
-                            <span class="text-danger" id="dangerAlertEmail2"></span>
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail3" name="AlertEmail3" placeholder="some@mail.com" autocomplete="off">
-                            <span class="text-danger" id="dangerAlertEmail3"></span>
-                        </div>
-                        <label for="inputEmail1" class="col-sm-3 col-form-label"></label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail4" name="AlertEmail4" placeholder="some@mail.com" autocomplete="off">
-                            <span class="text-danger" id="dangerAlertEmail4"></span>
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AlertEmail5" name="AlertEmail5" placeholder="some@mail.com" autocomplete="off">
-                            <span class="text-danger" id="dangerAlertEmail5"></span>
-                        </div>
+
                     </div>
                 </div>
 
@@ -306,188 +565,333 @@
                     <i class="bi bi-volume-up-fill"></i>
                     用水提醒
                 </div>
-                <div class="row">
-                    <div class="col-sm-8 col-lg-8">
-                        <div class="formGroup">
-                            <div class="title row">
-                                開啟
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" @*onclick="btnonoffswitch(this)"*@>
-                                    <label class="onoffswitch-label" for="myonoffswitch1" id="lbmyonoffswitch1">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
-                                </div>
-                                關閉
-                                &nbsp;&nbsp;
-                                日用水量(前日24:00至昨日23:00)
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio1" value="103">
-                                <label class="form-check-label row">
-                                    較前日比較突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含以上)，用水突減
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion02">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含以下)
+                <div class="row row-cols-4 py-2 mb-4">
+                    <div class="col">
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="checkbox1" value="650" id="checkbox1">
+                                <label class="form-check-label" for="每日用水上限提醒">
+                                    每日用水上限提醒
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio1" value="104">
-                                <label class="form-check-label row">
-                                    較上月日平均用水突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以上，用水突減
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion02">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以下
+                        </div>
+                        <div id="waterLimit">
+                            <div>用水上限度數</div>
+                            <div class="row align-items-center g-1">
+                                <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert650Extion01"></div>
+                                <div class="col-auto">度</div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col">
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="checkbox2" value="651" id="checkbox2">
+                                <label class="form-check-label" for="每期用水預算提醒">
+                                    每期用水預算提醒
                                 </label>
                             </div>
-
-                            <div class="title row">
-                                開啟
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch2">
-                                    <label class="onoffswitch-label" for="myonoffswitch2">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
-                                </div>
-                                關閉
-                                &nbsp;&nbsp;
-                                上月用水量
+                        </div>
+                        <div id="budgetLimit">
+                            <div>用水預算上限</div>
+                            <div class="row align-items-center g-1">
+                                <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert651Extion01"></div>
+                                <div class="col-auto">元</div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" value="105">
-                                <label class="form-check-label row" for="radio12">
-                                    較前月用水突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" value="106">
-                                <label class="form-check-label row">
-                                    較去年同期用水突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以上
-                                </label>
-                            </div>
-
                         </div>
                     </div>
                 </div>
+
+
+@*                 <div class="row">
+                    <div class="col-sm-8 col-lg-8">
+                        <div class="formGroup">
+                            <div class="d-flex">
+                                <div class="form-check me-5">
+                                    <input class="form-check-input" type="checkbox" name="checkbox1" value="DailyWaterUsageLimit">
+                                    <label class="form-check-label row">
+                                        每日用水上限提醒
+                                    </label>
+                                    <label class="form-check-label row">
+                                        用水上限度數
+                                    </label>
+                                    <input type="text" class="form-control" style="width:80px">度
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="checkbox2" value="WaterUsageBudget">
+                                    <label class="form-check-label row">
+                                        每期用水預算提醒
+                                    </label>
+                                    <label class="form-check-label row">
+                                        用水預算上限
+                                    </label>
+                                    <input type="text" class="form-control" style="width:80px">元
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div> *@
 
                 <div class="unitTitle">
                     <i class="bi bi-exclamation-triangle-fill"></i>
                     警訊設定管理
+                    <div class="d-flex mx-4 align-items-center">
+                        開啟
+                        <div class="onoffswitch">
+                            <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" @*onclick="btnonoffswitch(this)"*@>
+                            <label class="onoffswitch-label" for="myonoffswitch1" id="lbmyonoffswitch1">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                        關閉
+                    </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-8 col-lg-8">
+                    <div class="col-sm-12 col-lg-12">
                         <div class="formGroup">
-                            <div class="title row">
-                                開啟
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" @*onclick="btnonoffswitch(this)"*@>
-                                    <label class="onoffswitch-label" for="myonoffswitch1" id="lbmyonoffswitch1">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
+                            <div class="title d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" name="checkbox3" value="100">
+                                <span class="mx-2" style="color:red">日用水量</span>(前日24:00至昨日23:00)
+                            </div>
+                            <div class="ms-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio1" value="103">
+                                    <label class="form-check-label row">
+                                        較前日比較超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上，用水減少
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion03">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突減
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion04">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以下
                                     </label>
                                 </div>
-                                關閉
-                                &nbsp;&nbsp;
-                                日用水量(前日24:00至昨日23:00)
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio1" value="103">
-                                <label class="form-check-label row">
-                                    較前日比較突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含以上)，用水突減
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion02">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含以下)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio1" value="104">
-                                <label class="form-check-label row">
-                                    較上月日平均用水突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以上，用水突減
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion02">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以下
-                                </label>
-                            </div>
-
-                            <div class="title row">
-                                開啟
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch2">
-                                    <label class="onoffswitch-label" for="myonoffswitch2">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio1" value="104">
+                                    <label class="form-check-label row">
+                                        較上月日平均用水超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上，用水減少
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion03">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突減
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion04">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以下
                                     </label>
                                 </div>
-                                關閉
-                                &nbsp;&nbsp;
-                                上月用水量
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" value="105">
-                                <label class="form-check-label row" for="radio12">
-                                    較前月用水突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以上
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio2" value="106">
-                                <label class="form-check-label row">
-                                    較去年同期用水突增
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion01">
-                                        <span class="text-danger" autocomplete="off"></span>
-                                    </div>
-                                    %(含)以上
-                                </label>
                             </div>
 
+                            <div class="title d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" name="checkbox4" value="646">
+                                <span class="mx-2" style="color:red">週用水量</span>警示
+                            </div>
+                            <div class="ms-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio2" value="647">
+                                    <label class="form-check-label row" for="radio12">
+                                        較上週用水超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上，用水減少
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion03">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突減
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion04">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以下
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio2" value="648">
+                                    <label class="form-check-label row" for="radio12">
+                                        較去年同期用水超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上，用水減少
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion03">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突減
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion04">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以下
+                                    </label>
+                                </div>
+                            </div>
+                           
+                            <div class="title d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" name="checkbox5" value="101">
+                                <span class="mx-2" style="color:red">月用水量</span>警示
+                            </div>
+                            <div class="ms-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio3" value="105">
+                                    <label class="form-check-label row" for="radio12">
+                                        較上月用水超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上，用水減少
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion03">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突減
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion04">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以下
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio3" value="106">
+                                    <label class="form-check-label row" for="radio12">
+                                        較去年同期用水超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上，用水減少
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion03">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突減
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion04">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以下
+                                    </label>
+                                </div>
+                            </div>
+                           
+                            <div class="title d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" name="checkbox6" value="108">
+                                <span class="mx-2" style="color:red">連續用水</span>警示
+                            </div>
+                            <div class="ms-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio4" value="108">
+                                    <label class="form-check-label row" for="radio12">
+                                        水表持續運轉已達
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert108Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        日(含)以上
+                                    </label>
+                                </div>
+                            </div>
+                           
+                            <div class="title d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" name="checkbox7" value="107">
+                                <span class="mx-2" style="color:red">連續無用水</span>警示
+                            </div>
+                            <div class="ms-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio5" value="107">
+                                    <label class="form-check-label row" for="radio12">
+                                        水表持續未運轉已達
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert107Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        日(含)以上
+                                    </label>
+                                </div>
+                            </div>
+                          
+                            <div class="title d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" name="checkbox8" value="649">
+                                <span class="mx-2" style="color:red">夜間用水增加</span>警示(前日01:00~05:00)
+                            </div>
+                            <div class="ms-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radio6" value="649">
+                                    <label class="form-check-label row" for="radio12">
+                                        夜間用水超過
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert649Extion01">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        度且突增
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert649Extion02">
+                                            <span class="text-danger" autocomplete="off"></span>
+                                        </div>
+                                        %(含)以上
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4 col-lg-4">
+                    @* <div class="col-sm-4 col-lg-4">
                         <div class="formGroup">
 
                             <div class="title row">
@@ -523,7 +927,7 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div> *@
                 </div>
             </form>
             <div class="btnGroup">

@@ -63,9 +63,27 @@ namespace TWNPPublic.Domain.Service
             string AlertValueYesterday = "";
             string ExtendValue1Yesterday = "";
             string ExtendValue2Yesterday = "";
+            string AlertValueWeek = "";
+            string ExtendValue1Week = "";
             //額外參數 這設計應該是有點問題...
             string AlertValueLastMonth = "";
             string ExtendValueLastMonth = "";
+            //連續用水警示
+            string AlertValueContinuousWaterUsage = "";
+            string ExtendValueContinuousWaterUsage = "";
+            //連續無用水警示
+            string AlertValueContinuousIdleWaterUsage = "";
+            string ExtendValueContinuousIdleWaterUsage = "";
+            //夜間用水增加警示
+            string AlertValueNighttimeWaterIncrease = "";
+            string ExtendValueNighttimeWaterIncrease = "";
+            //每日用水上限提醒
+            string AlertValueDailyWaterUsageLimit = "";
+            string ExtendValueDailyWaterUsageLimit = "";
+            //每期用水預算提醒
+            string AlertValueWaterUsageBudget = "";
+            string ExtendValueWaterUsageBudget = "";
+
             string AlertValueThreedayWaterUse = "";
             string AlertValueThreedayWaterNonUse = "";
             //聯絡信箱
@@ -96,6 +114,12 @@ namespace TWNPPublic.Domain.Service
                 ExtendValue1Yesterday = result.First(c => c.B_ALART_CODE_SN == 100).VALUE1;
             }
 
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 646) != null)
+            {
+                AlertValueWeek = result.First(c => c.B_ALART_CODE_SN == 646).VALUE;
+                ExtendValue1Week = result.First(c => c.B_ALART_CODE_SN == 646).VALUE1;
+            }
+
             if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 101) != null)
             {
                 AlertValueLastMonth = result.First(c => c.B_ALART_CODE_SN == 101).VALUE;
@@ -104,11 +128,34 @@ namespace TWNPPublic.Domain.Service
 
             if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102) != null)
             {
-                var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
-                AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
-                var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
-                AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
+                var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
+                AlertValueContinuousWaterUsage = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
+                AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE1;
+                
+                var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
+                AlertValueContinuousIdleWaterUsage = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
+                ExtendValueContinuousIdleWaterUsage = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE1;
+
+                var AlertValueNighttimeWaterIncreaseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "649");
+                AlertValueNighttimeWaterIncrease = AlertValueNighttimeWaterIncreaseTemp == null ? "" : AlertValueNighttimeWaterIncreaseTemp.VALUE;
+                ExtendValueNighttimeWaterIncrease = AlertValueNighttimeWaterIncreaseTemp == null ? "" : AlertValueNighttimeWaterIncreaseTemp.VALUE1;
+
+                var AlertValueDailyWaterUsageLimitTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "650");
+                AlertValueDailyWaterUsageLimit = AlertValueDailyWaterUsageLimitTemp == null ? "" : AlertValueDailyWaterUsageLimitTemp.VALUE;
+                ExtendValueDailyWaterUsageLimit = AlertValueDailyWaterUsageLimitTemp == null ? "" : AlertValueDailyWaterUsageLimitTemp.VALUE1;
+
+                var AlertValueWaterUsageBudgetTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "651");
+                AlertValueWaterUsageBudget = AlertValueWaterUsageBudgetTemp == null ? "" : AlertValueWaterUsageBudgetTemp.VALUE;
+                ExtendValueWaterUsageBudget = AlertValueWaterUsageBudgetTemp == null ? "" : AlertValueWaterUsageBudgetTemp.VALUE1;
             }
+
+            //if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102) != null)
+            //{
+            //    var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
+            //    AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
+            //    var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
+            //    AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
+            //}
 
             return new ListedAlertSetViewModel()
             {
@@ -119,10 +166,30 @@ namespace TWNPPublic.Domain.Service
                 AlertValueYesterday = AlertValueYesterday,
                 ExtendValue1Yesterday = ExtendValue1Yesterday,
                 ExtendValue2Yesterday = ExtendValue1Yesterday,
+
+                AlertValueWeek = AlertValueWeek,
+                ExtendValue1Week = ExtendValue1Week,
+
                 AlertValueLastMonth = AlertValueLastMonth,
                 ExtendValueLastMonth = ExtendValueLastMonth,
-                AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUse,
-                AlertValueThreedayWaterUse = AlertValueThreedayWaterUse
+
+                AlertValueContinuousWaterUsage = AlertValueContinuousWaterUsage,
+                ExtendValueContinuousWaterUsage = ExtendValueContinuousWaterUsage,
+
+                AlertValueContinuousIdleWaterUsage = AlertValueContinuousIdleWaterUsage,
+                ExtendValueContinuousIdleWaterUsage = ExtendValueContinuousIdleWaterUsage,
+
+                AlertValueNighttimeWaterIncrease = AlertValueNighttimeWaterIncrease,
+                ExtendValueNighttimeWaterIncrease = ExtendValueNighttimeWaterIncrease,
+
+                AlertValueDailyWaterUsageLimit = AlertValueDailyWaterUsageLimit,
+                ExtendValueDailyWaterUsageLimit = ExtendValueDailyWaterUsageLimit,
+
+                AlertValueWaterUsageBudget = AlertValueWaterUsageBudget,
+                ExtendValueWaterUsageBudget = ExtendValueWaterUsageBudget
+
+                //AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUse,
+                //AlertValueThreedayWaterUse = AlertValueThreedayWaterUse
             };
 
         }
@@ -137,9 +204,27 @@ namespace TWNPPublic.Domain.Service
             string AlertValueYesterday = "";
             string ExtendValue1Yesterday = "";
             string ExtendValue2Yesterday = "";
+            string AlertValueWeek = "";
+            string ExtendValue1Week = "";
             //額外參數 這設計應該是有點問題...
             string AlertValueLastMonth = "";
             string ExtendValueLastMonth = "";
+            //連續用水警示
+            string AlertValueContinuousWaterUsage = "";
+            string ExtendValueContinuousWaterUsage = "";
+            //連續無用水警示
+            string AlertValueContinuousIdleWaterUsage = "";
+            string ExtendValueContinuousIdleWaterUsage = "";
+            //夜間用水增加警示
+            string AlertValueNighttimeWaterIncrease = "";
+            string ExtendValueNighttimeWaterIncrease = "";
+            //每日用水上限提醒
+            string AlertValueDailyWaterUsageLimit = "";
+            string ExtendValueDailyWaterUsageLimit = "";
+            //每期用水預算提醒
+            string AlertValueWaterUsageBudget = "";
+            string ExtendValueWaterUsageBudget = "";
+
             string AlertValueThreedayWaterUse = "";
             string AlertValueThreedayWaterNonUse = "";
             //聯絡信箱
@@ -165,6 +250,12 @@ namespace TWNPPublic.Domain.Service
                 ExtendValue1Yesterday = result.First(c => c.B_ALART_CODE_SN == 100).VALUE1;
             }
 
+            if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 646) != null)
+            {
+                AlertValueWeek = result.First(c => c.B_ALART_CODE_SN == 646).VALUE;
+                ExtendValue1Week = result.First(c => c.B_ALART_CODE_SN == 646).VALUE1;
+            }
+
             if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 101) != null)
             {
                 AlertValueLastMonth = result.First(c => c.B_ALART_CODE_SN == 101).VALUE;
@@ -173,11 +264,34 @@ namespace TWNPPublic.Domain.Service
 
             if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102) != null)
             {
-                var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
-                AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
-                var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
-                AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
+                var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
+                AlertValueContinuousWaterUsage = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
+                ExtendValueContinuousWaterUsage = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE1;
+
+                var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
+                AlertValueContinuousIdleWaterUsage = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
+                ExtendValueContinuousIdleWaterUsage = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE1;
+
+                var AlertValueNighttimeWaterIncreaseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "649");
+                AlertValueNighttimeWaterIncrease = AlertValueNighttimeWaterIncreaseTemp == null ? "" : AlertValueNighttimeWaterIncreaseTemp.VALUE;
+                ExtendValueNighttimeWaterIncrease = AlertValueNighttimeWaterIncreaseTemp == null ? "" : AlertValueNighttimeWaterIncreaseTemp.VALUE1;
+
+                var AlertValueDailyWaterUsageLimitTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "650");
+                AlertValueDailyWaterUsageLimit = AlertValueDailyWaterUsageLimitTemp == null ? "" : AlertValueDailyWaterUsageLimitTemp.VALUE;
+                ExtendValueDailyWaterUsageLimit = AlertValueDailyWaterUsageLimitTemp == null ? "" : AlertValueDailyWaterUsageLimitTemp.VALUE1;
+
+                var AlertValueWaterUsageBudgetTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "651");
+                AlertValueWaterUsageBudget = AlertValueWaterUsageBudgetTemp == null ? "" : AlertValueWaterUsageBudgetTemp.VALUE;
+                ExtendValueWaterUsageBudget = AlertValueWaterUsageBudgetTemp == null ? "" : AlertValueWaterUsageBudgetTemp.VALUE1;
             }
+
+            //if (result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102) != null)
+            //{
+            //    var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
+            //    AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
+            //    var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
+            //    AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;
+            //}
 
             return new ListedAlertSetViewModel()
             {
@@ -187,10 +301,29 @@ namespace TWNPPublic.Domain.Service
                 AlertValueYesterday = AlertValueYesterday,
                 ExtendValue1Yesterday = ExtendValue1Yesterday,
                 ExtendValue2Yesterday = ExtendValue1Yesterday,
+                AlertValueWeek = AlertValueWeek,
+                ExtendValue1Week = ExtendValue1Week,
+
                 AlertValueLastMonth = AlertValueLastMonth,
                 ExtendValueLastMonth = ExtendValueLastMonth,
-                AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUse,
-                AlertValueThreedayWaterUse = AlertValueThreedayWaterUse
+
+                AlertValueContinuousWaterUsage = AlertValueContinuousWaterUsage,
+                ExtendValueContinuousWaterUsage = ExtendValueContinuousWaterUsage,
+
+                AlertValueContinuousIdleWaterUsage = AlertValueContinuousIdleWaterUsage,
+                ExtendValueContinuousIdleWaterUsage = ExtendValueContinuousIdleWaterUsage,
+
+                AlertValueNighttimeWaterIncrease = AlertValueNighttimeWaterIncrease,
+                ExtendValueNighttimeWaterIncrease = ExtendValueNighttimeWaterIncrease,
+
+                AlertValueDailyWaterUsageLimit = AlertValueDailyWaterUsageLimit,
+                ExtendValueDailyWaterUsageLimit = ExtendValueDailyWaterUsageLimit,
+
+                AlertValueWaterUsageBudget = AlertValueWaterUsageBudget,
+                ExtendValueWaterUsageBudget = ExtendValueWaterUsageBudget
+
+                //AlertValueThreedayWaterNonUse = AlertValueThreedayWaterNonUse,
+                //AlertValueThreedayWaterUse = AlertValueThreedayWaterUse
             };
         }
 
