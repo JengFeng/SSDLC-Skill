@@ -2247,32 +2247,32 @@ namespace TWNPPublic.Controllers
                 // 當 Type 為 hour 時，不論傳入 Sdate/Edate 為何，最後都補上 2025/02/05 00:00:00 ~ 23:59:59
                 if (string.IsNullOrEmpty(TimeType))
                 {
-                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, Sdate.Hour, 0, 0);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, Edate.Hour, 59, 59);
                 }
                 else if (TimeType.ToLower() == "day")
                 {
                     // 先減一天（依傳入的 Sdate/Edate），接著補上固定日期
                     Sdate = Sdate.AddDays(-1);
                     Edate = Edate.AddDays(-1);
-                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, Sdate.Hour, 0, 0);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, Edate.Hour, 59, 59);
                 }
                 else if (TimeType.ToLower() == "month")
                 {
                     // 先減一個月，再補上固定日期
                     Sdate = Sdate.AddMonths(-1);
                     Edate = Edate.AddMonths(-1);
-                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, Sdate.Hour, 0, 0);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, Edate.Hour, 59, 59);
                 }
                 else if (TimeType.ToLower() == "year")
                 {
                     // 先減一年，再補上固定日期
                     Sdate = Sdate.AddYears(-1);
                     Edate = Edate.AddYears(-1);
-                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, 0, 0, 0);
-                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, 23, 59, 59);
+                    Sdate = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, Sdate.Hour, 0, 0);
+                    Edate = new DateTime(Edate.Year, Edate.Month, Edate.Day, Edate.Hour, 59, 59);
                 }
             }
             else if (Type.ToLower() == "day")
@@ -2415,15 +2415,15 @@ namespace TWNPPublic.Controllers
                             }
                         }
 
-                        // 產生完整的時間點範圍（24 小時，每小時一筆）
-                        for (int i = 0; i < 24; i++)
-                        {
-                            string timeKey = i.ToString("D2") + ":00"; // 00:00, 01:00, ..., 23:00
-                            if (!dic.ContainsKey(timeKey))
-                            {
-                                dic[timeKey] = 0;  // 預設為 0，確保有數據
-                            }
-                        }
+                        //// 產生完整的時間點範圍（24 小時，每小時一筆）
+                        //for (int i = 0; i < 24; i++)
+                        //{
+                        //    string timeKey = i.ToString("D2") + ":00"; // 00:00, 01:00, ..., 23:00
+                        //    if (!dic.ContainsKey(timeKey))
+                        //    {
+                        //        dic[timeKey] = 0;  // 預設為 0，確保有數據
+                        //    }
+                        //}
 
                         // 確保有基準時間格式
                         List<F_B_CHART2> timeBaseSource = lastSixDaysData.Count > 0 ? lastSixDaysData :

@@ -792,7 +792,7 @@ namespace TWNPPublic.Domain.Service
             {
                 WaterNo,
                 pin = ChartType,
-                StartTime = StartTime.Date,
+                StartTime = StartTime,
                 EndTime = EndTime
             };
 

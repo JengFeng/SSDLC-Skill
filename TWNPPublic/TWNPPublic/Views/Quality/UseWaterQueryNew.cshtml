@@ -13,8 +13,8 @@
 
 <script>
     $(function () {
-        $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd")");
-        $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd")");
+        $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 00:00")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd 00:00")");
+        $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 23:00")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd 23:00")");
         $(".menuList > a:nth-child(2)").addClass("active").siblings().removeClass("active");
         // 預設顯示小時對應的 checkbox
         $("#checkbox-group-day, #checkbox-group-month, #checkbox-group-year").show();
@@ -28,7 +28,7 @@
             updateDateInput($(this).val());
         });
         $("#checkbox-day").prop("checked", true);
-        //btnSearch();
+        btnSearch();
     });
 </script>
 
@@ -159,8 +159,8 @@
     let ddlDateS = null, ddlDateE = null;
 
     const SettingTxtDate = () => {
-        ddlDateS = CreateRocDate('inputStartTime', false, false, false);
-        ddlDateE = CreateRocDate('inputEndTime', false, false, false);
+        ddlDateS = CreateRocDate('inputStartTime', true, false, false);
+        ddlDateE = CreateRocDate('inputEndTime', true, false, false);
     }
 
     // 更新日期輸入框的類型
@@ -169,6 +169,17 @@
         ddlDateE.destroy();
 
         switch (selectedValue) {
+            case "hour":
+                ddlDateS = CreateRocDate('inputStartTime', true, false, false);
+                ddlDateE = CreateRocDate('inputEndTime', true, false, false);
+                $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 00:00")");
+                $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 23:00")");
+            case "day":
+                ddlDateS = CreateRocDate('inputStartTime', false, false, false);
+                ddlDateE = CreateRocDate('inputEndTime', false, false, false);
+                $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");
+                $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")");
+                break;
             case "week":
             case "month":
                 ddlDateS = CreateRocDate('inputStartTime', false, true, false);
@@ -614,34 +625,34 @@
                 padding: [0,0, 0, 0],   // [上, 右, 下, 左]
             },   // 工具
             dataZoom: [
-                {
-                    type: 'slider',
-                    show: true,
-                    xAxisIndex: [0],
-                    start: 0,
-                    end: 100,
-                    bottom: '10%' // 調整 dataZoom 到圖表下方 10%
-                },
                 // {
                 //     type: 'slider',
                 //     show: true,
-                //     yAxisIndex: [0],
-                //     left: '93%',
+                //     xAxisIndex: [0],
                 //     start: 0,
-                //     end: 100
+                //     end: 100,
+                //     bottom: '10%' // 調整 dataZoom 到圖表下方 10%
                 // },
-                // //{
-                // //    type: 'inside',
-                // //    xAxisIndex: [0],
-                // //    start: 1,
-                // //    end: 35
-                // //},
-                // {
-                //     type: 'inside',
-                //     yAxisIndex: [0],
-                //     start: 29,
-                //     end: 36
-                // }
+                // // {
+                // //     type: 'slider',
+                // //     show: true,
+                // //     yAxisIndex: [0],
+                // //     left: '93%',
+                // //     start: 0,
+                // //     end: 100
+                // // },
+                // // //{
+                // // //    type: 'inside',
+                // // //    xAxisIndex: [0],
+                // // //    start: 1,
+                // // //    end: 35
+                // // //},
+                // // {
+                // //     type: 'inside',
+                // //     yAxisIndex: [0],
+                // //     start: 29,
+                // //     end: 36
+                // // }
             ],  // 縮放功能
             tooltip: {
                 trigger: 'axis'    // item, axis

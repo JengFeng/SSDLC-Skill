@@ -35,6 +35,7 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
         multipleDatesSeparator: '~',
         minDate: threeYearsAgo,
         maxDate: yesterday,
+        maxMinutes: 0,
         buttons: [{
             content: isMonth ? '當月' : isYear ? '當年' : '今天'
             , onClick(dp) {
