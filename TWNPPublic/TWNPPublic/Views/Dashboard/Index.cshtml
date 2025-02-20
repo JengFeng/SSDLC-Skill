@@ -86,7 +86,7 @@
     $(function () {
        //圖表初始化
        chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
-       chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
+       //chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
 
         $.get("@Context.Items["urlPrefix"]@Url.Action("GetDashMainData","Dashboard")", function(result){
             if(result.Success){
@@ -144,14 +144,14 @@
                 //<!-- <i class="bi bi-arrow-down"></i> 下-->
             }
         });
-        InitWaterUseSearchChart();
+        //InitWaterUseSearchChart();
 
-        chartWaterUseMonitor.on('click', function (params) {
-            let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
-            OpenNotesModal(middledate);
-            //$("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
-            //$('#btngofbox').trigger('click');
-        });
+        // chartWaterUseMonitor.on('click', function (params) {
+        //     let middledate = $('#divWaterUserSearchChartTitle').data('themeswitchchart');
+        //     OpenNotesModal(middledate);
+        //     //$("#btngofbox").attr("href", barchatpopurl + '?Cdate=' + middledate);
+        //     //$('#btngofbox').trigger('click');
+        // });
 
         DashSlowQuery();
         DashSlowQuery2();
@@ -522,7 +522,7 @@
 
     function btnSwitchTimesplit(obj){
         $(obj).addClass("active").siblings().removeClass("active");
-        InitWaterUseSearchChart();
+        //InitWaterUseSearchChart();
     }
 
     //用水量查詢用日期轉換
@@ -654,7 +654,7 @@
     }
 
     window.onresize = function() {
-        chartWaterUseMonitor.resize();
+        //chartWaterUseMonitor.resize();
         chartCompareWaterUse.resize();
     };
 
@@ -851,15 +851,15 @@
                         <div id="ChartCompareWaterUse" class="chartSVG" style="width:100%; height:83%;"></div>
                     </div>
                 </div>
-                <div class="chartItem" style="">
+                @* <div class="chartItem" style="">
                     <div class="unitTitle  justify-content-between">
                         <div class="name">
                             <i class="bi bi-search"></i>
                             用水量查詢
                         </div>
-                        @*                        <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
+                                                <a class="btn-green-o fbox_View" href="@Url.Action("Fancybox_chart_WaterUseAnalyzer","Dashboard")" id="btngoAnalyzerfbox" onclick="openAnalyzerfbox()">
                             <i class="bi bi-window"></i> 用水分析預測
-                            </a>*@
+                            </a>
                     </div>
                     <div class="themeSwitch">
                         <a class="btn-green-o-line"
@@ -890,7 +890,7 @@
                         <span id="spanError">此時間段尚無資料</span>
                         <div id="ChartWaterUseMonitor" style="width:100%; height:81%;"></div>
                     </div>
-                </div>
+                </div> *@
             </div>
         </div><!-- chartInfoGroup end -->
     </div>

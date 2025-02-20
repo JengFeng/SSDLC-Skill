@@ -34,11 +34,22 @@ namespace TWNPPublic.Domain.Service
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public List<B_ACCOUNT_WATER_NO> ListedWaterNOBySN(int Id)
+        public List<V_B_ACCOUNT_WATER_NO> ListedWaterNOBySN(int Id)
         {
-            string mainsql = "Select * From B_ACCOUNT_WATER_NO Where B_ACCOUNT_SN = @Id And VALID=1";
+            string mainsql = @"Select BW.B_ACCOUNT_SN
+                                      , BW.WATER_NO
+                                      , BW.VALID
+                                      , BW.ST_DATE
+                                      , BW.EN_DATE
+                                      , BW.NICK_NAME
+                                      , BW.NICK_NAME_SHOW
+	                                  , A.NAME_DAES
+	                                  , A.ADDRESS_DAES 
+                               From B_ACCOUNT_WATER_NO  BW
+                               LEFT JOIN A_WATERFEE Ａ ON BW.WATER_NO = A.WATERNO
+                               Where B_ACCOUNT_SN = @Id And BW.VALID=1";
             object obj = new { Id };
-            return this.dapperDataAccess.Query<B_ACCOUNT_WATER_NO>(mainsql, obj);
+            return this.dapperDataAccess.Query<V_B_ACCOUNT_WATER_NO>(mainsql, obj);
         }
 
         /// <summary>
@@ -78,20 +89,39 @@ namespace TWNPPublic.Domain.Service
                 };
                 this.dapperDataAccess.Execute(deleteWaterNo5sql, deleteobj);
 
-                foreach (var item in model.WaterNO)
+                //foreach (var item in model.WaterNO)
+                //{
+                //    string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
+                //                                   (B_ACCOUNT_SN,WATER_NO,VALID)
+                //                             VALUES
+                //                                   (@SN,@WaterNo,@Valid)";
+                //    object waterobj = new
+                //    {
+                //        SN = SN,
+                //        WaterNo = item,
+                //        Valid = 1
+                //    };
+                //    this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
+                //}
+                foreach (var item in model.WaterData)
                 {
-                    string insertWaterNO5sql = @"Insert Into B_ACCOUNT_WATER_NO
-                                                   (B_ACCOUNT_SN,WATER_NO,VALID)
-                                             VALUES
-                                                   (@SN,@WaterNo,@Valid)";
-                    object waterobj = new
+                    string insertWaterNO5sql = @"INSERT INTO B_ACCOUNT_WATER_NO
+                                                    (B_ACCOUNT_SN, WATER_NO, NICK_NAME, NICK_NAME_SHOW, VALID)
+                                                VALUES
+                                                    (@SN, @WaterNo, @NickName, @NickNameShow, @Valid)";
+
+                    var waterobj = new
                     {
-                        SN = SN,
-                        WaterNo = item,
-                        Valid = 1
+                        SN = SN, // B_ACCOUNT_SN
+                        WaterNo = item.WaterNo, // 水號
+                        NickName = item.NickName, // 暱稱
+                        NickNameShow = item.ShowNickName, // 顯示暱稱的狀態（0 或 1）
+                        Valid = 1 // 這裡假設有效狀態是 1，根據實際情況修改
                     };
+
                     this.dapperDataAccess.Execute(insertWaterNO5sql, waterobj);
                 }
+
             }
 
             return this.dapperDataAccess.Execute(mainsql, obj); ;
@@ -207,7 +237,7 @@ namespace TWNPPublic.Domain.Service
     public interface IUserManageService
     {
         public b_ACCOUNT? GetAccountBySN(int Id);
-        public List<B_ACCOUNT_WATER_NO> ListedWaterNOBySN(int Id);
+        public List<V_B_ACCOUNT_WATER_NO> ListedWaterNOBySN(int Id);
         public int UpdateAccountInfo(UpdateUserManageViewModel model, int SN);
         public int CreateAccountInfo(CreateUserManageViewModel model);
         public int GetSNByAccount(string Account);

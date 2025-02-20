@@ -63,7 +63,7 @@ namespace TWNPPublic.Controllers
             {
                 var result = userManageService.ListedWaterNOBySN(aspNetUser.UserId.Value);
                 if (result != null)
-                    return Json(Success<List<B_ACCOUNT_WATER_NO>>(result));
+                    return Json(Success<List<V_B_ACCOUNT_WATER_NO>>(result));
             }
 
             return Json(Failed(message: "帳號尚未綁定水號"));
@@ -184,6 +184,24 @@ namespace TWNPPublic.Controllers
             }
 
             return Json(Success());
+        }
+
+        public IActionResult UserSettingsNew()
+        {
+            ViewBag.IsTestUser = false;
+
+            if (aspNetUser.UserId == 1)
+            {
+                ViewBag.IsTestUser = true;
+            }
+
+            ViewBag.IsSignAccount = false;
+            if (aspNetUser.UserId != null)
+            {
+                ViewBag.IsSignAccount = true;
+            }
+
+            return View();
         }
     }
 }

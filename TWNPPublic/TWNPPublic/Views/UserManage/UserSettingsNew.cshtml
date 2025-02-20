@@ -1,0 +1,265 @@
+﻿@using TWNPPublic.ViewModels.UserManage
+@model UpdateUserManageViewModel
+@{
+    ViewData["Title"] = "密碼設定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript" src="~/js/jquery.tmpl.min.js"></script>
+}
+<script>
+        var WaterNoIndex = 1;
+        $(function(){
+            $(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
+            $.get("@Context.Items["urlPrefix"]@Url.Action("GetUserInfo","UserManage")",function(result){
+                if(result.Success){
+                    $("#Account").val(result.Data.B_ACCOUNT);
+                    $("#Password").val(result.Data.PWD);
+                    $("#PhoneNumber").val(result.Data.CELL_PHONE);
+                    $("#Email").val(result.Data.EMAIL);
+                }
+            });
+            $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNo","UserManage")",function(result){
+                console.log(result.Data);
+                if(result.Success){
+                    $.each(result.Data,function(index,value){
+                        value["Index"] = WaterNoIndex;
+                        $("#TemplateWaterNoitem").tmpl(value).appendTo("#divWaterNoFromGroup");
+                        WaterNoIndex++;
+                    })
+                }
+            });
+        });
+
+        function btnReset(){
+            history.go(0);
+        }
+
+    @if (!ViewBag.IsSignAccount)
+    {
+        @*無帳號創建帳號*@
+        <text>
+                                            function btnSave(){
+                                                var Url = "@Context.Items["urlPrefix"]@Url.Action("CreatUserInfo","UserManage")";
+                                                var Data ={
+                                                    Account : $("#Account").val(),
+                                                    Password : $("#Password").val(),
+                                                    PhoneNumber : $("#PhoneNumber").val(),
+                                                    Email : $("#Email").val()
+                                                };
+                                                var Validator = $("#FormAccount").validate();
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: Url,
+                                                    data: Data,
+                                                    success: function (data) {
+                                                        if (data.Success) {
+                                                            alert(data.Message);
+                                                            history.go(0);
+                                                        }
+                                                        else {
+                                                            if (data.ModelStateErrors != null) {
+                                                                Validator.showErrors(data.ModelStateErrors);
+                                                            }
+                                                            else {
+                                                                alert(data.Message);
+                                                            }
+                                                        }
+                                                    },
+                                                    error: function (xhr, ajaxOptions, thrownError){
+                                                        alert("伺服器繁忙，請稍後再試");
+                                                    }
+                                                });
+                                            }
+        </text>
+    }
+    else
+    {
+        @*有帳號更新資料*@
+        <text>
+                                        function btnSave(){
+                                            var Url = "@Context.Items["urlPrefix"]@Url.Action("UpdateUserInfo","UserManage")";
+                                            var Data ={
+                                                Account : $("#Account").val(),
+                                                Password : $("#Password").val(),
+                                                PhoneNumber : $("#PhoneNumber").val(),
+                                                Email : $("#Email").val(),
+                                                WaterNO : $("label[name='WaterNo[]']").map(function(){return $(this).text();}).get(),
+                                                WaterData: $("div[id^='WaterNoItem']").map(function() {
+                                                    return {
+                                                        WaterNo: $(this).find("label[name='WaterNo[]']").text(),  // 獲取水號
+                                                        NickName: $(this).find("input[type='text']").val(),         // 獲取暱稱
+                                                        ShowNickName: $(this).find("input[type='checkbox']").is(":checked") ? 1 : 0  // 判斷下拉切換顯示暱稱是否勾選
+                                                    };
+                                                }).get()
+                                            };
+                                            var Validator = $("#FormAccount").validate();
+                                            $('#spanWaterNO').text('');
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: Url,
+                                                data: Data,
+                                                success: function (data) {
+                                                    if (data.Success) {
+                                                        alert(data.Message);
+                                                        history.go(0);
+                                                    }
+                                                    else {
+                                                        if (data.ModelStateErrors != null) {
+                                                            if(data.ModelStateErrors['WaterNO'] != null)
+                                                            {
+                                                                $('#spanWaterNO').text(data.ModelStateErrors['WaterNO'][0]);
+                                                            }
+                                                            else
+                                                            {
+                                                                Validator.showErrors(data.ModelStateErrors);
+                                                            }
+                                                        }
+                                                        else {
+                                                            alert(data.Message);
+                                                        }
+                                                    }
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError){
+                                                    alert("伺服器繁忙，請稍後再試");
+                                                }
+                                            });
+                                        }
+        </text>
+    }
+
+
+</script>
+
+<div class="pageWrap">
+    <partial name="_MenuPartial" />
+    <div class="pageArea">
+        <partial name="_NewsBoxPartial" />
+        <div class="mainGroup">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index","Dashboard")"><i class="bi bi-house-door-fill"></i>首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">密碼設定</li>
+                </ol>
+            </nav>
+            <div class="unitTitle">
+                <i class="bi bi-person-square"></i>
+                用戶密碼管理
+            </div>
+            <form id="FormAccount">
+                <div class="formGroup" style="padding:15px 60px">
+                    <div class="mb-3 row">
+                        <label for="Account" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-person-plus"></i>帳號
+                        </label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m=>m.Account,!(ViewBag.IsSignAccount) ? new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的帳號"} :  (object)new { disabled = "disabled",@class="form-control" } )
+                            @Html.ValidationMessageFor(m=>m.Account,"",new { @class = "text-danger"})
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="Password" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-key"></i>密碼
+                        </label>
+                        <div class="col-sm-9">
+                            @Html.PasswordFor(m=>m.Password,new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的密碼" })
+                            @Html.ValidationMessageFor(m=>m.Password,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="PhoneNumber" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-phone"></i>手機簡訊設定
+                        </label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m=>m.PhoneNumber,new{@class="form-control",autocomplete="off",@placeholder="0901000123" })
+                            @Html.ValidationMessageFor(m=>m.PhoneNumber,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="Email" class="col-sm-3 col-form-label">
+                            <span style="color:red"></span>
+                            <i class="bi bi-mailbox"></i>電子郵件設定
+                        </label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m=>m.Email,new{@class="form-control",autocomplete="off",@placeholder="Someone@mail.com" })
+                            @Html.ValidationMessageFor(m=>m.Email,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                @if (ViewBag.IsSignAccount && ViewBag.IsTestUser)
+                {
+                    <div class="unitTitle justify-content-between">
+                        <div class="name">
+                            <i class="bi bi-search"></i>
+                            用戶水號綁定管理
+                        </div>
+                    </div>
+                    <span class="text-danger" id="spanWaterNO">
+                    </span>
+                    <div class="formGroup" id="divWaterNoFromGroup" style="padding:15px 60px">
+                    </div>
+                }
+                <div class="unitTitle justify-content-between">
+                        <div class="name">
+                            <i class="bi bi-search"></i>
+                            自動讀表期滿通知
+                        </div>
+                </div>
+                <div class="formGroup" style="padding:15px 60px">
+                     <div class="mb-2 row" >
+                        <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
+                            <label class="col-auto col-form-label">自動讀表驗收次日日期:</label>
+                            <span class="me-5">2025/01/05</span>
+                            <label class="col-auto col-form-label">保固截止日:</label>
+                            <span class="me-5">2025/12/31</span>
+                        </div>
+                        <div class="w-100 mt-2 d-flex align-items-center">
+                            <input type="checkbox" >
+                            <label class="form-check-label me-5">
+                                前一日
+                            </label>
+                            <input type="checkbox" >
+                            <label class="form-check-label me-5">
+                                半年前
+                            </label>
+                            <input type="checkbox" >
+                            <label class="form-check-label me-5">
+                                前三個月
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="btnGroup">
+                <a class="btn-green-o" href="javascript:;" onclick="btnSave()">儲存</a>
+                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重填</a>
+            </div>
+        </div>
+    </div>
+</div><!-- wrap end -->
+
+<script type="text/template" data-template="TemplateWaterNoitem" id="TemplateWaterNoitem">
+    <div class="mb-2 row" id="WaterNoItem${Index}">
+        <label class="col-sm-1 col-form-label"><i class="bi bi-pin-angle-fill"></i>水號</label>
+        <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
+            <label class="col-sm-2 col-form-label" name="WaterNo[]">${WATER_NO}</label>
+            <span class="me-2">暱稱</span>
+            <input type="text" class="form-control me-2" style="width: 200px;" value="${NICK_NAME}">
+            <span class="me-2">下拉切換顯示暱稱</span>
+            <input type="checkbox" ${NICK_NAME_SHOW == 1 ? "checked" : ""}>
+        </div>
+        <div class="w-100 mt-2 d-flex align-items-center" style="border-bottom: 1px solid #EBF7F5;">
+            <label class="col-sm-1 col-form-label">用戶姓名</label>
+            <label class="col-sm-5 col-form-label">${NAME_DAES}</label>
+            <label class="col-sm-1 col-form-label">用水地址</label>
+            <label class="col-sm-5 col-form-label">${ADDRESS_DAES}</label>
+        </div>
+    </div>
+</script>
+
+
