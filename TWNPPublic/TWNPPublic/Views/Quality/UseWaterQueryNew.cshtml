@@ -10,7 +10,36 @@
     @* <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>*@
     <script type ="text/javascript" src="~/js/Common.js"></script>
 }
+<style>
 
+    .lowheighBackground {
+        background-color: #d1ecf1; /* 淺藍色背景 */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .waterTypeBackground {
+        background-color: #f8d7da; /* 淺紅色背景 */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .data-container {
+        display: flex;
+        width: 100%;
+    }
+
+    .lowheighBackground, .waterTypeBackground {
+        flex: 1;
+        padding: 10px; /* 保持原本的內邊距 */
+    }
+
+    .waterTypeBackground {
+        display: flex;
+        align-items: center; /* 垂直置中 */
+    }
+
+</style>
 <script>
     $(function () {
         $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 00:00")");//.val("@DateTime.Now.AddYears(-1).AddMonths(-1).AddDays(9).ToString("yyyy-MM-dd 00:00")");
@@ -110,10 +139,16 @@
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
                 <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重製</a>
             </div>
-            <div>
-                <p id="a"></p>
-                <p id="b"></p>
-                <p id="c"></p>
+            <div class="container">
+                <div class="data-container">
+                    <div class="lowheighBackground">
+                        <p id="a"></p>
+                        <p id="b"></p>
+                    </div>
+                    <div id="waterTypeContainer" class="waterTypeBackground" style="display: none;">
+                        <p id="c"></p>
+                    </div>
+                </div>
             </div>
             <span id="spanError">此時間段尚無資料</span>
             <div class="pagechartGroup" id="mychart" style="width:100%;height:500px;margin-top:15px">
@@ -134,6 +169,7 @@
         $(".checkbox-all-v").hide();
         $('.checkbox-all input[type="checkbox"]').prop('checked', false);
         $("#checkbox-type").prop("checked", false);
+        $("#waterTypeContainer").hide(); 
         checkedValues = [];
         // 根據不同選擇顯示對應的 checkbox
         switch (selectedValue) {
@@ -368,14 +404,15 @@
                     $('#c').text('同用水種別上年度同期平均用水量:-度');
                 }
                 else {
-                    $('#c').text('同用水種別上年度同期平均用水量:'+ result.Data.AVG_LASTYEARQTY+'度');
+                    $('#c').html('同用水種別上年度同期平均用水量:<span style="color: #721c24;;">' + result.Data.AVG_LASTYEARQTY + '</span>度');
                 }
 
-
+                $("#waterTypeContainer").show(); // 取得數據後顯示區塊
             }
             else {
                 //$("#spanError").text('此時間段尚無資料');
                 $('#c').text('同用水種別上年度同期平均用水量:-度');
+                $("#waterTypeContainer").show(); // 取得數據後顯示區塊
             }
         });
     }
@@ -400,8 +437,8 @@
                     else if ($("#form-name").val() == 'year') {
                         title = $("#inputStartTime").val() + "~" + $("#inputEndTime").val();
                     }
-                    $('#a').text('('+ title +')' + ' 之【最低】之時段:' + Datas.lowData);
-                    $('#b').text('('+ title +')' + ' 之【最高】之時段:' + Datas.heighData);
+                    $('#a').html('(' + title + ') 之<span style="color: #0c5460;">【最低】</span>之時段:' + Datas.lowData);
+                    $('#b').html('(' + title + ')' + ' 之<span style="color: #0c5460;">【最高】</span>之時段:' + Datas.heighData);
                 }
                 JsonDatas.push(QueryDataItem); // 加入陣列
                 resolve(); // **通知這個 QueryData() 已完成**

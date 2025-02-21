@@ -60,7 +60,7 @@
             </div>
 
             <!-- 搜尋區 -->
-            <div class="search-inline row">
+            @* <div class="search-inline row">
                 <div class="mb-3 col-xs-12 col-lg-12">
                     <label class="form-label">
                         <i class="bi bi-search"></i>日期起
@@ -72,6 +72,18 @@
                         <i class="bi bi-search"></i>日期迄
                     </label>
                     <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputEndTime">
+                </div>
+            </div> *@
+            <div class="search-inline row">
+                <div class="mb-3 col-12">
+                    <label class="form-label">
+                        <i class="bi bi-search"></i>日期起
+                    </label>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <input type="text" class="form-control mb-3" id="inputStartTime">
+                        <span class="mx-2">~</span>
+                        <input type="text" class="form-control mb-3" id="inputEndTime">
+                    </div>
                 </div>
             </div>
             <!-- 包覆顯示時段的區塊 -->
@@ -154,11 +166,17 @@
                         </tr> *@
                     </tbody>
                 </table>
+                <div>
+                    <span>說明:</span><br />
+                    <span>1.「估算用水量」以第六個時段指針值減去第一個時段指針值</span><br />
+                    <span>2.「回傳指針」抓取該時段第一筆訊號當時的指針值</span><br />
+                    <span>3.資料傳輸可能因環境與電信通訊等因素，造成訊息短暫未回傳情形，惟不影響計費正確性</span><br />
+                    <span>4.為避免資料載入時間過程，查詢期間現兩年內</span>
+                </div>
             </div>
 
             <!-- 水表指針圖表：圖表顯示區 (預設隱藏) -->
             <div id="chartView" style="">
-               
                 <div class="pagechartGroup" id="mychart" style="width:100%;height:500px;margin-top:15px"></div>
             </div>
         </div>
