@@ -13,4 +13,11 @@ namespace TWNPPublic.ViewModels.Quality
         public List<F_B_CHART1> PinChartData { get; set; }
         public List<F_B_CHART1> AmountChartData { get; set; }
     }
+
+    public class WaterTypeViewModel
+    {
+        public string? TYPE { get; set; }
+
+        public string? AVG_LASTYEARQTY { get; set; }
+    }
 }

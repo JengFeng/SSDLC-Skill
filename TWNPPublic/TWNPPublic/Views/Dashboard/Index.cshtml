@@ -80,6 +80,11 @@
     let AbnormalList;
     let LASTMONTH_METER = 0;
     let THISMONTH_METER = 0;
+    let LASTMONTH_DATE = '-';       //上一期帳單年月
+    let LASTMONTH_DATE1 = '-';      //上一期計費期間
+    let THISMONTHEND_DATE = '-';    //本期累積計費期間 
+    let LASTYEAR_DATE = '-';        //去年同期帳單年月
+    let LASTYEAR_DATE1 = '-';       //去年同期計費期間
     //雙月或單月判斷
     let TwiceOrSingle = "none";
 
@@ -89,6 +94,7 @@
        //chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
 
         $.get("@Context.Items["urlPrefix"]@Url.Action("GetDashMainData","Dashboard")", function(result){
+            //console.log(result);
             if(result.Success){
                 //名稱
                 $('#divNAME').html('歡迎  載入中！');
@@ -105,6 +111,12 @@
                     $("#THISMONTHMETER").toggleClass('totalUsage updateItem');
                 }
 
+                //下期累積度數
+                $('#NEXTMONTHENDMETER').html(setNodataifNullOrEmpty(result.Data.NEXTMONTHEND_METER) + '<span>度</span>');
+                if(result.Data.NEXTMONTHEND_METER == null){
+                    $("#NEXTMONTHENDMETER").toggleClass('totalUsage updateItem');
+                }
+
                 //上期水費
                 $('#LASTMONTHMONEY').html(setNodataifNullOrEmpty(result.Data.LASTMONTH_MONEY) + '<span>元</span>');
                 if(result.Data.LASTMONTH_METER == null){
@@ -112,15 +124,32 @@
                     $("#LASTMONTHMONEY").css("color", "#B7B9C0");
                 }
 
-                //本期預估
-                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
+                // //本期預估
+                // $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTH_MONEY) + '<span>元</span>');
+                // if(result.Data.THISMONTH_MONEY == null){
+                //     $("#THISMONTHENDMONEY").css("font-size", "1.0rem");
+                //     $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
+                // }
+
+                //本期試算水費
+                $('#THISMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.THISMONTHEND_MONEY) + '<span>元</span>');
                 if(result.Data.THISMONTH_MONEY == null){
                     $("#THISMONTHENDMONEY").css("font-size", "1.0rem");
                     $("#THISMONTHENDMONEY").css("color", "#B7B9C0");
                 }
 
+                 //下期試算水費
+                $('#NEXTMONTHENDMONEY').html(setNodataifNullOrEmpty(result.Data.NEXTMONTHEND_MONEY) + '<span>元</span>');
+                if(result.Data.NEXTMONTHEND_MONEY == null){
+                    $("#NEXTMONTHENDMONEY").css("font-size", "1.0rem");
+                    $("#NEXTMONTHENDMONEY").css("color", "#B7B9C0");
+                }
+
                 $('#AccumulateBilldate').text(result.Data.BILLDATE);
-                $('#LastBilldate').text(result.Data.BILLDATE);
+                //$('#LastBilldate').text(result.Data.BILLDATE);
+                $('#THISMONTHENDDATE').text(result.Data.THISMONTHEND_DATE);
+                $('.NEXTMONTHENDDATE').text(result.Data.NEXTMONTHEND_DATE);
+
 
                 $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
 
@@ -134,7 +163,10 @@
                 //用水情形比較
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 LASTMONTH_METER = result.Data.LASTMONTH_METER;
-                THISMONTH_METER = result.Data.THISMONTH_METER
+                THISMONTH_METER = result.Data.THISMONTH_METER;
+                LASTMONTH_DATE = result.Data.LASTMONTH_DATE == null ? '-' : result.Data.LASTMONTH_DATE;
+                LASTMONTH_DATE1 = result.Data.LASTMONTH_DATE1== null ? '-' : result.Data.LASTMONTH_DATE1;
+                THISMONTHEND_DATE = result.Data.THISMONTHEND_DATE == null ? '-' : result.Data.THISMONTHEND_DATE;
                 AbnormalList = result.Data.DashMainBMessage;
                 ReloadTable();
 
@@ -189,6 +221,8 @@
             // 在獲取到數據後執行以下操作
             //$('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
             $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
+            LASTYEAR_DATE = data.Data.BILLDATE;
+            LASTYEAR_DATE1 = data.Data.LASTMETERED +"~"+ data.Data.METERED;
             InitCompareChart(data.Data.TOQTY, LASTMONTH_METER, THISMONTH_METER);
             } catch (error) {
                 // 處理錯誤
@@ -268,11 +302,11 @@
         var xAxisDataLASTYEAR_METER = "無資料",xAxisDataLASTMONTH_METER = "無資料",xAxisDataTHISMONTH_METER = "無資料";
 
         if(LASTYEAR_METER != null)
-           xAxisDataLASTYEAR_METER = '去年同期\n' /*+ parseInt(LASTYEAR_METER) +'度'*/;
+           xAxisDataLASTYEAR_METER = '去年同期\n\n(帳單年月:'+ LASTYEAR_DATE +')\n\n (計費期間:'+ LASTYEAR_DATE1 + ')'/*+ parseInt(LASTYEAR_METER) +'度'*/;
         if(LASTMONTH_METER != null)
-           xAxisDataLASTMONTH_METER = '上一期\n'/*+ parseInt(LASTMONTH_METER) +'度'*/;
+           xAxisDataLASTMONTH_METER = '上一期\n\n (帳單年月:'+ LASTMONTH_DATE +')\n\n (計費期間:'+ LASTMONTH_DATE1 + ')'/*+ parseInt(LASTMONTH_METER) +'度'*/;
         if(THISMONTH_METER != null)
-           xAxisDataTHISMONTH_METER = '本期累積\n'/*+ parseInt(THISMONTH_METER) +'度'*/;
+           xAxisDataTHISMONTH_METER = '本期累積\n\n (計費期間:'+ THISMONTHEND_DATE+')' /*+ parseInt(THISMONTH_METER) +'度'*/;
         option = {
             color: colors,
             legend:{
@@ -392,7 +426,7 @@
 
         $("#divWaterUserSearchChartTitle").data('themeswitchchart',SwitcherTime);
         $("#divWaterUserSearchChartTitle").attr('data-themeswitchchart',SwitcherTime);
-        InitWaterUseSearchChart();
+        //InitWaterUseSearchChart();
     }
 
 
@@ -745,25 +779,47 @@
                             <text class="NewMeterDateText"></text>
                         </div>
                     </div>
+                     <div class="totalUsageGroup">
+                        <div class="name">下期累積度數</div>
+                        <div class="totalUsage" id="NEXTMONTHENDMETER"><span>度</span></div>
+                        <div class="updateItem">
+                            計算期間
+                            <text class="NEXTMONTHENDDATE"></text>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="costGroup">
-                    <div class="costItem">
+                   @*  <div class="costItem">
                         <div class="name">
                             上期水費
                             <div class="date" id="billdate1">帳單年月：</div>
                         </div>
                         <div class="costTotal" id="LASTMONTHMONEY"><span>元</span></div>
+                    </div> *@
+                     <div class="costItemRow">
+                        <div class="costItem">
+                            <div class="name">
+                                去年同期水費
+                                <span class="date" id="billdate1lastyear">帳單年月：</span>
+                            </div>
+                            <div class="costTotal" id="LASTYEARMONEY">
+                                載入中<span>元</span>
+                            </div>
+                        </div>
+                        <div class="costItem">
+                            <div class="name">
+                                上期水費
+                                <span class="date" id="billdate1">帳單年月：</span>
+                            </div>
+                             <div class="costTotal" id="LASTMONTHMONEY"><span>元</span></div>
+                        </div>
                     </div>
                     <div class="costItemRow">
                         <div class="costItem">
                             <div class="name">
-                                試算水費
-                                <span class="date">
-                                    計費期間：<text id="LastBilldate"></text>
-                                    ~
-                                    <text class="NewMeterDateText"></text>
-                                </span>
+                                本期試算水費
+                                <span class="date" id="THISMONTHENDDATE">計費期間：</span>
                             </div>
                             <div class="costTotal" id="THISMONTHENDMONEY" data-bs-toggle="tooltip" data-bs-placement="top"
                                  title="本水費試算金額僅供參考，應以台水公司水費通知單應繳總金額為準">
@@ -775,11 +831,11 @@
                         </div>
                         <div class="costItem">
                             <div class="name">
-                                去年同期水費
-                                <span class="date" id="billdate1lastyear">帳單年月：</span>
+                                下期試算水費
+                                <span class="date NEXTMONTHENDDATE">計費期間：</span>
                             </div>
-                            <div class="costTotal" id="LASTYEARMONEY">
-                                載入中<span>元</span>
+                            <div class="costTotal" id="NEXTMONTHENDMONEY">
+                                <span>元</span>
                             </div>
                         </div>
                     </div>

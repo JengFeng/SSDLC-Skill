@@ -361,6 +361,9 @@ namespace TWNPPublic.Controllers
 
             result.BILLDATE = billdatetext;
             result.NEW_METER_DATE = NewMeterDateText;
+            //result.LASTMONTH_DATE = result.LASTMONTH_DATE;
+            //result.LASTMONTH_DATE1 = result.LASTMONTH_DATE1;
+            //result.THISMONTHEND_DATE = result.THISMONTHEND_DATE;
 
             //result.LASTMONTH_MONEY = 0;
             return Json(Success(result));
@@ -434,7 +437,11 @@ namespace TWNPPublic.Controllers
                 result.NAME_DAES,
                 result.AREA,
                 result.SUBTOTAL,
-                result.TOQTY
+                result.TOQTY,
+                result.BILLDATE,
+                result.LASTMETERED,
+                result.METERED,
+
             }));
         }
 

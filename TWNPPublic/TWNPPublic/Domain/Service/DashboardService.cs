@@ -43,7 +43,7 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public DashMainViewModel GetDashMain(string WaterNo, string Account, DateTime dayText)
         {
-            string mainsql = @"select * From dbo.F_B_HOME(@WaterNo,@Account,@Theday)";
+            string mainsql = @"select * From dbo.[F_B_HOME-](@WaterNo,@Account,@Theday)";
             string Theday = dayText.ToString("yyyy/MM/dd");
             object obj = new { Account, WaterNo, Theday };
             return dataAccess.Query<DashMainViewModel>(mainsql, obj).FirstOrDefault();

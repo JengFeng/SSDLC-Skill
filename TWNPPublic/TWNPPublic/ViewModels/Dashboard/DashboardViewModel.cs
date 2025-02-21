@@ -103,6 +103,12 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string BILLDATE1 { get; set; }
 
         public string NEW_METER_DATE { get; set; }
+        public string LASTMONTH_DATE { get; set; }      //上一期帳單年月
+        public string LASTMONTH_DATE1 { get; set; }     //上一期計費期間
+        public string THISMONTHEND_DATE { get; set; }   //本期累積計費期間
+        public string NEXTMONTHEND_METER { get; set; }   //下期累積度數
+        public string NEXTMONTHEND_DATE { get; set; }   //下期累積度數計費期間
+
     }
 
     /// <summary>

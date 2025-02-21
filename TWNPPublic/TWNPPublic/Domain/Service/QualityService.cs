@@ -2,6 +2,7 @@
 using System.Dynamic;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.SqlFunctions;
+using TWNPPublic.ViewModels.Dashboard;
 using TWNPPublic.ViewModels.Quality;
 
 namespace TWNPPublic.Domain.Service
@@ -58,9 +59,20 @@ namespace TWNPPublic.Domain.Service
                 AmountChartData = AmountResult
             };
         }
+
+        public WaterTypeViewModel QueryWaterTypeData(DateTime StartTime, DateTime EndTime, string WaterNo)
+        {
+            string mainsql = @"EXEC spGET_CALCLAST_YEAR_AVGWATERUSAGE @WaterNo,@Sdate,@Edate";
+            string Sdate = StartTime.ToString("yyyyMM");
+            string Edate = EndTime.ToString("yyyyMM");
+            object obj = new { Sdate,  Edate, WaterNo };
+            return dapperDataAccess.Query<WaterTypeViewModel>(mainsql, obj).FirstOrDefault();
+        }
     }
     public interface IQualityService
     {
         public QualityChartViewModel GetWaterUseChart(DateTime? StartTime, DateTime? EndTime);
+    
+        public WaterTypeViewModel QueryWaterTypeData(DateTime StartTime, DateTime EndTime,string WATER_NO);
     }
 }

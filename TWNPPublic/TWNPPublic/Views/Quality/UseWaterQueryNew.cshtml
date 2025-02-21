@@ -26,6 +26,7 @@
         $("#form-name").change(function () {
             updateCheckboxVisibility($(this).val());
             updateDateInput($(this).val());
+            btnSearch();
         });
         $("#checkbox-day").prop("checked", true);
         btnSearch();
@@ -96,8 +97,8 @@
                 </div>
                 <div class="mb-3 col-lg-6 checkbox-all-v">
                     <label class="form-label"><i class="bi bi-search"></i>同用水種別比較</label>
-                    <div class="form-check me-3">
-                        <input class="form-check-input" type="checkbox" id="checkbox-type" value="option1">
+                    <div class="form-check me-3 checkbox-group-water">
+                        <input class="form-check-input" type="checkbox" id="checkbox-type" value="waterType">
                         <label class="form-check-label" for="checkbox-type">
                             同用水種別前一年度平均用水量
                         </label>
@@ -112,6 +113,7 @@
             <div>
                 <p id="a"></p>
                 <p id="b"></p>
+                <p id="c"></p>
             </div>
             <span id="spanError">此時間段尚無資料</span>
             <div class="pagechartGroup" id="mychart" style="width:100%;height:500px;margin-top:15px">
@@ -131,25 +133,30 @@
         $(".checkbox-group").hide();
         $(".checkbox-all-v").hide();
         $('.checkbox-all input[type="checkbox"]').prop('checked', false);
+        $("#checkbox-type").prop("checked", false);
         checkedValues = [];
         // 根據不同選擇顯示對應的 checkbox
         switch (selectedValue) {
             case "hour":
                 $(".checkbox-all").show();
                 $("#checkbox-group-day, #checkbox-group-month, #checkbox-group-year").show();
+                $("#checkbox-day").prop("checked", true);
                 break;
             case "day":
                 $(".checkbox-all").show();
                 $("#checkbox-group-month, #checkbox-group-year").show();
+                $("#checkbox-month").prop("checked", true);
                 break;
             case "week":
                 $(".checkbox-all").show();
                 $("#checkbox-group-year").show();
+                $("#checkbox-year").prop("checked", true);
                 break;
             case "month":
                 $(".checkbox-all").show();
                 $("#checkbox-group-year").show();
                 $(".checkbox-all-v").show();
+                $("#checkbox-year").prop("checked", true);
                 break;
             case "year":
                 $(".checkbox-all").hide();
@@ -174,6 +181,7 @@
                 ddlDateE = CreateRocDate('inputEndTime', true, false, false);
                 $("#inputStartTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 00:00")");
                 $("#inputEndTime").val("@DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd 23:00")");
+                break;
             case "day":
                 ddlDateS = CreateRocDate('inputStartTime', false, false, false);
                 ddlDateE = CreateRocDate('inputEndTime', false, false, false);
@@ -287,7 +295,7 @@
 
         await promises.push(QueryData(QueryDataItem, model)); // 加入 Promise 陣列
 
-        // 取得所有勾選的 checkbox 值
+        // 取得所有勾選的 checkbox 值 (套疊曲線)
         checkedValues = [];
         checkedValues = Array.from(document.querySelectorAll(".checkbox-group input[type='checkbox']:checked"))
             .map(cb => cb.value);
@@ -326,6 +334,50 @@
         // **等待所有 QueryData() 完成後，才執行 SetStationData()**
         await Promise.all(promises);
         SetStationData();
+
+        //同用水種別上年度同期平均用水量
+        let checkedWaterValues = [];
+        $('#c').text('');
+        checkedWaterValues = Array.from(document.querySelectorAll(".checkbox-group-water input[type='checkbox']:checked"))
+            .map(cb => cb.value);
+
+        checkedWaterValues.forEach(value => {
+            switch (value) {
+                case "waterType":
+                    QueryWaterTypeData();
+                    break;
+                default:
+                    console.log("未知選項");
+            }
+        });
+    }
+
+    function QueryWaterTypeData(){
+
+        // 同用水種別上年度同期平均用水量
+        let model = {
+            StartDate: $("#inputStartTime").val(),
+            EndDate: $("#inputEndTime").val(),
+        };
+
+        $.post("@Context.Items["urlPrefix"]@Url.Action("QueryWaterTypeData", "Quality")", model, function (result) {
+            console.log(result);
+            if (result.Success) {
+
+                if (result.Data == null || result.Data.Length == 0) {
+                    $('#c').text('同用水種別上年度同期平均用水量:-度');
+                }
+                else {
+                    $('#c').text('同用水種別上年度同期平均用水量:'+ result.Data.AVG_LASTYEARQTY+'度');
+                }
+
+
+            }
+            else {
+                //$("#spanError").text('此時間段尚無資料');
+                $('#c').text('同用水種別上年度同期平均用水量:-度');
+            }
+        });
     }
 
     // 使用起訖時間來查詢資料

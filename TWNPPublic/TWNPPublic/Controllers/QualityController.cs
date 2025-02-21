@@ -2,17 +2,20 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TWNPPublic.Common.Attributes;
+using TWNPPublic.Common.Extension;
 using TWNPPublic.Domain.Service;
 
 namespace TWNPPublic.Controllers
 {
     public class QualityController : BasicController
     {
+        private readonly IAspNetUser aspNetUser;
         private readonly IQualityService qualityService;
 
-        public QualityController(IQualityService qualityService)
+        public QualityController(IAspNetUser aspNetUser, IQualityService qualityService)
         {
             this.qualityService = qualityService;
+            this.aspNetUser = aspNetUser;
         }
 
         //看起來沒查權限相關的東西隨便寫吧
@@ -129,6 +132,21 @@ namespace TWNPPublic.Controllers
             ViewBag.HourList = hourList; // 傳遞到 View
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> QueryWaterTypeData(DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                var result = qualityService.QueryWaterTypeData(StartDate, EndDate, aspNetUser.CurrentWaterNo);
+
+                return Json(Success(result));
+            }
+            catch (Exception ex)
+            {
+                return Json(Success());
+            }
         }
     }
 
