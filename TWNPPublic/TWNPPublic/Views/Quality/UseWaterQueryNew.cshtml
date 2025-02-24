@@ -51,12 +51,19 @@
         // 頁面載入時，根據預設值更新 checkbox 顯示
         updateCheckboxVisibility($("#form-name").val());
         SettingTxtDate();
-        // 監聽 select 選單變更
+        // select 選單變更
         $("#form-name").change(function () {
             updateCheckboxVisibility($(this).val());
             updateDateInput($(this).val());
             btnSearch();
         });
+        
+        $("#inputStartTime").on("input", function () {
+            if ($("#form-name").val() == 'hour') {
+                $("#inputEndTime").val($("#inputStartTime").val().split(' ')[0] + " 23:00");
+            }
+        });
+
         $("#checkbox-day").prop("checked", true);
         btnSearch();
     });
