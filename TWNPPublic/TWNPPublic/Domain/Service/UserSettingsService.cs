@@ -113,9 +113,9 @@ namespace TWNPPublic.Domain.Service
                     var waterobj = new
                     {
                         SN = SN, // B_ACCOUNT_SN
-                        WaterNo = item.WaterNo, // 水號
-                        NickName = item.NickName, // 暱稱
-                        NickNameShow = item.ShowNickName, // 顯示暱稱的狀態（0 或 1）
+                        WaterNo = item.WATER_NO, // 水號
+                        NickName = item.NICK_NAME, // 暱稱
+                        NickNameShow = item.NICK_NAME_SHOW, // 顯示暱稱的狀態（0 或 1）
                         Valid = 1 // 這裡假設有效狀態是 1，根據實際情況修改
                     };
 

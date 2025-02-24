@@ -38,8 +38,8 @@ namespace TWNPPublic.ViewModels.UserManage
     // 新增 WaterItem 類別，保存每個水號及其相關資料
     public class WaterItem
     {
-        public string WaterNo { get; set; }      // 水號
-        public string? NickName { get; set; }     // 暱稱
-        public decimal? ShowNickName { get; set; }   // 是否顯示暱稱（勾選框）
+        public string WATER_NO { get; set; }      // 水號
+        public string? NICK_NAME { get; set; }     // 暱稱
+        public string? NICK_NAME_SHOW { get; set; }   // 是否顯示暱稱（勾選框）
     }
 }

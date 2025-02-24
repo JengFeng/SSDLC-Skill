@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TWNPPublic.Common.Attributes;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Domain.Service;
@@ -98,9 +100,12 @@ namespace TWNPPublic.Controllers
 
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
 
-                    if (result >= 1 && model.WaterNO != null)
+                    if (result >= 1 && model.WaterData != null)
                     {
-                        HttpContext.Session.SetString("WaterNo", string.Join(',', model.WaterNO));
+                        //HttpContext.Session.SetString("WaterNo", string.Join(',', model.WaterNO));
+                        // 序列化 List<F_B_LOGIN_WaterNo> 為 JSON 字符串
+                        string waterNoJson = JsonConvert.SerializeObject(model.WaterData.ToList());
+                        HttpContext.Session.SetString("WaterNo", waterNoJson);
                         return Json(Success(@$"更新成功"));
                     }
                     else if (result >= 1)

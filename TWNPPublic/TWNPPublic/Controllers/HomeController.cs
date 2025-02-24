@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SqlData;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
@@ -8,6 +9,7 @@ using TWNPPublic.Common.Helper;
 using TWNPPublic.Domain.Service;
 using TWNPPublic.Models;
 using TWNPPublic.Models.Entity;
+using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Home;
 
 namespace TWNPPublic.Controllers
@@ -122,11 +124,18 @@ namespace TWNPPublic.Controllers
                 //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
                 List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, model.WaterNo);
 
+                List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
+                {
+                    WATER_NO = waterNo,
+                    NICK_NAME ="",
+                    NICK_NAME_SHOW = "0"
+                }).ToList();
+
                 SetLoginSession(
                             HttpContext,
                             getAccount.B_ACCOUNT,
                             model.WaterNo,
-                            string.Join(',', WaterNos),
+                            waterNosList,
                             getAccount.B_ACCOUNT_SN.ToString(),
                             "",
                             "");
@@ -228,11 +237,18 @@ namespace TWNPPublic.Controllers
                         //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
                         List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
 
+                        List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
+                        {
+                            WATER_NO = waterNo,
+                            NICK_NAME = "",
+                            NICK_NAME_SHOW = "0"
+                        }).ToList();
+
                         SetLoginSession(
                                     HttpContext,
                                     getAccount.B_ACCOUNT,
                                     WaterNo,
-                                    string.Join(',', WaterNos),
+                                    waterNosList,
                                     getAccount.B_ACCOUNT_SN.ToString(), 
                                     getAccount.ST_DATE.ToString(),
                                     getAccount.EN_DATE.ToString());
@@ -455,12 +471,18 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            {
+                WATER_NO = waterNo.ToString(),
+                NICK_NAME = "",
+                NICK_NAME_SHOW = "0"
+            }).ToList();
 
             SetLoginSession(
                         HttpContext,
                         WaterNo,
                         WaterNo,
-                        WaterNo,
+                        waterNosList,
                         "0",
                         "",
                         "");
@@ -529,11 +551,18 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            {
+                WATER_NO = waterNo.ToString(),
+                NICK_NAME = "",
+                NICK_NAME_SHOW = "0"
+            }).ToList();
+
             SetLoginSession(
                         HttpContext,
                         WaterNo,
                         WaterNo,
-                        WaterNo,
+                        waterNosList,
                         "0",
                         "",
                         "");
@@ -601,11 +630,18 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            {
+                WATER_NO = waterNo.ToString(),
+                NICK_NAME = "",
+                NICK_NAME_SHOW = "0"
+            }).ToList();
+
             SetLoginSession(
                         HttpContext,
                         WaterNo,
                         WaterNo,
-                        WaterNo,
+                        waterNosList,
                         "0",
                         "",
                         "");
@@ -690,13 +726,19 @@ namespace TWNPPublic.Controllers
             CommonFunc comm = new();
             string EncryptPWD = comm.AesEncrypt(model.Password);
             var result = homeService.LoginByUserNameAndPassWord(model.UserName, EncryptPWD, remoteIpAddress.ToString());   // model.Password
+            var waterNosDataList = result.UserInfo.F_B_LOGIN_WaterNos.Select(c => new F_B_LOGIN_WaterNo
+                                                                                        {
+                                                                                            WATER_NO = c.WATER_NO,
+                                                                                            NICK_NAME = c.NICK_NAME,
+                                                                                            NICK_NAME_SHOW = c.NICK_NAME_SHOW
+                                                                                        }).ToList();
             if (result.IsSuccess)
             {
                 SetLoginSession(
                     HttpContext,
                     model.UserName,
                     result.UserInfo.F_B_LOGIN_WaterNos.First().WATER_NO.ToString(),
-                    string.Join(',', result.UserInfo.F_B_LOGIN_WaterNos.Select(c => c.WATER_NO)),
+                    waterNosDataList,
                     result.UserInfo.B_ACCOUNT_SN.ToString() ?? "0",
                     result.UserInfo.ST_DATE.ToString(),
                     result.UserInfo.EN_DATE.ToString());
@@ -806,14 +848,21 @@ namespace TWNPPublic.Controllers
         {
             return b.Replace(" ", "@@");
         }
-        private void SetLoginSession(HttpContext httpContext, string UserName, string CurrentWaterNo, string WaterNo, string UserId,string? StartDate, string? EndDate)
+        private void SetLoginSession(HttpContext httpContext, string UserName, string CurrentWaterNo, List<F_B_LOGIN_WaterNo> WaterNo, string UserId, string? StartDate, string? EndDate)
         {
             httpContext.Session.SetString("UserName", UserName);
             httpContext.Session.SetString("CurrentWaterNo", CurrentWaterNo);
-            httpContext.Session.SetString("WaterNo", WaterNo);
+
+            // 序列化 List<F_B_LOGIN_WaterNo> 為 JSON 字符串
+            string waterNoJson = JsonConvert.SerializeObject(WaterNo);
+
+            // 存儲 JSON 字符串到 Session
+            httpContext.Session.SetString("WaterNo", waterNoJson);
+
             httpContext.Session.SetString("UserId", UserId);
             httpContext.Session.SetString("StartDate", StartDate);
             httpContext.Session.SetString("EndDate", EndDate);
         }
+
     }
 }

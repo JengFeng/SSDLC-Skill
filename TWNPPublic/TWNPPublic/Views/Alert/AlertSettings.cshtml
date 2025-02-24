@@ -1,7 +1,8 @@
-﻿@{
+﻿@using TWNPPublic.Models.SqlFunctions
+@{
     ViewData["Title"] = "警示設定";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ListofWaterNO = (List<string>)ViewBag.WaterNo;
+    var ListofWaterNO = (List<F_B_LOGIN_WaterNo>)ViewBag.WaterNo;
     //var MMcode = (Dictionary<string, Tuple<int, string>>)ViewBag.MMcode;
     //Toggle Button 放在 css 裡，有需要更動的再注意一下
 }
@@ -511,7 +512,7 @@
                         foreach (var item in ListofWaterNO)
                         {
                             @*<input type="checkbox" value="@item" id="WaterNo@(item)" name="WaterNo"><label for="WaterNo@(item)">@item</label>*@
-                            <button type="button" class="btn-alertsetSwithch btn-green-o" style="margin:5px" onclick="btnSwitchSetAlertWaterNo(this)" id="WaterNo@(item)" data-waterno="@item">@item</button>
+                            <button type="button" class="btn-alertsetSwithch btn-green-o" style="margin:5px" onclick="btnSwitchSetAlertWaterNo(this)" id="WaterNo@(item.WATER_NO)" data-waterno="@item.WATER_NO">@item.WATER_NO</button>
                         }
                     }
                 </div>

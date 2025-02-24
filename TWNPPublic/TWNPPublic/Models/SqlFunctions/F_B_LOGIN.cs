@@ -22,5 +22,8 @@ namespace TWNPPublic.Models.SqlFunctions
     public class F_B_LOGIN_WaterNo
     {
         public string WATER_NO { get; set; }
+        public string NICK_NAME { get; set; }
+        public string NICK_NAME_SHOW { get; set; }
+
     }
 }

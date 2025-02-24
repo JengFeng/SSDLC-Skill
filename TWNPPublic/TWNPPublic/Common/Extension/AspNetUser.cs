@@ -1,4 +1,7 @@
-﻿namespace TWNPPublic.Common.Extension
+﻿using Newtonsoft.Json;
+using TWNPPublic.Models.SqlFunctions;
+
+namespace TWNPPublic.Common.Extension
 {
     public class AspNetUser : IAspNetUser
     {
@@ -11,7 +14,7 @@
 
         public string ClientIP => GetClientIP();
 
-        public List<string> WaterNo => GetWaterNo();
+        public List<F_B_LOGIN_WaterNo> WaterNo => GetWaterNo();
 
         public DateTime? StartDate => GetStartDate();
 
@@ -35,16 +38,27 @@
             return UserName;
         }
 
-        private List<string> GetWaterNo()
+        private List<F_B_LOGIN_WaterNo> GetWaterNo()
         {
             if (accessor.HttpContext == null)
-                return new List<string>();
-            var WaterNo = accessor.HttpContext.Session.GetString("WaterNo");
+                return new List<F_B_LOGIN_WaterNo>();  // 如果為 null 返回空列表
+            var waterNoJson = accessor.HttpContext.Session.GetString("WaterNo");
 
-            if (string.IsNullOrEmpty(WaterNo))
-                return new List<string>();
+            // 如果 Session 中有資料，則反序列化為 List<F_B_LOGIN_WaterNo>
+            if (!string.IsNullOrEmpty(waterNoJson))
+            {
+                try
+                {
+                    // 嘗試反序列化
+                    return JsonConvert.DeserializeObject<List<F_B_LOGIN_WaterNo>>(waterNoJson);
+                }
+                catch (JsonException ex)
+                {
+                    return new List<F_B_LOGIN_WaterNo>();  // 返回空列表以防止崩潰
+                }
+            }
 
-            return WaterNo.Split(',').ToList();
+            return new List<F_B_LOGIN_WaterNo>();  // 如果 Session 中沒有資料，返回空列表
         }
 
         private int? GetUserId()
@@ -119,7 +133,7 @@
     {
         public int? UserId { get; }
         public string CurrentWaterNo { get; }
-        public List<string> WaterNo { get; }
+        public List<F_B_LOGIN_WaterNo> WaterNo { get; }
         public string Name { get; }
 
         public string ClientIP { get; }

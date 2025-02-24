@@ -72,6 +72,7 @@
             //console.log('水號選單');
              //水號選單
             $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
+                //console.log(result);
                 if( result.Data == undefined ) return ;
                 $.each(result.Data.WaterNos,function(index,value){
                     if( result.Data.Name == '7D767220354' && result.Data.CurrentNos == '7D767190014'){
@@ -81,7 +82,13 @@
                         $(".SelectWaterNoslist").append('<option value=7D760002010>7D760002010</option>');
                     }
                     else{
-                        $(".SelectWaterNoslist").append('<option value=' + value + '>' + value + '</option>');
+
+                        if (value.NICK_NAME_SHOW == "1") {
+                            $(".SelectWaterNoslist").append('<option value=' + value.WATER_NO + ' title=' + value.NICK_NAME + '>' + value.WATER_NO + '</option>');
+                        }
+                        else {
+                            $(".SelectWaterNoslist").append('<option value=' + value.WATER_NO + '>' + value.WATER_NO + '</option>');
+                        }
                     }
                     
                 });
