@@ -100,6 +100,66 @@ namespace TWNPPublic.Controllers
 
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
 
+                    //自動讀表期滿通知之保固截止日
+                    if (model.ExpDate != null)
+                    {
+                        var reuslt2 = userManageService.DeleteAllAlertSetBySNAndWaterNo(aspNetUser.UserId.Value, aspNetUser.CurrentWaterNo);
+                        List<B_ALART_SETTING> alertsetitems = new List<B_ALART_SETTING>();
+                        var QualifyDate = userManageService.GetPhMeterQualifyDateByWaterNo(aspNetUser.CurrentWaterNo.ToString());
+                        string updatedDate = "";
+                        if (QualifyDate.QUALIFY_DATE.HasValue)
+                        {
+                            // 將日期轉換為字串並去掉時間部分，再加上 8 年
+                            updatedDate = QualifyDate.QUALIFY_DATE.Value.AddYears(8).ToString("yyyy-MM-dd");
+                        }
+                        else
+                        {
+                            updatedDate = "-";  // 如果 QUALIFY_DATE 為 null，可以設置預設日期
+                        }
+
+                        foreach (var item in model.ExpDate)
+                        {
+                            if (item == "653")
+                            {
+                                B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                                {
+                                    B_ALART_CODE_SN = 652,
+                                    WATER_NO = aspNetUser.CurrentWaterNo,
+                                    B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                                    VALUE = "653",
+                                    VALUE1 = updatedDate
+                                };
+                                alertsetitems.Add(MMcode1Item);
+                            }
+
+                            if (item == "654")
+                            {
+                                B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                                {
+                                    B_ALART_CODE_SN = 652,
+                                    WATER_NO = aspNetUser.CurrentWaterNo,
+                                    B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                                    VALUE = "654",
+                                    VALUE1 = updatedDate
+                                };
+                                alertsetitems.Add(MMcode1Item);
+                            }
+                            if (item == "655")
+                            {
+                                B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                                {
+                                    B_ALART_CODE_SN = 652,
+                                    WATER_NO = aspNetUser.CurrentWaterNo,
+                                    B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                                    VALUE = "655",
+                                    VALUE1 = updatedDate
+                                };
+                                alertsetitems.Add(MMcode1Item);
+                            }
+                        }
+                        userManageService.UpdateAlertServiceBySNAndWaterNo(aspNetUser.UserId.Value, aspNetUser.CurrentWaterNo, alertsetitems);
+                    }
+
                     if (result >= 1 && model.WaterData != null)
                     {
                         //HttpContext.Session.SetString("WaterNo", string.Join(',', model.WaterNO));
@@ -207,6 +267,22 @@ namespace TWNPPublic.Controllers
             }
 
             return View();
+        }
+
+        /// <summary>
+        /// 載入這個使用者的警示設定之自動讀表期滿通知設定
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult LoadAlertSet()
+        {
+            if (aspNetUser.UserId != null)
+            {
+                var result = userManageService.GetAertSetByAccountSNAndWaterNo(aspNetUser.UserId.Value, aspNetUser.CurrentWaterNo.ToString());
+                if (result != null)
+                    return Json(Success<object>(result));
+            }
+
+            return Json(Failed(message: "無資料"));
         }
     }
 }

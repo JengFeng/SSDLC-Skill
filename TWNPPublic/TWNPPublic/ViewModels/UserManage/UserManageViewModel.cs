@@ -19,6 +19,8 @@ namespace TWNPPublic.ViewModels.UserManage
         public List<string>? WaterNO { get; set; }
         //水號資料的列表
         public List<WaterItem>? WaterData { get; set; }
+
+        public List<string>? ExpDate { get; set; }
     }
 
     public class CreateUserManageViewModel

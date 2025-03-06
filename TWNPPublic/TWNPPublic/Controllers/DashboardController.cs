@@ -2355,7 +2355,7 @@ namespace TWNPPublic.Controllers
                     // 先減一年，再取出該月的第一天與最後一天
                     Sdate = Sdate.AddYears(-1);
                     Edate = Edate.AddYears(-1);
-                    int daysInMonth = DateTime.DaysInMonth(Sdate.Year, Sdate.Month);
+                    int daysInMonth = DateTime.DaysInMonth(Edate.Year, Edate.Month);
                     Sdate = new DateTime(Sdate.Year, Sdate.Month, 1);
                     Edate = new DateTime(Edate.Year, Edate.Month, daysInMonth);
                 }

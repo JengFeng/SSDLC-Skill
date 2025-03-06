@@ -107,7 +107,7 @@
             </div>
             <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
-                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">下載</a>
+                <a class="btn-lightGrey-o" href="javascript:;" onclick="btnExport()">下載</a>
             </div>
             <span id="spanError">資料查詢中.....</span>
             <!-- 水表指針比較：表格顯示區 -->
@@ -308,6 +308,8 @@
         myChart.resize();
     };
 
+     var ExcelData = {};
+     var selectedHours = [];
     // 查詢按鈕點擊 (根據顯示模式走不同流程)
     function btnSearch() {
         $("#spanError").text('資料查詢中.....');
@@ -325,7 +327,6 @@
         }
 
         // 收集所有被勾選的時段值 (僅對表格模式有作用)
-        var selectedHours = [];
         $(".checkbox-group input:checked").each(function () {
             selectedHours.push($(this).val());
         });
@@ -346,6 +347,8 @@
                         myChart.clear();
                     }
                 } else {
+                    console.log(result.Data);
+                    ExcelData = result.Data;
                     // 根據目前顯示的頁籤更新內容
                     if ($("#tabChart").hasClass("active")) {
                         // 圖表模式下：
@@ -407,7 +410,7 @@
             let dateCell = $("<td>").text(formatDate(item._date));
             row.append(dateCell);
 
-            let estimateCell = $("<td>").text(item._estimate.toFixed(6));
+            let estimateCell = $("<td>").text(item._estimate.toFixed(0));
             let differenceText = '';
             let differenceColor = 'black';
 
@@ -430,7 +433,7 @@
 
             // 填充回傳指針數的時段數據
             item._data.forEach(function (timeData) {
-                let amountCell = $("<td>").text(timeData._amount.toFixed(6));
+                let amountCell = $("<td>").text(timeData._amount.toFixed(0));
                 row.append(amountCell);
             });
 
@@ -487,7 +490,7 @@
             Datas.result.forEach(function (d) {
                 if (d.Y == null)
                     return;//continue的效果
-                let X = d.X;
+                let X = d.X.slice(0, 16);
                 let Y = d.Y.toFixed(5);
                 let DataID = Item.DataID;
                 let strDate2 = new Date(d.X);
@@ -740,5 +743,92 @@
         // };
         // myChart.setOption(option);
     }
+
+    //匯出查詢結果
+    function btnExport() {
+
+        console.log('★★★★水表指針比較-匯出查詢結果★★★★');//
+        if (ExcelData == null || ExcelData == null || ExcelData.legend < 1)
+            return;
+        if ($("#tabChart").hasClass("active")){
+
+            //查詢結果Json傳回後端
+            $.ajax({
+                url: '@Url.Action("ExporttoExcelChart", "Quality")',
+                method: 'POST',
+                data: { ResultData: JSON.stringify(ExcelData) }, //參數傳遞方式
+                dataType: 'json',
+                async: false,//是否非同步
+                //API錯誤時
+                error: function (error) {
+                    alert('水表指針圖表-匯出錯誤1:' + error.responseText);
+                },//error END
+                success: response => {
+                    /*var response = JSON.parse(res);*/
+                    if(response.Result=="NG")
+                    {
+                        alert('水表指針圖表-匯出錯誤2');
+                        return;
+                    }
+                    //另開一個視窗，由另一個Action去產出檔案
+                    var url ='@Url.Action("Download", "Quality")'+"?FileGuid="+response.FileGuid+"&FileName="+response.FileName;
+
+                    document.location=url;
+
+                    //windowExport = window.open(url,'', config='height=1,width=1');
+                    ////windowExport.close();
+                    //  $.when(
+                    //         windowExport
+                    // ).then(function (data, textStatus, jqXHR) {
+                    //     setTimeout(AAA,5000);
+                    // });
+
+                }//success END
+
+            });//ajax END
+
+        }
+        else{
+
+            //查詢結果Json傳回後端
+            $.ajax({
+                url: '@Url.Action("ExporttoExcelTable", "Quality")',
+                method: 'POST',
+                data: { ResultData: JSON.stringify(ExcelData), HoursList: selectedHours}, //參數傳遞方式
+                dataType: 'json',
+                async: false,//是否非同步
+                //API錯誤時
+                error: function (error) {
+                    alert('水表指針比較-匯出錯誤1:' + error.responseText);
+                },//error END
+                success: response => {
+                    /*var response = JSON.parse(res);*/
+                    if(response.Result=="NG")
+                    {
+                        alert('水表指針比較-匯出錯誤2');
+                        return;
+                    }
+                    //另開一個視窗，由另一個Action去產出檔案
+                    var url ='@Url.Action("Download", "Quality")'+"?FileGuid="+response.FileGuid+"&FileName="+response.FileName;
+
+                    document.location=url;
+
+                    //windowExport = window.open(url,'', config='height=1,width=1');
+                    ////windowExport.close();
+                    //  $.when(
+                    //         windowExport
+                    // ).then(function (data, textStatus, jqXHR) {
+                    //     setTimeout(AAA,5000);
+                    // });
+
+                }//success END
+
+            });//ajax END
+
+        }
+        
+
+    }//Excel END
+
 </script>
 

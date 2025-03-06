@@ -1,4 +1,7 @@
-﻿namespace TWNPPublic.Models.Entity
+﻿using System.Collections.Generic;
+using TWNPPublic.Models.SqlFunctions;
+
+namespace TWNPPublic.Models.Entity
 {
     public class A_PH_METER_RECORD_LIST
     {
@@ -51,6 +54,26 @@
     {
         public string time { get; set; }
         public decimal amount { get; set; }
+    }
+
+    public class UseWaterQueryPinExportTable
+    {
+        public List<timeData> _data { get; set; }
+        public string _date { get; set; }
+        public string _difference { get; set; }
+        public decimal _estimate { get; set; }
+        public string _min { get; set; }
+    }
+
+    public class timeData
+    {
+        public string _time { get; set; }
+        public decimal _amount { get; set; }
+    }
+
+    public class UseWaterQueryPinExportChart
+    {
+        public List<F_B_CHART1> result { get; set; }
     }
 
 }

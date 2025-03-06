@@ -1,6 +1,7 @@
 ﻿using SqlData;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
+using TWNPPublic.ViewModels.Alert;
 using TWNPPublic.ViewModels.UserManage;
 
 namespace TWNPPublic.Domain.Service
@@ -124,6 +125,8 @@ namespace TWNPPublic.Domain.Service
 
             }
 
+
+           
             return this.dapperDataAccess.Execute(mainsql, obj); ;
         }
 
@@ -233,6 +236,52 @@ namespace TWNPPublic.Domain.Service
             this.dapperDataAccess.Execute(mainsqlext, obj);
             return this.dapperDataAccess.Execute(mainsql, obj);
         }
+
+        /// <summary>
+        /// 使用水號取得自動讀表驗收次日日期
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public A_PH_METER_QUALIFY_DATE? GetPhMeterQualifyDateByWaterNo(string WaterNO)
+        {
+            string mainsql = "Select * From A_PH_METER_QUALIFY_DATE Where WATER_NO = @WaterNO";
+            object obj = new { WaterNO };
+            return this.dapperDataAccess.Query<A_PH_METER_QUALIFY_DATE>(mainsql, obj).FirstOrDefault();
+        }
+
+        public int DeleteAllAlertSetBySNAndWaterNo(int AccountSN, string WaterNo)
+        {
+            string mainsql = @"DELETE FROM B_ALART_SETTING
+                                WHERE B_ACCOUNT_SN = @SN And WATER_NO = @WaterNo AND B_ALART_CODE_SN = 652";
+            object obj = new { SN = AccountSN, WaterNo };
+            return this.dapperDataAccess.Execute(mainsql, obj);
+        }
+
+        public int UpdateAlertServiceBySNAndWaterNo(int AccountSN, string WaterNo, List<B_ALART_SETTING> obj)
+        {
+            string mainsql = @"INSERT INTO [dbo].[B_ALART_SETTING]
+                                       ([WATER_NO]
+                                       ,[B_ALART_CODE_SN]
+                                       ,[VALUE]
+                                       ,[VALUE1]
+                                       ,[B_ACCOUNT_SN])
+                                 VALUES
+                                       (@WATER_NO
+                                       ,@B_ALART_CODE_SN
+                                       ,@VALUE
+                                       ,@VALUE1
+                                       ,@B_ACCOUNT_SN)";
+            return this.dapperDataAccess.ExecuteList(mainsql, obj); ;
+        }
+
+        public List<B_ALART_SETTING> GetAertSetByAccountSNAndWaterNo(int SN, string WaterNos)
+        {
+            string mainsql = @"Select * From B_ALART_SETTING Where B_ACCOUNT_SN = @SN And WATER_NO = @WaterNos AND B_ALART_CODE_SN = 652";
+            object obj = new { SN, WaterNos };
+            var result = this.dapperDataAccess.Query<B_ALART_SETTING>(mainsql, obj).ToList(); ;
+
+            return result;
+        }
     }
     public interface IUserManageService
     {
@@ -245,5 +294,14 @@ namespace TWNPPublic.Domain.Service
         public int CreateWaterNosBySN(int SN, string WaterNO);
 
         public int DeleteWateNoByUserSN(int SN, string WaterNo);
+
+        public A_PH_METER_QUALIFY_DATE? GetPhMeterQualifyDateByWaterNo(string WaterNO);
+
+        public int DeleteAllAlertSetBySNAndWaterNo(int AccountSN, string WaterNo);
+
+        public int UpdateAlertServiceBySNAndWaterNo(int AccountSN, string WaterNo, List<B_ALART_SETTING> obj);
+
+        public List<B_ALART_SETTING> GetAertSetByAccountSNAndWaterNo(int SN, string WaterNo);
+
     }
 }

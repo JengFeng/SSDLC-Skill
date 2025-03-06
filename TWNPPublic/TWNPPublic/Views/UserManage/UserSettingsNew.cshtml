@@ -31,6 +31,43 @@
                     })
                 }
             });
+            $.get("@Context.Items["urlPrefix"]@Url.Action("GetPhMeterQualifyDate", "UserManage")",function(result){
+                console.log(result.Data);
+                if(result.Success){
+                    $("#QualifyDate").text(result.Data.QUALIFY_DATE.split("T")[0]);
+                        let dateObj = new Date(result.Data.QUALIFY_DATE.split("T")[0]);
+                            dateObj.setFullYear(dateObj.getFullYear() + 8);
+                        let newDate = dateObj.toISOString().split("T")[0];
+                    $("#WarrantyDate").text(newDate);
+                }
+                else{
+                    $("#QualifyDate").text("-");
+                    $("#WarrantyDate").text("-");
+                }
+            });
+
+            $.get("@Context.Items["urlPrefix"]@Url.Action("LoadAlertSet", "UserManage")",function(result){
+                console.log(result.Data);
+                if(result.Success){
+                  
+                    let resultData = result.Data; 
+
+                    // 確保 resultData 是陣列，否則設為空陣列
+                    let dataArray = Array.isArray(resultData) ? resultData : [];
+
+                    // 取得需要預設勾選的 VALUE 值
+                    let selectedValues = dataArray.map(item => item.VALUE);
+
+                    // 遍歷所有 checkbox，符合條件的打勾
+                    $(".exp-date-checkbox").each(function () {
+                        if (selectedValues.includes($(this).val())) {
+                            $(this).prop("checked", true);
+                        }
+                    });
+
+                }
+               
+            });
         });
 
         function btnReset(){
@@ -91,9 +128,12 @@
                                                     return {
                                                         WATER_NO: $(this).find("label[name='WaterNo[]']").text(),  // 獲取水號
                                                         NICK_NAME: $(this).find("input[type='text']").val(),         // 獲取暱稱
-                                                        NICK_NAME_SHOW: $(this).find("input[type='checkbox']").is(":checked") ? 1 : 0  // 判斷下拉切換顯示暱稱是否勾選
+                                                        NICK_NAME_SHOW: $(this).find(".nickname-checkbox").is(":checked") ? 1 : 0  // 判斷下拉切換顯示暱稱是否勾選
                                                     };
-                                                }).get()
+                                                }).get(),
+                                                ExpDate:$(".exp-date-checkbox:checked").map(function() {
+                                                        return $(this).val();
+                                                    }).get(),
                                             };
                                             var Validator = $("#FormAccount").validate();
                                             $('#spanWaterNO').text('');
@@ -214,20 +254,20 @@
                      <div class="mb-2 row" >
                         <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
                             <label class="col-auto col-form-label">自動讀表驗收次日日期:</label>
-                            <span class="me-5">2025/01/05</span>
-                            <label class="col-auto col-form-label">保固截止日:</label>
-                            <span class="me-5">2025/12/31</span>
+                            <span class="me-5" id="QualifyDate">2025/01/05</span>
+                            <label class="col-auto col-form-label" >保固截止日:</label>
+                            <span class="me-5" id="WarrantyDate">2025/12/31</span>
                         </div>
                         <div class="w-100 mt-2 d-flex align-items-center">
-                            <input type="checkbox" >
+                            <input type="checkbox" class="exp-date-checkbox" value="653">
                             <label class="form-check-label me-5">
-                                前一日
+                                前一年
                             </label>
-                            <input type="checkbox" >
+                            <input type="checkbox" class="exp-date-checkbox" value="654">
                             <label class="form-check-label me-5">
                                 半年前
                             </label>
-                            <input type="checkbox" >
+                            <input type="checkbox" class="exp-date-checkbox" value="655">
                             <label class="form-check-label me-5">
                                 前三個月
                             </label>
@@ -251,7 +291,7 @@
             <span class="me-2">暱稱</span>
             <input type="text" class="form-control me-2" style="width: 200px;" value="${NICK_NAME}">
             <span class="me-2">下拉切換顯示暱稱</span>
-            <input type="checkbox" ${NICK_NAME_SHOW == 1 ? "checked" : ""}>
+            <input type="checkbox" class="nickname-checkbox" ${NICK_NAME_SHOW == 1 ? "checked" : ""}>
         </div>
         <div class="w-100 mt-2 d-flex align-items-center" style="border-bottom: 1px solid #EBF7F5;">
             <label class="col-sm-1 col-form-label">用戶姓名</label>

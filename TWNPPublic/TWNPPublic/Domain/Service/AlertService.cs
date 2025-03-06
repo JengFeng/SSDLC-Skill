@@ -357,7 +357,7 @@ namespace TWNPPublic.Domain.Service
         public int DeleteAllAlertSetBySN(int AccountSN)
         {
             string mainsql = @"DELETE FROM B_ALART_SETTING
-                                WHERE B_ACCOUNT_SN = @SN";
+                                WHERE B_ACCOUNT_SN = @SN AND B_ALART_CODE_SN != 652";
             object obj = new { SN = AccountSN };
             return dataAccess.Execute(mainsql, obj);
         }
@@ -365,7 +365,7 @@ namespace TWNPPublic.Domain.Service
         public int DeleteAllAlertSetBySNAndWaterNo(int AccountSN, string WaterNo)
         {
             string mainsql = @"DELETE FROM B_ALART_SETTING
-                                WHERE B_ACCOUNT_SN = @SN And WATER_NO = @WaterNo";
+                                WHERE B_ACCOUNT_SN = @SN And WATER_NO = @WaterNo AND B_ALART_CODE_SN != 652";
             object obj = new { SN = AccountSN, WaterNo };
             return dataAccess.Execute(mainsql, obj);
         }
