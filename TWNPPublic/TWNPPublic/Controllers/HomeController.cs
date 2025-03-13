@@ -726,14 +726,15 @@ namespace TWNPPublic.Controllers
             CommonFunc comm = new();
             string EncryptPWD = comm.AesEncrypt(model.Password);
             var result = homeService.LoginByUserNameAndPassWord(model.UserName, EncryptPWD, remoteIpAddress.ToString());   // model.Password
-            var waterNosDataList = result.UserInfo.F_B_LOGIN_WaterNos.Select(c => new F_B_LOGIN_WaterNo
-                                                                                        {
-                                                                                            WATER_NO = c.WATER_NO,
-                                                                                            NICK_NAME = c.NICK_NAME,
-                                                                                            NICK_NAME_SHOW = c.NICK_NAME_SHOW
-                                                                                        }).ToList();
             if (result.IsSuccess)
             {
+                var waterNosDataList = result.UserInfo.F_B_LOGIN_WaterNos.Select(c => new F_B_LOGIN_WaterNo
+                {
+                    WATER_NO = c.WATER_NO,
+                    NICK_NAME = c.NICK_NAME,
+                    NICK_NAME_SHOW = c.NICK_NAME_SHOW
+                }).ToList();
+
                 SetLoginSession(
                     HttpContext,
                     model.UserName,

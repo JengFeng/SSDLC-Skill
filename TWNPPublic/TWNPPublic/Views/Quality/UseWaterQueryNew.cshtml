@@ -94,7 +94,7 @@
                 <div class="mb-3 col-lg-4">
                     <label class="form-label"><i class="bi bi-search"></i>日期起</label>
                    @*  <input type="date" id="inputStartTime" class="form-control mb-3 col-xs-6 col-lg-6"> *@
-                    <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputStartTime">
+                    <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputStartTime" readonly>
                 </div>
                 <!-- 日期分隔符號和日期迄 -->
                 <div class="d-flex align-items-center col-lg-5">
@@ -102,7 +102,7 @@
                         <span>~</span>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" data-datetime="0" data-months="0" id="inputEndTime">
+                        <input type="text" class="form-control" data-datetime="0" data-months="0" id="inputEndTime" readonly>
                     </div>
                 </div>
 
@@ -303,7 +303,7 @@
     // // 使用起訖時間來查詢資料
     // function QueryData(QueryDataItem, model) {
     //     // 取得傳訊點數據資料
-    //     GetStationData(model).then(Datas => {
+    //     GetUserWaterData(model).then(Datas => {
     //         console.log("Datas:", Datas);
     //         QueryDataItem.Datas = Datas;
     //         JsonDatas.push(QueryDataItem); // 加入陣列
@@ -312,11 +312,87 @@
     //     });
     // }
 
+        // 驗證日期範圍的邏輯
+    async function validateDateRange(startDate, endDate, Type) {
+        // 定義對應時間格式
+        let format;
+        switch (Type) {
+            case "hour":
+                format = "YYYY/MM/DD HH:mm";
+                break;
+            case "day":
+                format = "YYYY/MM/DD";
+                break;
+            case "week":
+                format = "YYYY/MM";
+                break;
+            case "month":
+                format = "YYYY/MM";
+                break;
+            case "year":
+                format = "YYYY";
+                break;
+            default:
+                format = null;
+                break;
+        }
+
+        // 檢查格式是否正確
+        if (format === null) {
+            alert("請選擇X軸維度!!");
+            return false;
+        }
+
+        // 檢查日期格式是否符合
+        if (!moment(startDate, format, true).isValid() || !moment(endDate, format, true).isValid()) {
+            alert(`時間格式不正確，請使用 ${format} 格式`);
+            return false;
+        }
+
+        // 轉換為 Date 物件
+        let Sdate = moment(startDate, format).toDate();
+        let Edate = moment(endDate, format).toDate();
+
+        // // 檢查 Type 為 "hour" 時，是否超過 24 小時
+        // if (Type === "hour") {
+        //     let diffHours = (Edate - Sdate) / (1000 * 60 * 60); // 換算成小時
+        //     if (diffHours >= 24) {
+        //         alert("開始時間和結束時間的差距不能等於或超過 24 小時");
+        //         return false;
+        //     }
+        // }
+
+        // 檢查 Type 為 "hour" 時，確保開始時間和結束時間為同一天，且時間差不能等於或超過 24 小時
+        if (Type === "hour") {
+            // 確保開始時間和結束時間是同一天
+            if (!moment(Sdate).isSame(Edate, 'day')) {
+                alert("開始時間和結束時間必須在同一天");
+                return false;
+            }
+
+            // 計算時間差（小時）
+            let diffHours = moment(Edate).diff(moment(Sdate), 'hours', true);
+            if (diffHours >= 24) {
+                alert("開始時間和結束時間的差距不能等於或超過 24 小時");
+                return false;
+            }
+        }
+
+        // 檢查時間差是否超過 3 年
+        let diffDays = (Edate - Sdate) / (1000 * 60 * 60 * 24); // 換算成天數
+        if (diffDays > 365 * 3) { // 3 年大約是 365*3 天
+            alert("開始時間和結束時間的差距不能超過 3 年");
+            return false;
+        }
+
+        return true; // 驗證通過
+    }
+
     async function btnSearch() {
         JsonDatas = []; //清空資料
         let model = {
-            Sdate: $("#inputStartTime").val(),
-            Edate: $("#inputEndTime").val(),
+            startDate: $("#inputStartTime").val(),
+            endDate: $("#inputEndTime").val(),
             Type: $('#form-name').val(),
             TimeType: '',
         };
@@ -324,6 +400,17 @@
         if ($("#form-name").val() == 'year') {
             model.Sdate =  $("#inputStartTime").val()+"-01-01";
             model.Edate =  $("#inputEndTime").val()+"-12-31";
+        }
+
+        // 呼叫 validateDateRange 來檢查日期範圍是否有效
+        console.log("開始日期:", $("#inputStartTime").val());
+        let startDate = $("#inputStartTime").val();
+        let endDate = $("#inputEndTime").val();
+        let Type = $('#form-name').val();
+
+        let isValid = await validateDateRange(startDate, endDate, Type);
+        if (!isValid) {
+            return; // 如果日期範圍無效，則停止後續操作
         }
 
         let promises = []; // 用來存儲所有的 QueryData() 呼叫
@@ -335,7 +422,7 @@
             StartDate: $("#inputStartTime").val(),
             EndDate: $("#inputEndTime").val(),
         };
-
+        console.log(QueryDataItem);
         await promises.push(QueryData(QueryDataItem, model)); // 加入 Promise 陣列
 
         // 取得所有勾選的 checkbox 值 (套疊曲線)
@@ -427,7 +514,7 @@
     // 使用起訖時間來查詢資料
     function QueryData(QueryDataItem, model) {
         return new Promise((resolve, reject) => { // 確保函式回傳 Promise
-            GetStationData(model).then(Datas => {
+            GetUserWaterData(model).then(Datas => {
                 console.log("Datas:", Datas);
                 QueryDataItem.Datas = Datas;
                 if (QueryDataItem.SeriesName == '查詢日期') {
@@ -450,15 +537,15 @@
                 JsonDatas.push(QueryDataItem); // 加入陣列
                 resolve(); // **通知這個 QueryData() 已完成**
             }).catch(error => {
-                console.error("取得數據時發生錯誤:", error);
+                console.log("取得數據時發生錯誤:", error);
                 reject(error); // **發生錯誤時，拒絕 Promise**
             });
         });
     }
 
-    // 取得傳訊點數據資料（超過 30 天的查法）
-    function GetStationData(model) {
-        console.log('☆☆☆☆☆取得監測站數據資料☆☆☆☆☆');
+    // 取得用水量資料
+    function GetUserWaterData(model) {
+        console.log('☆☆☆☆☆取得用水量資料☆☆☆☆☆');
 
         let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart2", "Dashboard")";
 
@@ -475,7 +562,8 @@
                         resolve(result.Data); // 正確回傳數據
                     }
                 } else {
-                    $("#spanError").text('此時間段尚無資料');
+                    alert(result.Message);
+                    $("#spanError").text("查無資料");
                     myChart.clear();
                     reject(new Error('API 回應失敗'));
                 }
@@ -491,7 +579,7 @@
     //畫出Chart圖
     function SetStationData() {
 
-        console.log('☆☆☆☆☆畫出Chart圖☆☆☆☆☆');//
+        //console.log('☆☆☆☆☆畫出Chart圖☆☆☆☆☆');//
         if (!JsonDatas || JsonDatas == null || JsonDatas.length < 1 || JsonDatas[0].Datas == null || JsonDatas[0].Datas.result == null || JsonDatas[0].Datas.result.length < 1)
             return;
         console.log('1(JsonDatas)' + JsonDatas);
@@ -561,7 +649,7 @@
                     X = monthDay.replace('-', '/');
                 }
                
-                let Y = d.Y.toFixed(2);
+                let Y = d.Y;//d.Y.toFixed(2);
                 let DataID = Item.DataID;
                 let strDate2 = new Date(d.X);
                 Source_Data.push([strDate2, X, Y, DataID]);

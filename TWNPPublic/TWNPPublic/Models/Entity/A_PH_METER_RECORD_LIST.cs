@@ -26,17 +26,17 @@ namespace TWNPPublic.Models.Entity
     /// <summary>
     /// ////////////////////////////////////////////////////
     /// </summary>
+    //public class PhMeterRecordRoot2
+    //{
+    //    public RootData2 DataRoot { get; set; }
+    //}
+
+    //public class RootData2
+    //{
+    //    public Dataloop2 DataLoop { get; set; }
+    //}
+
     public class PhMeterRecordRoot2
-    {
-        public RootData2 DataRoot { get; set; }
-    }
-
-    public class RootData2
-    {
-        public Dataloop2 DataLoop { get; set; }
-    }
-
-    public class Dataloop2
     {
         public string Result { get; set; }
         public string Message { get; set; }

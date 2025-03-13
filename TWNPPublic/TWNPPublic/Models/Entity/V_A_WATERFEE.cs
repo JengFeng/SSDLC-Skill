@@ -155,7 +155,7 @@
     public class DataLoop
     {
         public string DataCount { get; set; }
-        public V_A_WATERFEE Data { get; set; }
+        public List<V_A_WATERFEE> Data { get; set; }
     }
 
     public class DataRoot

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NuGet.Protocol;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -26,7 +28,7 @@ namespace TWNPPublic.Controllers
         private readonly IAspNetUser aspNetUser;
         private readonly IDashboardService dashboardService;
 
-        public DashboardController(IAspNetUser aspNetUser, IDashboardService dashboardService)
+        public DashboardController(ILogger<DashboardController> logger, IAspNetUser aspNetUser, IDashboardService dashboardService)
         {
             this.dashboardService = dashboardService;
             this.aspNetUser = aspNetUser;
@@ -163,7 +165,6 @@ namespace TWNPPublic.Controllers
 
             ViewBag.Type = billType;
             ViewBag.VDetailResult = CurrentResult;
-
             CultureInfo culture = new CultureInfo("zh-TW");
             culture.DateTimeFormat.Calendar = new TaiwanCalendar();
 
@@ -2220,34 +2221,52 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public async Task<IActionResult> WaterNoteTableChart2(DateTime Sdate, DateTime Edate, string Type, string TimeType)
+        public async Task<IActionResult> WaterNoteTableChart2(string startDate, string endDate, string Type, string TimeType)
         {
-            // 注意：這裡使用的「補上」固定日期或調整後的邏輯，
-            // 都是依照您所提供的例子（固定日期 2025/02/05 或 2025/02）來寫，實際上可能需依業務邏輯改寫。
+            // 定義 Type 對應的時間格式
+            string? format = Type switch
+            {
+                "hour" => "yyyy/MM/dd HH:mm",
+                "day" => "yyyy/MM/dd",
+                "week" => "yyyy/MM",
+                "month" => "yyyy/MM",
+                "year" => "yyyy",
+                _ => null
+            };
 
-            ////string input = "2025/02/12 00:00"; // 需要驗證的時間字串
-            ////string format = "yyyy/MM/dd HH:mm"; // 指定格式
-            ////CultureInfo culture = CultureInfo.InvariantCulture; // 使用不受地區影響的格式
-            ////DateTime parsedDate;
+            if (format == null)
+            {
+                return Json(Failed("請選擇X軸維度!!"));
+            }
 
-            ////bool isValid = DateTime.TryParseExact(input, format, culture, DateTimeStyles.None, out parsedDate);
+            // 驗證 Sdate 和 Edate 是否符合對應的時間格式
+            if (!DateTime.TryParseExact(startDate, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime Sdate) ||
+                !DateTime.TryParseExact(endDate, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime Edate))
+            {
+                return Json(Failed($"時間格式不正確，請使用 {format} 格式"));
+            }
 
-            ////if (isValid)
-            ////{
-            ////    Console.WriteLine($"✅ 時間格式正確！解析後時間：{parsedDate}");
-            ////}
-            ////else
-            ////{
-            ////    Console.WriteLine("❌ 時間格式錯誤！");
-            ////}
-            ///
+            // 進一步的判斷邏輯，處理 Type = "hour"
+            if (Type == "hour")
+            {
+                //// 檢查 startDate 和 endDate 之間是否等於或超過 24 小時
+                //if ((Edate - Sdate).TotalHours >= 24)
+                //{
+                //    return Json(Failed("開始時間和結束時間的差距不能等於或超過 24 小時"));
+                //}
 
-            ////if (!DateTime.TryParseExact(StartDate, "yyyy/MM/dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime StartTime))
-            ////{
-            ////    return Json(Failed("開始日期格式錯誤，請使用 yyyy/MM/dd HH:mm 格式"));
-            ///out DateTime StartTime：如果解析成功，StartTime 會存入轉換後的 DateTime 物件。
-            ////}
+                // 檢查開始時間和結束時間是否為同一天，且時間差不能等於或超過 24 小時
+                if (Sdate.Date != Edate.Date || (Edate - Sdate).TotalHours >= 24)
+                {
+                    return Json(Failed("開始時間和結束時間必須在同一天，且間隔不能等於或超過 24 小時"));
+                }
+            }
 
+            // 檢查 Sdate 和 Edate 之間的時間差是否超過 3 年
+            if ((Edate - Sdate).TotalDays > 365 * 3) // 3 年大約是 365*3 天
+            {
+                return Json(Failed("開始時間和結束時間的差距不能超過 3 年"));
+            }
 
             if (Type.ToLower() == "hour")
             {
@@ -2503,7 +2522,28 @@ namespace TWNPPublic.Controllers
 
                 }
 
+                #region 水號過戶判斷--濾符合時間條件的數據，並將 Y 四捨五入為整數
+                if (aspNetUser.UserId != 0)
+                {
+                    bool hasStart = aspNetUser.StartDate.HasValue;
+                    bool hasEnd = aspNetUser.EndDate.HasValue;
 
+                    // 過濾符合時間條件的數據，並將 Y 四捨五入為整數
+                    finalResult = finalResult
+                        .Where(item =>
+                            (!hasStart && !hasEnd) ||
+                            (hasStart && hasEnd && item.X >= aspNetUser.StartDate.Value && item.X <= aspNetUser.EndDate.Value) ||
+                            (hasStart && !hasEnd && item.X >= aspNetUser.StartDate.Value) ||
+                            (!hasStart && hasEnd && item.X <= aspNetUser.EndDate.Value)
+                        )
+                        .Select(item => new F_B_CHART2
+                        {
+                            X = item.X,
+                            Y = item.Y.HasValue ? Math.Round(item.Y.Value, 0) : (decimal?)null // 四捨五入為整數
+                        })
+                        .ToList();
+                }
+                #endregion
 
                 finalResult = finalResult.OrderBy(x => x.X).ToList();
                 List<string> minXValues, maxYValues;
@@ -2632,6 +2672,18 @@ namespace TWNPPublic.Controllers
                     return Json(Failed("結束日期格式錯誤，請使用 yyyy/MM/dd 格式"));
                 }
 
+                //// 檢查開始時間不能晚於結束時間
+                //if (StartTime > EnderTime)
+                //{
+                //    return Json(Failed("開始日期不能晚於結束日期"));
+                //}
+
+                // 檢查時間範圍是否超過 2 年 (730 天)
+                TimeSpan range = EnderTime - StartTime;
+                if (range.TotalDays > 730)
+                {
+                    return Json(Failed("查詢範圍不能超過 2 年 (730 天)"));
+                }
 
                 // 如果 HoursList 為 null，避免後續產生 NullReferenceException，直接初始化為空集合
                 HoursList = HoursList ?? new List<string>();
@@ -2722,7 +2774,9 @@ namespace TWNPPublic.Controllers
                         return new
                         {
                             _time = hour,
-                            _amount = existing != null ? existing._amount : 0m
+                            _amount = aspNetUser.UserId != 0
+                                    ? Math.Round(existing != null ? existing._amount : 0m) // 四捨五入到整數
+                                    : (existing != null ? existing._amount : 0m) // 保留小數
                         };
                     }) 
                     // 如果 HoursList 本身未排序或你希望再做依據 hour 值排序，
@@ -2732,6 +2786,7 @@ namespace TWNPPublic.Controllers
 
                     // 根據 newData 第 6 筆與第 1 筆資料計算 _estimate
                     decimal estimate = newData.Count >= 6 ? newData[5]._amount - newData[0]._amount : 0m;
+                    estimate = aspNetUser.UserId != 0 ? Math.Round(estimate) : estimate; // 四捨五入
 
                     // 取得當天 00:00 資料
                     decimal currentDayZeroAmount = 0m;
@@ -2764,7 +2819,9 @@ namespace TWNPPublic.Controllers
                     // 檢查是否有任何變數為 0，如果是則回傳 "-"
                     string _differenceDisplay = (currentDayZeroAmount == 0m || prevDayZeroAmount == 0m || nextDayZeroAmount == 0m)
                         ? "-"
-                        : (difference * 100).ToString("F6"); // 顯示 6 位小數
+                        : (aspNetUser.UserId != 0
+                          ? Math.Round(difference * 100).ToString() // 四捨五入到整數
+                          : (difference * 100).ToString("F6")); // 顯示6位小數
 
                     return new
                     {
@@ -2778,6 +2835,21 @@ namespace TWNPPublic.Controllers
                 // 在這裡加入對日期部分的排序
                 .OrderBy(item => item._date)
                 .ToList();
+
+                #region 水號過戶判斷
+                // **如果 aspNetUser.UserId != 0，則篩選符合 StartDate / EndDate 的日期**
+                if (aspNetUser.UserId != 0)
+                {
+                    tempResult = tempResult
+                        .Where(x =>
+                            (aspNetUser.StartDate == null && aspNetUser.EndDate == null) ||
+                            (aspNetUser.StartDate != null && aspNetUser.EndDate != null && x._date >= aspNetUser.StartDate && x._date <= aspNetUser.EndDate) ||
+                            (aspNetUser.StartDate != null && aspNetUser.EndDate == null && x._date >= aspNetUser.StartDate) ||
+                            (aspNetUser.StartDate == null && aspNetUser.EndDate != null && x._date <= aspNetUser.EndDate)
+                        )
+                        .ToList();
+                }
+                #endregion
 
                 // **最後再過濾，確保輸出範圍為 StartTime ~ EnderTime**
                 var result2 = tempResult
@@ -2824,6 +2896,25 @@ namespace TWNPPublic.Controllers
                 //    return Json(Failed("結束日期格式錯誤，請使用 yyyy/MM/dd 格式"));
                 //}
 
+                // 檢查 StartDate 和 EndDate 是否有效
+                if (StartDate == default || EndDate == default)
+                {
+                    return Json(Failed("開始時間或結束時間格式不正確！"));
+                }
+
+                //// 檢查開始時間不能晚於結束時間
+                //if (StartDate > EndDate)
+                //{
+                //    return Json(Failed("開始時間不能晚於結束時間！"));
+                //}
+
+                // 限制查詢範圍最多為 2 年 (730 天)
+                TimeSpan range = EndDate - StartDate;
+                if (range.TotalDays > 730)
+                {
+                    return Json(Failed("查詢範圍不能超過 2 年！"));
+                }
+
                 // 解析開始時間和結束時間
                 var StartTime = StartDate;// DateTime.ParseExact(StartDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
                 var EnderTime = EndDate;// DateTime.ParseExact(EndDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
@@ -2832,10 +2923,23 @@ namespace TWNPPublic.Controllers
 
                 var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
                 var dailyChartDatas = dayresultTask.OrderBy(x => x.REC_DATE_TIME).ToList();
-                var getAddData = dailyChartDatas.Where(s => s.REC_DATE_TIME.Hour == 0).Select(item => new F_B_CHART2
+
+                #region 水號過戶判斷--濾符合時間條件的數據
+                var filteredDailyChartDatas = dailyChartDatas
+                    .Where(item =>
+                    {
+                        bool isInDateRange = string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString())
+                                             || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.REC_DATE_TIME >= aspNetUser.StartDate && item.REC_DATE_TIME <= aspNetUser.EndDate)
+                                             || (!string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.REC_DATE_TIME >= aspNetUser.StartDate)
+                                             || (string.IsNullOrEmpty(aspNetUser.StartDate.ToString()) && !string.IsNullOrEmpty(aspNetUser.EndDate.ToString()) && item.REC_DATE_TIME <= aspNetUser.EndDate);
+                        return isInDateRange;
+                    })
+                    .ToList();
+                #endregion
+                var getAddData = filteredDailyChartDatas.Where(s => s.REC_DATE_TIME.Hour == 0).Select(item => new F_B_CHART2
                 {
                     X = DateTime.Parse(item.REC_DATE_TIME.AddDays(-1).ToString("yyyy-MM-dd 23:59:59")),
-                    Y = item.AMOUNT ?? 0m
+                    Y = aspNetUser.UserId != 0 ? Math.Round(item.AMOUNT ?? 0m) : item.AMOUNT ?? 0m  // 四捨五入//item.AMOUNT ?? 0m
                 }).ToList();
 
                 ////object obj = new
@@ -2878,11 +2982,11 @@ namespace TWNPPublic.Controllers
 
                 object obj = new
                 {
-                    result = dailyChartDatas
+                    result = filteredDailyChartDatas
                            .Select(item => new F_B_CHART2
                            {
                                X = item.REC_DATE_TIME,
-                               Y = item.AMOUNT
+                               Y = aspNetUser.UserId != 0 ? Math.Round(item.AMOUNT ?? 0m) : item.AMOUNT ?? 0m // 四捨五入//item.AMOUNT
                            })
                            .Select(item =>
                            {
@@ -2893,10 +2997,14 @@ namespace TWNPPublic.Controllers
                                {
                                    timeStr = "24:00:00";
                                }
+
+                               // 若 UserId 不為 0，對 Y 值進行四捨五入
+                               decimal roundedY = aspNetUser.UserId != 0 ? Math.Round(item.Y ?? 0m) : (item.Y ?? 0m);
+
                                return new F_B_CHART3
                                {
                                    X = item.X.ToString("yyyy-MM-dd ") + timeStr,  // X 為字串格式的時間
-                                   Y = item.Y
+                                   Y = roundedY //item.Y
                                };
                            })
                            .OrderBy(c => c.X)

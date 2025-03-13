@@ -284,5 +284,18 @@ namespace TWNPPublic.Controllers
 
             return Json(Failed(message: "無資料"));
         }
+
+        /// <summary>
+        /// 載入這個使用者的警示設定之自動讀表期滿通知設定
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GetPhMeterQualifyDate()
+        {
+            var result = userManageService.GetPhMeterQualifyDateByWaterNo(aspNetUser.CurrentWaterNo.ToString());
+            if (result != null)
+                return Json(Success<object>(result));
+            else
+                return Json(Failed(message: "無資料"));
+        }
     }
 }

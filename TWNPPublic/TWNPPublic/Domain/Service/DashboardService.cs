@@ -300,32 +300,53 @@ namespace TWNPPublic.Domain.Service
 
             try
             {
-                var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=67&key=57D22AF765176213&F1={F1}&F2={F2}");
+                //var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=67&key=57D22AF765176213&F1={F1}&F2={F2}");
+                //var responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/OracleForTWN_WATERNO.ashx?Table={F1}&WATERNO={F2}");
+
+                HttpResponseMessage responseMessage = new HttpResponseMessage(); // 預先初始化                                                                // 
+                string environment = configuration["Environment"];
+                if ( environment == "Development")
+                {
+                    responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=67&key=57D22AF765176213&F1={F1}&F2={F2}");
+                }
+                else{
+                    responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/OracleForTWN_WATERNO.ashx?Table={F1}&WATERNO={F2}");
+                }
+
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
-                    var root = JsonConvert.DeserializeObject<Root>(responseBody);
+                    var root = JsonConvert.DeserializeObject<DataLoop>(responseBody);
                     if (root != null)
                     {
                         if( _aspNetUser.Name == "7D767220354" && WaterNo == "7D767190014")
                         {
-                            root.DataRoot.DataLoop.Data.ADDRESS_DAES = "測試資料";
-                            root.DataRoot.DataLoop.Data.NAME_DAES = "測試資料";
-                            root.DataRoot.DataLoop.Data.WATERNO = "7D767220354";
+                            //root.DataRoot.DataLoop.Data.ADDRESS_DAES = "測試資料";
+                            //root.DataRoot.DataLoop.Data.NAME_DAES = "測試資料";
+                            //root.DataRoot.DataLoop.Data.WATERNO = "7D767220354";
+                            root.Data[0].ADDRESS_DAES = "測試資料";
+                            root.Data[0].NAME_DAES = "測試資料";
+                            root.Data[0].WATERNO = "7D767220354";
                         }
                         else if( _aspNetUser.Name == "7D760002010" && WaterNo == "7D760003007")
                         {
-                            root.DataRoot.DataLoop.Data.ADDRESS_DAES = "測試資料";
-                            root.DataRoot.DataLoop.Data.NAME_DAES = "測試資料";
-                            root.DataRoot.DataLoop.Data.WATERNO = "7D760002010";
+                            //root.DataRoot.DataLoop.Data.ADDRESS_DAES = "測試資料";
+                            //root.DataRoot.DataLoop.Data.NAME_DAES = "測試資料";
+                            //root.DataRoot.DataLoop.Data.WATERNO = "7D760002010";
+                            root.Data[0].ADDRESS_DAES = "測試資料";
+                            root.Data[0].NAME_DAES = "測試資料";
+                            root.Data[0].WATERNO = "7D760002010";
                         }
                         else
                         {
-                            root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
-                            root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
+                            //root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
+                            //root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
+
+                            root.Data[0].ADDRESS_DAES = root.Data[0].ADDRESS.MYSQL_AESDecrypt(); ;
+                            root.Data[0].NAME_DAES = root.Data[0].NAME.MYSQL_AESDecrypt();
                         }
                         
-                        return root.DataRoot.DataLoop.Data;
+                        return root.Data[0];
                     }
 
                     return null;
@@ -337,6 +358,7 @@ namespace TWNPPublic.Domain.Service
             }
             catch (Exception e)
             {
+                logger.Debug("e.Message-SN:67" + e.Message);
                 return null;
             }
         }
@@ -477,7 +499,20 @@ namespace TWNPPublic.Domain.Service
             string qt2 = EnderTime.ToString("yyyy-MM-dd");
             // 這裡要改成從API拿
             var httpClient = httpClientFactory.CreateClient();
-            var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=232&key=57FC3CE441543E32&F1={WaterNo}&F2={qt1}&F3={qt2}");
+            //var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=232&key=57FC3CE441543E32&F1={WaterNo}&F2={qt1}&F3={qt2}");
+            //var responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/SqliteForTWNP_AMOUNT.ashx?WATER_NO={WaterNo}&START_DATE={qt1}&END_DATE={qt2}");
+
+            HttpResponseMessage responseMessage = new HttpResponseMessage(); // 預先初始化                                                                // 
+            string environment = configuration["Environment"];
+            if (environment == "Development")
+            {
+                responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=232&key=57FC3CE441543E32&F1={WaterNo}&F2={qt1}&F3={qt2}");
+            }
+            else
+            {
+                responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/SqliteForTWNP_AMOUNT.ashx?WATER_NO={WaterNo}&START_DATE={qt1}&END_DATE={qt2}");
+            }
+
             try
             {
                 // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
@@ -487,7 +522,7 @@ namespace TWNPPublic.Domain.Service
                     var root = JsonConvert.DeserializeObject<PhMeterRecordRoot2>(responseBody);
                     if (root != null)
                     {
-                        return root.DataRoot.DataLoop.Data;
+                        return root.Data;
                     }
 
                     return null;
@@ -499,6 +534,7 @@ namespace TWNPPublic.Domain.Service
             }
             catch (Exception e) // 不知道資料多髒全部 Catch 住..
             {
+                logger.Debug("e.Message-SN:232" + e.Message);
                 return new List<A_PH_METER_RECORD_LIST>();
             }
 
@@ -509,17 +545,30 @@ namespace TWNPPublic.Domain.Service
             string qt = QueryTime.ToString("yyyy-MM-dd");
             // 這裡要改成從API拿
             var httpClient = httpClientFactory.CreateClient();
-            var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            //var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            //var responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/SqliteForTWNP.ashx?WaterNo={WaterNo}&QueryTime={qt}");
+
+            HttpResponseMessage responseMessage = new HttpResponseMessage(); // 預先初始化                                                                // 
+            string environment = configuration["Environment"];
+            if (environment == "Development")
+            {
+                responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            }
+            else
+            {
+                responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/SqliteForTWNP.ashx?WaterNo={WaterNo}&QueryTime={qt}");
+            }
+
             try
             {
                 // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
-                    var root = JsonConvert.DeserializeObject<PhMeterRecordRoot>(responseBody);
+                    var root = JsonConvert.DeserializeObject<List<A_PH_METER_RECORD_LIST>>(responseBody);
                     if (root != null)
                     {
-                        return root.Root.Data;
+                        return root;
                     }
 
                     return null;
@@ -531,6 +580,7 @@ namespace TWNPPublic.Domain.Service
             }
             catch (Exception e) // 不知道資料多髒全部 Catch 住..
             {
+                logger.Debug("e.Message-SN:108" + e.Message);
                 return new List<A_PH_METER_RECORD_LIST>();
             }
 
@@ -543,21 +593,34 @@ namespace TWNPPublic.Domain.Service
             string qt = QueryTime.ToString("yyyy-MM-dd");
             // 這裡要改成從API拿
             var httpClient = httpClientFactory.CreateClient();
-            var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            //var responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            //var responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/SqliteForTWNP.ashx?WaterNo={WaterNo}&QueryTime={qt}");
+
+            HttpResponseMessage responseMessage = new HttpResponseMessage(); // 預先初始化                                                                // 
+            string environment = configuration["Environment"];
+            if (environment == "Development")
+            {
+                responseMessage = await httpClient.GetAsync($"https://web.water.gov.tw/swns/TWN_Transfer/WebService/WSTransfer.ashx?op=GET&SN=108&key=D4B9B60C4CF1434E&F1={WaterNo}&F2={qt}");
+            }
+            else
+            {
+                responseMessage = await httpClient.GetAsync($"http://10.100.104.158/TWN_TRANSFER/WebService/SqliteForTWNP.ashx?WaterNo={WaterNo}&QueryTime={qt}");
+            }
+
             try
             {
                 // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
-                    var root = JsonConvert.DeserializeObject<PhMeterRecordRoot>(responseBody);
+                    var root = JsonConvert.DeserializeObject<List<A_PH_METER_RECORD_LIST>>(responseBody);
                     if (root != null)
                     {
                         List<A_PH_METER_RECORD_LIST> TimeSerailList = new List<A_PH_METER_RECORD_LIST>();
 
                         for (var i = QueryTime.Date.AddHours(-1); i < QueryTime.Date.AddDays(1).AddHours(1); i = i.AddHours(1))
                         {
-                            var getUseFulData = root.Root.Data.FirstOrDefault(c => c.REC_DATE_TIME == i);
+                            var getUseFulData = root.FirstOrDefault(c => c.REC_DATE_TIME == i);
                             if (getUseFulData != null)
                             {
                                 //區分業務版與民眾版的小數點規則...
@@ -611,6 +674,7 @@ namespace TWNPPublic.Domain.Service
             }
             catch (Exception e) // 不知道資料多髒全部 Catch 住..
             {
+                logger.Debug("e.Message-SN:108" + e.Message);
                 return new List<A_PH_METER_RECORD_LIST>();
             }
 

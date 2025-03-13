@@ -171,7 +171,7 @@
                     <span>1.「估算用水量」以第六個時段指針值減去第一個時段指針值</span><br />
                     <span>2.「回傳指針」抓取該時段第一筆訊號當時的指針值</span><br />
                     <span>3.資料傳輸可能因環境與電信通訊等因素，造成訊息短暫未回傳情形，惟不影響計費正確性</span><br />
-                    <span>4.為避免資料載入時間過程，查詢期間現兩年內</span>
+                    <span>4.為避免資料載入時間過程，查詢期間限兩年內</span>
                 </div>
             </div>
 
@@ -326,6 +326,7 @@
             url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
         }
 
+        selectedHours = [];
         // 收集所有被勾選的時段值 (僅對表格模式有作用)
         $(".checkbox-group input:checked").each(function () {
             selectedHours.push($(this).val());
@@ -410,7 +411,7 @@
             let dateCell = $("<td>").text(formatDate(item._date));
             row.append(dateCell);
 
-            let estimateCell = $("<td>").text(item._estimate.toFixed(0));
+            let estimateCell = $("<td>").text(item._estimate);  //item._estimate.toFixed(0)
             let differenceText = '';
             let differenceColor = 'black';
 
@@ -419,13 +420,13 @@
             } else {
                 const differenceValue = Number(item._difference);
                 if (differenceValue > 0) {
-                    differenceText = differenceValue.toFixed(0) + " %↑";
+                    differenceText = differenceValue + " %↑"; //differenceValue.toFixed(0) + " %↑";
                     differenceColor = 'red';
                 } else if (differenceValue < 0) {
-                    differenceText = differenceValue.toFixed(0) + " %↓";
+                    differenceText =  differenceValue + " %↓";//differenceValue.toFixed(0) + " %↓";
                     differenceColor = 'green';
                 } else {
-                    differenceText = differenceValue.toFixed(0);
+                    differenceText = differenceValue;//differenceValue.toFixed(0);
                 }
             }
             let differenceCell = $("<td>").text(differenceText).css('color', differenceColor);
@@ -433,7 +434,7 @@
 
             // 填充回傳指針數的時段數據
             item._data.forEach(function (timeData) {
-                let amountCell = $("<td>").text(timeData._amount.toFixed(0));
+                let amountCell = $("<td>").text(timeData._amount);//.text(timeData._amount.toFixed(0));
                 row.append(amountCell);
             });
 
@@ -491,7 +492,7 @@
                 if (d.Y == null)
                     return;//continue的效果
                 let X = d.X.slice(0, 16);
-                let Y = d.Y.toFixed(5);
+                let Y = d.Y;//d.Y.toFixed(5);
                 let DataID = Item.DataID;
                 let strDate2 = new Date(d.X);
                 Source_Data.push([strDate2, X, Y, DataID]);

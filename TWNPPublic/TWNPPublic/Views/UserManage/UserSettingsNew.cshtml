@@ -22,7 +22,7 @@
                 }
             });
             $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNo","UserManage")",function(result){
-                console.log(result.Data);
+               //console.log(result.Data);
                 if(result.Success){
                     $.each(result.Data,function(index,value){
                         value["Index"] = WaterNoIndex;

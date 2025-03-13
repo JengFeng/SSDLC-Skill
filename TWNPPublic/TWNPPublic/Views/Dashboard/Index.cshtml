@@ -80,9 +80,9 @@
     let AbnormalList;
     let LASTMONTH_METER = 0;
     let THISMONTH_METER = 0;
-    let LASTMONTH_DATE = '-';       //上一期帳單年月
+    let BILLDATE1 = '-';       //上一期帳單年月
     let LASTMONTH_DATE1 = '-';      //上一期計費期間
-    let THISMONTHEND_DATE = '-';    //本期累積計費期間 
+    let THISMONTHEND_DATE = '-';    //本期累積計費期間
     let LASTYEAR_DATE = '-';        //去年同期帳單年月
     let LASTYEAR_DATE1 = '-';       //去年同期計費期間
     //雙月或單月判斷
@@ -94,7 +94,7 @@
        //chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
 
         $.get("@Context.Items["urlPrefix"]@Url.Action("GetDashMainData","Dashboard")", function(result){
-            //console.log(result);
+            console.log(result);
             if(result.Success){
                 //名稱
                 $('#divNAME').html('歡迎  載入中！');
@@ -161,12 +161,13 @@
 
                 $('.NewMeterDateText').text(result.Data.NEW_METER_DATE);
                 //用水情形比較
+                BILLDATE1 = result.Data.BILLDATE1 == null ? '-' : result.Data.BILLDATE1;
+                LASTMONTH_DATE1 = result.Data.LASTMONTH_DATE1== null ? '-' : result.Data.LASTMONTH_DATE1;
+                THISMONTHEND_DATE = result.Data.THISMONTHEND_DATE == null ? '-' : result.Data.THISMONTHEND_DATE;
+                
                 InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 LASTMONTH_METER = result.Data.LASTMONTH_METER;
                 THISMONTH_METER = result.Data.THISMONTH_METER;
-                LASTMONTH_DATE = result.Data.LASTMONTH_DATE == null ? '-' : result.Data.LASTMONTH_DATE;
-                LASTMONTH_DATE1 = result.Data.LASTMONTH_DATE1== null ? '-' : result.Data.LASTMONTH_DATE1;
-                THISMONTHEND_DATE = result.Data.THISMONTHEND_DATE == null ? '-' : result.Data.THISMONTHEND_DATE;
                 AbnormalList = result.Data.DashMainBMessage;
                 ReloadTable();
 
@@ -304,7 +305,7 @@
         if(LASTYEAR_METER != null)
            xAxisDataLASTYEAR_METER = '去年同期\n\n(帳單年月:'+ LASTYEAR_DATE +')\n\n (計費期間:'+ LASTYEAR_DATE1 + ')'/*+ parseInt(LASTYEAR_METER) +'度'*/;
         if(LASTMONTH_METER != null)
-           xAxisDataLASTMONTH_METER = '上一期\n\n (帳單年月:'+ LASTMONTH_DATE +')\n\n (計費期間:'+ LASTMONTH_DATE1 + ')'/*+ parseInt(LASTMONTH_METER) +'度'*/;
+           xAxisDataLASTMONTH_METER = '上一期\n\n (帳單年月:'+ BILLDATE1 +')\n\n (計費期間:'+ LASTMONTH_DATE1 + ')'/*+ parseInt(LASTMONTH_METER) +'度'*/;
         if(THISMONTH_METER != null)
            xAxisDataTHISMONTH_METER = '本期累積\n\n (計費期間:'+ THISMONTHEND_DATE+')' /*+ parseInt(THISMONTH_METER) +'度'*/;
         option = {
