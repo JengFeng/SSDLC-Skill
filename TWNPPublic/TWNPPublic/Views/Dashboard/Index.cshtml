@@ -92,12 +92,10 @@
        //圖表初始化
        chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
        //chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
-
+        $('#divNAME').html('歡迎  載入中！');  //名稱
         $.get("@Context.Items["urlPrefix"]@Url.Action("GetDashMainData","Dashboard")", function(result){
-            console.log(result);
+            //console.log(result);
             if(result.Success){
-                //名稱
-                $('#divNAME').html('歡迎  載入中！');
 
                 //目前指針度數
                 $('#NEWMETER').html(setNodataifNullOrEmpty(result.Data.NEW_METER));
@@ -218,7 +216,7 @@
             try {
             // 使用 await 等待異步操作完成，並獲取取结果
             const data = await getData();
-            console.log(data);
+            //console.log(data);
             // 在獲取到數據後執行以下操作
             //$('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
             $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
