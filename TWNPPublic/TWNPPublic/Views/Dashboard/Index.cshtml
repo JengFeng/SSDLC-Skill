@@ -89,8 +89,8 @@
     let TwiceOrSingle = "none";
 
     $(function () {
-       //圖表初始化
-       chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
+       // //圖表初始化
+       // chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
        //chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
         $('#divNAME').html('歡迎  載入中！');  //名稱
         $.get("@Context.Items["urlPrefix"]@Url.Action("GetDashMainData","Dashboard")", function(result){
@@ -163,11 +163,11 @@
                 LASTMONTH_DATE1 = result.Data.LASTMONTH_DATE1== null ? '-' : result.Data.LASTMONTH_DATE1;
                 THISMONTHEND_DATE = result.Data.THISMONTHEND_DATE == null ? '-' : result.Data.THISMONTHEND_DATE;
                 
-                InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
+                //InitCompareChart(result.Data.LASTYEAR_METER,result.Data.LASTMONTH_METER,result.Data.THISMONTH_METER);
                 LASTMONTH_METER = result.Data.LASTMONTH_METER;
                 THISMONTH_METER = result.Data.THISMONTH_METER;
                 AbnormalList = result.Data.DashMainBMessage;
-                ReloadTable();
+                ReloadTable(result);
 
                 //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                 //<!-- <i class="bi bi-dash"></i> 持平-->
@@ -184,7 +184,7 @@
         //     //$('#btngofbox').trigger('click');
         // });
 
-        DashSlowQuery();
+        //DashSlowQuery();
         DashSlowQuery2();
     });
 
@@ -585,16 +585,28 @@
         return '@Context.Items["urlPrefix"]@Url.Action("ListedExceptionState", "Dashboard")'
     }
 
-    function ReloadTable(){
+    function ReloadTable(result){
         let pagesize = 3;
+
+        // 函數化，避免重複
+        function initializeChart() {
+            var chartBoxHeight = $(".chartBox")[0].clientHeight- 35;;
+            chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'), null, {
+                height: `${chartBoxHeight}` // 使用模板字串
+            });
+            InitCompareChart(result.Data.LASTYEAR_METER, result.Data.LASTMONTH_METER, result.Data.THISMONTH_METER);
+            DashSlowQuery();
+        }
 
         if(AbnormalList == null){
             $("#tbB_Message").footable();
+            initializeChart();
         }
         else{
             LoadPaginate(AbnormalList.length, 3);
             InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
             $("#tbB_Message").footable();
+            initializeChart();
         }
     }
 
@@ -766,24 +778,29 @@
                     <div class="totalUsageGroup">
                         <div class="name">現行指針</div>
                         <div class="totalUsage" id="NEWMETER"></div>
-                        <div class="updateItem">水表更新時間 <text class="NewMeterDateText"></text></div>
+                        <div class="updateItem">
+                            <div>水表更新時間</div> <div class="NewMeterDateText"></div>
+                        </div>
                     </div>
                     <div class="totalUsageGroup">
                         <div class="name">本期累積度數</div>
                         <div class="totalUsage" id="THISMONTHMETER"><span>度</span></div>
                         <div class="updateItem">
-                            計算期間
-                            <text id="AccumulateBilldate"></text>
-                            ~
-                            <text class="NewMeterDateText"></text>
+                            <div>計算期間</div>
+                            <div>
+                                <text id="AccumulateBilldate"></text>
+                                ~
+                                <text class="NewMeterDateText"></text>
+
+                            </div>
                         </div>
                     </div>
                      <div class="totalUsageGroup">
                         <div class="name">下期累積度數</div>
                         <div class="totalUsage" id="NEXTMONTHENDMETER"><span>度</span></div>
                         <div class="updateItem">
-                            計算期間
-                            <text class="NEXTMONTHENDDATE"></text>
+                            <div>計算期間</div>
+                            <div><text class="NEXTMONTHENDDATE"></text></div>
                         </div>
                     </div>
                 </div>
@@ -903,7 +920,7 @@
                         用水情形比較
                     </div>
                     <div class="chartBox">
-                        <div id="ChartCompareWaterUse" class="chartSVG" style="width:100%; height:83%;"></div>
+                        <div id="ChartCompareWaterUse"></div>
                     </div>
                 </div>
                 @* <div class="chartItem" style="">
