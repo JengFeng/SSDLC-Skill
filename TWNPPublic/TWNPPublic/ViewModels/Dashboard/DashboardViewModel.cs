@@ -217,4 +217,13 @@ namespace TWNPPublic.ViewModels.Dashboard
         [Required(ErrorMessage = "再確認新密碼為必填")]
         public string PasswordNew2 { get; set; } = string.Empty;
     }
+
+    /// <summary>
+    /// 轄管廠所聯絡資訊
+    /// </summary>
+    public class ContactPersonViewModel
+    {
+        public string FACTORY { get; set; }
+        public string TEL { get; set; }
+    }
 }

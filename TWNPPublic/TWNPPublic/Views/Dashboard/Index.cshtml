@@ -575,6 +575,36 @@
         $("#ModalException").modal('show');
     }
 
+    function OpenContactPerson(){
+        $("#modcontactpersonbody").empty();
+        $.get("@Context.Items["urlPrefix"]@Url.Action("GetContactPersonData", "Dashboard")", function(result){
+            if(result.Success){
+                //console.log(result.Data);
+                // 檢查 FACTORY 或 TEL 是否為空或 null
+                let factory = result.Data.FACTORY || "無廠所資料";  // 若沒有廠所資料，顯示預設文字
+                let tel = result.Data.TEL || "無聯絡電話";  // 若沒有聯絡電話，顯示預設文字
+
+                // 如果 TEL 是有效的，進行格式化
+                let intlTel = "";
+                if (tel !== "無聯絡電話") {
+                    let rawTel = tel.replace(/[^\d]/g, '');  // 去除非數字符號
+                    if (rawTel.startsWith("0")) {
+                        intlTel = "+886" + rawTel.substring(1);  // 去除開頭的 0 並加上台灣的國際區號
+                    } else {
+                        intlTel = "+886" + rawTel;  // 直接加上台灣國際區號
+                    }
+                }
+
+              $("#modcontactpersonbody").append( '<div>廠所:'+ factory + '  聯絡電話:<a href="tel:' + intlTel + '">' + tel +'</a></div>');
+            }
+            else{
+                $("#modcontactpersonbody").append( '<div>廠所: 無廠所資料  聯絡電話:無聯絡電話</div>');
+            }
+
+            $("#ModalContactPerson").modal('show');
+        });
+    }
+
     function OpenNotesModal(obj){
         $("#btnGoNoteFb").attr("href", waternotepopurl  + '?Cdate=' + obj+'&fromtwn='+sessionStorage.getItem('fromtwn'));
         $('#btnGoNoteFb').trigger('click');
@@ -795,7 +825,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="totalUsageGroup">
+                    <div class="totalUsageGroup">
                         <div class="name">下期累積度數</div>
                         <div class="totalUsage" id="NEXTMONTHENDMETER"><span>度</span></div>
                         <div class="updateItem">
@@ -804,7 +834,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="totalUsageArea">
+                    <div class="totalUsageGroup"><a style="color: #089BAB;font-weight: bold;" onclick="OpenContactPerson()">註：如有任何用水問題，請點選  聯絡資訊  洽詢轄管廠所人員</a></div>
+                </div>
                 <div class="costGroup">
                    @*  <div class="costItem">
                         <div class="name">
@@ -999,6 +1031,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalalertmsgbody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 轄管廠所聯絡資訊 Modal -->
+<div class="modal fade" id="ModalContactPerson" tabindex="-1" aria-labelledby="ModalContactPersonLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel01">轄管廠所聯絡資訊</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modcontactpersonbody">
+                @* <div>廠所:{factory} 聯絡電話:<a href="tel:+886912345678">{tel}</a> </div> *@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>

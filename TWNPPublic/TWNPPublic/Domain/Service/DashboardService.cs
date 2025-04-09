@@ -864,6 +864,20 @@ namespace TWNPPublic.Domain.Service
 
             return result;
         }
+
+        /// <summary>
+        /// 取得 F_GET_TEL('7D760003007')
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="AccountSn"></param>
+        /// <param name="dayText"></param>
+        /// <returns></returns>
+        public ContactPersonViewModel GetContactPerson(string WaterNo)
+        {
+            string mainsql = @"select * from F_GET_TEL( @WaterNo )";
+            object obj = new { WaterNo  };
+            return dataAccess.Query<ContactPersonViewModel>(mainsql, obj).FirstOrDefault();
+        }
     }
 
     public interface IDashboardService
@@ -1055,5 +1069,12 @@ namespace TWNPPublic.Domain.Service
         /// <param name="EndTime"></param>
         /// <returns></returns>
         public List<F_B_CHART2?> ListedChart2(string WaterNo, string ChartTpye, DateTime StartTime, DateTime EndTime);
+        /// <summary>
+        /// 取 F_GET_TEL('7D760003007')
+        /// </summary>
+        /// <param name="WaterNo"></param>
+        /// <param name="Time"></param>
+        /// <returns></returns>
+        public ContactPersonViewModel GetContactPerson(string WaterNo);
     }
 }

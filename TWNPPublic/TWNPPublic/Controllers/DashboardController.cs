@@ -3026,6 +3026,16 @@ namespace TWNPPublic.Controllers
             public decimal? Y { get; set; }
         }
 
+        /// <summary>
+        /// 轄管廠所聯絡資訊
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetContactPersonData()
+        {
+            var result = dashboardService.GetContactPerson(aspNetUser.CurrentWaterNo);
+            return Json(Success(result));
+        }
+
         #region 沒用
 
         ///// <summary>
