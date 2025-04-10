@@ -130,7 +130,7 @@ namespace TWNPPublic.Domain.Service
             {
                 var AlertValueThreedayWaterUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "108");
                 AlertValueContinuousWaterUsage = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE;
-                AlertValueThreedayWaterUse = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE1;
+                ExtendValueContinuousWaterUsage = AlertValueThreedayWaterUseTemp == null ? "" : AlertValueThreedayWaterUseTemp.VALUE1;
                 
                 var AlertValueThreedayWaterNonUseTemp = result.FirstOrDefault(c => c.B_ALART_CODE_SN == 102 && c.VALUE == "107");
                 AlertValueContinuousIdleWaterUsage = AlertValueThreedayWaterNonUseTemp == null ? "" : AlertValueThreedayWaterNonUseTemp.VALUE;

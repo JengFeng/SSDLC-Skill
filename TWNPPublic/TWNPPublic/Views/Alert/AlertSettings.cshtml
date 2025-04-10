@@ -282,8 +282,10 @@
                     if (result.Data.AlertValueContinuousWaterUsage == '108') {
                         $('input[name="radio4"][value="108"]').prop('checked', true);
                         $("#Code102Alert108Extion01").val(AVeContinuousWaterUsage);
-                    } 
+                    }
+                    else $("#Code102Alert108Extion01").val('3');
                 }
+                else $("#Code102Alert108Extion01").val('3');
 
                 if (result.Data.AlertValueContinuousIdleWaterUsage != null && result.Data.AlertValueContinuousIdleWaterUsage != '') {
                     let AVeContinuousIdleWaterUsage = "";
@@ -296,7 +298,9 @@
                         $('input[name="radio5"][value="107"]').prop('checked', true);
                         $("#Code102Alert107Extion01").val(AVeContinuousIdleWaterUsage);
                     }
+                    else $("#Code102Alert107Extion01").val('3');
                 }
+                else $("#Code102Alert107Extion01").val('3');
 
                 if (result.Data.AlertValueNighttimeWaterIncrease != null && result.Data.AlertValueNighttimeWaterIncrease != '') {
                     let AVeNighttimeWaterIncrease = "";
