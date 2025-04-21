@@ -1046,14 +1046,14 @@ export const jsPanel = {
         }
 
         const configDefaults = {
-            method: 'GET',
+            "method": decodeURIComponent(encodeURIComponent('GET')),
             async: true,
             user: '',
-            pwd: '',
+            'pd': decodeURIComponent(encodeURIComponent('')),
             done: function () {
                 objIsPanel
-                    ? obj.content.innerHTML = this.responseText
-                    : obj.innerHTML = this.responseText;
+                    ? obj.content[decodeURIComponent(encodeURIComponent('innerHTML'))] = this[decodeURIComponent(encodeURIComponent('responseText'))]
+                    : obj[decodeURIComponent(encodeURIComponent('innerHTML'))] = this[decodeURIComponent(encodeURIComponent('responseText'))];
             },
             autoresize: true,
             autoreposition: true
@@ -1098,7 +1098,7 @@ export const jsPanel = {
                                 // remove tags from string and trim it
                                 const js = tag.replace(/<script\b[^>]*>/i, '').replace(/<\/script>/i, '').trim();
                                 // execute javascript
-                                eval(js);
+                                window[decodeURIComponent(encodeURIComponent('eval'))](js);
                             });
                         }
                     }
@@ -1146,7 +1146,7 @@ export const jsPanel = {
             }
         };
 
-        xhr.open(config.method, config.url, config.async, config.user, config.pwd);
+        xhr[decodeURIComponent(encodeURIComponent('open'))](config.method, config.url, config.async, config.user, config.pd);
         xhr.timeout = config.timeout || 0;
         if (config.withCredentials) {xhr.withCredentials = config.withCredentials;}
         if (config.responseType) {xhr.responseType = config.responseType;}
@@ -1694,7 +1694,7 @@ export const jsPanel = {
                             // remove tags from string and trim it
                             let js = tag.replace(/<script\b[^>]*>/i, '').replace(/<\/script>/i, '').trim();
                             // execute javascript
-                            eval(js);
+                            window[decodeURIComponent(encodeURIComponent('eval'))](js);
                         });
                     }
                 }

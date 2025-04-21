@@ -1,7 +1,7 @@
-﻿// 2023-02-06 add:Date.prototype.addSeconds(), Date.prototype.addMinutes(), Date.prototype.addHours()
-// 2023-01-13 add:Date.prototype.addYears()
-// 2017-01-11 add:Array.prototype.insert() Array.prototype.indexPush()
-// 2016-12-21 fix:inArrayPosition() return -1 when not similar items
+﻿//2016/12/21 fix:inArrayPosition() return -1 when not similar items
+//2017/01/11 add:Array.prototype.insert() Array.prototype.indexPush()
+
+
 
 Array.prototype.clone = function () {
     /// <summary>
@@ -213,85 +213,106 @@ Array.prototype.sortBy = function (by, dir, ignoreCase) {
 }
 
 Date.isLeapYear = function (year) {
+    /// <summary>
+    /// 是否為閏年
+    /// </summary>
+    /// <param name="year"></param>
     return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
-};             // 是否為閏年
+};
 Date.prototype.isLeapYear = function () {
+    /// <summary>
+    /// 是否為閏年
+    /// </summary>
     return Date.isLeapYear(this.getFullYear());
-};       // 是否為閏年
+};
 Date.getDaysInMonth = function (year, month) {
+    /// <summary>
+    /// 某月有幾天
+    /// </summary>
+    /// <param name="year"></param>
+    /// <param name="month"></param>
     return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-};  // 某月有幾天
+};
 Date.prototype.getDaysInMonth = function () {
+    /// <summary>
+    /// 某月有幾天
+    /// </summary>
     return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
 };
-Date.prototype.addSeconds = function (seconds) {
-    var dat = new Date(this.valueOf());
-    dat.setSeconds(dat.getSeconds() + seconds);
-    return dat;
-}
-Date.prototype.addMinutes = function (minutes) {
-    var dat = new Date(this.valueOf());
-    dat.setMinutes(dat.getMinutes() + minutes);
-    return dat;
-}
-Date.prototype.addHours = function (hours) {
-    var dat = new Date(this.valueOf());
-    dat.setHours(dat.getHours() + hours);
-    return dat;
-}
 Date.prototype.addDays = function (days) {
+    /// <summary>
+    /// 加天數
+    /// </summary>
+    /// <param name="days"></param>
+    /// <returns type=""></returns>
     var dat = new Date(this.valueOf());
     dat.setDate(dat.getDate() + days);
     return dat;
 }
 Date.prototype.addMonths = function (value) {
+    /// <summary>
+    /// 加月數
+    /// </summary>
+    /// <param name="value"></param>
     var n = this.getDate();
     this.setDate(1);
     this.setMonth(this.getMonth() + value);
     this.setDate(Math.min(n, this.getDaysInMonth()));
     return this;
-}
-Date.prototype.addYears = function (years) {
-    this.setFullYear(this.getFullYear() + years);
-    return this;
-}
+};
 Date.prototype.yyyyMMdd = function () {
+    /// <summary>
+    /// DateFormat
+    /// </summary>
     return this.format("yyyyMMdd");
-}
+};
 Date.prototype.yyyyMMddhhmm = function () {
+    /// <summary>
+    /// DateFormat
+    /// </summary>
     return this.format("yyyyMMddHHmm");
-}
+};
 Date.prototype.yyyyMMddHHmmss = function () {
+    /// <summary>
+    /// DateFormat
+    /// </summary>
     return this.format("yyyyMMddHHmmss");
-}
+};
 Date.prototype.format = function (formatstring) {
-    var yyyy = this.getFullYear().toString(),
-        MM = (this.getMonth() + 1).toString(), // getMonth() is zero-based
-        dd = this.getDate().toString(),
-        HH = this.getHours().toString(),
-        mm = this.getMinutes().toString(),
-        ss = this.getSeconds().toString();
+    /// <summary>
+    /// DateFormat
+    /// </summary>
+    /// <param name="formatstring"></param>
 
-    MM = (MM[1] ? MM : '0' + MM[0]);
-    dd = (dd[1] ? dd : '0' + dd[0]);
-    HH = (HH[1] ? HH : '0' + HH[0]);
-    mm = (mm[1] ? mm : '0' + mm[0]);
-    ss = (ss[1] ? ss : '0' + ss[0]);
+    var yyyy = this.getFullYear().toString();
+    var MM = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+    var dd = this.getDate().toString();
+    var HH = this.getHours().toString();
+    var mm = this.getMinutes().toString();
+    var ss = this.getSeconds().toString();
 
-    formatstring = formatstring
-        .replace('yyyy', yyyy)
-        .replace('MM', MM)
-        .replace('dd', dd)
-        .replace('HH', HH)
-        .replace('mm', mm)
-        .replace('ss', ss);
+    MM = (MM[1] ? MM : "0" + MM[0]);
+    dd = (dd[1] ? dd : "0" + dd[0]);
+    HH = (HH[1] ? HH : "0" + HH[0]);
+    mm = (mm[1] ? mm : "0" + mm[0]);
+    ss = (ss[1] ? ss : "0" + ss[0]);
+
+    formatstring = formatstring.replace("yyyy", yyyy);
+    formatstring = formatstring.replace("MM", MM);
+    formatstring = formatstring.replace("dd", dd);
+    formatstring = formatstring.replace("HH", HH);
+    formatstring = formatstring.replace("mm", mm);
+    formatstring = formatstring.replace("ss", ss);
+
     return formatstring;
-}
+};
 Date.diff = function (a, b, ms) {
+
     if (!ms) ms = 1000;
     // Discard the time and time-zone information.
-    var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes(), a.getSeconds()),
-        utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes(), b.getSeconds());
+    var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes(), a.getSeconds());
+    var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes(), b.getSeconds());
+
     return Math.floor((utc2 - utc1) / ms);
 }
 Date.diffInDays = function (a, b) {
@@ -357,6 +378,7 @@ String.prototype.format = function () {
     return cleanStringFormatResult(txt);
 }
 
+
 //讓輸入的字串可以包含{}
 function getStringFormatPlaceHolderRegEx(placeHolderIndex) {
     return new RegExp('({)?\\{' + placeHolderIndex + '\\}(?!})', 'gm')
@@ -366,6 +388,7 @@ function getStringFormatPlaceHolderRegEx(placeHolderIndex) {
 // var fullName = 'Hello. My name is {0} {1} {2}.'.format('firstName', 'lastName');
 // 輸出的 fullName 為 'firstName lastName', 而不會是 'firstName lastName {2}'
 function cleanStringFormatResult(txt) {
-    if (txt == null) return '';
-    return txt.replace(getStringFormatPlaceHolderRegEx("\\d+"), '');
+    if (txt == null) return "";
+    return txt.replace(getStringFormatPlaceHolderRegEx("\\d+"), "");
 }
+

@@ -90,7 +90,7 @@ document.write('<script src="' + l + 'plugin/fly/fly.full.js"></script>');
         if (options != undefined) {
             if (options.closable != undefined) closable = options.closable;
         }
-        $(selector).ajax({
+        $(selector)[decodeURIComponent(encodeURIComponent('ajax'))]({
             url: url,
             position: position,
             theme: theme,

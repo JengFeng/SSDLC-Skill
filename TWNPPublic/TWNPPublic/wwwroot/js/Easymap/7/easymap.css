@@ -388,7 +388,7 @@
     border-radius: 0px;
     border: 1px solid #cccccc;
     bottom: 25px;
-    left: -50px;
+    left: -50px;    
     min-width: 100px;
 }
 
@@ -400,6 +400,8 @@
         width: 0;
         position: absolute;
         pointer-events: none;
+        /* 2024-10-11 center */
+        left: 50%;
     }
 
     .easymap-popup:after {
@@ -606,6 +608,78 @@ label.easymap-popup-select-label {
     border-radius: 2px;
     z-index: 1000000;
     cursor: pointer;
+}
+
+
+
+/* 另一版比例尺樣式 By 林辰 */
+.ol-scale-bar {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+}
+
+.ol-scale-bar-inner {
+    display: flex;
+}
+
+    .ol-scale-bar-inner > div {
+        padding: 25px 15px 10px 10px;
+        background-color: rgba(0,60,136,.3);
+        border-radius: 10px;
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+
+.ol-scale-step-marker {
+    width: 1px;
+    height: 15px;
+    background-color: var(--ol-foreground-color);
+    float: right;
+    z-index: 10;
+}
+
+.ol-scale-step-text {
+    position: absolute;
+    bottom: 5px;
+    font-size: 10px;
+    z-index: 11;
+    color: var(--ol-foreground-color);
+    text-shadow: -1.5px 0 var(--ol-partial-background-color), 0 1.5px var(--ol-partial-background-color), 1.5px 0 var(--ol-partial-background-color), 0 -1.5px var(--ol-partial-background-color);
+}
+
+.ol-scale-text {
+    position: absolute;
+    top: 5px;
+    font-size: 12px;
+    text-align: center;
+    bottom: 25px;
+    color: var(--ol-foreground-color);
+    white-space: nowrap;
+    text-shadow: -1.5px 0 var(--ol-partial-background-color), 0 1.5px var(--ol-partial-background-color), 1.5px 0 var(--ol-partial-background-color), 0 -1.5px var(--ol-partial-background-color);
+}
+
+.ol-scale-singlebar {
+    position: relative;
+    height: 10px;
+    z-index: 9;
+    box-sizing: border-box;
+    border: 1px solid var(--ol-foreground-color);
+    background-color: transparent !important;
+    border: 1px solid;
+    border-top: none;
+}
+
+.ol-scale-singlebar-even {
+    background-color: var(--ol-subtle-foreground-color);
+}
+
+.ol-scale-singlebar-odd {
+    background-color: var(--ol-background-color);
+}
+
+.ol-unsupported {
+    display: none;
 }
 
 .map__wedget {

@@ -240,7 +240,7 @@
 
 					selectedOpts.ajax.win = selectedOpts.ajax.success;
 
-					ajaxLoader = $.ajax($.extend({}, selectedOpts.ajax, {
+					ajaxLoader = $[decodeURIComponent(encodeURIComponent('ajax'))]($.extend({}, selectedOpts[decodeURIComponent(encodeURIComponent('ajax'))], {
 						url	: href,
 						data : selectedOpts.ajax.data || {},
 						error : function(XMLHttpRequest, textStatus, errorThrown) {

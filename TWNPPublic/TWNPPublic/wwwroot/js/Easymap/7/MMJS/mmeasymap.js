@@ -35,6 +35,7 @@
             新增 kml 之地形圖設定(enable3DTerrain)
  2020-11-09 修改 調整 DragInfo 避免重複觸發點擊事件
  2021-11-12 新增 KML 之設定可移至圖層該範圍
+ 2023-07-13 修正 modules 會載不到 window.js、dialog.js 的問題
  *
  * */
 
@@ -44,7 +45,7 @@ var r = new RegExp("(^|(.*?\\/))(" + "mmeasymap.js" + ")(\\?|$)"),
 for (var i = 0, len = s.length; i < len; i++) {
     src = s[i].getAttribute('src');
     if (src == null) continue;
-    if (src.toLowerCase().indexOf("modules")>=0) continue;
+    //if (src.toLowerCase().indexOf("modules")>=0) continue;
     if (src.toLowerCase().indexOf("mmjs") < 0) continue;
     if (src.toLowerCase()) {
         m = src.match(r);
@@ -352,9 +353,7 @@ MM.easymap.path = l;
                 {
                     map.enable3D(function () {
                         //# 預設使用 Cesium 官方地形圖
-                        if (url.indexOf('test') > -1) {
-                            // 官方地形圖，請上：https://cesium.com/ion/tokens ，需申請 token
-                            Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZTNiNmFlOC05YThjLTRlODgtYWVmMy0yZjE3ZGVkNzIwZDUiLCJpZCI6MjA1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1Nzc2ODMwMTV9.Df7NLu_eUE04i5Lc1bMtyoC3oTPxJlcFnojwbyT0jh0';
+                        if (url.indexOf('test') > -1) {                                                       
                         }
                         else {
                             map.setTerrainUrl(url);
@@ -366,8 +365,7 @@ MM.easymap.path = l;
                     });
                 }
                 else {
-                    if (url.indexOf('test') > -1) {
-                        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlZTNiNmFlOC05YThjLTRlODgtYWVmMy0yZjE3ZGVkNzIwZDUiLCJpZCI6MjA1MTEsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1Nzc2ODMwMTV9.Df7NLu_eUE04i5Lc1bMtyoC3oTPxJlcFnojwbyT0jh0';
+                    if (url.indexOf('test') > -1) {                        
                     }
                     else {
                         map.setTerrainUrl(url);
@@ -875,44 +873,51 @@ MM.easymap.path = l;
     /// 動態URL
     /// </summary>
     MM.easymap.setQueryStringVar = function (layer_sn, varible, value) {
+
         var query = MM.easymap.getQueryString(layer_sn, varible);
         if (query != null) {
             query.value = value;
             return;
         }
+
         MM.easymap._queries.push({
             id: layer_sn,
             varible: varible,
             value: value,
+            layer: layer
         });
     }
     MM.easymap.getQueryString = function (layer_sn, varible) {
-        let res = null;
         for (var i = 0; i < MM.easymap._queries.length; i++) {
             var q = MM.easymap._queries[i];
-            if (q.id != layer_sn) continue;
-            if (q.varible != varible) continue;
-            res = q;
-            break;
+            if (q.id == layer_sn) {
+                if (q.varible == varible) {
+                    return q;
+                }
+
+            }
         }
-        return res;
     }
     MM.easymap.changeQueryStringVar = function (layer_sn, varible, value) {
+
         for (var i = 0; i < MM.easymap._queries.length; i++) {
             var q = MM.easymap._queries[i];
             if (q.id == layer_sn) {
                 if (q.varible == varible) {
                     q.value = value;
                 }
+
             }
         }
     }
     MM.easymap._replaceQuery = function (layer, path) {
         for (var i = 0; i < MM.easymap._queries.length; i++) {
-            let q = MM.easymap._queries[i];
-            if (q === null) continue;
-            if (q.id != layer.LAYER_SN) continue;
-            path = path.replace(q.varible, q.value);
+            var q = MM.easymap._queries[i];
+            if (q == null) continue;
+            if (layer.LAYER_SN == q.id) {
+                path = path.replace(q.varible, q.value);
+                break;
+            }
         }
         return path;
     }

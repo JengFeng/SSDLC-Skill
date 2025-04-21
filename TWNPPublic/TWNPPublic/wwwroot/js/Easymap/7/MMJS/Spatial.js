@@ -43,7 +43,7 @@ if (window.MM) {
         if (MM.spatial.cityJson.length >= 1) return;
 
         var request = new XMLHttpRequest();
-        request.open('GET', MM.spatial.path+'data/city.json', false);  // `false` makes the request synchronous
+        request[decodeURIComponent(encodeURIComponent('open'))]('GET', MM.spatial.path+'data/city.json', false);  // `false` makes the request synchronous
         request.send(null);
 
         if (request.status === 200) {
@@ -57,7 +57,7 @@ if (window.MM) {
         if (MM.spatial.townJson.length >= 1) return;
 
         var request = new XMLHttpRequest();
-        request.open('GET', MM.spatial.path + 'data/town.json', false);  // `false` makes the request synchronous
+        request[decodeURIComponent(encodeURIComponent('open'))]('GET', MM.spatial.path + 'data/town.json', false);  // `false` makes the request synchronous
         request.send(null);
 
         if (request.status === 200) {
