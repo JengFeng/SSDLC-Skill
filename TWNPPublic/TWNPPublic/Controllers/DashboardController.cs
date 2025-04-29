@@ -2118,13 +2118,13 @@ namespace TWNPPublic.Controllers
                 {
                     if (aspNetUser.UserId != null)
                     {
-                        vm.Password = comm.AesEncrypt(vm.Password);
+                        vm.Pwd = comm.AesEncrypt(vm.Pwd);
                         var result = dashboardService.GetAccountBySN(aspNetUser.UserId.Value);
                         if (result != null)
                         {
-                            if (result.APWD != vm.Password)
+                            if (result.APWD != vm.Pwd)
                             {
-                                ModelState.AddModelError("Password", "舊密碼輸入錯誤");
+                                ModelState.AddModelError("Pwd", "舊密碼輸入錯誤");
                             }
                         }
                     }

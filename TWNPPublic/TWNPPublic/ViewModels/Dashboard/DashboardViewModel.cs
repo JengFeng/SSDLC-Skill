@@ -209,7 +209,7 @@ namespace TWNPPublic.ViewModels.Dashboard
     public class UpdatePwVm
     {
         [Required(ErrorMessage = "目前密碼為必填欄位")]
-        public string Password { get; set; } = string.Empty;
+        public string Pwd { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "新密碼為必填欄位")]
         public string PasswordNew1 { get; set; } = string.Empty;

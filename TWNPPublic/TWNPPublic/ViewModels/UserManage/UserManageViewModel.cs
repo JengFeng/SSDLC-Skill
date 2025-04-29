@@ -8,7 +8,7 @@ namespace TWNPPublic.ViewModels.UserManage
         [Required(ErrorMessage = "帳號為必填")]
         public string Account { get; set; }
         [Required(ErrorMessage = "密碼為必填")]
-        public string Password { get; set; }
+        public string Pwd { get; set; }
         [Required(ErrorMessage = "電話為必填")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "請確定電話號碼格式")]
         public string PhoneNumber { get; set; }
@@ -28,7 +28,7 @@ namespace TWNPPublic.ViewModels.UserManage
         [Required(ErrorMessage = "帳號為必填")]
         public string Account { get; set; }
         [Required(ErrorMessage = "密碼為必填")]
-        public string Password { get; set; }
+        public string Pwd { get; set; }
         [Required(ErrorMessage = "電話為必填")]
         [RegularExpression("^[0-9]{10}$", ErrorMessage = "請確定電話號碼格式")]
         public string PhoneNumber { get; set; }

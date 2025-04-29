@@ -16,7 +16,7 @@
             $.get("@Context.Items["urlPrefix"]@Url.Action("GetUserInfo","UserManage")",function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
-                    $("#Password").val(result.Data.PWD);
+                    $("#Pwd").val(result.Data.PWD);
                     $("#PhoneNumber").val(result.Data.CELL_PHONE);
                     $("#Email").val(result.Data.EMAIL);
                 }
@@ -82,7 +82,7 @@
                                                 var Url = "@Context.Items["urlPrefix"]@Url.Action("CreatUserInfo","UserManage")";
                                                 var Data ={
                                                     Account : $("#Account").val(),
-                                                    Password : $("#Password").val(),
+                                                    Pwd : $("#Pwd").val(),
                                                     PhoneNumber : $("#PhoneNumber").val(),
                                                     Email : $("#Email").val()
                                                 };
@@ -120,7 +120,7 @@
                                             var Url = "@Context.Items["urlPrefix"]@Url.Action("UpdateUserInfo","UserManage")";
                                             var Data ={
                                                 Account : $("#Account").val(),
-                                                Password : $("#Password").val(),
+                                                Pwd : $("#Pwd").val(),
                                                 PhoneNumber : $("#PhoneNumber").val(),
                                                 Email : $("#Email").val(),
                                                 WaterNO : $("label[name='WaterNo[]']").map(function(){return $(this).text();}).get(),
@@ -201,13 +201,13 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="Password" class="col-sm-3 col-form-label">
+                        <label for="Pwd" class="col-sm-3 col-form-label">
                             <span style="color:red"></span>
                             <i class="bi bi-key"></i>密碼
                         </label>
                         <div class="col-sm-9">
-                            @Html.PasswordFor(m=>m.Password,new{@class="form-control",autocomplete="off",@placeholder="在此輸入您的密碼" })
-                            @Html.ValidationMessageFor(m=>m.Password,"",new { @class = "text-danger" })
+                            @Html.PasswordFor(m => m.Pwd, new { @class = "form-control", autocomplete = "off", @placeholder = "在此輸入您的密碼" })
+                            @Html.ValidationMessageFor(m => m.Pwd, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="mb-3 row">

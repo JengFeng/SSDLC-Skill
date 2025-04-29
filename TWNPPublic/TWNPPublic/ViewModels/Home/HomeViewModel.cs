@@ -12,7 +12,7 @@ namespace TWNPPublic.ViewModels.Home
         public string UserName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "密碼為必填")]
-        public string Password { get; set; } = string.Empty;
+        public string Pwd { get; set; } = string.Empty;
 
         //[Required(ErrorMessage = "驗證碼為必填")]
         public string? CapthCode { get; set; } = string.Empty;

@@ -724,7 +724,7 @@ namespace TWNPPublic.Controllers
 
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
             CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Password);
+            string EncryptPWD = comm.AesEncrypt(model.Pwd);
             var result = homeService.LoginByUserNameAndPassWord(model.UserName, EncryptPWD, remoteIpAddress.ToString());   // model.Password
             if (result.IsSuccess)
             {

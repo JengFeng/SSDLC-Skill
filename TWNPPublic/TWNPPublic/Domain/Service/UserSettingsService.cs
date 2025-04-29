@@ -69,7 +69,7 @@ namespace TWNPPublic.Domain.Service
                                Where B_ACCOUNT_SN = @SN";
 
             CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Password);  //加密
+            string EncryptPWD = comm.AesEncrypt(model.Pwd);  //加密
             object obj = new
             {
                 Pwd = EncryptPWD,
@@ -155,7 +155,7 @@ namespace TWNPPublic.Domain.Service
                                        ,@CELL_PHONE
                                        ,@VALID)";
             CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Password);  //加密
+            string EncryptPWD = comm.AesEncrypt(model.Pwd);  //加密
             object obj = new
             {
                 B_ACCOUNT = model.Account,

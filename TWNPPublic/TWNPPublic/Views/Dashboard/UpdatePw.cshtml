@@ -29,8 +29,8 @@
                     <div class="form-group">
                         <label>目前密碼</label>
                         <div>
-                            @Html.PasswordFor(m=>m.Password , new {@class="form-control",@placeholder="請輸入您的目前密碼"})
-                            @Html.ValidationMessageFor(m=>m.Password, "", new { @class = "text-danger" })
+                            @Html.PasswordFor(m => m.Pwd, new { @class = "form-control", @placeholder = "請輸入您的目前密碼" })
+                            @Html.ValidationMessageFor(m => m.Pwd, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -67,7 +67,7 @@
 
         let url = "@Context.Items["urlPrefix"]@Url.Action("UpdatePw","Dashboard")";
         let model = {
-            Password : $("#Password").val(),
+            Pwd : $("#Pwd").val(),
             PasswordNew1 : $("#PasswordNew1").val(),
             PasswordNew2 : $("#PasswordNew2").val()
         };

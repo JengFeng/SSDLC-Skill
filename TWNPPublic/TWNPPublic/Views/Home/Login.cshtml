@@ -34,13 +34,13 @@
                         <div>
                             @if (ViewBag.islocalhost)
                             {
-                                @Html.PasswordFor(m=>m.Password , new {@class="form-control",@placeholder="請輸入您的密碼",@value ="24516669"})
+                                @Html.PasswordFor(m => m.Pwd, new { @class = "form-control", @placeholder = "請輸入您的密碼", @value = "24516669" })
                             }
                             else
                             {
-                                @Html.PasswordFor(m=>m.Password , new {@class="form-control",@placeholder="請輸入您的密碼"})
+                                @Html.PasswordFor(m => m.Pwd, new { @class = "form-control", @placeholder = "請輸入您的密碼" })
                             }
-                            @Html.ValidationMessageFor(m=>m.Password, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(m => m.Pwd, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
