@@ -108,6 +108,10 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string THISMONTHEND_DATE { get; set; }   //本期累積計費期間
         public string NEXTMONTHEND_METER { get; set; }   //下期累積度數
         public string NEXTMONTHEND_DATE { get; set; }   //下期累積度數計費期間
+        /// <summary>
+        /// 下期試算水費 金額
+        /// </summary>
+        public int? NEXTMONTHEND_MONEY { get; set; } = 0;
 
     }
 
