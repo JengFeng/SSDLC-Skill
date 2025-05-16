@@ -171,7 +171,7 @@
                     <span>1.「估算用水量」以第六個時段指針值減去第一個時段指針值</span><br />
                     <span>2.「回傳指針」抓取該時段第一筆訊號當時的指針值</span><br />
                     <span>3.資料傳輸可能因環境與電信通訊等因素，造成訊息短暫未回傳情形，惟不影響計費正確性</span><br />
-                    <span>4.為避免資料載入時間過程，查詢期間限兩年內</span>
+                    <span>4.為避免資料載入時間過長，查詢期間限兩年內</span>
                 </div>
             </div>
 
@@ -338,39 +338,48 @@
             HoursList: selectedHours
         };
 
-        $.post(url, model, function (result) {
-            $("#spanError").text('');
-            if (result.Success) {
-                console.log(result);
-                if (result.Data.length == 0) {
-                    $("#spanError").text('此時間段尚無資料');
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: model,
+                success: function (result) {
+                    $("#spanError").text('');
+                    if (result.Success) {
+                        console.log(result);
+                        if (result.Data.length === 0) {
+                            $("#spanError").text('此時間段尚無資料');
+                            if (typeof myChart !== 'undefined') {
+                                myChart.clear();
+                            }
+                        } else {
+                            console.log(result.Data);
+                            ExcelData = result.Data;
+
+                            if ($("#tabChart").hasClass("active")) {
+                                updateChart(result.Data);  // 圖表模式
+                            } else {
+                                updateTable(result.Data);  // 表格模式
+                            }
+                        }
+                    } else {
+                        if (result.Message !== '') {
+                            alert(result.Message);
+                            $("#spanError").text('');
+                        } else if (typeof myChart !== 'undefined') {
+                            $("#spanError").text('此時間段尚無資料');
+                            myChart.clear();
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // 錯誤處理：例如後端未回應、500錯誤、非JSON格式
+                    console.error("Ajax 錯誤：", status, error);
+                    $("#spanError").text('伺服器錯誤或無法連線，請稍後再試');
                     if (typeof myChart !== 'undefined') {
                         myChart.clear();
                     }
-                } else {
-                    console.log(result.Data);
-                    ExcelData = result.Data;
-                    // 根據目前顯示的頁籤更新內容
-                    if ($("#tabChart").hasClass("active")) {
-                        // 圖表模式下：
-                        // TODO: 實作第二種水表指針圖表查詢方式（若有需要）
-                        updateChart(result.Data);
-                    } else {
-                        // 表格模式下更新表格
-                        updateTable(result.Data);
-                    }
                 }
-            } else {
-                if (result.Message != ''){
-                    alert(result.Message);
-                    $("#spanError").text('');
-                }
-                else if (typeof myChart !== 'undefined') {
-                    $("#spanError").text('此時間段尚無資料');
-                    myChart.clear();
-                }
-            }
-        });
+            });
     }
 
     // 根據返回的資料更新表格 (原有函式)
@@ -425,6 +434,8 @@
                 } else if (differenceValue < 0) {
                     differenceText =  differenceValue + " %↓";//differenceValue.toFixed(0) + " %↓";
                     differenceColor = 'green';
+                 } else if (differenceValue == 0) {
+                    differenceText =  differenceValue + " % ";//differenceValue.toFixed(0) + " % ";
                 } else {
                     differenceText = differenceValue;//differenceValue.toFixed(0);
                 }

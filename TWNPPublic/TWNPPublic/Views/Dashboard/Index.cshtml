@@ -151,7 +151,6 @@
 
 
                 $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
-
                 if(result.Data.BILLDATE1 != null && result.Data.BILLDATE1 != "")
                 {
                     let yearparse = parseInt(result.Data.BILLDATE1.substring(0,3)) - 1;
@@ -220,7 +219,7 @@
             //console.log(data);
             // 在獲取到數據後執行以下操作
             //$('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
-            $("#LASTYEARMONEY").html(data.Data.SUBTOTAL + "<span>元</span>");
+            $("#LASTYEARMONEY").html(data.Data.TOTAL + "<span>元</span>");
             LASTYEAR_DATE = data.Data.BILLDATE;
             LASTYEAR_DATE1 = data.Data.LASTMETERED +"~"+ data.Data.METERED;
             InitCompareChart(data.Data.TOQTY, LASTMONTH_METER, THISMONTH_METER);

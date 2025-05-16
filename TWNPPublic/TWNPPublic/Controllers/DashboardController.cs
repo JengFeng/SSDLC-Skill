@@ -376,10 +376,10 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public async Task<IActionResult> GetWaterFee2()
         {
-            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1));
+            var result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(+2));
             if (result == null)
             {
-                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1));
+                result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddYears(-1).AddMonths(-1).AddMonths(+2));
             }
 
             #region 水號過戶判斷
@@ -442,6 +442,7 @@ namespace TWNPPublic.Controllers
                 result.BILLDATE,
                 result.LASTMETERED,
                 result.METERED,
+                result.TOTAL,
 
             }));
         }
@@ -2775,7 +2776,7 @@ namespace TWNPPublic.Controllers
                         {
                             _time = hour,
                             _amount = aspNetUser.UserId != 0
-                                    ? Math.Round(existing != null ? existing._amount : 0m) // 四捨五入到整數
+                                    ? Math.Floor(existing != null ? existing._amount : 0m) // 四捨五入到整數Math.Round→Math.Floor無條件捨去
                                     : (existing != null ? existing._amount : 0m) // 保留小數
                         };
                     }) 
@@ -2786,13 +2787,14 @@ namespace TWNPPublic.Controllers
 
                     // 根據 newData 第 6 筆與第 1 筆資料計算 _estimate
                     decimal estimate = newData.Count >= 6 ? newData[5]._amount - newData[0]._amount : 0m;
-                    estimate = aspNetUser.UserId != 0 ? Math.Round(estimate) : estimate; // 四捨五入
+                    estimate = aspNetUser.UserId != 0 ? Math.Floor(estimate) : estimate; // 四捨五入Math.Round→Math.Floor無條件捨去
 
                     // 取得當天 00:00 資料
                     decimal currentDayZeroAmount = 0m;
                     if (tempDic2.ContainsKey(x.Key))
                     {
                         currentDayZeroAmount = tempDic2[x.Key]._data.FirstOrDefault(t => t._time == "00")?._amount ?? 0m;
+                        if (aspNetUser.UserId != 0) currentDayZeroAmount = Math.Floor(currentDayZeroAmount); // 四捨五入到整數Math.Round→Math.Floor無條件捨去
                     }
 
                     // 取得前一天 00:00 資料
@@ -2800,6 +2802,7 @@ namespace TWNPPublic.Controllers
                     if (tempDic2.ContainsKey(x.Key.AddDays(-1)))
                     {
                         prevDayZeroAmount = tempDic2[x.Key.AddDays(-1)]._data.FirstOrDefault(t => t._time == "00")?._amount ?? 0m;
+                        if (aspNetUser.UserId != 0) prevDayZeroAmount = Math.Floor(prevDayZeroAmount); // 四捨五入到整數Math.Round→Math.Floor無條件捨去
                     }
 
                     // 取得隔天 00:00 資料
@@ -2807,6 +2810,7 @@ namespace TWNPPublic.Controllers
                     if (tempDic2.ContainsKey(x.Key.AddDays(1)))
                     {
                         nextDayZeroAmount = tempDic2[x.Key.AddDays(1)]._data.FirstOrDefault(t => t._time == "00")?._amount ?? 0m;
+                        if (aspNetUser.UserId != 0) nextDayZeroAmount = Math.Floor(nextDayZeroAmount); // 四捨五入到整數Math.Round→Math.Floor無條件捨去
                     }
 
                     // 計算 A 和 B
@@ -2817,10 +2821,10 @@ namespace TWNPPublic.Controllers
                     decimal difference = A != 0 ? (B - A) / A : 0m;
 
                     // 檢查是否有任何變數為 0，如果是則回傳 "-"
-                    string _differenceDisplay = (currentDayZeroAmount == 0m || prevDayZeroAmount == 0m || nextDayZeroAmount == 0m)
+                    string _differenceDisplay = A == 0m
                         ? "-"
                         : (aspNetUser.UserId != 0
-                          ? Math.Round(difference * 100).ToString() // 四捨五入到整數
+                          ? Math.Floor(difference * 100).ToString() // 四捨五入到整數Math.Round→Math.Floor無條件捨去
                           : (difference * 100).ToString("F6")); // 顯示6位小數
 
                     return new

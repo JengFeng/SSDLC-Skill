@@ -339,14 +339,23 @@ namespace TWNPPublic.Domain.Service
                         }
                         else
                         {
-                            //root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
-                            //root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
+                            ////root.DataRoot.DataLoop.Data.ADDRESS_DAES = root.DataRoot.DataLoop.Data.ADDRESS.MYSQL_AESDecrypt(); ;
+                            ////root.DataRoot.DataLoop.Data.NAME_DAES = root.DataRoot.DataLoop.Data.NAME.MYSQL_AESDecrypt();
 
-                            root.Data[0].ADDRESS_DAES = root.Data[0].ADDRESS.MYSQL_AESDecrypt(); ;
-                            root.Data[0].NAME_DAES = root.Data[0].NAME.MYSQL_AESDecrypt();
+                            //root.Data[0].ADDRESS_DAES = root.Data[0].ADDRESS.MYSQL_AESDecrypt(); ;
+                            //root.Data[0].NAME_DAES = root.Data[0].NAME.MYSQL_AESDecrypt();
+
+                            if (root != null && root.Data != null && root.Data.Count > 0)
+                            {
+                                var first = root.Data[0];
+
+                                // 若 ADDRESS 或 NAME 有可能是 null，也建議加上 null 檢查
+                                first.ADDRESS_DAES = first.ADDRESS?.MYSQL_AESDecrypt();
+                                first.NAME_DAES = first.NAME?.MYSQL_AESDecrypt();
+                            }
                         }
                         
-                        return root.Data[0];
+                        return (root?.Data != null && root.Data.Count > 0) ? root.Data[0] : null;
                     }
 
                     return null;
