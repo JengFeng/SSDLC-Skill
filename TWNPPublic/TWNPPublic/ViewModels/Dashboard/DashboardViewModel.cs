@@ -101,6 +101,7 @@ namespace TWNPPublic.ViewModels.Dashboard
         public string BILLDATE { get; set; }
 
         public string BILLDATE1 { get; set; }
+        public string BILLDATE2 { get; set; }
 
         public string NEW_METER_DATE { get; set; }
         public string LASTMONTH_DATE { get; set; }      //上一期帳單年月

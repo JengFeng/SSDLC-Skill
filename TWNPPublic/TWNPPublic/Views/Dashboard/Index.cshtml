@@ -80,7 +80,7 @@
     let AbnormalList;
     let LASTMONTH_METER = 0;
     let THISMONTH_METER = 0;
-    let BILLDATE1 = '-';       //上一期帳單年月
+    let BILLDATE1 = '-';       //上期帳單年月
     let LASTMONTH_DATE1 = '-';      //上一期計費期間
     let THISMONTHEND_DATE = '-';    //本期累積計費期間
     let LASTYEAR_DATE = '-';        //去年同期帳單年月
@@ -149,17 +149,18 @@
                 $('.THISMONTHENDDATE').text(result.Data.THISMONTHEND_DATE);
                 $('.NEXTMONTHENDDATE').text(result.Data.NEXTMONTHEND_DATE);
 
-
-                $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
-                if(result.Data.BILLDATE1 != null && result.Data.BILLDATE1 != "")
+                if(result.Data.BILLDATE2 != null && result.Data.BILLDATE2 != "")
                 {
-                    let yearparse = parseInt(result.Data.BILLDATE1.substring(0,3)) - 1;
-                    $('#billdate1lastyear').text("帳單年月：" + yearparse + result.Data.BILLDATE1.substring(3));
+                    let yearparse = parseInt(result.Data.BILLDATE2.substring(0,3));//parseInt(result.Data.BILLDATE1.substring(0,3)) - 1;
+                    $('#billdate1lastyear').text("帳單年月：" + yearparse + result.Data.BILLDATE2.substring(3));
                 }
 
                 $('.NewMeterDateText').text(result.Data.NEW_METER_DATE);
                 //用水情形比較
-                BILLDATE1 = result.Data.BILLDATE1 == null ? '-' : result.Data.BILLDATE1;
+                if(result.Data.BILLDATE1 != null && result.Data.BILLDATE1 != ""){
+                    $('#billdate1').text("帳單年月：" + result.Data.BILLDATE1);
+                    BILLDATE1 = result.Data.BILLDATE1 == null ? '-' : result.Data.BILLDATE1;
+                }
                 LASTMONTH_DATE1 = result.Data.LASTMONTH_DATE1== null ? '-' : result.Data.LASTMONTH_DATE1;
                 THISMONTHEND_DATE = result.Data.THISMONTHEND_DATE == null ? '-' : result.Data.THISMONTHEND_DATE;
                 
