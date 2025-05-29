@@ -253,7 +253,8 @@ namespace TWNPPublic.Controllers
 
         public IActionResult UserSettingsNew()
         {
-            ViewBag.IsTestUser = false;
+            //ViewBag.IsTestUser = false;
+            ViewBag.IsTestUser = true;  //不管是不是測試帳號都顯示
 
             if (aspNetUser.UserId == 1)
             {
