@@ -220,7 +220,7 @@
             //console.log(data);
             // 在獲取到數據後執行以下操作
             //$('#divNAME').html('歡迎  ' + data.Data.NAME_DAES);
-            $("#LASTYEARMONEY").html(data.Data.TOTAL + "<span>元</span>");
+            $("#LASTYEARMONEY").html(data.Data.TOTAL ? data.Data.TOTAL + "<span>元</span>" : "載入中");
             LASTYEAR_DATE = data.Data.BILLDATE;
             LASTYEAR_DATE1 = data.Data.LASTMETERED +"~"+ data.Data.METERED;
             InitCompareChart(data.Data.TOQTY, LASTMONTH_METER, THISMONTH_METER);

@@ -435,14 +435,14 @@ namespace TWNPPublic.Controllers
 
             return Json(Success(new
             {
-                result.NAME_DAES,
-                result.AREA,
-                result.SUBTOTAL,
-                result.TOQTY,
-                result.BILLDATE,
-                result.LASTMETERED,
-                result.METERED,
-                result.TOTAL,
+                result?.NAME_DAES,
+                result?.AREA,
+                result?.SUBTOTAL,
+                result?.TOQTY,
+                result?.BILLDATE,
+                result?.LASTMETERED,
+                result?.METERED,
+                result?.TOTAL,
 
             }));
         }
@@ -461,14 +461,18 @@ namespace TWNPPublic.Controllers
             }
 
             var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
-            var NAME = result2 == null ? result.NAME_DAES : result2.USERNAME == null ? result.NAME_DAES : result2.USERNAME == "" ? result.NAME_DAES : result2.USERNAME;
+            string NAME = "用戶";
+            // 如果 result2.USERNAME 有值就用它，否則退回 result.NAME_DAES
+            NAME = NAME = !string.IsNullOrEmpty(result2?.USERNAME)
+                          ? result2.USERNAME
+                          : result?.NAME_DAES ?? NAME;
 
             return Json(Success(new
             {
                 NAME,
-                result.AREA,
-                result.SUBTOTAL,
-                result.TOQTY
+                result?.AREA,
+                result?.SUBTOTAL,
+                result?.TOQTY
             }));
         }
 

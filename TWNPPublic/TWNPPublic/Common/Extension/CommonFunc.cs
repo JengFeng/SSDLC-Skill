@@ -79,6 +79,69 @@ namespace TWNPPublic.Common.Extension
             return encrypt;
         }
         #endregion
+        #region ========解密========
+        /// <summary>
+        /// SHA256字串解密
+        /// </summary>
+        /// <param name="strWORD">來源字串</param>
+        /// <returns>解密字串</returns>
+        public string AesDecrypt(string strWORD)
+        {
+            return AesDecrypt(strWORD, EncryptKey);
+        }
+        /// <summary>
+        /// SHA256字串解密
+        /// </summary>
+        /// <param name="strWORD">來源字串</param>
+        /// <param name="strKey">解密Key</param>
+        /// <returns>解密字串</returns>
+        public string AesDecrypt(string strWORD, string strKey)
+        {
+            if (strKey == "")
+                strKey = "Transfer";
+
+
+            string decrypt = "";
+            try
+            {
+                byte[] dataByteArray = new byte[strWORD.Length / 2];
+                for (int x = 0; x < strWORD.Length / 2; x++)
+                {
+                    int i = (Convert.ToInt32(strWORD.Substring(x * 2, 2), 16));
+                    dataByteArray[x] = (byte)i;
+                }
+
+                //MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+                //SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
+                //AesCryptoServiceProvider provider = new AesCryptoServiceProvider();
+                MD5 md5 = MD5.Create();
+                SHA256 sha256 = SHA256.Create();
+                Aes provider = Aes.Create();
+
+                byte[] keyData = sha256.ComputeHash(Encoding.UTF8.GetBytes(strKey));
+                byte[] IVData = md5.ComputeHash(Encoding.UTF8.GetBytes(strKey));
+
+                provider.Key = keyData;
+                provider.IV = IVData;
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, provider.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(dataByteArray, 0, dataByteArray.Length);
+                        cs.FlushFinalBlock();
+                        decrypt = Encoding.UTF8.GetString(ms.ToArray());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+
+            return decrypt;
+        }
+        #endregion
 
         #region 密碼規則
 

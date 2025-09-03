@@ -16,7 +16,7 @@
             $.get("@Context.Items["urlPrefix"]@Url.Action("GetUserInfo","UserManage")",function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
-                    $("#Pwd").val(result.Data.PWD);
+                    $("#Pwd").val(result.Data.APWD);
                     $("#PhoneNumber").val(result.Data.CELL_PHONE);
                     $("#Email").val(result.Data.EMAIL);
                 }
@@ -32,7 +32,7 @@
                 }
             });
             $.get("@Context.Items["urlPrefix"]@Url.Action("GetPhMeterQualifyDate", "UserManage")",function(result){
-                console.log(result.Data);
+                //console.log(result.Data);
                 if(result.Success){
                     $("#QualifyDate").text(result.Data.QUALIFY_DATE.split("T")[0]);
                         let dateObj = new Date(result.Data.QUALIFY_DATE.split("T")[0]);
@@ -47,7 +47,7 @@
             });
 
             $.get("@Context.Items["urlPrefix"]@Url.Action("LoadAlertSet", "UserManage")",function(result){
-                console.log(result.Data);
+                //console.log(result.Data);
                 if(result.Success){
                   
                     let resultData = result.Data; 

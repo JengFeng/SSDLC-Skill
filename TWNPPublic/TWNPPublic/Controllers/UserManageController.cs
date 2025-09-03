@@ -14,11 +14,13 @@ namespace TWNPPublic.Controllers
     {
         private readonly IAspNetUser aspNetUser;
         private readonly IUserManageService userManageService;
+        private readonly IDashboardService dashboardService;
 
-        public UserManageController(IAspNetUser aspNetUser, IUserManageService userManageService)
+        public UserManageController(IAspNetUser aspNetUser, IUserManageService userManageService, IDashboardService dashboardService)
         {
             this.aspNetUser = aspNetUser;
             this.userManageService = userManageService;
+            this.dashboardService = dashboardService;
         }
 
         public IActionResult UserSettings()
@@ -48,8 +50,12 @@ namespace TWNPPublic.Controllers
             if (aspNetUser.UserId != null)
             {
                 var result = userManageService.GetAccountBySN(aspNetUser.UserId.Value);
-                if (result != null)
+                if (result != null) {
+                    CommonFunc comm = new();
+                    result.APWD = comm.AesDecrypt(result.APWD);
                     return Json(Success<b_ACCOUNT>(result));
+                }
+                    
             }
 
             return Json(Failed(message: "系統帳號尚未綁定"));
@@ -98,6 +104,19 @@ namespace TWNPPublic.Controllers
                     //    }
                     //}
 
+                    var data = dashboardService.GetAccountBySN(aspNetUser.UserId.Value);
+                    if (data == null) return Json(Failed("查無此使用者"));
+                    if (string.IsNullOrWhiteSpace(model.Pwd)) return Json(Failed("密碼不得為空"));
+                    CommonFunc comm = new();
+                    var oldAPwd = comm.AesEncrypt(model.Pwd); //加密舊密碼
+
+                    // 如果與舊密碼不同 → 檢查新密碼規則
+                    if ( oldAPwd != data.APWD )
+                    {
+                      if (!CommonFunc.magicword(model.Pwd))
+                         return Json(Failed("請輸入密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字"));
+                    }
+                    
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
 
                     //自動讀表期滿通知之保固截止日
