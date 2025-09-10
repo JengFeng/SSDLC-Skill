@@ -249,7 +249,7 @@ namespace TWNPPublic.Controllers
                 int ColumnIndex = 0;
                 List<string> listHeader = new List<string> { "估算量(度)", "較前一日增減"};
                 listHeader.AddRange(HoursList);// 使用 AddRange 根據 HoursList 來增加項目
-                List<int> listColumnWidth = new List<int> { 25, 25, 20, 20, 20, 20, 20, 20 };
+                List<int> listColumnWidth = new List<int> { 25, 25, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 };
 
                 int RowIndex = 0;//列號
                 #region Title列
@@ -257,10 +257,26 @@ namespace TWNPPublic.Controllers
                 sheet.CreateRow(RowIndex); //需先用CreateRow建立
                 //建立列並且設定列高
                 sheet.CreateRow(RowIndex).Height = (short)30 * 20;//基本要乘20
-                sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, 8)); //合併儲存格
+                sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, 27)); //合併儲存格 A1 到 AB1 合併
                 SetValue(sheet, RowIndex, ColumnIndex, "用水指針比較 數據查詢結果", headerStyle);//給予儲存格內容及套用樣式
                 //補邊框樣式
-                SetValue(sheet, RowIndex, 8, "", headerStyle);//給予儲存格內容及套用樣式
+                //SetValue(sheet, RowIndex, 8, "", headerStyle);//給予儲存格內容及套用樣式
+                // 補齊合併儲存格的邊框樣式
+                int firstRow = 0;
+                int lastRow = 0;
+                int firstCol = 0;
+                int lastCol = 27;
+
+                for (int i = firstRow; i <= lastRow; i++)
+                {
+                    IRow row = sheet.GetRow(i) ?? sheet.CreateRow(i);
+                    for (int j = firstCol; j <= lastCol; j++)
+                    {
+                        ICell cell = row.GetCell(j) ?? row.CreateCell(j);
+                        cell.CellStyle = headerStyle;
+                    }
+                }
+
 
                 RowIndex = 1;//列號
                 ColumnIndex = 0;
@@ -277,9 +293,10 @@ namespace TWNPPublic.Controllers
 
                 ColumnIndex = 3;
                 //建立列並且設定列高
-                sheet.AddMergedRegion(new CellRangeAddress(1, 1, 3, 8));  // D2 到 I2 合併
+                sheet.AddMergedRegion(new CellRangeAddress(1, 1, 3, 27));  // D2 到 AB2 合併
                 SetValue(sheet, RowIndex, ColumnIndex, "回傳指針數", headerStyle);//給予儲存格內容及套用樣式
-
+                //補邊框樣式
+                SetValue(sheet, RowIndex, 27, "", headerStyle);//給予儲存格內容及套用樣式(AB2)
 
                 RowIndex++;
                 #endregion

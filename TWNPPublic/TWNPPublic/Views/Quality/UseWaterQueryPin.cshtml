@@ -5,6 +5,7 @@
 @section echart {
     <script type="text/javascript" src="~/js/echarts/echarts.js"></script>
     <script type="text/javascript" src="~/js/Common.js"></script>
+    <script type="text/javascript" src="~/js/Easymap/7/MMJS/mask.js"></script>
 }
 
 <!-- CSS 區塊 -->
@@ -345,14 +346,14 @@
                 success: function (result) {
                     $("#spanError").text('');
                     if (result.Success) {
-                        console.log(result);
+                        //console.log(result);
                         if (result.Data.length === 0) {
                             $("#spanError").text('此時間段尚無資料');
                             if (typeof myChart !== 'undefined') {
                                 myChart.clear();
                             }
                         } else {
-                            console.log(result.Data);
+                            //console.log(result.Data);
                             ExcelData = result.Data;
 
                             if ($("#tabChart").hasClass("active")) {
@@ -756,14 +757,61 @@
         // myChart.setOption(option);
     }
 
+    var allHours = [];
+    ///水表指針比較要匯出所以時段資料，再去要一次資料
+    function excelAllTimeData() {
+        MM.mask.showInText("資料下載中...");
+        return new Promise((resolve, reject) => {
+            let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+
+            allHours = [];  //每次先清空，避免重複累加
+            // 收集所有 checkbox 的值（不管有沒有勾選）
+            $(".checkbox-group input[type='checkbox']").each(function () {
+                allHours.push($(this).val());
+            });
+
+            let model = {
+                StartDate: $("#inputStartTime").val(),
+                EndDate: $("#inputEndTime").val(),
+                HoursList: allHours,
+                hoursPart:false
+            };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: model,
+                success: function (result) {
+                    MM.mask.hide();
+                    if (result.Success) {
+                        if (result.Data.length === 0) {
+                            alert('此時間段尚無資料');
+                            resolve(null);  // 沒有資料
+                        } else {
+                            resolve(result.Data);  // 回傳資料
+                        }
+                    } else {
+                        alert(result.Message || '查詢失敗');
+                        resolve(null);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    MM.mask.hide();
+                    console.error("Ajax 錯誤：", status, error);
+                    alert('伺服器錯誤或無法連線，請稍後再試');
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
     //匯出查詢結果
-    function btnExport() {
+    async function btnExport() {
 
         console.log('★★★★水表指針比較-匯出查詢結果★★★★');//
-        if (ExcelData == null || ExcelData == null || ExcelData.legend < 1)
-            return;
         if ($("#tabChart").hasClass("active")){
-
+            if (ExcelData == null || ExcelData == null || ExcelData.legend < 1) return;
             //查詢結果Json傳回後端
             $.ajax({
                 url: '@Url.Action("ExporttoExcelChart", "Quality")',
@@ -802,11 +850,14 @@
         }
         else{
 
-            //查詢結果Json傳回後端
+           const data = await excelAllTimeData();
+           if (!data || data.length < 1) return;
+           ExcelData = data;
+           //查詢結果Json傳回後端
             $.ajax({
                 url: '@Url.Action("ExporttoExcelTable", "Quality")',
                 method: 'POST',
-                data: { ResultData: JSON.stringify(ExcelData), HoursList: selectedHours}, //參數傳遞方式
+                data: { ResultData: JSON.stringify(ExcelData), HoursList: allHours}, //參數傳遞方式
                 dataType: 'json',
                 async: false,//是否非同步
                 //API錯誤時

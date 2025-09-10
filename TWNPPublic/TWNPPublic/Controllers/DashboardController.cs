@@ -2646,11 +2646,11 @@ namespace TWNPPublic.Controllers
         /// </summary>
         /// <param name="Cdate"></param>
         /// <returns></returns>
-        public async Task<IActionResult> WaterNoteTableChart3(string StartDate, string EndDate, List<string> HoursList)
+        public async Task<IActionResult> WaterNoteTableChart3(string StartDate, string EndDate, List<string> HoursList, bool hoursPart = true )
         {
             try
             {
-                if( HoursList.Count() < 6 || HoursList.Count() > 6)
+                if( hoursPart && (HoursList.Count() < 6 || HoursList.Count() > 6) )
                 {
                     // 可依照您的錯誤回應機制回傳錯誤訊息
                     return Json(Failed("顯示時段請選擇6個時段!!!"));
