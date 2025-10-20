@@ -372,7 +372,7 @@ namespace TWNPPublic.Controllers
             }
             catch (Exception ex)
             {
-                string strJSON = "[{\"Result\":\"NG\",\"Message\":\"" + ex.Message + ex.StackTrace + "\",\"FileGuid\":\"\",\"FileName\":\"TestReportOutput.xlsx\"}]";
+                string strJSON = "[{\"Result\":\"NG\",\"Message\":\"" + ex.Message +(ex.InnerException!=null?ex.InnerException.Message:"")+ ex.StackTrace + "\",\"FileGuid\":\"\",\"FileName\":\"TestReportOutput.xlsx\"}]";
                 //return new JsonResult(strJSON);
 
                 return Content(strJSON, "application/json");

@@ -73,7 +73,7 @@
 <script>
 
     function ReloadCapth() {
-        $("#CapthCodes").attr("src", "@Context.Items["urlPrefix"]@Url.Action("CreateValidate", "Home")" + "?" + Math.random());;
+        $("#CapthCodes").attr("src",GetWebSiteURL('@Url.Action("CreateValidate", "Home")') + "?" + Math.random());
     }
 
     function submitForm(){

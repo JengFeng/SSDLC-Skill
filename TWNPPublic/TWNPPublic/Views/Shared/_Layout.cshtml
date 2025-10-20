@@ -12,7 +12,8 @@
     <title>@ViewData["Title"] -智慧水網民眾版</title>
 
     <link rel="stylesheet" href="~/css/All.css?v=202210161128">
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+	@* <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script> *@
+    <script src="~/js/jquery-v3.3.1.js"></script>
     <!-- <script src="~/js/jquery-2.2.0.min.js" ></script> -->
 	<script src="~/js/popper.min.js?v=202208220213"></script>
     <script src="~/js/bootstrap.js"></script>
@@ -44,6 +45,9 @@
     <!-- air-datepicker套件 -->
     <link rel="stylesheet" href="~/js/air-datepicker/air-datepicker.css" />
     <script type="text/javascript" src="~/js/air-datepicker/air-datepicker.js"></script>
+
+    <!--公用function -->
+    <script src="~/js/UtilityFunction.js"></script>
 
     @RenderSection("echart", required: false)
     @RenderSection("validation",required:false)

@@ -762,7 +762,7 @@
     function excelAllTimeData() {
         MM.mask.showInText("資料下載中...");
         return new Promise((resolve, reject) => {
-            let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+            let url = GetWebSiteURL('@Url.Action("WaterNoteTableChart3", "Dashboard")');
 
             allHours = [];  //每次先清空，避免重複累加
             // 收集所有 checkbox 的值（不管有沒有勾選）
@@ -798,7 +798,20 @@
                 error: function (xhr, status, error) {
                     MM.mask.hide();
                     console.error("Ajax 錯誤：", status, error);
-                    alert('伺服器錯誤或無法連線，請稍後再試');
+                    //alert('伺服器錯誤或無法連線，請稍後再試'+' status:'+status+' error'+error);
+                    //let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+                    // 顯示錯誤訊息給使用者（可選擇精簡）
+                    // alert(
+                    //     '伺服器錯誤或無法連線，請稍後再試\n' +
+                    //     'HTTP 狀態: ' + xhr.status + '\n' +
+                    //     '錯誤訊息: ' + error + '\n\n' +
+                    //     '網頁'+url+'\n\n' +
+                    //     '如問題持續發生，請聯絡系統管理員。'
+                    // );
+                     alert(
+                        '伺服器錯誤或無法連線，請稍後再試\n' +
+                        '如問題持續發生，請聯絡系統管理員。'
+                    );
                     reject(error);
                 }
             });
@@ -814,7 +827,7 @@
             if (ExcelData == null || ExcelData == null || ExcelData.legend < 1) return;
             //查詢結果Json傳回後端
             $.ajax({
-                url: '@Url.Action("ExporttoExcelChart", "Quality")',
+                url: GetWebSiteURL('@Url.Action("ExporttoExcelChart", "Quality")'),
                 method: 'POST',
                 data: { ResultData: JSON.stringify(ExcelData) }, //參數傳遞方式
                 dataType: 'json',
@@ -831,7 +844,7 @@
                         return;
                     }
                     //另開一個視窗，由另一個Action去產出檔案
-                    var url ='@Url.Action("Download", "Quality")'+"?FileGuid="+response.FileGuid+"&FileName="+response.FileName;
+                    var url = GetWebSiteURL('@Url.Action("Download", "Quality")')+"?FileGuid="+response.FileGuid+"&FileName="+response.FileName;
 
                     document.location=url;
 
@@ -855,7 +868,7 @@
            ExcelData = data;
            //查詢結果Json傳回後端
             $.ajax({
-                url: '@Url.Action("ExporttoExcelTable", "Quality")',
+                url: GetWebSiteURL('@Url.Action("ExporttoExcelTable", "Quality")'),
                 method: 'POST',
                 data: { ResultData: JSON.stringify(ExcelData), HoursList: allHours}, //參數傳遞方式
                 dataType: 'json',
@@ -872,7 +885,7 @@
                         return;
                     }
                     //另開一個視窗，由另一個Action去產出檔案
-                    var url ='@Url.Action("Download", "Quality")'+"?FileGuid="+response.FileGuid+"&FileName="+response.FileName;
+                    var url =GetWebSiteURL('@Url.Action("Download", "Quality")')+"?FileGuid="+response.FileGuid+"&FileName="+response.FileName;
 
                     document.location=url;
 
