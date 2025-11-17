@@ -172,7 +172,7 @@
         let model = {
             WaterNo : obj
             };
-         $.get("@Context.Items["urlPrefix"]@Url.Action("LoadAlertSet","Alert")",model,function(result){
+         $.get(GetWebSiteURL('@Url.Action("LoadAlertSet", "Alert")'),model,function(result){
             if(result.Success){
                 console.log(result);
                 $("#AlertPhone").val(result.Data.AlertPhone);

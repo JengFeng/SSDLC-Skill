@@ -31,10 +31,15 @@
         margin-right: 10px;
     }
 
-        .tab.active {
-            font-weight: bold;
-            border-bottom: 2px solid blue;
-        }
+    .tab.active {
+        font-weight: bold;
+        border-bottom: 2px solid blue;
+    }
+
+    .air-datepicker {
+        z-index: 99999 !important;
+    }
+
 </style>
 
 <!-- HTML 主區塊 -->
@@ -109,6 +114,7 @@
             <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
                 <a class="btn-lightGrey-o" href="javascript:;" onclick="btnExport()">下載</a>
+                <a class="btn-blue-o" href="javascript:;" onclick="btnCover()">資料回寫</a>
             </div>
             <span id="spanError">資料查詢中.....</span>
             <!-- 水表指針比較：表格顯示區 -->
@@ -183,6 +189,28 @@
         </div>
     </div>
 </div><!-- wrap end -->
+
+<!-- 資料回寫 Modal -->
+<div class="modal fade" id="ModalContactPerson" tabindex="-1" aria-labelledby="ModalContactPersonLabel" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel01">資料回寫</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="datacover">
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">日期</label>
+                    <input type="text" class="form-control mb-3" id="inputDate" readonly onchange="dateChangeEvent()">
+                </div>                  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-blue-o" onclick="btnDataCoverSubmit()" id="btnCover">確認回寫</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- JavaScript 區塊 -->
 <script>
     let ddlDateS = null, ddlDateE = null;
@@ -220,6 +248,9 @@
         $("#comparisonView").show();
         $("#chartView").hide();
         $("#hourSelection").show();
+
+        //顯示確認回寫按鈕
+        $('#btnCover').removeClass('d-none');
 
         // 初次查詢 (走表格查詢流程)
         btnSearch();
@@ -302,6 +333,7 @@
     const SettingTxtDate = () => {
         ddlDateS = CreateRocDate('inputStartTime', false, false, false, false);
         ddlDateE = CreateRocDate('inputEndTime', false, false, false, false);
+        CreateRocDate('inputDate', false, false, false, false);
     };
 
     var myChart = echarts.init(document.getElementById('mychart'));
@@ -905,6 +937,62 @@
         
 
     }//Excel END
+
+    function btnCover(){
+
+          const today = new Date();
+          
+          // 取得年/月/日，並補0
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0'); // 月份從0開始
+          const day = String(today.getDate()).padStart(2, '0');
+          
+          const formattedDate = `${year}/${month}/${day}`;
+          $("#inputDate").val(formattedDate);
+          $("#ModalContactPerson").modal('show');
+    }
+
+    function btnDataCoverSubmit(){
+
+          //確認是否可以進行資料回寫動作
+          let model = {
+              DateTime: $("#inputDate").val(),
+          };
+
+          $.post("@Context.Items["urlPrefix"]@Url.Action("CheckOptCondition", "Quality")", model, function (result) {
+              console.log(result);
+              if (result.Success) {
+                  alert(result.Message);
+                  $('#btnCover').addClass('d-none');
+                  $("#ModalContactPerson").modal('hide');
+              }
+              else {
+                 alert(result.Message);
+                 $('#btnCover').addClass('d-none');
+              }
+          });
+
+        // $("#ModalContactPerson").modal('hide');
+        // MM.mask.showInText("資料覆寫中...");
+        // let model = {
+        //     CoverDate: $("#inputDate").val(),
+        // };
+        // $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteDataCover", "Quality")", model, function (result) {
+        //     MM.mask.hide();
+        //     if (result.Success) {
+        //         alert('資料覆寫成功');
+        //         // 呼叫查詢 (走表格查詢流程)
+        //         btnSearch();
+        //     }
+        //     else {
+        //         alert('資料覆寫失敗，原因：' + result.Message);
+        //     }
+        // });
+    }
+
+    function dateChangeEvent(){
+         $('#btnCover').removeClass('d-none');
+    }
 
 </script>
 

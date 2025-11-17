@@ -154,6 +154,89 @@ namespace TWNPPublic.Controllers
             }
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> CheckOptCondition( DateTime dateTime)
+        {
+            try
+            {
+
+                DateTime currentDate = DateTime.Now;
+                TimeSpan timeDifference = currentDate - dateTime;
+
+                if (timeDifference.Days > 7)
+                {
+                    var result = qualityService.CheckOptCondition(dateTime, aspNetUser.CurrentWaterNo);
+
+                    if (result == null)
+                    {
+                        var dayresultTask = qualityService.UpdateSQLite(dateTime, aspNetUser.CurrentWaterNo);
+                        return Json(Success("操作成功，正在執行資料回寫中....."));
+                    }
+                    else if (result != null && result.STATUS2 == 10)
+                    {
+                        var dayresultTask = qualityService.UpdateSQLite(dateTime, aspNetUser.CurrentWaterNo);
+                        return Json(Success("操作成功，正在執行資料回寫中....."));
+                    }
+                    else if (result != null && result.STATUS2 != 10 && result.STATUS2 == 1)
+                    {
+                        return Json(Failed("請稍後再試，已有其他資料正在回寫中......"));
+                    }
+                    else if (result != null && result.STATUS2 != 10 && (result.STATUS2 >= 2 && result.STATUS2 <= 9))
+                    {
+                        return Json(Failed("執行錯誤出現問題......"));
+                    }
+                    else
+                    {
+                        return Json(Failed("執行錯誤出現'其他問題'......"));
+                    }
+
+                }
+                else
+                {
+                    //var waterNo = aspNetUser.CurrentWaterNo; //"7D760253004"; //aspNetUser.CurrentWaterNo;
+                    //dateTime = DateTime.Parse("2025-07-01"); //測試用
+                    var dayresultTask = await qualityService.LitedPhMeterRecordApiList(aspNetUser.CurrentWaterNo, dateTime);
+                    List<A_PH_METER_RECORD_LIST> aphmeterrecord = new List<A_PH_METER_RECORD_LIST>();
+
+                    if (dayresultTask == null || !dayresultTask.Any())
+                    {
+                        return Json(Failed("無資料可更新"));
+                    }
+
+                    // 排序確保資料依時間順序
+                    var sortedData = dayresultTask?
+                        .OrderBy(d => DateTime.Parse($"{d.date} {d.time}"))
+                        .ToList();
+
+                    for (int i = 0; i < sortedData.Count; i++)
+                    {
+                        var d = sortedData[i];
+
+                        // 將 date + time 轉換成 DateTime
+                        DateTime recDateTime = DateTime.Parse($"{d.date} {d.time}");
+
+                        aphmeterrecord.Add(new A_PH_METER_RECORD_LIST
+                        {
+                            WATER_NO = aspNetUser.CurrentWaterNo,                 
+                            PROPERTY_NO = d.meter_no,            
+                            REC_DATE_TIME = recDateTime,         
+                            AMOUNT = (decimal)d.total_flow,      
+                        });
+                    }
+
+                    var result = qualityService.UpdateAphMeterRecordByWaterNoAndDateTime(aspNetUser.CurrentWaterNo, aphmeterrecord);
+                    var res = result > 0 ? true : false;
+                    if (res)return Json(Success("更新成功"));
+                    else return Json(Failed("更新失敗"));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Failed("系統錯誤"));
+            }
+        }
+
         /// <summary>
         /// 匯出EXCEL
         /// </summary>

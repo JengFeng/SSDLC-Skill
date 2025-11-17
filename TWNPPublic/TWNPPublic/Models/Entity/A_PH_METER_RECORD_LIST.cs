@@ -76,4 +76,34 @@ namespace TWNPPublic.Models.Entity
         public List<F_B_CHART1> result { get; set; }
     }
 
+    public class PhMeterRecordAPIResponse
+    {
+        public string ISOK { get; set; }
+        public string Message { get; set; }
+        public List<A_PH_METER_RECORD_LIST> Data { get; set; }
+    }
+
+
+    public class Rootobject
+    {
+        public string Result { get; set; }
+        public bool ISOK { get; set; }
+        public string Message { get; set; }
+        public APIData DataContent { get; set; }
+    }
+
+    public class APIData
+    {
+        public string date { get; set; }
+        public List<Datum> data { get; set; }
+        public string water_no { get; set; }
+    }
+
+    public class Datum
+    {
+        public string date { get; set; }
+        public float total_flow { get; set; }
+        public string meter_no { get; set; }
+        public string time { get; set; }
+    }
 }

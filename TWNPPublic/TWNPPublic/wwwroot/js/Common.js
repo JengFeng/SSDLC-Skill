@@ -52,7 +52,9 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
         //},
         onSelect: function onSelect(dp) {
             const event = new Event('input', { bubbles: true });
+            const changeEvent = new Event('change', { bubbles: true });
             dp.datepicker.$el.dispatchEvent(event);
+            dp.datepicker.$el.dispatchEvent(changeEvent);
         },
     };
     if (customPosition != '') options.position = customPosition;//right center
