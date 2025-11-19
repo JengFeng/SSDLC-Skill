@@ -2700,6 +2700,7 @@ namespace TWNPPublic.Controllers
                 List<DailyChartData> dailyChartDatas = new List<DailyChartData>();
 
                var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
+               //var dayresultTask = await GetPhMeterRecordAutoSplit(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
                dailyChartDatas = dayresultTask
                    .GroupBy(item => item.REC_DATE_TIME.Date)
                    .Select(g => new DailyChartData
@@ -2930,6 +2931,7 @@ namespace TWNPPublic.Controllers
                 List<F_B_CHART2> finalResult = new List<F_B_CHART2>();
 
                 var dayresultTask = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
+                //var dayresultTask = await GetPhMeterRecordAutoSplit(StartTime, EnderTime, aspNetUser.CurrentWaterNo);
                 var dailyChartDatas = dayresultTask.OrderBy(x => x.REC_DATE_TIME).ToList();
 
                 #region 水號過戶判斷--濾符合時間條件的數據
@@ -3042,6 +3044,56 @@ namespace TWNPPublic.Controllers
         {
             var result = dashboardService.GetContactPerson(aspNetUser.CurrentWaterNo);
             return Json(Success(result));
+        }
+
+        public async Task<List<A_PH_METER_RECORD_LIST>> GetPhMeterRecordAutoSplit(DateTime StartTime, DateTime EnderTime, string WaterNo)
+        {
+            var now = DateTime.Now;
+            var sevenDaysAgo = now.AddDays(-7);
+
+            List<A_PH_METER_RECORD_LIST> mergedList = new List<A_PH_METER_RECORD_LIST>();
+
+            // 1. 完全在 7 天前 
+            if (StartTime < sevenDaysAgo && EnderTime < sevenDaysAgo)
+            {
+                var data = await dashboardService.LitedPhMeterRecordListNew2(StartTime, EnderTime, WaterNo);
+                //mergedList.AddRange(data);
+                mergedList.AddRange(data ?? Enumerable.Empty<A_PH_METER_RECORD_LIST>());
+            }
+            // 2. 完全在最近 7 天內(資料庫撈需要多撈前後一天)
+            else if (StartTime >= sevenDaysAgo && EnderTime >= sevenDaysAgo)
+            {
+                var data = await dashboardService.LitedPhMeterRecordListNew3(StartTime.AddDays(-1), EnderTime.AddDays(1), WaterNo);
+                //mergedList.AddRange(data);
+                mergedList.AddRange(data ?? Enumerable.Empty<A_PH_METER_RECORD_LIST>());
+            }
+            // 3. 跨越 7 天 → 分段撈
+            else
+            {
+                // 前半段
+                if (StartTime < sevenDaysAgo)
+                {
+                    var oldData = await dashboardService.LitedPhMeterRecordListNew2(StartTime, sevenDaysAgo, WaterNo);
+
+                    //mergedList.AddRange(oldData);
+                    mergedList.AddRange(oldData ?? Enumerable.Empty<A_PH_METER_RECORD_LIST>());
+                }
+
+                // 後半段(資料庫撈需要多撈前後一天)
+                if (EnderTime >= sevenDaysAgo)
+                {
+                    var newData = await dashboardService.LitedPhMeterRecordListNew3(sevenDaysAgo.AddDays(-1), EnderTime.AddDays(1), WaterNo);
+                    //mergedList.AddRange(newData);
+                    mergedList.AddRange(newData ?? Enumerable.Empty<A_PH_METER_RECORD_LIST>());
+                }
+            }
+            // 4. 去除 REC_DATE_TIME + WATER_NO 的重複資料
+            mergedList = mergedList
+                .GroupBy(x => new { x.REC_DATE_TIME, x.WATER_NO })
+                .Select(g => g.First())
+                .ToList();
+
+            return mergedList;
         }
 
         #region 沒用

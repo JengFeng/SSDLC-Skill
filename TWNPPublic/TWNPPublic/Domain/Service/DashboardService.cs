@@ -502,6 +502,26 @@ namespace TWNPPublic.Domain.Service
             return dataAccess.Query<B_Note_ReuturnSN>(mainsql, obj).First().B_NOTE_SN;
         }
 
+        public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew3(DateTime StartTime, DateTime EnderTime, string WaterNo)
+        {
+            string qt1 = StartTime.ToString("yyyy-MM-dd 00:00:00");
+            string qt2 = EnderTime.ToString("yyyy-MM-dd 23:59:59");
+            string mainsql = @"SELECT *
+                               FROM A_PH_METER_RECORD_LIST
+                               WHERE WATER_NO = @WaterNo AND REC_DATE_TIME >=@StartTime AND REC_DATE_TIME <=@EndTime";
+            object obj = new
+            {
+                WaterNo,
+                StartTime = qt1,
+                EndTime = qt2
+            };
+
+            return (await this.dataAccess.QueryAsync<A_PH_METER_RECORD_LIST>(mainsql, obj).ConfigureAwait(false)).ToList();
+
+            //var result = await this.dataAccess.QueryAsync<A_PH_METER_RECORD_LIST>(mainsql, obj).ConfigureAwait(false);
+            //return result.ToList();
+        }
+
         public async Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew2(DateTime StartTime, DateTime EnderTime, string WaterNo)
         {
             string qt1 = StartTime.ToString("yyyy-MM-dd");
@@ -524,7 +544,7 @@ namespace TWNPPublic.Domain.Service
 
             try
             {
-                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
+                
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
@@ -570,7 +590,7 @@ namespace TWNPPublic.Domain.Service
 
             try
             {
-                // 拿前一的最後一筆來相減(邏輯顛倒)，所有原始會有 25 筆，輸出資料時會pop最後一筆 輸出24筆資料
+
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string responseBody = await responseMessage.Content.ReadAsStringAsync();
@@ -975,7 +995,14 @@ namespace TWNPPublic.Domain.Service
         /// <param name="SN"></param>
         /// <returns></returns>
         public List<B_NOTE_HOUR> ListedB_NOTE_HOURBySN(int SN);
-
+        /// <summary>
+        /// A_PH_METER_RECORD_LIST 查詢資料表前七天內的資料
+        /// </summary>
+        /// <param name="StartTime"></param>
+        /// <param name="EnderTime"></param>
+        /// <param name="WaterNo"></param>
+        /// <returns></returns>
+        public Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew3(DateTime StartTime, DateTime EnderTime, string WaterNo);
         public Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew2(DateTime StartTime, DateTime EnderTime, string WaterNo);
         public Task<List<A_PH_METER_RECORD_LIST>?> LitedPhMeterRecordListNew(DateTime QueryTime, string WaterNo);
 

@@ -85,7 +85,7 @@ namespace TWNPPublic.Domain.Service
 
         public A_PH_METER_RECORD_COVER_LOG CheckOptCondition(DateTime DateTime, string WATER_NO)
         {
-            string mainsql = @"SELECT [SN],[ADATE],[WATER_NO],[MESSAGE],[STATUS1],[STATUS2],[INP_DATE] FROM [A_PH_METER_RECORD_COVER_LOG] WHERE ADATE=@Sdate";
+            string mainsql = @"SELECT [SN],[ADATE],[WATER_NO],[MESSAGE],[STATUS1],[STATUS2],[INP_DATE] FROM [A_PH_METER_RECORD_COVER_LOG] WHERE ADATE=@Sdate ORDER BY SN DESC";
             string Sdate = DateTime.ToString("yyyy-MM-dd");
             object obj = new { Sdate, WATER_NO };
             return dapperDataAccess.Query<A_PH_METER_RECORD_COVER_LOG>(mainsql, obj).FirstOrDefault();
@@ -206,7 +206,7 @@ namespace TWNPPublic.Domain.Service
                                         (@WATER_NO, @PROPERTY_NO, @REC_DATE_TIME, @AMOUNT);
                                 END";
 
-            return dapperDataAccess.ExecuteList(mainsql, obj); ;
+            return dapperDataAccess.ExecuteList(mainsql, obj);
         }
 
     }

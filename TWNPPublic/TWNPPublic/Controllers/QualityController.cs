@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
@@ -156,39 +157,49 @@ namespace TWNPPublic.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CheckOptCondition( DateTime dateTime)
+        public async Task<IActionResult> CheckOptCondition( DateTime? dateTime)
         {
             try
             {
 
+                if (!ModelState.IsValid)
+                {
+                    return Json(Failed("日期格式錯誤!!"));
+                }
+
+                if (dateTime == null)
+                {
+                    return Json(Failed("請選擇要回寫資料的日期!!"));
+                }
+
                 DateTime currentDate = DateTime.Now;
-                TimeSpan timeDifference = currentDate - dateTime;
+                TimeSpan timeDifference = currentDate - dateTime.Value;
 
                 if (timeDifference.Days > 7)
                 {
-                    var result = qualityService.CheckOptCondition(dateTime, aspNetUser.CurrentWaterNo);
+                    var result = qualityService.CheckOptCondition(dateTime.Value, aspNetUser.CurrentWaterNo);
 
                     if (result == null)
                     {
-                        var dayresultTask = qualityService.UpdateSQLite(dateTime, aspNetUser.CurrentWaterNo);
-                        return Json(Success("操作成功，正在執行資料回寫中....."));
+                        var dayresultTask = qualityService.UpdateSQLite(dateTime.Value, aspNetUser.CurrentWaterNo);
+                        return Json(Success("操作成功，正在執行資料回寫中.....請3分鐘後再重新查詢"));
                     }
-                    else if (result != null && result.STATUS2 == 10)
+                    else if (result != null  &&  result.STATUS2 != 1)
                     {
-                        var dayresultTask = qualityService.UpdateSQLite(dateTime, aspNetUser.CurrentWaterNo);
-                        return Json(Success("操作成功，正在執行資料回寫中....."));
+                        var dayresultTask = qualityService.UpdateSQLite(dateTime.Value, aspNetUser.CurrentWaterNo);
+                        return Json(Success("操作成功，正在執行資料回寫中.....請3分鐘後再重新查詢"));
                     }
-                    else if (result != null && result.STATUS2 != 10 && result.STATUS2 == 1)
+                    else if (result != null &&  result.STATUS2 == 1 )
                     {
                         return Json(Failed("請稍後再試，已有其他資料正在回寫中......"));
                     }
-                    else if (result != null && result.STATUS2 != 10 && (result.STATUS2 >= 2 && result.STATUS2 <= 9))
-                    {
-                        return Json(Failed("執行錯誤出現問題......"));
-                    }
+                    //else if (result != null && result.STATUS2 != 10 && (result.STATUS2 >= 2 && result.STATUS2 <= 9))
+                    //{
+                    //    return Json(Failed("執行錯誤出現問題......"));
+                    //}
                     else
                     {
-                        return Json(Failed("執行錯誤出現'其他問題'......"));
+                        return Json(Failed("執行錯誤出現問題......"));
                     }
 
                 }
@@ -196,7 +207,7 @@ namespace TWNPPublic.Controllers
                 {
                     //var waterNo = aspNetUser.CurrentWaterNo; //"7D760253004"; //aspNetUser.CurrentWaterNo;
                     //dateTime = DateTime.Parse("2025-07-01"); //測試用
-                    var dayresultTask = await qualityService.LitedPhMeterRecordApiList(aspNetUser.CurrentWaterNo, dateTime);
+                    var dayresultTask = await qualityService.LitedPhMeterRecordApiList(aspNetUser.CurrentWaterNo, dateTime.Value);
                     List<A_PH_METER_RECORD_LIST> aphmeterrecord = new List<A_PH_METER_RECORD_LIST>();
 
                     if (dayresultTask == null || !dayresultTask.Any())
