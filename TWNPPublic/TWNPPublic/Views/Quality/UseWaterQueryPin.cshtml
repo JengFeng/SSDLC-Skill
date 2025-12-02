@@ -218,20 +218,43 @@
         // 初始化日期選擇元件
         SettingTxtDate();
         // 預設為「水表指針比較」(表格)模式：
-        // 1. 設定日期為本月1號 ~ 本月月底 (格式：yyyy/MM/dd)
+        // 1. 設定日期為前天月份的1號 ~ 當日的前一天 (格式：yyyy/MM/dd)
         // 2. 預設勾選顯示時段中的 00,03,06,09,12,15
         // 3. 顯示表格及顯示時段區塊
+
         var now = new Date();
-        var firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-        var lastDay = new Date(new Date().setDate(new Date().getDate() - 1)); // 先取得今天的日期//new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        var startDateStrTable = firstDay.getFullYear() + "/" +
-            (firstDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
-            firstDay.getDate().toString().padStart(2, "0");
+        // 1. 本月的第一天
+        var firstDayThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        // 2. 结束日期為今天的前一天
+        var lastDay = new Date(now); // 複製當前日期
+        lastDay.setDate(now.getDate() - 1); // 昨天
+
+        // 3. 判斷结束日期的前一天是否屬於上個月
+        var firstDayOfEndMonth = new Date(lastDay.getFullYear(), lastDay.getMonth(), 1); // 獲取结束日期所在月份的月初
+        var firstDayToUse;
+
+        if (firstDayOfEndMonth.getMonth() === firstDayThisMonth.getMonth()) {
+            // 如果结束日期的前一天屬於當前月，開始日期为當月的月初
+            firstDayToUse = firstDayThisMonth;
+        } else {
+            // 否則，结束日期的前一天屬於上個月，開始日期為上個月的月初
+            firstDayToUse = new Date(lastDay.getFullYear(), lastDay.getMonth(), 1);
+        }
+
+        // 4. 格式化日期 "yyyy/MM/dd"
+        var startDateStrTable = firstDayToUse.getFullYear() + "/" +
+            (firstDayToUse.getMonth() + 1).toString().padStart(2, "0") + "/" +
+            firstDayToUse.getDate().toString().padStart(2, "0");
+
         var endDateStrTable = lastDay.getFullYear() + "/" +
             (lastDay.getMonth() + 1).toString().padStart(2, "0") + "/" +
             lastDay.getDate().toString().padStart(2, "0");
+
+        // 5. 輸入框的值
         $("#inputStartTime").val(startDateStrTable);
         $("#inputEndTime").val(endDateStrTable);
+
         // 預設勾選 00,03,06,09,12,15 的 checkbox
         var defaultHours = ["00", "03", "06", "09", "12", "15"];
         $("#hourSelection input[type='checkbox']").each(function () {
@@ -350,13 +373,13 @@
         let url = "";
         if ($("#tabChart").hasClass("active")) {
             // 圖表模式下的查詢網址
-            url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart4", "Dashboard")";
+            url = GetWebSiteURL('@Url.Action("WaterNoteTableChart4", "Dashboard")');
         } else {
             //清除table
             $("#data-table thead").empty();
             $("#data-table tbody").empty();
             // 表格模式下的查詢網址
-            url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+            url = GetWebSiteURL('@Url.Action("WaterNoteTableChart3", "Dashboard")');
         }
 
         selectedHours = [];
@@ -831,7 +854,7 @@
                     MM.mask.hide();
                     console.error("Ajax 錯誤：", status, error);
                     //alert('伺服器錯誤或無法連線，請稍後再試'+' status:'+status+' error'+error);
-                    //let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart3", "Dashboard")";
+                    //let url = GetWebSiteURL('@Url.Action("WaterNoteTableChart3", "Dashboard")');
                     // 顯示錯誤訊息給使用者（可選擇精簡）
                     // alert(
                     //     '伺服器錯誤或無法連線，請稍後再試\n' +
@@ -959,7 +982,7 @@
               DateTime: $("#inputDate").val(),
           };
 
-          $.post("@Context.Items["urlPrefix"]@Url.Action("CheckOptCondition", "Quality")", model, function (result) {
+          $.post(GetWebSiteURL('@Url.Action("CheckOptCondition", "Quality")'), model, function (result) {
               console.log(result);
               if (result.Success) {
                   alert(result.Message);
@@ -977,7 +1000,7 @@
         // let model = {
         //     CoverDate: $("#inputDate").val(),
         // };
-        // $.post("@Context.Items["urlPrefix"]@Url.Action("WaterNoteDataCover", "Quality")", model, function (result) {
+        // $.post(GetWebSiteURL('@Url.Action("WaterNoteDataCover", "Quality")'), model, function (result) {
         //     MM.mask.hide();
         //     if (result.Success) {
         //         alert('資料覆寫成功');

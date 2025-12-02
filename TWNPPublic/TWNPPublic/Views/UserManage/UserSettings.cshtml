@@ -13,15 +13,15 @@
         var WaterNoIndex = 1;
         $(function(){
             $(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
-            $.get("@Context.Items["urlPrefix"]@Url.Action("GetUserInfo","UserManage")",function(result){
+            $.get(GetWebSiteURL('@Url.Action("GetUserInfo", "UserManage")'),function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
-                    $("#Pwd").val(result.Data.PWD);
+                    $("#Pwd").val(result.Data.APWD);
                     $("#PhoneNumber").val(result.Data.CELL_PHONE);
                     $("#Email").val(result.Data.EMAIL);
                 }
             });
-            $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNo","UserManage")",function(result){
+            $.get(GetWebSiteURL('@Url.Action("ListedUserWaterNo", "UserManage")'),function(result){
                 if(result.Success){
                     $.each(result.Data,function(index,value){
                         value["Index"] = WaterNoIndex;
@@ -36,7 +36,7 @@
             var Id = $(obj).data('id');
             let waterno = $(obj).data('waterno');
             $("#WaterNoItem" + Id).remove();
-            let url = "@Context.Items["urlPrefix"]@Url.Action("DeleteUserWaterNo","UserManage")";
+            let url = GetWebSiteURL('@Url.Action("DeleteUserWaterNo", "UserManage")');
             let model = {
                 WaterNo : waterno
             };
@@ -64,7 +64,7 @@
         @*無帳號創建帳號*@
         <text>
                                             function btnSave(){
-                                                var Url = "@Context.Items["urlPrefix"]@Url.Action("CreatUserInfo","UserManage")";
+                                                var Url = GetWebSiteURL('@Url.Action("CreatUserInfo","UserManage")');
                                                 var Data ={
                                                     Account : $("#Account").val(),
                                                     Pwd : $("#Pwd").val(),
@@ -102,7 +102,7 @@
         @*有帳號更新資料*@
         <text>
                                         function btnSave(){
-                                            var Url = "@Context.Items["urlPrefix"]@Url.Action("UpdateUserInfo","UserManage")";
+                                            var Url = GetWebSiteURL('@Url.Action("UpdateUserInfo","UserManage")');
                                             var Data ={
                                                 Account : $("#Account").val(),
                                                 Pwd : $("#Pwd").val(),

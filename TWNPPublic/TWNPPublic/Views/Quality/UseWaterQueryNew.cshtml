@@ -490,7 +490,7 @@
             EndDate: $("#inputEndTime").val(),
         };
 
-        $.post("@Context.Items["urlPrefix"]@Url.Action("QueryWaterTypeData", "Quality")", model, function (result) {
+        $.post(GetWebSiteURL('@Url.Action("QueryWaterTypeData", "Quality")'), model, function (result) {
             console.log(result);
             if (result.Success) {
 
@@ -547,7 +547,7 @@
     function GetUserWaterData(model) {
         console.log('☆☆☆☆☆取得用水量資料☆☆☆☆☆');
 
-        let url = "@Context.Items["urlPrefix"]@Url.Action("WaterNoteTableChart2", "Dashboard")";
+        let url = GetWebSiteURL('@Url.Action("WaterNoteTableChart2", "Dashboard")');
 
         return new Promise((resolve, reject) => {
             $.post(url, model, function (result) {

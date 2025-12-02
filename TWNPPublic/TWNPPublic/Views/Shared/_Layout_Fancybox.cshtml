@@ -11,7 +11,8 @@
     <link rel="bookmark" href="~/images/favicon.ico" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/css/All.css">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+   @* <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script> *@
+    <script src="~/js/jquery-v3.3.1.js"></script>
 
     <!-- <script src="~/Js/jquery-2.2.0.min.js" ></script> -->
     <script src="~/Js/bootstrap.js"></script>
@@ -38,6 +39,9 @@
     <!-- footable套件 -->
     <link rel="stylesheet" href="~/Js/footable/footable.bootstrap.css" />
     <script type="text/javascript" src="~/Js/footable/footable.js"></script>
+
+    <!--公用function -->
+    <script src="~/js/UtilityFunction.js"></script>
 
     @RenderSection("echart", required: false)
     <script type="text/javascript">

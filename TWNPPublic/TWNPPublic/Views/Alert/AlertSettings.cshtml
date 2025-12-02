@@ -459,7 +459,7 @@
 
         $(".text-danger").text('');
         var Validator = $("#FormAlertSet").validate();
-        var url = "@Context.Items["urlPrefix"]@Url.Action("SaveAlertSet", "Alert")"
+        var url = GetWebSiteURL('@Url.Action("SaveAlertSet", "Alert")');
             $.ajax({
             url: url,
                 type: "Post",

@@ -196,7 +196,7 @@
              Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart"),
              timespilt: $(".timesplit.btn-green-o.active").data("timesplit")
          };
-        $.post("@Context.Items["urlPrefix"]@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
+        $.post(GetWebSiteURL('@Url.Action("GetDashWaterAnalyer", "Dashboard")'), model ,function(result){
             if(result.Success){
                 const colors = ['#5391C7'];
 

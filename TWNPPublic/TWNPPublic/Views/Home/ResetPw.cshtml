@@ -71,7 +71,7 @@
 
     function submitForm(){
 
-        let url = "@Context.Items["urlPrefix"]@Url.Action("ResetPw","Home")";
+        let url = GetWebSiteURL('@Url.Action("ResetPw", "Home")');
         let model = {
             Account : $("#Account").val(),
             Email : $("#Email").val(),
@@ -112,6 +112,6 @@
     }
 
     function ReloadCapth() {
-        $("#CapthCodes").attr("src", "@Context.Items["urlPrefix"]@Url.Action("CreateValidate", "Home")" + "?" + Math.random());;
+        $("#CapthCodes").attr("src", GetWebSiteURL('@Url.Action("CreateValidate", "Home")') + "?" + Math.random());;
     }
 </script>

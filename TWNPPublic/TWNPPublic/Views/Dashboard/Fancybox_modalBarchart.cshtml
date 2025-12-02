@@ -65,7 +65,7 @@
          var model = {
             Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart")
          };
-        $.post("@Context.Items["urlPrefix"]@Url.Action("ModalBarchart","Dashboard")", model ,function(result){
+        $.post(GetWebSiteURL('@Url.Action("ModalBarchart", "Dashboard")'), model ,function(result){
             $("#spanError").text('');
             if(result.Success){
                 const colors = ['#5391C7'];

@@ -78,7 +78,7 @@
 
             //console.log('水號選單');
              //水號選單
-            $.get("@Context.Items["urlPrefix"]@Url.Action("ListedUserWaterNos","Dashboard")", function(result){
+            $.get(GetWebSiteURL('@Url.Action("ListedUserWaterNos", "Dashboard")'), function(result){
                 //console.log(result);
                 if( result.Data == undefined ) return ;
                 $.each(result.Data.WaterNos,function(index,value){
@@ -122,7 +122,7 @@
             });
 
             //老馬燈AJAX
-             $.get("@Context.Items["urlPrefix"]@Url.Action("ListedNews","Dashboard")", function(result){
+             $.get(GetWebSiteURL('@Url.Action("ListedNews", "Dashboard")'), function(result){
                 if(result.Success){
                     $("#marquee1").empty();
                     $.each(result.Data,function(index,value){
@@ -164,11 +164,11 @@
                            let model = {
                                  Cdate : '@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")'
                             };
-                            $.get("@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard")",model,function(result){
+                            $.get(GetWebSiteURL('@Url.Action("Fancybox_tableChart", "Dashboard")'),model,function(result){
                     
                                 if ( result.includes('忘記密碼') )
                                 {
-                                    window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Login","Home")";
+                                    window.location.href = GetWebSiteURL('@Url.Action("Login", "Home")');
                                 }
                              });
                         }
@@ -199,7 +199,7 @@
             timer2 = minutes + ':' + seconds;
             if (timer2 == "0:00") {
                 alert("網頁已閒置超過15分鐘，請從新登入");
-                window.location = "@Context.Items["urlPrefix"]@Url.Action("Logout", "Home")";
+                window.location = GetWebSiteURL('@Url.Action("Logout", "Home")');
             }
         }, 1000);
 

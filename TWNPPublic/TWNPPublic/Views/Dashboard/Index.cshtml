@@ -47,7 +47,7 @@
             },
             events:function(info, successCallback, failureCallback) {
                 var model = {start : info.startStr, end : info.endStr };
-                $.post("@Context.Items["urlPrefix"]@Url.Action("ListedNotes","Dashboard")",model,function(result){
+                $.post(GetWebSiteURL('@Url.Action("ListedNotes", "Dashboard")'),model,function(result){
                      var events = result.Data;
                      successCallback(events);
                 });
@@ -62,7 +62,7 @@
         });
         calendar.render();
 
-        $.get("@Context.Items["urlPrefix"]@Url.Action("GetCurrentLatAndLon","Dashboard")",function(data){
+        $.get(GetWebSiteURL('@Url.Action("GetCurrentLatAndLon", "Dashboard")'),function(data){
             console.log(`This.${data.Data.Lot},${data.Data.Lat}`)
         })
     });
@@ -75,8 +75,8 @@
     //兩個圖表全域
     var chartWaterUseMonitor;
     var chartCompareWaterUse;
-    let barchatpopurl = "@Context.Items["urlPrefix"]@Url.Action("Fancybox_modalBarchart","Dashboard")";
-    let waternotepopurl = "@Context.Items["urlPrefix"]@Url.Action("Fancybox_tableChart","Dashboard")";
+    let barchatpopurl = GetWebSiteURL('@Url.Action("Fancybox_modalBarchart", "Dashboard")');
+    let waternotepopurl = GetWebSiteURL('@Url.Action("Fancybox_tableChart", "Dashboard")');
     let AbnormalList;
     let LASTMONTH_METER = 0;
     let THISMONTH_METER = 0;
@@ -93,7 +93,7 @@
        // chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'));
        //chartWaterUseMonitor = echarts.init(document.getElementById('ChartWaterUseMonitor'));
         $('#divNAME').html('歡迎  載入中！');  //名稱
-        $.get("@Context.Items["urlPrefix"]@Url.Action("GetDashMainData","Dashboard")", function(result){
+        $.get(GetWebSiteURL('@Url.Action("GetDashMainData", "Dashboard")'), function(result){
             //console.log(result);
             if(result.Success){
 
@@ -204,7 +204,7 @@
         // 創建一個 Promise 對象，包裝 $.get 方法
         const getData = () => {
             return new Promise((resolve, reject) => {
-                $.get("@Context.Items["urlPrefix"]@Url.Action("GetWaterFee2","Dashboard")", function(data) {
+                $.get(GetWebSiteURL('@Url.Action("GetWaterFee2", "Dashboard")'), function(data) {
                     if (data.Success) {
                         resolve(data);
                     } else {
@@ -234,7 +234,7 @@
         // 創建一個 Promise 對象，包裝 $.get 方法
         const getData = () => {
             return new Promise((resolve, reject) => {
-                $.get("@Context.Items["urlPrefix"]@Url.Action("GetWaterFee3","Dashboard")", function(data) {
+                $.get(GetWebSiteURL('@Url.Action("GetWaterFee3", "Dashboard")'), function(data) {
                     if (data.Success) {
                         resolve(data);
                     } else {
@@ -459,7 +459,7 @@
             Cdate :$("#divWaterUserSearchChartTitle").data("themeswitchchart"),
             timespilt: $(".timesplit.btn-green-o.active").data("timesplit")
         };
-        $.post("@Context.Items["urlPrefix"]@Url.Action("GetDashWaterAnalyer","Dashboard")", model ,function(result){
+        $.post(GetWebSiteURL('@Url.Action("GetDashWaterAnalyer", "Dashboard")'), model ,function(result){
             if(result.Success){
                 //console.log(result)
                 @*給業務版的邏輯(有小數)*@
@@ -578,7 +578,7 @@
 
     function OpenContactPerson(){
         $("#modcontactpersonbody").empty();
-        $.get("@Context.Items["urlPrefix"]@Url.Action("GetContactPersonData", "Dashboard")", function(result){
+        $.get(GetWebSiteURL('@Url.Action("GetContactPersonData", "Dashboard")'), function(result){
             if(result.Success){
                 //console.log(result.Data);
                 // 檢查 FACTORY 或 TEL 是否為空或 null
@@ -613,7 +613,7 @@
 
     /* 以條件生成 Listed 查詢條件 */
     function GetTableQueryString() {
-        return '@Context.Items["urlPrefix"]@Url.Action("ListedExceptionState", "Dashboard")'
+        return GetWebSiteURL('@Url.Action("ListedExceptionState", "Dashboard")')
     }
 
     function ReloadTable(result){

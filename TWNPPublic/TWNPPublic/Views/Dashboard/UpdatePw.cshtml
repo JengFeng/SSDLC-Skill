@@ -65,7 +65,7 @@
 
   function submitForm(){
 
-        let url = "@Context.Items["urlPrefix"]@Url.Action("UpdatePw","Dashboard")";
+        let url = GetWebSiteURL('@Url.Action("UpdatePw", "Dashboard")');
         let model = {
             Pwd : $("#Pwd").val(),
             PasswordNew1 : $("#PasswordNew1").val(),
@@ -80,7 +80,7 @@
             success: function (data) {
                 if (data.Success) {
                     alert(data.Message);
-                    window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Index","Dashboard")";
+                    window.location.href = GetWebSiteURL('@Url.Action("Index", "Dashboard")');
                 }
                 else {
                      $("#Other").empty();

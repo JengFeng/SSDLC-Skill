@@ -42,7 +42,7 @@
         let searchParams = new URLSearchParams(data);
 
         $("#fbversion").busyLoad("show");
-        window.location.href = "@Context.Items["urlPrefix"]@Url.Action("Fancybox_detailsTable","Dashboard")?" + searchParams;
+        window.location.href = GetWebSiteURL('@Url.Action("Fancybox_detailsTable", "Dashboard")?') + searchParams;
     }
 </script>
 <div class="wrap-page">
