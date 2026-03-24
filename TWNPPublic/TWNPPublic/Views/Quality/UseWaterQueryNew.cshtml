@@ -80,7 +80,7 @@
                     <li class="breadcrumb-item active" aria-current="page">用水量查詢</li>
                 </ol>
             </nav>
-            <div class="search-inline row">
+            <div class="row">
                 <div class="mb-3 col-lg-3">
                     <label for="form-name" class="form-label">X軸維度</label>
                     <select class="form-select" id="form-name" aria-label="請選擇值">
@@ -91,69 +91,74 @@
                         <option value="year">年</option>
                     </select>
                 </div>
-                <div class="mb-3 col-lg-4">
+                <div class="mb-3 col-lg-9">
+                    <!-- 日期分隔符號和日期迄 -->
                     <label class="form-label"><i class="bi bi-search"></i>日期起</label>
-                   @*  <input type="date" id="inputStartTime" class="form-control mb-3 col-xs-6 col-lg-6"> *@
-                    <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputStartTime" readonly>
-                </div>
-                <!-- 日期分隔符號和日期迄 -->
-                <div class="d-flex align-items-center col-lg-5">
-                    <div class="col-auto">
-                        <span>~</span>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" data-datetime="0" data-months="0" id="inputEndTime" readonly>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputStartTime" readonly>
+                        </div>
+                        <div class="col-auto">~</div>
+                        <div class="col">
+                            <input type="text" class="form-control" data-datetime="0" data-months="0" id="inputEndTime" readonly>
+                        </div>
+                    </div>     
 
+                </div>
                 <div class="mb-3 col-lg-6 checkbox-all">
                     <label class="form-label"><i class="bi bi-search"></i> 套疊</label>
-                    <div class="d-flex">
-                        <div class="form-check me-3 checkbox-group" id="checkbox-group-day">
+                    <div>
+                        <div class="form-check form-check-inline checkbox-group" id="checkbox-group-day">
                             <input class="form-check-input" type="checkbox" id="checkbox-day" value="day">
                             <label class="form-check-label" for="checkbox-day">
                                 前一日同期
                             </label>
                         </div>
-
-                        <div class="form-check me-3 checkbox-group" id="checkbox-group-month">
+                        <div class="form-check form-check-inline checkbox-group" id="checkbox-group-month">
                             <input class="form-check-input" type="checkbox" id="checkbox-month" value="month">
                             <label class="form-check-label" for="checkbox-month">
                                 前一個月同期
                             </label>
                         </div>
-
-                        <div class="form-check me-3 checkbox-group" id="checkbox-group-year">
+                        <div class="form-check form-check-inline checkbox-group" id="checkbox-group-year">
                             <input class="form-check-input" type="checkbox" id="checkbox-year" value="year">
                             <label class="form-check-label" for="checkbox-year">
                                 去年同期
                             </label>
                         </div>
-                    </div>
-                </div>
-                <div class="mb-3 col-lg-6 checkbox-all-v">
-                    <label class="form-label"><i class="bi bi-search"></i>同用水種別比較</label>
-                    <div class="form-check me-3 checkbox-group-water">
-                        <input class="form-check-input" type="checkbox" id="checkbox-type" value="waterType">
-                        <label class="form-check-label" for="checkbox-type">
-                            同用水種別前一年度平均用水量
-                        </label>
-                    </div>
-                </div>
 
+                    </div>
+                </div> 
+                <div class="mb-3 col-lg-6 checkbox-all-v">
+                    <label class="form-label"><i class="bi bi-search"></i> 同用水種別比較</label>
+                    <div>
+                        <div class="form-check form-check-inline checkbox-group-water">
+                            <input class="form-check-input" type="checkbox" id="checkbox-type" value="waterType">
+                            <label class="form-check-label" for="checkbox-type">
+                                同用水種別前一年度平均用水量
+                            </label>
+                        </div>
+                    </div>
+                </div>                
             </div>
-            <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
+            <div class="btnGroup">
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
                 <a class="btn-lightGrey-o" href="javascript:;" onclick="btnReset()">重製</a>
             </div>
-            <div class="container">
-                <div class="data-container">
-                    <div class="lowheighBackground">
-                        <p id="a"></p>
-                        <p id="b"></p>
+            <hr class="border-secondary" />
+
+            <div class="container-fluid p-0">
+                <div class="row">
+                    <div class="col">
+                        <div class="lowheighBackground p-3">
+                            <p id="a"></p>
+                            <p id="b"></p>
+                        </div>
                     </div>
-                    <div id="waterTypeContainer" class="waterTypeBackground" style="display: none;">
-                        <p id="c"></p>
+                    <div class="col d-none">
+                        <div id="waterTypeContainer p-3" class="waterTypeBackground">
+                            <p id="c"></p>
+                        </div>
                     </div>
                 </div>
             </div>

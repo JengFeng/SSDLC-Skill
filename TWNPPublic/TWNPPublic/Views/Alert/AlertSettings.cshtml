@@ -525,20 +525,23 @@
                     基本資料
                 </div>
                 <div class="formGroup">
-                    <div class="mb-3 row">
-                        <label for="inputText" class="col-sm-3 col-form-label">
-                            <span style="color:red">*</span>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <label for="inputText" class="col-sm-4 col-lg-2 form-label">
+                            <span style="width:1rem; color:red;">*</span>
                             <i class="bi bi-phone"></i> 聯繫電話設定
                         </label>
-                        <div class="col-sm-3">
+                        <div class="col">
                             <input type="text" class="form-control" id="AlertPhone" placeholder="0901001001" autocomplete="off">
                             <span class="text-danger" id="dangerAlertPhone"></span>
                         </div>
                     </div>
-                    <div class="mb-3 row">
-                        <label for="inputEmail1" class="col-sm-3 col-form-label"><i class="bi bi-mailbox"></i> 電子郵件設定</label>
+                    <div class="mb-3 row g-3 align-items-center">
+                        <label for="inputEmail1" class="col-sm-4 col-lg-2 form-label">
+                            <span class="d-inline-flex" style="width:1rem;"></span>
+                            <i class="bi bi-mailbox"></i> 電子郵件設定
+                        </label>
                         <div class="col">
-                            <div class="row row-cols-1 row-cols-md-3">
+                            <div class="row row-cols-1 row-cols-md-2">
                                 <div class="col mb-2">
                                     <input type="text" class="form-control" id="AlertEmail1" name="AlertEmail1" placeholder="some@mail.com" autocomplete="off">
                                     <span class="text-danger" id="dangerAlertEmail1"></span>
@@ -570,39 +573,43 @@
                     <i class="bi bi-volume-up-fill"></i>
                     用水提醒
                 </div>
-                <div class="row row-cols-4 py-2 mb-4">
-                    <div class="col">
+                <div class="row py-2 mb-4">
+                    <div class="col-12 col-md">
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="checkbox1" value="650" id="checkbox1">
-                                <label class="form-check-label" for="每日用水上限提醒">
+                                <label class="form-check-label" for="checkbox1">
                                     每日用水上限提醒
                                 </label>
                             </div>
                         </div>
-                        <div id="waterLimit">
-                            <div>用水上限度數</div>
-                            <div class="row align-items-center g-1">
-                                <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert650Extion01"></div>
-                                <div class="col-auto">度</div>
+                        <div id="waterLimit" class="row align-items-center g-1 ms-4">
+                            <div class="col-auto">用水上限度數</div>
+                            <div class="col">
+                                <div class="row align-items-center g-1">
+                                    <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert650Extion01"></div>
+                                    <div class="col-auto">度</div>
+                                </div>
                             </div>
                         </div>
                         
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md">
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="checkbox2" value="651" id="checkbox2">
-                                <label class="form-check-label" for="每期用水預算提醒">
+                                <label class="form-check-label" for="checkbox2">
                                     每期用水預算提醒
                                 </label>
                             </div>
                         </div>
-                        <div id="budgetLimit">
-                            <div>用水預算上限</div>
-                            <div class="row align-items-center g-1">
-                                <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert651Extion01"></div>
-                                <div class="col-auto">元</div>
+                        <div id="budgetLimit" class="row align-items-center g-1 ms-4">
+                            <div class="col-auto">用水預算上限</div>
+                            <div class="col">
+                                <div class="row align-items-center g-1">
+                                    <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert651Extion01"></div>
+                                    <div class="col-auto">元</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -640,87 +647,125 @@
                     </div>
                 </div> *@
 
-                <div class="unitTitle">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    警訊設定管理
-                    <div class="d-flex mx-4 align-items-center">
-                        開啟
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" @*onclick="btnonoffswitch(this)"*@>
-                            <label class="onoffswitch-label" for="myonoffswitch1" id="lbmyonoffswitch1">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
+                <div class="row pb-2 align-items-center" style="border-bottom: 1px solid #EBF7F5;">
+                    <div class="col-auto">
+                        <div class="unitTitle border-bottom-0">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            警訊設定管理
                         </div>
-                        關閉
+                    </div>
+                    <div class="col-auto">
+                        <div class="d-flex ms-5 align-items-center">
+                            開啟
+                            <div class="onoffswitch mx-3">
+                                <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" @*onclick="btnonoffswitch(this)"*@>
+                                <label class="onoffswitch-label" for="myonoffswitch1" id="lbmyonoffswitch1">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                            關閉
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-12 col-lg-12">
-                        <div class="formGroup">
-                            <div class="title d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox" name="checkbox3" value="100">
-                                <span class="mx-2" style="color:red">日用水量</span>(前日24:00至昨日24:00)
+                        <div class="p-2">
+                            <div class="title form-check">
+                                <input class="form-check-input" id="waterUsageDaily" type="checkbox" name="checkbox3" value="100">
+                                <label class="form-check-label" for="waterUsageDaily">
+                                    <span class="mx-2 text-danger">日用水量</span>(前日24:00至昨日24:00)
+                                </label>
                             </div>
                             <div class="ms-5">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio1" value="103">
-                                    <label class="form-check-label row">
-                                        較前日比較超過
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio1" value="103">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">
+                                                較前日比較超過
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert103Extion01">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                度且突增
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert103Extion02">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                %(含)以上，用水減少
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert103Extion03">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                度且突減
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert103Extion04">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                %(含)以下
+                                            </div>
                                         </div>
-                                        度且突增
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion02">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以上，用水減少
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion03">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        度且突減
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert103Extion04">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以下
                                     </label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio1" value="104">
-                                    <label class="form-check-label row">
-                                        較上月日平均用水超過
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio1" value="104">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">
+                                                較上月日平均用水超過
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert104Extion01">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                度且突增
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert104Extion02">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                %(含)以上，用水減少
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert104Extion03">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                度且突減
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code100Alert104Extion04">
+                                                <span class="text-danger" autocomplete="off"></span>
+                                            </div>
+                                            <div class="col-auto">
+                                                %(含)以下
+                                            </div>
+
                                         </div>
-                                        度且突增
                                         <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion02">
-                                            <span class="text-danger" autocomplete="off"></span>
                                         </div>
-                                        %(含)以上，用水減少
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion03">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        度且突減
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code100Alert104Extion04">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以下
                                     </label>
                                 </div>
                             </div>
-
-                            <div class="title d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox" name="checkbox4" value="646">
-                                <span class="mx-2" style="color:red">週用水量</span>警示
+                        </div>
+                        <div class="p-2">
+                            <div class="title form-check">
+                                <input class="form-check-input" id="weeklyWaterUsage" type="checkbox" name="checkbox4" value="646">
+                                <label class="form-check-label" for="weeklyWaterUsage">
+                                    <span class="mx-2 text-danger">週用水量</span>警示
+                                </label>
                             </div>
                             <div class="ms-5">
                                 <div class="form-check">
@@ -776,121 +821,173 @@
                                     </label>
                                 </div>
                             </div>
-                           
-                            <div class="title d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox" name="checkbox5" value="101">
-                                <span class="mx-2" style="color:red">月用水量</span>警示
+                        </div>
+                        <div class="p-2">
+                            <div class="title form-check">
+                                <input class="form-check-input" id="monthlyWaterUsage" type="checkbox" name="checkbox5" value="101">
+                                <label class="form-check-label" for="monthlyWaterUsage">
+                                    <span class="mx-2 text-danger">月用水量</span>警示
+                                </label>
                             </div>
+
                             <div class="ms-5">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio3" value="105">
-                                    <label class="form-check-label row" for="radio12">
-                                        較上月用水超過
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
+                                <!-- 第一組 -->
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio3" value="105">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">較上月用水超過</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert105Extion01">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">度且突增</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert105Extion02">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">%(含)以上，用水減少</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert105Extion03">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">度且突減</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert105Extion04">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">%(含)以下</div>
                                         </div>
-                                        度且突增
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion02">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以上，用水減少
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion03">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        度且突減
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert105Extion04">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以下
                                     </label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio3" value="106">
-                                    <label class="form-check-label row" for="radio12">
-                                        較去年同期用水超過
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
+
+                                <!-- 第二組 -->
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio3" value="106">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">較去年同期用水超過</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert106Extion01">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">度且突增</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert106Extion02">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">%(含)以上，用水減少</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert106Extion03">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">度且突減</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code101Alert106Extion04">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">%(含)以下</div>
                                         </div>
-                                        度且突增
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion02">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以上，用水減少
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion03">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        度且突減
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code101Alert106Extion04">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        %(含)以下
-                                    </label>
-                                </div>
-                            </div>
-                           
-                            <div class="title d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox" name="checkbox6" value="108">
-                                <span class="mx-2" style="color:red">連續用水</span>警示
-                            </div>
-                            <div class="ms-5">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio4" value="108">
-                                    <label class="form-check-label row" for="radio12">
-                                        水表持續運轉已達
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert108Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        日(含)以上
-                                    </label>
-                                </div>
-                            </div>
-                           
-                            <div class="title d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox" name="checkbox7" value="107">
-                                <span class="mx-2" style="color:red">連續無用水</span>警示
-                            </div>
-                            <div class="ms-5">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio5" value="107">
-                                    <label class="form-check-label row" for="radio12">
-                                        水表持續未運轉已達
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert107Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
-                                        </div>
-                                        日(含)以上
                                     </label>
                                 </div>
                             </div>
-                          
-                            <div class="title d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox" name="checkbox8" value="649">
-                                <span class="mx-2" style="color:red">夜間用水增加</span>警示(01:00~05:00)
+                        </div>
+                        <div class="p-2">
+                            <div class="title form-check">
+                                <input class="form-check-input" id="continuousWaterUsage" type="checkbox" name="checkbox6" value="108">
+                                <label class="form-check-label" for="continuousWaterUsage">
+                                    <span class="mx-2 text-danger">連續用水</span>警示
+                                </label>
                             </div>
+
                             <div class="ms-5">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="radio6" value="649">
-                                    <label class="form-check-label row" for="radio12">
-                                        夜間用水超過
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert649Extion01">
-                                            <span class="text-danger" autocomplete="off"></span>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio4" value="108">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">水表持續運轉已達</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code102Alert108Extion01">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">日(含)以上</div>
                                         </div>
-                                        度且突增
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control" style="width:80px" id="Code102Alert649Extion02">
-                                            <span class="text-danger" autocomplete="off"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div><div class="p-2">
+                            <div class="title form-check">
+                                <input class="form-check-input" id="noWaterUsageContinuous" type="checkbox" name="checkbox7" value="107">
+                                <label class="form-check-label" for="noWaterUsageContinuous">
+                                    <span class="mx-2 text-danger">連續無用水</span>警示
+                                </label>
+                            </div>
+
+                            <div class="ms-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio5" value="107">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">水表持續未運轉已達</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code102Alert107Extion01">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">日(含)以上</div>
                                         </div>
-                                        %(含)以上
+                                    </label>
+                                </div>
+                            </div>
+                        </div><div class="p-2">
+                            <div class="title form-check">
+                                <input class="form-check-input" id="nightWaterUsageIncrease" type="checkbox" name="checkbox8" value="649">
+                                <label class="form-check-label" for="nightWaterUsageIncrease">
+                                    <span class="mx-2 text-danger">夜間用水增加</span>警示
+                                    <span class="text-muted">(01:00~05:00)</span>
+                                </label>
+                            </div>
+
+                            <div class="ms-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input mt-3" type="radio" name="radio6" value="649">
+                                    <label class="form-check-label">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-auto">夜間用水超過</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code102Alert649Extion01">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">度且突增</div>
+
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" style="width:8rem" id="Code102Alert649Extion02">
+                                                <span class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-auto">%(含)以上</div>
+                                        </div>
                                     </label>
                                 </div>
                             </div>

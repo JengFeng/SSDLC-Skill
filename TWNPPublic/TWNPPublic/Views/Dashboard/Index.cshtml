@@ -616,29 +616,42 @@
         return GetWebSiteURL('@Url.Action("ListedExceptionState", "Dashboard")')
     }
 
-    function ReloadTable(result){
+        function ReloadTable(result) {
         let pagesize = 3;
 
-        // 函數化，避免重複
+        function setChartBoxHeight() {
+            var unitTitleHeight = $(".unitTitleHeight")[0]?.clientHeight || 0;
+            $('.chartBox').css('height', 'calc(100% - ' + unitTitleHeight + 'px)');
+        }
+
         function initializeChart() {
-            var chartBoxHeight = $(".chartBox")[0].clientHeight- 45;;
+            var chartBoxHeight = $(".chartBox")[0].clientHeight - 45;
+
+            if (chartCompareWaterUse) {
+                chartCompareWaterUse.dispose();
+            }
+
             chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'), null, {
-                height: `${chartBoxHeight}` // 使用模板字串
+                height: chartBoxHeight
             });
+
             InitCompareChart(result.Data.LASTYEAR_METER, result.Data.LASTMONTH_METER, result.Data.THISMONTH_METER);
             DashSlowQuery();
         }
 
-        if(AbnormalList == null){
+        if (AbnormalList == null) {
             $("#tbB_Message").footable();
-            initializeChart();
-        }
-        else{
+        } else {
             LoadPaginate(AbnormalList.length, 3);
             InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
             $("#tbB_Message").footable();
-            initializeChart();
         }
+
+        setChartBoxHeight();
+
+        setTimeout(function () {
+            initializeChart();
+        }, 50);
     }
 
     /* 現在頁數 */
@@ -756,11 +769,11 @@
         });
     });
 
-    $(function(){
-        var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
-        var total = unitTitleHeight;
-        $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
-    });
+    // $(function(){
+    //     var unitTitleHeight = $(".unitTitleHeight")[0].clientHeight;
+    //     var total = unitTitleHeight;
+    //     $('.chartBox').css('height','calc(100% - {total}px)'.replace('{total}',total));
+    // });
 </script>
 
 <script>
@@ -772,6 +785,8 @@
         })
     });
 </script>
+
+
 <div class="wrap">
     <partial name="_FadeModalPartial" />
     <partial name="_MenuPartial" />

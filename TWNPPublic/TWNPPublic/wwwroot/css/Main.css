@@ -90,8 +90,9 @@ input[class*="btn-"] {
     border: 0;
 }
 
-input[class*="btn-"] {
+input[class*="btn-"], button[class*="btn-"] {
     border: 0;
+    padding: 0 10px;
 }
 
 a[class*="btn-"] > i {
@@ -675,25 +676,26 @@ ul.marquee {
 @media (max-width: 1024px) {
     .mainArea {
         display: block;
-        flex-direction: inherit;
+        /*flex-direction: inherit;*/
+        /*flex-direction:column;*/
         overflow: auto;
     }
 
     .chartInfoGroup {
         flex: none;
-        display: block;
-        flex-direction: inherit;
+        /*display: block;
+        flex-direction: inherit;*/
+        display: flex;
+        flex-direction: column;
         align-items: unset;
-        width: 100%;
-        height: auto;
-        overflow-y: auto;
-        overflow-x: hidden;
+
     }
 
-    .chartGroup {
-        flex: none;
-        display: block;
-    }
+        .chartGroup {
+            flex: none;
+            display: block;
+            height: 400px;
+        }
 
     .chartItem {
         display: block;

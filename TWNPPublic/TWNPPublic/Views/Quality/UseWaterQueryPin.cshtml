@@ -80,42 +80,330 @@
                     <input type="text" class="form-control mb-3 col-xs-6 col-lg-6" id="inputEndTime">
                 </div>
             </div> *@
-            <div class="search-inline row">
-                <div class="mb-3 col-12">
-                    <label class="form-label">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label class="form-label mb-3">
                         <i class="bi bi-search"></i>日期起
                     </label>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <input type="text" class="form-control mb-3" id="inputStartTime" readonly>
-                        <span class="mx-2">~</span>
-                        <input type="text" class="form-control mb-3" id="inputEndTime" readonly>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputStartTime" readonly>
+                        </div>
+                        <div class="col-auto">~</div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEndTime" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- 包覆顯示時段的區塊 -->
-            <div id="hourSelection" class="search-inline row">
-                <div class="mb-3 col-xs-12 col-lg-12">
-                    <label class="form-label">
-                        <i class="bi bi-search"></i>顯示時段(請務必選擇6個時段不可超過)
-                    </label>
-                    <div class="d-flex flex-wrap">
-                        @foreach (var hour in ViewBag.HourList)
-                        {
-                            <div class="form-check me-3 checkbox-group">
-                                <input class="form-check-input" type="checkbox" id="checkbox-@hour" value="@hour">
-                                <label class="form-check-label" for="checkbox-@hour">
-                                    @hour 時
-                                </label>
-                            </div>
-                        }
-                    </div>
+            <div id="hourSelection">
+                <label class="form-label mb-3">
+                    <i class="bi bi-search"></i>顯示時段(請務必選擇6個時段不可超過)
+                </label>
+                <div class="px-4">
+                    @foreach (var hour in ViewBag.HourList)
+                    {
+                        <div class="form-check form-check-inline checkbox-group">
+                            <input class="form-check-input" type="checkbox" id="checkbox-@hour" value="@hour">
+                            <label class="form-check-label" for="checkbox-@hour">
+                                @hour 時
+                            </label>
+                        </div>
+                    }
                 </div>
+                
             </div>
-            <div class="btnGroup" style="border-bottom: 1px solid #EBF7F5;padding-bottom:25px">
+            <div class="btnGroup my-4">
                 <a class="btn-green-o" href="javascript:;" onclick="btnSearch()">查詢</a>
                 <a class="btn-lightGrey-o" href="javascript:;" onclick="btnExport()">下載</a>
                 <a class="btn-blue-o" href="javascript:;" onclick="btnCover()">資料回寫</a>
             </div>
+            <hr />
+
+            <div class="container py-5">
+                <h2 class="mb-4 text-center fw-bold text-secondary">每日用水量紀錄</h2>
+
+                <div class="row row-cols-1 g-3">
+
+                    <!-- 卡片 1 (2026/03/01) -->
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-2 p-lg-4">
+                                <!-- 使用 row 網格系統 -->
+                                <div class="row align-items-center g-3">
+
+                                    <!-- 1. 日期群組 (col-4) -->
+                                    <div class="col-12 col-lg-2 position-relative">
+                                        <div class="bg-primary text-white rounded-3 py-2 px-3 fw-bold text-center w-100">
+                                            <i class="bi bi-calendar-event d-none d-sm-inline-block me-1"></i>2026/03/01
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 2. 00:00~24:00 用水量群組 (col-4) -->
+                                    <div class="col-12 col-lg-3 position-relative">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">00:00~24:00用水量</div>
+                                        <div class="row gap-2 text-center">
+                                            <div class="col border-end">
+                                                <span class="d-block text-muted lh-1 mb-1">估算量</span>
+                                                <strong class="text-dark">0</strong>
+                                            </div>
+                                            <div class="col">
+                                                <span class="d-block text-muted lh-1 mb-1">增減</span>
+                                                <strong class="text-success">-100%</strong>
+                                            </div>
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 3. 指針數群組 (col-4) -->
+                                    <div class="col-12 col-lg-7">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">回傳指針數</div>
+                                        <div class="row px-3 gap-1">
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">00時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">03時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">06時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">09時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">12時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">15時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 1 (2026/03/01) -->
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-2 p-lg-4">
+                                <!-- 使用 row 網格系統 -->
+                                <div class="row align-items-center g-3">
+
+                                    <!-- 1. 日期群組 (col-4) -->
+                                    <div class="col-12 col-lg-2 position-relative">
+                                        <div class="bg-primary text-white rounded-3 py-2 px-3 fw-bold text-center w-100">
+                                            <i class="bi bi-calendar-event d-none d-sm-inline-block me-1"></i>2026/03/01
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 2. 00:00~24:00 用水量群組 (col-4) -->
+                                    <div class="col-12 col-lg-3 position-relative">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">00:00~24:00用水量</div>
+                                        <div class="row gap-2 text-center">
+                                            <div class="col border-end">
+                                                <span class="d-block text-muted lh-1 mb-1">估算量</span>
+                                                <strong class="text-dark">0</strong>
+                                            </div>
+                                            <div class="col">
+                                                <span class="d-block text-muted lh-1 mb-1">增減</span>
+                                                <strong class="text-success">-100%</strong>
+                                            </div>
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 3. 指針數群組 (col-4) -->
+                                    <div class="col-12 col-lg-7">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">回傳指針數</div>
+                                        <div class="row px-3 gap-1">
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">00時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">03時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">06時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">09時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">12時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">15時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 1 (2026/03/01) -->
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-2 p-lg-4">
+                                <!-- 使用 row 網格系統 -->
+                                <div class="row align-items-center g-3">
+
+                                    <!-- 1. 日期群組 (col-4) -->
+                                    <div class="col-12 col-lg-2 position-relative">
+                                        <div class="bg-primary text-white rounded-3 py-2 px-3 fw-bold text-center w-100">
+                                            <i class="bi bi-calendar-event d-none d-sm-inline-block me-1"></i>2026/03/01
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 2. 00:00~24:00 用水量群組 (col-4) -->
+                                    <div class="col-12 col-lg-3 position-relative">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">00:00~24:00用水量</div>
+                                        <div class="row gap-2 text-center">
+                                            <div class="col border-end">
+                                                <span class="d-block text-muted lh-1 mb-1">估算量</span>
+                                                <strong class="text-dark">0</strong>
+                                            </div>
+                                            <div class="col">
+                                                <span class="d-block text-muted lh-1 mb-1">增減</span>
+                                                <strong class="text-success">-100%</strong>
+                                            </div>
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 3. 指針數群組 (col-4) -->
+                                    <div class="col-12 col-lg-7">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">回傳指針數</div>
+                                        <div class="row px-3 gap-1">
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">00時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">03時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">06時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">09時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">12時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">15時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片 1 (2026/03/01) -->
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-2 p-lg-4">
+                                <!-- 使用 row 網格系統 -->
+                                <div class="row align-items-center g-3">
+
+                                    <!-- 1. 日期群組 (col-4) -->
+                                    <div class="col-12 col-lg-2 position-relative">
+                                        <div class="bg-primary text-white rounded-3 py-2 px-3 fw-bold text-center w-100">
+                                            <i class="bi bi-calendar-event d-none d-sm-inline-block me-1"></i>2026/03/01
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 2. 00:00~24:00 用水量群組 (col-4) -->
+                                    <div class="col-12 col-lg-3 position-relative">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">00:00~24:00用水量</div>
+                                        <div class="row gap-2 text-center">
+                                            <div class="col border-end">
+                                                <span class="d-block text-muted lh-1 mb-1">估算量</span>
+                                                <strong class="text-dark">0</strong>
+                                            </div>
+                                            <div class="col">
+                                                <span class="d-block text-muted lh-1 mb-1">增減</span>
+                                                <strong class="text-success">-100%</strong>
+                                            </div>
+                                        </div>
+                                        <!-- 電腦版垂直分隔線 -->
+                                        <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                    </div>
+
+                                    <!-- 3. 指針數群組 (col-4) -->
+                                    <div class="col-12 col-lg-7">
+                                        <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">回傳指針數</div>
+                                        <div class="row px-3 gap-1">
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">00時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">03時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">06時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">09時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">12時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                            <div class="col col-sm bg-light rounded text-center">
+                                                <span class="d-block text-secondary lh-1 pt-2">15時</span>
+                                                <strong class=" lh-1">596</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
             <span id="spanError">資料查詢中.....</span>
             <!-- 水表指針比較：表格顯示區 -->
             <div id="comparisonView">
@@ -205,7 +493,7 @@
                 </div>                  
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-blue-o" onclick="btnDataCoverSubmit()" id="btnCover">確認回寫</button>
+                <button type="button" class="btn btn-primary" onclick="btnDataCoverSubmit()" id="btnCover">確認回寫</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
             </div>
         </div>

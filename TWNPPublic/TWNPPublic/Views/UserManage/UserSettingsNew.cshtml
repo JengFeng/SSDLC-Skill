@@ -189,7 +189,7 @@
                 用戶密碼管理
             </div>
             <form id="FormAccount">
-                <div class="formGroup" style="padding:15px 60px">
+                <div class="formGroup">
                     <div class="mb-3 row">
                         <label for="Account" class="col-sm-3 col-form-label">
                             <span style="color:red"></span>
@@ -241,7 +241,7 @@
                     </div>
                     <span class="text-danger" id="spanWaterNO">
                     </span>
-                    <div class="formGroup" id="divWaterNoFromGroup" style="padding:15px 60px">
+                    <div class="formGroup" id="divWaterNoFromGroup">
                     </div>
                 }
                 <div class="unitTitle justify-content-between">
@@ -250,36 +250,58 @@
                             自動讀表期滿通知
                         </div>
                 </div>
-                <div class="formGroup" style="padding:15px 50px">
-                     <div class="mb-2" >
-                        <div class="d-flex align-items-center">
-                            <label class="col-form-label">自動讀表驗收次日日期:</label>
-                            <span class="me-4" id="QualifyDate">2025/01/05</span>
-                            <label class="col-form-label" >保固截止日:</label>
-                            <span class="" id="WarrantyDate">2025/12/31</span>
+                <div class="formGroup">
+                    <div class="border rounded-3 bg-white shadow-sm p-3 mb-3">
+                        <!-- 日期區 -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-md-6">
+                                <div class="bg-primary-subtle border border-primary-subtle rounded-3 px-3 py-2 h-100">
+                                    <div class="small text-secondary mb-1">
+                                        <i class="bi bi-calendar-check text-primary me-1"></i>
+                                        自動讀表驗收次日日期
+                                    </div>
+                                    <div class="fw-semibold" id="QualifyDate">2025/01/05</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="bg-danger-subtle border border-danger-subtle rounded-3 px-3 py-2 h-100">
+                                    <div class="small text-secondary mb-1">
+                                        <i class="bi bi-shield-check text-danger me-1"></i>
+                                        保固截止日
+                                    </div>
+                                    <div class="fw-semibold text-danger" id="WarrantyDate">2025/12/31</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ps-3">
-                            <div>
-                                <input type="checkbox" class="exp-date-checkbox" value="653">
-                                <label class="form-check-label me-5">
-                                    前一年
-                                </label>
+
+                        <!-- 到期提醒條件 -->
+                        <div class="">
+                            <div class="small text-secondary mb-2">
+                                <i class="bi bi-bell-fill text-warning me-1"></i>
+                                到期提醒條件
                             </div>
-                            <div>
-                                <input type="checkbox" class="exp-date-checkbox" value="654">
-                                <label class="form-check-label me-5">
-                                    半年前
-                                </label>
-                            </div>
-                            <div>
-                                <input type="checkbox" class="exp-date-checkbox" value="655">
-                                <label class="form-check-label me-5">
-                                    前三個月
-                                </label>
+
+                            <div class="d-flex flex-wrap gap-3 ps-1">
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input exp-date-checkbox" type="checkbox" value="653" id="expDate653">
+                                    <label class="form-check-label" for="expDate653">前一年</label>
+                                </div>
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input exp-date-checkbox" type="checkbox" value="654" id="expDate654">
+                                    <label class="form-check-label" for="expDate654">半年前</label>
+                                </div>
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input exp-date-checkbox" type="checkbox" value="655" id="expDate655">
+                                    <label class="form-check-label" for="expDate655">前三個月</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            
             </form>
             <div class="btnGroup">
                 <a class="btn-green-o" href="javascript:;" onclick="btnSave()">儲存</a>
@@ -290,7 +312,7 @@
 </div><!-- wrap end -->
 
 <script type="text/template" data-template="TemplateWaterNoitem" id="TemplateWaterNoitem">
-    <div class="row py-4 px-2 mb-4 border rounded-3" id="WaterNoItem${Index}">
+    @* <div class="row py-4 px-2 mb-4 border rounded-3" id="WaterNoItem${Index}">
         <label class="col-sm-1 col-form-label"><i class="bi bi-pin-angle-fill"></i>水號</label>
         <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
             <label class="col-sm-2 col-form-label" name="WaterNo[]">${WATER_NO}</label>
@@ -304,6 +326,58 @@
             <label class="col-sm-5 col-form-label">${NAME_DAES}</label>
             <label class="col-sm-1 col-form-label">用水地址</label>
             <label class="col-sm-5 col-form-label">${ADDRESS_DAES}</label>
+        </div>
+    </div> *@
+
+    <div class="border rounded-3 p-3 mb-4" id="WaterNoItem${Index}">
+        <!-- 第一列 -->
+        <div class="row g-3 align-items-center mb-2">
+            <div class="col-12 col-lg-2 d-flex align-items-center">
+                <span class="me-2 text-dark">
+                    <i class="bi bi-pin-angle-fill"></i>
+                </span>
+                <span class="me-2">水號</span>
+                <span name="WaterNo[]">${WATER_NO}</span>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3 d-flex align-items-center">
+                <label class="me-2 mb-0 flex-shrink-0">暱稱</label>
+                <input type="text" class="form-control" value="${NICK_NAME}">
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+                <div class="form-check mb-0">
+                    <input
+                        class="form-check-input nickname-checkbox"
+                        type="checkbox"
+                        id="nicknameShow${Index}"
+                        ${NICK_NAME_SHOW == 1 ? "checked" : ""}>
+                    <label class="form-check-label" for="nicknameShow${Index}">
+                        下拉切換顯示暱稱
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二列 -->
+        <div class="row g-3">
+            <div class="col-12 col-lg-4">
+                <div class="bg-light rounded-3 border px-3 py-2 h-100">
+                    <div class="small text-secondary mb-1">
+                        <i class="bi bi-person-fill text-info me-1"></i>用戶姓名
+                    </div>
+                    <div class="fw-semibold text-dark">${NAME_DAES}</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-8">
+                <div class="bg-light rounded-3 border px-3 py-2 h-100">
+                    <div class="small text-secondary mb-1">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>用水地址
+                    </div>
+                    <div class="fw-semibold text-dark">${ADDRESS_DAES}</div>
+                </div>
+            </div>
         </div>
     </div>
 </script>
