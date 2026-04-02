@@ -396,7 +396,3 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/SyncDataBase/SyncWcf.csproj
-/SyncDataBase/Web.config
-/SyncDataBase/SyncWcf.csproj
-/SyncDataBase/Web.config
