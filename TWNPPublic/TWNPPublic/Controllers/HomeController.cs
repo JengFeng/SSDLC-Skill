@@ -68,13 +68,13 @@ namespace TWNPPublic.Controllers
                     var RealToken = model.AccessToken.AesDecryptExtened(KingErrandYours);
                     var tokenWaterNoAndTime = RealToken.Split('_');
 
-                    if (RealToken.Substring(0, 2) != "7D")
-                    {
-                        return Json(Failed(new
-                        {
-                            ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token", 1001));
-                    }
+                    //if (RealToken.Substring(0, 2) != "7D")
+                    //{
+                    //    return Json(Failed(new
+                    //    {
+                    //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+                    //    }, "Token Error,未合法的 Token", 1001));
+                    //}
 
                     string formatString = "yyyyMMddHHmmss";
                     string tokenDateTime = tokenWaterNoAndTime[1].ToString();
@@ -202,7 +202,7 @@ namespace TWNPPublic.Controllers
                         return Json(Failed(new
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error,未合法的 Token 非澎湖水號", 1001));
+                        }, "Token Error,未合法的 Token", 1001));
                     }
 
                     string formatString = "yyyyMMddHHmmss";
@@ -307,14 +307,14 @@ namespace TWNPPublic.Controllers
                     ));
             }
 
-            //檢查澎湖水號
-            if (WaterNo.Substring(0, 2) != "7D")
-            {
-                return Json(Failed(new
-                {
-                    ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Token Error,未合法的 Token 非澎湖水號", 1001));
-            }
+            ////檢查澎湖水號
+            //if (WaterNo.Substring(0, 2) != "7D")
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+            //    }, "Token Error,未合法的 Token 非澎湖水號", 1001));
+            //}
 
             //檢查是否為智慧水表
             if (!homeService.CheckWaterNoIsAutoMeter(WaterNo))
@@ -440,13 +440,13 @@ namespace TWNPPublic.Controllers
            var verifyTokenList = verifyToken.Split('_');
            string WaterNo = verifyTokenList[0];
 
-            if (verifyTokenList[0].Substring(0, 2) != "7D")
-            {
-                return Json(Failed(new
-                {
-                    ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Token Error,未合法的 Token", 1001));
-            }
+            //if (verifyTokenList[0].Substring(0, 2) != "7D")
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+            //    }, "Token Error,未合法的 Token", 1001));
+            //}
 
            
             string formatString = "yyyyMMddHHmmss";
@@ -514,13 +514,13 @@ namespace TWNPPublic.Controllers
             string WaterNo = verifyTokenList[0];
             DateTime dt = DateTime.Parse( verifyTokenList[1] );
 
-            if (verifyTokenList[0].Substring(0, 2) != "7D")
-            {
-                return Json(Failed(new
-                {
-                    ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Token Error,未合法的 Token", 1001));
-            }
+            //if (verifyTokenList[0].Substring(0, 2) != "7D")
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+            //    }, "Token Error,未合法的 Token", 1001));
+            //}
 
             //if (verifyTokenList[1] != dt.ToString("yyyy-MM-dd"))
             //{
@@ -593,13 +593,13 @@ namespace TWNPPublic.Controllers
             string WaterNo = verifyTokenList[0];
             DateTime dt = DateTime.Parse(verifyTokenList[1]);
 
-            if (verifyTokenList[0].Substring(0, 2) != "7D")
-            {
-                return Json(Failed(new
-                {
-                    ErrorCode = ApiErrorCode.TokenError.ToString(),
-                }, "Token Error,未合法的 Token", 1001));
-            }
+            //if (verifyTokenList[0].Substring(0, 2) != "7D")
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+            //    }, "Token Error,未合法的 Token", 1001));
+            //}
 
             //if (verifyTokenList[1] !=  dt.ToString("yyyy-MM-dd"))
             //{
