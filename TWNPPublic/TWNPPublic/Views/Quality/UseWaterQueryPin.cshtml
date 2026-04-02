@@ -121,7 +121,7 @@
             </div>
             <hr />
 
-            <div class="container py-5">
+           @*  <div class="container py-5">
                 <h2 class="mb-4 text-center fw-bold text-secondary">每日用水量紀錄</h2>
 
                 <div class="row row-cols-1 g-3">
@@ -401,12 +401,12 @@
 
 
                 </div>
-            </div>
+            </div> *@
 
 
             <span id="spanError">資料查詢中.....</span>
             <!-- 水表指針比較：表格顯示區 -->
-            <div id="comparisonView">
+            <!--  <div id="comparisonView">
                 <table id="data-table" border="1">
                     <thead>
                         @* <tr>
@@ -461,6 +461,21 @@
                         </tr> *@
                     </tbody>
                 </table>
+                <div>
+                    <span>說明:</span><br />
+                    <span>1.「估算用水量」以第六個時段指針值減去第一個時段指針值</span><br />
+                    <span>2.「回傳指針」抓取該時段第一筆訊號當時的指針值</span><br />
+                    <span>3.資料傳輸可能因環境與電信通訊等因素，造成訊息短暫未回傳情形，惟不影響計費正確性</span><br />
+                    <span>4.為避免資料載入時間過長，查詢期間限兩年內</span>
+                </div>
+            </div>-->
+
+            <div class="container py-5" id="comparisonView">
+                @* <h2 class="mb-4 text-center fw-bold text-secondary">每日用水量紀錄</h2> *@
+
+                <div class="row row-cols-1 g-3" id="data-container">
+                    <!-- JS 會將卡片動態渲染在這裡 -->
+                </div>
                 <div>
                     <span>說明:</span><br />
                     <span>1.「估算用水量」以第六個時段指針值減去第一個時段指針值</span><br />
@@ -663,9 +678,11 @@
             // 圖表模式下的查詢網址
             url = GetWebSiteURL('@Url.Action("WaterNoteTableChart4", "Dashboard")');
         } else {
-            //清除table
-            $("#data-table thead").empty();
-            $("#data-table tbody").empty();
+            // //清除table
+            // $("#data-table thead").empty();
+            // $("#data-table tbody").empty();
+            // 清空現有內容
+            $("#data-container").empty();
             // 表格模式下的查詢網址
             url = GetWebSiteURL('@Url.Action("WaterNoteTableChart3", "Dashboard")');
         }
@@ -702,7 +719,7 @@
                             if ($("#tabChart").hasClass("active")) {
                                 updateChart(result.Data);  // 圖表模式
                             } else {
-                                updateTable(result.Data);  // 表格模式
+                                updateCards(result.Data);  // 表格模式
                             }
                         }
                     } else {
@@ -794,6 +811,104 @@
             });
 
             tableBody.append(row);
+        });
+    }
+
+    // 根據返回的資料更新卡片版面
+    function updateCards(data) {
+        let container = $("#data-container");
+        container.empty(); // 清空現有內容
+
+        // 遍歷每一筆資料
+        data.forEach(function (item) {
+            // 1. 處理日期
+            let formattedDate = formatDate(item._date);
+
+            // 2. 處理估算量
+            let estimateText = item._estimate; // 若需取整數可加 .toFixed(0)
+
+            // 3. 處理增減與顏色 (轉換為 Bootstrap 的 text-class)
+            let differenceText = '';
+            let differenceClass = 'text-dark'; // 預設黑色
+
+            if (isNaN(item._difference)) {
+                differenceText = item._difference;
+            } else {
+                const differenceValue = Number(item._difference);
+                if (differenceValue > 0) {
+                    differenceText = differenceValue + " %↑";
+                    differenceClass = 'text-danger'; // Bootstrap 的紅色
+                } else if (differenceValue < 0) {
+                    differenceText = differenceValue + " %↓";
+                    differenceClass = 'text-success'; // Bootstrap 的綠色
+                } else if (differenceValue === 0) {
+                    differenceText = differenceValue + " % ";
+                } else {
+                    differenceText = differenceValue;
+                }
+            }
+
+            // 4. 動態生成「回傳指針數」的時段區塊 HTML
+            let timeBlocksHtml = '';
+            if (item._data && item._data.length > 0) {
+                item._data.forEach(function (timeData) {
+                    timeBlocksHtml += `
+                        <div class="col col-sm bg-light rounded text-center">
+                            <span class="d-block text-secondary lh-1 pt-2">${timeData._time}時</span>
+                            <strong class="lh-1">${timeData._amount}</strong>
+                        </div>
+                    `;
+                });
+            }
+
+            // 5. 組合單張卡片的完整 HTML
+            let cardHtml = `
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-2 p-lg-4">
+                            <div class="row align-items-center g-3">
+
+                                <!-- 1. 日期群組 -->
+                                <div class="col-12 col-lg-2 position-relative">
+                                    <div class="bg-primary text-white rounded-3 py-2 px-3 fw-bold text-center w-100">
+                                        <i class="bi bi-calendar-event d-none d-sm-inline-block me-1"></i>${formattedDate}
+                                    </div>
+                                    <!-- 電腦版垂直分隔線 -->
+                                    <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                </div>
+
+                                <!-- 2. 00:00~24:00 用水量群組 -->
+                                <div class="col-12 col-lg-3 position-relative">
+                                    <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">00:00~24:00用水量</div>
+                                    <div class="row gap-2 text-center">
+                                        <div class="col border-end">
+                                            <span class="d-block text-muted lh-1 mb-1">估算量</span>
+                                            <strong class="text-dark">${estimateText}</strong>
+                                        </div>
+                                        <div class="col">
+                                            <span class="d-block text-muted lh-1 mb-1">增減</span>
+                                            <strong class="${differenceClass}">${differenceText}</strong>
+                                        </div>
+                                    </div>
+                                    <!-- 電腦版垂直分隔線 -->
+                                    <div class="d-none d-lg-block position-absolute top-50 translate-middle-y end-0" style="width: 1px; height: 70%; background-color: #dee2e6;"></div>
+                                </div>
+
+                                <!-- 3. 指針數群組 -->
+                                <div class="col-12 col-lg-7">
+                                    <div class="text-secondary text-center fw-semibold mb-2 pb-1 border-bottom">回傳指針數</div>
+                                    <div class="row px-3 gap-1">
+                                        ${timeBlocksHtml}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            // 將組好的卡片加入容器中
+            container.append(cardHtml);
         });
     }
 

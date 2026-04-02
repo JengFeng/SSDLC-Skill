@@ -71,6 +71,20 @@
 @*<script type="text/javascript" src="https://easymap.gis.tw/easymap/Easymap/easymap.js"></script>*@
 <script src="~/js/Easymap/easymap.js"></script>
 <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
+<style>
+    /* 限制顯示 3 行的 CSS */
+    .text-limit-3 {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; /* 限制最多顯示 3 行 */
+        overflow: hidden; /* 隱藏超過的部分 */
+        text-overflow: ellipsis; /* 加上 ... */
+        white-space: normal;
+        word-break: break-word; /* 避免長單字不換行破壞版面 */
+        line-height: 1.5; /* 設定行高，讓閱讀更舒適 */
+        max-height: 4.5em; /* line-height * 3行，確保高度固定 */
+    }
+</style>
 <script type="text/javascript">
     //兩個圖表全域
     var chartWaterUseMonitor;
@@ -288,11 +302,23 @@
     function InitTableB_Message(obj){
         $("#tbB_Message > tbody").empty();
         $.each(obj,function(index,value){
+            // $("#tbB_Message > tbody").append('<tr>' +
+            //                                 '<td class="width15">'+moment(new Date(value.INP_DATE)).format('yyyy/MM/DD')+'</td>' +
+            //                                 '<td id="alerttablemsg'+index+'">'+ value.NOTE +'</td>' +
+            //                                 '<td class="width15"><a class="btn-green-o" href="javascript:;" data-rowid='+index+' onclick="OpenExceptionModal(this)"><i class="bi bi-window"></i>查看</a></td>'+
+            //                                 '</tr>');
+
+            // 處理 NOTE 裡面的 <P> 標籤。
+            let noteFormat = value.NOTE.replace(/<P>/gi, '<br>');
+
             $("#tbB_Message > tbody").append('<tr>' +
-                                            '<td class="width15">'+moment(new Date(value.INP_DATE)).format('yyyy/MM/DD')+'</td>' +
-                                            '<td id="alerttablemsg'+index+'">'+ value.NOTE +'</td>' +
-                                            '<td class="width15"><a class="btn-green-o" href="javascript:;" data-rowid='+index+' onclick="OpenExceptionModal(this)"><i class="bi bi-window"></i>查看</a></td>'+
-                                            '</tr>');
+            '<td class="width15">'+moment(new Date(value.INP_DATE)).format('yyyy/MM/DD')+'</td>' +
+            // 這裡在外層包一個 div 並套用 text-limit-3
+            '<td id="alerttablemsg'+index+'">' +
+                '<div class="text-limit-3" title="點擊右側查看完整資訊">' + noteFormat + '</div>' +
+            '</td>' +
+            '<td class="width15"><a class="btn-green-o" href="javascript:;" data-rowid='+index+' onclick="OpenExceptionModal(this)"><i class="bi bi-window"></i>查看</a></td>'+
+            '</tr>');
 
         });
     }
@@ -325,11 +351,39 @@
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
-                }
+                },
+               confine: true,
+               formatter: function (params) {
+                  var p = params[0];
+
+                  var axisText = p.axisValue
+                    .replace(/\n+/g, '\n')   //\n 變一個
+                    .replace(/\n/g, '<br/>');
+
+                  return axisText + '<br/>' +
+                         p.marker + p.seriesName + '：' + p.value;
+               }
             },
             xAxis: {
                 type: 'category',
-                data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER]
+                data: [xAxisDataLASTYEAR_METER, xAxisDataLASTMONTH_METER, xAxisDataTHISMONTH_METER],
+                axisLabel: {
+                  interval: 0,
+                  formatter: function (value) {
+                    var width = window.innerWidth;
+
+                    if (width < 480) {
+                      // 手機：縮短文字
+                      return value.split('\n')[0]; // 只顯示第一行
+                    } else if (width < 768) {
+                      // 平板：顯示前兩段
+                      return value.split('\n').slice(0, 2).join('\n');
+                    } else {
+                      // 桌機：完整顯示
+                      return value;
+                    }
+                  }
+                }
             },
             yAxis: {
                 nameLocation : 'center',
@@ -616,7 +670,7 @@
         return GetWebSiteURL('@Url.Action("ListedExceptionState", "Dashboard")')
     }
 
-        function ReloadTable(result) {
+    function ReloadTable(result) {
         let pagesize = 3;
 
         function setChartBoxHeight() {
@@ -625,7 +679,7 @@
         }
 
         function initializeChart() {
-            var chartBoxHeight = $(".chartBox")[0].clientHeight - 45;
+            var chartBoxHeight = $(".chartBox")[0].clientHeight;
 
             if (chartCompareWaterUse) {
                 chartCompareWaterUse.dispose();
