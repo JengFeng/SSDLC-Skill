@@ -677,7 +677,7 @@
             var unitTitleHeight = $(".unitTitleHeight")[0]?.clientHeight || 0;
             $('.chartBox').css('height', 'calc(100% - ' + unitTitleHeight + 'px)');
 
-            var winHeight = window.outerHeight;
+            var winHeight = window.visualViewport.height;
             if (winHeight <= 670) {
                $('.chartBox').css('height', '200px');
             }
