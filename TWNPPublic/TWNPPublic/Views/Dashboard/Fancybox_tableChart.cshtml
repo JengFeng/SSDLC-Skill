@@ -24,6 +24,14 @@
             var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
             var total = chartsTitleHeightHeight;
             $('.chartBox').css('height', 'calc(100% - {total}px)'.replace('{total}', total));
+
+            var winHeight = window.outerHeight;
+            if (winHeight <= 780) {
+                $('#mychart').css('height', '200px'); 
+            }
+            else {
+                $('#mychart').css('height', '100%');
+            }
         });
         $(function () {
             $(".videoScroll,.chartsScroll").mCustomScrollbar({
@@ -157,8 +165,9 @@
                             }
                         },
                         grid: {
-                            left: 55,
-                            bottom: 50
+                            left: '10%',
+                            bottom: '12%',
+                            containLabel: true
                         },
                         toolbox: {
                             show: true,
@@ -311,7 +320,7 @@
                 </div>
                 <div class="chartBox">
                     <span id="spanError">資料載入中</span>
-                    <div class="pagechartGroup" id="mychart" style="width:100%;height:100%">
+                    <div class="pagechartGroup" id="mychart" style="width:100%">
                     </div>
                 </div>
             </div>

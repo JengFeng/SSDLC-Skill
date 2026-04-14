@@ -1085,3 +1085,13 @@ ul.marquee {
         flex: 1;
         margin-right: 10px;
     }
+
+
+@media (max-width: 375px) {
+
+    .wrap-page .unitTitle {
+        display: flex;
+        justify-content: center;
+        font-size: 3.5rem;
+    }
+}

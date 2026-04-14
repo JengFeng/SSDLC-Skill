@@ -676,6 +676,14 @@
         function setChartBoxHeight() {
             var unitTitleHeight = $(".unitTitleHeight")[0]?.clientHeight || 0;
             $('.chartBox').css('height', 'calc(100% - ' + unitTitleHeight + 'px)');
+
+            var winHeight = window.outerHeight;
+            if (winHeight <= 670) {
+               $('.chartBox').css('height', '200px');
+            }
+            else if(winHeight <= 780) {
+               $('.chartBox').css('height', '300px');
+            }
         }
 
         function initializeChart() {
