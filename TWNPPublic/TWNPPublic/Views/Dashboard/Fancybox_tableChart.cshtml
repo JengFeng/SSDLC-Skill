@@ -25,8 +25,16 @@
             var total = chartsTitleHeightHeight;
             $('.chartBox').css('height', 'calc(100% - {total}px)'.replace('{total}', total));
 
-            var winHeight = window.outerHeight;
-            if (winHeight <= 780) {
+            // var winHeight =  window.visualViewport.height;
+            // if (winHeight <= 780) {
+            //     $('#mychart').css('height', '200px'); 
+            // }
+            // else {
+            //     $('#mychart').css('height', '100%');
+            // }
+
+            var winWidth =  window.visualViewport.width;
+            if (winWidth <= 400) {
                 $('#mychart').css('height', '200px'); 
             }
             else {
