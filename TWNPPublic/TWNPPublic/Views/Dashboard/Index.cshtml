@@ -182,7 +182,8 @@
                 LASTMONTH_METER = result.Data.LASTMONTH_METER;
                 THISMONTH_METER = result.Data.THISMONTH_METER;
                 AbnormalList = result.Data.DashMainBMessage;
-                ReloadTable(result);
+                ReloadTable();
+                ReloadEchart(result);
 
                 //<!-- .text-red 上升 .text-blue 下降 .text-grey 持平 -->
                 //<!-- <i class="bi bi-dash"></i> 持平-->
@@ -670,8 +671,7 @@
         return GetWebSiteURL('@Url.Action("ListedExceptionState", "Dashboard")')
     }
 
-    function ReloadTable(result) {
-        let pagesize = 3;
+    function ReloadEchart(result){
 
         function setChartBoxHeight() {
             var unitTitleHeight = $(".unitTitleHeight")[0]?.clientHeight || 0;
@@ -711,6 +711,15 @@
             DashSlowQuery();
         }
 
+        setChartBoxHeight();
+        setTimeout(function () {
+            initializeChart();
+        }, 1500);
+    }
+
+    function ReloadTable() {
+        let pagesize = 3;
+
         if (AbnormalList == null) {
             $("#tbB_Message").footable();
         } else {
@@ -718,12 +727,6 @@
             InitTableB_Message(AbnormalList.slice((currentpage - 1) * pagesize, currentpage * pagesize));
             $("#tbB_Message").footable();
         }
-
-        setChartBoxHeight();
-
-        setTimeout(function () {
-            initializeChart();
-        }, 1500);
     }
 
     /* 現在頁數 */
