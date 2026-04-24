@@ -26,6 +26,7 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
 
     let threeYearsAgo = new Date();
     threeYearsAgo.setFullYear(today.getFullYear() - 3); // 減去 3 年
+    let isMobileDevice = window.innerWidth <= 768;
 
     let options = {
         locale: zh,
@@ -36,7 +37,7 @@ function CreateRocDate(elmId, isTimepicker = false, isMonth = false, isYear = fa
         minDate: threeYearsAgo,
         maxDate: yesterday,
         maxMinutes: 0,
-        isMobile: true,
+        isMobile: isMobileDevice,
         buttons: [{
             content: isMonth ? '當月' : isYear ? '當年' : '今天'
             , onClick(dp) {
