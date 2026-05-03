@@ -123,11 +123,11 @@
                                                 Pwd : $("#Pwd").val(),
                                                 PhoneNumber : $("#PhoneNumber").val(),
                                                 Email : $("#Email").val(),
-                                                WaterNO : $("label[name='WaterNo[]']").map(function(){return $(this).text();}).get(),
+                                                WaterNO : $("[name='WaterNo[]']").map(function(){return $(this).text();}).get(),
                                                 WaterData: $("div[id^='WaterNoItem']").map(function() {
                                                     return {
-                                                        WATER_NO: $(this).find("label[name='WaterNo[]']").text(),  // 獲取水號
-                                                        NICK_NAME: $(this).find("input[type='text']").val(),         // 獲取暱稱
+                                                        WATER_NO: $(this).find("[name='WaterNo[]']").text(),  // 獲取水號
+                                                        NICK_NAME: $(this).find("input[type='text']").first().val(),         // 獲取暱稱
                                                         NICK_NAME_SHOW: $(this).find(".nickname-checkbox").is(":checked") ? 1 : 0  // 判斷下拉切換顯示暱稱是否勾選
                                                     };
                                                 }).get(),

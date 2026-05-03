@@ -5,6 +5,7 @@ using TWNPPublic.Common.Attributes;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Domain.Service;
 using TWNPPublic.Models.Entity;
+using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.UserManage;
 
 namespace TWNPPublic.Controllers
@@ -181,9 +182,19 @@ namespace TWNPPublic.Controllers
 
                     if (result >= 1 && model.WaterData != null)
                     {
-                        //HttpContext.Session.SetString("WaterNo", string.Join(',', model.WaterNO));
+                        //從資料庫重新查詢水號列表，保持原始順序
+                        var waterNosFromDb = userManageService.ListedWaterNOBySN(aspNetUser.UserId.Value);
+                        
+                        // 轉換為 F_B_LOGIN_WaterNo 格式
+                        var waterNosDataList = waterNosFromDb.Select(c => new F_B_LOGIN_WaterNo
+                        {
+                            WATER_NO = c.WATER_NO,
+                            NICK_NAME = c.NICK_NAME,
+                            NICK_NAME_SHOW = c.NICK_NAME_SHOW?.ToString("0") ?? string.Empty  // 轉換為整數格式字串
+                        }).ToList();
+
                         // 序列化 List<F_B_LOGIN_WaterNo> 為 JSON 字符串
-                        string waterNoJson = JsonConvert.SerializeObject(model.WaterData.ToList());
+                        string waterNoJson = JsonConvert.SerializeObject(waterNosDataList);
                         HttpContext.Session.SetString("WaterNo", waterNoJson);
                         return Json(Success(@$"更新成功"));
                     }

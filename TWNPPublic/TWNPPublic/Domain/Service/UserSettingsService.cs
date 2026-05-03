@@ -48,7 +48,10 @@ namespace TWNPPublic.Domain.Service
 	                                  , A.ADDRESS_DAES 
                                From B_ACCOUNT_WATER_NO  BW
                                LEFT JOIN A_WATERFEE Ａ ON BW.WATER_NO = A.WATERNO
-                               Where B_ACCOUNT_SN = @Id And BW.VALID=1";
+                               Where B_ACCOUNT_SN = @Id And BW.VALID=1
+                               ORDER BY BW.WATER_NO";
+                
+
             object obj = new { Id };
             return this.dapperDataAccess.Query<V_B_ACCOUNT_WATER_NO>(mainsql, obj);
         }
