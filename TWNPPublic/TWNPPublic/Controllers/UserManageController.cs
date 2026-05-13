@@ -48,17 +48,33 @@ namespace TWNPPublic.Controllers
         /// <returns></returns>
         public IActionResult GetUserInfo()
         {
+            //if (aspNetUser.UserId != null)
+            //{
+            //    var result = userManageService.GetAccountBySN(aspNetUser.UserId.Value);
+            //    if (result != null) {
+            //        CommonFunc comm = new();
+            //        result.APWD = comm.AesDecrypt(result.APWD);
+            //        return Json(Success<b_ACCOUNT>(result));
+            //    }
+
+            //}
+
             if (aspNetUser.UserId != null)
             {
                 var result = userManageService.GetAccountBySN(aspNetUser.UserId.Value);
-                if (result != null) {
-                    CommonFunc comm = new();
-                    result.APWD = comm.AesDecrypt(result.APWD);
-                    return Json(Success<b_ACCOUNT>(result));
-                }
-                    
-            }
+                if (result != null)
+                {
+                    // 建立 DTO 或匿名物件，不包含密碼
+                    var dto = new
+                    {
+                        B_ACCOUNT = result.B_ACCOUNT,
+                        EMAIL = result.EMAIL,
+                        CELL_PHONE = result.CELL_PHONE
+                    };
 
+                    return Json(Success(dto));
+                }
+            }
             return Json(Failed(message: "系統帳號尚未綁定"));
         }
 
@@ -107,17 +123,39 @@ namespace TWNPPublic.Controllers
 
                     var data = dashboardService.GetAccountBySN(aspNetUser.UserId.Value);
                     if (data == null) return Json(Failed("查無此使用者"));
-                    if (string.IsNullOrWhiteSpace(model.Pwd)) return Json(Failed("密碼不得為空"));
-                    CommonFunc comm = new();
-                    var oldAPwd = comm.AesEncrypt(model.Pwd); //加密舊密碼
+                    //if (string.IsNullOrWhiteSpace(model.Pwd)) return Json(Failed("密碼不得為空"));
+                    //CommonFunc comm = new();
+                    //var oldAPwd = comm.AesEncrypt(model.Pwd); //加密舊密碼
 
-                    // 如果與舊密碼不同 → 檢查新密碼規則
-                    if ( oldAPwd != data.APWD )
+                    //// 如果與舊密碼不同 → 檢查新密碼規則
+                    //if ( oldAPwd != data.APWD )
+                    //{
+                    //  if (!CommonFunc.magicword(model.Pwd))
+                    //     return Json(Failed("請輸入密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字"));
+                    //}
+
+                    CommonFunc comm = new();
+
+                    // 如果密碼欄位有值，才進行密碼更新和驗證
+                    if (!string.IsNullOrWhiteSpace(model.Pwd))
                     {
-                      if (!CommonFunc.magicword(model.Pwd))
-                         return Json(Failed("請輸入密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字"));
+                        var newAPwd = comm.AesEncrypt(model.Pwd);
+
+                        // 檢查是否與舊密碼相同
+                        if (newAPwd != data.APWD)
+                        {
+                            // 驗證新密碼強度
+                            if (!CommonFunc.magicword(model.Pwd))
+                                return Json(Failed("請輸入密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字"));
+                        }
                     }
-                    
+                    else
+                    {
+                        // 如果密碼為空，保持原密碼不變
+                        model.Pwd = comm.AesDecrypt(data.APWD);
+                    }
+
+
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
 
                     //自動讀表期滿通知之保固截止日

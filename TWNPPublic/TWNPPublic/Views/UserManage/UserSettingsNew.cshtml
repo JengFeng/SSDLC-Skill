@@ -16,7 +16,6 @@
             $.get(GetWebSiteURL('@Url.Action("GetUserInfo", "UserManage")'),function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
-                    $("#Pwd").val(result.Data.APWD);
                     $("#PhoneNumber").val(result.Data.CELL_PHONE);
                     $("#Email").val(result.Data.EMAIL);
                 }
@@ -208,6 +207,9 @@
                         <div class="col-sm-9">
                             @Html.PasswordFor(m => m.Pwd, new { @class = "form-control", autocomplete = "off", @placeholder = "在此輸入您的密碼" })
                             @Html.ValidationMessageFor(m => m.Pwd, "", new { @class = "text-danger" })
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle"></i> 若不修改密碼，請保持此欄位空白。
+                            </small>
                         </div>
                     </div>
                     <div class="mb-3 row">

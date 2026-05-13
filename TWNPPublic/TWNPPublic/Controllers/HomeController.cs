@@ -705,22 +705,33 @@ namespace TWNPPublic.Controllers
             }
 
 
-            if (model.UserName != "jeffrey")
+            //if (model.UserName != "jeffrey")
+            //{
+            //    try
+            //    {
+            //        if (model.CapthCode != HttpContext.Session.GetString("ValidateCode"))
+            //        {
+            //            ModelState.AddModelError("CapthCode", "驗證碼錯誤");
+            //            return View(model);
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        ModelState.AddModelError("CapthCode", "驗證碼過期請刷新驗證碼");
+            //        return View();
+            //    }
+            //}
+
+            // ===== 新增:強化驗證碼驗證邏輯 =====
+            // 1. 驗證碼驗證與安全檢查
+            var captchaValidation = ValidateCaptcha(model.CapthCode);
+
+            if (!captchaValidation.IsValid)
             {
-                try
-                {
-                    if (model.CapthCode != HttpContext.Session.GetString("ValidateCode"))
-                    {
-                        ModelState.AddModelError("CapthCode", "驗證碼錯誤");
-                        return View(model);
-                    }
-                }
-                catch
-                {
-                    ModelState.AddModelError("CapthCode", "驗證碼過期請刷新驗證碼");
-                    return View();
-                }
+                ModelState.AddModelError("CapthCode", captchaValidation.ErrorMessage);
+                return View(model);
             }
+            // ===== 驗證碼邏輯結束 =====
 
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
             CommonFunc comm = new();
@@ -762,18 +773,41 @@ namespace TWNPPublic.Controllers
             return View();
         }
 
+        // ===== 新增:驗證碼生成方法 (修改現有方法) =====
         /// <summary>
-        /// 驗證碼
+        /// 驗證碼生成 - 強化版本
         /// </summary>
         /// <returns></returns>
         public FileContentResult CreateValidate()
         {
-            //驗證碼有用的 bitmap, bitmap 是 windows kernel 的東西,不能部屬到 linux 上 (◜◔。◔◝)~
+            ////驗證碼有用的 bitmap, bitmap 是 windows kernel 的東西,不能部屬到 linux 上 (◜◔。◔◝)~
+            //CaptchaHelper vCode = new CaptchaHelper();
+            //string code = vCode.CreateValidateCode(5);
+            //HttpContext.Session.SetString("ValidateCode", code);
+            //byte[] bytes = vCode.CreateValidateGraphic(code);
+
+            //return File(bytes, "image/JPEG");
+
+
             CaptchaHelper vCode = new CaptchaHelper();
             string code = vCode.CreateValidateCode(5);
-            HttpContext.Session.SetString("ValidateCode", code);
-            byte[] bytes = vCode.CreateValidateGraphic(code);
 
+            // 建立驗證碼模型並存入 Session
+            var captchaModel = new CaptchaModel
+            {
+                Code = code,
+                CreatedTime = DateTime.Now,
+                ExpirationMinutes = 5,  // 5分鐘有效期
+                SessionId = HttpContext.Session.Id,
+                FailedAttempts = 0,
+                IsUsed = false
+            };
+
+            // 序列化並存入 Session
+            string captchaJson = JsonConvert.SerializeObject(captchaModel);
+            HttpContext.Session.SetString("CaptchaData", captchaJson);
+
+            byte[] bytes = vCode.CreateValidateGraphic(code);
             return File(bytes, "image/JPEG");
         }
 
@@ -804,14 +838,27 @@ namespace TWNPPublic.Controllers
                           ), "欄位錯誤"));
                 }
 
-                if (vm.CapthCode != HttpContext.Session.GetString("ValidateCode"))
+                //if (vm.CapthCode != HttpContext.Session.GetString("ValidateCode"))
+                //{
+                //    ModelState.AddModelError("CapthCode", "驗證碼錯誤");
+                //    return Json(ValidationFailed(
+                //      ModelState.Where(x => x.Value.Errors.Count > 0)
+                //          .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                //          ), "欄位錯誤"));
+                //}
+
+                // ===== 新增:使用強化驗證碼驗證 =====
+                var captchaValidation = ValidateCaptcha(vm.CapthCode);
+
+                if (!captchaValidation.IsValid)
                 {
-                    ModelState.AddModelError("CapthCode", "驗證碼錯誤");
+                    ModelState.AddModelError("CapthCode", captchaValidation.ErrorMessage);
                     return Json(ValidationFailed(
                       ModelState.Where(x => x.Value.Errors.Count > 0)
                           .ToDictionary(k => k.Key, k => k.Value.Errors.Select(e => e.ErrorMessage).ToArray()
                           ), "欄位錯誤"));
                 }
+                // ===== 驗證碼邏輯結束 =====
 
                 var b_ACCOUNT = homeService.GetBAccountByAccount(vm.Account);
 
@@ -865,5 +912,77 @@ namespace TWNPPublic.Controllers
             httpContext.Session.SetString("EndDate", EndDate);
         }
 
+        // ===== 新增:驗證碼驗證方法 =====
+        /// <summary>
+        /// 驗證碼驗證 (包含所有安全檢查)
+        /// </summary>
+        /// <param name="inputCode">使用者輸入的驗證碼</param>
+        /// <returns>驗證結果</returns>
+        private (bool IsValid, string ErrorMessage) ValidateCaptcha(string inputCode)
+        {
+            try
+            {
+                var captchaJson = HttpContext.Session.GetString("CaptchaData");
+                if (string.IsNullOrEmpty(captchaJson))
+                {
+                    return (false, "驗證碼已過期,請重新整理");
+                }
+
+                var captchaModel = JsonConvert.DeserializeObject<CaptchaModel>(captchaJson);
+
+                // ===== 新增:立即標記為已使用 (防止 Replay Attack) =====
+                if (captchaModel.IsUsed)
+                {
+                    HttpContext.Session.Remove("CaptchaData");  // 立即銷毀
+                    return (false, "驗證碼已使用過,請重新整理");
+                }
+                
+                // 無論驗證成功或失敗,都標記為已使用
+                captchaModel.IsUsed = true;
+                captchaModel.UsedTime = DateTime.Now;  // 記錄使用時間
+                string updatedJson = JsonConvert.SerializeObject(captchaModel);
+                HttpContext.Session.SetString("CaptchaData", updatedJson);
+                // ===== 標記結束 =====
+
+                if (captchaModel.IsExpired())
+                {
+                    HttpContext.Session.Remove("CaptchaData");
+                    return (false, "驗證碼已過期,請重新整理");
+                }
+
+                if (captchaModel.SessionId != HttpContext.Session.Id)
+                {
+                    HttpContext.Session.Remove("CaptchaData");
+                    return (false, "驗證碼無效,請重新整理");
+                }
+
+                // 驗證碼比對
+                if (!string.Equals(inputCode, captchaModel.Code, StringComparison.OrdinalIgnoreCase))
+                {
+                    // 驗證失敗,立即銷毀
+                    HttpContext.Session.Remove("CaptchaData");
+                    return (false, "驗證碼錯誤,請重新整理驗證碼");
+                }
+
+                // 驗證成功,立即銷毀
+                HttpContext.Session.Remove("CaptchaData");
+                return (true, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "驗證碼驗證過程發生錯誤");
+                HttpContext.Session.Remove("CaptchaData");
+                return (false, "驗證碼驗證失敗,請重新整理");
+            }
+        }
+
+        // ===== 新增:驗證碼銷毀方法 =====
+        /// <summary>
+        /// 銷毀驗證碼 (驗證成功或失敗後呼叫)
+        /// </summary>
+        private void InvalidateCaptcha()
+        {
+            HttpContext.Session.Remove("CaptchaData");
+        }
     }
 }
