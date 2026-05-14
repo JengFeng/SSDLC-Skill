@@ -922,56 +922,37 @@ namespace TWNPPublic.Controllers
         {
             try
             {
+                // 先讀取再立即銷毀 (原子性操作)
                 var captchaJson = HttpContext.Session.GetString("CaptchaData");
+                InvalidateCaptcha();
+
                 if (string.IsNullOrEmpty(captchaJson))
                 {
-                    return (false, "驗證碼已過期,請重新整理");
+                    return (false, "驗證碼已過期或已使用,請重新整理");
                 }
 
                 var captchaModel = JsonConvert.DeserializeObject<CaptchaModel>(captchaJson);
 
-                // ===== 新增:立即標記為已使用 (防止 Replay Attack) =====
-                if (captchaModel.IsUsed)
-                {
-                    HttpContext.Session.Remove("CaptchaData");  // 立即銷毀
-                    return (false, "驗證碼已使用過,請重新整理");
-                }
-                
-                // 無論驗證成功或失敗,都標記為已使用
-                captchaModel.IsUsed = true;
-                captchaModel.UsedTime = DateTime.Now;  // 記錄使用時間
-                string updatedJson = JsonConvert.SerializeObject(captchaModel);
-                HttpContext.Session.SetString("CaptchaData", updatedJson);
-                // ===== 標記結束 =====
-
                 if (captchaModel.IsExpired())
                 {
-                    HttpContext.Session.Remove("CaptchaData");
                     return (false, "驗證碼已過期,請重新整理");
                 }
 
                 if (captchaModel.SessionId != HttpContext.Session.Id)
                 {
-                    HttpContext.Session.Remove("CaptchaData");
                     return (false, "驗證碼無效,請重新整理");
                 }
 
-                // 驗證碼比對
                 if (!string.Equals(inputCode, captchaModel.Code, StringComparison.OrdinalIgnoreCase))
                 {
-                    // 驗證失敗,立即銷毀
-                    HttpContext.Session.Remove("CaptchaData");
                     return (false, "驗證碼錯誤,請重新整理驗證碼");
                 }
 
-                // 驗證成功,立即銷毀
-                HttpContext.Session.Remove("CaptchaData");
                 return (true, string.Empty);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "驗證碼驗證過程發生錯誤");
-                HttpContext.Session.Remove("CaptchaData");
                 return (false, "驗證碼驗證失敗,請重新整理");
             }
         }
