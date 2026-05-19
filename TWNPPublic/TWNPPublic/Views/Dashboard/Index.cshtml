@@ -219,12 +219,16 @@
         // 創建一個 Promise 對象，包裝 $.get 方法
         const getData = () => {
             return new Promise((resolve, reject) => {
-                $.get(GetWebSiteURL('@Url.Action("GetWaterFee2", "Dashboard")'), function(data) {
+                $.get(GetWebSiteURL('@Url.Action("GetWaterFee2", "Dashboard")'))
+                .done(function(data) {
                     if (data.Success) {
                         resolve(data);
                     } else {
                         reject(new Error("資料取得失敗"));
                     }
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    reject(new Error("API 請求失敗: " + textStatus + " - " + errorThrown));
                 });
             });
         };
@@ -249,12 +253,16 @@
         // 創建一個 Promise 對象，包裝 $.get 方法
         const getData = () => {
             return new Promise((resolve, reject) => {
-                $.get(GetWebSiteURL('@Url.Action("GetWaterFee3", "Dashboard")'), function(data) {
+                $.get(GetWebSiteURL('@Url.Action("GetWaterFee3", "Dashboard")'))
+                    .done(function(data) {
                     if (data.Success) {
                         resolve(data);
                     } else {
                         reject(new Error("資料取得失敗"));
                     }
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    reject(new Error("API 請求失敗: " + textStatus + " - " + errorThrown));
                 });
             });
         };
@@ -697,10 +705,23 @@
         }
 
         function initializeChart() {
-            var chartBoxHeight = $(".chartBox")[0].clientHeight;
+            var chartBoxElement = $(".chartBox")[0];
+            if (!chartBoxElement) {
+                console.error('找不到 .chartBox 元素');
+                return;
+            }
+        
+            var chartBoxHeight = chartBoxElement.clientHeight;
 
             if (chartCompareWaterUse) {
                 chartCompareWaterUse.dispose();
+                chartCompareWaterUse = null; // 清除引用
+            }
+
+             var chartElement = document.getElementById('ChartCompareWaterUse');
+            if (!chartElement) {
+                console.error('找不到 ChartCompareWaterUse 元素');
+                return;
             }
 
             chartCompareWaterUse = echarts.init(document.getElementById('ChartCompareWaterUse'), null, {
@@ -817,9 +838,20 @@
         return function (tok, i) { return (i % 2) ? props[tok] : tok; };
     }
 
+    // 修正 window.onresize，加入防呆和安全檢查
+    let resizeTimer;
     window.onresize = function() {
-        //chartWaterUseMonitor.resize();
-        chartCompareWaterUse.resize();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            // 檢查圖表是否已初始化
+            if (chartCompareWaterUse && typeof chartCompareWaterUse.resize === 'function') {
+                try {
+                    chartCompareWaterUse.resize();
+                } catch (error) {
+                    console.error('圖表 resize 錯誤:', error);
+                }
+            }
+        }, 250); // 250ms 防抖延遲
     };
 
 </script>
