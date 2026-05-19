@@ -19,12 +19,17 @@ namespace TWNPPublic
                 options.Cookie.SameSite = SameSiteMode.None;
             });
 
+            // 註冊分散式快取服務
+            services.AddDistributedMemoryCache();
+
             services.AddSession(option => {
                 option.Cookie.HttpOnly = true;
                 option.Cookie.Name = ".TWNP.Session";
                 option.Cookie.SameSite = SameSiteMode.None;
                 option.IdleTimeout = TimeSpan.FromSeconds(3600);
                 option.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                // 標記為必要 Cookie（避免被隱私政策擋掉）
+                option.Cookie.IsEssential = true;  
             });
 
             services.AddControllersWithViews().AddJsonOptions(option =>

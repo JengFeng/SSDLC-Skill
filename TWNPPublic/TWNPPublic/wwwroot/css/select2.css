@@ -1,0 +1,257 @@
+﻿/*Select2 自訂樣式*/
+
+/* Select2 容器基本樣式 - 圓角設計 */
+.select2-container--default .select2-selection--single {
+    height: auto;
+    min-height: 36px;
+    border: 1px solid #ddd;
+    border-radius: 20px; /* 圓角效果 */
+    padding: 5px 15px; /* 增加內距配合較大字體 */
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+/* 聚焦時保持相同樣式（只改變邊框顏色） */
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #0066cc;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+    border-radius: 20px; /* 確保圓角不變 */
+    background-color: #fff; /* 確保背景色不變 */
+}
+
+/* 打開時也保持相同樣式（關鍵修正） */
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: #0066cc;
+    border-radius: 20px !important; /* 強制保持圓角 */
+    background-color: #fff; /* 確保背景色不變 */
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+}
+
+/* 防止打開時邊框樣式改變 */
+.select2-container--default.select2-container--open.select2-container--below .select2-selection--single,
+.select2-container--default.select2-container--open.select2-container--above .select2-selection--single {
+    border-radius: 20px !important; /* 無論向上或向下展開都保持圓角 */
+    border-color: #0066cc;
+}
+
+/* 選中的選項顯示區域 - 黑色字體 16px */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 26px;
+    color: #000; /* 純黑色字體 */
+    padding-left: 0;
+    padding-right: 28px;
+    font-size: 16px; /* 字體大小 16px */
+    font-weight: 500;
+}
+
+/* 下拉箭頭 */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 34px;
+    right: 10px;
+}
+
+/* 下拉選單容器 - 圓角（關鍵修正） */
+.select2-container--default .select2-dropdown {
+    border: 1px solid #ddd;
+    border-radius: 12px !important; /* 下拉選單圓角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    overflow: hidden; /* 關鍵：隱藏超出圓角的內容 */
+    margin-top: 4px; /* 與主選單保持距離 */
+}
+
+/* 向上展開時的下拉選單 */
+.select2-container--default.select2-container--open.select2-container--above .select2-dropdown {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+/* 修正內部結構的圓角問題（重要） */
+.select2-container--default .select2-results {
+    border-radius: 12px; /* 內部結果容器也要圓角 */
+}
+
+    .select2-container--default .select2-results > .select2-results__options {
+        border-radius: 0 0 12px 12px; /* 選項列表底部圓角 */
+    }
+
+/* 搜尋框容器 - 調整內距 */
+.select2-container--default .select2-search--dropdown {
+    padding: 8px;
+    background-color: #fff;
+    border-radius: 12px 12px 0 0; /* 頂部圓角 */
+}
+
+    /* 搜尋框 - 圓角 + 黑色字體 16px */
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #ddd;
+        border-radius: 16px; /* 搜尋框圓角 */
+        padding: 5px 15px; /* 配合圓角調整內距 */
+        height: 36px;
+        font-size: 16px; /* 字體大小 16px */
+        font-weight: 500;
+        color: #000; /* 黑色字體 */
+        box-sizing: border-box;
+    }
+
+        /* 搜尋框 placeholder 顏色 */
+        .select2-container--default .select2-search--dropdown .select2-search__field::placeholder {
+            color: #666;
+        }
+
+        /* 搜尋框聚焦 */
+        .select2-container--default .select2-search--dropdown .select2-search__field:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+        }
+
+/* 選項列表 - 黑色字體 16px */
+.select2-container--default .select2-results__option {
+    padding: 10px 15px;
+    font-size: 16px; /* 字體大小 16px */
+    line-height: 1.5;
+    color: #000; /* 黑色字體 */
+    transition: background-color 0.2s ease;
+}
+
+    /* 第一個選項移除上邊距 */
+    .select2-container--default .select2-results__option:first-child {
+        border-radius: 0;
+    }
+
+    /* 最後一個選項加上底部圓角 */
+    .select2-container--default .select2-results__option:last-child {
+        border-radius: 0 0 12px 12px;
+    }
+
+/* 選項懸停效果 */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #0066cc;
+    color: white; /* 懸停時白色字體 */
+}
+
+    /* 最後一個選項懸停時保持圓角 */
+    .select2-container--default .select2-results__option--highlighted[aria-selected]:last-child {
+        border-radius: 0 0 12px 12px;
+    }
+
+/* 已選中的選項 */
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #f0f0f0;
+    color: #000; /* 黑色字體 */
+}
+
+    /* 已選中且是最後一個選項 */
+    .select2-container--default .select2-results__option[aria-selected=true]:last-child {
+        border-radius: 0 0 12px 12px;
+    }
+
+/* 沒有結果時的提示 */
+.select2-container--default .select2-results__option.select2-results__message {
+    color: #666;
+    font-size: 16px;
+}
+
+/* 針對選單列的 Select2 */
+.menuList .select2-container {
+    min-width: 160px;
+    max-width: 260px;
+    width: auto !important;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+/* 手機選單的 Select2 */
+.nav_sub .select2-container {
+    width: 100% !important;
+    margin: 5px 0;
+}
+
+/* 手機版樣式 */
+@@media (max-width: 768px) {
+    .select2-container--default .select2-selection--single {
+        min-height: 42px;
+        padding: 7px 18px;
+        font-size: 16px;
+        border-radius: 24px; /* 手機版更圓 */
+    }
+
+    .select2-container--default.select2-container--open .select2-selection--single {
+        border-radius: 24px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 28px;
+        font-size: 16px;
+        color: #000;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px;
+        right: 12px;
+    }
+
+    .select2-container--default .select2-dropdown {
+        border-radius: 16px !important;
+    }
+
+    .select2-container--default .select2-results {
+        border-radius: 16px;
+    }
+
+        .select2-container--default .select2-results > .select2-results__options {
+            border-radius: 0 0 16px 16px;
+        }
+
+    .select2-container--default .select2-search--dropdown {
+        border-radius: 16px 16px 0 0;
+    }
+
+    .select2-container--default .select2-results__option:last-child {
+        border-radius: 0 0 16px 16px;
+    }
+    /* 手機版搜尋框 */
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        height: 42px;
+        padding: 7px 18px;
+        font-size: 16px;
+        border-radius: 20px;
+        color: #000;
+    }
+
+    .select2-container--default .select2-results__option {
+        font-size: 16px;
+        padding: 12px 15px;
+        color: #000;
+    }
+
+    .menuList .select2-container {
+        width: 100% !important;
+        min-width: auto;
+        max-width: none;
+        margin: 10px 0;
+    }
+}
+
+/* 確保下拉選單不會被其他元素遮擋 */
+.select2-dropdown {
+    z-index: 10000 !important;
+}
+
+/* 如果文字過長，使用省略號 */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 下拉箭頭顏色 */
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #000 transparent transparent transparent;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent #000 transparent;
+}
+

@@ -734,8 +734,22 @@ namespace TWNPPublic.Controllers
             // ===== 驗證碼邏輯結束 =====
 
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
-            CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Pwd);
+
+            // ===== 加入錯誤處理 =====
+            string EncryptPWD;
+            try
+            {
+                CommonFunc comm = new();
+                EncryptPWD = comm.AesEncrypt(model.Pwd);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"密碼加密失敗: {ex.Message}");
+                ModelState.AddModelError("", "系統錯誤，請稍後再試");
+                return View(model);
+            }
+            // ===== 加入錯誤處理結束 =====
+
             var result = homeService.LoginByUserNameAndPassWord(model.UserName, EncryptPWD, remoteIpAddress.ToString());   // model.Password
             if (result.IsSuccess)
             {
@@ -902,7 +916,7 @@ namespace TWNPPublic.Controllers
             httpContext.Session.SetString("CurrentWaterNo", CurrentWaterNo);
 
             // 序列化 List<F_B_LOGIN_WaterNo> 為 JSON 字符串
-            string waterNoJson = JsonConvert.SerializeObject(WaterNo);
+            string waterNoJson = JsonConvert.SerializeObject(WaterNo ?? new List<F_B_LOGIN_WaterNo>());
 
             // 存儲 JSON 字符串到 Session
             httpContext.Session.SetString("WaterNo", waterNoJson);

@@ -43,7 +43,7 @@
                     }
                     @* <a class="CustomerSurvey" href="" id=""><i class="bi bi-bar-chart-line"></i>滿意度調查</a> *@
 
-                    <select id="SelectWaterNos" class="form-SelectWaterNos SelectWaterNoslist" onchange="SelectWaterNosChange()">
+                    <select id="SelectWaterNos" class="form-SelectWaterNos SelectWaterNoslist">
                     </select>
                 </div>
             </div>
@@ -72,7 +72,7 @@
             </div>
         </li>
         <li tabindex="-1">
-           <select id="SelectWaterNos2" class="form-SelectWaterNos SelectWaterNoslist" onchange="SelectWaterNosChange()"></select>
+           <select id="SelectWaterNos2" class="form-SelectWaterNos SelectWaterNoslist"></select>
         </li>
         <li tabindex="-1"><a class="" href="@Url.Action("Index","Dashboard")"><i class="bi bi-columns-gap"></i>首頁</a></li>
         <li tabindex="-1"><a class="" href="@Url.Action("UseWaterQueryNew","Quality")"><i class="bi bi-columns-gap"></i>用水量查詢</a></li>
@@ -122,20 +122,41 @@
     //    });
     //});
 
-    $('.SelectWaterNoslist').change(function(){
-        var value = $(this).val();
-        var model = {
-            WaterNos : value
-        };
-        $.post(GetWebSiteURL('@Url.Action("ChangeUserWaterNos","Dashboard")'),model,function(result){
-            if(result.Success)
-            {
-                history.go(0);
-            }
-            else
-            {
-                alert('一片空白');
-            }
+    // $('.SelectWaterNoslist').change(function(){
+    //     var value = $(this).val();
+    //     var model = {
+    //         WaterNos : value
+    //     };
+    //     $.post(GetWebSiteURL('@Url.Action("ChangeUserWaterNos","Dashboard")'),model,function(result){
+    //         if(result.Success)
+    //         {
+    //             history.go(0);
+    //         }
+    //         else
+    //         {
+    //             alert('一片空白');
+    //         }
+    //     });
+    // });
+
+
+    // 使用 Select2 的 change 事件
+    $(document).ready(function() {
+        $('.SelectWaterNoslist').on('select2:select', function (e) {
+            var value = $(this).val();
+            var model = {
+                WaterNos : value
+            };
+            $.post(GetWebSiteURL('@Url.Action("ChangeUserWaterNos", "Dashboard")'),model,function(result){
+                if(result.Success)
+                {
+                    history.go(0);
+                }
+                else
+                {
+                    alert('一片空白');
+                }
+            });
         });
     });
 
