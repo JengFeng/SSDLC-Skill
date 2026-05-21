@@ -722,14 +722,41 @@ namespace TWNPPublic.Controllers
             //    }
             //}
 
-            // ===== 新增:強化驗證碼驗證邏輯 =====
-            // 1. 驗證碼驗證與安全檢查
-            var captchaValidation = ValidateCaptcha(model.CapthCode);
+            //// ===== 新增:強化驗證碼驗證邏輯 =====
+            //// 1. 驗證碼驗證與安全檢查
+            //var captchaValidation = ValidateCaptcha(model.CapthCode);
 
-            if (!captchaValidation.IsValid)
+            //if (!captchaValidation.IsValid)
+            //{
+            //    ModelState.AddModelError("CapthCode", captchaValidation.ErrorMessage);
+            //    return View(model);
+            //}
+            //// ===== 驗證碼邏輯結束 =====
+            ///
+
+            // ===== 新增:白名單帳號列表 (不需要驗證碼) =====
+            var captchaExemptAccounts = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                ModelState.AddModelError("CapthCode", captchaValidation.ErrorMessage);
-                return View(model);
+                "jeffrey",
+                // 可以在此新增其他不需要驗證碼的帳號
+                // "admin",
+                // "testuser"
+            };
+
+            // 判斷是否為白名單帳號
+            bool needsCaptcha = !captchaExemptAccounts.Contains(model.UserName);
+            // ===== 白名單邏輯結束 =====
+
+            // ===== 修改:條件式驗證碼驗證 =====
+            if (needsCaptcha)
+            {
+                var captchaValidation = ValidateCaptcha(model.CapthCode);
+
+                if (!captchaValidation.IsValid)
+                {
+                    ModelState.AddModelError("CapthCode", captchaValidation.ErrorMessage);
+                    return View(model);
+                }
             }
             // ===== 驗證碼邏輯結束 =====
 

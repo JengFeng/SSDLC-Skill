@@ -228,32 +228,90 @@ namespace TWNPPublic.Domain.Service
 
             if (result.LOGIN_STATUS == "OK")
             {
-                string executesql = @"INSERT INTO [B_LOGIN_LOG]
-                                       ([WATER_NO]
-                                       ,[B_ACCOUNT_SN]
-                                       ,[INP_DATE]
-                                       ,[IP])
-                                 VALUES
-                                       (@WATER_NO
-                                       ,@B_ACCOUNT_SN
-                                       ,@INP_DATE
-                                       ,@IP)";
+                //string executesql = @"INSERT INTO [B_LOGIN_LOG]
+                //                       ([WATER_NO]
+                //                       ,[B_ACCOUNT_SN]
+                //                       ,[INP_DATE]
+                //                       ,[IP])
+                //                 VALUES
+                //                       (@WATER_NO
+                //                       ,@B_ACCOUNT_SN
+                //                       ,@INP_DATE
+                //                       ,@IP)";
 
 
-                object execobj = new
+                //object execobj = new
+                //{
+                //    WATER_NO = "",
+                //    B_ACCOUNT_SN = result.B_ACCOUNT_SN,
+                //    INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                //    IP = remoteIpAddress
+                //};
+
+                //var Execreuslt = dataAccess.Execute(executesql, execobj);
+
+                //return (true, "登入成功", result);
+
+                // 異步記錄登入日誌，不等待完成
+                // 檢查 B_ACCOUNT_SN 是否有值再記錄日誌
+                if (result.B_ACCOUNT_SN.HasValue)
                 {
-                    WATER_NO = "",
-                    B_ACCOUNT_SN = result.B_ACCOUNT_SN,
-                    INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                    IP = remoteIpAddress
-                };
-
-                var Execreuslt = dataAccess.Execute(executesql, execobj);
-
+                    _ = Task.Run(() => InsertLoginLogAsync(result.B_ACCOUNT_SN.Value, "", remoteIpAddress));
+                }
                 return (true, "登入成功", result);
             }
 
             return (false, result.LOGIN_STATUS, null);
+        }
+
+        // <summary>
+        /// 異步記錄登入日誌
+        /// </summary>
+        /// <param name="accountSn">帳號序號</param>
+        /// <param name="waterNo">水號</param>
+        /// <param name="ipAddress">IP位址</param>
+        private async Task InsertLoginLogAsync(int accountSn, string waterNo, string ipAddress)
+        {
+            try
+            {
+                await Task.Run(() => InsertLoginLog(accountSn, waterNo, ipAddress));
+            }
+            catch (Exception ex)
+            {
+                // 記錄錯誤但不影響登入流程
+                Console.WriteLine($"登入日誌記錄失敗: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 記錄登入日誌
+        /// </summary>
+        /// <param name="accountSn">帳號序號</param>
+        /// <param name="waterNo">水號</param>
+        /// <param name="ipAddress">IP位址</param>
+        /// <returns>影響的資料列數</returns>
+        public int InsertLoginLog(int accountSn, string waterNo, string ipAddress)
+        {
+            string executesql = @"INSERT INTO [B_LOGIN_LOG]
+                           ([WATER_NO]
+                           ,[B_ACCOUNT_SN]
+                           ,[INP_DATE]
+                           ,[IP])
+                     VALUES
+                           (@WATER_NO
+                           ,@B_ACCOUNT_SN
+                           ,@INP_DATE
+                           ,@IP)";
+
+            object execobj = new
+            {
+                WATER_NO = waterNo,
+                B_ACCOUNT_SN = accountSn,
+                INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                IP = ipAddress
+            };
+
+            return dataAccess.Execute(executesql, execobj);
         }
 
         public int SendMailUsingSendMailList(string B_ACCOUNT, string Email)
@@ -389,5 +447,14 @@ namespace TWNPPublic.Domain.Service
         /// <param name="WaterNo"></param>
         /// <param name="Token"></param>
         public void UpdateAppUser(string AccountNo, string WaterNo, string Token);
+
+        /// <summary>
+        /// 記錄登入日誌
+        /// </summary>
+        /// <param name="accountSn">帳號序號</param>
+        /// <param name="waterNo">水號</param>
+        /// <param name="ipAddress">IP位址</param>
+        /// <returns>影響的資料列數</returns>
+        public int InsertLoginLog(int accountSn, string waterNo, string ipAddress);
     }
 }
