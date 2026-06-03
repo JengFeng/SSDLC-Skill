@@ -50,6 +50,7 @@ namespace TWNPPublic.ViewModels.Alert
         [Required(ErrorMessage = "手機號碼為必填")]
         [RegularExpression("^[0-9]{10}$", ErrorMessage = "請確定電話號碼格式")]
         public string? AlertPhone { get; set; } = string.Empty;
+        [Required(ErrorMessage = "信箱為必填")]
         [EmailAddress(ErrorMessage = "請確定您的信箱格式")]
         public string? AlertEmail1 { get; set; } = string.Empty;
         [EmailAddress(ErrorMessage = "請確定您的信箱格式")]

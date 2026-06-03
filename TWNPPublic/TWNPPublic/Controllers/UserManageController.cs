@@ -135,12 +135,13 @@ namespace TWNPPublic.Controllers
                     //}
 
                     CommonFunc comm = new();
+                    bool isPasswordChanged = false;
 
                     // 如果密碼欄位有值，才進行密碼更新和驗證
                     if (!string.IsNullOrWhiteSpace(model.Pwd))
                     {
                         var newAPwd = comm.AesEncrypt(model.Pwd);
-
+                        isPasswordChanged = newAPwd != data.APWD;
                         // 檢查是否與舊密碼相同
                         if (newAPwd != data.APWD)
                         {
@@ -156,7 +157,7 @@ namespace TWNPPublic.Controllers
                     }
 
 
-                    var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value);
+                    var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value, isPasswordChanged);
 
                     //自動讀表期滿通知之保固截止日
                     if (model.ExpDate != null)
@@ -329,7 +330,8 @@ namespace TWNPPublic.Controllers
                 ViewBag.IsTestUser = true;
             }
 
-            ViewBag.IsSignAccount = false;
+            //ViewBag.IsSignAccount = false;
+            ViewBag.IsSignAccount = true;  //不會從網站上註冊的帳號
             if (aspNetUser.UserId != null)
             {
                 ViewBag.IsSignAccount = true;

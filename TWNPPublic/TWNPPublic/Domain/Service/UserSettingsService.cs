@@ -62,7 +62,7 @@ namespace TWNPPublic.Domain.Service
         /// <param name="model">本身不會使用帳號進行查詢或更新帳號</param>
         /// <param name="SN">用SN更新</param>
         /// <returns></returns>
-        public int UpdateAccountInfo(UpdateUserManageViewModel model, int SN)
+        public int UpdateAccountInfo(UpdateUserManageViewModel model, int SN, bool isPasswordChanged)
         {
 
             string mainsql = @"Update B_ACCOUNT
@@ -72,12 +72,12 @@ namespace TWNPPublic.Domain.Service
                                Where B_ACCOUNT_SN = @SN";
 
             CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Pwd);  //加密
+            string EncryptPWD = comm.AesEncrypt(model.Pwd?.Trim());  //加密
             object obj = new
             {
                 Pwd = EncryptPWD,
-                Email = model.Email,
-                CellPhone = model.PhoneNumber,
+                Email = model.Email?.Trim(),
+                CellPhone = model.PhoneNumber?.Trim(),
                 SN = SN
             };
 
@@ -117,8 +117,8 @@ namespace TWNPPublic.Domain.Service
                     var waterobj = new
                     {
                         SN = SN, // B_ACCOUNT_SN
-                        WaterNo = item.WATER_NO, // 水號
-                        NickName = item.NICK_NAME, // 暱稱
+                        WaterNo = item.WATER_NO?.Trim(), // 水號
+                        NickName = item.NICK_NAME?.Trim(), // 暱稱
                         NickNameShow = item.NICK_NAME_SHOW, // 顯示暱稱的狀態（0 或 1）
                         Valid = 1 // 這裡假設有效狀態是 1，根據實際情況修改
                     };
@@ -128,9 +128,30 @@ namespace TWNPPublic.Domain.Service
 
             }
 
+            int result = this.dapperDataAccess.Execute(mainsql, obj);
 
-           
-            return this.dapperDataAccess.Execute(mainsql, obj); ;
+            if (result > 0)
+            {
+                var accountInfo = this.GetAccountBySN(SN);
+                if (accountInfo != null)
+                {
+                    bool isGroupedAccount = this.IsSttnGrpIdExist(accountInfo.B_ACCOUNT);
+
+                    if (isGroupedAccount)
+                    {
+                        // 歸戶：更新其他 DB 的密碼/電話/郵件
+                        this.UpdateWmmmdbSttngrp(accountInfo.B_ACCOUNT, EncryptPWD, model.Email, model.PhoneNumber, isPasswordChanged);
+                    }
+                    else if (isPasswordChanged)
+                    {
+                        // 一般水號：只更新其他 DB 的密碼
+                        // 這裡放你「一般水號」原本的其他 DB 密碼更新 SQL
+                        this.UpdateWmmmdbImCmuserPassword(accountInfo.B_ACCOUNT, EncryptPWD);
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -285,12 +306,63 @@ namespace TWNPPublic.Domain.Service
 
             return result;
         }
+
+        public bool IsSttnGrpIdExist(string SttnGrpId)
+        {
+            string mainsql = @"SELECT 1 
+                       FROM A_PH_METER_STTNGRP 
+                       WHERE sttn_grp_id = @SttnGrpId";
+
+            object obj = new { SttnGrpId };
+            return this.dapperDataAccess.Query<int>(mainsql, obj).Any();
+        }
+
+        private int UpdateWmmmdbSttngrp(string sttnGrpId, string encryptedPwd, string email, string tel, bool isPasswordChanged)
+        {
+            //調整密碼更新SQL，讓它只更新密碼欄位，其他欄位保持不變
+            string mainsql = isPasswordChanged
+                            ? @"UPDATE WMMMDB.dbo.sttngrp
+                           SET login_pwd = @LoginPwd
+                              ,email = @Email
+                              ,tel = @Tel
+                         WHERE sttn_grp_id = @SttnGrpId"
+                            : @"UPDATE WMMMDB.dbo.sttngrp
+                           SET email = @Email
+                              ,tel = @Tel
+                         WHERE sttn_grp_id = @SttnGrpId";
+
+            object obj = new
+            {
+                SttnGrpId = sttnGrpId,
+                LoginPwd = encryptedPwd,
+                Email = email?.Trim(),
+                Tel = tel?.Trim()
+            };
+
+            return this.dapperDataAccess.Execute(mainsql, obj);
+        }
+
+        private int UpdateWmmmdbImCmuserPassword(string account, string encryptedPwd)
+        {
+            //調整密碼更新SQL，讓它只更新密碼欄位，其他欄位保持不變
+            string mainsql = @"UPDATE WMMMDB.dbo.im_cmuser
+                       SET password = @Password
+                       WHERE user_id = @Account";
+
+            object obj = new
+            {
+                Account = account,
+                Password = encryptedPwd
+            };
+
+            return this.dapperDataAccess.Execute(mainsql, obj);
+        }
     }
     public interface IUserManageService
     {
         public b_ACCOUNT? GetAccountBySN(int Id);
         public List<V_B_ACCOUNT_WATER_NO> ListedWaterNOBySN(int Id);
-        public int UpdateAccountInfo(UpdateUserManageViewModel model, int SN);
+        public int UpdateAccountInfo(UpdateUserManageViewModel model, int SN, bool isPasswordChanged);
         public int CreateAccountInfo(CreateUserManageViewModel model);
         public int GetSNByAccount(string Account);
         public (bool IsExist, string Message) IsThisAccountCanUsed(string Account);
@@ -305,6 +377,8 @@ namespace TWNPPublic.Domain.Service
         public int UpdateAlertServiceBySNAndWaterNo(int AccountSN, string WaterNo, List<B_ALART_SETTING> obj);
 
         public List<B_ALART_SETTING> GetAertSetByAccountSNAndWaterNo(int SN, string WaterNo);
+
+        public bool IsSttnGrpIdExist(string SttnGrpId);
 
     }
 }

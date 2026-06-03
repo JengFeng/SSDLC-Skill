@@ -36,10 +36,13 @@
     $(function(){
         $(".menuList > a:nth-child(4)").addClass("active").siblings().removeClass("active");
         let gettest = $(".btn-alertsetSwithch").attr('id');
+        // 保留這行即可（內部已含 Reset + GetAlertSetFromWaterNo）
         btnSwitchSetAlertWaterNo($('#' + gettest));
-        GetAlertSetFromWaterNo($('#' + gettest).data('waterno'));
+        // 刪除這行，避免重複載入
+        //GetAlertSetFromWaterNo($('#' + gettest).data('waterno'));
 
-        $(".onoffswitch-checkbox").on('click', function(){
+        $(".onoffswitch-checkbox").on('change', function(){
+            //SetOnOffswitch($(this).attr('id'));
             let isChecked = this.checked;
             let $label = $("label[for='" + $(this).attr('id') + "']");
             if (isChecked) {
@@ -49,7 +52,13 @@
                 $label.find('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
                 $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
             }
+
+            // 控制警訊設定明細顯示/隱藏
+            ToggleAlertSettingDetail();
         });
+
+        // // 初始化時先套用一次
+        // ToggleAlertSettingDetail();
 
         // 綁定 checkbox 變化事件
         $("#checkbox1").on("change", function () {
@@ -70,6 +79,10 @@
 
     });
 
+    function ToggleAlertSettingDetail() {
+       $("#alertSettingDetail").toggle($("#myonoffswitch1").is(":checked"));
+    }
+
     function SetOnOffswitch(obj){
         let isChecked = $('#' + obj)[0].checked;
         let $label = $("label[for='" + obj + "']");
@@ -80,9 +93,13 @@
             $label.find('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
             $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
         }
+        //由程式勾選時也同步控制區塊
+        ToggleAlertSettingDetail();
     }
 
     function ResetAllSet(){
+
+        $(".text-danger").text('');
 
         $("#AlertPhone").val('');
         $("#AlertEmail1").val('');
@@ -166,6 +183,12 @@
         $("#Code102Alert650Extion01").val('');
         //每期用水預算提醒
         $("#Code102Alert651Extion01").val('');
+        //是否顯示警示設定管理
+        ToggleAlertSettingDetail();
+    }
+
+    function parseSwitchValue(value) {
+       return value === true || value === 1 || value === "1" || value === "true" || value === "on";
     }
 
     function GetAlertSetFromWaterNo(obj){
@@ -183,6 +206,11 @@
                 $("#AlertEmail4").val(result.Data.AlertEmails[3]);
                 $("#AlertEmail5").val(result.Data.AlertEmails[4]);
 
+                //  // 改成只依 onoffswitch1 決定顯示/隱藏
+                // const isOn = parseSwitchValue(result.Data.onoffswitch1 ?? result.Data.OnOffswitch1);
+                // $("#myonoffswitch1").prop("checked", isOn);
+                // SetOnOffswitch('myonoffswitch1');
+
                 const alertValues = [
                     result.Data.AlertValueYesterday,
                     result.Data.AlertValueWeek,
@@ -196,6 +224,10 @@
                     $("#myonoffswitch1").prop("checked", true);
                     SetOnOffswitch('myonoffswitch1');
                 }
+                // else {
+                //     $("#myonoffswitch1").prop("checked", false);
+                //     SetOnOffswitch('myonoffswitch1');
+                // }
 
                 if(result.Data.AlertValueYesterday != null && result.Data.AlertValueYesterday != ''){
                     let EVYesterday = "";
@@ -370,6 +402,10 @@
                 //     SetOnOffswitch('myonoffswitch4');
                 // }
 
+            }
+            else {
+                $("#myonoffswitch1").prop("checked", false);
+                SetOnOffswitch('myonoffswitch1');
             }
         });
     }
@@ -651,7 +687,7 @@
                     <div class="col-auto">
                         <div class="unitTitle border-bottom-0">
                             <i class="bi bi-exclamation-triangle-fill"></i>
-                            警訊設定管理
+                            警示設定管理
                         </div>
                     </div>
                     <div class="col-auto">
@@ -669,13 +705,13 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="alertSettingDetail">
                     <div class="col-sm-12 col-lg-12">
                         <div class="p-2">
                             <div class="title form-check">
                                 <input class="form-check-input" id="waterUsageDaily" type="checkbox" name="checkbox3" value="100">
                                 <label class="form-check-label" for="waterUsageDaily">
-                                    <span class="mx-2 text-danger">日用水量</span>(前日24:00至昨日24:00)
+                                    <span class="mx-2" style="color:red;">日用水量</span>(前日24:00至昨日24:00)
                                 </label>
                             </div>
                             <div class="ms-5">
@@ -691,7 +727,7 @@
                                                 <span class="text-danger" autocomplete="off"></span>
                                             </div>
                                             <div class="col-auto">
-                                                度且突增
+                                                度或突增
                                             </div>
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code100Alert103Extion02">
@@ -705,7 +741,7 @@
                                                 <span class="text-danger" autocomplete="off"></span>
                                             </div>
                                             <div class="col-auto">
-                                                度且突減
+                                                度或突減
                                             </div>
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code100Alert103Extion04">
@@ -729,7 +765,7 @@
                                                 <span class="text-danger" autocomplete="off"></span>
                                             </div>
                                             <div class="col-auto">
-                                                度且突增
+                                                度或突增
                                             </div>
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code100Alert104Extion02">
@@ -743,7 +779,7 @@
                                                 <span class="text-danger" autocomplete="off"></span>
                                             </div>
                                             <div class="col-auto">
-                                                度且突減
+                                                度或突減
                                             </div>
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code100Alert104Extion04">
@@ -764,7 +800,7 @@
                             <div class="title form-check">
                                 <input class="form-check-input" id="weeklyWaterUsage" type="checkbox" name="checkbox4" value="646">
                                 <label class="form-check-label" for="weeklyWaterUsage">
-                                    <span class="mx-2 text-danger">週用水量</span>警示
+                                    <span class="mx-2" style="color:red;">週用水量</span>警示
                                 </label>
                             </div>
                             <div class="ms-5">
@@ -776,7 +812,7 @@
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion01">
                                             <span class="text-danger" autocomplete="off"></span>
                                         </div>
-                                        度且突增
+                                        度或突增
                                         <div class="col-auto">
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion02">
                                             <span class="text-danger" autocomplete="off"></span>
@@ -786,7 +822,7 @@
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion03">
                                             <span class="text-danger" autocomplete="off"></span>
                                         </div>
-                                        度且突減
+                                        度或突減
                                         <div class="col-auto">
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert647Extion04">
                                             <span class="text-danger" autocomplete="off"></span>
@@ -802,7 +838,7 @@
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion01">
                                             <span class="text-danger" autocomplete="off"></span>
                                         </div>
-                                        度且突增
+                                        度或突增
                                         <div class="col-auto">
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion02">
                                             <span class="text-danger" autocomplete="off"></span>
@@ -812,7 +848,7 @@
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion03">
                                             <span class="text-danger" autocomplete="off"></span>
                                         </div>
-                                        度且突減
+                                        度或突減
                                         <div class="col-auto">
                                             <input type="text" class="form-control" style="width:80px" id="Code646Alert648Extion04">
                                             <span class="text-danger" autocomplete="off"></span>
@@ -826,7 +862,7 @@
                             <div class="title form-check">
                                 <input class="form-check-input" id="monthlyWaterUsage" type="checkbox" name="checkbox5" value="101">
                                 <label class="form-check-label" for="monthlyWaterUsage">
-                                    <span class="mx-2 text-danger">月用水量</span>警示
+                                    <span class="mx-2" style="color:red;">月用水量</span>警示
                                 </label>
                             </div>
 
@@ -843,7 +879,7 @@
                                                 <span class="text-danger"></span>
                                             </div>
 
-                                            <div class="col-auto">度且突增</div>
+                                            <div class="col-auto">度或突增</div>
 
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code101Alert105Extion02">
@@ -857,7 +893,7 @@
                                                 <span class="text-danger"></span>
                                             </div>
 
-                                            <div class="col-auto">度且突減</div>
+                                            <div class="col-auto">度或突減</div>
 
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code101Alert105Extion04">
@@ -881,7 +917,7 @@
                                                 <span class="text-danger"></span>
                                             </div>
 
-                                            <div class="col-auto">度且突增</div>
+                                            <div class="col-auto">度或突增</div>
 
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code101Alert106Extion02">
@@ -895,7 +931,7 @@
                                                 <span class="text-danger"></span>
                                             </div>
 
-                                            <div class="col-auto">度且突減</div>
+                                            <div class="col-auto">度或突減</div>
 
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code101Alert106Extion04">
@@ -912,7 +948,7 @@
                             <div class="title form-check">
                                 <input class="form-check-input" id="continuousWaterUsage" type="checkbox" name="checkbox6" value="108">
                                 <label class="form-check-label" for="continuousWaterUsage">
-                                    <span class="mx-2 text-danger">連續用水</span>警示
+                                    <span class="mx-2" style="color:red;">連續用水</span>警示
                                 </label>
                             </div>
 
@@ -937,7 +973,7 @@
                             <div class="title form-check">
                                 <input class="form-check-input" id="noWaterUsageContinuous" type="checkbox" name="checkbox7" value="107">
                                 <label class="form-check-label" for="noWaterUsageContinuous">
-                                    <span class="mx-2 text-danger">連續無用水</span>警示
+                                    <span class="mx-2" style="color:red;">連續無用水</span>警示
                                 </label>
                             </div>
 
@@ -962,7 +998,7 @@
                             <div class="title form-check">
                                 <input class="form-check-input" id="nightWaterUsageIncrease" type="checkbox" name="checkbox8" value="649">
                                 <label class="form-check-label" for="nightWaterUsageIncrease">
-                                    <span class="mx-2 text-danger">夜間用水增加</span>警示
+                                    <span class="mx-2" style="color:red;">夜間用水增加</span>警示
                                     <span class="text-muted">(01:00~05:00)</span>
                                 </label>
                             </div>
@@ -979,7 +1015,7 @@
                                                 <span class="text-danger"></span>
                                             </div>
 
-                                            <div class="col-auto">度且突增</div>
+                                            <div class="col-auto">度或突增</div>
 
                                             <div class="col-auto">
                                                 <input type="text" class="form-control" style="width:8rem" id="Code102Alert649Extion02">

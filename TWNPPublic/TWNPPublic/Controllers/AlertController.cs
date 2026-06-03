@@ -66,7 +66,7 @@ namespace TWNPPublic.Controllers
             //有選水號
             else
             {
-                var reuslt = alertService.DeleteAllAlertSetBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo);
+                //var reuslt = alertService.DeleteAllAlertSetBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo);//移至Service裡面做成交易
                 //先檢查手機是不是必填
                 //在檢查信箱格式
                 //在檢查 惟至少50度以上 有選這個就要填 要填就要50度以上
@@ -418,10 +418,11 @@ namespace TWNPPublic.Controllers
 
                 #endregion
 
-
-                alertService.UpdateAlertServiceBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo, alertsetitems);
-
                 //最簡單刪掉所有在加回去
+                alertService.UpdateAlertServiceBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo, alertsetitems);
+                //更新其他資料庫手機信箱
+                //alertService.UpdateImCmuserContactInfo(model.WaterNo, model.AlertPhone,model.AlertEmail1,model.AlertEmail2,model.AlertEmail3,model.AlertEmail4,model.AlertEmail5);
+               
                 return Json(Success("更新成功"));
             }
         }
