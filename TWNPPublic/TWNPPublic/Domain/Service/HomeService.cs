@@ -217,7 +217,8 @@ namespace TWNPPublic.Domain.Service
 
         public (bool IsSuccess, string Message, F_B_LOGIN? UserInfo) LoginByUserNameAndPassWord(string UserName, string PassWord, string remoteIpAddress)
         {
-            string mainsql = @"SELECT * FROM [dbo].[F_B_LOGIN] (@UserName,@PassWord)";
+            //string mainsql = @"SELECT * FROM [dbo].[F_B_LOGIN] (@UserName,@PassWord)";
+            string mainsql = @"EXEC [dbo].[spB_LOGIN] @UserName, @PassWord";
             object obj = new { UserName, PassWord };
             var result = dataAccess.Query<F_B_LOGIN>(mainsql, obj).FirstOrDefault();
 
