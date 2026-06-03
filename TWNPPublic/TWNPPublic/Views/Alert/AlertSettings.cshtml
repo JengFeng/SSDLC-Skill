@@ -42,7 +42,6 @@
         //GetAlertSetFromWaterNo($('#' + gettest).data('waterno'));
 
         $(".onoffswitch-checkbox").on('change', function(){
-            //SetOnOffswitch($(this).attr('id'));
             let isChecked = this.checked;
             let $label = $("label[for='" + $(this).attr('id') + "']");
             if (isChecked) {
@@ -56,9 +55,6 @@
             // 控制警訊設定明細顯示/隱藏
             ToggleAlertSettingDetail();
         });
-
-        // // 初始化時先套用一次
-        // ToggleAlertSettingDetail();
 
         // 綁定 checkbox 變化事件
         $("#checkbox1").on("change", function () {
@@ -187,10 +183,6 @@
         ToggleAlertSettingDetail();
     }
 
-    function parseSwitchValue(value) {
-       return value === true || value === 1 || value === "1" || value === "true" || value === "on";
-    }
-
     function GetAlertSetFromWaterNo(obj){
         let model = {
             WaterNo : obj
@@ -206,11 +198,6 @@
                 $("#AlertEmail4").val(result.Data.AlertEmails[3]);
                 $("#AlertEmail5").val(result.Data.AlertEmails[4]);
 
-                //  // 改成只依 onoffswitch1 決定顯示/隱藏
-                // const isOn = parseSwitchValue(result.Data.onoffswitch1 ?? result.Data.OnOffswitch1);
-                // $("#myonoffswitch1").prop("checked", isOn);
-                // SetOnOffswitch('myonoffswitch1');
-
                 const alertValues = [
                     result.Data.AlertValueYesterday,
                     result.Data.AlertValueWeek,
@@ -224,10 +211,6 @@
                     $("#myonoffswitch1").prop("checked", true);
                     SetOnOffswitch('myonoffswitch1');
                 }
-                // else {
-                //     $("#myonoffswitch1").prop("checked", false);
-                //     SetOnOffswitch('myonoffswitch1');
-                // }
 
                 if(result.Data.AlertValueYesterday != null && result.Data.AlertValueYesterday != ''){
                     let EVYesterday = "";
