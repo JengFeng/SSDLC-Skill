@@ -2456,18 +2456,58 @@ namespace TWNPPublic.Controllers
                         //    }
                         //}
 
-                        // 確保有基準時間格式
-                        List<F_B_CHART2> timeBaseSource = lastSixDaysData.Count > 0 ? lastSixDaysData :
-                                                          (historyData.Count > 0 ? historyData.Select(item => new F_B_CHART2
-                                                          {
-                                                              X = item.REC_DATE_TIME,
-                                                              Y = item.AMOUNT
-                                                          }).ToList() :
-                                                          Enumerable.Range(0, 24).Select(i => new F_B_CHART2
-                                                          {
-                                                              X = Sdate.Date.AddHours(i),
-                                                              Y = 0
-                                                          }).ToList());
+                        //// 確保有基準時間格式
+                        //List<F_B_CHART2> timeBaseSource = lastSixDaysData.Count > 0 ? lastSixDaysData :
+                        //                                  (historyData.Count > 0 ? historyData.Select(item => new F_B_CHART2
+                        //                                  {
+                        //                                      X = item.REC_DATE_TIME,
+                        //                                      Y = item.AMOUNT
+                        //                                  }).ToList() :
+                        //                                  Enumerable.Range(0, 24).Select(i => new F_B_CHART2
+                        //                                  {
+                        //                                      X = Sdate.Date.AddHours(i),
+                        //                                      Y = 0
+                        //                                  }).ToList());
+
+                        //finalResult = timeBaseSource.Select(item => new F_B_CHART2
+                        //{
+                        //    X = item.X,
+                        //    Y = dic.ContainsKey(item.X.ToString("HH:mm")) ? dic[item.X.ToString("HH:mm")] : item.Y
+                        //}).OrderBy(c => c.X).ToList();
+
+                        //foreach (var key in dic.Keys)
+                        //{
+                        //    if (!finalResult.Any(x => x.X.ToString("HH:mm") == key))
+                        //    {
+                        //        finalResult.Add(new F_B_CHART2
+                        //        {
+                        //            X = Sdate.Date.AddHours(int.Parse(key.Substring(0, 2))),
+                        //            Y = dic[key]
+                        //        });
+                        //    }
+                        //}
+
+                        var hourStart = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, Sdate.Hour, 0, 0);
+                        var hourEnd = new DateTime(Edate.Year, Edate.Month, Edate.Day, Edate.Hour, 0, 0);
+                        var totalHours = (int)(hourEnd - hourStart).TotalHours + 1;
+
+                        // 確保有基準時間格式（依查詢區間）
+                        List<F_B_CHART2> timeBaseSource = lastSixDaysData.Count > 0
+                            ? lastSixDaysData.Where(x => x.X >= hourStart && x.X <= hourEnd).ToList()
+                            : historyData.Count > 0
+                                ? historyData
+                                    .Where(x => x.REC_DATE_TIME >= hourStart && x.REC_DATE_TIME <= hourEnd)
+                                    .Select(item => new F_B_CHART2
+                                    {
+                                        X = item.REC_DATE_TIME,
+                                        Y = item.AMOUNT
+                                    }).ToList()
+                                : Enumerable.Range(0, Math.Max(totalHours, 0))
+                                    .Select(i => new F_B_CHART2
+                                    {
+                                        X = hourStart.AddHours(i),
+                                        Y = 0
+                                    }).ToList();
 
                         finalResult = timeBaseSource.Select(item => new F_B_CHART2
                         {
@@ -2475,17 +2515,27 @@ namespace TWNPPublic.Controllers
                             Y = dic.ContainsKey(item.X.ToString("HH:mm")) ? dic[item.X.ToString("HH:mm")] : item.Y
                         }).OrderBy(c => c.X).ToList();
 
+                        // 補點時限制在查詢區間內，避免超出開始/結束時間
                         foreach (var key in dic.Keys)
                         {
+                            var keyHour = int.Parse(key.Substring(0, 2));
+                            var keyTime = new DateTime(Sdate.Year, Sdate.Month, Sdate.Day, keyHour, 0, 0);
+
+                            if (keyTime < hourStart || keyTime > hourEnd)
+                            {
+                                continue;
+                            }
+
                             if (!finalResult.Any(x => x.X.ToString("HH:mm") == key))
                             {
                                 finalResult.Add(new F_B_CHART2
                                 {
-                                    X = Sdate.Date.AddHours(int.Parse(key.Substring(0, 2))),
+                                    X = keyTime,
                                     Y = dic[key]
                                 });
                             }
                         }
+
                         break;
                     case "day":
                         //finalResult = dashboardService.ListedChart2(aspNetUser.CurrentWaterNo, Type, Sdate, Edate).OrderBy(x => x.X).ToList();
@@ -2962,63 +3012,100 @@ namespace TWNPPublic.Controllers
 
                 ////};
 
+                ////object obj = new
+                ////{
+                ////    result = dailyChartDatas
+                ////            .Select(item => new F_B_CHART2
+                ////            {
+                ////                X = item.REC_DATE_TIME,
+                ////                Y = item.AMOUNT
+                ////            })                          
+                ////            .Union(getAddData) // 假設 getAddData 也為 F_B_CHART2 集合且 X 為字串
+                ////            .Select(item =>
+                ////            {
+                ////                // 將 DateTime 轉成 "HH:mm:ss" 格式的字串
+                ////                string timeStr = item.X.ToString("HH:mm:ss");
+                ////                // 若等於 23:59:59，則轉換成 24:00:00
+                ////                if (timeStr == "23:59:59")
+                ////                {
+                ////                    timeStr = "24:00:00";
+                ////                }
+                ////                return new F_B_CHART3
+                ////                {
+                ////                    X = item.X.ToString("yyyy-MM-dd ")+timeStr,  // X 為字串格式的時間
+                ////                    Y = item.Y
+                ////                };
+                ////            })
+                ////            .OrderBy(c => c.X)
+                ////            .ToList(),
+                //// };
+
                 //object obj = new
                 //{
-                //    result = dailyChartDatas
-                //            .Select(item => new F_B_CHART2
-                //            {
-                //                X = item.REC_DATE_TIME,
-                //                Y = item.AMOUNT
-                //            })                          
-                //            .Union(getAddData) // 假設 getAddData 也為 F_B_CHART2 集合且 X 為字串
-                //            .Select(item =>
-                //            {
-                //                // 將 DateTime 轉成 "HH:mm:ss" 格式的字串
-                //                string timeStr = item.X.ToString("HH:mm:ss");
-                //                // 若等於 23:59:59，則轉換成 24:00:00
-                //                if (timeStr == "23:59:59")
-                //                {
-                //                    timeStr = "24:00:00";
-                //                }
-                //                return new F_B_CHART3
-                //                {
-                //                    X = item.X.ToString("yyyy-MM-dd ")+timeStr,  // X 為字串格式的時間
-                //                    Y = item.Y
-                //                };
-                //            })
-                //            .OrderBy(c => c.X)
-                //            .ToList(),
-                // };
+                //    result = filteredDailyChartDatas
+                //           .Select(item => new F_B_CHART2
+                //           {
+                //               X = item.REC_DATE_TIME,
+                //               Y = aspNetUser.UserId != 0 ? Math.Round(item.AMOUNT ?? 0m) : item.AMOUNT ?? 0m // 四捨五入//item.AMOUNT
+                //           })
+                //           .Select(item =>
+                //           {
+                //               // 將 DateTime 轉成 "HH:mm:ss" 格式的字串
+                //               string timeStr = item.X.ToString("HH:mm:ss");
+                //               // 若等於 23:59:59，則轉換成 24:00:00
+                //               if (timeStr == "23:59:59")
+                //               {
+                //                   timeStr = "24:00:00";
+                //               }
+
+                //               // 若 UserId 不為 0，對 Y 值進行四捨五入
+                //               decimal roundedY = aspNetUser.UserId != 0 ? Math.Round(item.Y ?? 0m) : (item.Y ?? 0m);
+
+                //               return new F_B_CHART3
+                //               {
+                //                   X = item.X.ToString("yyyy-MM-dd ") + timeStr,  // X 為字串格式的時間
+                //                   Y = roundedY //item.Y
+                //               };
+                //           })
+                //           .OrderBy(c => c.X)
+                //           .ToList(),
+                //};
+
+                // 最終合併資料，並確保在查詢區間內
+                var queryStart = StartTime;
+                var queryEnd = EnderTime.TimeOfDay == TimeSpan.Zero
+                    ? EnderTime.Date.AddDays(1).AddTicks(-1)
+                    : EnderTime;
+
+                var mergedData = filteredDailyChartDatas
+                    .Select(item => new F_B_CHART2
+                    {
+                        X = item.REC_DATE_TIME,
+                        Y = aspNetUser.UserId != 0 ? Math.Round(item.AMOUNT ?? 0m) : item.AMOUNT ?? 0m
+                    })
+                    .Concat(getAddData)
+                    .Where(item => item.X >= queryStart && item.X <= queryEnd)
+                    .OrderBy(item => item.X)
+                    .ToList();
 
                 object obj = new
                 {
-                    result = filteredDailyChartDatas
-                           .Select(item => new F_B_CHART2
-                           {
-                               X = item.REC_DATE_TIME,
-                               Y = aspNetUser.UserId != 0 ? Math.Round(item.AMOUNT ?? 0m) : item.AMOUNT ?? 0m // 四捨五入//item.AMOUNT
-                           })
-                           .Select(item =>
-                           {
-                               // 將 DateTime 轉成 "HH:mm:ss" 格式的字串
-                               string timeStr = item.X.ToString("HH:mm:ss");
-                               // 若等於 23:59:59，則轉換成 24:00:00
-                               if (timeStr == "23:59:59")
-                               {
-                                   timeStr = "24:00:00";
-                               }
+                    result = mergedData
+                        .Select(item =>
+                        {
+                            string timeStr = item.X.ToString("HH:mm:ss");
+                            if (timeStr == "23:59:59")
+                            {
+                                timeStr = "24:00:00";
+                            }
 
-                               // 若 UserId 不為 0，對 Y 值進行四捨五入
-                               decimal roundedY = aspNetUser.UserId != 0 ? Math.Round(item.Y ?? 0m) : (item.Y ?? 0m);
-
-                               return new F_B_CHART3
-                               {
-                                   X = item.X.ToString("yyyy-MM-dd ") + timeStr,  // X 為字串格式的時間
-                                   Y = roundedY //item.Y
-                               };
-                           })
-                           .OrderBy(c => c.X)
-                           .ToList(),
+                            return new F_B_CHART3
+                            {
+                                X = item.X.ToString("yyyy-MM-dd ") + timeStr,
+                                Y = item.Y
+                            };
+                        })
+                        .ToList(),
                 };
 
                 return Json(Success(obj));
