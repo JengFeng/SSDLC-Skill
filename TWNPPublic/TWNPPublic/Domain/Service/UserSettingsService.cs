@@ -1,4 +1,5 @@
 ﻿using SqlData;
+using System.Security.Cryptography;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.Alert;
@@ -10,6 +11,9 @@ namespace TWNPPublic.Domain.Service
     {
         private readonly IDapperDataAccess dapperDataAccess;
         private readonly IAspNetUser aspNetUser;
+        private const int Iterations = 10000;
+        private const int SaltLength = 16;
+        private const int KeyLength = 32; // 256 bits = 32 bytes
 
         public UserManageService(IDapperDataAccess dapperDataAccess, IAspNetUser aspNetUser)
         {
@@ -136,17 +140,17 @@ namespace TWNPPublic.Domain.Service
                 if (accountInfo != null)
                 {
                     bool isGroupedAccount = this.IsSttnGrpIdExist(accountInfo.B_ACCOUNT);
-
+                    string hashedPassword = HashPassword(model.Pwd?.Trim());  //加密
                     if (isGroupedAccount)
                     {
                         // 歸戶：更新其他 DB 的密碼/電話/郵件
-                        this.UpdateWmmmdbSttngrp(accountInfo.B_ACCOUNT, EncryptPWD, model.Email, model.PhoneNumber, isPasswordChanged);
+                        this.UpdateWmmmdbSttngrp(accountInfo.B_ACCOUNT, hashedPassword, model.Email, model.PhoneNumber, isPasswordChanged);
                     }
                     else if (isPasswordChanged)
                     {
                         // 一般水號：只更新其他 DB 的密碼
                         // 這裡放你「一般水號」原本的其他 DB 密碼更新 SQL
-                        this.UpdateWmmmdbImCmuserPassword(accountInfo.B_ACCOUNT, EncryptPWD);
+                        this.UpdateWmmmdbImCmuserPassword(accountInfo.B_ACCOUNT, hashedPassword);
                     }
                 }
             }
@@ -357,6 +361,60 @@ namespace TWNPPublic.Domain.Service
 
             return this.dapperDataAccess.Execute(mainsql, obj);
         }
+
+        /// <summary>
+        /// 雜湊密碼：iterations:salt:hash
+        /// </summary>
+        public string HashPassword(string password)
+        {
+            byte[] salt = new byte[SaltLength];
+            RandomNumberGenerator.Fill(salt);
+
+            byte[] hash = Rfc2898DeriveBytes.Pbkdf2(
+                password,
+                salt,
+                Iterations,
+                HashAlgorithmName.SHA256,
+                KeyLength
+            );
+
+            string saltBase64 = Convert.ToBase64String(salt);
+            string hashBase64 = Convert.ToBase64String(hash);
+
+            return $"{Iterations}:{saltBase64}:{hashBase64}";
+        }
+
+        /// <summary>
+        /// 驗證密碼
+        /// </summary>
+        public bool VerifyPassword(string password, string storedHash)
+        {
+            try
+            {
+                var parts = storedHash.Split(':');
+                if (parts.Length != 3) return false;
+
+                int iterations = int.Parse(parts[0]);
+                byte[] salt = Convert.FromBase64String(parts[1]);
+                byte[] stored = Convert.FromBase64String(parts[2]);
+
+                byte[] computed = Rfc2898DeriveBytes.Pbkdf2(
+                    password,
+                    salt,
+                    iterations,
+                    HashAlgorithmName.SHA256,
+                    stored.Length
+                );
+
+                // 固定時間比對（避免 timing attack）
+                return CryptographicOperations.FixedTimeEquals(stored, computed);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
     public interface IUserManageService
     {
@@ -379,6 +437,15 @@ namespace TWNPPublic.Domain.Service
         public List<B_ALART_SETTING> GetAertSetByAccountSNAndWaterNo(int SN, string WaterNo);
 
         public bool IsSttnGrpIdExist(string SttnGrpId);
+        /// <summary>
+        /// 雜湊密碼：iterations:salt:hash
+        /// </summary>
+        public string HashPassword(string password);
+
+        /// <summary>
+        /// 驗證密碼是否正確
+        /// </summary>
+        public bool VerifyPassword(string password, string hash);
 
     }
 }
