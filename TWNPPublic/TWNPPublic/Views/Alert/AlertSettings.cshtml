@@ -5,6 +5,7 @@
     var ListofWaterNO = (List<F_B_LOGIN_WaterNo>)ViewBag.WaterNo;
     //var MMcode = (Dictionary<string, Tuple<int, string>>)ViewBag.MMcode;
     //Toggle Button 放在 css 裡，有需要更動的再注意一下
+    var isGroupedAccount = ViewBag.IsGroupedAccount as bool? ?? false;
 }
 @section validation{
 <link rel="stylesheet" href=~/css/Switcher.css />
@@ -72,7 +73,6 @@
                 $("#budgetLimit").hide(); // 隱藏用水預算上限
             }
         });
-
     });
 
     function ToggleAlertSettingDetail() {
@@ -385,6 +385,33 @@
                 //     SetOnOffswitch('myonoffswitch4');
                 // }
 
+
+                // // 將禁用邏輯移到這裡，在資料載入完成後執行
+                // // ⭐ 修改後的禁用邏輯
+                // const isGroupedAccount = @(isGroupedAccount.ToString().ToLower());
+                // if (isGroupedAccount) {
+                //     // 只禁用表單內的輸入欄位
+                //     $("#FormAlertSet :input").prop("disabled", true);
+                //     // 隱藏儲存/重填按鈕
+                //     $(".btnGroup").hide();
+                // } else {
+                //     // 確保非歸戶帳號時欄位可用
+                //     $("#FormAlertSet :input").prop("disabled", false);
+                //     $(".btnGroup").show();
+                // }
+
+                 const isGroupedAccount = @(isGroupedAccount.ToString().ToLower());
+                 if (isGroupedAccount) {
+                     // 只禁用可輸入欄位，不要禁用水號按鈕
+                     $("#FormAlertSet").find("input, textarea, select").prop("disabled", true);
+
+                     // 若要保留水號切換，就不要碰 .btn-alertsetSwithch
+                     $(".btnGroup").hide();
+                 } else {
+                     $("#FormAlertSet").find("input, textarea, select").prop("disabled", false);
+                     $(".btnGroup").show();
+                 }
+
             }
             else {
                 $("#myonoffswitch1").prop("checked", false);
@@ -504,6 +531,11 @@
     function btnSwitchSetAlertWaterNo(obj){
         $(".btn-alertsetSwithch").removeClass("btn-green-o-hover");
         $(obj).addClass("btn-green-o-hover");
+
+    //      // ⭐ 確保水號按鈕始終可用
+    // $(".btn-alertsetSwithch").prop("disabled", false);
+    // $(".btn-alertsetSwithch").css("pointer-events", "auto");
+
         ResetAllSet();
         GetAlertSetFromWaterNo($(obj).data('waterno'));
     }
@@ -1051,10 +1083,13 @@
                     </div> *@
                 </div>
             </form>
-            <div class="btnGroup">
-                <a class="btn-green-o" href="javascript:" onclick="BtnSave()">儲存</a>
-                <a class="btn-lightGrey-o" href="javascript:" onclick="BtnReset()">重填</a>
-            </div>
+            @if (isGroupedAccount)
+            {
+                <div class="btnGroup">
+                    <a class="btn-green-o" href="javascript:" onclick="BtnSave()">儲存</a>
+                    <a class="btn-lightGrey-o" href="javascript:" onclick="BtnReset()">重填</a>
+                </div>
+            }
         </div>
     </div>
 </div><!-- wrap end -->

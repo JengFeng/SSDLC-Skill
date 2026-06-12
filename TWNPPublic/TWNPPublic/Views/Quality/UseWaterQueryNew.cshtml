@@ -398,10 +398,10 @@
             TimeType: '',
         };
 
-        if ($("#form-name").val() == 'year') {
-            model.Sdate =  $("#inputStartTime").val()+"-01-01";
-            model.Edate =  $("#inputEndTime").val()+"-12-31";
-        }
+        // if ($("#form-name").val() == 'year') {
+        //     model.Sdate =  $("#inputStartTime").val()+"-01-01";
+        //     model.Edate =  $("#inputEndTime").val()+"-12-31";
+        // }
 
         // 呼叫 validateDateRange 來檢查日期範圍是否有效
         console.log("開始日期:", $("#inputStartTime").val());
@@ -424,7 +424,7 @@
             EndDate: $("#inputEndTime").val(),
         };
         console.log(QueryDataItem);
-        await promises.push(QueryData(QueryDataItem, model)); // 加入 Promise 陣列
+        promises.push(QueryData(QueryDataItem, model)); // 加入 Promise 陣列
 
         // 取得所有勾選的 checkbox 值 (套疊曲線)
         checkedValues = [];
@@ -495,11 +495,11 @@
             console.log(result);
             if (result.Success) {
 
-                if (result.Data == null || result.Data.Length == 0) {
+                if (result.Data == null || result.Data.length == 0) {
                     $('#c').text('同用水種別上年度同期平均用水量:-度');
                 }
                 else {
-                    $('#c').html('同用水種別上年度同期平均用水量:<span style="color: #721c24;;">' + result.Data.AVG_LASTYEARQTY + '</span>度');
+                    $('#c').html('同用水種別上年度同期平均用水量:<span style="color: #721c24;">' + result.Data.AVG_LASTYEARQTY + '</span>度');
                 }
 
                 $("#waterTypeContainer").show(); // 取得數據後顯示區塊

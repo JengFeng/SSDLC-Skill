@@ -139,7 +139,7 @@ namespace TWNPPublic.Domain.Service
                 var accountInfo = this.GetAccountBySN(SN);
                 if (accountInfo != null)
                 {
-                    bool isGroupedAccount = this.IsSttnGrpIdExist(accountInfo.B_ACCOUNT);
+                    bool isGroupedAccount = this.IsSttnGrpIdExist(accountInfo.B_ACCOUNT) != null;
                     string hashedPassword = HashPassword(model.Pwd?.Trim());  //加密
                     if (isGroupedAccount)
                     {
@@ -311,14 +311,15 @@ namespace TWNPPublic.Domain.Service
             return result;
         }
 
-        public bool IsSttnGrpIdExist(string SttnGrpId)
+        public A_PH_METER_STTNGRP? IsSttnGrpIdExist(string SttnGrpId)
         {
             string mainsql = @"SELECT 1 
                        FROM A_PH_METER_STTNGRP 
                        WHERE sttn_grp_id = @SttnGrpId";
 
-            object obj = new { SttnGrpId };
-            return this.dapperDataAccess.Query<int>(mainsql, obj).Any();
+            object obj = new { SttnGrpId = SttnGrpId };
+            var aabb = this.dapperDataAccess.Execute(mainsql, obj);
+            return this.dapperDataAccess.Query<A_PH_METER_STTNGRP>(mainsql, obj).FirstOrDefault();
         }
 
         private int UpdateWmmmdbSttngrp(string sttnGrpId, string encryptedPwd, string email, string tel, bool isPasswordChanged)
@@ -436,7 +437,7 @@ namespace TWNPPublic.Domain.Service
 
         public List<B_ALART_SETTING> GetAertSetByAccountSNAndWaterNo(int SN, string WaterNo);
 
-        public bool IsSttnGrpIdExist(string SttnGrpId);
+        public A_PH_METER_STTNGRP? IsSttnGrpIdExist(string SttnGrpId);
         /// <summary>
         /// 雜湊密碼：iterations:salt:hash
         /// </summary>

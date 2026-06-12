@@ -12,11 +12,13 @@ namespace TWNPPublic.Controllers
     {
         private readonly IAlertService alertService;
         private readonly IAspNetUser aspNetUser;
+        private readonly IUserManageService userManageService;
 
-        public AlertController(IAlertService alertService, IAspNetUser aspNetUser)
+        public AlertController(IAlertService alertService, IAspNetUser aspNetUser, IUserManageService userManageService)
         {
             this.alertService = alertService;
             this.aspNetUser = aspNetUser;
+            this.userManageService = userManageService;
         }
 
         /// <summary>
@@ -27,8 +29,12 @@ namespace TWNPPublic.Controllers
         {
             if (aspNetUser.UserId == null)
                 return View();
+
+            bool isGroupedAccount = userManageService.IsSttnGrpIdExist(aspNetUser.Name) != null;
+
             ViewBag.WaterNo = aspNetUser.WaterNo;
             ViewBag.MMcode = alertService.GetAlertMMCode();
+            ViewBag.IsGroupedAccount = isGroupedAccount;
             return View();
         }
 
