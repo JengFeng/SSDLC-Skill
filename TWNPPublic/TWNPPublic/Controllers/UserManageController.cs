@@ -39,6 +39,9 @@ namespace TWNPPublic.Controllers
                 ViewBag.IsSignAccount = true;
             }
 
+            bool isGroupedAccount = userManageService.IsSttnGrpIdExist(aspNetUser.Name) != null;
+            ViewBag.IsGroupedAccount = isGroupedAccount;//false; //isGroupedAccount;
+
             return View();
         }
 
@@ -64,12 +67,14 @@ namespace TWNPPublic.Controllers
                 var result = userManageService.GetAccountBySN(aspNetUser.UserId.Value);
                 if (result != null)
                 {
+                    bool isGroupedAccount = userManageService.IsSttnGrpIdExist(aspNetUser.Name) != null;
                     // 建立 DTO 或匿名物件，不包含密碼
                     var dto = new
                     {
                         B_ACCOUNT = result.B_ACCOUNT,
                         EMAIL = result.EMAIL,
-                        CELL_PHONE = result.CELL_PHONE
+                        CELL_PHONE = result.CELL_PHONE,
+                        IS_GROUPED_ACCOUNT = isGroupedAccount // 傳遞給前端判斷
                     };
 
                     return Json(Success(dto));
@@ -106,6 +111,9 @@ namespace TWNPPublic.Controllers
             {
                 if (aspNetUser.UserId == null)
                     return Json(Failed("使用者尚未註冊"));
+
+                // 檢查是否為歸戶帳號
+                bool isGroupedAccount = userManageService.IsSttnGrpIdExist(aspNetUser.Name) != null;
 
                 if (ModelState.IsValid)
                 {
@@ -156,11 +164,18 @@ namespace TWNPPublic.Controllers
                         model.Pwd = comm.AesDecrypt(data.APWD);
                     }
 
+                    // 如果是歸戶帳號，不允許修改帳號和水號資料
+                    if (isGroupedAccount)
+                    {
+                        model.Account = data.B_ACCOUNT; // 保持原帳號
+                        model.WaterData = null; // 清空水號資料，不允許修改
+                        model.ExpDate = null; // 清空保固截止日通知設定
+                    }
 
                     var result = userManageService.UpdateAccountInfo(model, aspNetUser.UserId.Value, isPasswordChanged);
 
-                    //自動讀表期滿通知之保固截止日
-                    if (model.ExpDate != null)
+                    // 只有非歸戶帳號才處理自動讀表期滿通知
+                    if (!isGroupedAccount && model.ExpDate != null)
                     {
                         var reuslt2 = userManageService.DeleteAllAlertSetBySNAndWaterNo(aspNetUser.UserId.Value, aspNetUser.CurrentWaterNo);
                         List<B_ALART_SETTING> alertsetitems = new List<B_ALART_SETTING>();

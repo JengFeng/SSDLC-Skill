@@ -44,7 +44,9 @@
 
         $(".onoffswitch-checkbox").on('change', function(){
             let isChecked = this.checked;
-            let $label = $("label[for='" + $(this).attr('id') + "']");
+            let id = $(this).attr('id');
+            let $label = $("label[for='" + id + "']");
+
             if (isChecked) {
                 $label.find('.onoffswitch-inner').addClass('onoffswitch-inner-on');
                 $label.find('.onoffswitch-switch').addClass('onoffswitch-switch-on');
@@ -53,31 +55,40 @@
                 $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
             }
 
-            // 控制警訊設定明細顯示/隱藏
-            ToggleAlertSettingDetail();
-        });
-
-        // 綁定 checkbox 變化事件
-        $("#checkbox1").on("change", function () {
-            if ($(this).is(":checked")) {
-                $("#waterLimit").show(); // 顯示用水上限度數
-            } else {
-                $("#waterLimit").hide(); // 隱藏用水上限度數
+            if (id === 'myonoffswitch1') {
+                ToggleAlertSettingDetail();
+            } else if (id === 'myonoffswitch2') {
+                ToggleWaterReminderDetail();
             }
         });
 
-        $("#checkbox2").on("change", function () {
-            if ($(this).is(":checked")) {
-                $("#budgetLimit").show(); // 顯示用水預算上限
-            } else {
-                $("#budgetLimit").hide(); // 隱藏用水預算上限
-            }
-        });
+        // // 綁定 checkbox 變化事件
+        // $("#checkbox1").on("change", function () {
+        //     if ($(this).is(":checked")) {
+        //         $("#waterLimit").show(); // 顯示用水上限度數
+        //     } else {
+        //         $("#waterLimit").hide(); // 隱藏用水上限度數
+        //     }
+        // });
+
+        // $("#checkbox2").on("change", function () {
+        //     if ($(this).is(":checked")) {
+        //         $("#budgetLimit").show(); // 顯示用水預算上限
+        //     } else {
+        //         $("#budgetLimit").hide(); // 隱藏用水預算上限
+        //     }
+        // });
     });
 
     function ToggleAlertSettingDetail() {
        $("#alertSettingDetail").toggle($("#myonoffswitch1").is(":checked"));
     }
+
+    // 2) 新增函式
+    function ToggleWaterReminderDetail() {
+       $("#waterReminderDetail").toggle($("#myonoffswitch2").is(":checked"));
+    }
+
 
     function SetOnOffswitch(obj){
         let isChecked = $('#' + obj)[0].checked;
@@ -89,8 +100,12 @@
             $label.find('.onoffswitch-inner').removeClass('onoffswitch-inner-on');
             $label.find('.onoffswitch-switch').removeClass('onoffswitch-switch-on');
         }
-        //由程式勾選時也同步控制區塊
-        ToggleAlertSettingDetail();
+
+        if (obj === 'myonoffswitch1') {
+            ToggleAlertSettingDetail();
+        } else if (obj === 'myonoffswitch2') {
+            ToggleWaterReminderDetail();
+        }
     }
 
     function ResetAllSet(){
@@ -105,7 +120,7 @@
         $("#AlertEmail5").val('');
 
         $("#myonoffswitch1").prop('checked', false);
-        // $("#myonoffswitch2").prop('checked', false);
+        $("#myonoffswitch2").prop('checked', false);
         // $("#myonoffswitch3").prop('checked', false);
         // $("#myonoffswitch4").prop('checked', false);
 
@@ -114,8 +129,10 @@
 
         $('input[name="checkbox1"][value="650"]').prop('checked', false);
         $('input[name="checkbox2"][value="651"]').prop('checked', false);
-        $("#waterLimit").hide(); // 隱藏用水上限度數
-        $("#budgetLimit").hide(); // 隱藏用水預算上限
+        // $("#waterLimit").hide(); // 隱藏用水上限度數
+        // $("#budgetLimit").hide(); // 隱藏用水預算上限
+        $("#waterLimit").show(); // 隱藏用水上限度數
+        $("#budgetLimit").show(); // 隱藏用水預算上限
         $('input[name="checkbox3"][value="100"]').prop('checked', false);
         $('input[name="checkbox4"][value="646"]').prop('checked', false);
         $('input[name="checkbox5"][value="101"]').prop('checked', false);
@@ -181,6 +198,7 @@
         $("#Code102Alert651Extion01").val('');
         //是否顯示警示設定管理
         ToggleAlertSettingDetail();
+        ToggleWaterReminderDetail();
     }
 
     function GetAlertSetFromWaterNo(obj){
@@ -332,6 +350,9 @@
                     }
                 }
 
+                //用水提醒區塊前先加：
+                let hasWaterReminderData = false;
+
                 if(result.Data.AlertValueDailyWaterUsageLimit != null && result.Data.AlertValueDailyWaterUsageLimit != '') {
                     let AVeDailyWaterUsageLimit = "";
                     if (result.Data.ExtendValueDailyWaterUsageLimit != null && result.Data.ExtendValueDailyWaterUsageLimit != '') {
@@ -341,6 +362,8 @@
                     $('input[name="checkbox1"][value="650"]').prop('checked', true);
                     $("#waterLimit").show(); // 顯示用水上限度數
                     if (result.Data.AlertValueDailyWaterUsageLimit == '650') {
+                        // 每日上限有資料時，加這行：
+                        hasWaterReminderData = true;
                         $("#Code102Alert650Extion01").val(AVeDailyWaterUsageLimit);
                     }
                 }
@@ -354,9 +377,20 @@
                     $('input[name="checkbox2"][value="651"]').prop('checked', true);
                     $("#budgetLimit").show(); // 顯示用水預算上限
                     if (result.Data.AlertValueWaterUsageBudget == '651') {
+                        // 每期預算有資料時，加這行：
+                        hasWaterReminderData = true;
                         $("#Code102Alert651Extion01").val(AVeWaterUsageBudget);
                     }
                 }
+
+                // 每日/預算兩段判斷都跑完後，加這段：
+                $("#myonoffswitch2").prop("checked", hasWaterReminderData);
+                SetOnOffswitch('myonoffswitch2');
+
+                // // 4) ResetAllSet 裡面補上（建議加在 myonoffswitch1 那段附近）
+                // $("#myonoffswitch2").prop('checked', false);
+                // // Reset 結尾補上
+                // ToggleWaterReminderDetail();
 
                 // if(result.Data.AlertValueLastMonth != null && result.Data.AlertValueLastMonth != ''){
                 //     let AVeLastMonth = "";
@@ -431,11 +465,15 @@
             AlertEmail4:$("input[name='AlertEmail4']").val(),
             AlertEmail5:$("input[name='AlertEmail5']").val(),
 
-            //設定管理
-            onoffswitch1:$("input[name='onoffswitch1']:checked").val(),
+            // //設定管理
+            // onoffswitch1:$("input[name='onoffswitch1']:checked").val(),
             // onoffswitch2:$("input[name='onoffswitch2']:checked").val(),
-            // onoffswitch3:$("input[name='onoffswitch3']:checked").val(),
-            // onoffswitch4:$("input[name='onoffswitch4']:checked").val(),
+            // // onoffswitch3:$("input[name='onoffswitch3']:checked").val(),
+            // // onoffswitch4:$("input[name='onoffswitch4']:checked").val(),
+
+           // 設定管理：改為明確 on/off
+            onoffswitch1: $("#myonoffswitch1").is(":checked") ? "on" : "off",
+            onoffswitch2: $("#myonoffswitch2").is(":checked") ? "on" : "off",
 
             AlertCheckbox1: $("input[name='checkbox1']:checked").val(),
             AlertCheckbox2: $("input[name='checkbox2']:checked").val(),
@@ -499,6 +537,17 @@
         {
             let confirmAction = confirm("若您尚未選擇水號，系統將清空您的設定，您確定要執行以下操作?");
             if (!confirmAction) {
+                return;
+            }
+        }
+
+         var offMessages = [];
+        if (model.onoffswitch2 === "off") offMessages.push("用水無設定提醒");
+        if (model.onoffswitch1 === "off") offMessages.push("無警示設定管理");
+
+        if (offMessages.length > 0) {
+            var confirmMessage = "您目前設定為：\n" + offMessages.join("\n") + "\n\n是否仍要儲存？";
+            if (!confirm(confirmMessage)) {
                 return;
             }
         }
@@ -620,51 +669,71 @@
                     </div>
                 </div>
 
-                <div class="unitTitle">
-                    <i class="bi bi-volume-up-fill"></i>
-                    用水提醒
-                </div>
-                <div class="row py-2 mb-4">
-                    <div class="col-12 col-md">
-                        <div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="checkbox1" value="650" id="checkbox1">
-                                <label class="form-check-label" for="checkbox1">
-                                    每日用水上限提醒
-                                </label>
-                            </div>
+                <div class="row pb-2 align-items-center" style="border-bottom: 1px solid #EBF7F5;">
+                    <div class="col-auto">
+                        <div class="unitTitle border-bottom-0">
+                            <i class="bi bi-volume-up-fill"></i>
+                            用水提醒
                         </div>
-                        <div id="waterLimit" class="row align-items-center g-1 ms-4">
-                            <div class="col-auto">用水上限度數</div>
-                            <div class="col">
-                                <div class="row align-items-center g-1">
-                                    <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert650Extion01"></div>
-                                    <div class="col-auto">度</div>
-                                </div>
-                            </div>
-                        </div>
-                        
                     </div>
-                    <div class="col-12 col-md">
-                        <div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" name="checkbox2" value="651" id="checkbox2">
-                                <label class="form-check-label" for="checkbox2">
-                                    每期用水預算提醒
+                    <div class="col-auto">
+                        <div class="d-flex ms-5 align-items-center">
+                            開啟
+                            <div class="onoffswitch mx-3">
+                                <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" id="myonoffswitch2">
+                                <label class="onoffswitch-label" for="myonoffswitch2">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
                                 </label>
                             </div>
-                        </div>
-                        <div id="budgetLimit" class="row align-items-center g-1 ms-4">
-                            <div class="col-auto">用水預算上限</div>
-                            <div class="col">
-                                <div class="row align-items-center g-1">
-                                    <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert651Extion01"></div>
-                                    <div class="col-auto">元</div>
-                                </div>
-                            </div>
+                            關閉
                         </div>
                     </div>
                 </div>
+                <div id="waterReminderDetail">
+                    <div class="row py-2 mb-4">
+                        <div class="col-12 col-md">
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="checkbox1" value="650" id="checkbox1">
+                                    <label class="form-check-label" for="checkbox1">
+                                        每日用水上限提醒
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="waterLimit" class="row align-items-center g-1 ms-4">
+                                <div class="col-auto">用水上限度數</div>
+                                <div class="col">
+                                    <div class="row align-items-center g-1">
+                                        <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert650Extion01"></div>
+                                        <div class="col-auto">度</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-md">
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="checkbox2" value="651" id="checkbox2">
+                                    <label class="form-check-label" for="checkbox2">
+                                        每期用水預算提醒
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="budgetLimit" class="row align-items-center g-1 ms-4">
+                                <div class="col-auto">用水預算上限</div>
+                                <div class="col">
+                                    <div class="row align-items-center g-1">
+                                        <div class="col-4"><input type="text" class="form-control" value="" id="Code102Alert651Extion01"></div>
+                                        <div class="col-auto">元</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
 
 
 @*                 <div class="row">
@@ -1083,7 +1152,7 @@
                     </div> *@
                 </div>
             </form>
-            @if (isGroupedAccount)
+            @if (!isGroupedAccount)
             {
                 <div class="btnGroup">
                     <a class="btn-green-o" href="javascript:" onclick="BtnSave()">儲存</a>

@@ -4,6 +4,7 @@ using TWNPPublic.Common.Extension;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.Alert;
 using TWNPPublic.ViewModels.UserManage;
+using static NPOI.HSSF.Util.HSSFColor;
 
 namespace TWNPPublic.Domain.Service
 {
@@ -148,9 +149,8 @@ namespace TWNPPublic.Domain.Service
                     }
                     else if (isPasswordChanged)
                     {
-                        // 一般水號：只更新其他 DB 的密碼
-                        // 這裡放你「一般水號」原本的其他 DB 密碼更新 SQL
-                        this.UpdateWmmmdbImCmuserPassword(accountInfo.B_ACCOUNT, hashedPassword);
+                        // 一般水號：更新其他 DB 的密碼/電話/郵件
+                        this.UpdateWmmmdbImCmuserPassword(accountInfo.B_ACCOUNT, hashedPassword, model.Email, model.PhoneNumber, isPasswordChanged);
                     }
                 }
             }
@@ -347,17 +347,26 @@ namespace TWNPPublic.Domain.Service
             return this.dapperDataAccess.Execute(mainsql, obj);
         }
 
-        private int UpdateWmmmdbImCmuserPassword(string account, string encryptedPwd)
+        private int UpdateWmmmdbImCmuserPassword(string account, string encryptedPwd, string email, string tel, bool isPasswordChanged)
         {
             //調整密碼更新SQL，讓它只更新密碼欄位，其他欄位保持不變
-            string mainsql = @"UPDATE WMMMDB.dbo.im_cmuser
-                       SET password = @Password
+            string mainsql = isPasswordChanged ?
+                      @"UPDATE WMMMDB.dbo.im_cmuser
+                       SET password = @Password 
+                           ,email = @Email
+                           ,phone_1 = @Tel
+                       WHERE user_id = @Account" :
+                       @"UPDATE WMMMDB.dbo.im_cmuser
+                       SET email = @Email
+                           ,phone_1 = @Tel
                        WHERE user_id = @Account";
 
             object obj = new
             {
                 Account = account,
-                Password = encryptedPwd
+                Password = encryptedPwd,
+                Email = email?.Trim(),
+                Tel = tel?.Trim()
             };
 
             return this.dapperDataAccess.Execute(mainsql, obj);

@@ -11,25 +11,71 @@
 }
 <script>
         var WaterNoIndex = 1;
+        var isGroupedAccount = false; // 新增全域變數
+
         $(function(){
             $(".menuList > a:nth-child(5)").addClass("active").siblings().removeClass("active");
+            // 第一步:取得用戶資訊(包含歸戶帳號狀態)
             $.get(GetWebSiteURL('@Url.Action("GetUserInfo", "UserManage")'),function(result){
                 if(result.Success){
                     $("#Account").val(result.Data.B_ACCOUNT);
                     $("#PhoneNumber").val(result.Data.CELL_PHONE);
                     $("#Email").val(result.Data.EMAIL);
+                    console.log(result.Data);
+                      // 儲存歸戶帳號狀態
+                    isGroupedAccount = result.Data.IS_GROUPED_ACCOUNT;
+
+                    // 如果是歸戶帳號，禁用帳號欄位
+                    if(isGroupedAccount){
+                        $("#Account").prop("disabled", true);
+                    }
+                    // 第二步:載入水號資料(確保 isGroupedAccount 已設定)
+                    $.get(GetWebSiteURL('@Url.Action("ListedUserWaterNo", "UserManage")'),function(result){
+                       //console.log(result.Data);
+                        if(result.Success){
+                            $.each(result.Data,function(index,value){
+                                value["Index"] = WaterNoIndex;
+                                $("#TemplateWaterNoitem").tmpl(value).appendTo("#divWaterNoFromGroup");
+                                WaterNoIndex++;
+                            })
+
+                            // 如果是歸戶帳號，禁用所有水號相關的輸入框
+                            if(isGroupedAccount){
+                                disableWaterNoInputs();
+                            }
+                        }
+                    });
+                    // 第三步:載入到期提醒設定
+                    $.get(GetWebSiteURL('@Url.Action("LoadAlertSet", "UserManage")'),function(result){
+                        //console.log(result.Data);
+                        if(result.Success){
+
+                            let resultData = result.Data;
+
+                            // 確保 resultData 是陣列，否則設為空陣列
+                            let dataArray = Array.isArray(resultData) ? resultData : [];
+
+                            // 取得需要預設勾選的 VALUE 值
+                            let selectedValues = dataArray.map(item => item.VALUE);
+
+                            // 遍歷所有 checkbox，符合條件的打勾
+                            $(".exp-date-checkbox").each(function () {
+                                if (selectedValues.includes($(this).val())) {
+                                    $(this).prop("checked", true);
+                                }
+                            });
+
+                            // 如果是歸戶帳號，禁用 checkbox
+                            if(isGroupedAccount){
+                                $(".exp-date-checkbox").prop("disabled", true);
+                            }
+
+                        }
+
+                    });
                 }
             });
-            $.get(GetWebSiteURL('@Url.Action("ListedUserWaterNo", "UserManage")'),function(result){
-               //console.log(result.Data);
-                if(result.Success){
-                    $.each(result.Data,function(index,value){
-                        value["Index"] = WaterNoIndex;
-                        $("#TemplateWaterNoitem").tmpl(value).appendTo("#divWaterNoFromGroup");
-                        WaterNoIndex++;
-                    })
-                }
-            });
+            // 第四步:載入 pH 計資料(與 isGroupedAccount 無關,可獨立執行)
             $.get(GetWebSiteURL('@Url.Action("GetPhMeterQualifyDate", "UserManage")'),function(result){
                 //console.log(result.Data);
                 if(result.Success){
@@ -45,29 +91,23 @@
                 }
             });
 
-            $.get(GetWebSiteURL('@Url.Action("LoadAlertSet", "UserManage")'),function(result){
-                //console.log(result.Data);
-                if(result.Success){
-                  
-                    let resultData = result.Data; 
-
-                    // 確保 resultData 是陣列，否則設為空陣列
-                    let dataArray = Array.isArray(resultData) ? resultData : [];
-
-                    // 取得需要預設勾選的 VALUE 值
-                    let selectedValues = dataArray.map(item => item.VALUE);
-
-                    // 遍歷所有 checkbox，符合條件的打勾
-                    $(".exp-date-checkbox").each(function () {
-                        if (selectedValues.includes($(this).val())) {
-                            $(this).prop("checked", true);
-                        }
-                    });
-
-                }
-               
-            });
+            
         });
+
+        // 禁用所有水號輸入框函式
+        function disableWaterNoInputs() {
+            // // 禁用暱稱輸入框
+            // $(".water-nickname-input").prop("disabled", true);
+
+            // // 禁用下拉切換顯示暱稱 checkbox
+            // $(".nickname-checkbox").prop("disabled", true);
+
+             // 禁用暱稱輸入框
+            $("#divWaterNoFromGroup input[type='text']").prop("disabled", true);
+
+            // 禁用下拉切換顯示暱稱 checkbox
+            $(".nickname-checkbox").prop("disabled", true);
+        }
 
         function btnReset(){
             history.go(0);
@@ -117,23 +157,44 @@
         <text>
                                         function btnSave(){
                                             var Url = GetWebSiteURL('@Url.Action("UpdateUserInfo","UserManage")');
-                                            var Data ={
-                                                Account : $("#Account").val(),
-                                                Pwd : $("#Pwd").val(),
-                                                PhoneNumber : $("#PhoneNumber").val(),
-                                                Email : $("#Email").val(),
-                                                WaterNO : $("[name='WaterNo[]']").map(function(){return $(this).text();}).get(),
-                                                WaterData: $("div[id^='WaterNoItem']").map(function() {
-                                                    return {
-                                                        WATER_NO: $(this).find("[name='WaterNo[]']").text(),  // 獲取水號
-                                                        NICK_NAME: $(this).find("input[type='text']").first().val(),         // 獲取暱稱
-                                                        NICK_NAME_SHOW: $(this).find(".nickname-checkbox").is(":checked") ? 1 : 0  // 判斷下拉切換顯示暱稱是否勾選
-                                                    };
-                                                }).get(),
-                                                ExpDate:$(".exp-date-checkbox:checked").map(function() {
+                                            // var Data ={
+                                            //     Account : $("#Account").val(),
+                                            //     Pwd : $("#Pwd").val(),
+                                            //     PhoneNumber : $("#PhoneNumber").val(),
+                                            //     Email : $("#Email").val(),
+                                            //     WaterNO : $("[name='WaterNo[]']").map(function(){return $(this).text();}).get(),
+                                            //     WaterData: $("div[id^='WaterNoItem']").map(function() {
+                                            //         return {
+                                            //             WATER_NO: $(this).find("[name='WaterNo[]']").text(),  // 獲取水號
+                                            //             NICK_NAME: $(this).find("input[type='text']").first().val(),         // 獲取暱稱
+                                            //             NICK_NAME_SHOW: $(this).find(".nickname-checkbox").is(":checked") ? 1 : 0  // 判斷下拉切換顯示暱稱是否勾選
+                                            //         };
+                                            //     }).get(),
+                                            //     ExpDate:$(".exp-date-checkbox:checked").map(function() {
+                                            //             return $(this).val();
+                                            //         }).get(),
+                                            // };
+                                                 var Data ={
+                                                    Account : $("#Account").val(),
+                                                    Pwd : $("#Pwd").val(),
+                                                    PhoneNumber : $("#PhoneNumber").val(),
+                                                    Email : $("#Email").val()
+                                                };
+
+                                                // 只有非歸戶帳號才傳送水號和到期提醒資料
+                                                if(!isGroupedAccount){
+                                                    Data.WaterNO = $("[name='WaterNo[]']").map(function(){return $(this).text();}).get();
+                                                    Data.WaterData = $("div[id^='WaterNoItem']").map(function() {
+                                                        return {
+                                                            WATER_NO: $(this).find("[name='WaterNo[]']").text(),
+                                                            NICK_NAME: $(this).find("input[type='text']").first().val(),
+                                                            NICK_NAME_SHOW: $(this).find(".nickname-checkbox").is(":checked") ? 1 : 0
+                                                        };
+                                                    }).get();
+                                                    Data.ExpDate = $(".exp-date-checkbox:checked").map(function() {
                                                         return $(this).val();
-                                                    }).get(),
-                                            };
+                                                    }).get();
+                                                }
                                             var Validator = $("#FormAccount").validate();
                                             $('#spanWaterNO').text('');
                                             $.ajax({
@@ -233,71 +294,73 @@
                         </div>
                     </div>
                 </div>
-                @if (ViewBag.IsSignAccount && ViewBag.IsTestUser)
-                {
+                <div id="waterNoManagementSection">
+                    @if (ViewBag.IsSignAccount && ViewBag.IsTestUser)
+                    {
+                        <div class="unitTitle justify-content-between">
+                            <div class="name">
+                                <i class="bi bi-search"></i>
+                                用戶水號綁定管理
+                            </div>
+                        </div>
+                        <span class="text-danger" id="spanWaterNO">
+                        </span>
+                        <div class="formGroup" id="divWaterNoFromGroup">
+                        </div>
+                    }
                     <div class="unitTitle justify-content-between">
-                        <div class="name">
-                            <i class="bi bi-search"></i>
-                            用戶水號綁定管理
-                        </div>
+                            <div class="name">
+                                <i class="bi bi-search"></i>
+                                自動讀表期滿通知
+                            </div>
                     </div>
-                    <span class="text-danger" id="spanWaterNO">
-                    </span>
-                    <div class="formGroup" id="divWaterNoFromGroup">
-                    </div>
-                }
-                <div class="unitTitle justify-content-between">
-                        <div class="name">
-                            <i class="bi bi-search"></i>
-                            自動讀表期滿通知
-                        </div>
-                </div>
-                <div class="formGroup">
-                    <div class="border rounded-3 bg-white shadow-sm p-3 mb-3">
-                        <!-- 日期區 -->
-                        <div class="row g-3 mb-3">
-                            <div class="col-12 col-md-6">
-                                <div class="bg-primary-subtle border border-primary-subtle rounded-3 px-3 py-2 h-100">
-                                    <div class="small text-secondary mb-1">
-                                        <i class="bi bi-calendar-check text-primary me-1"></i>
-                                        自動讀表驗收次日日期
+                    <div class="formGroup">
+                        <div class="border rounded-3 bg-white shadow-sm p-3 mb-3">
+                            <!-- 日期區 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="bg-primary-subtle border border-primary-subtle rounded-3 px-3 py-2 h-100">
+                                        <div class="small text-secondary mb-1">
+                                            <i class="bi bi-calendar-check text-primary me-1"></i>
+                                            自動讀表驗收次日日期
+                                        </div>
+                                        <div class="fw-semibold" id="QualifyDate">2025/01/05</div>
                                     </div>
-                                    <div class="fw-semibold" id="QualifyDate">2025/01/05</div>
                                 </div>
-                            </div>
 
-                            <div class="col-12 col-md-6">
-                                <div class="bg-danger-subtle border border-danger-subtle rounded-3 px-3 py-2 h-100">
-                                    <div class="small text-secondary mb-1">
-                                        <i class="bi bi-shield-check text-danger me-1"></i>
-                                        保固截止日
+                                <div class="col-12 col-md-6">
+                                    <div class="bg-danger-subtle border border-danger-subtle rounded-3 px-3 py-2 h-100">
+                                        <div class="small text-secondary mb-1">
+                                            <i class="bi bi-shield-check text-danger me-1"></i>
+                                            保固截止日
+                                        </div>
+                                        <div class="fw-semibold text-danger" id="WarrantyDate">2025/12/31</div>
                                     </div>
-                                    <div class="fw-semibold text-danger" id="WarrantyDate">2025/12/31</div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- 到期提醒條件 -->
-                        <div class="">
-                            <div class="small text-secondary mb-2">
-                                <i class="bi bi-bell-fill text-warning me-1"></i>
-                                到期提醒條件
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-3 ps-1">
-                                <div class="form-check mb-0">
-                                    <input class="form-check-input exp-date-checkbox" type="checkbox" value="653" id="expDate653">
-                                    <label class="form-check-label" for="expDate653">前一年</label>
+                            <!-- 到期提醒條件 -->
+                            <div class="">
+                                <div class="small text-secondary mb-2">
+                                    <i class="bi bi-bell-fill text-warning me-1"></i>
+                                    到期提醒條件
                                 </div>
 
-                                <div class="form-check mb-0">
-                                    <input class="form-check-input exp-date-checkbox" type="checkbox" value="654" id="expDate654">
-                                    <label class="form-check-label" for="expDate654">半年前</label>
-                                </div>
+                                <div class="d-flex flex-wrap gap-3 ps-1">
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input exp-date-checkbox" type="checkbox" value="653" id="expDate653">
+                                        <label class="form-check-label" for="expDate653">前一年</label>
+                                    </div>
 
-                                <div class="form-check mb-0">
-                                    <input class="form-check-input exp-date-checkbox" type="checkbox" value="655" id="expDate655">
-                                    <label class="form-check-label" for="expDate655">前三個月</label>
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input exp-date-checkbox" type="checkbox" value="654" id="expDate654">
+                                        <label class="form-check-label" for="expDate654">半年前</label>
+                                    </div>
+
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input exp-date-checkbox" type="checkbox" value="655" id="expDate655">
+                                        <label class="form-check-label" for="expDate655">前三個月</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

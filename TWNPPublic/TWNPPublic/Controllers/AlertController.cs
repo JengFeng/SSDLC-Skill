@@ -34,7 +34,7 @@ namespace TWNPPublic.Controllers
 
             ViewBag.WaterNo = aspNetUser.WaterNo;
             ViewBag.MMcode = alertService.GetAlertMMCode();
-            ViewBag.IsGroupedAccount = isGroupedAccount;
+            ViewBag.IsGroupedAccount = isGroupedAccount;//false; //isGroupedAccount;
             return View();
         }
 
@@ -174,38 +174,42 @@ namespace TWNPPublic.Controllers
                 };
                 alertsetitems.Add(PhoneItem);
 
-                //每日用水上限提醒
-                if (model.AlertCheckbox1 == "650")
+                // 用水提醒（比照 onoffswitch1）
+                if (model.onoffswitch2 == "on")
                 {
-                    var value2 = "";
-                    value2 = model.AlertExtion10265001;
-
-                    B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                    //每日用水上限提醒
+                    if (model.AlertCheckbox1 == "650")
                     {
-                        B_ALART_CODE_SN = 102,
-                        WATER_NO = model.WaterNo,
-                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = model.AlertCheckbox1,
-                        VALUE1 = value2
-                    };
-                    alertsetitems.Add(MMcode1Item);
-                }
+                        var value2 = "";
+                        value2 = model.AlertExtion10265001;
 
-                //每期用水預算提醒
-                if (model.AlertCheckbox2 == "651")
-                {
-                    var value2 = "";
-                    value2 = model.AlertExtion10265101;
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 102,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertCheckbox1,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
 
-                    B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                    //每期用水預算提醒
+                    if (model.AlertCheckbox2 == "651")
                     {
-                        B_ALART_CODE_SN = 102,
-                        WATER_NO = model.WaterNo,
-                        B_ACCOUNT_SN = aspNetUser.UserId.Value,
-                        VALUE = model.AlertCheckbox2,
-                        VALUE1 = value2
-                    };
-                    alertsetitems.Add(MMcode1Item);
+                        var value2 = "";
+                        value2 = model.AlertExtion10265101;
+
+                        B_ALART_SETTING MMcode1Item = new B_ALART_SETTING()
+                        {
+                            B_ALART_CODE_SN = 102,
+                            WATER_NO = model.WaterNo,
+                            B_ACCOUNT_SN = aspNetUser.UserId.Value,
+                            VALUE = model.AlertCheckbox2,
+                            VALUE1 = value2
+                        };
+                        alertsetitems.Add(MMcode1Item);
+                    }
                 }
 
                 #region 其他選項
@@ -426,9 +430,14 @@ namespace TWNPPublic.Controllers
 
                 //最簡單刪掉所有在加回去
                 alertService.UpdateAlertServiceBySNAndWaterNo(aspNetUser.UserId.Value, model.WaterNo, alertsetitems);
-                //更新其他資料庫手機信箱
-                //alertService.UpdateImCmuserContactInfo(model.WaterNo, model.AlertPhone,model.AlertEmail1,model.AlertEmail2,model.AlertEmail3,model.AlertEmail4,model.AlertEmail5);
-               
+
+                // 檢查是否為歸戶帳號
+                bool isGroupedAccount = userManageService.IsSttnGrpIdExist(aspNetUser.Name) != null;
+                if (!isGroupedAccount) {
+                    //更新其他資料庫手機信箱
+                    alertService.UpdateImCmuserContactInfo(model.WaterNo, model.AlertPhone,model.AlertEmail1,model.AlertEmail2,model.AlertEmail3,model.AlertEmail4,model.AlertEmail5);
+                }
+
                 return Json(Success("更新成功"));
             }
         }

@@ -375,13 +375,13 @@ namespace TWNPPublic.Domain.Service
         public int UpdateImCmuserContactInfo(string waterNo, string phone, string email1, string email2, string email3, string email4, string email5)
         {
             string sql = @"UPDATE WMMMDB.dbo.im_cmuser 
-                   SET phone_2 = @Phone,
-                       email_1 = @Email1,
-                       email_2 = @Email2,
-                       email_3 = @Email3,
-                       email_4 = @Email4,
-                       email_5 = @Email5
-                   WHERE user_id = @WaterNo";
+                           SET phone_2 = @Phone,
+                               email_1 = @Email1,
+                               email_2 = @Email2,
+                               email_3 = @Email3,
+                               email_4 = @Email4,
+                               email_5 = @Email5
+                           WHERE user_id = @WaterNo";
 
             var parameters = new
             {
