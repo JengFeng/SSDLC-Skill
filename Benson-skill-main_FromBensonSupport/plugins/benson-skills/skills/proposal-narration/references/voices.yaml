@@ -1,0 +1,281 @@
+# ============================================================
+# proposal-narration / voices.yaml
+# ------------------------------------------------------------
+# 配音聲音清單。Step 1 確認對話時，讀取此檔列出所有選項。
+# 使用者可自由新增/刪除/排序此檔，不需動 skill.md。
+#
+# 多 Provider 支援：
+#   provider: elevenlabs | openai | edge_tts
+#   cost:     paid | free
+#
+# 欄位說明：
+#   key            短代號（A/B/C... 給對話選單用）
+#   name           中文顯示名
+#   provider       服務商（決定走哪個 API）
+#   cost           paid（付費，要算錢）/ free（免費）
+#   voice_id       對應 provider 的 voice id（ElevenLabs 用 hash / OpenAI 用 nova / Edge 用 zh-TW-XXXNeural）
+#   gender         male / female
+#   description    一句話形容
+#   model          provider 對應 model（ElevenLabs eleven_v3 / OpenAI tts-1-hd / Edge 不需要）
+#   settings       voice_settings dict（僅 ElevenLabs 用）
+#   user_validated true 表示林秉澄試聽後評價可接受
+#   notes          備註（適用情境、提醒事項、付費注意）
+# ============================================================
+
+voices:
+
+  # ================================================================
+  # ElevenLabs (付費 / Starter $6 月，30k credits/月)
+  # 中文表現最佳、可 clone、起伏豐富
+  # ================================================================
+
+  - key: A
+    name: Benson_TW
+    provider: elevenlabs
+    cost: paid                 # 💰 付費 (ElevenLabs Starter $6/月)
+    voice_id: YgP0tgq87thdcVrL3XYt
+    gender: male
+    description: 林秉澄本人 clone（從 Discord 語音樣本）⭐ 個人專屬
+    model: eleven_v3
+    settings:
+      stability: 0.50
+      similarity_boost: 0.85
+      style: 0.70
+      use_speaker_boost: true
+    user_validated: true
+    notes: |
+      💰 付費聲音（吃 ElevenLabs 月額度，v3 模型 ~2-3x credits/字）
+      林秉澄本人聲音 clone。適用本人親自簡報配音、自我介紹、個人品牌影片。
+      已知限制：Discord 音檔 clone 品質先天打折，比 Library voice 略偏柔。
+
+  - key: B
+    name: Tiffy_TW
+    provider: elevenlabs
+    cost: paid                 # 💰 付費
+    voice_id: 1AKkSX7KMPHIWuz76m0n
+    gender: female
+    description: 女聲 / 年輕專業 / Library 錄音棚級 ⭐ 林秉澄推薦
+    model: eleven_v3
+    settings:
+      stability: 0.50
+      similarity_boost: 0.85
+      style: 0.70
+      use_speaker_boost: true
+    user_validated: true
+    notes: |
+      💰 付費聲音（吃 ElevenLabs 月額度）
+      ElevenLabs Library 公開聲音，台灣腔，錄音棚專業品質。
+      適用：一般提案、教學影片、APP 介紹。
+      v24 (2026-05-04) 林秉澄評為「效果很好」⭐
+
+  - key: C
+    name: Kuo Yu_TW
+    provider: elevenlabs
+    cost: paid                 # 💰 付費
+    voice_id: Z9RJEkFYQw307BCQULDR
+    gender: male
+    description: 男聲 / 中年沉穩 / 新聞播報 
+    model: eleven_v3
+    settings:
+      stability: 0.50
+      similarity_boost: 0.85
+      style: 0.65
+      use_speaker_boost: true
+    user_validated: true
+    notes: |
+      💰 付費聲音（吃 ElevenLabs 月額度）
+      Library 男聲，廣告級沉穩。適用：政府正式提案、評審面對面、企業客戶。
+      ⭐ 林秉澄 2026-05-04 推薦。
+
+  - key: D
+    name: Anna Su
+    provider: elevenlabs
+    cost: paid                 # 💰 付費
+    voice_id: r6qgCCGI7RWKXCagm158
+    gender: female
+    description: 女聲 / 年輕中性 / 新聞播報 
+    model: eleven_v3
+    settings:
+      stability: 0.50
+      similarity_boost: 0.85
+      style: 0.75
+      use_speaker_boost: true
+    user_validated: true
+    notes: |
+      💰 付費聲音（吃 ElevenLabs 月額度）
+      Library 女聲，年輕中性。適用：社群短片、輕鬆風、產品介紹。
+      ⭐ 林秉澄 2026-05-04 推薦。
+
+
+
+  # ================================================================
+  # Microsoft Edge TTS (完全免費 / Azure Neural 引擎)
+  # 中文發音 100% 準、不能 clone、聲音選擇受限
+  # 適用：開發測試、不需要 clone、零預算
+  # ================================================================
+
+  - key: E
+    name: HsiaoChen 女聲（微軟免費）
+    provider: edge_tts
+    cost: free                 # 🆓 免費，無上限
+    voice_id: zh-TW-HsiaoChenNeural
+    gender: female
+    description: Microsoft Azure 台灣女聲 / 教育播報感
+    model: null                # Edge TTS 不需指定 model
+    settings: null             # Edge TTS 不需 voice_settings
+    user_validated: true       # 林秉澄之前用過 OK
+    notes: |
+      🆓 完全免費，無使用上限（Microsoft Azure Neural TTS 同一引擎）
+      中文發音 100% 準確、台灣腔原生、不會破音字
+      ❌ 不能 clone 個人聲音
+      ❌ 起伏不如 ElevenLabs v3
+      ✅ 適合測試、demo、零預算情境
+
+  - key: F
+    name: YunJhe 男聲（微軟免費）
+    provider: edge_tts
+    cost: free                 # 🆓 免費
+    voice_id: zh-TW-YunJheNeural
+    gender: male
+    description: Microsoft Azure 台灣男聲 / 穩重
+    model: null
+    settings: null
+    user_validated: false
+    notes: |
+      🆓 完全免費，無使用上限
+      Microsoft Azure 台灣男聲，穩重風格
+      適合：技術簡報、產品介紹、零預算男聲場合
+
+  - key: G
+    name: HsiaoYu 女聲（微軟免費）
+    provider: edge_tts
+    cost: free                 # 🆓 免費
+    voice_id: zh-TW-HsiaoYuNeural
+    gender: female
+    description: Microsoft Azure 台灣女聲 / 明亮
+    model: null
+    settings: null
+    user_validated: false
+    notes: |
+      🆓 完全免費，無使用上限
+      Microsoft Azure 台灣女聲，明亮活潑
+      適合：年輕風、社群、輕鬆主題
+
+  # ================================================================
+  # OpenAI TTS (按字計費 / tts-1-hd ~$0.030/1k chars)
+  # 中文略帶英文腔但起伏豐富、6 個聲音可選
+  # 適用：英中混合內容、不在意輕微洋腔
+  # ================================================================
+
+  - key: I
+    name: Nova 女聲（OpenAI）
+    provider: openai
+    cost: paid                 # 💰 按字計費 (~$0.030/1k chars)
+    voice_id: nova
+    gender: female
+    description: OpenAI tts-1-hd / 女聲 / 年輕清亮
+    model: tts-1-hd
+    settings: null
+    user_validated: true       # v22 之前用過完整 18 頁
+    notes: |
+      💰 按字計費，OpenAI API（~$0.030/1k chars，17 頁約 $0.10）
+      中文發音準但帶輕微英文腔（用英文模型套中文）
+      起伏豐富、年輕清亮，適合活潑主題
+      ⚠️ 林秉澄之前評：洋腔感對台灣評審不利，僅在英中混合內容用
+
+  - key: J
+    name: Onyx 男聲（OpenAI）
+    provider: openai
+    cost: paid
+    voice_id: onyx
+    gender: male
+    description: OpenAI tts-1-hd / 男聲 / 低沉廣告級
+    model: tts-1-hd
+    settings: null
+    user_validated: false
+    notes: |
+      💰 按字計費 (~$0.030/1k chars)
+      OpenAI 男聲，低沉有磁性，廣告級
+      中文略帶洋腔但聲線非常有質感
+
+  - key: K
+    name: Shimmer 女聲（OpenAI）
+    provider: openai
+    cost: paid
+    voice_id: shimmer
+    gender: female
+    description: OpenAI tts-1-hd / 女聲 / 柔和
+    model: tts-1-hd
+    settings: null
+    user_validated: false
+    notes: |
+      💰 按字計費 (~$0.030/1k chars)
+      OpenAI 女聲，柔和輕快
+      適合：說故事、podcast、教學
+
+  - key: L
+    name: Alloy 中性（OpenAI）
+    provider: openai
+    cost: paid
+    voice_id: alloy
+    gender: neutral
+    description: OpenAI tts-1-hd / 中性聲 / 新聞播報感
+    model: tts-1-hd
+    settings: null
+    user_validated: false
+    notes: |
+      💰 按字計費 (~$0.030/1k chars)
+      OpenAI 中性聲，新聞播報感強
+      適合：報告、宣布、嚴肅內容
+
+# ============================================================
+# Provider 比較表（給用戶選擇時參考）
+# ============================================================
+provider_comparison:
+  elevenlabs:
+    cost: 💰 訂閱制（Starter $6/月含 30k credits）
+    chinese: ⭐⭐⭐⭐⭐ 最佳，台灣腔
+    expressive: ⭐⭐⭐⭐⭐ 起伏最豐富（v3 模型）
+    can_clone: ✅ 可 clone 個人聲音
+    best_for: 政府提案、商用配音、要 clone 自己聲音
+
+  edge_tts:
+    cost: 🆓 完全免費
+    chinese: ⭐⭐⭐⭐⭐ 100% 準確（Azure Neural 同引擎）
+    expressive: ⭐⭐⭐ 中等
+    can_clone: ❌ 不能
+    best_for: 測試、demo、零預算、英中混合
+
+  openai:
+    cost: 💰 按字計費 (~$0.030/1k chars，17 頁約 $0.10)
+    chinese: ⭐⭐⭐ 略帶洋腔
+    expressive: ⭐⭐⭐⭐ 起伏豐富
+    can_clone: ❌ 不能
+    best_for: 英中混合內容、不在意輕微洋腔、要英文流暢
+
+# ============================================================
+# 預設策略（用戶完全沒指定 + 沒說「隨便」時）
+# ============================================================
+defaults:
+  voice_key: B          # Tiffy_TW（仍要問用戶確認）
+  duration_min: 10       # 10 分鐘標準版
+  preserve_pptx: true    # 不動 PPTX 視覺，只配音
+
+# ============================================================
+# 仍不建議的選擇（已驗證效果差）
+# ============================================================
+not_recommended:
+  - id: eleven_multilingual_v2
+    reason: 比 v3 太念稿、無起伏，已被 v3 取代
+  - id: eleven_turbo_v2_5 / eleven_flash_v2_5
+    reason: 速度型模型，提案級不適用
+  - id: "ElevenLabs stab < 0.30"
+    reason: 走音
+  - id: "ElevenLabs stab=1.0 + style=1.0"
+    reason: 機械化過頭
+
+# ============================================================
+# 版本歷史
+# ============================================================
+# 2026-05-04 v2: 加入 Microsoft Edge TTS (3 voices) + OpenAI TTS (4 voices) + provider 比較表
+# 2026-05-04 v1: 從 skill.md 拆出獨立 config

@@ -1,0 +1,47 @@
+# 敏感檔
+**/.env
+**/*.key
+**/credentials.json
+**/credentials*.json
+**/token.txt
+**/secrets.json
+
+# 本地資料庫
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/.handover/
+
+# Python 暫存
+**/__pycache__/
+**/*.pyc
+
+# OS / 編輯器
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Linux/WSL 殘留
+**/.fuse_hidden*
+
+# 編輯產物 / 測試輸出
+**/output/
+**/test_*.docx
+**/test_*.xlsx
+**/test_*.pptx
+*.tmp
+*.bak
+
+# 個人筆記
+**/_notes.md
+**/_scratch/
+
+# 開發暫存，含臨時撈取資料/token，不入庫
+project-pulse-poc/
+
+# 每日檢查 log（每台電腦各自產生，不入庫避免互相衝突）
+check-skills.log

@@ -1,0 +1,11 @@
+{
+  "name": "benson-skills",
+  "version": "1.0.8",
+  "description": "Benson 自建 Claude Code skill bundle (29 skills)",
+  "author": {
+    "name": "Benson",
+    "email": "benson@gis.fcu.edu.tw"
+  },
+  "homepage": "https://github.com/MMBenson/Benson-skill",
+  "repository": "https://github.com/MMBenson/Benson-skill"
+}
