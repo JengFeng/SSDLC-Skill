@@ -21,8 +21,9 @@
 Thumbs.db
 desktop.ini
 *.swp
-*~
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+*.zip
 .idea/
 
 # Linux/WSL 殘留
