@@ -1,0 +1,39 @@
+# 章節過場頁旁白模板
+# 用於 20 / 30 分鐘版影片，在 4 大章節前插過場頁
+# 每段 30-45 秒，~120 字
+# 視覺：用 PIL 生成簡潔大字版面（章節名 + 一句話）
+
+transitions:
+  - chapter: Why
+    insert_before_page: 2
+    title: 為什麼
+    script: |
+      接下來的第一個章節，我們先回答一個最根本的問題——
+      為什麼台灣需要這套系統？
+      這個答案不是技術，而是現實——
+      農業面臨的水資源、氣候、人口三大壓力。
+
+  - chapter: See
+    insert_before_page: 5
+    title: 看
+    script: |
+      前面我們講了系統願景，接下來進入【看】的章節——
+      讓各位看見 AI 在田間實際怎麼運作。
+      這不是 demo，是楊梅田 4 月 29 號的真實畫面。
+
+  - chapter: Think
+    insert_before_page: 12
+    title: 想
+    script: |
+      看完 AI 怎麼【看】，現在進入更深的層次——
+      AI 怎麼【想】？
+      怎麼從多源資料推論出今天該不該示警？
+      這是這套系統最核心的技術。
+
+  - chapter: Win
+    insert_before_page: 17
+    title: 贏
+    script: |
+      最後進入【贏】的章節——
+      量化效益、農民痛點、未來推廣。
+      各位最關心的問題，我們一次回答完整。

@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>每日工作整合報告 2026-03-28</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f2f5;font-family:-apple-system,'Microsoft JhengHei',sans-serif;font-size:15px;line-height:1.6;color:#1a202c;">
+
+<!-- HEADER -->
+<div id="top" style="background:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);color:#fff;padding:28px 20px 24px;text-align:center;">
+  <div style="font-size:24px;font-weight:700;letter-spacing:0.5px;">&#x1F4CB; 每日工作整合報告</div>
+  <div style="font-size:14px;margin-top:6px;opacity:0.88;">2026/03/28（六）| Outlook + EIP 整合檢核</div>
+</div>
+
+<div style="max-width:720px;margin:0 auto;padding:16px 12px 40px;">
+
+<!-- ==================== A. 管理摘要 ==================== -->
+<div style="background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:16px;margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#1a365d;margin-bottom:10px;">A. 管理摘要</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:14px; font-size:13px; color:#4a5568;">CEO 級全局摘要 — 涵蓋行程、緊急事項、Email、資安、會議回顧與建議</div>
+
+  <!-- 今日建議 -->
+  <div style="margin-bottom:14px;">
+    <div style="background:#1a365d; color:#fff; padding:8px 12px; border-radius:6px 6px 0 0; font-size:14px; font-weight:600;">&#x1F4A1; 建議今日優先處理</div>
+    <div style="background:#edf2f7; padding:10px 12px; border-radius:0 0 6px 6px; font-size:14px; line-height:1.8;">
+      <div>1. 指派人員配合五河分署 03/30 裝機聯測</div>
+      <div>2. 確認公司卡續約項目，完成移轉</div>
+      <div>3. 簽核 EIP 表單 DR26030234</div>
+      <div>4. 確認四河分署三站畫面已關閉</div>
+      <div>5. 開始看明璋 GIS 經費規劃附件（04/02 會議準備）</div>
+    </div>
+  </div>
+
+  <!-- 行程總覽 -->
+  <div style="margin-bottom:14px;">
+    <div style="background:#2b6cb0; color:#fff; padding:8px 12px; border-radius:6px 6px 0 0; font-size:14px; font-weight:600;">&#x1F4C5; 行程總覽</div>
+    <div style="background:#ebf8ff; padding:10px 12px; border-radius:0 0 6px 6px; font-size:14px; line-height:1.8;">
+      <div>• 本週至 04/11 共 <strong>15 場</strong>已確認行程</div>
+      <div>• 03/30（一）五河分署裝機 + 物種辨識啟動會議</div>
+      <div>• 03/31（二）ISMS 教育訓練佔整天（10:00-16:30）</div>
+      <div>• 04/01（三）實習生工讀金計算 &#x26A0;「一定要記得」</div>
+      <div>• 04/02（四）桃園專案例行會議 — <strong>本週最關鍵，需準備 5 項</strong></div>
+      <div>• 04/03-06 連假，但 04/05（日）南投月報待確認是否改期</div>
+    </div>
+  </div>
+
+  <!-- 緊急事項 -->
+  <div style="margin-bottom:14px;">
+    <div style="background:#c53030; color:#fff; padding:8px 12px; border-radius:6px 6px 0 0; font-size:14px; font-weight:600;">&#x1F534; 緊急事項</div>
+    <div style="background:#fff5f5; padding:10px 12px; border-radius:0 0 6px 6px; font-size:14px; line-height:1.8;">
+      <div>• 五河分署 03/30 裝機 — 需<strong>今天指派人員</strong>配合安裝 CMM（IP: 10.57.64.6）</div>
+      <div>• 公司卡月底註銷 — 確認續約項目，找婉萍移轉到新卡</div>
+      <div>• EIP 待簽表單 DR26030234 — 連續多日未簽</div>
+      <div>• 四河分署 2/4/5 號站已撤站 — 畫面顯示是否已關閉？</div>
+      <div>• 一河分署多站影像異常（03/16）— 是否已排除？</div>
+      <div>• 河川便利通顯示問題（03/17）— 是否已修復？</div>
+      <div>• 事件結案回傳異常（03/22）— 是否已解決？</div>
+      <div>• 桃園水情有 3 筆「安裝新串流主機」未開始（舊主機遭入侵替換）、GISCAM 防火牆 IP 限縮與滲透事件留存仍在進行中</div>
+      <div>• 雙向安全平台 Modbus 控制模組 2 項高優先未開始</div>
+    </div>
+  </div>
+
+  <!-- Email 與報價 -->
+  <div style="margin-bottom:14px;">
+    <div style="background:#dd6b20; color:#fff; padding:8px 12px; border-radius:6px 6px 0 0; font-size:14px; font-weight:600;">&#x1F4E7; Email 與報價追蹤</div>
+    <div style="background:#fffaf0; padding:10px 12px; border-radius:0 0 6px 6px; font-size:14px; line-height:1.8;">
+      <div>• 過去兩週共 <strong>36 封</strong>重要 email（已過濾系統通知）</div>
+      <div>• 精誠 Joy Chan — 發票作帳確認，<strong>需儘速回覆</strong></div>
+      <div>• Fortinet 桃園專案報價（Yeena）— 已收到</div>
+      <div>• App 資安檢測 — 安華已報價，Gary 詢第二家（每隻便宜 5,000），等報價中</div>
+      <div>• Comodo 50U 報價（康正徐）— 已收到</div>
+      <div>• 明璋 GIS 經費規劃附件 — <strong>04/02 會議前看完</strong></div>
+      <div>• 捷運局推播系統截圖（呂宜純）— 待檢視</div>
+      <div>• FLEXWAVE 合作詢問（Jeffrey 轉寄）— 待確認回覆</div>
+    </div>
+  </div>
+
+  <!-- 資安維運 -->
+  <div style="margin-bottom:14px;">
+    <div style="background:#2f855a; color:#fff; padding:8px 12px; border-radius:6px 6px 0 0; font-size:14px; font-weight:600;">&#x1F512; 資安與維運</div>
+    <div style="background:#f0fff4; padding:10px 12px; border-radius:0 0 6px 6px; font-size:14px; line-height:1.8;">
+      <div>• SSL 憑證更新 — &#x2705; 振昌已完成（03/19）</div>
+      <div>• 農村水保署弱點修補（03/20 通知）— &#x2753; 是否已修補</div>
+      <div>• 電腦資安漏洞修補（03/22 期限）— &#x26A0; 已過期，需確認</div>
+      <div>• Synology NAS 安全風險 — 兩次偵測（03/19, 03/26），需登入檢視</div>
+      <div>• 資安通識課程調查（03/25 截止）— &#x26A0; 已過期，04/09 課程是否已報名</div>
+      <div>• 資安法規演練表單 — 06/01 前研提（遠期追蹤）</div>
+      <div>• EIP 系統共 <strong>50 筆</strong>活躍工項分佈在 8 個專案，其中桃園水情佔 28 項為最多</div>
+    </div>
+  </div>
+
+  <!-- 過去會議 -->
+  <div style="margin-bottom:14px;">
+    <div style="background:#6b46c1; color:#fff; padding:8px 12px; border-radius:6px 6px 0 0; font-size:14px; font-weight:600;">&#x23EA; 過去兩週會議</div>
+    <div style="background:#faf5ff; padding:10px 12px; border-radius:0 0 6px 6px; font-size:14px; line-height:1.8;">
+      <div>• 你主辦 <strong>7 場</strong> — 多數待確認紀錄與工項建立</div>
+      <div>• 外部訓練 <strong>5 場</strong>（AI認證、AI Agent、ISO27701、數位財管、ESG）</div>
+      <div>• 桃園專案例行會議 <strong>2 場</strong>（03/19, 03/26）— 會議紀錄待確認</div>
+      <div>• 遠端監控交接 <strong>2 場</strong>（署端 + 分署端）— 交接狀態待確認</div>
+      <div>• &#x26A0; 韻如休假中（3/20~4/6），你代理 115 整合平台 SA</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== B. 關鍵數字 ==================== -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+  <a href="#urgent" style="text-decoration:none;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:16px;text-align:center;border-left:4px solid #c53030;">
+    <div style="font-size:28px;font-weight:800;color:#c53030;">5</div>
+    <div style="font-size:13px;color:#718096;">&#x1F534; 緊急待辦</div>
+  </a>
+  <a href="#email" style="text-decoration:none;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:16px;text-align:center;border-left:4px solid #2b6cb0;">
+    <div style="font-size:28px;font-weight:800;color:#2b6cb0;">14</div>
+    <div style="font-size:13px;color:#718096;">&#x1F4E7; Email 待跟進</div>
+  </a>
+  <a href="#calendar" style="text-decoration:none;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:16px;text-align:center;border-left:4px solid #2c7a7b;">
+    <div style="font-size:28px;font-weight:800;color:#2c7a7b;">15</div>
+    <div style="font-size:13px;color:#718096;">&#x1F4C5; 未來行程</div>
+  </a>
+  <a href="#eip" style="text-decoration:none;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:16px;text-align:center;border-left:4px solid #dd6b20;">
+    <div style="font-size:28px;font-weight:800;color:#dd6b20;">50</div>
+    <div style="font-size:13px;color:#718096;">&#x1F4CB; EIP 未完成工項</div>
+  </a>
+</div>
+
+<!-- ==================== C. 緊急行動清單 ==================== -->
+<div id="urgent" style="margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#c53030;margin-bottom:10px;">C. &#x1F534; 緊急行動清單</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">5 項需立即處理</div>
+
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:14px;margin-bottom:8px;border-left:4px solid #c53030;">
+    <div style="font-weight:700;color:#c53030;">1. 五河分署 03/30 裝機</div>
+    <div style="font-size:13px;color:#718096;margin-top:2px;">需指派人員配合聯測 — 週一到，時間緊迫</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:14px;margin-bottom:8px;border-left:4px solid #c53030;">
+    <div style="font-weight:700;color:#c53030;">2. 公司卡月底註銷</div>
+    <div style="font-size:13px;color:#718096;margin-top:2px;">確認續約項目找婉萍移轉 — 月底截止</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:14px;margin-bottom:8px;border-left:4px solid #c53030;">
+    <div style="font-weight:700;color:#c53030;">3. EIP 待簽表單 DR26030234</div>
+    <div style="font-size:13px;color:#718096;margin-top:2px;">持續未簽 — 盡速處理</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:14px;margin-bottom:8px;border-left:4px solid #c53030;">
+    <div style="font-weight:700;color:#c53030;">4. 明璋 GIS 經費規劃</div>
+    <div style="font-size:13px;color:#718096;margin-top:2px;">04/02 會議前看完附件</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:14px;margin-bottom:8px;border-left:4px solid #c53030;">
+    <div style="font-weight:700;color:#c53030;">5. 精誠 Joy Chan 發票</div>
+    <div style="font-size:13px;color:#718096;margin-top:2px;">需回覆作帳事宜</div>
+  </div>
+</div>
+
+<!-- ==================== D. 未來兩週行程 ==================== -->
+<div id="calendar" style="margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#2c7a7b;margin-bottom:10px;">D. &#x1F4C5; 未來兩週行程</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">本週 6 場 | 下週 5 場 | 連假中 1 場</div>
+
+  <!-- 03/30 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">03/30（一）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">全天</div>
+    <div>實習月報</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="font-size:13px;color:#718096;">— email 通知</div>
+    <div style="font-weight:600;">五河分署裝機 <span style="color:#c53030;font-size:13px;">&#x1F534; 派人聯測</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">10:00-12:00</div>
+    <div>物種辨識啟動會議</div>
+  </div>
+
+  <!-- 03/31 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">03/31（二）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">09:00-10:00 | Teams</div>
+    <div>統合3月部門會議</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">10:00-16:30</div>
+    <div>ISMS教育訓練 <span style="color:#dd6b20;font-size:13px;">&#x26A0;&#xFE0F; 佔整天</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">14:30-15:30</div>
+    <div>福委愚人節活動</div>
+  </div>
+
+  <!-- 04/01 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">04/01（三）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">11:00-12:00 | Teams</div>
+    <div>AI運用分享會</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">16:00-17:00</div>
+    <div>實習生工讀金計算 <span style="color:#dd6b20;font-size:13px;">&#x26A0;&#xFE0F; 一定要記得</span></div>
+  </div>
+
+  <!-- 04/02 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">04/02（四）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #2b6cb0;">
+    <div style="font-size:13px;color:#718096;">09:30-11:30</div>
+    <div style="font-weight:600;">桃園專案例行會議 <span style="color:#2b6cb0;font-size:13px;">&#x1F4CE; 需準備5項</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">17:30-18:30</div>
+    <div>Vide Coding實戰應用</div>
+  </div>
+
+  <!-- 04/02 PREP BOX -->
+  <div style="background:#edf2f7;border-radius:8px;padding:14px;margin-bottom:10px;border:1px dashed #2b6cb0;">
+    <div style="font-size:14px;font-weight:700;color:#2b6cb0;margin-bottom:8px;">&#x1F4CE; 04/02 桃園會議準備事項</div>
+    <div style="font-size:14px;">
+      <div style="margin-bottom:4px;">1. 明璋 GIS 經費規劃附件</div>
+      <div style="margin-bottom:4px;">2. 楊梅田應變通知結論</div>
+      <div style="margin-bottom:4px;">3. 航空城用印確認</div>
+      <div style="margin-bottom:4px;">4. Fortinet 報價確認</div>
+      <div>5. App 資安檢測報價進度</div>
+    </div>
+  </div>
+
+  <!-- 04/03-06 連假 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">04/03-06 清明連假</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">04/05（日）10:00</div>
+    <div>南投檢核點月報 <span style="color:#dd6b20;font-size:13px;">&#x26A0;&#xFE0F; 連假中</span></div>
+  </div>
+
+  <!-- 04/07 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">04/07（一）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div>物種辨識工作會議</div>
+  </div>
+
+  <!-- 04/08 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">04/08（二）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div>AI分享會 + 台新信用卡費</div>
+  </div>
+
+  <!-- 04/09 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">04/09（三）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div>資安教育訓練</div>
+  </div>
+
+  <!-- 04/10 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #2c7a7b;padding-left:10px;">04/10（四）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div>觀測站會議 + 新進人員工作坊</div>
+  </div>
+</div>
+
+<!-- ==================== E. EIP 工項追蹤 ==================== -->
+<div id="eip" style="margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#dd6b20;margin-bottom:10px;">E. &#x1F4CB; EIP 工項追蹤</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">共 50 筆 | &#x1F534; 高優先 11 筆 | &#x1F7E1; 中優先 38 筆 | &#x26AA; 一般 1 筆 | 涉及 8 個專案</div>
+
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:14px; box-shadow:0 1px 4px rgba(0,0,0,0.06); border-left:4px solid #1a365d;">
+    <div style="font-size:14px; line-height:1.8; color:#2d3748;">
+      目前共有 <strong>8 個專案</strong>存在未完成工項，合計 <strong>50 項</strong>。其中<strong>桃園水情佔 28 項</strong>為工項數最多的專案，涵蓋資安事件處理、串流主機替換、功能擴充等多條線同時推進。觀測站（7 項）與系統整合（5 項）也有一定量的待處理事項。
+      <br><br>
+      &#x1F534; <strong>需立即關注：</strong>桃園水情有 3 筆「安裝新串流主機」尚未開始（舊主機遭入侵替換），加上 GISCAM 防火牆 IP 限縮與滲透事件資訊留存仍在進行中，資安相關事項為當前最高風險群。「應變開設提醒功能」「LINE 淹水深度改即時狀態」「台整預報訊息推送」三項高優先功能開發均未啟動。觀測站的「鋼索啟用開關機制」與「地聲擷取程式改版」也是高優先進行中項目。雙向安全平台的 Modbus 控制模組部署與整合測試（2 項高優先）亦未開始。
+      <br><br>
+      &#x26A0;&#xFE0F; <strong>待外部配合：</strong>觀測站「地聲模組規格討論（與錦和）」需等待外部廠商回覆；桃園水情「第三方滲透行政流程」需第三方檢測單位配合；系統整合「韌性燈桿倒塌」需外部單位處理現場。
+      <br><br>
+      &#x1F4A1; <strong>建議優先處理：</strong>(1) 確認串流主機替換時程與資安事件收斂狀態；(2) 追蹤雙向安全平台 Modbus 部署排程；(3) 聯繫錦和確認地聲模組規格進度。
+    </div>
+  </div>
+
+  <!-- 桃園水情 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">桃園水情 <span style="font-size:12px; background:#fed7d7; color:#c53030; padding:2px 8px; border-radius:10px; margin-left:6px;">28 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F534; 高優先 7 筆（未開始 4 / 進行中 3）| &#x1F7E1; 中優先 21 筆（未開始 12 / 進行中 9）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#fff5f5; border-radius:4px;">
+      資安事件為最高風險 — 3 筆串流主機替換未開始、GISCAM 防火牆限縮與滲透留存進行中。另有 3 項高優先功能開發（應變提醒、LINE 淹水、台整預報）均未啟動。
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1356" target="_blank" style="color:#2b6cb0; text-decoration:none;">安裝新串流主機（舊主機遭入侵替換）#1</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1357" target="_blank" style="color:#2b6cb0; text-decoration:none;">安裝新串流主機（舊主機遭入侵替換）#2</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1358" target="_blank" style="color:#2b6cb0; text-decoration:none;">安裝新串流主機（舊主機遭入侵替換）#3</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1381" target="_blank" style="color:#2b6cb0; text-decoration:none;">LINE淹水深度改即時狀態</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1382" target="_blank" style="color:#2b6cb0; text-decoration:none;">台整預報訊息推送</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1380" target="_blank" style="color:#2b6cb0; text-decoration:none;">應變開設提醒功能</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1264" target="_blank" style="color:#2b6cb0; text-decoration:none;">農工AI分析擴充</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1362" target="_blank" style="color:#2b6cb0; text-decoration:none;">GISCAM串流主機防火牆IP限縮</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1377" target="_blank" style="color:#2b6cb0; text-decoration:none;">滲透事件資訊留存</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1108" target="_blank" style="color:#2b6cb0; text-decoration:none;">備援處理host80</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1130" target="_blank" style="color:#2b6cb0; text-decoration:none;">115水利設施巡查APP擴充</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1158" target="_blank" style="color:#2b6cb0; text-decoration:none;">APP介面優化</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1159" target="_blank" style="color:#2b6cb0; text-decoration:none;">AI輔助會議紀錄</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1196" target="_blank" style="color:#2b6cb0; text-decoration:none;">每週comodo檢測</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1233" target="_blank" style="color:#2b6cb0; text-decoration:none;">每週comodo檢測</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1178" target="_blank" style="color:#2b6cb0; text-decoration:none;">NAS備份檢查</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1198" target="_blank" style="color:#2b6cb0; text-decoration:none;">NAS備份檢查</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1376" target="_blank" style="color:#2b6cb0; text-decoration:none;">NAS備份檢查</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1214" target="_blank" style="color:#2b6cb0; text-decoration:none;">兩階段確認機制</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1217" target="_blank" style="color:#2b6cb0; text-decoration:none;">兩階段確認機制</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1216" target="_blank" style="color:#2b6cb0; text-decoration:none;">160主機遷移</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1218" target="_blank" style="color:#2b6cb0; text-decoration:none;">前30分鐘累積雨量</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1219" target="_blank" style="color:#2b6cb0; text-decoration:none;">內插法鄰近站</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1220" target="_blank" style="color:#2b6cb0; text-decoration:none;">PWA改版</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1221" target="_blank" style="color:#2b6cb0; text-decoration:none;">群組概念呈現</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1375" target="_blank" style="color:#2b6cb0; text-decoration:none;">每週comodo檢測</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1239" target="_blank" style="color:#2b6cb0; text-decoration:none;">第三方滲透行政</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1373" target="_blank" style="color:#2b6cb0; text-decoration:none;">備援演練測試</a>
+    </div>
+    <div style="background:#ebf8ff; padding:6px 10px; border-radius:4px; font-size:12px; color:#2b6cb0; margin-top:8px;">
+      &#x1F4E7; 關聯 email: 五河分署裝機(03/26)、App資安檢測報價(03/25)<br>
+      &#x1F4C5; 關聯行程: 04/02 桃園專案例行會議
+    </div>
+  </div>
+
+  <!-- 觀測站 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">觀測站 <span style="font-size:12px; background:#fed7d7; color:#c53030; padding:2px 8px; border-radius:10px; margin-left:6px;">7 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F534; 高優先 2 筆（進行中 2）| &#x1F7E1; 中優先 4 筆（進行中 2 / 未開始 2）| &#x26AA; 一般 1 筆（待測試 1）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#faf5ff; border-radius:4px;">
+      鋼索啟用開關與地聲擷取改版為當前高優先，地聲模組規格需等錦和回覆。每月回傳率頁面已進入待測試。
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1313" target="_blank" style="color:#2b6cb0; text-decoration:none;">鋼索啟用開關機制</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1316" target="_blank" style="color:#2b6cb0; text-decoration:none;">地聲擷取程式改版</a>
+    </div>
+    <div style="border-left:3px solid #a0aec0; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x26AA; [待測試] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1315" target="_blank" style="color:#2b6cb0; text-decoration:none;">每月設備回傳率頁面</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1223" target="_blank" style="color:#2b6cb0; text-decoration:none;">攝影機斷線預存圖片</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1278" target="_blank" style="color:#2b6cb0; text-decoration:none;">第九章資安強化修改</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1314" target="_blank" style="color:#2b6cb0; text-decoration:none;">地聲模組規格討論（與錦和）</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1222" target="_blank" style="color:#2b6cb0; text-decoration:none;">數據補遺標示機制</a>
+    </div>
+    <div style="background:#ebf8ff; padding:6px 10px; border-radius:4px; font-size:12px; color:#2b6cb0; margin-top:8px;">
+      &#x1F4C5; 關聯行程: 04/10 觀測站定期會議
+    </div>
+  </div>
+
+  <!-- 系統整合 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">系統整合 <span style="font-size:12px; background:#fefcbf; color:#dd6b20; padding:2px 8px; border-radius:10px; margin-left:6px;">5 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F7E1; 中優先 5 筆（進行中 4 / 未開始 1）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#ebf8ff; border-radius:4px;">
+      水情設備撞毀檢修中，彰化與水利署防火牆申請進行中，韌性燈桿倒塌需外部處理。
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1146" target="_blank" style="color:#2b6cb0; text-decoration:none;">水情F03-701撞毀檢修</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1232" target="_blank" style="color:#2b6cb0; text-decoration:none;">申請彰化防火牆</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1384" target="_blank" style="color:#2b6cb0; text-decoration:none;">興隆街抽水站UI調整</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1385" target="_blank" style="color:#2b6cb0; text-decoration:none;">申請水利署防火牆</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1387" target="_blank" style="color:#2b6cb0; text-decoration:none;">韌性燈桿倒塌影響設備</a>
+    </div>
+  </div>
+
+  <!-- 航空城 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">航空城 <span style="font-size:12px; background:#fefcbf; color:#dd6b20; padding:2px 8px; border-radius:10px; margin-left:6px;">4 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F7E1; 中優先 4 筆（未開始 4）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#fffaf0; border-radius:4px;">
+      4 項均為未開始狀態，系統流程圖 Roadmap 與設計報告範本架構待啟動，需與甫任討論後推進。
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1247" target="_blank" style="color:#2b6cb0; text-decoration:none;">系統執行流程圖Roadmap</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1248" target="_blank" style="color:#2b6cb0; text-decoration:none;">設計報告範本架構</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1249" target="_blank" style="color:#2b6cb0; text-decoration:none;">與甫任下一步討論</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1352" target="_blank" style="color:#2b6cb0; text-decoration:none;">0316會議追蹤事項</a>
+    </div>
+    <div style="background:#ebf8ff; padding:6px 10px; border-radius:4px; font-size:12px; color:#2b6cb0; margin-top:8px;">
+      &#x1F4E7; 關聯 email: 佩吟用印(03/27)、明璋GIS經費(03/27)
+    </div>
+  </div>
+
+  <!-- 水利署整合平台 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">水利署整合平台 <span style="font-size:12px; background:#fefcbf; color:#dd6b20; padding:2px 8px; border-radius:10px; margin-left:6px;">2 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F7E1; 中優先 2 筆（未開始 2）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#ebf8ff; border-radius:4px;">
+      工作執行計畫書與啟動會議說明均未開始。韻如休假中，SA 由你代理。
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1359" target="_blank" style="color:#2b6cb0; text-decoration:none;">工作執行計畫書</a>
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1360" target="_blank" style="color:#2b6cb0; text-decoration:none;">啟動會議說明</a>
+    </div>
+    <div style="background:#fff5f5; padding:6px 10px; border-radius:4px; font-size:12px; color:#c53030; margin-top:8px;">
+      &#x26A0; 韻如休假中，你代理 SA
+    </div>
+  </div>
+
+  <!-- 雙向安全平台 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">雙向安全平台 <span style="font-size:12px; background:#fed7d7; color:#c53030; padding:2px 8px; border-radius:10px; margin-left:6px;">2 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F534; 高優先 2 筆（未開始 2）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#fff5f5; border-radius:4px;">
+      Modbus 控制模組部署與硬體端整合測試 2 項高優先均未開始，需儘速排定時程。
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1364" target="_blank" style="color:#2b6cb0; text-decoration:none;">Modbus控制模組部署</a>
+    </div>
+    <div style="border-left:3px solid #c53030; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F534; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1365" target="_blank" style="color:#2b6cb0; text-decoration:none;">Modbus控制硬體整合測試</a>
+    </div>
+    <div style="background:#ebf8ff; padding:6px 10px; border-radius:4px; font-size:12px; color:#2b6cb0; margin-top:8px;">
+      &#x1F4C5; 關聯行程: 03/23 modbus擴充說明（已開會）
+    </div>
+  </div>
+
+  <!-- 桃園出流管制 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">桃園出流管制 <span style="font-size:12px; background:#fefcbf; color:#dd6b20; padding:2px 8px; border-radius:10px; margin-left:6px;">1 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F7E1; 中優先 1 筆（進行中 1）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#f7fafc; border-radius:4px;">
+      巡查 App 擴充規劃進行中。
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [進行中] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1152" target="_blank" style="color:#2b6cb0; text-decoration:none;">出流管制巡查app擴充</a>
+    </div>
+  </div>
+
+  <!-- 南投雨水 -->
+  <div style="background:#fff; border-radius:8px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="font-size:16px; font-weight:700; color:#1a365d; margin-bottom:8px;">南投雨水 <span style="font-size:12px; background:#fefcbf; color:#dd6b20; padding:2px 8px; border-radius:10px; margin-left:6px;">1 項</span></div>
+    <div style="background:#edf2f7; padding:6px 10px; border-radius:4px; font-size:13px; color:#4a5568; margin-bottom:8px;">
+      &#x1F7E1; 中優先 1 筆（未開始 1）
+    </div>
+    <div style="font-size:13px; color:#4a5568; margin-bottom:8px; padding:6px 10px; background:#f7fafc; border-radius:4px;">
+      網站檢核未開始。03/26 已完成南投教育訓練。
+    </div>
+    <div style="border-left:3px solid #dd6b20; padding:6px 10px; margin-bottom:4px; font-size:13px;">
+      &#x1F7E1; [未開始] <a href="https://your-server.example.com/EIP/progress/itemdetail.php?id=1386" target="_blank" style="color:#2b6cb0; text-decoration:none;">南投雨水網站檢核</a>
+    </div>
+    <div style="background:#ebf8ff; padding:6px 10px; border-radius:4px; font-size:12px; color:#2b6cb0; margin-top:8px;">
+      &#x1F4C5; 關聯行程: 03/26 南投教育訓練
+    </div>
+  </div>
+</div>
+
+<!-- ==================== F. Email 追蹤 ==================== -->
+<div id="email" style="margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#2b6cb0;margin-bottom:10px;">F. &#x1F4E7; 過去兩週 Email 追蹤</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">共 36 封 | &#x1F534; 需行動 3 封 | &#x1F7E1; 追蹤 14 封 | &#x2705; 已完成 7 封</div>
+
+  <!-- 專案執行 -->
+  <div style="font-size:14px;font-weight:700;color:#c53030;margin:12px 0 8px;padding-left:4px;">&#x1F534; 專案執行（10）</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">10 封 | &#x2753; 待確認 8 封</div>
+
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>賴正哲</strong> 五河分署裝機</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x1F534; 週一到</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/26</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>遠端影像監控</strong> 五河分署聯測</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x1F534; 配合裝機</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/26</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>賴正哲</strong> 四河移動站5號撤站</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753; 已處理？</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/20</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>賴正哲</strong> 四河移動站4號撤站</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>賴正哲</strong> 四河移動站2號撤站</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/18</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>陳彥安</strong> 七河分署移動站出勤</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>遠端影像</strong> 一河分署多站異常</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/16</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Jy Tang</strong> 一河異常中華電信處理</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/16</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>弘哲</strong> 河川便利通顯示問題</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/17</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>承恩</strong> 事件結案回傳異常</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/23</div>
+  </div>
+
+  <!-- 報價採購 -->
+  <div style="font-size:14px;font-weight:700;color:#dd6b20;margin:16px 0 8px;padding-left:4px;">&#x1F7E1; 報價採購（7）</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">7 封 | &#x1F534; 需回覆 1 封</div>
+
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Joy Chan</strong> 發票作帳</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x1F534; 需回覆</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/27</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Yeena</strong> Fortinet桃園報價</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 已收</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/25</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Stephen</strong> App資安檢測報價</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 待比價</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/25</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Nerissa</strong> 德凱安華報價</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/24</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Gary</strong> 第二家App檢測</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 等報價</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/25</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #2f855a;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Yeena</strong> FORTI 91G報價</div>
+      <span style="font-size:12px;color:#2f855a;white-space:nowrap;">&#x2705; 已回覆</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>康正徐</strong> Comodo報價</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 已收</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/18</div>
+  </div>
+
+  <!-- 合作溝通 -->
+  <div style="font-size:14px;font-weight:700;color:#dd6b20;margin:16px 0 8px;padding-left:4px;">&#x1F7E1; 合作溝通（7）</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">7 封 | &#x2705; 已處理 2 封</div>
+
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>明璋</strong> GIS經費規劃附件</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 04/02前看完</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/27</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #2f855a;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>佩吟</strong> 航空城用印已寄出</div>
+      <span style="font-size:12px;color:#2f855a;white-space:nowrap;">&#x2705;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/27</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>呂宜純</strong> 捷運局推播截圖</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 需檢視</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/24</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Jeffrey</strong> FLEXWAVE合作</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 需確認</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/24</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Brian</strong> 新增機房需求</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/24</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Vita</strong> 水利案建議書</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753; 已提供？</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #2f855a;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>昭明</strong> 水情建議書共用</div>
+      <span style="font-size:12px;color:#2f855a;white-space:nowrap;">&#x2705;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/24</div>
+  </div>
+
+  <!-- 資安維運 -->
+  <div style="font-size:14px;font-weight:700;color:#dd6b20;margin:16px 0 8px;padding-left:4px;">&#x1F7E1; 資安維運（7）</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">7 封 | &#x26A0;&#xFE0F; 已過期 2 封</div>
+
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #2f855a;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>振昌</strong> SSL憑證已更新</div>
+      <span style="font-size:12px;color:#2f855a;white-space:nowrap;">&#x2705;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>劉薇芝</strong> 弱點修補通知</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x2753;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/20</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>峪陞</strong> 資安漏洞修補</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x26A0;&#xFE0F; 已過期</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>Synology</strong> NAS風險</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 需檢視</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/26</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>文元</strong> 資安課程調查</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x26A0;&#xFE0F; 已過期</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #718096;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>劉薇芝</strong> 演練表單06/01</div>
+      <span style="font-size:12px;color:#718096;white-space:nowrap;">&#x2139;&#xFE0F; 遠期</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/19</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #718096;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>賴正哲</strong> 四河密碼變更</div>
+      <span style="font-size:12px;color:#718096;white-space:nowrap;">&#x2139;&#xFE0F; 備查</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/16</div>
+  </div>
+
+  <!-- 人事行政 -->
+  <div style="font-size:14px;font-weight:700;color:#dd6b20;margin:16px 0 8px;padding-left:4px;">&#x1F7E1; 人事行政（5）</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">5 封 | &#x1F534; 月底到期 1 封</div>
+
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>婉萍</strong> 公司卡月底註銷</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x1F534;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/23</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #2f855a;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>婉萍</strong> 實習說明會</div>
+      <span style="font-size:12px;color:#2f855a;white-space:nowrap;">&#x2705;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/26</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>瓊懿</strong> 系統分享評語</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1; 需填</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/25</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>信宏</strong> 官網更新</div>
+      <span style="font-size:12px;color:#dd6b20;white-space:nowrap;">&#x1F7E1;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/20</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px 14px;margin-bottom:6px;border-left:4px solid #c53030;">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+      <div><strong>韻如</strong> 休假代理中</div>
+      <span style="font-size:12px;color:#c53030;white-space:nowrap;">&#x26A0;&#xFE0F;</span>
+    </div>
+    <div style="font-size:12px;color:#a0aec0;margin-top:2px;">03/17</div>
+  </div>
+</div>
+
+<!-- ==================== G. 過去兩週會議回顧 ==================== -->
+<div style="margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#1a365d;margin-bottom:10px;">G. &#x23EA; 過去兩週會議回顧</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">21 場 | 你主辦 7 場 | 外訓 5 場 | &#x2753; 待確認紀錄 10 場</div>
+
+  <!-- 03/15 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/15（六）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">09:30-16:30 | 外訓</div>
+    <div>生成式AI認證班</div>
+  </div>
+
+  <!-- 03/16 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/16（一）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">09:00 | 你主辦</div>
+    <div>桃園水情測試報告 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">13:30</div>
+    <div>生成式設計討論 <span style="font-size:13px;color:#dd6b20;">&#x2753; 結論？</span></div>
+  </div>
+
+  <!-- 03/17 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/17（二）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">09:30 | 外訓</div>
+    <div>AI Agent工作坊</div>
+  </div>
+
+  <!-- 03/18 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/18（三）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">全天</div>
+    <div>觀測站計劃書修改 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">全天 | 你主辦</div>
+    <div>主機維護紀錄表 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">全天</div>
+    <div>資安事件回報 <span style="font-size:13px;color:#dd6b20;">&#x2753;</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">全天</div>
+    <div>syslog <span style="font-size:13px;color:#dd6b20;">&#x2753;</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">15:00 | 你主辦</div>
+    <div>提案討論 <span style="font-size:13px;color:#dd6b20;">&#x2753; 結論？</span></div>
+  </div>
+
+  <!-- 03/19 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/19（四）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">09:00 | 你主辦</div>
+    <div>遠端監控署端交接 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">09:30</div>
+    <div>桃園專案例行會議 <span style="font-size:13px;color:#dd6b20;">&#x2753; 紀錄？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">17:30 | 內訓</div>
+    <div>AI圖像生成</div>
+  </div>
+
+  <!-- 03/23 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/23（一）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">09:00 | 你主辦</div>
+    <div>遠端監控分署端交接 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">09:30 | 你主辦</div>
+    <div>modbus擴充說明 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+
+  <!-- 03/24 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/24（二）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">09:00 | 外訓</div>
+    <div>ISO27701認證課程</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">14:00 | 外訓</div>
+    <div>數位化財務管理</div>
+  </div>
+
+  <!-- 03/25 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/25（三）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">14:00</div>
+    <div>系統分享 <span style="font-size:13px;color:#dd6b20;">&#x2753; 評語？</span></div>
+  </div>
+
+  <!-- 03/26 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/26（四）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">09:30</div>
+    <div>桃園專案例行會議 <span style="font-size:13px;color:#dd6b20;">&#x2753; 紀錄？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">14:00</div>
+    <div>南投雨水下水道教育訓練 <span style="font-size:13px;color:#dd6b20;">&#x2753; 紀錄？</span></div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #2f855a;">
+    <div style="font-size:13px;color:#718096;">17:30</div>
+    <div>借力使力 <span style="font-size:13px;color:#2f855a;">&#x2705; 已取消</span></div>
+  </div>
+
+  <!-- 03/27 -->
+  <div style="font-size:14px;font-weight:700;color:#1a365d;padding:6px 0 4px;margin-top:8px;border-left:4px solid #718096;padding-left:10px;">03/27（五）</div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;">
+    <div style="font-size:13px;color:#718096;">14:00 | 外訓</div>
+    <div>ESG轉型</div>
+  </div>
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);padding:12px;margin-bottom:6px;border-left:4px solid #dd6b20;">
+    <div style="font-size:13px;color:#718096;">20:45 | 你主辦</div>
+    <div>線上教學 <span style="font-size:13px;color:#dd6b20;">&#x2753; 完成？</span></div>
+  </div>
+</div>
+
+<!-- ==================== H. 📱 LINE 本週重點（weekly mode only — daily mode 刪除整段） ==================== -->
+<div id="section-h" style="margin-bottom:16px;">
+  <div style="font-size:17px;font-weight:700;color:#1a365d;margin-bottom:10px;">H. &#x1F4F1; LINE 本週重點</div>
+  <div style="background:#edf2f7; padding:8px 12px; border-radius:6px; margin-bottom:12px; font-size:13px; color:#4a5568;">本週 &#x1F534; 紅 {RED_COUNT} 條 | &#x1F7E1; 黃 {YELLOW_COUNT} 條 | &#x1F7E2; 綠 {GREEN_COUNT} 條 | 共掃 {TOTAL_MSGS} 則訊息</div>
+
+  <!-- H1. 商務／報價／請購 -->
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:10px;border-left:4px solid #dd6b20;">
+    <div style="background:#dd6b20;color:#fff;padding:8px 12px;border-radius:8px 8px 0 0;font-weight:700;">&#x1F4B0; 商務／報價／請購</div>
+    <div style="padding:10px 12px;">
+      <!-- 重複此區塊每筆訊息：-->
+      <div style="padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px;">
+        <div style="color:#718096;font-size:12px;">[{TS}] {SOURCE_NAME} | {USER}</div>
+        <div style="color:#2d3748;margin-top:2px;">{CONTENT}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- H2. 會議追蹤（邀約無結論）-->
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:10px;border-left:4px solid #6b46c1;">
+    <div style="background:#6b46c1;color:#fff;padding:8px 12px;border-radius:8px 8px 0 0;font-weight:700;">&#x1F4C5; 會議追蹤（邀約後無結論）</div>
+    <div style="padding:10px 12px;">
+      <div style="padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px;">
+        <div style="color:#718096;font-size:12px;">[{TS}] {SOURCE_NAME} | {USER}</div>
+        <div style="color:#2d3748;margin-top:2px;">{CONTENT}</div>
+        <div style="color:#c53030;font-size:12px;margin-top:2px;">&#x26A0; {FLAG}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- H3. 客戶催件 -->
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:10px;border-left:4px solid #c53030;">
+    <div style="background:#c53030;color:#fff;padding:8px 12px;border-radius:8px 8px 0 0;font-weight:700;">&#x1F4DE; 客戶催件</div>
+    <div style="padding:10px 12px;">
+      <div style="padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px;">
+        <div style="color:#718096;font-size:12px;">[{TS}] {SOURCE_NAME} | {USER}</div>
+        <div style="color:#2d3748;margin-top:2px;">{CONTENT}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- H4. @Benson inbox 未回 -->
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:10px;border-left:4px solid #ed8936;">
+    <div style="background:#ed8936;color:#fff;padding:8px 12px;border-radius:8px 8px 0 0;font-weight:700;">&#x1F4E5; @Benson inbox 未回（按已晾天數降序）</div>
+    <div style="padding:10px 12px;">
+      <div style="padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px;">
+        <div style="color:#718096;font-size:12px;">[{TS}] {SOURCE_NAME} | {USER} <span style="color:#c53030;">&#x1F4A4; {DAYS_PENDING} 天</span></div>
+        <div style="color:#2d3748;margin-top:2px;">{CONTENT}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- H5. 自動推播未 close -->
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:10px;border-left:4px solid #4a5568;">
+    <div style="background:#4a5568;color:#fff;padding:8px 12px;border-radius:8px 8px 0 0;font-weight:700;">&#x1F501; 自動推播未 close</div>
+    <div style="padding:10px 12px;">
+      <div style="padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px;">
+        <div style="color:#718096;font-size:12px;">[{TS}] {SOURCE_NAME}</div>
+        <div style="color:#2d3748;margin-top:2px;">{CONTENT}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- H6. 已派未追 -->
+  <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:10px;border-left:4px solid #2b6cb0;">
+    <div style="background:#2b6cb0;color:#fff;padding:8px 12px;border-radius:8px 8px 0 0;font-weight:700;">&#x1F3AF; 已派未追</div>
+    <div style="padding:10px 12px;">
+      <div style="padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px;">
+        <div style="color:#718096;font-size:12px;">[{TS}] {SOURCE_NAME} | {USER} 派工</div>
+        <div style="color:#2d3748;margin-top:2px;">{CONTENT}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div style="text-align:center;color:#a0aec0;font-size:13px;padding:20px 0 10px;border-top:1px solid #e2e8f0;">
+  下次檢核建議：04/07（一）收假後 | Generated by Claude Code
+</div>
+
+</div><!-- /max-width container -->
+<a href="#top" style="position:fixed; bottom:20px; right:20px; width:44px; height:44px; background:#2b6cb0; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; text-decoration:none; box-shadow:0 2px 8px rgba(0,0,0,0.2); z-index:999;">↑</a>
+</body>
+</html>

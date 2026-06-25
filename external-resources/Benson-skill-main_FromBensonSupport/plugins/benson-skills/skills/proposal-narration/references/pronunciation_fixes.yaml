@@ -1,0 +1,164 @@
+# ============================================================
+# proposal-narration / pronunciation_fixes.yaml
+# ------------------------------------------------------------
+# 破音字 / 同音歧義 / 縮寫拆字母替換表
+# TTS 前必過，避免「簡報→健保」「稻田→稻天」等踩雷
+#
+# 結構：
+#   fixes:
+#     - from: 原詞
+#       to: 替換詞
+#       reason: 為什麼要替換（給未來維護者看）
+#       category: pronunciation_error / acronym / phonetic / symbol
+#
+# 加新詞流程：
+#   1. user 回報「OO 念錯了」→ 加一個 fix entry
+#   2. category 標清楚（破音 / 縮寫 / 音譯 / 符號）
+#   3. reason 寫清楚（聽起來像什麼錯字）
+#   4. 順序很重要：長詞 / 特殊詞放前面（避免被短詞先吃掉）
+#
+# 套用方式（tts.py 已實作）：
+#   from tts import apply_pronunciation_fixes
+#   text = apply_pronunciation_fixes(raw_text)
+# ============================================================
+
+fixes:
+
+  # ============================================================
+  # Category: 破音字 / 同音歧義（已踩雷詞）
+  # ============================================================
+
+  - from: 簡報
+    to: 提案投影片
+    category: pronunciation_error
+    reason: ElevenLabs 中文模型常念成「健保」（jiǎn bào → jiàn bǎo）
+
+  - from: 稻田
+    to: 水稻田
+    category: pronunciation_error
+    reason: 「田」常被念成「天」（tián → tiān），加「水」字消歧義
+
+  - from: 田裡
+    to: 田地裡
+    category: pronunciation_error
+    reason: 「田」字單獨出現有破音風險，加「地」字
+
+  - from: 田區
+    to: 田地區
+    category: pronunciation_error
+    reason: 同上，避免單獨「田」字
+
+  # ============================================================
+  # Category: 英文縮寫拆字母念
+  # 大寫縮寫直接給 TTS 會亂念，拆字母念才標準
+  # ============================================================
+
+  - from: AI
+    to: A I
+    category: acronym
+    reason: 拆字母念，避免讀成「愛」或其他
+
+  - from: LLM
+    to: L L M
+    category: acronym
+    reason: 拆字母念
+
+  - from: RAG
+    to: R A G
+    category: acronym
+    reason: 拆字母念，避免讀成「ragging」
+
+  - from: API
+    to: A P I
+    category: acronym
+    reason: 拆字母念
+
+  - from: GDD
+    to: G D D
+    category: acronym
+    reason: 拆字母念
+
+  - from: CCTV
+    to: C C T V
+    category: acronym
+    reason: 拆字母念
+
+  - from: HSV
+    to: H S V
+    category: acronym
+    reason: 拆字母念
+
+  - from: LCC
+    to: L C C
+    category: acronym
+    reason: 拆字母念
+
+  - from: IRRI
+    to: I R R I
+    category: acronym
+    reason: 拆字母念
+
+  - from: ESG
+    to: E S G
+    category: acronym
+    reason: 拆字母念
+
+  - from: FPS
+    to: F P S
+    category: acronym
+    reason: 拆字母念
+
+  - from: LINE
+    to: L I N E
+    category: acronym
+    reason: 拆字母念，避免讀成「萊恩」
+
+  - from: APP
+    to: A P P
+    category: acronym
+    reason: 拆字母念，避免讀成「app/愛剖」
+
+  # ============================================================
+  # Category: 音譯（拆字母念起來奇怪）
+  # ============================================================
+
+  - from: SHAP
+    to: 夏普
+    category: phonetic
+    reason: SHAP 不適合拆字母（"S H A P" 念起來破碎），用音譯「夏普」
+
+  - from: YOLO
+    to: Y O L O
+    category: acronym
+    reason: 拆字母念，避免讀成「優咯」
+
+  - from: Grad-CAM
+    to: Grad C A M
+    category: phonetic
+    reason: 「Grad-」維持英文，「CAM」拆字母
+
+  # ============================================================
+  # Category: 符號 / 全形半形
+  # ============================================================
+
+  - from: 趴
+    to: '%'
+    category: symbol
+    reason: 「趴」是百分比口語，TTS 直接念「%」更清楚
+
+  - from: '％'
+    to: '%'
+    category: symbol
+    reason: 全形 % 統一成半形
+
+# ============================================================
+# 套用順序提醒
+# ============================================================
+# 規則：上面的先套用 → 下面的後套用
+# 如果新增的詞會影響既有詞替換，要往上插（越早替換越優先）
+# 例：若加 "Grad-CAM Plus" → 要放在 "Grad-CAM" 之前
+
+# ============================================================
+# 版本歷史
+# ============================================================
+# 2026-05-04 v1: 從 skill.md / tts.py 抽出獨立 yaml

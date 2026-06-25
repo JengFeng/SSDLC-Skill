@@ -291,12 +291,32 @@ name: Harness Engineering CI
 ### 1. 當前建置狀態 (截至 2026-06-24 12:00)
 專案的核心軟體工程基礎設施已全數建置完畢：
 *   **SSDLC 六大階段目錄**：已建立 `01_planning_and_analysis` 至 `06_maintenance` 的資料夾結構，並包含對應的 `inputs/` 與 `outputs/` 目錄（附帶 `.gitkeep`）。
-*   **自定義階段技能**：在 `.agents/skills/` 下為每個階段建立了專屬的 `SKILL.md`，定義了三步循環的執行細節。
-*   **全局防線規章**：已建立 [.agents/AGENTS.md](file:///e:/00AI協作/SSDLC-skill/.agents/AGENTS.md)，寫入全局連貫性大循環、組態管理與測試同步規範。
-*   **根目錄控制文件**：已初始化 [traceability_matrix.md](file:///e:/00AI協作/SSDLC-skill/traceability_matrix.md)（需求追溯矩陣）與 [system_specification.md](file:///e:/00AI協作/SSDLC-skill/system_specification.md)（系統規格說明書）。
-*   **IDE 串接**：已建立 [.vscode/tasks.json](file:///e:/00AI協作/SSDLC-skill/.vscode/tasks.json)，可在 VS Code 中直接執行自動化備份、BDD 測試、RTM 稽核與還原。
+*   **自定義階段技能**：在各開發階段目錄下建立了專屬的 `SKILL.md`，定義了三步循環的執行細節。
+*   **全局防線規章**：已建立 [.agents/AGENTS.md](file:///d:/00AI協作/SSDLC_Skill/.agents/AGENTS.md)，寫入全局連貫性大循環、組態管理與測試同步規範。
+*   **根目錄控制文件**：已初始化 [traceability_matrix.md](file:///d:/00AI協作/SSDLC_Skill/traceability_matrix.md)（需求追溯矩陣）與 [system_specification.md](file:///d:/00AI協作/SSDLC_Skill/system_specification.md)（系統規格說明書）。
+*   **IDE 串接**：已建立 [.vscode/tasks.json](file:///d:/00AI協作/SSDLC_Skill/.vscode/tasks.json)，可在 VS Code 中直接執行自動化備份、BDD 測試、RTM 稽核與還原。
 
 ### 2. 下一步執行計畫 (下午討論議題)
 當重新開啟對話時，我們將接續執行以下任務：
 1.  **新增第一個實體需求**：在 `01_planning_and_analysis/inputs/` 目錄下建立第一個 `REQ_*.md` 檔案，開始進行需求訪談與正規化處理。
 2.  **執行大循環**：由 AI Planner 自動對此需求進行系統設計的轉譯（產出 ER Model、UML 圖表與 API 規格），落實交互驗證與追溯。
+
+---
+
+## 八、 引導式專案初始化與階段 Skill 配置之腦力激盪 (2026-06-25)
+
+### 1. 討論主題與動機
+為了降低使用者手動建立專案目錄的負擔，並提升 AI 協作時的 Skill 載入精準度，決定建立一套標準的引導式工作流程，讓專案初始化與階段 Skill 綁定能完全自動化。
+
+### 2. 核心流程決定
+*   **步驟一：目錄自動生成**
+    *   AI 必須提示使用者當前工作目錄，並主動引導使用者輸入欲建立之專案子目錄名稱（相對路徑）。
+    *   取得子目錄名稱後，AI 直接讀取 [template_skill.md](file:///d:/00AI協作/SSDLC_Skill/template_skill.md) 中定義的目錄結構，自動在工作目錄之指定子路徑下建立完整的 SSDLC 各階段資料夾與基礎檔案（例如：`traceability_matrix.md` 與 `system_specification.md`）。
+*   **步驟二：階段 Skill 複選配置與扁平化目錄**
+    *   AI 必須依照 SSDLC 的 6 個開發階段，循序進行各階段的引導配置。
+    *   在每一階段的引導中，AI 必須掃描並列出該階段下所有可用的 Skill，清晰呈現 Skill 名稱與用途，供使用者複選勾選。
+    *   **扁平化目錄與動態合併**：當使用者勾選完成後，AI 必須將這些所勾選的 Skill 自動部署到目標專案的對應開發階段目錄（此目錄直接位於專案根目錄下，例如 `[專案根目錄]/01_planning_and_analysis/`），並將其規範與 instructions 動態合併，動態寫入至該階段目錄下的 `SKILL.md`（如 `[專案根目錄]/01_planning_and_analysis/SKILL.md`），以利後續互動直接載入使用。
+
+### 3. 落地實作規範
+此規範將被正式寫入 [.agents/AGENTS.md](file:///d:/00AI協作/SSDLC_Skill/.agents/AGENTS.md) 的「六、 引導式專案初始化與階段 Skill 配置規範」中，作為 AI 協作時的最高準則。同時，決定在專案根目錄下生成一個極簡之 `AGENTS.md` 引導檔，內嵌相對超連結指向實體規章 `.agents/AGENTS.md`，以確保所有類型的 AI 代理皆能正確識別並加載開發規範。
+

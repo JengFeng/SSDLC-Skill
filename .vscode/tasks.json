@@ -27,11 +27,11 @@
                 "-f",
                 "json",
                 "-o",
-                ".agents/skills/04_testing/outputs/test_report.json",
+                "04_testing/outputs/test_report.json",
                 "-f",
                 "html",
                 "-o",
-                ".agents/skills/04_testing/outputs/test_report.html"
+                "04_testing/outputs/test_report.html"
             ],
             "problemMatcher": [],
             "presentation": {

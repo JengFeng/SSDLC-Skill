@@ -1,0 +1,271 @@
+# Benson 水利監控系統 — SQA 檢測 config
+# 2026-04-18 初版，對應 C:\github\service 專案
+
+site:
+  base_url: https://your-server.example.com/service
+  local_path: C:\github\service
+  deploy_path: Z:\service
+
+roles:
+  admin:
+    username: benson
+    display: 系統管理員
+    expected_permission_count: 56
+    can_impersonate: true   # benson 可在 topbar 切其他角色（免登出）
+  operator:
+    username: test_operator     # 或 qa_operator
+    display: 操作員
+    expected_permission_count: 22
+  viewer:
+    username: test_viewer
+    display: 檢視者
+    expected_permission_count: 10
+    whitelist:  # viewer 應該只能看到的 permission key（viewer_allowed_views()）
+      - dashboard.view
+      - stations.view
+      - sensors.view
+      - sensor_types.view
+      - motor_dependency.view
+      - history.view
+      - availability.view
+      - alert_logs.view
+      - inspection_logs.view
+      - app.data.view
+
+# 管理頁（有 require_permission 的頁面）
+admin_pages:
+  # 需要 view 權限才能看
+  - page: allowed_ips.php
+    perm: allowed_ips.view
+    category: 控制管理
+  - page: control_commands.php
+    perm: control_commands.view
+    category: 控制管理
+  - page: control_logs.php
+    perm: control_logs.view
+    category: 控制管理
+  - page: modbus_control_test.php
+    perm: modbus_control_test.view
+    category: 控制管理
+  - page: backup_management.php
+    perm: backup.view
+    category: 系統管理
+  - page: ftp_browser.php
+    perm: ftp_browser.view
+    category: 系統管理
+  - page: mqtt_brokers.php
+    perm: mqtt_brokers.view
+    category: 系統管理
+  - page: email_config.php
+    perm: email_config.view
+    category: 系統管理
+  - page: system_schedule.php
+    perm: system_schedule.view
+    category: 系統管理
+  - page: service_monitor.php
+    perm: service_monitor.view
+    category: 系統管理
+  - page: system_config.php
+    perm: system_config.view
+    category: 系統管理
+  - page: system_maintenance.php
+    perm: system_maintenance.view
+    category: 系統管理
+  - page: users_management.php
+    perm: users.view
+    category: 使用者管理
+  - page: roles_management.php
+    perm: roles.view
+    category: 使用者管理
+  - page: login_security.php
+    perm: login_security.view
+    category: 使用者管理
+  - page: stations.php
+    perm: stations.view
+    category: 監測站與感測器
+  - page: sensors.php
+    perm: sensors.view
+    category: 監測站與感測器
+  - page: sensor_types.php
+    perm: sensor_types.view
+    category: 監測站與感測器
+  - page: motor_dependency.php
+    perm: motor_dependency.view
+    category: 監測站與感測器
+  - page: history.php
+    perm: history.view
+    category: 歷史數據
+  - page: availability.php
+    perm: availability.view
+    category: 歷史數據
+  - page: alert_logs.php
+    perm: alert_logs.view
+    category: 歷史數據
+  - page: inspection_logs.php
+    perm: inspection_logs.view
+    category: 歷史數據
+  - page: outflow_api.php
+    perm: outflow_api.view
+    category: 同步出流管制
+  - page: sensor_sync_settings.php
+    perm: sensor_sync_settings.view
+    category: 同步出流管制
+  - page: outflow_sync_logs.php
+    perm: outflow_sync_logs.view
+    category: 同步出流管制
+
+# API 端點（api/app/* 走 token 驗證）
+api_endpoints:
+  - path: /service/api/app/sensors.php
+    method: GET
+    perm: app.access
+  - path: /service/api/app/sensor_detail.php
+    method: GET
+    perm: app.data.view
+  - path: /service/api/app/inspection.php
+    method: POST
+    perm: app.inspection.submit
+  - path: /service/api/app/inspection_photo.php
+    method: GET
+    perm: app.data.view
+  - path: /service/api/app/location_update.php
+    method: POST
+    perm: app.sensor.location.update
+  - path: /service/api/app/maintenance_toggle.php
+    method: POST
+    perm: app.maintenance.toggle
+  - path: /service/api/app/sensor_photo.php
+    method: GET/POST/DELETE
+    perm: app.data.view / app.sensor.photo.manage
+  - path: /service/api/app/search.php
+    method: GET
+    perm: app.access
+  - path: /service/api/app/alert_logs.php
+    method: GET
+    perm: app.data.view
+  - path: /service/api/app/stations.php
+    method: GET
+    perm: app.access
+  - path: /service/api/app/read_now.php
+    method: POST
+    perm: app.data.view
+  - path: /service/api/app/sensor_image.php
+    method: GET
+    perm: app.data.view
+
+# 敏感路徑（必須全回 404）
+sensitive_paths:
+  - /service/.env
+  - /service/.env.example
+  - /service/.env.production
+  - /service/.env.local
+  - /service/.env.php          # 只擋 GET（內容為 PHP 陣列；實際會被 FPM 執行回空 200 — OK）
+  - /service/.git/config
+  - /service/.git/HEAD
+  - /service/.gitignore
+  - /service/CLAUDE.md
+  - /service/composer.json
+  - /service/composer.lock
+  - /service/package.json
+  - /service/package-lock.json
+  - /service/create_user.php
+  - /service/create_sample_data.php
+  - /service/deleteDB.php
+  - /service/python/modbus_reader.py
+  - /service/python/modbus_reader_V11.py
+  - /service/python/mqtt_receiver.py
+  - /service/python/alert_manager.py
+  - /service/python/requirements.txt
+  - /service/docs/
+  - /service/sql/
+  - /service/backup/
+  - /service/_dev_tools/
+
+# 必要的 Security Headers
+required_security_headers:
+  - name: Strict-Transport-Security
+    pattern: 'max-age=\d+'
+    mandatory_https: true
+  - name: X-Content-Type-Options
+    expected: 'nosniff'
+  - name: X-Frame-Options
+    expected: 'SAMEORIGIN'
+  - name: Referrer-Policy
+    pattern: '.+'
+  - name: Content-Security-Policy-Report-Only
+    pattern: '.+'
+  - name: Permissions-Policy
+    pattern: '.+'
+  - name: X-XSS-Protection
+    expected: '1; mode=block'
+
+# 禁止出現的 header
+forbidden_headers:
+  - X-Powered-By
+  - Server         # 不應包含版本號
+
+# Cookie 應有的屬性
+cookie_rules:
+  - name: PHPSESSID
+    must_have: [HttpOnly, Secure, SameSite]
+  # 若系統有其他 cookie (_SSID / _CrPoSt) 要驗證是不是敏感
+
+# Bug 檢查指標（從 2026-04-18 實戰經驗提煉）
+bug_indicators:
+  layout_corruption:
+    # 正常 admin layout 頁面應該：aside=1, app-shell=1, title=1
+    aside_count_expected: 1
+    app_shell_count_expected: 1
+    title_count_expected: 1
+  response_size_sanity:
+    # 單頁回應 > 1MB 視為異常（照片 base64 嵌入等）
+    max_bytes: 1048576
+  http_status:
+    deny_expected: 403      # 被拒絕時應為 403，非 200
+  dom_required:
+    # 正常頁應有這些 class/tag
+    - .app-sidebar
+    - .app-topbar
+    - .app-content
+
+# 已知「不應被使用者看到」的敏感欄位
+sensitive_fields:
+  - API_Token
+  - Api_Token_Hash        # hash 本身也不該露在列表
+  - password              # 純文字密碼絕不出現
+  - FTP_Password
+
+# 情境演練（scenario_runner 用）
+scenarios:
+  - name: admin_crud_station
+    description: admin 新增/編輯/刪除站點
+    steps:
+      - login: benson
+      - navigate: stations.php
+      - action: add_station
+        data: { name: 'QA_TEST_STATION', location: 'TEST' }
+      - verify: row_exists
+      - action: edit_station
+        data: { location: 'TEST_UPDATED' }
+      - verify: location_updated
+      - action: delete_station
+      - verify: row_removed
+      - logout
+
+  - name: operator_access_boundary
+    description: operator 能看監測、不能看管理
+    steps:
+      - login: test_operator
+      - navigate_and_expect_200: [index.php, stations.php, sensors.php, history.php, alert_logs.php, inspection_logs.php]
+      - navigate_and_expect_403: [users_management.php, allowed_ips.php, backup_management.php, control_commands.php, mqtt_brokers.php]
+      - logout
+
+  - name: viewer_readonly
+    description: viewer 能看但所有輸入都 disable
+    steps:
+      - login: test_viewer
+      - navigate: sensors.php
+      - verify: all_inputs_disabled
+      - attempt: post_edit
+      - verify: db_unchanged
+      - logout

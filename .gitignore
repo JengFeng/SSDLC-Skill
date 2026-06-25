@@ -46,3 +46,7 @@ project-pulse-poc/
 
 # 每日檢查 log（每台電腦各自產生，不入庫避免互相衝突）
 check-skills.log
+
+# 測試專案目錄，不入庫
+myPrj*/
+
