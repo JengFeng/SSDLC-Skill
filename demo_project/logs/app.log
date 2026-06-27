@@ -1,0 +1,23 @@
+2026-06-27 12:05:08,330 [INFO] DB init
+2026-06-27 12:05:08,331 [INFO] App started
+2026-06-27 12:05:08,370 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-27 12:05:08,370 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-27 12:05:08,378 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-27 12:05:08,607 [INFO] DB init
+2026-06-27 12:05:08,607 [INFO] App started
+2026-06-27 12:05:08,630 [WARNING]  * Debugger is active!
+2026-06-27 12:05:08,633 [INFO]  * Debugger PIN: 142-713-570
+2026-06-27 12:05:11,156 [INFO] Added: 日誌測試
+2026-06-27 12:05:11,157 [INFO] 127.0.0.1 - - [27/Jun/2026 12:05:11] "[32mPOST /add HTTP/1.1[0m" 302 -
+2026-06-27 12:05:11,177 [INFO] 127.0.0.1 - - [27/Jun/2026 12:05:11] "GET / HTTP/1.1" 200 -
+2026-06-27 12:46:00,605 [INFO] DB init
+2026-06-27 12:46:00,606 [INFO] App started
+2026-06-27 12:46:00,646 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-27 12:46:00,646 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-27 12:46:00,656 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-27 12:46:00,890 [INFO] DB init
+2026-06-27 12:46:00,890 [INFO] App started
+2026-06-27 12:46:00,912 [WARNING]  * Debugger is active!
+2026-06-27 12:46:00,915 [INFO]  * Debugger PIN: 142-713-570

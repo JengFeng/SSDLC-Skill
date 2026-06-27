@@ -1,0 +1,16 @@
+# 循序圖（新增員工 MVC 互動）
+```plantuml
+@startuml
+actor 人資管理員 as HR
+participant "瀏覽器" as B
+participant "Flask" as F
+participant "SQLite" as D
+HR -> B : 點新增; B -> F : GET /add; F --> B : 表單頁
+HR -> B : 填寫提交; B -> F : POST /add; F -> D : INSERT; D --> F : OK
+alt 成功
+  F --> B : 302 redirect; B -> F : GET /; F -> D : SELECT; D --> F : 列表; F --> B : 渲染
+else Email重複
+  F --> B : 錯誤提示
+end
+@enduml
+```

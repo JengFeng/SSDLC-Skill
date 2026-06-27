@@ -1,0 +1,13 @@
+# 活動圖
+```plantuml
+@startuml
+start; :進入首頁; :顯示列表;
+if (有資料?) then (是) else (否) :提示「尚無」; endif
+switch (操作)
+case (搜尋) :過濾列表;
+case (新增) :填表單; if (必填?) then (是) else (否) :提示必填; stop; endif; if (Email重複?) then (是) :提示重複; stop; else (否) :寫入DB; endif
+case (修改) :編輯表單; :更新DB;
+case (刪除) :確認對話框; if (確認?) then (是) :刪除; else (否) :取消; endif
+endswitch; :返回列表; stop
+@enduml
+```
