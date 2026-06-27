@@ -598,3 +598,41 @@ name: Harness Engineering CI
 **各階段描述一致性**：CORE_RULES.md 的六階段核心用途與 .agents/skills/*/SKILL.md 的 description 欄位一致 ✅
 
 **格式檢查**：繁體中文一致，無簡體字/大陸用語
+
+## 外層全域主控 Agent 五大自動化機制補強 — 2026-06-27
+
+**觸發**：框架建造者發現外層全域主控 Agent 五大核心職責僅有「宣告」而無「可執行機制」。
+
+**補強範圍**：
+
+### CORE_RULES.md 大改版（v2.0）
+- **新增第三節**「外層全域主控 Agent 自動化機制與追溯同步規範」：五大職責逐一補強為可執行規範
+  1. **追溯鏈自動化**：定義觸發時機（Evaluator 通過）、REQ 編號自動產生規則、traceability_matrix.md 八欄位自動填入規範、連貫性報告輸出
+  2. **規格同步自動化**：定義 system_specification.md 各章節的自動同步時機與內容對照表、Gherkin 狀態寫回機制
+  3. **日誌留存機制**：定義三類紀錄（iteration_log / conversation_* / ai_adjustment_*）、歸檔觸發規則、保留上限與清理策略
+  4. **階段 Baseline**：新增階段級 Baseline（phase-{NN}_v{M}），與全域 @baseline 分離；全域 Baseline 須所有階段皆完成方可建立
+  5. **關卡管控**：phase_gates.json + 階段切換檢核流程 + 強制解鎖 @unlock + 階段重建機制
+- **Generator 強化**：完成後自動儲存快照 + 寫入 iteration_log.md
+- **Evaluator 強化**：通過後自動觸發 Five-Point 全域同步作業，任一失敗則中止後續步驟
+- **Five-Point Automation Checklist**：以流程圖定義五項作業的強制執行順序
+
+### 新增檔案
+- `phase_gates.json`：階段關卡管控檔案（6 階段 locked 初始狀態）
+- `logs/iteration_log.md`：迭代日誌範本
+
+### 連帶更新
+- `.agents/AGENTS.md`：新增 `@unlock` 指令（Section 8）+ 口語觸發
+- `commands_reference.md`：核心指令表加入 `@unlock` + 口語喚出詞彙
+- `TEMPLATE_SKILL.md`：目錄結構補上 `phase_gates.json` + 更新 baseline/logs 註釋
+- `README.md`：目錄結構補上 `phase_gates.json` + 更新 baseline/logs 註釋
+- `Harness_Optimization_SKILL.md`：新增 4.5 階段關卡管控防線檢查（5 項檢查點）
+- `CORE_RULES.md`：節次重編（一→五），原第三節改為第四節（快照管理），原第四節改為第五節（部署）
+
+**CORE_RULES.md 節次對照**：
+| 舊節次 | 新節次 | 標題 |
+|:---|:---|:---|
+| 一 | 一 | 整體雙層解耦架構 |
+| 二 | 二 | 內層局部駕馭工程 \| 通用標準流程 |
+| — | **三（新增）** | **外層全域主控 Agent 自動化機制與追溯同步規範** |
+| 三 | 四 | 快照管理與日誌儲存規則 |
+| 四 | 五 | 部署環境適配與進程守護通則 |
