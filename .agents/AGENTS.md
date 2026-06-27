@@ -1,4 +1,4 @@
-# 專案開發規則與防線規範 (AGENTS.md)
+﻿# 專案開發規則與防線規範 (AGENTS.md)
 
 👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
@@ -109,7 +109,8 @@ graph TD
 ### 1\. 階段查詢指令：`@stages`
 *   **指令定義**：查詢 SSDLC 各開發階段之代碼與中文名稱對照。
 *   **AI 代理執行規範**：
-    1.  必須立即輸出以下對照表：
+    1.  必須立即輸出以下對照表（六大核心開發階段 + 跨階段全域共用層）：
+        *   `00` : 跨階段全域共用 (cross_phase)
         *   `01` : 規劃與需求分析 (planning_and_analysis)
         *   `02` : 系統設計 (system_design)
         *   `03` : 開發與編碼 (implementation_and_coding)
