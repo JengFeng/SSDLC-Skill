@@ -1,6 +1,6 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方、Benson 自建、GitHub 社群開源及 Anthropic 官方插件等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（29）、GitHub 社群（41）、Anthropic 官方插件（1）等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
