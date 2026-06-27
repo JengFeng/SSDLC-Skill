@@ -532,3 +532,15 @@ name: Harness Engineering CI
 | baseline-v1 | ✅ | ✅ | base/form/index | chcp65001+taskkill |
 | baseline-v2 | ✅ | ✅ | base/form/index | chcp65001+taskkill |
 | baseline-v3 | ✅ | ✅ | base/form/index | chcp65001+taskkill |
+---
+
+## @restore 指令新增 — 2026-06-27
+
+**觸發**：框架建造者確認快照回溯指令規劃後執行實作。
+
+**新增內容**：
+- `docs/commands_reference.md`：核心指令表新增 `@restore`（語音觸發 + 表格列）
+- `.agents/AGENTS.md`：新增 Section 6 完整 `@restore` 執行規範（參數：latest/N/時間戳、警告提示、git stash + diff apply + SHA-256 驗證）
+- `README.md`：指令系統表格新增 `@restore` 列
+
+**口語觸發**：「回溯快照」「還原快照」「退回上一步」「載入快照」「復原工作目錄」
