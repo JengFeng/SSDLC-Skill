@@ -28,7 +28,7 @@
 │   └── features/                               # Gherkin .feature BDD 可執行規格
 │       └── .gitkeep
 │
-├── baseline/                                   # 全域組態基準存放區（含階段 Baseline: phase-{NN}_v{M}/ + 全域 Baseline，各自保留最近 3 份）
+├── baseline/                                   # 全域組態基準存放區（全域 Baseline 保留最近 3 份；階段 Baseline (phase-{NN}_v{M}/) 為可選功能）
 │   └── .gitkeep
 │
 ├── snapshots/                                  # 全域執行快照備份區 (保留最近 5 筆)
@@ -234,5 +234,6 @@ AI 代理在與使用者對話時，必須主動識別並代為執行以下對�
 *   當 AI 代理識別到類似的口語或語音輸入時，必須主動執行對應動作：
     1.  當識別到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」或「叫出指令對照表」等語音或口語輸入時，必須自動使用檔案讀取工具，在對話中呈現 [docs/commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容。
     2.  當識別到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，必須自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，對專案的各核心檔案之關聯與排版進行地毯式優化。
+
 
 

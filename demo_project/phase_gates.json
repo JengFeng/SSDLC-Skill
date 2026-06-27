@@ -5,38 +5,68 @@
     "01_planning_and_analysis": {
       "status": "completed",
       "baseline": "baseline/phase-01_v1/",
-      "evaluator_score": { "coverage": 40, "clarity": 30, "traceability": 20, "format": 10 },
+      "evaluator_score": {
+        "coverage": 40,
+        "clarity": 30,
+        "traceability": 20,
+        "format": 10
+      },
       "completed_at": "2026-06-27T12:00:00"
     },
     "02_system_design": {
       "status": "completed",
       "baseline": "baseline/phase-02_v1/",
-      "evaluator_score": { "completeness": 100, "consistency": 100, "traceability": 100 },
+      "evaluator_score": {
+        "completeness": 100,
+        "consistency": 100,
+        "traceability": 100
+      },
       "completed_at": "2026-06-27T13:00:00"
     },
     "03_implementation_and_coding": {
       "status": "completed",
       "baseline": "baseline/phase-03_v1/",
-      "evaluator_score": { "spec_compliance": 35, "code_quality": 25, "test_coverage": 20, "security": 20 },
+      "evaluator_score": {
+        "spec_compliance": 35,
+        "code_quality": 25,
+        "test_coverage": 20,
+        "security": 20
+      },
       "completed_at": "2026-06-27T14:00:00"
     },
     "04_testing": {
       "status": "completed",
       "baseline": "baseline/phase-04_v1/",
-      "evaluator_score": { "requirement_coverage": 35, "dual_track_pass_rate": 30, "bug_tracking": 20, "regression_strategy": 15 },
+      "evaluator_score": {
+        "requirement_coverage": 35,
+        "dual_track_pass_rate": 30,
+        "bug_tracking": 20,
+        "regression_strategy": 15
+      },
       "completed_at": "2026-06-27T15:00:00"
     },
     "05_deployment": {
       "status": "completed",
       "baseline": "baseline/phase-05_v1/",
-      "evaluator_score": { "config_baseline": 30, "availability": 30, "signature": 20, "config_correctness": 20 },
+      "evaluator_score": {
+        "config_baseline": 30,
+        "availability": 30,
+        "signature": 20,
+        "config_correctness": 20
+      },
       "completed_at": "2026-06-27T16:00:00"
     },
     "06_maintenance": {
       "status": "completed",
       "baseline": "baseline/phase-06_v1/",
-      "evaluator_score": { "regression_testing": 30, "monitoring_effectiveness": 25, "error_extraction": 25, "artifact_verification": 20 },
+      "evaluator_score": {
+        "regression_testing": 30,
+        "monitoring_effectiveness": 25,
+        "error_extraction": 25,
+        "artifact_verification": 20
+      },
       "completed_at": "2026-06-27T17:00:00"
     }
-  }
+  },
+  "phase_baseline_enabled": true
 }

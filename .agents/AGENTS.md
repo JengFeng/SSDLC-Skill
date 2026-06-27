@@ -222,3 +222,4 @@ graph TD
         *   在 `logs/ai_adjustment_{date}.md` 中記錄此次強制解鎖。
     4.  若使用者取消，則不執行任何變更。
 
+

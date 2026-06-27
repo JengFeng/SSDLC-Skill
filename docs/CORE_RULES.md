@@ -219,13 +219,13 @@ AI 代理在執行過程中，每當做出以下自主判斷時，必須即時�
   * `snapshot_*.md` + `diff_*.patch`：本階段的執行快照配對。
 * **保留規則**：每個階段僅保留最近 3 份 Baseline。當第 4 份產生時，自動清理最舊版本。
 
-#### 4-2. 專案全域 Baseline（Project Baseline — 現有 @baseline 指令）
+#### 4-3. 專案全域 Baseline（Project Baseline — 現有 @baseline 指令）
 保留現有 `@baseline` 指令行為，但新增以下規則：
 * 全域 Baseline 僅在所有 6 個階段皆完成（皆有階段 Baseline）後方可建立。
 * 若任一階段缺少階段 Baseline，`@baseline` 指令須提示：「以下階段尚未建立階段 Baseline：{階段清單}。請先完成該階段 PDCA 後再建立全域 Baseline。」
 * 全域 Baseline 的 MANIFEST.md 必須彙整所有 6 個階段 Baseline 的版本資訊。
 
-#### 4-3. Baseline 驗證規則（語言無關，自動適配）
+#### 4-4. Baseline 驗證規則（語言無關，自動適配）
 每次階段 Baseline 建立後，必須自動執行以下驗證並記錄結果於 MANIFEST.md。AI 代理須自動偵測專案技術棧，選用對應語言的等效檢查：
 
 **通用驗證項目**（所有專案皆執行）：
@@ -445,6 +445,7 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 
 4. **互斥部署環境靜態檢核**
    * 若系統中存在彼此衝突的部署操作（例如容器化部署與實體進程部署），此類架構與環境之衝突應在 Plan 階段進行靜態檢核，並直接判定為 B 類錯誤予以攔截，避免環境配置產生衝突。
+
 
 
 

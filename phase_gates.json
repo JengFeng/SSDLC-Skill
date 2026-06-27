@@ -38,5 +38,6 @@
       "evaluator_score": null,
       "completed_at": null
     }
-  }
+  },
+  "phase_baseline_enabled": false
 }
