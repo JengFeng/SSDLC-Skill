@@ -669,3 +669,19 @@ name: Harness Engineering CI
 | Token 消耗 | 高（需解析全文） | 低（只讀取所需欄位） |
 | 跨階段傳遞 | 間接（透過 YAML） | 直接（欄位對欄位） |
 | 版本比對 | 逐行 diff | 欄位級結構化 diff |
+
+## demo_project 依循雙格式規則重推 — 2026-06-27
+
+**觸發**：框架建造者要求以新規則（YAML SSOT 為唯一資料源）重新推演 demo_project。
+
+**新增檔案**：
+- `demo_project/specs/executable_spec.yaml`：完整 6 階段 SSOT（10 REQ + 結構化 API 端點 + 資料表定義 + 測試結果 + change_log 六版）
+- `demo_project/specs/features/requirements.feature`：Gherkin BDD（9 Scenario，含列表/新增/搜尋/重複/空白/修改/刪除/日誌）
+- `demo_project/specs/README.md`：雙格式架構說明
+- `demo_project/phase_gates.json`：全 6 階段 completed + evaluator_score
+
+**修正檔案**：
+- `demo_project/traceability_matrix.md`：REQ_008~010 的 `.puml` 參照 → `.md`（符合 Mermaid 標準）
+
+**@optimize 同步強化**：
+- `docs/Harness_Optimization_SKILL.md`：新增檢查 3.6「可執行規格 YAML SSOT 防線」（7 項檢查點）
