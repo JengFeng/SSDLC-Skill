@@ -152,9 +152,15 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 ---
 
-## 📄 授權
+## 📄 授權與來源
 
-本專案為 SSDLC 開發框架，架構設計與 Skill 歸類由 Benson 維護。
+本專案為開源專案，基於以下 GitHub 開放原始碼資源進行整合與歸類：
+
+- **Anthropic 官方 Skills**：取自 [anthropics/skills](https://github.com/anthropics/skills) 開源倉庫（17 個 Skill）
+- **Benson 自建 Skills**：取自 [MMBenson/Benson-skill](https://github.com/MMBenson/Benson-skill) 開源倉庫（29 個 Skill）
+- **GitHub 社群 Skills**：取自各開放原始碼專案（31 個 Skill）
+
+本框架的 SSDLC 階段架構設計與 Skill 歸類方法為原創整理成果，Skill 內容著作權歸屬各原始開源專案。
 
 ---
 
