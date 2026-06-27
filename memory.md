@@ -543,4 +543,29 @@ name: Harness Engineering CI
 - `.agents/AGENTS.md`：新增 Section 6 完整 `@restore` 執行規範（參數：latest/N/時間戳、警告提示、git stash + diff apply + SHA-256 驗證）
 - `README.md`：指令系統表格新增 `@restore` 列
 
-**口語觸發**：「回溯快照」「還原快照」「退回上一步」「載入快照」「復原工作目錄」
+**口語觸發**：「回溯快照」「還原快照」「退回上一步」「載入快照」「復原工作目錄」---
+
+## PDCA 全面標準化 — 2026-06-27
+
+**觸發**：框架建造者要求所有階段嚴格遵循 CORE_RULES.md 的 PDCA 格式。
+
+**標準化範圍**：.agents/skills/ 下全部 7 個階段 SKILL.md。
+
+**各階段狀態**：
+| 階段 | 狀態 | 說明 |
+|:---|:---|:---|
+| 00_cross_phase | ✅ PDCA | Planner + Generator鐵律 + Evaluator(30/25/25/20%) + A/B分類 |
+| 01_planning_and_analysis | ✅ PDCA | Planner + Generator鐵律 + Evaluator(40/30/20/10%) + A/B分類 |
+| 02_system_design | ✅ PDCA | Planner(7 deliverables) + Generator鐵律 + Evaluator + A/B分類 |
+| 03_implementation_and_coding | ✅ PDCA | **本次補齊**：CORE_RULES參照 + Generator鐵律 + A/B分類 |
+| 04_testing | ✅ PDCA | Planner(dual-track) + Generator鐵律 + Evaluator(35/30/20/15%) + A/B分類 |
+| 05_deployment | ✅ PDCA | **本次補齊**：CORE_RULES參照 + Generator鐵律 + Evaluator百分比(30/30/20/20%) + A/B分類 |
+| 06_maintenance | ✅ PDCA | **本次補齊**：CORE_RULES參照 + Generator鐵律 + Evaluator百分比(30/25/25/20%) + A/B分類 |
+
+**統一的 PDCA 必備元素**（7 個 phase 全數具備）：
+1. `> ⚠️ **最高指導框架原則**：本規範受 CORE_RULES.md 管轄...`
+2. Planner：任務清單 + 驗收標準
+3. Generator：**核心鐵律「只執行、不判斷、不檢查、不修改」** + 執行任務 + 快照儲存
+4. Evaluator：百分比評分標準 + **A/B 錯誤分類 + 分級重試機制**
+
+**demo_project/.agents/skills/**：維持輕量「Skill 配置」格式（專案層級 Skill 匯入註冊），不需完整 PDCA。
