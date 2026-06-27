@@ -61,6 +61,10 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/01_planning_and_analysis/docusaurus) / [原始 GitHub 倉庫](https://github.com/facebook/docusaurus)
 
 
+### GitHub 推薦開源文檔技能合集 (1)
+* **[[19] document-skills](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/document-skills)**：增強版文件處理技能合集，涵蓋 docx、pdf、pptx、xlsx 四種格式的進階操作、OOXML 底層編輯、HTML 轉換與試算表重算。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/01_planning_and_analysis/document-skills) / [原始 GitHub 倉庫](https://github.com/appautomaton/document-SKILLs)
+
 ## 2. 系統設計
 本階段技能用於前端 UI 原型設計、配色、品牌風格套用、系統分析（SA/SD）設計與簡報配音。
 
@@ -243,6 +247,10 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/test-driven-development) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
 * **[[08] verification-before-completion](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/verification-before-completion)**：完成前驗證。在聲稱工作完成、修復或通過之前執行驗證命令並確認輸出。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/verification-before-completion) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
-* **[[09] writing-plans](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/writing-plans)**：撰寫實作計畫。在接觸程式碼之前，先制定多步驟任務的規格與需求。
+* **[[09] writing-plans](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/writing-plans)**
+* **[[10] ralph-loop](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/ralph-loop)**：自主 AI 開發循環。自動化修改→測試→驗證→保留/丟棄的迭代流程，具備智慧退出偵測。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/ralph-loop) / [原始 GitHub 倉庫](https://github.com/frankbria/ralph-claude-code)
+* **[[11] using-superpowers](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/using-superpowers)**：Skill 尋找與使用引導。教導 AI 代理如何在對話中主動發現、呼叫與使用可用技能。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/using-superpowers) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)：撰寫實作計畫。在接觸程式碼之前，先制定多步驟任務的規格與需求。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/writing-plans) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/diffsync) / [原始 GitHub 倉庫](https://github.com/google/diff-sync-match-patch)

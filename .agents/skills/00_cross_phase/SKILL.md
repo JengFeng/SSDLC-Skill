@@ -20,3 +20,5 @@ description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的
 | `07` | test-driven-development | 測試驅動開發 (TDD) 流程 |
 | `08` | verification-before-completion | 完成前強制驗證 |
 | `09` | writing-plans | 多步驟任務規劃與規格撰寫 |
+| `10` | ralph-loop | 自主 AI 開發循環（修改→測試→驗證→保留） |
+| `11` | using-superpowers | Skill 尋找與使用引導 |

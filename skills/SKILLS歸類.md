@@ -15,8 +15,8 @@
 ## 技能分類規則與映射表
 
 ### 1. 01_planning_and_analysis
-* **適用技能**：需求場景拆解、訪談整理、文件結構化、通用文件處理與靜態文檔建置。
-* **技能清單**：`langchain`、`llamaindex`、`docling`、`docusaurus`、`doc-coauthoring`、`internal-comms`、`docx`、`xlsx` / `pdf` / `pptx`。
+* **適用技能**：需求場景拆解、訪談整理、文件結構化、通用文件處理、增強版文檔技能合集與靜態文檔建置。
+* **技能清單**：`langchain`、`llamaindex`、`docling`、`docusaurus`、`doc-coauthoring`、`internal-comms`、`docx`、`xlsx` / `pdf` / `pptx`、`document-skills`（docx/pdf/pptx/xlsx 增強合集）。
 
 ### 2. 02_system_design
 * **適用技能**：架構圖、流程圖、UML 圖表、資料庫設計、API 規格產生以及前端視覺色彩規範。
@@ -40,7 +40,7 @@
 
 ### 7. 00_cross_phase
 * **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制以及程式碼差異比對。
-* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`。
 
 ## 執行步驟 SOP
 
