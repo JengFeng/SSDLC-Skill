@@ -1,6 +1,6 @@
 ---
 name: 06_maintenance
-description: 維護與監控階段，負責線上故障分析、編寫熱修補（Hotfix）程式，並執行回歸測試以確保系統穩定性。
+description: 維護與監控階段，負責線上運行日誌收集與分析、錯誤原因萃取、系統硬體與效能監控、程式執行軌跡追蹤、熱修補（Hotfix）程式編寫及回歸測試。
 ---
 
 # 維護與監控階段技能規範 (06_maintenance)
@@ -13,19 +13,25 @@ description: 維護與監控階段，負責線上故障分析、編寫熱修補�
 *   **任務**：
     1.  讀取儲存於 `inputs/` 下的線上異常或使用者修補需求 `BUG_*.md` 或 `REQ_*.md`。
     2.  規劃修補程式的影響範圍（Impact Analysis），制定回歸測試策略。
-*   **驗收標準**：分析計畫中必須明確指出本次修補可能會影響的既有功能清單，並要求 Evaluator 對其進行加強測試。
+    3.  設定日誌收集範圍與監控指標（如 CPU、記憶體、回應時間、錯誤率）。
+*   **驗收標準**：分析計畫中必須明確指出本次修補可能會影響的既有功能清單、監控指標閾值，並要求 Evaluator 對其進行加強測試。
 
 ### 2. Generator (執行代理)
 *   **任務**：
-    1.  編寫安全性漏洞修補、修復 Bug。
-    2.  同步更新 `traceability_matrix.md` 及 `system_specification.md`。
-    3.  產出修補日誌與異動明細 `outputs/patch_changelog.md`。
+    1.  啟用並設定線上運行日誌集中收集與快速檢索分析機制。
+    2.  設定系統硬體與效能指標監控（APM），包含分布式調用鏈追蹤與即時視覺化告警。
+    3.  設定雜亂日誌的正則篩選與清理格式化規則。
+    4.  編寫安全性漏洞修補、修復 Bug（Hotfix）。
+    5.  同步更新 `traceability_matrix.md` 及 `system_specification.md`。
+    6.  產出修補日誌與異動明細 `outputs/patch_changelog.md`。
 
 ### 3. Evaluator (審查代理)
 *   **任務**：執行安全防線核對。
 *   **審查重點**：
-    *   **回歸測試 (Regression Testing)**：執行完整的 `behave` 測試案例，確認修補後系統的既有功能皆未損壞（維持綠燈）。
-    *   **產出物驗證**：產出故障分析報告 `outputs/incident_report.md`，並核對 RTM，確保修補結果已更新至需求鏈條。
+    *   **回歸測試 (Regression Testing)**：執行完整的測試案例，確認修補後系統的既有功能皆未損壞。
+    *   **監控有效性**：確認日誌收集、APM 指標監控與告警機制正常運作。
+    *   **錯誤萃取**：分析日誌與監控數據，萃取錯誤根本原因，產出故障分析報告 `outputs/incident_report.md`。
+    *   **產出物驗證**：核對 RTM，確保修補結果已更新至需求鏈條。
 
 ---
 
@@ -35,3 +41,4 @@ description: 維護與監控階段，負責線上故障分析、編寫熱修補�
 *   **輸出路徑 (`outputs/`)**：
     *   `incident_report.md`：故障分析與根源報告。
     *   `patch_changelog.md`：修補日誌。
+    *   `monitoring_dashboard.json`：監控儀表板指標配置。

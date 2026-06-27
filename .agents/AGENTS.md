@@ -1,4 +1,4 @@
-﻿# 專案開發規則與防線規範 (AGENTS.md)
+# 專案開發規則與防線規範 (AGENTS.md)
 
 👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
@@ -100,7 +100,13 @@ graph TD
 
 為極簡化專案配置流程，AI 代理在與使用者對話時，必須主動辨識並執行以下對話指令：
 
-### 1. 階段查詢指令：`@stages`
+### 0. 指令參照查詢指令：`@help`
+*   **指令定義**：立即顯示指令集參照表的完整內容，方便使用者快速查閱所有可用指令與語法。
+*   **AI 代理執行規範**：
+    1.  AI 代理必須讀取 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容。
+    2.  將內容以結構化方式呈現於對話中，包含所有指令的語法、參數與用途說明。
+
+### 1\. 階段查詢指令：`@stages`
 *   **指令定義**：查詢 SSDLC 各開發階段之代碼與中文名稱對照。
 *   **AI 代理執行規範**：
     1.  必須立即輸出以下對照表：
@@ -124,7 +130,8 @@ graph TD
 ### 3. 直接與聯合導入 Skill 指令：`@[階段雙位數代碼]/[快捷編號]` 或 `@[階段雙位數代碼]/[快捷編號_1],[快捷編號_2]`
 *   **指令定義**：將指定的單個或多個 Skill（以逗號 `,` 聯合參數組合）部署至當前專案對應的階段目錄，並合併規範與登錄追溯。
 *   **AI 代理執行規範**：
-    1.  **安全網防禦**：執行前，AI 必須呼叫 Git 檢查工作區狀態。若有未提交之變更，必須自動建立暫存 Git tag（格式為 `temp-baseline-YYYYMMDD-HHMMSS`）作為 Baseline。
+    0.  **專案初始化防呆 (Project Init Guard)**：執行前，AI 必須檢查當前工作目錄是否為已初始化之 SSDLC 專案（根目錄須具備 `traceability_matrix.md`、`system_specification.md` 及 SSDLC 階段目錄結構）。若非已初始化專案，必須中止導入，並提示使用者：「當前目錄尚未初始化為 SSDLC 專案，請先執行 `@init [路徑]` 建立專案工作目錄後再導入 Skill。」
+    1.  **安全網防禦**：執行前，AI 必須呼叫 Git 檢查工作區狀態...。若有未提交之變更，必須自動建立暫存 Git tag（格式為 `temp-baseline-YYYYMMDD-HHMMSS`）作為 Baseline。
     2.  **快捷編號與逗號 (,) 防呆提醒與錯誤處理**：
         *   若使用者輸入非雙位數快捷編號（例如輸入了完整的 Skill 資料夾名稱），AI 代理必須友善提示，例如：「請使用快捷編號進行導入，例如使用 `@01/01` 代替 `@01/skill_categorizer`」。
         *   若指令中包含逗號 `,`，AI 代理必須將其視為聯合導入，並依逗號拆分所有快捷編號。
@@ -134,10 +141,11 @@ graph TD
     5.  **SKILL.md 動態合併**：
         *   依序讀取所選之各 Skill 的 `SKILL.md` 內容。
         *   將其 instructions 與規範分別以 `## [Skill 實體名稱] 規範` 為標題封裝，動態追加合併至該開發階段目錄下的 `SKILL.md` 中，並加上導入註記。
+        *   同步更新 `.agents/skills/[階段]/SKILL.md`，加入該 Skill 的用途描述與快捷編號對照。
         *   若某階段尚未有 `SKILL.md`，則依據 `TEMPLATE_SKILL.md` 範本初始化後再行合併。
     6.  **衝突處理**：動態合併時若出現重疊或矛盾的 instructions，以全局規章 `.agents/AGENTS.md` 為最高準則；若無法自動判定，必須列出衝突點由使用者手動裁決，嚴禁自行腦補。
     7.  **重複導入防護**：若目標目錄已存在同名 Skill，AI 必須提示使用者進行「覆蓋（Overwrite）」或「放棄（Abort）」。
-    8.  **組態追溯**：在專案根目錄的 `traceability_matrix.md` 中一次性登錄此次（或此批）Skill 導入的快捷編號、實體名稱、時間與版本。
+    8.  **組態追溯**：在 `traceability_matrix.md` 中一次性登錄此次（或此批）Skill 導入的快捷編號、實體名稱、時間與版本。
 
 ### 4. 專案初始化指令：`@init [相對路徑]`
 *   **指令定義**：自動建立指定路徑之標準專案目錄結構與基礎檔案，並引導後續階段 Skill 配置。
@@ -150,5 +158,17 @@ graph TD
 ### 5. 自然語言與語音喚出協議
 *   **語意觸發規範**：AI 代理在與使用者對話時，必須主動識別使用者的自然語言或語音口語輸入：
     1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
-    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
+    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
+
+
+### 6. 專案基線快照指令：`@baseline`
+*   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
+*   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
+*   **AI 代理執行規範**：
+    1.  計算下一個版本號（baseline-v1, v2, v3...）。
+    2.  複製完整可執行專案（app.py + templates/ + requirements.txt + run.bat + employee.db）至 `baseline/baseline-v{N}/`。
+    3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
+    4.  保留最近 3 份 baseline，自動清理最舊版本。
+    5.  寫入 memory.md 紀錄。
+
 

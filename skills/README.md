@@ -1,10 +1,10 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [template_skill.md](file:///d:/00AI協作/SSDLC_Skill/template_skill.md) 所定義的 6 個軟體開發生命週期（SSDLC）階段，將 Anthropic 官方的 17 個技能（skills）與 Benson 自建的 29 個技能（共 46 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方的 17 個技能（skills）與 Benson 自建的 29 個技能（共 77 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
-## 1. 規劃與需求分析階段
+## 1. 規劃與需求分析
 本階段技能用於專案初期的需求釐清、文件協作、數據處理、提案報價與內部資訊傳遞。
 
 ### Anthropic 官方技能 (6)
@@ -49,7 +49,19 @@
 
 ---
 
-## 2. 系統設計階段
+
+### GitHub 推薦開源工具技能 (4)
+* **[[01] langchain](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/langchain)**：需求場景拆解、語意整理與鏈式呼叫工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/01_planning_and_analysis/langchain) / [原始 GitHub 倉庫](https://github.com/langchain-ai/langchain)
+* **[[02] llamaindex](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/llamaindex)**：文件數據索引萃取與關鍵需求擷取工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/01_planning_and_analysis/llamaindex) / [原始 GitHub 倉庫](https://github.com/run-llama/llama_index)
+* **[[03] docling](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/docling)**：各式複雜文件（PDF, Word等）轉換為標準 Markdown 格式工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/01_planning_and_analysis/docling) / [原始 GitHub 倉庫](https://github.com/DS4SD/docling)
+* **[[04] docusaurus](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/docusaurus)**：需求文件靜態版本網站建置與版本化管理。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/01_planning_and_analysis/docusaurus) / [原始 GitHub 倉庫](https://github.com/facebook/docusaurus)
+
+
+## 2. 系統設計
 本階段技能用於前端 UI 原型設計、配色、品牌風格套用、系統分析（SA/SD）設計與簡報配音。
 
 ### Anthropic 官方技能 (6)
@@ -84,7 +96,19 @@
 
 ---
 
-## 3. 系統開發與實作階段
+
+### GitHub 推薦開源工具技能 (4)
+* **[[01] mermaid](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/mermaid)**：以文字繪製專案流程圖、系統架構圖與狀態圖。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/02_system_design/mermaid) / [原始 GitHub 倉庫](https://github.com/mermaid-js/mermaid)
+* **[[02] plantuml](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/plantuml)**：產生精確 UML 類別圖、序列圖與部署圖的標準設計工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/02_system_design/plantuml) / [原始 GitHub 倉庫](https://github.com/plantuml/plantuml)
+* **[[03] prisma](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/prisma)**：資料庫實體關係圖 (ER Model)、Schema 與 SQL DDL 產生工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/02_system_design/prisma) / [原始 GitHub 倉庫](https://github.com/prisma/prisma)
+* **[[04] openapi_generator](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/openapi_generator)**：自動產生符合 OpenAPI 規格的 API 文件與介面程式碼。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/02_system_design/openapi_generator) / [原始 GitHub 倉庫](https://github.com/OpenAPITools/openapi-generator)
+
+
+## 3. 開發與編碼
 本階段技能用於開發任務管理、程式碼實作、MCP 伺服器建置、API 規格查詢與自訂技能管理。
 
 ### Anthropic 官方技能 (4)
@@ -115,7 +139,21 @@
 
 ---
 
-## 4. 測試階段
+
+### GitHub 推薦開源工具技能 (5)
+* **[[01] continue_dev](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/continue_dev)**：本機 AI 輔助寫碼、語境理解與程式產生套件。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/continue_dev) / [原始 GitHub 倉庫](https://github.com/continuedev/continue)
+* **[[02] codellama](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/codellama)**：本地離線代碼編譯、語法生成與程式碼自動補全核心。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/codellama) / [原始 GitHub 倉庫](https://github.com/facebookresearch/codellama)
+* **[[03] eslint](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/eslint)**：代碼語法與靜態邏輯檢核，維護團隊代碼品質。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/eslint) / [原始 GitHub 倉庫](https://github.com/eslint/eslint)
+* **[[04] prettier](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/prettier)**：代碼風格美化與自動格式化，避免排版衝突。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/prettier) / [原始 GitHub 倉庫](https://github.com/prettier/prettier)
+* **[[05] nx](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/nx)**：大型專案多模組與依賴關係的整合管控工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/nx) / [原始 GitHub 倉庫](https://github.com/nrwl/nx)
+
+
+## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
 
 ### Anthropic 官方技能 (1)
@@ -128,13 +166,43 @@
 
 ---
 
-## 5. 部署階段
+
+### GitHub 推薦開源工具技能 (8)
+* **[[01] playwright](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/playwright)**：主流 UI 自動化測試與跨瀏覽器兼容性回歸測試套件。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/playwright) / [原始 GitHub 倉庫](https://github.com/microsoft/playwright)
+* **[[02] selenium](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/selenium)**：傳統網頁與多瀏覽器的自動化測試與兼容性回歸測試工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/selenium) / [原始 GitHub 倉庫](https://github.com/SeleniumHQ/selenium)
+* **[[03] cypress](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/cypress)**：前端單頁面應用 (SPA) 的快速自動化回歸測試框架。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/cypress) / [原始 GitHub 倉庫](https://github.com/cypress-io/cypress)
+* **[[04] robot_framework](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/robot_framework)**：基於關鍵字驅動的通用自動化測試與驗收框架。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/robot_framework) / [原始 GitHub 倉庫](https://github.com/robotframework/robotframework)
+* **[[05] pytest](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/pytest)**：Python 單元測試與多功能測試驗證框架。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/pytest) / [原始 GitHub 倉庫](https://github.com/pytest-dev/pytest)
+* **[[06] jest](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/jest)**：JavaScript / TypeScript 的單元測試與 Mock 驗證工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/jest) / [原始 GitHub 倉庫](https://github.com/jestjs/jest)
+* **[[07] sonarqube](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/sonarqube)**：專案原始碼安全漏洞、壞味道與代碼品質靜態掃描。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/sonarqube) / [原始 GitHub 倉庫](https://github.com/SonarSource/sonarqube)
+* **[[08] coverage_py](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/coverage_py)**：Python 測試覆蓋率分析與未涵蓋代碼報告器。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/coverage_py) / [原始 GitHub 倉庫](https://github.com/nedbat/coveragepy)
+
+
+## 5. 部署發布
 本階段技能用於自動化建置、寫入數位簽章與部署環境型態比對。
 * *(目前尚無對應技能 - 待擴充)*
 
 ---
 
-## 6. 維護階段
+
+### GitHub 推薦開源工具技能 (3)
+* **[[01] docker](file:///d:/00AI協作/SSDLC_Skill/skills/05_deployment/docker)**：容器化服務打包、鏡像製作與多服務 Docker Compose 部署。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/05_deployment/docker) / [原始 GitHub 倉庫](https://github.com/docker/docker-ce)
+* **[[02] ansible](file:///d:/00AI協作/SSDLC_Skill/skills/05_deployment/ansible)**：伺服器自動化組態管理、主機配置與遠端批次部署。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/05_deployment/ansible) / [原始 GitHub 倉庫](https://github.com/ansible/ansible)
+* **[[03] nginx_config_generator](file:///d:/00AI協作/SSDLC_Skill/skills/05_deployment/nginx_config_generator)**：Web 伺服器反向代理與負載平衡組態檔自動產生器。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/05_deployment/nginx_config_generator) / [原始 GitHub 倉庫](https://github.com/nginx/nginx)
+
+
+## 6. 維護監控
 本階段技能用於系統上線後的資安內部稽核準備，以及線上運行訊號與討論輿情監控。
 
 ### Benson 自建技能 (2)
@@ -142,3 +210,25 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/isms-audit-prep) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/isms-audit-prep)
 * **[eip-line-radar](file:///d:/00AI協作/SSDLC_Skill/skills/06_maintenance/eip-line-radar)**：EIP LINE 訊號雷達。掃描與挖掘上線後相關 LINE 群組討論，執行問題通報與輿情監控。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/eip-line-radar) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/eip-line-radar)
+
+
+### GitHub 推薦開源工具技能 (4)
+* **[[01] elk_stack](file:///d:/00AI協作/SSDLC_Skill/skills/06_maintenance/elk_stack)**：線上日誌集中化收集、Elasticsearch 檢索與日誌異常分析。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/06_maintenance/elk_stack) / [原始 GitHub 倉庫](https://github.com/elastic/elasticsearch)
+* **[[02] prometheus_grafana](file:///d:/00AI協作/SSDLC_Skill/skills/06_maintenance/prometheus_grafana)**：系統硬體指標與服務效能監控、即時 Grafana 圖表告警機制。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/06_maintenance/prometheus_grafana) / [原始 GitHub 倉庫](https://github.com/prometheus/prometheus)
+* **[[03] opentelemetry](file:///d:/00AI協作/SSDLC_Skill/skills/06_maintenance/opentelemetry)**：雲原生 APM 效能瓶頸、調用鏈分佈式追蹤系統。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/06_maintenance/opentelemetry) / [原始 GitHub 倉庫](https://github.com/open-telemetry/opentelemetry-specification)
+* **[[04] logparser](file:///d:/00AI協作/SSDLC_Skill/skills/06_maintenance/logparser)**：雜亂日誌自動清理、正則篩選與格式化輸出分析。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/06_maintenance/logparser) / [原始 GitHub 倉庫](https://github.com/Microsoft/LogParser-Studio-References)
+
+## 跨階段全域共用 Skill
+本階段技能用於跨階段的狀態管理、版本控制與程式碼差異比對。
+
+### GitHub 推薦開源工具技能 (3)
+* **[[01] langgraph](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/langgraph)**：複雜狀態多 Agent 協作工作流的圖形狀態管理引擎。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/langgraph) / [原始 GitHub 倉庫](https://github.com/langchain-ai/langgraph)
+* **[[02] git](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/git)**：全域版本控制、分支管理與 Baseline 基線封存追溯工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/git) / [原始 GitHub 倉庫](https://github.com/git/git)
+* **[[03] diffsync](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/diffsync)**：跨階段專案原始碼版本差異對比與同步工具。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/diffsync) / [原始 GitHub 倉庫](https://github.com/google/diff-sync-match-patch)

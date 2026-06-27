@@ -13,7 +13,7 @@
 
 | 階段與層級 | 傳統開發行為 | Harness 對應機制 (AI 代理) | 驗證工具/方法 |
 | :--- | :--- | :--- | :--- |
-| **需求層級** | 需求分析 / 驗收測試 | 系統功能規格書 (SSOT) / 甲方驗收 | `.agents/traceability_matrix.md` 追溯矩陣 |
+| **需求層級** | 需求分析 / 驗收測試 | 系統功能規格書 (SSOT) / 甲方驗收 | `根目錄 traceability_matrix.md / system_specification.md` 追溯矩陣 |
 | **系統層級** | 系統設計 / 系統測試 | 可 executable 規格 (YAML / Feature) | `behave` (Python) / `SpecFlow` (C#) |
 | **單元層級** | 單元設計 / 單元測試 | 程式碼實作與驗證 (Generator / Evaluator) | `pytest` (Python) / `MSTest` (C#) |
 
@@ -293,7 +293,7 @@ name: Harness Engineering CI
 *   **SSDLC 六大階段目錄**：已建立 `01_planning_and_analysis` 至 `06_maintenance` 的資料夾結構，並包含對應的 `inputs/` 與 `outputs/` 目錄（附帶 `.gitkeep`）。
 *   **自定義階段技能**：在各開發階段目錄下建立了專屬的 `SKILL.md`，定義了三步循環的執行細節。
 *   **全局防線規章**：已建立 [.agents/AGENTS.md](file:///d:/00AI協作/SSDLC_Skill/.agents/AGENTS.md), 寫入全局連貫性大循環、組態管理與測試同步規範。
-*   **根目錄控制文件**：已初始化 [.agents/traceability_matrix.md](file:///d:/00AI協作/SSDLC_Skill/.agents/traceability_matrix.md)（需求追溯矩陣）與 [.agents/system_specification.md](file:///d:/00AI協作/SSDLC_Skill/.agents/system_specification.md)（系統規格說明書）。
+*   **根目錄控制文件**：已初始化 [根目錄 traceability_matrix.md / system_specification.md](file:///d:/00AI協作/SSDLC_Skill/根目錄 traceability_matrix.md / system_specification.md)（需求追溯矩陣）與 [根目錄 traceability_matrix.md / system_specification.md](file:///d:/00AI協作/SSDLC_Skill/根目錄 traceability_matrix.md / system_specification.md)（系統規格說明書）。
 *   **IDE 串接**：已建立 [.vscode/tasks.json](file:///d:/00AI協作/SSDLC_Skill/.vscode/tasks.json), 可在 VS Code 中直接執行自動化備份、BDD 測試、RTM 稽核與還原。
 
 ### 2. 下一步執行計畫 (下午討論議題)
@@ -335,7 +335,7 @@ name: Harness Engineering CI
 ### 2. 核心機制與指令設計 (全對話指令協議補強版)
 *   **@stages**：查詢 SSDLC 各階段代碼與名稱對照表（例如 `01` 到 `06`）。
 *   **@[階段雙位數代碼]** (例如 `@01`、`@02`)：掃描並列出該開發階段的所有可用 Skill。AI 代理必須自動讀取各 Skill 的 `SKILL.md`，動態解析其 Frontmatter 中的 `description`，併同名稱與導入指令輸出，使用戶一目了然。
-*   **@[階段雙位數代碼]/[Skill_1]+[Skill_2]** (例如 `@02/sa-design+bootstrap-ui`)：聯合導入指令。AI 代理會一次性建立 Git tag Baseline，依次將多個 Skill 複製到對應階段，將各 instructions 分段追加合併至 `SKILL.md`，並在 `.agents/traceability_matrix.md` 中一次性登錄此批導入。
+*   **@[階段雙位數代碼]/[Skill_1]+[Skill_2]** (例如 `@02/sa-design+bootstrap-ui`)：聯合導入指令。AI 代理會一次性建立 Git tag Baseline，依次將多個 Skill 複製到對應階段，將各 instructions 分段追加合併至 `SKILL.md`，並在 `根目錄 traceability_matrix.md / system_specification.md` 中一次性登錄此批導入。
 *   **加號 (+) 防呆提醒**：若 Skill 名稱中包含加號，AI 代理在拆分解析時若發現 any 一個 Skill 不存在，必須主動回報是哪一個 Skill 找不到，並提示加號聯合導入的正確範例語法，附上可用 Skill 清單，防止拼寫錯誤。
 *   **@init [相對路徑]** (例如 `@init ./my_new_project`)：自動在指定路徑下建立完整的 SSDLC 目錄結構與基礎控制檔案。**目錄與檔案建立完畢後，AI 代理會自動啟動 01 到 06 階段的 Skill 配置引導流，引導使用者循序選取要載舉的 Skill 或選擇跳過。**
 *   **自然語言語意喚起**：偵測到如「讀取指令集」、「有什麼指令可以用」、「叫出指令對照表」等口語語意時，自動讀取並顯示 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md)。
@@ -385,7 +385,7 @@ name: Harness Engineering CI
 *   **目錄樹後方新增註釋**：在標準專案目錄結構後面，新增 `### 目錄結構組態說明與防線註釋` 小節。明確指明 `docs/CORE_RULES.md` 的最高守則地位，並說明 `.agents/AGENTS.md` 與根目錄 `AGENTS.md` 是如何強制與此指導守則建立引用與關聯防線。
 *   **重構「AI 協作對話與執行協議」**：
     將 [docs/CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 與 [.agents/AGENTS.md](file:///d:/00AI協作/SSDLC_Skill/.agents/AGENTS.md) 規章的核心協定整合為 5 大核心部分：
-    1.  **需求收集與追溯協議**：規範 Entity 格式需求記錄點之建立與 `.agents/traceability_matrix.md` 追溯。
+    1.  **需求收集與追溯協議**：規範 Entity 格式需求記錄點之建立與 `根目錄 traceability_matrix.md / system_specification.md` 追溯。
     2.  **階段 PDCA 執行與結果上傳協議**：明文要求 Plan -> Generator -> Evaluator 流程，以及將成果與快照自動上傳給頂層 Agent 的資料同步協議。
     3.  **錯誤二分類與分級重試協議**：寫入 A 類（執行層臨時）重試最多 3 次、B 類（規劃層根源）直接升級全域迭代（上限 2 輪）的分級重試規則。
     4.  **AI 代理對話指令協議**：詳細載入 `@stages`, `@[階段]`, `@init`, 快捷編號還原與逗號聯合導入的執行細節。
@@ -417,7 +417,7 @@ name: Harness Engineering CI
 *   **Harness Optimization 指令與技能更新**：
     *   `docs/commands_reference.md` 新增 `@optimize` 指令，觸發 Harness Optimization 地毯式全案關聯檢查。
     *   將語音喚出詞彙（「幫我執行駕馭工程框架優化檢查」、「Harness Optimization」、「執行架構優化」）整合至前言。
-    *   `docs/Harness_Optimization_SKILL.md` 全面更新：檢查範圍從 4 組擴充至 6 組（10 組檔案與目錄），補上 memory.md、.agents/traceability_matrix.md、.agents/system_specification.md、commands_reference.md、階段 SKILL.md 檢查。
+    *   `docs/Harness_Optimization_SKILL.md` 全面更新：檢查範圍從 4 組擴充至 6 組（10 組檔案與目錄），補上 memory.md、根目錄 traceability_matrix.md / system_specification.md、根目錄 traceability_matrix.md / system_specification.md、commands_reference.md、階段 SKILL.md 檢查。
 
 *   **`.agents/skills/` 結構同步**：
     *   刪除過時的 `skill_categorizer/`。
@@ -438,7 +438,7 @@ name: Harness Engineering CI
 *   **檢查範圍**：6 大檢查組、12 組核心檔案與目錄。
 *   **發現與修復**：
     *   .agents/AGENTS.md Init Guard 仍引用根目錄 	raceability_matrix.md / system_specification.md → 全數更新為 .agents/ 路徑（共 7 處）。
-    *   .agents/system_specification.md 與 .agents/traceability_matrix.md 清除 demo 假資料，改為乾淨佔位範本。
+    *   根目錄 traceability_matrix.md / system_specification.md 與 根目錄 traceability_matrix.md / system_specification.md 清除 demo 假資料，改為乾淨佔位範本。
     *   demo_project 重建完成，Init Guard 驗證通過。
 *   **狀態**：全案 6 組檢查 PASS。
 ### 5. 階段間交付物傳遞鏈補強 (2026-06-27)
@@ -446,3 +446,60 @@ name: Harness Engineering CI
 *   更新 docs/TEMPLATE_SKILL.md：各階段 inputs/ 註釋明確標示承接上游 outputs。
 *   新增「階段間交付物傳遞鏈」規範（TEMPLATE_SKILL.md 註釋第 3 條）。
 *   更新 docs/Harness_Optimization_SKILL.md：檢查範圍從 6 組擴充至 7 組（新增第 7 組：階段間交付物傳遞鏈防線）。
+---
+
+## 專案概覽
+
+| 項目 | 內容 |
+|:---|:---|
+| **專案名稱** | AI 寫作自動化軟體作業流程 — SSDLC 開發框架 |
+| **框架版本** | v0.3.0 |
+| **建立日期** | 2026-06-27 |
+| **開發階段** | 框架建造階段（7 階段 Skill 架構） |
+| **技術棧** | Markdown / YAML / Mermaid / Python (Flask + SQLite) / PowerShell |
+| **核心倉庫** | `D:\00AI協作\SSDLC_Skill\` |
+
+---
+
+## 關鍵決策紀錄
+
+| 日期 | 決策 | 影響範圍 |
+|:---|:---|:---|
+| 2026-06-27 | traceability_matrix.md 與 system_specification.md 置於根目錄（非 .agents/） | 全專案 |
+| 2026-06-27 | Bug 追蹤統一使用 bug_tracker.md 單一表格 | 04_testing |
+| 2026-06-27 | 需求追蹤統一使用 requirement_tracker.md 單一表格 | 01_planning |
+| 2026-06-27 | UML 圖表使用 Mermaid .md 格式（可直接瀏覽器渲染） | 02_system_design |
+| 2026-06-27 | 02_system_design 標準產出為 7 項（含 3 UML + UI 雛型） | 02_system_design |
+| 2026-06-27 | @optimize 限框架建造者使用，含警告提示 | 全專案 |
+| 2026-06-27 | @baseline 指令：建立可獨立執行快照，保留最近 3 份 | 全專案 |
+| 2026-06-27 | @help 指令：即時顯示指令集參照表 | 全專案 |
+| 2026-06-27 | AGENTS.md 三層規章鏈：根 AGENTS.md → .agents/AGENTS.md → docs/CORE_RULES.md | 全專案 |
+| 2026-06-27 | 雙軌測試：pytest (API) + Playwright (UI) | 04_testing |
+| 2026-06-27 | 日誌統一輸出至全域 logs/ | 全專案 |
+| 2026-06-27 | memory.md 必須包含五大區塊 | 全專案 |
+
+---
+
+## 當前狀態
+
+| 階段 | 狀態 | 說明 |
+|:---|:---|:---|
+| 00_cross_phase | ✅ 完成 | 跨階段全域共用 Skill |
+| 01_planning_and_analysis | ✅ 完成 | reg/ requirement_tracker.md 表格 |
+| 02_system_design | ✅ 完成 | 7 項標準產出 + Mermaid UML |
+| 03_implementation_and_coding | ✅ 完成 | Python Flask + SQLite + pytest |
+| 04_testing | ✅ 完成 | pytest (14 tests) + Playwright (7 tests) |
+| 05_deployment | ✅ 完成 | baseline/ 快照機制 |
+| 06_maintenance | ✅ 完成 | logs/ 全域日誌 |
+| demo_project | ✅ 完成 | 員工管理 CRUD 網頁應用 |
+| 框架優化 | 🔄 進行中 | @optimize 全面架構對齊檢查 |
+
+---
+
+## Git 版本歷程
+
+| Tag | 日期 | 說明 |
+|:---|:---|:---|
+| v0.1.0 | 2026-06-27 | 初始框架：6 階段 + 00_cross_phase 結構 |
+| v0.2.0 | 2026-06-27 | 加入指令系統（@init、@stages、@[階段]/[快捷]） |
+| v0.3.0 | 2026-06-27 | 加入 @baseline、@optimize、@help，完整 demo_project 驗證 |
