@@ -685,3 +685,22 @@ name: Harness Engineering CI
 
 **@optimize 同步強化**：
 - `docs/Harness_Optimization_SKILL.md`：新增檢查 3.6「可執行規格 YAML SSOT 防線」（7 項檢查點）
+
+## @optimize v4 — 2026-06-27（Baseline 語言無關化後全案複檢）
+
+**觸發**：框架建造者發現 Baseline 驗證規則硬編碼 Python Flask，要求改為語言無關。
+
+**修復內容**：
+- `CORE_RULES.md` 三-4-3：從 4 項擴為 6 項通用驗證 + 5 語言適配對照表（Python/Node.js/Java/Go/C#）
+- `commands_reference.md` 二-5：新增語言適配說明 + 通用驗證 5 項，Python Flask 降為特定範例
+- `.agents/AGENTS.md`  Section 7：`@baseline` 檔案清單改為依技術棧自動判定
+
+**@optimize 檢查結果**：
+| # | 檢查組 | 結果 |
+|:---|:---|:---|
+| 1 | CORE_RULES.md 5 節次 | ✅ |
+| 2 | 指令集雙檔同步 | ✅（6 指令一致；regex false alarm 已排除） |
+| 3 | YAML SSOT | ✅（project + 6 phases + 10 traceability + 6 changelog） |
+| 4 | 7 phase PDCA | ✅ |
+| 5 | 關鍵檔案完整 | ✅（6/6） |
+| 6 | Baseline 語言無關驗證 | ✅（CORE_RULES + commands_reference 皆有語言適配說明） |
