@@ -14,3 +14,9 @@ description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的
 | `01` | langgraph | 多 Agent 協作工作流狀態管理引擎 |
 | `02` | git | 版本控制與 Baseline 封存追溯 |
 | `03` | diffsync | 跨階段程式碼差異對比與同步 |
+| `04` | autoresearch | 自主迭代研究：修改→驗證→保留/丟棄 |
+| `05` | brainstorming | 創意發想引導與需求探索 |
+| `06` | firecrawl | 網頁擷取、截圖、搜尋與爬蟲 |
+| `07` | test-driven-development | 測試驅動開發 (TDD) 流程 |
+| `08` | verification-before-completion | 完成前強制驗證 |
+| `09` | writing-plans | 多步驟任務規劃與規格撰寫 |

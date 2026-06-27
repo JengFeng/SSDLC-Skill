@@ -183,6 +183,8 @@
 * **[[07] sonarqube](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/sonarqube)**：專案原始碼安全漏洞、壞味道與代碼品質靜態掃描。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/sonarqube) / [原始 GitHub 倉庫](https://github.com/SonarSource/sonarqube)
 * **[[08] coverage_py](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/coverage_py)**：Python 測試覆蓋率分析與未涵蓋代碼報告器。
+* **[[09] systematic-debugging](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/systematic-debugging)**：系統化除錯方法。在遇到任何 bug、測試失敗或非預期行為時，於提出修復方案之前先進行根因分析。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/systematic-debugging) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/coverage_py) / [原始 GitHub 倉庫](https://github.com/nedbat/coveragepy)
 
 
@@ -231,4 +233,16 @@
 * **[[02] git](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/git)**：全域版本控制、分支管理與 Baseline 基線封存追溯工具。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/git) / [原始 GitHub 倉庫](https://github.com/git/git)
 * **[[03] diffsync](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/diffsync)**：跨階段專案原始碼版本差異對比與同步工具。
+* **[[04] autoresearch](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/autoresearch)**：自主目標導向迭代循環。自動修改、驗證、保留/丟棄，針對任意指標進行最佳化，靈感來自 Karpathy。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/autoresearch) / [原始 GitHub 倉庫](https://github.com/uditgoenka/autoresearch)
+* **[[05] brainstorming](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/brainstorming)**：創意發想引導。在任何創意工作前探索使用者意圖、需求與設計方向。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/brainstorming) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
+* **[[06] firecrawl](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/firecrawl)**：網頁內容擷取、截圖、結構化資料提取、網頁搜尋與文件網站爬蟲。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/firecrawl) / [原始 GitHub 倉庫](https://github.com/BexTuychiev/firecrawl-claude-code-skill)
+* **[[07] test-driven-development](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/test-driven-development)**：測試驅動開發流程。在撰寫實作程式碼之前先寫測試。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/test-driven-development) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
+* **[[08] verification-before-completion](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/verification-before-completion)**：完成前驗證。在聲稱工作完成、修復或通過之前執行驗證命令並確認輸出。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/verification-before-completion) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
+* **[[09] writing-plans](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/writing-plans)**：撰寫實作計畫。在接觸程式碼之前，先制定多步驟任務的規格與需求。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/writing-plans) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/diffsync) / [原始 GitHub 倉庫](https://github.com/google/diff-sync-match-patch)

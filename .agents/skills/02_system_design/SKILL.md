@@ -10,4 +10,5 @@
 | use_case_diagram.md | 12-plantuml / 10-mermaid | Mermaid graph |
 | activity_diagram.md | 12-plantuml / 10-mermaid | Mermaid flowchart |
 | sequence_diagram.md | 12-plantuml / 10-mermaid | Mermaid sequenceDiagram |
+| ui_design_guide.md | 14-frontend-design | 視覺設計指引（排版、色彩、動線） |
 > 註：.puml 原始檔可保留供 PlantUML 工具使用，.md 為瀏覽器可直接渲染格式。

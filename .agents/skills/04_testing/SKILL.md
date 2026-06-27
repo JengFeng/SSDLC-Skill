@@ -5,6 +5,7 @@
 |:---|:---|:---|
 | 04 | playwright | 瀏覽器 UI 互動測試 |
 | 05 | pytest | API 功能測試 |
+| 06 | systematic-debugging | 系統化除錯：根因分析→修復→驗證 |
 
 ## 標準產出
 - `test_employee_crud.py` — pytest API 測試

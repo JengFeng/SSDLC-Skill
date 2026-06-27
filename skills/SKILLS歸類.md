@@ -28,7 +28,7 @@
 
 ### 4. 04_testing
 * **適用技能**：單元測試、前後端驗證、UI 自動化測試、API 與 Web 服務之 Schema 驗證、單機應用程式 UI 測試、安全漏洞靜態掃描與覆蓋率分析。
-* **技能清單**：`playwright`、`selenium`、`cypress`、`robot_framework`、`pytest`、`jest`、`sonarqube`、`coverage_py`、`webapp-testing`。
+* **技能清單**：`playwright`、`selenium`、`cypress`、`robot_framework`、`pytest`、`jest`、`sonarqube`、`coverage_py`、`webapp-testing`、`systematic-debugging`。
 
 ### 5. 05_deployment
 * **適用技能**：成品建置與打包、組態管理配置、遠端批次部署與反向代理組態生成。
@@ -39,8 +39,8 @@
 * **技能清單**：`elk_stack`、`prometheus_grafana`、`opentelemetry`、`logparser`、`isms-audit-prep`、`eip-line-radar`。
 
 ### 7. 00_cross_phase
-* **適用技能**：跨階段全域共用技能，用於複雜多 Agent 協作工作流、版本控制、以及程式碼差異比對。
-* **技能清單**：`langgraph`、`git`、`diffsync`。
+* **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制以及程式碼差異比對。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`。
 
 ## 執行步驟 SOP
 
