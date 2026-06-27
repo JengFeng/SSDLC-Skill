@@ -80,3 +80,40 @@ phase_04_testing.evaluator.scores:
 2. 填入 SRS 範本對應章節
 3. 更新版本號與變更紀錄
 4. 寫入 Gherkin 狀態（`[已通過]` / `[未通過]`）
+
+
+## YAML 母版還原能力
+
+YAML 母版的定位是 **「規格層的 SSOT」**，不是「全檔案備份」：
+
+### ✅ 可從 YAML 完全還原（結構化規格文件）
+| 文件 | 還原來源 |
+|:---|:---|
+| `system_specification.md` | `project` + `phase_01.requirements` + `phase_02.database/api` + `phase_04.test_results` |
+| `traceability_matrix.md` | `traceability.matrix` |
+| `formal_requirements.md` | `phase_01.requirements`（需求 + 驗收條件） |
+| `api_spec.md` | `phase_02.api.endpoints` |
+| `test_results.md` | `phase_04.test_results`（結構化通過/失敗統計） |
+| `requirement_tracker.md` | `phase_01.requirements`（REQ ID、優先級、來源） |
+| `bug_tracker.md` | `phase_04.bugs` |
+| Gherkin `.feature` | `phase_01.requirements[].acceptance_criteria` → Given/When/Then |
+
+### ❌ 不可從 YAML 還原（實作產物，YAML 僅記錄路徑參照）
+| 檔案類型 | YAML 中的資訊 | 需搭配原始檔 |
+|:---|:---|:---|
+| 原始碼（`.py`） | 模組名稱 + 相依清單 | `app.py` 本體 |
+| 測試程式碼（`test_*.py`） | 檔案路徑參照 | pytest / Playwright 原始碼 |
+| SQL DDL（`db_schema.sql`） | 欄位結構摘要（名稱 + 型別） | 完整 `CREATE TABLE` 語法 |
+| UML 圖（`er_diagram.md` 等） | 檔案路徑參照 | Mermaid 圖形程式碼 |
+| UI 雛型（`ui_prototype.html`） | 檔案路徑參照 | HTML/CSS 原始碼 |
+| 部署腳本（`run.bat`） | 檔案路徑 + SHA-256 | 腳本本體 |
+| 依賴清單（`requirements.txt`） | 檔案路徑 + SHA-256 | 套件清單本體 |
+
+### 設計哲學
+YAML 不該去存 SQL 語法或 Python 程式碼 — 那些是實作產物，由版本控制系統（Git）管理。YAML 的角色是：
+- **規格狀態總覽**：一眼看完全案 6 階段完成度、追溯鏈、評分
+- **跨階段資料橋樑**：下游 Planner 不需讀取上游 Markdown，直接讀 YAML 結構化欄位
+- **自動化生成來源**：從 YAML 自動生成人類閱讀的 SRS、RTM、Gherkin
+- **驗證基準**：Evaluator 以 YAML 中的 acceptance_criteria 與 test_results 進行比對
+
+> 💡 **正確理解**：把 YAML 母版從 git clone 取出 → 可自動生成所有規格文件，但程式碼原始檔仍須從 git 倉庫取得。
