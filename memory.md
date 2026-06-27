@@ -1,4 +1,4 @@
-# AI 寫作自動化軟體作業流程 — 腦力激盪記錄
+﻿# AI 寫作自動化軟體作業流程 — 腦力激盪記錄
 
 本文件用於記錄關於「AI 寫作自動化軟體作業流程」的討論與規劃。本流程旨在遵循軟體工程的規範與生命週期，建立一套具備可重用性、可測試性與高可靠性的自動化寫作系統。
 
@@ -503,3 +503,32 @@ name: Harness Engineering CI
 | v0.1.0 | 2026-06-27 | 初始框架：6 階段 + 00_cross_phase 結構 |
 | v0.2.0 | 2026-06-27 | 加入指令系統（@init、@stages、@[階段]/[快捷]） |
 | v0.3.0 | 2026-06-27 | 加入 @baseline、@optimize、@help，完整 demo_project 驗證 |
+---
+
+## @optimize 執行記錄 — 2026-06-27
+
+**觸發**：框架建造者口語指令「執行對其架構」
+
+**檢查結果**：
+- ✅ 檢查 1: CORE_RULES.md 六階段標記正確、平台中立
+- ✅ 檢查 2: AGENTS 規章鏈完整、指令一致性
+- ✅ 檢查 3: TEMPLATE_SKILL.md vs .agents/skills/ 目錄對齊
+- ✅ 檢查 4: memory.md / traceability / SRS 格式正確
+- ✅ 檢查 5: skills/README.md 與根 README 數字同步 (88: 17+28+41+2)
+- ✅ 檢查 6: .agents/skills/ 7 階段 SKILL.md 齊全
+- ✅ 檢查 7: 交付物傳遞鏈結構完整（框架層級 .gitkeep）
+- ✅ 檢查 8: logs/ snapshots/ baseline/ 全域目錄存在
+- ✅ 檢查 9: Baseline v1/v2/v3 可執行性驗證通過（HTTP 200、import OK、模板完整）
+
+**修復行動**：
+- 🔧 TEMPLATE_SKILL.md 補上 CORE_RULES 最高指導框架宣告
+- 🔧 .agents/AGENTS.md 補上 @optimize 指令定義（原僅在 commands_reference.md）
+
+**格式檢查**：繁體中文一致，無簡體字/大陸用語
+
+**Baseline 驗證摘要**：
+| 版本 | Python import | HTTP | 模板 | run.bat |
+|------|:---:|:---:|:---:|:---:|
+| baseline-v1 | ✅ | ✅ | base/form/index | chcp65001+taskkill |
+| baseline-v2 | ✅ | ✅ | base/form/index | chcp65001+taskkill |
+| baseline-v3 | ✅ | ✅ | base/form/index | chcp65001+taskkill |
