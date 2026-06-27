@@ -58,10 +58,16 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     1. 確認 `skills/README.md` 內所有 Skill 名稱皆為指向本機 `skills/` 實體路徑的可點擊超連結。
     2. 確認階段名稱為 SSDLC 六階段正名，且包含 `00_cross_phase` 跨階段全域共用分類。
     3. 確認 `skills/SKILLS歸類.md` 中的 7 個分類（6 階段 + 1 全域）與 `skills/README.md` 的實際目錄結構一致，映射清單無缺漏。
-    4. **根 README Skill 數量同步檢查**：比對根目錄 `README.md` 底部「授權與來源」段落中的各來源 Skill 數量（Anthropic 官方、Anthropic 官方插件、Benson 自建、GitHub 社群）與 `skills/README.md` 實際歸類數量是否一致。
-       * 統計方法：從 `skills/README.md` 中每個 Skill 條目的「原始 GitHub 倉庫」連結，依網域分類計數（`anthropics/skills`、`claude-plugins-official`、`MMBenson`、其他 GitHub 社群）。
-       * 若根 `README.md` 數量不一致，自動更新為正確數字並確保總和等於實際 Skill 總數。
-       * 同時檢查根 `README.md` 標頭附近的 Skill 總數宣告（如「共 XX 個」）是否與實際目錄數量一致。
+    4. **根 README Skill 數量同步檢查**（強制執行，不可跳過）：
+       * **自動化先行**：優先執行 `scripts/check-readme-sync.ps1`，機械比對以下所有數字點。若腳本無法執行，則改以人工逐項比對。
+       * **比對基準**：以 `skills/README.md` 標頭行宣告的來源細項數字為準（格式：`Anthropic 官方（N）、Benson 自建（N）、GitHub 社群（N）、Anthropic 官方插件（N）…共 N 個`）。
+       * **檢查點清單**（根 `README.md` 中以下六處數字必須完全一致）：
+         1. **Banner 行**：`六大階段 SSDLC × N 個 AI 協作 Skill` 中的 N。
+         2. **專案概述段**：`合計 **N 個** AI 協作 Skill` 中的 N。
+         3. **授權與來源段**：Anthropic 官方、Anthropic 官方插件、Benson 自建、GitHub 社群各自的數字，以及 `合計 N 個 Skill` 總數。
+         4. **倉庫結構段**：`N 個 Skill 實體` 中的 N。
+       * **階段數量檢查**：確認根 `README.md` 全文不存在「七大階段」或「七個階段」字樣（僅可出現「六大核心開發階段」或「六階段」）；`00` 跨階段全域共用層不得被描述為獨立階段。
+       * **自動修正**：若任何數字不一致，立即以 `skills/README.md` 標頭數字為準，更新根 `README.md` 所有不一致處。
 
 ### 6. `.agents/skills/` 結構與內容防線 (`.agents/skills/0*_*/SKILL.md`)
 *   **檢查點**：
