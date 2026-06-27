@@ -569,3 +569,32 @@ name: Harness Engineering CI
 4. Evaluator：百分比評分標準 + **A/B 錯誤分類 + 分級重試機制**
 
 **demo_project/.agents/skills/**：維持輕量「Skill 配置」格式（專案層級 Skill 匯入註冊），不需完整 PDCA。
+
+## @optimize 執行記錄 — 2026-06-27 (第二次：PDCA 標準化後全案複檢)
+
+**觸發**：框架建造者口語指令「幫我重新比對對其架構」
+
+**檢查範圍**：Harness_Optimization_SKILL.md 定義的 9 大檢查組
+
+**各組結果**：
+| # | 檢查組 | 結果 |
+|:---|:---|:---|
+| 1 | CORE_RULES 最高守則 | ✅ 階段標記正確、platform-neutral、規章鏈完整 |
+| 2 | AGENTS 規章鏈（三層） | ✅ AGENTS.md → .agents/AGENTS.md → CORE_RULES.md 全鏈完整 |
+| 3 | TEMPLATE_SKILL 目錄對齊 | ✅ 目錄結構一致（reg/、bug/、baseline/、snapshots/ 位置正確），.puml 殘留僅一行備註 |
+| 3.5 | 02_system_design 產出完整性 | ⬚ 框架層級尚無 demo 產出（demo_project 內齊全） |
+| 4 | memory / traceability / SRS | ✅ 格式正確，範本狀態 |
+| 5 | skills/README ↔ README 數字同步 | ✅ **本次修復**：00_cross_phase (3→11) + 04_testing GitHub (8→9)。現 17+28+41+2=88 |
+| 6 | .agents/skills/ 7 階段齊全 | ✅ 全數 PDCA 格式（上一輪標準化完成） |
+| 7 | 交付物傳遞鏈 | ✅ .gitkeep 結構完整 |
+| 8 | logs/ snapshots/ baseline/ | ✅ 全域目錄存在，snapshots/ 含 3 筆快照 |
+| 9 | Baseline 可執行性驗證 | ✅ v3: run.bat 語法正確、Python import OK、templates 完整 |
+
+**修復行動**：
+- 🔧 `skills/README.md`：00_cross_phase 分類標題「GitHub 推薦開源工具技能 (3)」→「(11)」（實際列出 11 個）
+- 🔧 `skills/README.md`：04_testing GitHub 分類標題「(8)」→「(9)」（實際列出 9 個）
+- 🔧 `docs/Harness_Optimization_SKILL.md`：檢查 3.5 的 `.puml` 副檔名參照 → `.md`（Mermaid 格式為標準）
+
+**各階段描述一致性**：CORE_RULES.md 的六階段核心用途與 .agents/skills/*/SKILL.md 的 description 欄位一致 ✅
+
+**格式檢查**：繁體中文一致，無簡體字/大陸用語
