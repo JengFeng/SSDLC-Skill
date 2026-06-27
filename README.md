@@ -1,32 +1,41 @@
 # SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 77 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 88 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為七個階段（一個跨階段全域共用 + 六個核心階段），每個階段都配置了專屬的 AI Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 88 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性與品質防線。
 
 ---
 
-## 🧩 七大開發階段
+## 🧩 開發階段架構
 
-| 代碼 | 階段名稱 | 核心職責 | Skill 數量 |
-|:---|:---|:---|:---|
-| `00` | 跨階段全域共用 | 適用所有階段的通用工具（Git、LangGraph、DiffSync） | 3 |
-| `01` | 規劃與需求分析 | 需求釐清、文件協作、提案報價、訪談記錄 | 18 |
-| `02` | 系統設計 | DB Schema、ER 圖、API 規格、UI 雛型、UML 圖 | 12 |
-| `03` | 開發與編碼 | AI 輔助程式碼實作、Linter、Formatter、單元測試 | 15 |
-| `04` | 測試驗證 | pytest、Playwright、Cypress、SonarQube、覆蓋率 | 13 |
-| `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 | 8 |
-| `06` | 維護監控 | ELK Stack、Prometheus、OpenTelemetry、Hotfix | 8 |
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **88 個** AI 協作 Skill。
 
-> **合計 77 個 Skill**：Anthropic 官方 17 個 + Benson 自建 29 個 + GitHub 社群 31 個
+### 🌐 跨階段全域共用
+
+| 代碼 | 名稱 | 核心職責 |
+|:---|:---|:---|
+| `00` | 跨階段全域共用 | 適用所有階段的通用工具（Git、LangGraph、DiffSync） |
+
+### 🧩 六大核心開發階段
+
+| 代碼 | 階段名稱 | 核心職責 |
+|:---|:---|:---|
+| `01` | 規劃與需求分析 | 需求釐清、文件協作、提案報價、訪談記錄 |
+| `02` | 系統設計 | DB Schema、ER 圖、API 規格、UI 雛型、UML 圖 |
+| `03` | 開發與編碼 | AI 輔助程式碼實作、Linter、Formatter、單元測試 |
+| `04` | 測試驗證 | pytest、Playwright、Cypress、SonarQube、覆蓋率 |
+| `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
+| `06` | 維護監控 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
+
+> **合計 88 個 Skill**：Anthropic 官方 17 個 + Benson 自建 29 個 + GitHub 社群 41 個 + Anthropic 官方插件 1 個
 
 ---
 
@@ -37,7 +46,7 @@
 | 指令 | 用途 | 範例 |
 |:---|:---|:---|
 | `@help` | 顯示完整指令集參照表 | `@help` |
-| `@stages` | 列出七大階段代碼對照表 | `@stages` |
+| `@stages` | 列出六大階段代碼對照表 | `@stages` |
 | `@00` ~ `@06` | 查看指定階段所有可用 Skill | `@02` |
 | `@[階段]/[快捷]` | 導入單個 Skill 至專案 | `@01/03` |
 | `@[階段]/[快1],[快2]` | 聯合導入多個 Skill | `@04/01,03,07` |
@@ -145,7 +154,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | 路徑 | 用途 |
 |:---|:---|
 | `.agents/` | 框架規章守則與階段 Skill 定義 |
-| `skills/` | 77 個 Skill 實體（含 README.md 與歸類索引） |
+| `skills/` | 88 個 Skill 實體（含 README.md 與歸類索引） |
 | `docs/` | 核心文件（CORE_RULES、TEMPLATE_SKILL、commands_reference、Harness_Optimization_SKILL） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD） |
 | `external-resources/` | 外部 Skill 原始來源備份 |
