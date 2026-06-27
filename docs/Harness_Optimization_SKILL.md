@@ -88,6 +88,12 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     2. 確認 `snapshots/` 目錄存在且包含 snapshot_*.md + diff_*.patch 配對檔案（保留最近 5 筆）。驗證最新快照的 SHA-256 檔案清單與當前工作目錄一致（無檔案遺漏或雜湊不符）。
     3. 確認 `baseline/` 目錄存在且已建立 Git tag（格式 `baseline-vX.Y.Z`）。
     4. 各階段應用程式日誌應統一輸出至全域 `logs/`，不應殘留於各階段 `outputs/` 中。
+    5. **@restore 指令交叉引用完整性**：確認以下檔案中皆存在 `@restore` 指令定義與說明：
+       * `docs/commands_reference.md`：核心指令表 + 防呆規則
+       * `.agents/AGENTS.md`：完整執行規範（Section 6）
+       * `README.md`：指令系統表格
+       * `docs/CORE_RULES.md`：快照回溯機制提及 `@restore`
+    6. 確認 `docs/commands_reference.md` 中的 `@restore` 防呆規則與 `.agents/AGENTS.md` 的執行規範一致（警告提示、git stash、SHA-256 驗證流程）。
 
 ### 9. Baseline 可執行性驗證防線 (`baseline/*/run.bat`、`baseline/*/app.py`)
 *   **檢查點**：

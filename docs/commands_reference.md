@@ -51,7 +51,20 @@
 *   **檢核機制**：AI 代理在執行 Skill 導入前，必須檢查當前工作目錄是否為已初始化之專案（根目錄須具備 `traceability_matrix.md`、`system_specification.md` 及 SSDLC 階段目錄結構）。
 *   **攔截行為**：若當前目錄非已初始化專案，AI 代理必須強制中止導入、嚴禁以任何形式繞過或繼續，並提示：「當前目錄尚未初始化為 SSDLC 專案，請先執行 `@init [路徑]` 建立專案工作目錄後再導入 Skill。」
 
-### 3. Baseline 建立後自動驗證防呆 (Baseline Auto-Verify)
+
+### 4. 快照回溯防呆 (Restore Guard)
+*   **觸發條件**：使用者執行 `@restore` 指令。
+*   **檢核機制**：
+    1. 掃描 `snapshots/` 目錄，確認目標快照配對（snapshot_*.md + diff_*.patch）存在。
+    2. 若無任何快照，提示：「當前尚無可用快照，請先執行 @baseline 建立基線後再回溯。」
+    3. 若指定時間戳的快照不存在，列出最近 5 筆可用快照供選擇。
+*   **安全網**：
+    1. 回溯前強制顯示警告提示，要求使用者明確確認。
+    2. 自動 `git stash` 保留當前未提交變更（stash message：`pre-restore-[timestamp]`）。
+    3. `git apply` 失敗時不強制覆蓋，輸出衝突檔案清單供手動處理。
+    4. 載入後以 SHA-256 驗證還原完整性，不符時明確列出差異檔案。
+
+### 5. Baseline 建立後自動驗證防呆 (Baseline Auto-Verify)
 *   **觸發時機**：每次 `@baseline` 完成快照建立後自動執行，無需使用者額外呼叫。
 *   **驗證項目**：
     1. `run.bat` 語法檢查：確認編碼為 UTF-8 BOM、`chcp 65001` 存在、路徑引用正確。
