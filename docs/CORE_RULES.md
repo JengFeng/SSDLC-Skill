@@ -225,12 +225,28 @@ AI 代理在執行過程中，每當做出以下自主判斷時，必須即時�
 * 若任一階段缺少階段 Baseline，`@baseline` 指令須提示：「以下階段尚未建立階段 Baseline：{階段清單}。請先完成該階段 PDCA 後再建立全域 Baseline。」
 * 全域 Baseline 的 MANIFEST.md 必須彙整所有 6 個階段 Baseline 的版本資訊。
 
-#### 4-3. Baseline 驗證規則
-每次階段 Baseline 建立後，必須自動執行以下驗證並記錄結果於 MANIFEST.md：
-1. 產出檔案完整性：確認 `outputs/` 目錄中所有預期檔案皆存在。
-2. 檔案雜湊一致性：計算並記錄所有產出檔案的 SHA-256 雜湊值。
-3. 可執行性檢查（若階段產出為程式碼）：執行編譯或 import 檢查。
-4. 驗證失敗處理：任一檢查失敗即標記 Baseline 為「驗證未通過」，不釋放階段切換權限。
+#### 4-3. Baseline 驗證規則（語言無關，自動適配）
+每次階段 Baseline 建立後，必須自動執行以下驗證並記錄結果於 MANIFEST.md。AI 代理須自動偵測專案技術棧，選用對應語言的等效檢查：
+
+**通用驗證項目**（所有專案皆執行）：
+1. **啟動腳本語法檢查**：確認啟動腳本存在、編碼正確、路徑引用有效。Windows 檢查 `run.bat` 的 `chcp 65001`；Linux/macOS 檢查 `run.sh` 的 shebang。
+2. **依賴清單完整性**：確認依賴宣告檔存在且格式正確（`requirements.txt` / `package.json` / `pom.xml` / `go.mod` 等，依技術棧而定）。
+3. **程式碼編譯或語法檢查**：依技術棧執行對應檢查（Python: `import`；Java: `javac`；Node.js: `node --check`；Go: `go build`；C#: `dotnet build`）。
+4. **服務啟動與 HTTP 回應檢查**：背景啟動應用程式，對其預設埠號發出 HTTP GET，確認回應 200。
+5. **必要資源檔案完整性**：確認專案所需的模板、靜態資源、設定檔等存在（檔案清單依專案類型而定）。
+6. **檔案雜湊一致性**：計算並記錄所有產出檔案的 SHA-256 雜湊值，與前次 Baseline 比對。
+
+**語言適配對照**（AI 代理自動判定）：
+
+| 技術棧 | 依賴檔 | 編譯/語法檢查 | 預設埠號 | 資源目錄 |
+|:---|:---|:---|:---|:---|
+| Python Flask | `requirements.txt` | `python -c "import app"` | 5000 | `templates/` |
+| Node.js Express | `package.json` | `node --check server.js` | 3000 | `views/` 或 `public/` |
+| Java Spring Boot | `pom.xml` | `mvn compile` | 8080 | `src/main/resources/` |
+| Go | `go.mod` | `go build ./...` | 8080 | `static/` |
+| C# .NET | `.csproj` | `dotnet build` | 5000 | `wwwroot/` |
+
+**失敗處理**：任一檢查失敗即標記 Baseline 為「驗證未通過」，不釋放階段切換權限，並輸出失敗報告（含失敗項目、根因分析、建議修復方案）。
 
 ### 5. 階段切換權限管控機制（責任 5）
 
@@ -429,6 +445,7 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 
 4. **互斥部署環境靜態檢核**
    * 若系統中存在彼此衝突的部署操作（例如容器化部署與實體進程部署），此類架構與環境之衝突應在 Plan 階段進行靜態檢核，並直接判定為 B 類錯誤予以攔截，避免環境配置產生衝突。
+
 
 
 

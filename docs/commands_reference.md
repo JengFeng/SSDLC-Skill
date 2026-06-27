@@ -69,14 +69,16 @@
 
 ### 5. Baseline 建立後自動驗證防呆 (Baseline Auto-Verify)
 *   **觸發時機**：每次 `@baseline` 完成快照建立後自動執行，無需使用者額外呼叫。
-*   **驗證項目**：
-    1. `run.bat` 語法檢查：確認編碼為 UTF-8 BOM、`chcp 65001` 存在、路徑引用正確。
-    2. Python 匯入檢查：執行 `python -c "import <app_module>"` 確認無 import 錯誤。
-    3. Flask 啟動測試：背景啟動 app，對 `http://127.0.0.1:5000` 發出 HTTP GET，確認回應 200。
-    4. 模板完整性：確認 `templates/` 目錄含 `index.html`、`form.html`、`base.html`（如適用）。
-    5. 靜態資源檢查：確認 `requirements.txt` 中包含 `flask` 等必要依賴。
-*   **失敗處理**：任一檢查失敗即中止並在對話中輸出「Baseline 驗證失敗報告」（含失敗項目、根因分析、建議修復方案），由使用者決定是否立即修復。
-*   **成功處理**：所有檢查通過後輸出「✅ Baseline vX 驗證通過」摘要，含版本號、檔案數、HTTP 狀態碼。
+*   **語言適配說明**：以下為 Python Flask 專案的預設驗證規則。若專案使用其他語言或框架（Java / Node.js / Go / C# 等），AI 代理應自動偵測專案技術棧，並將驗證項目替換為對應語言的等效檢查（詳見 CORE_RULES.md 三-4-3 語言適配對照表）。
+*   **通用驗證項目**（不限語言，所有專案皆執行）：
+    1. **啟動腳本語法檢查**：確認啟動腳本存在、編碼正確、路徑引用有效。
+    2. **依賴清單完整性**：確認依賴宣告檔存在且格式正確（`requirements.txt` / `package.json` / `pom.xml` / `go.mod` 等）。
+    3. **程式碼編譯或語法檢查**：依技術棧執行（Python: `import`；Java: `javac`；Node.js: `node --check`；Go: `go build`）。
+    4. **服務啟動與 HTTP 回應檢查**：背景啟動應用，對其預設埠號發出 HTTP GET，確認回應 200。
+    5. **必要資源檔案完整性**：確認專案所需的模板、靜態資源、設定檔等存在。
+*   **Python Flask 特定檢查**（`demo_project` 預設）：`run.bat` 語法 → `python -c "import app"` → `http://127.0.0.1:5000` → `templates/*.html` → `requirements.txt` 含 `flask`
+*   **失敗處理**：任一檢查失敗即中止並輸出「Baseline 驗證失敗報告」。
+*   **成功處理**：所有檢查通過後輸出「✅ Baseline vX 驗證通過」摘要。
 
     *   CORE_RULES.md 新增 1-6「指令集雙檔同步強制規則」，確保 `.agents/AGENTS.md` 與 `commands_reference.md` 指令清單一致。
 *   **2026-06-27 (@baseline 指令新增 + @optimize 嚴謹限制)**：
