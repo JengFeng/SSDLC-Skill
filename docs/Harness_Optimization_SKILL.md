@@ -148,10 +148,27 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 2. 驗證期間若發現端口 5000 被佔用，先 `taskkill` 清理殘留程序後再重試。
 3. 若任一 baseline 版本驗證失敗，先嘗試自動修復（修正編碼、路徑、依賴缺失），修復後重新驗證。
 
+
+### 10. CORE_RULES 規範 vs 實際落實落差掃描 (Spec-Implementation Gap Analysis)
+*   **檢查點**：此為 @optimize 的收斂性終檢，逐條比對 CORE_RULES.md 中的每一項可執行規範是否已在專案中實際落實。
+    1. 掃描 CORE_RULES.md 全文，萃取所有「必須」、「自動」、「強制」等可執行規範條目。
+    2. 逐條驗證對應的檔案、目錄、腳本、設定欄位是否存在。
+    3. 區分「框架層級範本」（正確應為空白/佔位）與「專案實例」（應有實際內容）。
+    4. 產出落差清單：已落實 ✅ / 未落實 ❌ / 無需落實（框架範本）⬚。
+    5. 落差清單中的 ❌ 項目，依 CORE_RULES 錯誤分類判定為 B 類錯誤，需立即修復或標記為已知限制。
+*   **檢查範例**：
+    | 規範條目 | 狀態 | 說明 |
+    |:---|:---|:---|
+    | traceability_matrix.md 有實際追溯資料 | ⬚ | 框架範本（demo_project 已有） |
+    | YAML → SRS 自動生成器 | ✅ | scripts/generate_srs.py |
+    | logs/ 含對話紀錄 | ✅ | demo_project/logs/conversation_*.md |
+    | Baseline 驗證語言無關適配 | ✅ | CORE_RULES 三-4-4 語言對照表 |
+
 ### 步驟四：產出報告與同步 Baseline (Report & Sync)
 1. 於對話中輸出框架優化成果報告（以「Status + Root Cause + Suggested Fix」格式說明修補處）。
 2. 輸出 Baseline 可執行性驗證摘要（各版本 HTTP 狀態碼、模板數量、檢查通過/失敗清單）。
 3. 自動建立 Git 暫存基線（Baseline），並在 `memory.md` 載入本次優化之異動紀錄。
+
 
 
 
