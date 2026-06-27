@@ -21,8 +21,7 @@
 Thumbs.db
 desktop.ini
 *.swp
-.vscode/*
-!.vscode/tasks.json
+.vscode/
 *.zip
 .idea/
 
