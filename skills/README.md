@@ -254,7 +254,10 @@
 * **[[09] writing-plans](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/writing-plans)**
 * **[[10] ralph-loop](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/ralph-loop)**：自主 AI 開發循環。自動化修改→測試→驗證→保留/丟棄的迭代流程，具備智慧退出偵測。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/ralph-loop) / [原始 GitHub 倉庫](https://github.com/frankbria/ralph-claude-code)
-* **[[11] using-superpowers](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/using-superpowers)**：Skill 尋找與使用引導。教導 AI 代理如何在對話中主動發現、呼叫與使用可用技能。
+* * **[[12] llm-council](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/llm-council)**：LLM 委員會協作。多個大型語言模型協同討論，共同回答最困難的問題。（Karpathy 出品，21,569★）
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/llm-council) / [原始 GitHub 倉庫](https://github.com/karpathy/llm-council)
+
+**[[11] using-superpowers](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/using-superpowers)**：Skill 尋找與使用引導。教導 AI 代理如何在對話中主動發現、呼叫與使用可用技能。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/using-superpowers) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)：撰寫實作計畫。在接觸程式碼之前，先制定多步驟任務的規格與需求。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/writing-plans) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/diffsync) / [原始 GitHub 倉庫](https://github.com/google/diff-sync-match-patch)

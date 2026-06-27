@@ -40,7 +40,7 @@
 
 ### 7. 00_cross_phase
 * **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制以及程式碼差異比對。
-* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`。
 
 ## 執行步驟 SOP
 
