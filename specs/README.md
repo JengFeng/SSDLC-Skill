@@ -82,6 +82,41 @@ phase_04_testing.evaluator.scores:
 4. 寫入 Gherkin 狀態（`[已通過]` / `[未通過]`）
 
 
+
+## 傳統 SA 多格式 vs YAML SSOT 單一母版
+
+### 傳統作法：各階段各自產出不同格式
+```
+01 規劃：Word 需求規格書 ──── 人類寫、人類讀
+02 設計：Visio ER 圖 + Excel API 清單 + Word 架構書
+03 開發：只有程式碼，沒有結構化追溯
+04 測試：Excel 測試報告，手動對照需求
+05 部署：Confluence 上的一頁 checklist
+06 維護：又一份 Word 操作手冊
+```
+當你問「REQ_005 的測試過了沒？」→ 人肉翻 4 份文件才能回答。
+
+### YAML SSOT：單一檔案貫穿六階段
+```
+executable_spec.yaml
+    ├─ phase_01.requirements[4]  → REQ_005 的需求定義
+    ├─ phase_02.database         → 對應的資料表設計
+    ├─ phase_03.modules          → 哪個模組實作
+    ├─ phase_04.test_results     → 測試結果（自動連動）
+    └─ traceability.matrix[4]    → 一條線全串起來
+```
+當你問「REQ_005 的測試過了沒？」→ AI 代理查一個 YAML 欄位，毫秒級回答。
+
+### 五個核心優勢
+
+| 優勢 | 傳統多格式 | YAML SSOT |
+|:---|:---|:---|
+| **跨階段查詢** | 人肉翻 Word→Excel→Confluence，數分鐘 | AI 代理直接查一個欄位，毫秒級 |
+| **格式一致性** | 每個階段產出格式不同，無法自動比對 | 全階段統一 YAML schema，自動驗證 |
+| **追溯斷裂偵測** | 靠人眼檢查，容易漏 | `traceability.matrix[].status` 自動標記「不連貫警告」 |
+| **文件生成** | 每份文件獨立手動撰寫，容易過時 | 從 YAML 自動生成 SRS/RTM/Gherkin，永不脫節 |
+| **AI 代理效率** | 須解析 Markdown/Word 全文，Token 消耗高 | 只讀取所需欄位，Token 節省 70% 以上 |
+| **版本比對** | 兩份 Word 逐段 diff，難以自動化 | 兩個 YAML 版本欄位級 diff，一眼看出哪個階段變了什麼 |
 ## YAML 母版還原能力
 
 YAML 母版的定位是 **「規格層的 SSOT」**，不是「全檔案備份」：
@@ -117,3 +152,4 @@ YAML 不該去存 SQL 語法或 Python 程式碼 — 那些是實作產物，由
 - **驗證基準**：Evaluator 以 YAML 中的 acceptance_criteria 與 test_results 進行比對
 
 > 💡 **正確理解**：把 YAML 母版從 git clone 取出 → 可自動生成所有規格文件，但程式碼原始檔仍須從 git 倉庫取得。
+
