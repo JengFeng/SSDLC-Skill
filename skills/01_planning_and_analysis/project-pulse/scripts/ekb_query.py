@@ -10,7 +10,7 @@ hit_count=0 → 老實回「EKB 查無」，問使用者要不要 deep_fetch 展
 """
 import json, os, sys, urllib.request, urllib.parse, ssl
 sys.stdout.reconfigure(encoding="utf-8")
-EKB = os.environ.get("EKB_BASE_URL", "https://your-server.example.com/EIP/ekb")
+EKB = os.environ.get("EKB_BASE_URL", "https://your-server.example.com/ekb")
 TOK = os.environ.get("EKB_TOKEN", "")
 ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE
 def hg(u): return urllib.request.urlopen(urllib.request.Request(u, headers={"X-EKB-Token": TOK}), context=ctx, timeout=40).read().decode("utf-8", "replace")

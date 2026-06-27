@@ -135,7 +135,7 @@ project-pulse/
 
 ## 九、環境依賴
 
-- `EKB_TOKEN` / `EKB_BASE_URL`（預設 `https://your-server.example.com/EIP/ekb`）— EKB API
-- EIP 工項：`https://your-server.example.com/EIP/progress/api/`（免認證，form-encoded，自簽憑證 verify=False）
+- `EKB_TOKEN` / `EKB_BASE_URL`（預設 `https://your-server.example.com EKB API
+- EIP 工項：`https://your-server.example.com verify=False）
 - LINE：本機 `{cwd}/.handover/handover.db` 的 `chat_msg_cache` + `handover` 表（借 eip-line-radar 方法），或 `LINE` 專案中央庫 `PROJECTS\LINE\.handover\handover.db`
 - Python 3 標準庫即可（urllib + sqlite3 + ssl），無第三方依賴；截圖用 playwright（channel=msedge）

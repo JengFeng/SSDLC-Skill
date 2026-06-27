@@ -7,10 +7,10 @@
 """
 import json, os, sys, urllib.request, urllib.parse, ssl, sqlite3
 sys.stdout.reconfigure(encoding="utf-8")
-EKB = os.environ.get("EKB_BASE_URL", "https://your-server.example.com/EIP/ekb"); TOK = os.environ.get("EKB_TOKEN", "")
-EIP = "https://your-server.example.com/EIP/progress/api"
-LINE_API = "https://your-server.example.com/EIP/LINE/api"
-LINE_DB = os.environ.get("EIP_LINE_DB", r"C:\Users\benso\Desktop\CLAUDE COWORK\PROJECTS\LINE\.handover\handover.db")
+EKB = os.environ.get("EKB_BASE_URL", "https://your-server.example.com/ekb"); TOK = os.environ.get("EKB_TOKEN", "")
+EIP = "https://your-server.example.com/progress/api"
+LINE_API = "https://your-server.example.com/line/api"
+LINE_DB = os.environ.get("EIP_LINE_DB", r"/path/to/your/handover.db")
 ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE
 def hg(u, h=None): return urllib.request.urlopen(urllib.request.Request(u, headers=h or {}), context=ctx, timeout=40).read().decode("utf-8", "replace")
 def hp(u, f): return urllib.request.urlopen(urllib.request.Request(u, data=urllib.parse.urlencode(f).encode()), context=ctx, timeout=40).read().decode("utf-8", "replace")

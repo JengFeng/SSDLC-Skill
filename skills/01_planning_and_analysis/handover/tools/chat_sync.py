@@ -29,7 +29,7 @@ API contract（必須回傳這個 shape）：
 Config schema（存在 handover_config 表的 chat_api key、JSON value）：
 {
   "enabled": true,
-  "messages_url": "https://your-server.example.com/EIP/LINE/api/line_messages_api.php",
+  "messages_url": "https://your-server.example.com/line/api/messages.php",
   "source_label": "LINE",        // 顯示用：「LINE」「Slack」隨便
   "sync_interval_min": 30,
   "filter_groups": null,         // null=全部、或 ["桃園水情","桃園水務局"]

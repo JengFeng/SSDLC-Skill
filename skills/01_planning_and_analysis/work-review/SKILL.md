@@ -56,7 +56,7 @@ ns = outlook.GetNamespace('MAPI')
 ```python
 import requests, json
 resp = requests.post(
-    'https://your-server.example.com/EIP/progress/api/items_api.php',
+    'https://your-server.example.com
     data={
         'action': 'fetch',
         'status': json.dumps(['未開始', '進行中', '待測試'], ensure_ascii=False)
@@ -66,7 +66,7 @@ data = resp.json()
 items = [it for it in data.get('data', []) if it.get('status') in ('未開始', '進行中', '待測試')]
 ```
 
-工項連結格式：`https://your-server.example.com/EIP/progress/itemdetail.php?id={item_id}`
+工項連結格式：`https://your-server.example.com
 
 ### 3. LINE 群組對話（weekly mode 才啟用）
 
@@ -192,7 +192,7 @@ line_sources:
   - 優先級統計 summary bar
   - **專案文字小總結**（1-2 句描述目前狀況與重點）
   - 每筆工項：左邊框顏色（紅=高、橙=中、灰=低）+ 狀態 + **可點擊連結到 EIP**
-  - 連結格式：`<a href="https://your-server.example.com/EIP/progress/itemdetail.php?id={item_id}" target="_blank" style="color:#2b6cb0;">{item_name}</a>`
+  - 連結格式：`<a href="https://your-server.example.com" target="_blank" style="color:#2b6cb0;">{item_name}</a>`
   - **不標註 email 關聯**（不做強制比對）
 - 小總結：共 N 筆 | 🔴 高 N 筆 | 涉及 N 專案
 
@@ -233,14 +233,14 @@ line_sources:
 每次執行 review 時，同時重新生成儀表板 HTML 並上傳覆蓋：
 ```python
 requests.post(
-    'https://your-server.example.com/EIP/api/save_dashboard.php',
+    'https://your-server.example.com
     headers={
         'Content-Type': 'application/json',
         'Authorization': 'Bearer YOUR_API_TOKEN',
     },
     json={'html': dashboard_html, 'key': 'dashboard'}
 )
-# 固定網址：https://your-server.example.com/EIP/dashboard.html
+# 固定網址：https://your-server.example.com
 ```
 
 儀表板內容：所有 skill 清單、MCP 連線、記憶項目、API Key 狀態、重要路徑。
@@ -263,7 +263,7 @@ with pyzipper.AESZipFile(zip_path, 'w', compression=pyzipper.ZIP_DEFLATED, encry
 
 # 上傳
 requests.post(
-    'https://your-server.example.com/EIP/api/upload_backup.php',
+    'https://your-server.example.com/api/upload_backup.php',
     headers={'Authorization': 'Bearer YOUR_API_TOKEN'},
     files={'backup': (f'claude_backup_{today}.zip', open(zip_path, 'rb'), 'application/zip')}
 )
@@ -278,7 +278,7 @@ requests.post(
 ```python
 import requests
 response = requests.post(
-    'https://your-server.example.com/EIP/api/save_report.php',
+    'https://your-server.example.com
     headers={
         'Content-Type': 'application/json',
         'Authorization': 'Bearer YOUR_API_TOKEN',
@@ -303,7 +303,7 @@ requests.post(
         'to': 'U9f13c28b1df2ddbc5a1ed6a7c9358830',
         'messages': [{
             'type': 'text',
-            'text': f'📋 每日工作整合報告\n🔴 緊急待辦：{urgent_count} 項\n📋 EIP 未完成：{eip_count} 項\n📧 Email 待跟進：{email_count} 封\n📅 未來行程：{calendar_count} 場\n\n👉 完整報告：{report_url}\n📊 儀表板：https://your-server.example.com/EIP/dashboard.html\n🔒 加密備份：{backup_url}'
+            'text': f'📋 每日工作整合報告\n🔴 緊急待辦：{urgent_count} 項\n📋 EIP 未完成：{eip_count} 項\n📧 Email 待跟進：{email_count} 封\n📅 未來行程：{calendar_count} 場\n\n👉 完整報告：{report_url}\n📊 儀表板：https://your-server.example.com 加密備份：{backup_url}'
         }]
     }
 )
@@ -330,11 +330,11 @@ requests.post(
 11. **【Weekly mode 限定】** 跑 §十一 寫回 handover 互動流程
 
 ### ⚠ 常見錯誤防範
-- **LINE 網址錯誤**：報告 URL 一定從 save_report API 的回傳 JSON 取得 `url` 欄位，格式為 `https://your-server.example.com/EIP/reports/YYYYMMDD_HHMMSS_xxxx.html`，絕對不要自己拼湊 URL
+- **LINE 網址錯誤**：報告 URL 一定從 save_report API 的回傳 JSON 取得 `url` 欄位，格式為 `https://your-server.example.com URL
 - **備份被省略**：備份是必要步驟，檔案大小應 > 50KB（包含所有 skill 和記憶），如果 < 20KB 表示備份不完整
 - **模板沒讀取**：如果不讀模板就自己生成 HTML，每次格式會不一樣。必須先讀模板再照做
 - **EIP 工項沒連結**：每筆工項必須有 `<a href="...itemdetail.php?id={id}">` 可點擊連結
-- **LINE 推播缺連結**：LINE 訊息必須包含三個連結 — 報告 URL（save_report 回傳）、儀表板 URL（固定 https://your-server.example.com/EIP/dashboard.html）、備份 URL（upload_backup 回傳）。缺一不可
+- **LINE 推播缺連結**：LINE 訊息必須包含三個連結 — 報告 URL（save_report 回傳）、儀表板 URL（固定 https://your-server.example.com URL（upload_backup 回傳）。缺一不可
 
 ---
 

@@ -27,7 +27,7 @@ def _hj():
 
 
 def _base():
-    return os.environ.get('EKB_BASE_URL', 'https://your-server.example.com/EIP/ekb')
+    return os.environ.get('EKB_BASE_URL', 'https://your-server.example.com/ekb')
 
 
 def list_projects() -> list:
