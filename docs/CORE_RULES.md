@@ -307,6 +307,65 @@ Evaluator 判定本階段通過
 
 > ⚠️ **執行順序強制規則**：上述五項作業必須依序執行。任一步驟失敗（如 SHA-256 驗證不通過），則中止後續步驟，該階段標記為「待修復」，不釋放下一階段權限。
 
+
+### 7. 可執行規格母版（YAML SSOT）雙格式架構（責任 1+2 的基礎設施）
+
+本專案採用「雙格式規格」架構：YAML 可執行規格為唯一資料源（SSOT），人類可讀的傳統 SRS 由此自動生成。
+
+#### 7-1. 架構定位
+```
+specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
+        │
+        ├── 自動生成 → system_specification.md (人類閱讀)
+        ├── 自動生成 → traceability_matrix.md (追溯矩陣)
+        └── 自動生成 → specs/features/*.feature (Gherkin BDD)
+```
+* **YAML 母版**：單一檔案涵蓋全部 6 個階段的結構化資料。Planner 讀取、Generator 寫入產出、Evaluator 寫入評分。
+* **Markdown SRS**：由全域 Agent 在每次階段完成後從 YAML 自動生成，永不手動編輯。
+* **Gherkin .feature**：從 YAML 中的需求與驗收條件自動轉換為 BDD 可執行規格。
+
+#### 7-2. YAML 母版結構規範
+`specs/executable_spec.yaml` 必須包含以下頂層區塊，各階段 AI 代理依職責讀寫對應區塊：
+
+| YAML 區塊 | 讀取者 | 寫入者 | 內容 |
+|:---|:---|:---|:---|
+| `project` | 所有階段 | 全域 Agent | 專案名稱、版本、當前階段 |
+| `phase_01_planning` | 01 Planner, 02 Planner | 01 Generator, 01 Evaluator | 需求清單、正規化規格、評分 |
+| `phase_02_design` | 02 Planner, 03 Planner | 02 Generator, 02 Evaluator | 資料庫、API、UML 產出、評分 |
+| `phase_03_implementation` | 03 Planner, 04 Planner | 03 Generator, 03 Evaluator | 模組清單、單元測試、評分 |
+| `phase_04_testing` | 04 Planner, 05 Planner | 04 Generator, 04 Evaluator | API/UI 測試結果、Bug 清單、評分 |
+| `phase_05_deployment` | 05 Planner, 06 Planner | 05 Generator, 05 Evaluator | 部署產物 SHA-256、評分 |
+| `phase_06_maintenance` | 06 Planner | 06 Generator, 06 Evaluator | 監控指標、事件清單、評分 |
+| `traceability` | 全域 Agent | 全域 Agent | 自動彙整的追溯矩陣 |
+| `change_log` | 全域 Agent | 全域 Agent | 版本變更紀錄 |
+
+#### 7-3. 階段間資料傳遞規則（以 YAML 為唯一介面）
+1. **上游寫入**：階段 N 的 Generator 將產出寫入 `phase_0N_*.outputs` 與對應結構化欄位（如 `requirements`、`modules`、`test_results`）。
+2. **下游讀取**：階段 N+1 的 Planner 從 `phase_0N_*.outputs` 與結構化欄位讀取上游產出，作為本階段輸入。
+3. **禁止跨格式查詢**：下游階段不得直接讀取上游的 Markdown 檔案（如 `formal_requirements.md`）；必須透過 YAML 母版取得結構化資料。
+4. **容錯機制**：若 YAML 中對應欄位為空，Planner 應提示「上游階段尚未完成」，並中止規劃。
+
+#### 7-4. 自動生成規則
+全域 Agent 在每次 Evaluator 通過後執行自動生成：
+1. **生成 system_specification.md**：
+   * 從 `project` 區塊取得基本資訊。
+   * 從 `phase_01_planning.requirements` 填充功能摘要與具體需求章節。
+   * 從 `phase_02_design.database` + `api` 填充資料庫與 API 章節。
+   * 從 `phase_04_testing.test_results` 填充驗收標準狀態。
+   * 更新 `change_log` 並寫入 SRS 變更紀錄。
+2. **生成 traceability_matrix.md**：
+   * 從 `traceability.matrix` 與各階段 `outputs` 欄位自動彙整。
+3. **生成 Gherkin .feature**：
+   * 從 `phase_01_planning.requirements` 中每個需求的 `acceptance_criteria` 轉換為 Given/When/Then 語句。
+
+#### 7-5. YAML Schema 驗證
+每次 YAML 母版被寫入前，必須通過以下自動化驗證（由 Evaluator 執行）：
+1. **結構完整性**：所有必要區塊與欄位存在且非空（`project.name`、各階段 `status`、`evaluator.passed`）。
+2. **格式正確性**：YAML 語法有效、列舉值在允許範圍內（`status: [pending, in_progress, completed]`）。
+3. **跨階段一致性**：下游階段的 `inputs` 引用的檔案路徑，必須存在於上游階段的 `outputs` 中。
+4. **版本遞增**：`project.version` 在每次寫入時必須較前次版本遞增。
+5. 驗證失敗則標記為 B 類錯誤，退回 Planner 重新規劃。
+
 ---
 
 ## 四、 快照管理與日誌儲存規則
@@ -354,3 +413,4 @@ Evaluator 判定本階段通過
 
 4. **互斥部署環境靜態檢核**
    * 若系統中存在彼此衝突的部署操作（例如容器化部署與實體進程部署），此類架構與環境之衝突應在 Plan 階段進行靜態檢核，並直接判定為 B 類錯誤予以攔截，避免環境配置產生衝突。
+

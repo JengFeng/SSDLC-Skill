@@ -1,0 +1,218 @@
+# =============================================================================
+# 可執行規格母版 (Executable Specification - SSOT)
+# =============================================================================
+# 本檔案為專案唯一資料源（Single Source of Truth）。
+# 所有 6 個 SSDLC 階段的 AI 代理（Planner/Generator/Evaluator）皆以此檔案
+# 作為主要讀取/寫入對象。system_specification.md 由此檔案自動生成。
+#
+# 更新規則：
+#   - Planner：讀取現有狀態，規劃本階段目標
+#   - Generator：讀取 inputs，寫入 outputs
+#   - Evaluator：驗證 outputs，寫入 verification 狀態
+#   - 階段完成後自動遞增 version 並記錄變更至 change_log
+# =============================================================================
+
+project:
+  name: "<專案初始化後自動填入>"
+  version: "0.1.0"
+  created: "<專案初始化後自動填入>"
+  last_updated: "<專案初始化後自動填入>"
+  current_phase: "01_planning_and_analysis"
+  description: "<專案初始化後自動填入>"
+
+# =============================================================================
+# 階段 01：規劃與需求分析
+# =============================================================================
+phase_01_planning:
+  status: pending            # pending | in_progress | completed
+  baseline: null             # baseline/phase-01_v{N}/ (Evaluator 通過後填入)
+  inputs:
+    raw_requirements: []     # 原始口語需求來源路徑
+    rfp_documents: []        # RFP 文件路徑
+  outputs:
+    formal_requirements: null    # outputs/formal_requirements.md
+    requirement_tracker: null    # reg/requirement_tracker.md
+  requirements:              # 正規化後的需求清單（由 Generator 寫入）
+    - id: "<專案初始化後自動填入>"
+      description: "<專案初始化後自動填入>"
+      priority: P0           # P0 | P1 | P2
+      source: "<專案初始化後自動填入>"
+      acceptance_criteria: []
+  evaluator:
+    passed: false
+    scores:
+      coverage: 0            # 需求覆蓋率 (40%)
+      clarity: 0             # 需求明確性 (30%)
+      traceability: 0        # 追溯鏈完整性 (20%)
+      format: 0              # 格式一致性 (10%)
+    errors:
+      type_a: []             # A 類執行層錯誤
+      type_b: []             # B 類規劃層錯誤
+
+# =============================================================================
+# 階段 02：系統設計
+# =============================================================================
+phase_02_design:
+  status: pending
+  baseline: null
+  inputs:
+    requirements: []         # 承接 01 階段 outputs
+  outputs:
+    db_schema: null          # db_schema.sql
+    er_diagram: null         # er_diagram.md
+    api_spec: null           # api_spec.md
+    ui_prototype: null       # ui_prototype.html
+    use_case_diagram: null   # use_case_diagram.md
+    activity_diagram: null   # activity_diagram.md
+    sequence_diagram: null   # sequence_diagram.md
+  database:
+    tables: []               # 資料表定義（由 Generator 從 db_schema.sql 萃取寫入）
+  api:
+    endpoints: []            # API 端點清單（由 Generator 從 api_spec.md 萃取寫入）
+  evaluator:
+    passed: false
+    scores:
+      completeness: 0
+      consistency: 0
+      traceability: 0
+    errors:
+      type_a: []
+      type_b: []
+
+# =============================================================================
+# 階段 03：開發與編碼
+# =============================================================================
+phase_03_implementation:
+  status: pending
+  baseline: null
+  inputs:
+    design_outputs: []       # 承接 02 階段 outputs
+  outputs:
+    task_list: null          # outputs/task_list.json
+    source_files: []         # 原始碼檔案清單
+    unit_test_results: null  # outputs/unit_test_results.xml
+    lint_report: null        # outputs/lint_report.txt
+  modules:                   # 模組清單（由 Generator 寫入）
+    - name: "<專案初始化後自動填入>"
+      path: "<專案初始化後自動填入>"
+      dependencies: []
+  evaluator:
+    passed: false
+    scores:
+      spec_compliance: 0     # 規格符合度 (35%)
+      code_quality: 0        # 代碼品質與規範 (25%)
+      test_coverage: 0       # 測試涵蓋率 (20%)
+      security: 0            # 安全與錯誤處理 (20%)
+    errors:
+      type_a: []
+      type_b: []
+
+# =============================================================================
+# 階段 04：測試驗證
+# =============================================================================
+phase_04_testing:
+  status: pending
+  baseline: null
+  inputs:
+    source_code: []          # 承接 03 階段 outputs
+  outputs:
+    test_api: null           # outputs/test_api.py
+    test_ui: null            # outputs/test_ui.py
+    test_results: null       # outputs/test_results.md
+  test_results:              # 結構化測試結果（由 Generator 寫入）
+    api:
+      total: 0
+      passed: 0
+      failed: 0
+      coverage_pct: 0
+    ui:
+      total: 0
+      passed: 0
+      failed: 0
+  bugs:                      # Bug 清單（由 Generator 從 bug_tracker.md 萃取寫入）
+    - id: "<專案初始化後自動填入>"
+      severity: Minor
+      description: "<專案初始化後自動填入>"
+      status: open
+  evaluator:
+    passed: false
+    scores:
+      requirement_coverage: 0   # 需求測試覆蓋率 (35%)
+      dual_track_pass_rate: 0   # 雙軌測試通過率 (30%)
+      bug_tracking: 0           # Bug 追蹤完整性 (20%)
+      regression_strategy: 0    # 回歸測試策略 (15%)
+    errors:
+      type_a: []
+      type_b: []
+
+# =============================================================================
+# 階段 05：部署發布
+# =============================================================================
+phase_05_deployment:
+  status: pending
+  baseline: null
+  inputs:
+    test_results: []         # 承接 04 階段 outputs
+  outputs:
+    build_manifest: null     # outputs/build_manifest.json
+    signature_status: null   # outputs/signature_status.json
+    deployment_topology: null # outputs/deployment_topology.md
+  artifacts:                 # 部署產物（由 Generator 寫入）
+    - path: "<專案初始化後自動填入>"
+      sha256: "<專案初始化後自動填入>"
+  evaluator:
+    passed: false
+    scores:
+      config_baseline: 0     # 組態基準比對 (30%)
+      availability: 0        # 可用度核對 (30%)
+      signature: 0           # 數位簽章校驗 (20%)
+      config_correctness: 0  # 組態正確性 (20%)
+    errors:
+      type_a: []
+      type_b: []
+
+# =============================================================================
+# 階段 06：維護監控
+# =============================================================================
+phase_06_maintenance:
+  status: pending
+  baseline: null
+  inputs:
+    deployment_outputs: []   # 承接 05 階段 outputs
+  outputs:
+    incident_report: null    # outputs/incident_report.md
+    patch_changelog: null    # outputs/patch_changelog.md
+    monitoring_dashboard: null # outputs/monitoring_dashboard.json
+  monitors:                  # 監控指標（由 Generator 寫入）
+    - name: "<專案初始化後自動填入>"
+      threshold: "<專案初始化後自動填入>"
+      current_value: null
+  incidents:                 # 事件清單（由 Generator 寫入）
+    - id: "<專案初始化後自動填入>"
+      severity: Minor
+      description: "<專案初始化後自動填入>"
+      resolved: false
+  evaluator:
+    passed: false
+    scores:
+      regression_testing: 0  # 回歸測試完整性 (30%)
+      monitoring_effectiveness: 0  # 監控有效性 (25%)
+      error_extraction: 0    # 錯誤萃取準確性 (25%)
+      artifact_verification: 0  # 產出物驗證 (20%)
+    errors:
+      type_a: []
+      type_b: []
+
+# =============================================================================
+# 全域追溯與變更紀錄
+# =============================================================================
+traceability:
+  matrix: []                 # 自動從各階段萃取彙整的追溯矩陣
+  last_alignment_check: null
+
+change_log:                  # 每次階段完成自動追加
+  - version: "0.1.0"
+    date: "<專案初始化後自動填入>"
+    phase: "01_planning_and_analysis"
+    summary: "專案初始化"
+    files_changed: []

@@ -71,6 +71,9 @@
 │   ├── TEMPLATE_SKILL.md                       # 專案範本規格書
 │   ├── commands_reference.md                   # 指令集參照表
 │   └── Harness_Optimization_SKILL.md           # 框架優化技能（口語觸發地毯式檢查）
+├── specs/                                       # 可執行規格目錄（YAML SSOT + Gherkin .feature）
+│   ├── executable_spec.yaml                    # YAML 可執行規格母版（唯一資料源）
+│   └── features/                               # Gherkin .feature BDD 規格
 ├── 00_cross_phase/                             # 跨階段全域共用
 │   ├── SKILL.md                                # 跨階段 Skill 整合定義
 │   ├── inputs/                                 # 跨階段輸入區
@@ -199,4 +202,5 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 <p align="center">
   <sub>Built with Harness Engineering · Powered by AI Collaboration</sub>
 </p>
+
 

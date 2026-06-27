@@ -636,3 +636,36 @@ name: Harness Engineering CI
 | — | **三（新增）** | **外層全域主控 Agent 自動化機制與追溯同步規範** |
 | 三 | 四 | 快照管理與日誌儲存規則 |
 | 四 | 五 | 部署環境適配與進程守護通則 |
+
+## 可執行規格（YAML SSOT）雙格式架構實作 — 2026-06-27
+
+**觸發**：框架建造者確認 memory.md 中定義的「YAML 可執行規格」願景從未實作，要求補上。
+
+**設計定位**：
+- **YAML 母版** (`specs/executable_spec.yaml`) = 唯一資料源（SSOT），所有 6 階段 AI 代理讀寫此檔
+- **system_specification.md** = 從 YAML 自動生成的人類閱讀版（永不手動編輯）
+- **階段間資料傳遞** = 以 YAML 為唯一介面，禁止跨格式查詢
+
+**新增檔案**：
+- `specs/executable_spec.yaml`：完整 6 階段結構化 YAML 母版（含 project / phase_01~06 / traceability / change_log）
+- `specs/README.md`：雙格式架構說明文件（含資料流圖、使用方式、格式優勢對照表）
+- `specs/features/.gitkeep`：Gherkin .feature 目錄
+
+**更新檔案**：
+- `docs/CORE_RULES.md`：新增三-7「可執行規格母版（YAML SSOT）雙格式架構」，含 5 條子規範：
+  - 7-1 架構定位（YAML → SRS + RTM + Gherkin）
+  - 7-2 YAML 母版結構規範（9 大頂層區塊的讀寫權責表）
+  - 7-3 階段間資料傳遞規則（以 YAML 為唯一介面、禁止跨格式查詢、容錯機制）
+  - 7-4 自動生成規則（SRS、RTM、Gherkin 三向生成）
+  - 7-5 YAML Schema 驗證（5 項自動檢查）
+- `docs/TEMPLATE_SKILL.md`：目錄結構加入 `specs/` 區塊
+- `README.md`：目錄結構加入 `specs/` 區塊
+
+**與既有 SRS 的關係**：
+| 特性 | 傳統 SRS (Markdown) | 可執行規格 (YAML SSOT) |
+|:---|:---|:---|
+| 主要讀者 | 人類（甲方） | AI 代理 |
+| 編輯方式 | 自動生成（不可手動） | Planner/Generator/Evaluator 寫入 |
+| Token 消耗 | 高（需解析全文） | 低（只讀取所需欄位） |
+| 跨階段傳遞 | 間接（透過 YAML） | 直接（欄位對欄位） |
+| 版本比對 | 逐行 diff | 欄位級結構化 diff |
