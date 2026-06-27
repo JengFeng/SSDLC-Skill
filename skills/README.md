@@ -157,6 +157,10 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/nx) / [原始 GitHub 倉庫](https://github.com/nrwl/nx)
 
 
+### Anthropic 官方插件技能 (1)
+* **[[16] code-simplifier](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/code-simplifier)**：程式碼簡化與精煉。在保留所有功能的前提下，提升程式碼清晰度、一致性與可維護性。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/code-simplifier) / [原始 GitHub 倉庫](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)
+
 ## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
 
