@@ -1,5 +1,16 @@
-@echo off
-cd /d "%~dp0..\03_implementation_and_coding\outputs"
-echo 員工管理系統 http://127.0.0.1:5000
-python app.py
-pause
+﻿@echo off
+chcp 65001 >nul
+cd /d "%~dp0..\..\03_implementation_and_coding\outputs"
+echo ============================================
+echo   員工管理系統 (Deployment)
+echo   正在啟動，請稍候...
+echo ============================================
+start "" /B python app.py
+echo 等待伺服器啟動...
+timeout /t 3 /nobreak >nul
+start http://127.0.0.1:5000
+echo.
+echo 系統已就緒！請在瀏覽器中操作。
+echo 完成後按任意鍵關閉伺服器...
+pause >nul
+taskkill /F /IM python.exe /T 2>nul
