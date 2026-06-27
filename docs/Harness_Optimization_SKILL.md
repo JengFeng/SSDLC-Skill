@@ -1,4 +1,4 @@
-﻿---
+---
 name: Harness Optimization
 description: 執行整個駕馭工程的框架優化。當使用者說「幫我執行駕馭工程框架優化檢查」或「Harness Optimization Skill」時觸發，進行地毯式之檔案關聯性、格式與排版優化。
 ---
@@ -42,7 +42,7 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
 
 ### 3.5 系統設計產出完整性檢查 (02_system_design/outputs/)
 *   **檢查點（附加於第 3 組 TEMPLATE_SKILL.md 防線）**：
-    1. 確認 02_system_design/outputs/ 至少包含七項標準產出：db_schema.sql、er_diagram.md、api_spec.md、ui_prototype.html、use_case_diagram.puml、activity_diagram.puml、sequence_diagram.puml。
+    1. 確認 02_system_design/outputs/ 至少包含七項標準產出：db_schema.sql、er_diagram.md、api_spec.md、ui_prototype.html、use_case_diagram.md、activity_diagram.md、sequence_diagram.md。
     2. 確認 er_diagram.md 使用 Mermaid erDiagram 語法，欄位與 db_schema.sql 一致。
     3. 確認 ui_prototype.html 為可獨立開啟的互動式 HTML 雛型（Bootstrap 或等效框架）。
 

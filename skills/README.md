@@ -1,4 +1,4 @@
-﻿# 軟體開發流程技能目錄索引表
+# 軟體開發流程技能目錄索引表
 
 本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（41）、Anthropic 官方插件（2）等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
@@ -175,7 +175,7 @@
 ---
 
 
-### GitHub 推薦開源工具技能 (8)
+### GitHub 推薦開源工具技能 (9)
 * **[[01] playwright](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/playwright)**：主流 UI 自動化測試與跨瀏覽器兼容性回歸測試套件。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/04_testing/playwright) / [原始 GitHub 倉庫](https://github.com/microsoft/playwright)
 * **[[02] selenium](file:///d:/00AI協作/SSDLC_Skill/skills/04_testing/selenium)**：傳統網頁與多瀏覽器的自動化測試與兼容性回歸測試工具。
@@ -235,7 +235,7 @@
 ## 跨階段全域共用 Skill
 本階段技能用於跨階段的狀態管理、版本控制與程式碼差異比對。
 
-### GitHub 推薦開源工具技能 (3)
+### GitHub 推薦開源工具技能 (11)
 * **[[01] langgraph](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/langgraph)**：複雜狀態多 Agent 協作工作流的圖形狀態管理引擎。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/langgraph) / [原始 GitHub 倉庫](https://github.com/langchain-ai/langgraph)
 * **[[02] git](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/git)**：全域版本控制、分支管理與 Baseline 基線封存追溯工具。
@@ -257,3 +257,5 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/ralph-loop) / [原始 GitHub 倉庫](https://github.com/frankbria/ralph-claude-code)
 * **[[11] using-superpowers](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/using-superpowers)**：Skill 尋找與使用引導。教導 AI 代理如何在對話中主動發現、呼叫與使用可用技能。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/using-superpowers) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
+
+
