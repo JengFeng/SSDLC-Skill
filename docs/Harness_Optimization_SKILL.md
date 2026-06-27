@@ -46,6 +46,17 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     2. 確認 er_diagram.md 使用 Mermaid erDiagram 語法，欄位與 db_schema.sql 一致。
     3. 確認 ui_prototype.html 為可獨立開啟的互動式 HTML 雛型（Bootstrap 或等效框架）。
 
+
+### 3.6 可執行規格 YAML SSOT 防線 (`specs/executable_spec.yaml`)
+*   **檢查點（附加於第 3 組 TEMPLATE_SKILL.md 防線）**：
+    1. 確認 `specs/executable_spec.yaml` 存在且為有效 YAML 語法。
+    2. 確認 YAML 包含全部 9 個頂層區塊：`project`、`phase_01~06`、`traceability`、`change_log`。
+    3. 確認各階段 `status` 欄位值在允許範圍內（`pending` / `in_progress` / `completed`）。
+    4. 確認已完成階段的 `evaluator.passed` 為 `true` 且 `baseline` 欄位非空。
+    5. 確認 `project.version` 與 `change_log` 最新版本一致。
+    6. 確認跨階段一致性：下游 `inputs` 引用的檔案路徑存在於上游 `outputs` 中。
+    7. 確認 `specs/README.md` 存在，內容包含雙格式架構說明。
+
 ### 4. 專案記憶與追溯防線 (`memory.md`、`traceability_matrix.md`、`system_specification.md`)
 *   **檢查點**：
     1. 確認 `memory.md` 記錄了最近一次的結構或規章變更，日期與內容與實際異動一致。
@@ -141,4 +152,5 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 1. 於對話中輸出框架優化成果報告（以「Status + Root Cause + Suggested Fix」格式說明修補處）。
 2. 輸出 Baseline 可執行性驗證摘要（各版本 HTTP 狀態碼、模板數量、檢查通過/失敗清單）。
 3. 自動建立 Git 暫存基線（Baseline），並在 `memory.md` 載入本次優化之異動紀錄。
+
 

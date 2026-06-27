@@ -9,9 +9,9 @@
 | REQ_005 | grill-me | Email 唯一 | db_schema.sql UNIQUE | IntegrityError | TC_003 + TC_UI_004 | [已驗證] |
 | REQ_006 | 設計規範 | ER 模型 | er_diagram.md | db_schema.sql | — | [設計完成] |
 | REQ_007 | 設計規範 | UI 雛型 | ui_prototype.html | templates/ | — | [設計完成] |
-| REQ_008 | 設計規範 | 用例 | use_case_diagram.puml | api_spec.md | — | [設計完成] |
-| REQ_009 | 設計規範 | 流程 | activity_diagram.puml | app.py CRUD | — | [設計完成] |
-| REQ_010 | 設計規範 | 互動 | sequence_diagram.puml | app.py add() | TC_002 | [設計完成] |
+| REQ_008 | 設計規範 | 用例 | use_case_diagram.md | api_spec.md | — | [設計完成] |
+| REQ_009 | 設計規範 | 流程 | activity_diagram.md | app.py CRUD | — | [設計完成] |
+| REQ_010 | 設計規範 | 互動 | sequence_diagram.md | app.py add() | TC_002 | [設計完成] |
 ## 二、 Skill 導入
 | 日期 | 指令 | Skill |
 |:---|:---|:---|
@@ -27,4 +27,5 @@
 | 05→06 | requirements.txt + run.bat | maintenance_brief.md | ✅ |
 
 | 2026-06-27 | @04/04 | playwright（瀏覽器 UI 自動化測試） |
+
 
