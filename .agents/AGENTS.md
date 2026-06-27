@@ -201,7 +201,7 @@ graph TD
 *   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
 *   **AI 代理執行規範**：
     1.  計算下一個版本號（baseline-v1, v2, v3...）。
-    2.  複製完整可執行專案（app.py + templates/ + requirements.txt + run.bat + employee.db）至 `baseline/baseline-v{N}/`。
+    2.  複製完整可執行專案（原始碼 + 依賴清單 + 啟動腳本 + 必要資源檔）至 `baseline/baseline-v{N}/`。複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
     3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
     4.  保留最近 3 份 baseline，自動清理最舊版本。
     5.  寫入 memory.md 紀錄。
@@ -221,3 +221,4 @@ graph TD
         *   在 `phase_gates.json` 中記錄解鎖事件（含時間戳、操作理由）。
         *   在 `logs/ai_adjustment_{date}.md` 中記錄此次強制解鎖。
     4.  若使用者取消，則不執行任何變更。
+
