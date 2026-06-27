@@ -1,4 +1,4 @@
-﻿# 駕馭工程 Harness Engineering | 雙層六階段完整正式規格書 (通則性核心指導守則)
+# 駕馭工程 Harness Engineering | 雙層六階段完整正式規格書 (通則性核心指導守則)
 
 本文件定義了本專案在自動化軟體開發全流程架構與企業級 Agent 工作流中，各 AI 代理（Planner、Generator、Evaluator）與安全軟體開發生命週期各階段都必須嚴格遵循的最高指導框架原則。所有子規章、階段定義與實作規範皆不得與本守則衝突。
 
@@ -16,6 +16,8 @@
 3. 永久留存人機對話紀錄、AI 調整紀錄、與迭代日誌。
 4. 每階段驗證穩定後，封存 Baseline 穩定可執行版本。
 5. 管控階段切換權限：前一階段產生 Baseline，才可進入下一階段。
+
+> 📌 **詳細自動化執行機制與觸發規則**，請參見 [第三節](#三-外層全域主控-agent-自動化機制與追溯同步規範)。
 
 ### 2. 內層：安全軟體開發生命週期六階段（通稱 SSDLC）各階段定義與 Skill 屬性
 安全軟體開發生命週期切割為六階段，通稱 SSDLC。每一階段獨立執行一套完整的 Plan → Generator → Evaluator 閉環，且各階段具備明確之核心用途與對應 Skill 之重要屬性特性：
@@ -61,9 +63,8 @@
 * **只執行、不判斷、不檢查、不修改**。
 #### 強化機制：
 1. 執行中動態監控模組衝突、參數覆蓋與流程矛盾。
-2. 執行完成後自動儲存執行快照。
-3. 回溯時可直接執行 @restore 指令載入快照，不需重跑 Plan，大幅降低 Token 消耗。
-4. 回溯時直接載入快照，不需重跑 Plan，大幅降低 Token 消耗。
+2. 執行完成後自動儲存執行快照至根目錄的 `snapshots/` 目錄。
+3. 執行完成後自動將階段執行摘要寫入根目錄的 `logs/iteration_log.md`（含時間戳、階段名稱、執行 Skill 清單、產出檔案清單）。
 
 ### 4. Evaluator 階段（雙層驗證 + 錯誤分級 + 分級重試）
 #### 4-1. 雙層 Check 驗證
@@ -91,22 +92,238 @@
 2. 全域自動迭代上限：2 輪。
 3. 滿 2 輪仍失敗 → 自動暫停、移交人工處理。
 
+#### 4-5. Evaluator 通過後觸發全域同步（銜接外層 Agent）
+Evaluator 判定本階段產出通過（所有審查項目達標）後，**自動觸發**下列外層全域主控 Agent 作業（詳見第三節）：
+1. 更新 `traceability_matrix.md`（本階段需求追溯狀態寫回）。
+2. 更新 `system_specification.md`（本階段測試/驗收狀態寫回）。
+3. 歸檔本階段對話紀錄與 AI 調整紀錄至 `logs/`。
+4. 建立本階段 Baseline（`baseline/phase-{N}_v{M}/`）。
+5. 釋放下一階段切換權限（更新 `phase_gates.json`）。
+
 ---
 
-## 三、 快照管理與組態基線
+## 三、 外層全域主控 Agent 自動化機制與追溯同步規範
+
+本節定義外層全域主控 Agent 在接收到內層各階段 Evaluator 通過訊號後，必須自動執行的五大作業之具體觸發條件、執行步驟與輸出格式。
+
+### 1. 跨階段需求追溯鏈自動化（責任 1）
+
+#### 1-1. 觸發時機
+* **主觸發**：任一階段 Evaluator 判定通過（所有審查項目達標）。
+* **輔助觸發**：`@baseline` 指令執行後、階段 Skill 導入後（`@[階段]/[快捷]`）。
+
+#### 1-2. 執行步驟
+1. **讀取階段交付物**：掃描本階段 `outputs/` 目錄，提取所有產出檔案清單。
+2. **自動產生 REQ 編號**（若為全新需求）：
+   * 格式：`REQ_{三位流水號}`（如 REQ_001、REQ_002）。
+   * 從 `traceability_matrix.md` 現有最大編號 +1 開始遞增。
+   * 若本階段為 01（規劃），則為每個正規化需求建立新的 REQ 條目。
+   * 若本階段為 02~06，則在既有 REQ 條目對應欄位填入本階段產出路徑。
+3. **寫回追溯矩陣**：
+   * 更新 `traceability_matrix.md` 中對應 REQ 的本階段欄位（規格定義 / 系統設計 / 開發實作 / 測試案例 / 部署驗證 / 維護記錄）。
+   * 自動計算並更新「當前狀態」欄位：所有跨階段欄位皆有對應產出 → `[已驗證]`；部分缺漏 → `[不連貫警告]`。
+4. **輸出連貫性報告**：
+   * 產出 `logs/alignment_report_{YYYYMMDD-HHMMSS}.md`，記錄本次追溯更新摘要（新增/更新 REQ 數量、跨階段連貫狀態、缺漏項目清單）。
+
+#### 1-3. 需求追溯表欄位規範
+| 欄位 | 填入時機 | 格式 |
+|:---|:---|:---|
+| 需求編號 | 01 階段 Planner | `REQ_{NNN}` |
+| 原始輸入來源 | 01 階段 Planner | 檔案路徑（如 `inputs/user_requirement_raw.md`） |
+| 規格定義 (01) | 01 Evaluator 通過 | 對應 `outputs/` 檔案路徑 |
+| 系統設計 (02) | 02 Evaluator 通過 | 對應 `outputs/` 檔案路徑 |
+| 開發實作 (03) | 03 Evaluator 通過 | 對應 `outputs/` 或原始碼路徑 |
+| 測試案例 (04) | 04 Evaluator 通過 | 對應測試案例 ID |
+| 部署驗證 (05) | 05 Evaluator 通過 | SHA-256 驗證狀態 |
+| 維護記錄 (06) | 06 Evaluator 通過 | Hotfix/監控事件 ID |
+| 當前狀態 | 每次更新後自動計算 | `[已驗證]` / `[測試失敗]` / `[不連貫警告]` |
+
+### 2. 規格文件自動同步機制（責任 2）
+
+#### 2-1. 觸發時機
+* **主觸發**：任一階段 Evaluator 判定通過。
+* **輔助觸發**：Skill 導入後、Baseline 建立後。
+
+#### 2-2. 自動同步對象與規則
+`system_specification.md` 中下列章節將自動更新：
+
+| 章節 | 同步時機 | 同步內容 |
+|:---|:---|:---|
+| 文件版本與日期 | 每次 Evaluator 通過 | 遞增版號（v1.0 → v1.1 → ...），更新日期 |
+| 二、整體描述 > 產品功能摘要 | 01 Evaluator 通過 | 從 `formal_requirements.md` 萃取功能編號與說明 |
+| 三、具體需求 > 功能需求詳細說明 | 01 Evaluator 通過 | 從 `formal_requirements.md` 寫入每個 FEAT 的描述/輸入/輸出/例外 |
+| 三、具體需求 > 外部介面需求 | 02 Evaluator 通過 | 從 `api_spec.md` 寫入 API 端點表 |
+| 三、具體需求 > 資料庫需求 | 02 Evaluator 通過 | 從 `er_diagram.md` + `db_schema.sql` 萃取 ER 圖連結與 DDL |
+| 四、UML 系統模型 | 02 Evaluator 通過 | 更新四項 UML 圖表連結與說明 |
+| 五、驗收標準 > 狀態欄位 | 04/05 Evaluator 通過 | 寫入 pytest/Playwright 通過數、SHA-256 驗證結果 |
+| 六、附錄 B 變更紀錄 | 每次 Evaluator 通過 | 自動追加一行變更紀錄（日期 + 階段 + 版號 + 摘要） |
+
+#### 2-3. Gherkin 狀態寫回機制
+若 `system_specification.md` 中包含 Gherkin 語法的 Scenario（`gherkin` 程式碼區塊），Evaluator 必須在測試完成後：
+1. 解析測試結果，將每個 Scenario 的執行狀態寫回該 Scenario 標題後方。
+2. 格式：`場景: XXX [已通過]` 或 `場景: XXX [未通過]`。
+3. Evaluator 拒絕合併任何仍包含 `[未通過]` 狀態 Scenario 的規格文件。
+
+### 3. 全域日誌與對話紀錄留存機制（責任 3）
+
+#### 3-1. 日誌目錄與檔案結構
+全域 `logs/` 目錄下必須維護以下三類紀錄檔案：
+
+| 檔案 | 內容 | 寫入時機 | 格式 |
+|:---|:---|:---|:---|
+| `iteration_log.md` | 每次 PDCA 迭代的執行摘要 | Generator 完成後、Evaluator 完成後 | Markdown 表格（時間戳 + 階段 + 代理 + 動作 + 結果） |
+| `conversation_{YYYYMMDD-HHMMSS}.md` | 本次對話 session 的完整人機對話記錄 | 每次對話 session 結束（或階段完成）時 | 純文字，含時間戳標記的問答對 |
+| `ai_adjustment_{YYYYMMDD-HHMMSS}.md` | AI 代理在執行過程中的自主調整決策記錄 | AI 代理每次做出自主判斷或調整時 | Markdown 表格（時間 + 決策類型 + 原始狀態 + 調整後狀態 + 理由） |
+
+#### 3-2. 對話紀錄自動歸檔規則
+1. **歸檔觸發**：每個對話 session 結束，或當前階段 Evaluator 判定通過時，AI 代理必須自動將本 session 的完整對話內容（去除重複與無效訊息）歸檔為 `logs/conversation_{timestamp}.md`。
+2. **最小留存內容**：每筆對話紀錄至少包含：
+   * Session 開始/結束時間戳。
+   * 使用者提出的所有指令與決策。
+   * AI 代理的關鍵回應與執行摘要。
+   * 本 session 中產出或修改的檔案清單。
+3. **清理規則**：`logs/` 目錄下僅保留最近 20 筆對話紀錄與 20 筆 AI 調整紀錄。當超過上限時，自動合併最舊的 10 筆為一個彙整檔（`archive_{date_range}.md`）後刪除原始檔。
+
+#### 3-3. AI 調整紀錄寫入規範
+AI 代理在執行過程中，每當做出以下自主判斷時，必須即時追加一筆紀錄至 `logs/ai_adjustment_{date}.md`：
+* 自動修正檔案路徑或超連結。
+* 自動調整 Skill 配置參數。
+* 自動重試 A 類錯誤。
+* 自動升級 B 類錯誤至全域迭代。
+* 格式：`| 時間戳 | 決策類型 | 原始狀態 | 調整後狀態 | 調整理由 |`
+
+### 4. 每階段 Baseline 封存機制（責任 4）
+
+#### 4-1. 階段級 Baseline（Phase Baseline）
+不同於專案全域的 `@baseline` 指令，**階段級 Baseline** 是階段切換的前置條件：
+
+* **觸發時機**：本階段 Evaluator 判定通過後自動觸發。
+* **存放路徑**：`baseline/phase-{階段代碼}_v{流水號}/`（例如 `baseline/phase-01_v1/`、`baseline/phase-03_v2/`）。
+* **包含內容**：
+  * 本階段 `outputs/` 目錄完整複本。
+  * 本階段 `SKILL.md`（含已導入的 Skill 配置）。
+  * `MANIFEST.md`：階段 Baseline 版本資訊（建立時間、Git commit hash、Evaluator 評分摘要、需求追溯狀態）。
+  * `snapshot_*.md` + `diff_*.patch`：本階段的執行快照配對。
+* **保留規則**：每個階段僅保留最近 3 份 Baseline。當第 4 份產生時，自動清理最舊版本。
+
+#### 4-2. 專案全域 Baseline（Project Baseline — 現有 @baseline 指令）
+保留現有 `@baseline` 指令行為，但新增以下規則：
+* 全域 Baseline 僅在所有 6 個階段皆完成（皆有階段 Baseline）後方可建立。
+* 若任一階段缺少階段 Baseline，`@baseline` 指令須提示：「以下階段尚未建立階段 Baseline：{階段清單}。請先完成該階段 PDCA 後再建立全域 Baseline。」
+* 全域 Baseline 的 MANIFEST.md 必須彙整所有 6 個階段 Baseline 的版本資訊。
+
+#### 4-3. Baseline 驗證規則
+每次階段 Baseline 建立後，必須自動執行以下驗證並記錄結果於 MANIFEST.md：
+1. 產出檔案完整性：確認 `outputs/` 目錄中所有預期檔案皆存在。
+2. 檔案雜湊一致性：計算並記錄所有產出檔案的 SHA-256 雜湊值。
+3. 可執行性檢查（若階段產出為程式碼）：執行編譯或 import 檢查。
+4. 驗證失敗處理：任一檢查失敗即標記 Baseline 為「驗證未通過」，不釋放階段切換權限。
+
+### 5. 階段切換權限管控機制（責任 5）
+
+#### 5-1. 階段關卡檔案（Phase Gate）
+專案根目錄下維護一個 `phase_gates.json` 檔案，用於記錄各階段的切換狀態：
+
+```json
+{
+  "project": "專案名稱",
+  "last_updated": "YYYY-MM-DDTHH:MM:SS",
+  "phases": {
+    "01_planning_and_analysis": {
+      "status": "completed",
+      "baseline": "baseline/phase-01_v1/",
+      "evaluator_score": { "coverage": 40, "clarity": 30, "traceability": 20, "format": 10 },
+      "completed_at": "YYYY-MM-DDTHH:MM:SS"
+    },
+    "02_system_design": {
+      "status": "in_progress",
+      "baseline": null,
+      "completed_at": null
+    },
+    "03_implementation_and_coding": { "status": "locked" },
+    "04_testing": { "status": "locked" },
+    "05_deployment": { "status": "locked" },
+    "06_maintenance": { "status": "locked" }
+  }
+}
+```
+
+#### 5-2. 階段切換檢核流程
+AI 代理在進入任一階段（N）之前，必須執行以下關卡檢查：
+
+1. **讀取 `phase_gates.json`**，確認階段 N-1 的 `status` 為 `completed` 且 `baseline` 欄位非空。
+2. **若階段 N-1 未完成**：
+   * 強制中止，顯示：「🛑 階段 {N-1} 尚未完成。請先完成該階段的 PDCA 閉環並建立階段 Baseline 後，再進入階段 {N}。」
+   * 不允許任何繞過行為。
+3. **若階段 N-1 已完成**：
+   * 將階段 N 的 `status` 更新為 `in_progress`。
+   * 顯示：「✅ 階段 {N-1} 已完成且 Baseline 已封存。現在進入階段 {N}。」
+4. **首次進入階段 01**：無前置階段，直接將狀態設為 `in_progress`。
+
+#### 5-3. 人工強制解鎖（Manual Override）
+* **適用情境**：緊急 Hotfix、框架建造者維護、階段重建。
+* **觸發方式**：框架建造者口語指令「強制解鎖階段 {N}」或 `@unlock {N}`。
+* **安全機制**：
+  1. 顯示警告：「⚠️ 強制解鎖將繞過階段關卡檢查，可能導致需求追溯斷裂與規格不一致。確認強制解鎖階段 {N}？」
+  2. 確認後在 `phase_gates.json` 中記錄解鎖事件（含時間戳、操作者、理由）。
+  3. 解鎖後不自動建立缺失的階段 Baseline。
+  4. 在 `logs/ai_adjustment_{date}.md` 中記錄此次強制解鎖。
+
+#### 5-4. 階段重建（Phase Rebuild）
+若需重跑已完成階段：
+* **觸發**：框架建造者口語指令「重建階段 {N}」。
+* **行為**：
+  1. 將該階段及所有後續階段的 `status` 重置為 `locked`。
+  2. 清除該階段及後續階段的 `baseline` 參照。
+  3. 輸出受影響的階段清單與 REQ 清單，供使用者確認。
+  4. 確認後，從該階段重新開始 PDCA。
+
+### 6. 全域 Agent 觸發摘要（Five-Point Automation Checklist）
+
+本節為外層全域主控 Agent 五大自動化作業的執行順序與相依關係總覽：
+
+```
+Evaluator 判定本階段通過
+         │
+         ├─→ [1] 更新 traceability_matrix.md（追溯鏈寫回）
+         │         └─ 輸出 logs/alignment_report_{ts}.md
+         │
+         ├─→ [2] 更新 system_specification.md（規格同步寫回）
+         │         └─ 含 Gherkin 狀態回寫
+         │
+         ├─→ [3] 歸檔對話紀錄與 AI 調整紀錄
+         │         ├─ logs/conversation_{ts}.md
+         │         ├─ logs/ai_adjustment_{ts}.md
+         │         └─ logs/iteration_log.md（追加）
+         │
+         ├─→ [4] 建立階段 Baseline
+         │         ├─ baseline/phase-{NN}_v{M}/
+         │         ├─ MANIFEST.md（含 SHA-256 驗證）
+         │         └─ snapshot + diff pair
+         │
+         └─→ [5] 釋放下一階段權限
+                   └─ 更新 phase_gates.json（N → completed, N+1 → unlocked）
+```
+
+> ⚠️ **執行順序強制規則**：上述五項作業必須依序執行。任一步驟失敗（如 SHA-256 驗證不通過），則中止後續步驟，該階段標記為「待修復」，不釋放下一階段權限。
+
+---
+
+## 四、 快照管理與日誌儲存規則
 
 ### 1. 階段檢核結果自動向上回傳
 在安全軟體開發生命週期各階段應用軟體工程之 Plan、Generator、Evaluator 流程後，該階段之完整檢核結果必須自動上傳至上一層之全域主控 Agent，以利其隨時掌握與稽核全局狀態。
 * **本階段上傳內容包含**：
   * 本階段所有 Skill 配置參數。
-  * 執行快照（存放於該階段的 `snapshots/` 目錄）。
-  * 錯誤日誌、人機對話紀錄與版本差異（存放於該階段的 `logs/` 目錄，記錄臨時錯誤、對話與程式碼 Baseline 差異）。
-  * 階段交付物與驗證報告（存放於該階段的 `outputs/` 目錄）。
+  * 執行快照（存放於根目錄的 `snapshots/` 目錄）。
+  * 錯誤日誌、人機對話紀錄與版本差異（存放於根目錄的 `logs/` 目錄，記錄臨時錯誤、對話與程式碼 Baseline 差異）。
+  * 階段交付物與驗證報告（存放於本階段的 `outputs/` 目錄）。
 * **全域 Agent 接收並同步更新**：
   * 需求追溯鏈（更新至根目錄的 [traceability_matrix.md](file:///d:/00AI協作/SSDLC_Skill/traceability_matrix.md)）。
   * 規格文件（更新至根目錄的 [system_specification.md](file:///d:/00AI協作/SSDLC_Skill/system_specification.md)）。
-  * 對話紀錄與變更日誌（歸檔至全域對話紀錄中）。
-  * 新版 Baseline 穩定版本（以 Git tag 標記並更新快照基準）。
+  * 對話紀錄與變更日誌（歸檔至根目錄的 `logs/` 目錄）。
+  * 階段 Baseline（建立於根目錄的 `baseline/phase-{NN}_v{M}/`）。
+  * 階段關卡狀態（更新至根目錄的 `phase_gates.json`）。
 
 ### 2. 快照與日誌儲存規則
 
@@ -115,12 +332,12 @@
   - `diff_YYYYMMDD-HHMMSS.patch`：`git diff HEAD` 的完整差異補丁，用於快速回溯還原
 * **回溯還原**：AI 代理可讀取最新快照的 SHA-256 檔案清單，與當前工作目錄比對後載入差異補丁，直接還原至快照點狀態，不需重跑 Plan 階段，大幅降低 Token 消耗。
 * **快照保留規則**：`snapshots/` 目錄下僅保留最近 5 筆快照配對（snapshot_*.md + diff_*.patch）。當產生第 6 筆時，自動清理最舊的一對檔案，防止儲存空間膨脹。
-* **日誌記錄規則**：各階段的 `logs/` 目錄下必須詳實記錄 A 類與 B 類錯誤日誌、執行時的版本差異（例如程式碼與 Baseline 的 diff）以及人機對話紀錄，並定期輪轉清理。
+* **日誌記錄規則**：根目錄的 `logs/` 目錄下必須詳實記錄 A 類與 B 類錯誤日誌、執行時的版本差異（例如程式碼與 Baseline 的 diff）、人機對話紀錄（`conversation_*.md`）、AI 調整紀錄（`ai_adjustment_*.md`）、迭代日誌（`iteration_log.md`），並定期輪轉清理（參見第三節第 3 條）。
 * **系統固定限制**：系統固定關閉任何降級模式與輕量備援機制，Token 控制完全依靠「快照複用 + 錯誤分類 + 迭代次數上限」。
 
 ---
 
-## 四、 部署環境適配與進程守護通則
+## 五、 部署環境適配與進程守護通則
 
 為了確保系統在各類實體、虛擬或雲端部署環境下運行的穩定性，系統應遵循以下環境適配通則：
 

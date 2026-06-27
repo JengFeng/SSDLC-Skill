@@ -1,4 +1,4 @@
-﻿# AI 協作專案範本規格書 (TEMPLATE_SKILL.md)
+# AI 協作專案範本規格書 (TEMPLATE_SKILL.md)
 
 
 > 👉 **最高指導框架原則**：本範本規格書受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有目錄結構與配置定義皆不得與其衝突。
@@ -22,14 +22,17 @@
 │   ├── commands_reference.md                   # 指令集參照表
 │   └── Harness_Optimization_SKILL.md           # 專案框架優化技能 (口語或指令觸發地毯式檢查優化)
 │
-├── baseline/                                   # 全域組態基準存放區（@baseline 指令建立可獨立執行專案快照，保留最近 3 份）
+├── baseline/                                   # 全域組態基準存放區（含階段 Baseline: phase-{NN}_v{M}/ + 全域 Baseline，各自保留最近 3 份）
 │   └── .gitkeep
 │
 ├── snapshots/                                  # 全域執行快照備份區 (保留最近 5 筆)
 │   └── .gitkeep
 │
-├── logs/                                       # 全域錯誤日誌、對話紀錄與版本差異記錄區（各階段應用程式日誌統一輸出至此）
+├── logs/                                       # 全域日誌區（conversation_*.md 對話紀錄 + ai_adjustment_*.md AI 調整紀錄 + iteration_log.md 迭代日誌 + 應用程式日誌）
 │   └── .gitkeep
+│
+├── phase_gates.json                            # 階段關卡管控檔案（記錄各階段完成狀態、Baseline 參照、切換權限）
+│
 │
 ├── 00_cross_phase/                            # 跨階段全域共用 Skill 存放區
 │   ├── SKILL.md                                # 跨階段 Skill 整合定義
@@ -225,3 +228,4 @@ AI 代理在與使用者對話時，必須主動識別並代為執行以下對�
 *   當 AI 代理識別到類似的口語或語音輸入時，必須主動執行對應動作：
     1.  當識別到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」或「叫出指令對照表」等語音或口語輸入時，必須自動使用檔案讀取工具，在對話中呈現 [docs/commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容。
     2.  當識別到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，必須自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，對專案的各核心檔案之關聯與排版進行地毯式優化。
+

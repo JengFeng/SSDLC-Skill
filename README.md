@@ -1,4 +1,4 @@
-﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 88 個 AI 協作 Skill</strong>
@@ -101,9 +101,10 @@
 │   ├── SKILL.md                                # 階段 Skill 定義
 │   ├── inputs/                                 # 承接 05 階段 outputs
 │   └── outputs/                                # 故障分析與修補日誌輸出區
-├── baseline/                                   # @baseline 建立，保留最近 3 份
+├── baseline/                                   # @baseline 建立（含階段 Baseline + 全域 Baseline，各保留最近 3 份）
 ├── snapshots/                                  # 全域執行快照備份（保留最近 5 筆）
-├── logs/                                       # 全域錯誤日誌
+├── logs/                                       # 全域日誌區（對話紀錄 + AI 調整紀錄 + 迭代日誌 + 應用程式日誌）
+├── phase_gates.json                            # 階段關卡管控（各階段完成狀態與切換權限）
 ├── traceability_matrix.md                      # 全域需求追溯矩陣 (RTM)
 ├── system_specification.md                     # 系統功能規格書 SRS（IEEE 830 標準）
 ├── memory.md                                   # 腦力激盪與對話歷程記錄
@@ -198,3 +199,4 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 <p align="center">
   <sub>Built with Harness Engineering · Powered by AI Collaboration</sub>
 </p>
+

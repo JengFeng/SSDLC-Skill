@@ -1,0 +1,42 @@
+{
+  "project": "<專案初始化後自動填入>",
+  "last_updated": "<專案初始化後自動填入>",
+  "phases": {
+    "01_planning_and_analysis": {
+      "status": "locked",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null
+    },
+    "02_system_design": {
+      "status": "locked",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null
+    },
+    "03_implementation_and_coding": {
+      "status": "locked",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null
+    },
+    "04_testing": {
+      "status": "locked",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null
+    },
+    "05_deployment": {
+      "status": "locked",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null
+    },
+    "06_maintenance": {
+      "status": "locked",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null
+    }
+  }
+}

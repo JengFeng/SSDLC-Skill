@@ -1,4 +1,4 @@
-﻿# 專案開發規則與防線規範 (AGENTS.md)
+# 專案開發規則與防線規範 (AGENTS.md)
 
 👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
@@ -205,5 +205,6 @@ graph TD
     3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
     4.  保留最近 3 份 baseline，自動清理最舊版本。
     5.  寫入 memory.md 紀錄。
+
 
 
