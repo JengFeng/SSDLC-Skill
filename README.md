@@ -35,7 +35,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護監控 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 88 個 Skill**：Anthropic 官方 17 個 + Benson 自建 29 個 + GitHub 社群 41 個 + Anthropic 官方插件 1 個
+> **合計 88 個 Skill**：Anthropic 官方 17 個 + Benson 自建 28 個 + GitHub 社群 41 個 + Anthropic 官方插件 2 個
 
 ---
 
@@ -185,8 +185,8 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 本專案為開源專案，基於以下 GitHub 開放原始碼資源進行整合與歸類：
 
 - **Anthropic 官方 Skills**：取自 [anthropics/skills](https://github.com/anthropics/skills) 開源倉庫（17 個）
-- **Anthropic 官方插件**：取自 [claude-plugins-official](https://github.com/anthropics/claude-plugins-official)（1 個）
-- **Benson 自建 Skills**：取自 Benson 個人開源倉庫（29 個）  
+- **Anthropic 官方插件**：取自 [claude-plugins-official](https://github.com/anthropics/claude-plugins-official)（2 個）
+- **Benson 自建 Skills**：取自 Benson 個人開源倉庫（28 個）  
   > ⚠️ **注意**：Benson 自建 Skill 的原始倉庫連結需經 Benson 本人授權後方可公開存取。
 - **GitHub 社群 Skills**：取自各開放原始碼專案（41 個）
 

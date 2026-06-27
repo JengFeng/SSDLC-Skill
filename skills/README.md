@@ -1,6 +1,6 @@
-# 軟體開發流程技能目錄索引表
+﻿# 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（29）、GitHub 社群（41）、Anthropic 官方插件（1）等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（41）、Anthropic 官方插件（2）等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
@@ -21,7 +21,7 @@
 * **[pptx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/pptx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pptx)
 
-### Benson 自建技能 (12)
+### Benson 自建技能 (11)
 * **[grill-me](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/grill-me)**：需求釐清與拷問。在動手開發前，先讀文件並逐點拷問使用者以釐清需求，並將結論回寫。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/grill-me) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/grill-me)
 * **[project-pulse](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/project-pulse)**：專案把脈與問答。作為單一專案問答入口，串接知識庫、討論區與工項等來源進行分層作答。
@@ -30,8 +30,6 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/rfp-builder) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/rfp-builder)
 * **[proposal-doc](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/proposal-doc)**：服務建議書撰寫工具。內建去 AI 痕跡規則，撰寫高品質服務建議書並輸出為 Word 文件。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-doc) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-doc)
-* **[proposal-pptx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/proposal-pptx)**：一站式建議簡報產生器。套用大綱框架並內建備忘稿與講者備忘。
-  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-pptx) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-pptx)
 * **[quote-builder](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/quote-builder)**：報價單產生器。產生政府或企業估價報價單 Excel 檔案，內建多種職級人月單價與管理費稅率計算。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/quote-builder) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/quote-builder)
 * **[workplan-doc](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/workplan-doc)**：工作執行計畫書產生器。得標後第一份交付文件，包含需求訪談、導入規章與專案時程規畫。
@@ -157,10 +155,12 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/nx) / [原始 GitHub 倉庫](https://github.com/nrwl/nx)
 
 
-### Anthropic 官方插件技能 (1)
+### Anthropic 官方插件技能 (2)
 * **[[16] code-simplifier](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/code-simplifier)**：程式碼簡化與精煉。在保留所有功能的前提下，提升程式碼清晰度、一致性與可維護性。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/code-simplifier) / [原始 GitHub 倉庫](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)
 
+* **[proposal-pptx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/proposal-pptx)**：服務建議簡報一站式產出。基於 Anthropic 官方 `pptx` skill 的包裝擴充。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-pptx) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-pptx)
 ## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
 
