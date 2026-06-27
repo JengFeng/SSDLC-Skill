@@ -1,4 +1,4 @@
-# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 88 個 AI 協作 Skill</strong>
@@ -61,33 +61,52 @@
 
 ```
 [PROJECT_ROOT]/
-├── .agents/                     # 專案規章守則
+├── .agents/                                    # 專案規章守則
 │   └── AGENTS.md
-├── docs/                        # 核心文件
-│   ├── CORE_RULES.md            # 最高指導框架原則
-│   ├── TEMPLATE_SKILL.md        # 專案範本規格書
-│   └── commands_reference.md    # 指令集參照表
-├── 00_cross_phase/              # 跨階段全域共用 Skill
-├── 01_planning_and_analysis/    # 第一階段：規劃與需求分析
-│   ├── reg/                     # 需求歷程記錄（requirement_tracker.md）
-│   ├── inputs/                  # 原始需求輸入
-│   └── outputs/                 # 正規化規格輸出
-├── 02_system_design/            # 第二階段：系統設計
-│   ├── inputs/                  # 承接 01 階段 outputs
-│   └── outputs/                 # 七項標準產出（DB Schema、ER 圖、API 規格、UI 雛型、3 UML 圖）
-├── 03_implementation_and_coding/ # 第三階段：開發與編碼
-├── 04_testing/                  # 第四階段：測試驗證
-│   ├── bug/                     # Bug 追蹤（bug_tracker.md）
-│   └── outputs/                 # pytest + Playwright 測試報告
-├── 05_deployment/               # 第五階段：部署發布
-├── 06_maintenance/              # 第六階段：維護監控
-├── baseline/                    # 可獨立執行快照（@baseline 建立，保留最近 3 份）
-├── logs/                        # 全域錯誤日誌
-├── snapshots/                   # 全域執行快照備份（保留最近 5 筆）
-├── traceability_matrix.md       # 全域需求追溯矩陣 (RTM)
-├── system_specification.md      # 系統功能規格書 SRS（IEEE 830 標準）
-├── memory.md                    # 腦力激盪與對話歷程記錄
-└── AGENTS.md                    # 根目錄規則引導（指向 .agents/AGENTS.md）
+├── .vscode/                                    # IDE 整合設定
+│   └── tasks.json                              # VS Code 自動化防線工作設定檔
+├── docs/                                       # 核心文件
+│   ├── CORE_RULES.md                           # 最高指導框架原則
+│   ├── TEMPLATE_SKILL.md                       # 專案範本規格書
+│   ├── commands_reference.md                   # 指令集參照表
+│   └── Harness_Optimization_SKILL.md           # 框架優化技能（口語觸發地毯式檢查）
+├── 00_cross_phase/                             # 跨階段全域共用
+│   ├── SKILL.md                                # 跨階段 Skill 整合定義
+│   ├── inputs/                                 # 跨階段輸入區
+│   └── outputs/                                # 跨階段輸出區
+├── 01_planning_and_analysis/                   # 第一階段：規劃與需求分析
+│   ├── SKILL.md                                # 階段 Skill 定義
+│   ├── inputs/                                 # 原始需求輸入區
+│   ├── reg/                                    # 需求歷程記錄區（requirement_tracker.md）
+│   └── outputs/                                # 正規化規格輸出區
+├── 02_system_design/                           # 第二階段：系統設計
+│   ├── SKILL.md                                # 階段 Skill 定義
+│   ├── inputs/                                 # 承接 01 階段 outputs
+│   └── outputs/                                # 七項標準產出（DB Schema、ER 圖、API 規格、UI 雛型、3 UML 圖）
+├── 03_implementation_and_coding/               # 第三階段：開發與編碼
+│   ├── SKILL.md                                # 階段 Skill 定義
+│   ├── inputs/                                 # 承接 02 階段 outputs
+│   └── outputs/                                # 實作任務清單與單元測試輸出區
+├── 04_testing/                                 # 第四階段：測試驗證
+│   ├── SKILL.md                                # 階段 Skill 定義
+│   ├── inputs/                                 # 承接 03 階段 outputs
+│   ├── bug/                                    # Bug 追蹤（bug_tracker.md）
+│   └── outputs/                                # pytest + Playwright 測試報告
+├── 05_deployment/                              # 第五階段：部署發布
+│   ├── SKILL.md                                # 階段 Skill 定義
+│   ├── inputs/                                 # 承接 04 階段 outputs
+│   └── outputs/                                # 建置產物清單與簽章報告輸出區
+├── 06_maintenance/                             # 第六階段：維護監控
+│   ├── SKILL.md                                # 階段 Skill 定義
+│   ├── inputs/                                 # 承接 05 階段 outputs
+│   └── outputs/                                # 故障分析與修補日誌輸出區
+├── baseline/                                   # @baseline 建立，保留最近 3 份
+├── snapshots/                                  # 全域執行快照備份（保留最近 5 筆）
+├── logs/                                       # 全域錯誤日誌
+├── traceability_matrix.md                      # 全域需求追溯矩陣 (RTM)
+├── system_specification.md                     # 系統功能規格書 SRS（IEEE 830 標準）
+├── memory.md                                   # 腦力激盪與對話歷程記錄
+└── AGENTS.md                                   # 根目錄規則引導（指向 .agents/AGENTS.md）
 ```
 
 ---
