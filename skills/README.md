@@ -1,6 +1,6 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方的 17 個技能（skills）與 Benson 自建的 29 個技能（共 77 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方、Benson 自建、GitHub 社群開源及 Anthropic 官方插件等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
@@ -251,13 +251,9 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/test-driven-development) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
 * **[[08] verification-before-completion](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/verification-before-completion)**：完成前驗證。在聲稱工作完成、修復或通過之前執行驗證命令並確認輸出。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/verification-before-completion) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
-* **[[09] writing-plans](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/writing-plans)**
+* **[[09] writing-plans](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/writing-plans)**：撰寫實作計畫。在接觸程式碼之前，先制定多步驟任務的規格與需求。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/writing-plans) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
 * **[[10] ralph-loop](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/ralph-loop)**：自主 AI 開發循環。自動化修改→測試→驗證→保留/丟棄的迭代流程，具備智慧退出偵測。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/ralph-loop) / [原始 GitHub 倉庫](https://github.com/frankbria/ralph-claude-code)
-* * **[[12] llm-council](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/llm-council)**：LLM 委員會協作。多個大型語言模型協同討論，共同回答最困難的問題。（Karpathy 出品，21,569★）
-  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/llm-council) / [原始 GitHub 倉庫](https://github.com/karpathy/llm-council)
-
-**[[11] using-superpowers](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/using-superpowers)**：Skill 尋找與使用引導。教導 AI 代理如何在對話中主動發現、呼叫與使用可用技能。
-  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/using-superpowers) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)：撰寫實作計畫。在接觸程式碼之前，先制定多步驟任務的規格與需求。
-  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/writing-plans) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
-  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/diffsync) / [原始 GitHub 倉庫](https://github.com/google/diff-sync-match-patch)
+* **[[11] using-superpowers](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/using-superpowers)**：Skill 尋找與使用引導。教導 AI 代理如何在對話中主動發現、呼叫與使用可用技能。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/using-superpowers) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
