@@ -1,4 +1,4 @@
----
+﻿---
 name: Harness Optimization
 description: 執行整個駕馭工程的框架優化。當使用者說「幫我執行駕馭工程框架優化檢查」或「Harness Optimization Skill」時觸發，進行地毯式之檔案關聯性、格式與排版優化。
 ---
@@ -13,7 +13,7 @@ description: 執行整個駕馭工程的框架優化。當使用者說「幫我�
 
 ## 一、 核心檢查對照與關聯防線 (Linkage & Consistency)
 
-AI 代理必須依序對以下 8 大檢查組（涵蓋 17 組核心檔案與目錄）進行地毯式關聯性檢查，發現不一致或超連結失效時，必須立即進行同步優化：
+AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目錄）進行地毯式關聯性檢查，發現不一致或超連結失效時，必須立即進行同步優化：
 
 ### 1. 最高指導守則防線 (`docs/CORE_RULES.md`)
 *   **檢查點**：
@@ -50,21 +50,10 @@ AI 代理必須依序對以下 8 大檢查組（涵蓋 17 組核心檔案與目�
 *   **檢查點**：
     1. 確認 `memory.md` 記錄了最近一次的結構或規章變更，日期與內容與實際異動一致。
     2. 確認 `traceability_matrix.md` 格式符合 `docs/TEMPLATE_SKILL.md` 第二節中的範本定義（包含 REQ 編號、六階段追溯欄位）。
-    3. 確認 `system_specification.md` 格式符合範本定義，包含 IEEE 830 六章完整結構（緒論、整體描述、具體需求、UML 模型、驗收標準、附錄），且每個 Scenario 均有 `[狀態]` 標記。
+    3. 確認 `system_specification.md` 格式符合範本定義，包含 IEEE 830 六章完整結構（緒論、整體描述、具體需求、系統特性、驗收標準、附錄）。
+    4. 確認 `system_specification.md` 中所有引用之文件（UML 圖、API 規格、DB Schema、UI Prototype）皆已轉換為可點擊之相對超連結，點選後可直達目標檔案。
 
-### 4.5 測試階段產出完整性檢查 (04_testing/outputs/)
-*   **檢查點（附加）**：
-    1. 確認 04_testing/outputs/ 至少包含雙套測試：pytest API 測試（test_employee_crud.py）與 Playwright 瀏覽器 UI 測試（test_ui_playwright.py）。
-    2. 確認雙套測試均可獨立執行且全數通過。
-    3. 確認 test_results.md 包含兩套測試的逐項結果。
-
-### 4.2 專案記憶完整性檢查 (memory.md)
-*   **檢查點**：
-    1. 確認 memory.md 包含五大區塊：專案概覽、對話歷程（含時間戳）、關鍵決策紀錄、當前狀態、Git 版本歷程。
-    2. 確認記憶內容與實際專案狀態一致（階段進度、已執行指令、決策時間）。
-    3. 若 memory.md 僅有 @init 初始記錄，標記為「記憶缺漏」並提示補強。
-
-### 5. 技能目錄與歸類防線 (`skills/README.md`、`skills/SKILLS歸類.md`、根 `README.md`)
+### 5. Skill 目錄與列表防線 (`skills/README.md`、`skills/SKILLS歸類.md`)
 *   **檢查點**：
     1. 確認 `skills/README.md` 內所有 Skill 名稱皆為指向本機 `skills/` 實體路徑的可點擊超連結。
     2. 確認階段名稱為 SSDLC 六階段正名，且包含 `00_cross_phase` 跨階段全域共用分類。
@@ -81,21 +70,28 @@ AI 代理必須依序對以下 8 大檢查組（涵蓋 17 組核心檔案與目�
     3. 逐一比對各階段 `SKILL.md` 中的代理人職責定義，與 `docs/CORE_RULES.md` 中該階段的「核心用途」及「Skill 屬性」是否一致，確保無缺漏（特別注意 AI 輔助寫碼/Linter/Formatter、多服務部署/IaC、日誌收集/APM 監控等近期補強項目）。
     4. 確認 `skills/` 目錄下的 Skill 歸類與 `.agents/skills/` 的階段定義一致，無歸屬錯誤。
 
----
-
-### 7. 階段間交付物傳遞鏈防線 ( *_*/inputs/、 *_*/outputs/)
+### 7. 階段間交付物傳遞鏈防線 (`*_*/inputs/`、`*_*/outputs/`)
 *   **檢查點**：
     1. 確認各階段 inputs/ 目錄皆包含承接上游 outputs/ 的 brief 檔案（非僅 .gitkeep）。
     2. 確認 brief 檔案中明確引用上游階段 outputs/ 的具體檔案路徑，形成完整追溯鏈。
     3. 傳遞鏈依序檢查：01→02、02→03、03→04、04→05、05→06，確保無斷鏈。
 
-
-### 8. 全域日誌與快照防線 (logs/、snapshots/、aseline/)
+### 8. 全域日誌與快照防線 (`logs/`、`snapshots/`、`baseline/`)
 *   **檢查點**：
-    1. 確認專案根目錄 logs/ 目錄存在且非空（應包含應用程式日誌如 pp.log）。
-    2. 確認 snapshots/ 目錄存在（保留最近 5 筆快照）。
-    3. 確認 aseline/ 目錄存在且已建立 Git tag（格式 aseline-vX.Y.Z）。
-    4. 各階段應用程式日誌應統一輸出至全域 logs/，不應殘留於各階段 outputs/ 中。
+    1. 確認專案根目錄 `logs/` 目錄存在且非空（應包含應用程式日誌如 `app.log`）。
+    2. 確認 `snapshots/` 目錄存在（保留最近 5 筆快照）。
+    3. 確認 `baseline/` 目錄存在且已建立 Git tag（格式 `baseline-vX.Y.Z`）。
+    4. 各階段應用程式日誌應統一輸出至全域 `logs/`，不應殘留於各階段 `outputs/` 中。
+
+### 9. Baseline 可執行性驗證防線 (`baseline/*/run.bat`、`baseline/*/app.py`)
+*   **檢查點**：
+    1. **run.bat 語法與編碼檢查**：確認 `baseline/` 下各版本 `run.bat` 使用 UTF-8 BOM 編碼、首行含 `chcp 65001`、`cd /d "%~dp0"` 指向自身目錄、結尾含 `taskkill` 清理邏輯。
+    2. **Python 匯入檢查**：對每個 baseline 版本執行 `python -c "import <模組>"`（從該 baseline 目錄執行），確認無 `ModuleNotFoundError` 或 `SyntaxError`。
+    3. **Flask 啟動測試**：背景啟動 baseline app，對 `http://127.0.0.1:5000` 發出 HTTP GET 請求，確認回應狀態碼為 200，回應內容含 `</html>` 標籤。
+    4. **模板完整性檢查**：確認 `baseline/*/templates/` 目錄存在且含 `index.html`、`form.html`、`base.html`，各模板內容為有效 HTML。
+    5. **靜態資源檢查**：確認 `baseline/*/requirements.txt` 存在且內含 `flask` 依賴宣告。
+    6. **路徑一致性檢查**：確認 baseline 中 `app.py` 使用 `os.path.abspath(__file__)` 絕對路徑（非脆弱相對路徑），日誌與 DB 路徑指向正確的根層級 `logs/` 與自身目錄。
+*   **失敗處理**：任一檢查失敗即於對話中輸出「Baseline 可執行性驗證失敗報告」，包含版本號、失敗項目、根因分析、建議修復方案。
 
 ## 二、 格式與排版防線 (Formatting & Typesetting)
 
@@ -112,7 +108,7 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 當觸發「執行整個駕馭工程的框架優化」時，AI 代理必須執行以下步驟：
 
 ### 步驟一：靜態分析與關聯稽核 (Cross-Audit)
-1. 讀取上述 8 大檢查組（含根 README.md 在內共涵蓋 18+ 組核心檔案與目錄）的內容。
+1. 讀取上述 9 大檢查組（含根 README.md 在內共涵蓋 20+ 組核心檔案與目錄）的內容。
 2. 比對各超連結路徑，若有實體檔案移動或重命名，必須自動更新所有引用處的超連結。
 3. 檢查名詞定義（如 SSDLC 階段名稱、目錄名稱、Skill 名稱）在各檔案間是否一致，列出不連貫的清單。
 4. 檢查 `docs/TEMPLATE_SKILL.md` 目錄樹與實際專案目錄結構是否一致。
@@ -124,6 +120,12 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 3. 確保 `docs/TEMPLATE_SKILL.md` 範本中的目錄結構與註釋說明，隨時與實體規章之更新保持一致。
 4. 若發現任一階段 `SKILL.md` 內容與其實際 `skills/` 目錄下的技能配置或 `CORE_RULES.md` 定義不一致，自動同步更新。
 
-### 步驟三：產出報告與同步 Baseline (Report & Sync)
+### 步驟三：執行 Baseline 可執行性驗證 (Baseline Live Verification)
+1. 逐一對 `baseline/` 下所有版本執行第 9 組的所有檢查點（run.bat 語法、Python 匯入、HTTP 啟動測試、模板完整性）。
+2. 驗證期間若發現端口 5000 被佔用，先 `taskkill` 清理殘留程序後再重試。
+3. 若任一 baseline 版本驗證失敗，先嘗試自動修復（修正編碼、路徑、依賴缺失），修復後重新驗證。
+
+### 步驟四：產出報告與同步 Baseline (Report & Sync)
 1. 於對話中輸出框架優化成果報告（以「Status + Root Cause + Suggested Fix」格式說明修補處）。
-2. 自動建立 Git 暫存基線（Baseline），並在 `memory.md` 載入本次優化之異動紀錄。
+2. 輸出 Baseline 可執行性驗證摘要（各版本 HTTP 狀態碼、模板數量、檢查通過/失敗清單）。
+3. 自動建立 Git 暫存基線（Baseline），並在 `memory.md` 載入本次優化之異動紀錄。
