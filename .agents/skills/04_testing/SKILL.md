@@ -1,19 +1,66 @@
-# 階段 04：測試驗證 — Skill 配置
+﻿---
+name: 04_testing
+description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 + Playwright UI 測試）、Bug 追蹤與分類、測試覆蓋率報告產出，以及回歸測試策略制定。
+---
 
-## 已導入 Skill
-| 快捷 | Skill | 用途 |
-|:---|:---|:---|
-| 04 | playwright | 瀏覽器 UI 互動測試 |
-| 05 | pytest | API 功能測試 |
-| 06 | systematic-debugging | 系統化除錯：根因分析→修復→驗證 |
+# 測試驗證階段技能規範 (04_testing)
 
-## 標準產出
-- `test_employee_crud.py` — pytest API 測試
-- `test_ui_playwright.py` — Playwright 瀏覽器 UI 測試
-- `test_results.md` — 雙套測試結果報告
-- `bug/bug_tracker.md` — 統一缺陷追蹤表（ID、日期、嚴重度、根因、修復、狀態）
+本技能定義了開發團隊在測試驗證階段的標準作業程序（SOP）與代理職責。
 
-## Bug 追蹤規範
+> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
+
+## 一、 代理人職責規範
+
+### 1. Planner (規劃代理)
+*   **任務**：
+    1.  讀取 03 階段輸出的原始碼與單元測試結果 `outputs/unit_test_results.xml`，作為測試輸入。
+    2.  根據 `reg/requirement_tracker.md` 的需求追溯鏈，規劃雙軌測試範圍（API 端點覆蓋 + UI 互動覆蓋）。
+    3.  選定本階段適用的測試 Skill（pytest、Playwright、systematic-debugging）。
+    4.  定義測試通過標準（HTTP 狀態碼、回應內容驗證、UI 元素可見性、互動行為正確性）。
+*   **驗收標準**：測試計畫中必須明確定義每個 REQ ID 對應的測試案例、預期結果、以及失敗時的 Bug 登錄流程。
+
+### 2. Generator (執行代理)
+*   **核心鐵律**：**只執行、不判斷、不檢查、不修改**。
+*   **任務**：
+    1.  執行 pytest API 功能測試：對所有 API 端點進行請求/回應驗證（狀態碼、回應結構、資料正確性）。
+    2.  執行 Playwright 瀏覽器 UI 互動測試：模擬使用者操作流程（表單填寫、按鈕點擊、頁面跳轉）。
+    3.  將測試過程中的所有異常與失敗案例記錄為 Bug，登錄至 `bug/bug_tracker.md`（Bug ID、日期、嚴重度、描述、重現步驟）。
+    4.  產出雙套測試腳本：`outputs/test_api.py`（pytest）與 `outputs/test_ui.py`（Playwright）。
+    5.  完成後儲存執行快照至根目錄的 `snapshots/` 目錄。
+
+### 3. Evaluator (審查代理)
+*   **任務**：進行測試結果審查、Bug 分類與回歸測試策略制定。
+*   **審查重點**：
+    *   **需求測試覆蓋率 (35%)**：確認 `reg/requirement_tracker.md` 中每條需求皆有對應的測試案例，無未測試的需求。
+    *   **雙軌測試通過率 (30%)**：確認 pytest 與 Playwright 測試全數通過（或失敗案例已正確登錄為 Bug）。
+    *   **Bug 追蹤完整性 (20%)**：確認 `bug/bug_tracker.md` 中所有失敗案例皆有 Bug ID、嚴重度分類、重現步驟、根因分析。
+    *   **回歸測試策略 (15%)**：針對修復後的 Bug 制定回歸測試範圍，確保修復不引入新缺陷。
+*   **錯誤分類與重試**（依 CORE_RULES.md 規範）：
+    *   **A 類錯誤**（測試環境問題、API 逾時、DOM 元素暫態不可見、網路連線中斷）：局部重試最多 3 次，僅退回 Generator。
+    *   **B 類錯誤**（功能缺陷、需求未實作、API 回應結構錯誤、UI 行為不符規格）：登錄為 Bug 後立即升級全域迭代，上限 2 輪。
+
+---
+
+## 二、 輸入與輸出規範
+
+*   **輸入路徑 (`inputs/`)**：承接 03 階段 outputs（原始碼、`unit_test_results.xml`、`task_list.json`）。
+*   **輸出路徑 (`outputs/`)**：
+    *   `test_api.py`：pytest API 功能測試腳本。
+    *   `test_ui.py`：Playwright 瀏覽器 UI 測試腳本。
+    *   `test_results.md`：雙套測試結果報告（含通過/失敗統計、覆蓋率）。
+*   **Bug 追蹤 (`bug/`)**：
+    *   `bug_tracker.md`：統一缺陷追蹤表（Bug ID | 發現日期 | 嚴重度 | 描述 | 重現步驟 | 根因 | 修復方案 | 狀態 | 修復日期）。
+
+## 三、 Bug 追蹤規範
+
 所有測試缺陷統一記錄於 `bug/bug_tracker.md` 單一表格，不另建獨立 .md 檔案。
-欄位：Bug ID | 發現日期 | 嚴重度 | 描述 | 重現步驟 | 根因 | 修復方案 | 狀態 | 修復日期
-狀態值：✅ 已修復 | 🔄 處理中 | ⏳ 待處理 | ❌ 不予修復
+| 欄位 | 說明 |
+|:---|:---|
+| Bug ID | 唯一缺陷編號（格式：BUG_001, BUG_002...） |
+| 發現日期 | YYYY-MM-DD |
+| 嚴重度 | Critical / Major / Minor / Trivial |
+| 描述 | 一句話描述缺陷現象 |
+| 重現步驟 | 可重現的操作步驟 |
+| 根因 | 缺陷的根本原因分析 |
+| 修復方案 | 修復程式碼的簡要說明 |
+| 狀態 | ✅ 已修復 / 🔄 處理中 / ⏳ 待處理 / ❌ 不予修復 |
