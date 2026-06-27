@@ -10,7 +10,7 @@
                 "-ExecutionPolicy",
                 "Bypass",
                 "-Command",
-                "if (Test-Path docs/專案基準建立與還原指令.md) { & C:\\Users\\gary\\.gemini\\antigravity\\execute_baseline.ps1 -Action Backup } else { Write-Host '未找到基準建立指令，已自動進行 Git 暫存備份...'; git stash save 'Harness Baseline Auto-Backup' }"
+                "if (Test-Path docs/專案基準建立與還原指令.md) { & "$env:USERPROFILE\\.gemini\\antigravity\\execute_baseline.ps1" -Action Backup } else { Write-Host '未找到基準建立指令，已自動進行 Git 暫存備份...'; git stash save 'Harness Baseline Auto-Backup' }"
             ],
             "problemMatcher": [],
             "group": "build",
@@ -65,7 +65,7 @@
                 "-ExecutionPolicy",
                 "Bypass",
                 "-Command",
-                "if (Test-Path docs/專案基準建立與還原指令.md) { & C:\\Users\\gary\\.gemini\\antigravity\\execute_baseline.ps1 -Action Restore } else { Write-Host '還原中...'; git stash pop }"
+                "if (Test-Path docs/專案基準建立與還原指令.md) { & "$env:USERPROFILE\\.gemini\\antigravity\\execute_baseline.ps1" -Action Restore } else { Write-Host '還原中...'; git stash pop }"
             ],
             "problemMatcher": [],
             "presentation": {
