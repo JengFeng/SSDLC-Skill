@@ -257,3 +257,15 @@ run.bat
 ```
 
 > ⚠️ 此為示範用預設帳號，正式環境請立即更換密碼。
+
+## 全案規則補強與架構對齊 (2026-06-28 晚間)
+
+### 本次對話主要成果
+- SSOT 完整性監控：從強制封鎖改為互動決策（異常時詢問使用者退回或放行）
+- @CheckSpec 指令：四規格完整性與交叉一致性檢查
+- 階段性限制免責聲明：@security-check 報告強制標註非軟體因素未符合原因
+- 模板同步規則 (2.3.5)：專案 YAML 結構變更自動提示同步根層級模板
+- Harness_Optimization_SKILL.md 盲點修正：硬編碼→動態讀取、四規格擴增、符號統一
+- README.md 全面對齊：10 指令到位、tree 重組、Demo 90.5% 說明
+- 新增 check_spec_integrity.py + check_readme_commands.py
+- GitHub v1.1.0 commit + v1.1.1 Release

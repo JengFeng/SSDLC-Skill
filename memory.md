@@ -856,3 +856,64 @@ app = Flask(__name__, template_folder=os.path.join(APP_DIR, "templates"))
 - pp.py：template_folder 改為 APP_DIR/templates，LOG_DIR 改為 APP_DIR/logs
 - un.bat：標題 v3 → v5
 - 驗證：HTTP 200 ✅，登入表單 ✅，Security Headers ✅
+## v1.1.0 ~ v1.1.1 規則補強與架構對齊 (2026-06-28 全日晚間)
+
+### SSOT 完整性監控機制調整
+- 從「🔒 強制封鎖」改為「🛡️ 自動提醒 + 使用者決策」互動模式
+- 階段完成後 AI 自動執行 check_spec_integrity.py，異常時詢問使用者：退回修正 or 直接放行
+- 涉及檔案：.agents/AGENTS.md、demo_project/.agents/AGENTS.md（PDCA 流程圖 + 階段切換規則 + 2.4 節）
+
+### @CheckSpec 四規格完整性檢查指令
+- 新增指令 `@CheckSpec`，檢查四種規格完整性與交叉一致性：
+  - 結構化可執行規格（executable_spec.yaml）
+  - 行為可執行規格（requirements.feature）
+  - 系統規格書 SRS（system_specification.md）
+  - 追溯矩陣 RTM（requirement_tracker.md）
+- 支援口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」
+- 新增 check_spec_integrity.py：模式 A/B/C/D/S，支援中英文 Gherkin、SRS 參照、交叉一致性比對
+- 涉及檔案：docs/commands_reference.md、.agents/AGENTS.md、README.md、scripts/check_spec_integrity.py
+
+### 指令一致性自動檢查
+- 新增 check_readme_commands.py：比對 README.md 指令系統表格 vs docs/commands_reference.md 核心指令表
+- 整合至 align_framework.ps1 為 STEP 6，@optimize 時自動觸發
+- 首次執行發現 README 缺漏 @CheckSpec、@optimize、@unlock 三指令，已補齊
+
+### 階段性限制免責聲明規則
+- @security-check 檢核報告強制包含「階段性限制說明」章節
+- 非軟體因素（HTTPS 憑證、硬體安全等）導致未符合的項目，必須標註原因與階段性限制
+- README.md Demo 段落補上 Phase 3 普級檢核 90.5% 中 2 項未符合（HTTPS/TLS）的階段性限制說明
+- 涉及檔案：.agents/AGENTS.md、Security-Principles/SKILL.md、docs/commands_reference.md、README.md
+
+### 專案規格 ↔ 框架模板同步規則 (2.3.5)
+- 補上原本缺失的規則：專案層級 executable_spec.yaml 結構變更時，自動提示同步回根層級模板
+- 確保 @init 新專案不會拿到過時模板
+
+### Harness_Optimization_SKILL.md 盲點修正
+- 5.5 指令系統檢查：硬編碼 9 指令列表 → 改為動態讀取 commands_reference.md（避免版本演進過時）
+- 7 交付物傳遞鏈：從只檢查 brief → 擴增四規格檢查（YAML/Feature/SRS/RTM）+ spec_ref.md
+- 10 範例符號統一：⬚（虛線框）→ ✅/➖，與專案資安檢核符號一致
+- 步驟一：移除無法對應的虛浮數字（"13 大檢查組"→"各項檢查模組"、"35+ 組核心檔案"→"所有核心檔案"）
+
+### README.md 全面對齊
+- 指令系統：補齊 10 指令（@CheckSpec、@optimize、@unlock）、修正 @security-load 跑版
+- 標準專案目錄結構 tree：Phase 目錄（00~06）從根層級正確歸入 demo_project/ 下
+- 倉庫結構 table：更新 scripts 描述、依字母排序
+- Demo 段落：補上 90.5% 檢核率說明與 2 項階段性限制原因
+
+### GitHub 發布
+- v1.1.0 commit：67 files changed, +3400/-830（d79450e）
+- v1.1.1 tag + Release：中英雙語 release notes（規則補強、優化修正、新增腳本、Demo 專案）
+- 全倉 git history 僅單一作者（Jeng-Feng Yang），GitHub 顯示 3 貢獻者為 UI 計算瑕疵
+
+### 所有完成檔案清單
+- .agents/AGENTS.md — 規則補強（2.3.5、2.4 互動模式、@CheckSpec、免責聲明）
+- demo_project/.agents/AGENTS.md — 同步
+- docs/commands_reference.md — @CheckSpec 指令 + @security-check 免責聲明
+- docs/Harness_Optimization_SKILL.md — 5.5/7/10 盲點修正 + 步驟一數字
+- README.md — 指令/結構/Demo 全面對齊
+- external-resources/Security-Principles/SKILL.md — 免責聲明規範
+- scripts/check_spec_integrity.py — 新增（5 模式）
+- scripts/check_readme_commands.py — 新增（指令一致性檢查）
+- scripts/align_framework.ps1 — 附加 STEP 6
+- demo_project/0*_*/inputs/spec_ref.md — 7 階段完整建立
+- memory.md — 本記錄
