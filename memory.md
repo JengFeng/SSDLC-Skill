@@ -917,3 +917,15 @@ app = Flask(__name__, template_folder=os.path.join(APP_DIR, "templates"))
 - scripts/align_framework.ps1 — 附加 STEP 6
 - demo_project/0*_*/inputs/spec_ref.md — 7 階段完整建立
 - memory.md — 本記錄
+
+## 今日成果總結 (2026-06-28)
+
+| 領域 | 完成事項 |
+|:---|:---|
+| **SSOT 監控** | 強制封鎖 → 互動決策（提醒後讓使用者選擇退回或放行） |
+| **新指令** | `@CheckSpec` 四規格完整性 + 交叉一致性 |
+| **新腳本** | `check_spec_integrity.py`（5 模式）、`check_readme_commands.py` |
+| **新規則** | 2.3.5 模板同步、階段性免責聲明、align STEP 6 |
+| **盲點修正** | Harness_Optimization 硬編碼→動態、四規格擴增、符號統一 |
+| **架構對齊** | README 10 指令到位、tree 重組、Demo 說明 |
+| **GitHub** | v1.1.0 commit + v1.1.1 Release（中英雙語） |
