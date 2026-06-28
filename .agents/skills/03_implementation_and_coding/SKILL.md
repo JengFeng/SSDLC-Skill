@@ -1,4 +1,4 @@
----
+﻿---
 name: 03_implementation_and_coding
 description: 開發與編碼階段，負責將設計規格拆解為微小任務，進行 AI 輔助程式碼實作、代碼規範檢查、自動格式化、單元測試撰寫以及跨模組依賴整合管理。
 ---
@@ -11,12 +11,27 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
 
 ## 一、 代理人職責規範
 
+### 0. 安全防護整合（條件式）
+
+> 本節僅在 `phase_gates.json` 中 `security_baseline.enabled` 為 `true` 時啟用。
+
+*   **適用安全構面**：構面 1（存取控制）、構面 2（事件日誌）、構面 4（識別與鑑別）、構面 5（系統與服務獲得）、構面 6（系統與通訊保護）
+*   **對應參考文件**：`external-resources/Security-Principles/references/01_access_control.md`、`02_audit_logging.md`、`04_auth.md`、`05_acquisition.md`、`06_comm_protection.md`
+
+
 ### 1. Planner (規劃代理)
 *   **任務**：
     1.  讀取設計階段產出的 `openapi.yaml`、`db_schema.sql` 與 `ui_model.json`。
     2.  將開發工作拆解為微小的代碼實作任務。
     3.  分析跨模組依賴關係，標註任務間的相依性與整合順序。
-    4.  選定本階段適用的程式碼規範檢查工具（Linter）與自動格式化工具（Formatter）。
+    4.  **Skill 上下文推薦**：分析技術棧與設計規格，主動向使用者推薦：
+    - React/Next.js 專案 → 推薦 `react-best-practices`（效能最佳化）
+    - 使用 shadcn/ui 組件 → 推薦 `shadcn`（組件管理與樣式）
+    - Postgres/Supabase 資料庫 → 推薦 `supabase-postgres-best-practices`（查詢最佳化）
+    - Stripe 金流整合 → 推薦 `stripe-best-practices`（API 選擇與安全）
+    - 使用者決定採用、跳過、或換其他 Skill。不可未確認即載入。
+    - 另選定本階段適用的程式碼規範檢查工具（Linter）與自動格式化工具（Formatter）。
+    5.  **[條件式] 安全編碼規劃**：若 `security_baseline.enabled` 為 `true`，讀取構面 1/2/4/5/6 控制措施，選定安全編碼規範（OWASP Top 10 防範、輸入驗證、帳號鎖定、日誌框架、HTTPS 強制），納入任務清單 `task_list.json` 的安全需求欄位。
     5.  產出任務清單 `outputs/task_list.json`。
 *   **驗收標準**：任務清單中必須明確定義每一項任務的單元測試通過標準（如 Assert 條件）、相依模組清單，以及設定的 Linter/Formatter 規則。
 
@@ -31,6 +46,8 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
     6.  編寫對應的單元測試程式碼。
     7.  完成後執行編譯檢查，確認無語法錯誤。
     8.  完成後儲存執行快照至根目錄的 `snapshots/` 目錄。
+    9.  **[條件式] 安全實作**：若 `security_baseline.enabled` 為 `true`，實作以下安全控制：帳號鎖定機制（5次/15分）、日誌記錄（含使用者ID+IP+事件類型）、輸入驗證（SQL Injection/XSS防範）、HTTPS 強制導向、密碼雜湊儲存（bcrypt/Argon2）、RBAC 權限檢查。
+    10. **[條件式] 自動 SAST 掃描**：若 security_baseline.enabled 為 	rue，程式碼產生後自動執行 python scripts/security/run_security_scan.py <target_dir>。若 bandit 回報 HIGH 或 MEDIUM 等級問題 → A 類錯誤（退回 Generator 修復，最多 3 次）。若 pip-audit 發現已知漏洞相依套件 → B 類錯誤（升級全域迭代）。
 
 ### 3. Evaluator (審查代理)
 *   **任務**：進行代碼評審（Code Review）與測試執行。
@@ -38,8 +55,10 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
     *   **規格符合度 (35%)**：確認程式碼完全按照 `task_list.json` 實作。
     *   **代碼品質與規範 (25%)**：確認通過 Linter 檢查無警告、Formatter 已正確執行、無 Dead Code、邏輯清晰易讀。
     *   **測試涵蓋率 (20%)**：單元測試必須覆蓋所有關鍵業務邏輯分支，並產出 JUnit 格式的測試結果 `outputs/unit_test_results.xml`。
-    *   **安全與錯誤處理 (20%)**：確認輸入值有進行安全檢驗、有完整的 Exception Handling、跨模組介面無資安漏洞。
+    *   **安全與錯誤處理 (20%)**：確認輸入值有進行安全檢驗、有完整的 Exception Handling、跨模組介面無資安漏洞。**[條件式]** 若 `security_baseline.enabled` 為 `true`，額外檢查：帳號鎖定機制、日誌完整性（人事時地物）、密碼雜湊儲存、HTTPS 實作、RBAC 權限檢查，不符合者判定為 B 類錯誤。
+*   **安全關卡檢查**：若 `security_baseline.enabled` 為 `true` 且安全評分未達 `phase_gates.json` 中 `min_security_score`（預設 70%），則不論其他評分項目結果如何，判定為 **B 類錯誤**，強制退回 Generator 重新實作。安全評分來自：帳號鎖定 ✅/❌、日誌完整性 ✅/❌、密碼雜湊 ✅/❌、HTTPS ✅/❌、RBAC ✅/❌、輸入驗證 ✅/❌（每項 1 分，需達 min_security_score%）。
 *   **錯誤分類與重試**（依 CORE_RULES.md 規範）：
+
     *   **A 類錯誤**（編譯錯誤、Linter 警告、單元測試失敗、跨模組介面接合異常）：局部重試最多 3 次，僅退回 Generator。
     *   **B 類錯誤**（架構設計缺陷、模組間介面不相容、需求與設計矛盾）：立即升級全域迭代，上限 2 輪。
 
@@ -52,3 +71,7 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
     *   `task_list.json`：實作任務清單（含模組相依性標註）。
     *   `unit_test_results.xml`：單元測試執行結果報告。
     *   `lint_report.txt`：Linter 代碼規範檢查報告。
+
+*   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
+    *   `outputs/security_check_report.md` — Phase 3 資安防護基準檢核報告（@security-check 產出）
+    *   `outputs/security_scan_report.json` — SAST + 依賴掃描報告（run_security_scan.py 產出）

@@ -88,6 +88,18 @@
 * **A 類：執行層臨時錯誤**
   * 包含：參數錯誤、環境問題、API 超時、DOM 找不到元素、執行短暫衝突、網路連線中斷、權限異常等。
   * 處理方式：允許局部重試最多 3 次（退回 Generator）。
+
+---
+
+## 安全防護關卡阻斷機制 (Security Gate Enforcement)
+
+若專案啟用 Security-Principles（`security_baseline.enabled = true`）：
+
+*   **最低安全分數門檻**：每階段 Evaluator 審查時，安全評分需達 `phase_gates.json` 中 `min_security_score`（預設 70%），未達標 → **B 類錯誤**，強制退回 Generator，不得進入下一階段。
+*   **Phase 3 強制檢核**：Phase 3 完成前必須執行 `@security-check`，符合率低於門檻 → B 類錯誤。
+*   **安全回歸防線**：Phase 4/5/6 Evaluator 若安全分數較前一階段下降超過 10% → B 類錯誤，需回溯修正。
+*   **例外處理**：使用者可透過 `@unlock` 加註安全豁免理由，記錄於 `memory.md`。
+
 * **B 類：規劃層根源錯誤**
   * 包含：Skill 互斥、需求矛盾、設計缺陷、架構問題等。
   * 處理方式：直接跳過局部重試，立即升級全域迭代。
@@ -421,7 +433,7 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 * **快照格式**：每次階段完成或 `@baseline` 執行後，自動於 `snapshots/` 產生一對快照檔案：
   - `snapshot_YYYYMMDD-HHMMSS.md`：快照索引，包含 Git HEAD commit hash、完整檔案清單與 SHA-256 雜湊值、執行階段上下文（階段名稱、測試結果、需求追溯狀態）
   - `diff_YYYYMMDD-HHMMSS.patch`：`git diff HEAD` 的完整差異補丁，用於快速回溯還原
-* **回溯還原**：AI 代理可讀取最新快照的 SHA-256 檔案清單，與當前工作目錄比對後載入差異補丁，直接還原至快照點狀態，不需重跑 Plan 階段，大幅降低 Token 消耗。
+* **回溯還原**：AI 代理可透過 `@restore` 指令讀取最新快照的 SHA-256 檔案清單，與當前工作目錄比對後載入差異補丁，直接還原至快照點狀態，不需重跑 Plan 階段，大幅降低 Token 消耗。
 * **快照保留規則**：`snapshots/` 目錄下僅保留最近 5 筆快照配對（snapshot_*.md + diff_*.patch）。當產生第 6 筆時，自動清理最舊的一對檔案，防止儲存空間膨脹。
 * **日誌記錄規則**：根目錄的 `logs/` 目錄下必須詳實記錄 A 類與 B 類錯誤日誌、執行時的版本差異（例如程式碼與 Baseline 的 diff）、人機對話紀錄（`conversation_*.md`）、AI 調整紀錄（`ai_adjustment_*.md`）、迭代日誌（`iteration_log.md`），並定期輪轉清理（參見第三節第 3 條）。
 * **系統固定限制**：系統固定關閉任何降級模式與輕量備援機制，Token 控制完全依靠「快照複用 + 錯誤分類 + 迭代次數上限」。

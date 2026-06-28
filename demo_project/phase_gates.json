@@ -1,6 +1,6 @@
 {
   "project": "員工基本資料管理系統",
-  "last_updated": "2026-06-27T18:35:00",
+  "last_updated": "2026-06-28T19:00:00",
   "phases": {
     "01_planning_and_analysis": {
       "status": "completed",
@@ -68,5 +68,99 @@
       "completed_at": "2026-06-27T17:00:00"
     }
   },
-  "phase_baseline_enabled": true
+  "phase_baseline_enabled": true,
+  "security_baseline": {
+    "level": "medium",
+    "enabled": true,
+    "skill": "Security-Principles",
+    "skill_path": "external-resources/Security-Principles",
+    "last_checks": [
+      {
+        "checked_at": "2026-06-28T15:49:00",
+        "passed": 5,
+        "rate": "8.6%",
+        "level": "general",
+        "failed": 24,
+        "total": 58
+      },
+      {
+        "checked_at": "2026-06-28T15:49:00",
+        "passed": 5,
+        "rate": "7.1%",
+        "level": "medium",
+        "failed": 35,
+        "total": 70
+      },
+      {
+        "checked_at": "2026-06-28T15:49:00",
+        "passed": 5,
+        "rate": "6.3%",
+        "level": "high",
+        "failed": 45,
+        "total": 80
+      },
+      {
+        "phase": "02_system_design",
+        "failed": 4,
+        "level": "general",
+        "total": 29,
+        "passed": 22,
+        "rate": "75.9%",
+        "checked_at": "2026-06-28T18:00:00",
+        "not_applicable": 3
+      },
+      {
+        "rate": "100%",
+        "level": "general",
+        "phase": "03_implementation_and_coding",
+        "checks": [
+          {
+            "result": "pass",
+            "item": "HTTP 200 Response"
+          },
+          {
+            "result": "pass",
+            "item": "Security Headers (nosniff/DENY/XSS)"
+          },
+          {
+            "result": "pass",
+            "item": "CRUD Operations"
+          },
+          {
+            "result": "pass",
+            "item": "SQL Injection Defense"
+          },
+          {
+            "result": "pass",
+            "item": "XSS Defense"
+          },
+          {
+            "result": "pass",
+            "item": "Input Validation Logging"
+          },
+          {
+            "result": "pass",
+            "item": "DB Schema (security columns)"
+          }
+        ],
+        "checked_at": "2026-06-28T18:30:00",
+        "total": 7,
+        "test_type": "security_verification",
+        "passed": 7,
+        "failed": 0
+      },
+      {
+        "checked_at": "2026-06-28T19:00:00",
+        "passed": 19,
+        "level": "general",
+        "min_score_met": true,
+        "phase": "03_implementation_and_coding",
+        "total": 21,
+        "rate": "90.5%"
+      }
+    ],
+    "initialized_at": "2026-06-28T15:49:00",
+    "min_security_score": 70,
+    "block_on_fail": true
+  }
 }

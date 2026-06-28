@@ -1,4 +1,4 @@
-# AI 協作專案範本規格書 (TEMPLATE_SKILL.md)
+﻿# AI 協作專案範本規格書 (TEMPLATE_SKILL.md)
 
 
 > 👉 **最高指導框架原則**：本範本規格書受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有目錄結構與配置定義皆不得與其衝突。
@@ -53,21 +53,21 @@
 │   │   └── .gitkeep
 │   ├── reg/                                    # 需求歷程記錄區（統一 requirement_tracker.md 表格 + grill-me 對話記錄）
 │   │   └── .gitkeep
-│   └── outputs/                                # AI 萃取與正規化規格輸出區
+│   └── outputs/                                # AI 萃取與正規化規格輸出區（🔒 安全啟用時追加：security_requirements.md）
 │       └── .gitkeep
 │
 ├── 02_system_design/                           # 第二階段：系統設計
 │   ├── SKILL.md                                # 系統設計階段技能定義
 │   ├── inputs/                                 # 設計輸入區（承接 01 階段 outputs 正規化規格）
 │   │   └── .gitkeep
-│   └── outputs/                                # 設計模型與可執行規格輸出區（標準七項產出：db_schema.sql、er_diagram.md、api_spec.md、ui_prototype.html、use_case_diagram.md、activity_diagram.md、sequence_diagram.md（Mermaid 格式，可直接瀏覽器渲染；亦可保留 .puml 原始檔））
+│   └── outputs/                                # 設計模型與可執行規格輸出區（標準七項產出；🔒 安全啟用時追加：threat_model.md）
 │       └── .gitkeep
 │
 ├── 03_implementation_and_coding/               # 第三階段：開發與編碼
 │   ├── SKILL.md                                # 開發階段技能定義
 │   ├── inputs/                                 # 開發輸入區（承接 02 階段 outputs 設計規格）
 │   │   └── .gitkeep
-│   └── outputs/                                # 實作任務清單與單元測試輸出區
+│   └── outputs/                                # 實作任務清單與單元測試輸出區（🔒 安全啟用時追加：security_check_report.md、security_scan_report.json）
 │       └── .gitkeep
 │
 ├── 04_testing/                                 # 第四階段：測試驗證
@@ -76,21 +76,21 @@
 │   │   └── .gitkeep
 │   ├── bug/                                    # bug 歷程記錄區（統一 bug_tracker.md 表格，以 ID/日期/嚴重度/根因/修復/狀態追蹤）
 │   │   └── .gitkeep
-│   └── outputs/                                # 測試報告輸出區（標準產出：pytest API 測試腳本、Playwright UI 測試腳本、測試結果報告）
+│   └── outputs/                                # 測試報告輸出區（標準產出：pytest API 測試腳本、Playwright UI 測試腳本、測試結果報告；🔒 安全啟用時追加：dast_report.md、zap_report.html）
 │       └── .gitkeep
 │
 ├── 05_deployment/                              # 第五階段：部署發布
 │   ├── SKILL.md                                # 部署階段技能定義
 │   ├── inputs/                                 # 部署輸入區（承接 04 階段 outputs 測試報告與驗證碼）
 │   │   └── .gitkeep
-│   └── outputs/                                # 建置產物清單與簽章報告輸出區
+│   └── outputs/                                # 建置產物清單與簽章報告輸出區（🔒 安全啟用時追加：sbom.json、.env.example、security_deployment_checklist.md）
 │       └── .gitkeep
 │
 ├── 06_maintenance/                             # 第六階段：維護監控
 │   ├── SKILL.md                                # 維護階段技能定義
 │   ├── inputs/                                 # 維護輸入區（承接 05 階段 outputs 部署配置）
 │   │   └── .gitkeep
-│   └── outputs/                                # 故障分析與修補日誌輸出區
+│   └── outputs/                                # 故障分析與修補日誌輸出區（🔒 安全啟用時追加：security_trend.md、vulnerability_advisory.md）
 │       └── .gitkeep
 │
 ├── traceability_matrix.md                      # 全域需求追溯矩陣 (RTM) — 根目錄直觀查閱
@@ -123,7 +123,7 @@
 6.  **baseline/**：全域 Git tag 基準存放區，保留最近 5 筆穩定版本。
 7.  **reg/**：存放於  1_planning_and_analysis/ 下，為腦力激盪與口述需求的歷史記錄區。
 8.  **bug/**：存放於  4_testing/ 下，為測試缺陷歷史記錄區（重現步驟、修復歷程）。
-9.  **00_cross_phase/**：跨階段全域共用 Skill，用於版本控制、多 Agent 協作與程式碼差異同步等通用任務。
+9.  **🔒 安全產出物**：若 `security_baseline.enabled` 為 `true`，各階段 outputs/ 需額外產出安全相關文件（標註 🔒 者）。詳見各階段 SKILL.md 輸出路徑規範。`n9.  **00_cross_phase/**：跨階段全域共用 Skill，用於版本控制、多 Agent 協作與程式碼差異同步等通用任務。
 ## 二、 核心檔案初始化範本 (Core File Templates)
 
 ### 1. 需求追溯矩陣範本 (`traceability_matrix.md`)
@@ -209,15 +209,30 @@ AI 協作代理在處理新專案或新需求時，必須嚴格遵循以下對�
 
 ### 5. 專案記憶記錄協議 (memory.md)
 *   **強制記錄**：AI 代理在專案開發過程中，必須即時將以下事件寫入根目錄 `memory.md`：
-    *   每次對話 session 的開始與結束時間
+    *   每次對話 session 的開始與結束時間（含討論主題摘要、關鍵決策、產出檔案清單）
     *   每個 `@` 指令的執行（@init、@[階段]、@baseline 等）
     *   每個階段的開始與完成，含產出檔案清單
     *   每項關鍵技術決策（技術棧選擇、架構決策、規則變更）
     *   每個 Bug 的發現與修復
     *   當前進度與下一步建議
+*   **記錄粒度**：每次有意義的對話段落結束時必須寫入一筆記錄，單一 session 可含多筆記錄。不可只在 session 完全結束時才補寫。
 *   **接續機制**：若對話中斷，下一 session 的 AI 代理必須先完整讀取 `memory.md`，以還原專案狀態後繼續作業。
 *   **格式**：Markdown，含專案概覽、對話歷程（時間戳）、關鍵決策、當前狀態、Git 版本歷程五節。
+*   **@optimize 自動檢查**：`Harness_Optimization_SKILL.md` Group 4 將檢查 `memory.md` 最後記錄時間戳是否在本次 session 期間，若無則自動補寫本次會話記錄。
 
+
+
+### 4.5 上下文感知 Skill 推薦協議 (Context-Aware Skill Recommendation)
+
+> **設計原則**：Skill 不應強制綁定。AI 代理根據對話上下文**主動推薦**，由使用者決定。
+
+*   **觸發情境對照**：
+    | 關鍵詞 | 推薦 Skill | 說明 |
+    |:---|:---|:---|
+    | UI/前端/網頁/畫面/登入頁 | `frontend-app-builder` | 高品質現代化 UI（漸層/動畫/SVG/RWD） |
+    | 圖表/資料視覺化/儀表板 | `build-web-data-visualization` | 圖表選擇與設計 |
+    | 安全/資安/弱點/滲透 | Security-Principles | 資安防護基準檢核 |
+*   **推薦流程**：AI 分析上下文 → 1-2 句簡述推薦原因 → 使用者（採用/跳過/換其他）→ 不可未確認即載入
 
 ### 4. AI 代理對話指令協議 (AI Conversation Protocol)
 AI 代理在與使用者對話時，必須主動識別並代為執行以下對話指令：

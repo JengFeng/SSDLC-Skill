@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<a href="{{url_for('index')}}" class="back-link">← 返回員工列表</a>
+<div class="form-card"><h2 style="margin-bottom:20px;color:#1a73e8">{{'編輯員工' if action=='edit' else '新增員工'}}</h2>
+<form method="post">
+<div class="form-group"><label>姓名</label><input type="text" name="name" value="{{employee.get('name','')}}" required></div>
+<div class="form-group"><label>部門</label><input type="text" name="department" value="{{employee.get('department','')}}" required></div>
+<div class="form-group"><label>職稱</label><input type="text" name="title" value="{{employee.get('title','')}}" required></div>
+<div class="form-group"><label>電子郵件</label><input type="email" name="email" value="{{employee.get('email','')}}" required></div>
+<div class="form-group"><label>到職日期</label><input type="date" name="hire_date" value="{{employee.get('hire_date','')}}" required></div>
+<div class="form-actions"><button type="submit" class="btn btn-success">{{'更新' if action=='edit' else '新增'}}</button><a href="{{url_for('index')}}" class="btn btn-outline">取消</a></div></form></div>{% endblock %}

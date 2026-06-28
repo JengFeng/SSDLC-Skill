@@ -1,0 +1,3 @@
+display_name: 資安防護基準
+short_description: 政府機關資通系統 7 構面安全檢核，支援普/中/高三等級防護基準與資安稽核
+default_prompt: 請依本專案資通系統防護等級，執行對應的資安防護基準檢核。

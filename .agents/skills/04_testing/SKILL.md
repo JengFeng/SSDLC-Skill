@@ -11,11 +11,25 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
 
 ## 一、 代理人職責規範
 
+### 0. 安全防護整合（條件式）
+
+> 本節僅在 `phase_gates.json` 中 `security_baseline.enabled` 為 `true` 時啟用。
+
+*   **適用安全構面**：構面 5（系統與服務獲得—測試階段）、構面 7（系統與資訊完整性）
+*   **對應參考文件**：`external-resources/Security-Principles/references/05_acquisition.md`、`07_integrity.md`
+
+
 ### 1. Planner (規劃代理)
 *   **任務**：
     1.  讀取 03 階段輸出的原始碼與單元測試結果 `outputs/unit_test_results.xml`，作為測試輸入。
     2.  根據 `reg/requirement_tracker.md` 的需求追溯鏈，規劃雙軌測試範圍（API 端點覆蓋 + UI 互動覆蓋）。
-    3.  選定本階段適用的測試 Skill（pytest、Playwright、systematic-debugging）。
+    3.  **Skill 上下文推薦**：分析專案類型與測試需求，主動向使用者推薦：
+    - 有前端/瀏覽器 UI → 推薦 `Playwright`（預錄腳本自動化測試，高覆蓋率）
+    - 純 API/後端 → 推薦 `pytest`（API 端點測試）
+    - 遇到 Bug/測試失敗 → 推薦 `systematic-debugging`（系統性除錯）
+    - 欲採用測試先行 → 推薦 `test-driven-development`（TDD 紅綠重構循環）
+    - 使用者決定採用、跳過、或換其他 Skill。不可未確認即載入。
+    4.  **[條件式] 安全測試規劃**：若 `security_baseline.enabled` 為 `true`，讀取構面 5/7 控制措施，選定 SAST 工具（如 Bandit/SonarQube）、弱點掃描工具、滲透測試範圍，納入測試計畫。
     4.  定義測試通過標準（HTTP 狀態碼、回應內容驗證、UI 元素可見性、互動行為正確性）。
 *   **驗收標準**：測試計畫中必須明確定義每個 REQ ID 對應的測試案例、預期結果、以及失敗時的 Bug 登錄流程。
 
@@ -27,14 +41,16 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
     3.  將測試過程中的所有異常與失敗案例記錄為 Bug，登錄至 `bug/bug_tracker.md`（Bug ID、日期、嚴重度、描述、重現步驟）。
     4.  產出雙套測試腳本：`outputs/test_api.py`（pytest）與 `outputs/test_ui.py`（Playwright）。
     5.  完成後儲存執行快照至根目錄的 `snapshots/` 目錄。
+    6.  **[條件式] 安全測試執行**：若 `security_baseline.enabled` 為 `true`，執行 SAST 原始碼安全檢測、弱點掃描、OWASP Top 10 漏洞驗證，產出 `outputs/security_test_report.md`。
 
 ### 3. Evaluator (審查代理)
 *   **任務**：進行測試結果審查、Bug 分類與回歸測試策略制定。
 *   **審查重點**：
-    *   **需求測試覆蓋率 (35%)**：確認 `reg/requirement_tracker.md` 中每條需求皆有對應的測試案例，無未測試的需求。
-    *   **雙軌測試通過率 (30%)**：確認 pytest 與 Playwright 測試全數通過（或失敗案例已正確登錄為 Bug）。
+    *   **需求測試覆蓋率 (30%)**：確認 `reg/requirement_tracker.md` 中每條需求皆有對應的測試案例，無未測試的需求。
+    *   **雙軌測試通過率 (25%)**：確認 pytest 與 Playwright 測試全數通過（或失敗案例已正確登錄為 Bug）。
     *   **Bug 追蹤完整性 (20%)**：確認 `bug/bug_tracker.md` 中所有失敗案例皆有 Bug ID、嚴重度分類、重現步驟、根因分析。
-    *   **回歸測試策略 (15%)**：針對修復後的 Bug 制定回歸測試範圍，確保修復不引入新缺陷。
+    *   **回歸測試策略 (10%)**：針對修復後的 Bug 制定回歸測試範圍，確保修復不引入新缺陷。
+    *   **安全測試通過率 (15%)（條件式）：若 `security_baseline.enabled` 為 `true`，確認 SAST/弱點掃描無 Critical/High 風險。若未啟用則此項權重歸還：需求覆蓋 35% + 雙軌 30% + 回歸 15%。
 *   **錯誤分類與重試**（依 CORE_RULES.md 規範）：
     *   **A 類錯誤**（測試環境問題、API 逾時、DOM 元素暫態不可見、網路連線中斷）：局部重試最多 3 次，僅退回 Generator。
     *   **B 類錯誤**（功能缺陷、需求未實作、API 回應結構錯誤、UI 行為不符規格）：登錄為 Bug 後立即升級全域迭代，上限 2 輪。
@@ -64,3 +80,7 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
 | 根因 | 缺陷的根本原因分析 |
 | 修復方案 | 修復程式碼的簡要說明 |
 | 狀態 | ✅ 已修復 / 🔄 處理中 / ⏳ 待處理 / ❌ 不予修復 |
+
+*   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
+    *   `outputs/dast_report.md` — DAST 動態測試報告（HTTP Headers + OWASP ZAP 結果摘要）
+    *   `outputs/zap_report.html` — OWASP ZAP 完整掃描報告（若 ZAP 可用）

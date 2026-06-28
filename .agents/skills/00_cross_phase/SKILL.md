@@ -1,4 +1,4 @@
-﻿---
+---
 name: 00_cross_phase
 description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的通用工具，包含版本控制、多 Agent 協作、程式碼差異同步、自主迭代研究與 TDD 流程。
 ---
@@ -64,4 +64,76 @@ description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的
 | 08 | verification-before-completion | 完成前強制驗證 |
 | 09 | writing-plans | 多步驟任務規劃與規格撰寫 |
 | 10 | ralph-loop | 自主 AI 開發循環（修改→測試→驗證→保留） |
+
+| 12 | security-principles | 資通系統防護基準檢核（7構面/80項控制措施，支援普/中/高三等級） |
 | 11 | using-superpowers | Skill 尋找與使用引導 |
+
+## 四、 資安防護基準整合規範 (Security-Principles)
+
+### 1. 初始化階段引用（@init 指令）
+
+於 @init 指令執行專案初始化時，Planner 必須詢問使用者：
+「本專案是否需導入資通系統防護基準（Security-Principles）？」
+若使用者同意，則進一步詢問系統防護等級（普/中/高），並執行以下步驟：
+
+1.  呼叫 Security-Principles/scripts/generate_checklist.py <等級> 產生對應檢核表
+2.  將檢核表存至當前階段或專案根目錄的 outputs/ 目錄
+3.  在專案 phase_gates.json 中記錄已選用之安全等級
+
+### 2. 階段中途呼叫（@security-check 指令）
+
+於任一 SSDLC 階段執行期間，可隨時呼叫本 Skill 進行安全檢核：
+
+- **指令語法**：@security-check [等級]
+- **口語觸發**：「執行資安檢核」「以普級防護基準檢查」「資通安全稽核」「弱點掃描檢查清單」
+- **AI 代理執行步驟**：
+  1.  載入對應等級之檢核表（ssets/checklist_*.md）
+  2.  根據當前 SSDLC 階段，篩選適用的控制措施構面（參照 SKILL.md 中 7 構面 vs SSDLC 階段對照表）
+  3.  逐項比對當前系統產出是否符合控制措施要求
+  4.  產出檢核報告（含符合/不符合/不適用狀態、佐證說明）
+  5.  將報告存入當前階段 outputs/security_check_report.md
+
+### 3. 與現有 Skill 之相容性檢查
+
+每次載入或引用 Security-Principles Skill 時，Planner 必須執行以下相容性檢查：
+
+1.  **規則重複檢查**：比對 Security-Principles 各構面控制措施與現有 6 階段 SKILL.md 內容，偵測重複定義之規則
+2.  **規則衝突檢查**：偵測 Security-Principles 控制措施與現有 Skill 規則之間是否存在矛盾（例如：安全要求 vs 效能最佳實踐衝突）
+3.  **警示機制**：
+    - 發現重複規則 → 輸出 [INFO] 提示，說明重複項目及所在檔案
+    - 發現衝突規則 → 輸出 [WARN] 警示，列出衝突項目、所在檔案，暫停執行等候使用者確認
+    - 無衝突 → 輸出 [OK] 確認，繼續執行
+
+
+### 5. 階段中途安全導入（@security-load 指令）
+
+於任一 SSDLC 階段執行期間，若 @init 時未導入 Security-Principles，
+或僅需針對特定安全面向強化，可呼叫本指令：
+
+- **指令語法**：`@security-load [等級] [構面1,構面2,...]`
+- **口語觸發**：「載入資安構面」「導入安全防護」「只加存取控制和日誌」
+- **AI 代理執行步驟**：
+  1.  無參數時：列出 8 構面清單（含各等級項目數），供使用者選擇
+  2.  讀取 `phase_gates.json`，若 `security_baseline` 不存在則自動建立
+  3.  載入選定構面的 reference 文件，篩選指定等級控制措施
+  4.  執行相容性檢查（比對當前階段已載入 Skill，偵測重複/衝突）
+  5.  更新當前階段 `SKILL.md` 中「安全防護整合」段落
+   5.5 回溯補寫：若本指令在 Phase 2 之後執行，自動對所有已完成階段補寫安全整合段落與 design_brief.md。
+
+  6.  更新 `phase_gates.json` 記錄選定構面與等級
+  7.  產出階段專屬檢核表至 `outputs/`
+*   **使用範例**：
+    - `@security-load` → 列出構面清單
+    - `@security-load medium` → 全構面中級導入
+    - `@security-load general 1,4,6` → 僅導入存取控制+識別鑑別+通訊保護
+
+### 4. Skill 實體路徑
+
+本 Skill 之完整實體位於：
+xternal-resources/Security-Principles/
+
+包含：
+- SKILL.md — 主技能定義
+- eferences/ — 7 構面詳細控制措施
+- ssets/ — 普/中/高三等級檢核表
+- scripts/generate_checklist.py — 檢核表產生工具

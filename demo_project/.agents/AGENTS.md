@@ -1,4 +1,4 @@
-# 專案開發規則與防線規範 (AGENTS.md)
+﻿# 專案開發規則與防線規範 (AGENTS.md)
 
 👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
@@ -100,10 +100,17 @@ graph TD
 
 為極簡化專案配置流程，AI 代理在與使用者對話時，必須主動辨識並執行以下對話指令：
 
-### 1. 階段查詢指令：`@stages`
+### 0. 指令參照查詢指令：`@help`
+*   **指令定義**：立即顯示指令集參照表的完整內容，方便使用者快速查閱所有可用指令與語法。
+*   **AI 代理執行規範**：
+    1.  AI 代理必須讀取 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容。
+    2.  將內容以結構化方式呈現於對話中，包含所有指令的語法、參數與用途說明。
+
+### 1\. 階段查詢指令：`@stages`
 *   **指令定義**：查詢 SSDLC 各開發階段之代碼與中文名稱對照。
 *   **AI 代理執行規範**：
-    1.  必須立即輸出以下對照表：
+    1.  必須立即輸出以下對照表（六大核心開發階段 + 跨階段全域共用層）：
+        *   `00` : 跨階段全域共用 (cross_phase)
         *   `01` : 規劃與需求分析 (planning_and_analysis)
         *   `02` : 系統設計 (system_design)
         *   `03` : 開發與編碼 (implementation_and_coding)
@@ -137,9 +144,6 @@ graph TD
         *   將其 instructions 與規範分別以 `## [Skill 實體名稱] 規範` 為標題封裝，動態追加合併至該開發階段目錄下的 `SKILL.md` 中，並加上導入註記。
         *   同步更新 `.agents/skills/[階段]/SKILL.md`，加入該 Skill 的用途描述與快捷編號對照。
         *   若某階段尚未有 `SKILL.md`，則依據 `TEMPLATE_SKILL.md` 範本初始化後再行合併。
-        *   依序讀取所選之各 Skill 的 `SKILL.md` 內容。
-        *   將其 instructions 與規範分別以 `## [Skill 實體名稱] 規範` 為標題封裝，動態追加合併至該開發階段目錄下的 `SKILL.md` 中，並加上導入註記。
-        *   若某階段尚未有 `SKILL.md`，則依據 `TEMPLATE_SKILL.md` 範本初始化後再行合併。
     6.  **衝突處理**：動態合併時若出現重疊或矛盾的 instructions，以全局規章 `.agents/AGENTS.md` 為最高準則；若無法自動判定，必須列出衝突點由使用者手動裁決，嚴禁自行腦補。
     7.  **重複導入防護**：若目標目錄已存在同名 Skill，AI 必須提示使用者進行「覆蓋（Overwrite）」或「放棄（Abort）」。
     8.  **組態追溯**：在 `traceability_matrix.md` 中一次性登錄此次（或此批）Skill 導入的快捷編號、實體名稱、時間與版本。
@@ -151,21 +155,178 @@ graph TD
     2.  於指定路徑下建立完整的 SSDLC 目錄結構與 `.gitkeep`。
     3.  自動生成基礎控制檔案：`traceability_matrix.md`、`system_specification.md`、`memory.md`，以及在根目錄建立引導檔 `AGENTS.md`（指向實體規章 `.agents/AGENTS.md`）。
     4.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
+     5.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
+        *   適用安全構面清單（依各階段對照表）
+        *   對應參考文件路徑（`external-resources/Security-Principles/references/0X_*.md`）
+        *   對應等級檢核表路徑
+        *   參照框架層 `SKILL.md` 安全整合段落的提示
+        *   **目的**：確保後續各階段 Generator/Evaluator 執行時，能讀取到安全實作要求，避免「設計有定義、程式未實作」的斷鏈。
 
-### 6. 專案基線快照指令：`@baseline`
-*   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
-*   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
-*   **AI 代理執行規範**：
-    1.  計算下一個版本號（baseline-v1, v2, v3...）。
-    2.  複製完整可執行專案（app.py + templates/ + requirements.txt + run.bat + employee.db）至 `baseline/baseline-v{N}/`。
-    3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
-    4.  保留最近 3 份 baseline，自動清理最舊版本。
-    5.  寫入 memory.md 紀錄。
-
-3.  當辨識到類似「建立基線」、「新建 Baseline」、「儲存專案快照」等語意時，AI 代理必須自動執行 @baseline 指令，建立可獨立執行快照至 aseline/ 目錄。
 
 ### 5. 自然語言與語音喚出協議
 *   **語意觸發規範**：AI 代理在與使用者對話時，必須主動識別使用者的自然語言或語音口語輸入：
     1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
     2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
 
+
+
+
+### 4.5 上下文感知 Skill 推薦機制
+
+> **設計理念**：不將特定 Skill 強制綁定到階段流程中，而是讓 AI 代理根據對話上下文**智慧推薦**，由使用者決定是否採用。保持彈性，避免寫死。
+
+#### 完整情境對照表
+
+| 階段 | 情境關鍵詞 | 推薦 Skill | 說明 |
+|:---|:---|:---|:---|
+| **01 規劃** | 需求模糊/缺口多 | `grill-me` | 結構化缺口拷問，強制釐清模糊點 |
+| | 創意發想/探索 | `brainstorming` | 腦力激盪與創意展開 |
+| | 大量文件/RFP | `langchain` | 文件分析與處理 |
+| **02 設計** | UI/前端/網頁/畫面 | `frontend-app-builder` | 高品質現代化 UI（漸層/動畫/SVG/RWD） |
+| | 資料視覺化/圖表 | `build-web-data-visualization` | 圖表選擇與設計 |
+| | UML/架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
+| **03 開發** | React/Next.js | `react-best-practices` | 效能最佳化（memo/Suspense/Image） |
+| | shadcn/ui 組件 | `shadcn` | 組件管理與樣式設計 |
+| | Postgres/Supabase | `supabase-postgres-best-practices` | 查詢最佳化與索引設計 |
+| | Stripe 金流 | `stripe-best-practices` | API 選擇與安全整合 |
+| **04 測試** | 前端/瀏覽器 UI | `Playwright` | 預錄腳本自動化測試，高覆蓋率 |
+| | API/後端 | `pytest` | API 端點測試與回歸 |
+| | Bug/測試失敗 | `systematic-debugging` | 系統性根因分析與修復 |
+| | 測試先行/TDD | `test-driven-development` | 紅綠重構循環 |
+| **05 部署** | CI/CD 管線 | `circleci` | 自動化建置、測試、部署 |
+| | Expo/App 上架 | `expo-deployment` | App Store/Play Store 發佈 |
+| **06 維護** | 線上錯誤追蹤 | `sentry` | 即時錯誤監控與事件分析 |
+| | 效能/瓶頸問題 | `systematic-debugging` | 根因分析與 Hotfix |
+| **全域** | 安全/資安檢核 | Security-Principles | 資通系統防護基準（普/中/高） |
+| | 版本控制/回溯 | Git + `@restore` + `@baseline` | SSOT 快照與還原 |
+
+#### 推薦流程（白話版）
+
+> AI 就像一個有經驗的隊友。聽你描述需求時，發現「這情況用某個工具會更好」，就會順口問你一句「要不要試試這個？」。你可以說好、說不用、或說換別的。不強迫、不自動套用。
+
+實際例子：
+```
+你：「幫我做一個員工登入頁面」
+AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
+     它可以做漸層背景、動畫那種現代化的頁面，比基礎樣式好看很多。」
+你：「好，用這個」   ← 採用
+你：「不用，簡單就好」 ← 跳過
+你：「有沒有別的？」 ← 換其他
+```
+
+#### 階段整合
+
+各階段 `SKILL.md` 的 Planner 已經從「預設調用」全面改成「看情況推薦」，要不要用由你決定。
+
+
+### 5. 框架優化指令：`@optimize`
+*   **指令定義**：⚠️ **框架建造者專用**。觸發 Harness Optimization，對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。
+*   **口語觸發**：「幫我執行駕馭工程框架優化檢查」、「Harness Optimization」、「對齊所有」、「對齊架構」、「幫我對齊架構」、「檢查全案關聯」、「規範落實度檢查」、「CORE_RULES 落差掃描」。
+*   **AI 代理執行規範**：
+    1.  執行前必須確認當前工作目錄為框架根目錄。
+    2.  顯示警告提示：「⚠️ 框架建造者專用指令。@optimize 將對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。此指令僅限框架建造者使用，專案開發者請勿呼叫。」
+    3.  取得使用者確認後，**首先執行 `scripts/align_framework.ps1` 進行動態掃描與自動修復**（倉庫結構 table ↔ 實際檔案系統對齊、標準結構 tree 交叉比對、必要章節完整性驗證），再依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
+    4.  修復完成後輸出報告，並自動建立 Git 暫存基線，寫入 memory.md。
+    5.  最後執行 CORE_RULES 規範 vs 實際落實落差掃描做為收斂性終檢：逐條比對 CORE_RULES.md 中所有「必須」、「自動」、「強制」等可執行規範條目是否已在專案中實際落實，產出落差清單（已落實 ✅ / 未落實 ❌ / 無需落實 ⬚），❌ 項目判定為 B 類錯誤並立即修復。
+
+### 6. 快照回溯指令：`@restore`
+*   **指令定義**：回溯工作目錄至指定的執行快照，快速還原至先前穩定狀態，不需重跑整個 Plan 階段。
+*   **口語觸發**：「回溯快照」、「還原快照」、「退回上一步」、「載入快照」、「回復到之前的快照」、「還原到 X 分鐘前的狀態」、「回到上一個 snapshot」、「復原工作目錄」。
+*   **參數說明**：
+    | 參數 | 行為 |
+    |:---|:---|
+    | 無（預設） | 列出最近 5 筆快照（時間戳 + Git HEAD + 階段上下文），讓使用者選擇回溯目標 |
+    | `latest` | 直接回溯到最新快照，跳過選擇步驟 |
+    | `N`（1~5） | 回溯到倒數第 N 筆快照（1 = 最新，2 = 次新…） |
+    | `YYYYMMDD-HHMMSS` | 回溯到指定時間戳的快照 |
+*   **AI 代理執行規範**：
+    1.  **快照定位**：掃描 `snapshots/` 目錄，讀取所有 `snapshot_*.md`，依時間戳排序。
+    2.  **摘要顯示**（無參數時）：列出最近 5 筆快照的摘要資訊（時間戳、Git HEAD 前 7 碼、檔案數量、執行階段、測試結果）。
+    3.  **⚠️ 警告提示**：回溯將覆蓋當前工作目錄變更。AI 代理必須顯示警告：「⚠️ 回溯至 [時間戳] 快照將覆蓋當前工作目錄的未提交變更。系統將自動執行 git stash 保留這些變更。確認回溯？」
+    4.  **安全網**：
+        *   自動執行 `git stash` 保留當前未提交變更（stash message 格式：`pre-restore-YYYYMMDD-HHMMSS`）。
+        *   載入目標快照配對的 `diff_*.patch`：`git apply snapshots/diff_[timestamp].patch`。
+        *   若 `git apply` 失敗（檔案衝突），輸出衝突檔案清單，不強制覆蓋，提示使用者手動處理。
+    5.  **完整性驗證**：載入後比對快照中的 SHA-256 檔案清單與當前工作目錄檔案，輸出驗證報告：
+        *   ✅ SHA-256 一致
+        *   ⚠️ SHA-256 不符（列出檔案清單）
+        *   ❌ 檔案缺失（列出檔案清單）
+    6.  **回溯完成報告**：輸出回溯結果摘要（快照時間戳、還原檔案數、驗證通過/失敗清單、衝突檔案清單）。
+
+### 7. 專案基線快照指令：`@baseline`
+*   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
+*   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
+*   **AI 代理執行規範**：
+    1.  計算下一個版本號（baseline-v1, v2, v3...）。
+    2.  複製完整可執行專案（原始碼 + 依賴清單 + 啟動腳本 + 必要資源檔）至 `baseline/baseline-v{N}/`。複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
+    3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
+    4.  保留最近 3 份 baseline，自動清理最舊版本。
+    5.  寫入 memory.md 紀錄。
+
+
+
+
+
+### 8. 階段強制解鎖指令：`@unlock`
+*   **指令定義**：⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制，繞過正常的階段切換檢查。
+*   **口語觸發**：「強制解鎖階段 {N}」、「跳過階段關卡 {N}」、「略過階段 {N} 檢查」。
+*   **AI 代理執行規範**：
+    1.  讀取 `phase_gates.json`，確認目標階段的當前狀態。
+    2.  顯示警告提示：「⚠️ 強制解鎖將繞過階段關卡檢查，可能導致需求追溯斷裂與規格不一致。確認強制解鎖階段 {N}？」
+    3.  **使用者確認後**：
+        *   將目標階段 `status` 更新為 `in_progress`（不自動建立缺失的階段 Baseline）。
+        *   在 `phase_gates.json` 中記錄解鎖事件（含時間戳、操作理由）。
+        *   在 `logs/ai_adjustment_{date}.md` 中記錄此次強制解鎖。
+    4.  若使用者取消，則不執行任何變更。
+
+
+
+
+### 9. 資安防護基準檢核指令：`@security-check`
+*   **指令定義**：載入 Security-Principles Skill 之對應等級檢核表，根據當前 SSDLC 階段篩選適用安全構面，逐項比對系統產出是否符合控制措施要求，並產出檢核報告。
+*   **參數說明**：
+    | 參數 | 行為 |
+    |:---|:---|
+    | `general` | 普級檢核（58 項控制措施） |
+    | `medium` | 中級檢核（70 項控制措施） |
+    | `high` | 高級檢核（80 項控制措施） |
+    | 無（預設） | 使用專案初始化時選定的等級（讀取 `phase_gates.json` 中 `security_baseline.level`） |
+*   **口語觸發**：「執行資安檢核」、「資通安全稽核」、「以普級防護基準檢查」、「安全檢核」。
+*   **AI 代理執行規範**：
+    1.  讀取 `phase_gates.json`，確認 `security_baseline.enabled` 為 `true`。若未啟用，提示使用者先執行 `@init` 並導入 Security-Principles。
+    2.  載入對應等級檢核表（`external-resources/Security-Principles/assets/checklist_*.md`）。
+    3.  根據當前 SSDLC 階段，篩選適用構面（參照 Security-Principles SKILL.md 中 7 構面 vs SSDLC 階段對照表）。
+    4.  逐項比對系統產出是否符合控制措施，標記 ✅符合 / ❌不符合 / ➖不適用 / ⬚未涵蓋。
+    5.  產出檢核報告（`outputs/security_check_report.md`），含摘要統計、逐項結果、重點風險、改善建議。
+    6.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
+*   **相容性檢查**：執行前自動比對 Security-Principles 控制措施與現有 6 階段 Skill 規則，若發現衝突則顯示 `[WARN]` 警示並暫停等候使用者確認。
+
+### 10. 彈性安全防護導入指令：`@security-load`
+*   **指令定義**：於任一 SSDLC 階段中途導入 Security-Principles 資安防護基準，支援選定特定構面與等級，非強制全選。適用於 @init 時未導入、或僅需針對特定安全面向強化的場景。
+*   **參數說明**：
+    | 參數 | 行為 |
+    |:---|:---|
+    | 無（預設） | 列出 8 大安全構面清單（含各等級控制措施數），供使用者選擇 |
+    | `[等級]` | 全構面導入（7 軟體構面），等級為 general/medium/high |
+    | `[等級] [構面1,構面2,...]` | 僅導入指定構面（1-8），逗號分隔 |
+*   **口語觸發**：「導入安全防護」、「載入資安構面」、「只加存取控制和日誌」、「針對 Phase 3 強化安全」。
+*   **AI 代理執行規範**：
+    1.  **無參數**：讀取 `external-resources/Security-Principles/README.md` 中的構面對照表，列出 8 構面清單（含各等級控制措施數與簡介），提示使用者選擇等級與構面。
+    2.  **讀取 phase_gates.json**：若 `security_baseline` 不存在則自動建立（`enabled: true`）。
+    3.  **載入選定構面**：根據參數，讀取對應 `references/0X_*.md`，篩選指定等級的控制措施。
+    4.  **相容性檢查**：比對選定構面的控制措施與當前階段已載入 Skill 內容，偵測重複規則 → `[INFO]` 提示、衝突規則 → `[WARN]` 警示暫停。
+    5.  **寫入當前階段**：更新當前階段 `SKILL.md` 中「安全防護整合（條件式）」段落的適用構面清單。
+    5.5 **🔙 回溯補寫已完成階段**：若 `@security-load` 在非 Phase 1 階段執行（即先前階段已完成但未啟用安全防護），AI 代理必須自動回溯補寫「安全防護整合（條件式）」段落至所有已完成階段的專案 `SKILL.md`：
+        - 讀取 `phase_gates.json`，確認哪些階段的 `status` 為 `completed`
+        - 對每個已完成階段，依該階段適用構面（參照 Security-Principles 構面對照表），寫入安全整合段落
+        - 對已完成階段，自動產生 `design_brief.md`（萃取該階段產出中的既有安全相關內容）
+        - 補寫完成後輸出回溯摘要（階段編號、補入構面、補寫檔案清單）
+        - **目的**：確保中途導入安全防護時，不會出現「前面階段已完成但無安全設計」的斷鏈。
+
+    6.  **更新 phase_gates.json**：記錄 `security_baseline.domains`（選定構面編號）、`security_baseline.level`。
+    7.  **產出階段檢核表**：呼叫 `scripts/generate_checklist.py <等級> --domains <構面清單>` 產生該階段專屬檢核表。
+*   **使用範例**：
+    - `@security-load` → 列出構面清單供選擇
+    - `@security-load medium` → 全構面中級導入
+    - `@security-load general 1,4,6` → 僅導入存取控制+識別鑑別+通訊保護，普級
+    - `@security-load high 2,3` → 僅導入日誌+備援，高級

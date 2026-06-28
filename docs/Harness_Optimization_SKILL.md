@@ -1,4 +1,4 @@
----
+﻿---
 name: Harness Optimization
 description: 執行整個駕馭工程的框架優化。當使用者說「幫我執行駕馭工程框架優化檢查」或「Harness Optimization Skill」時觸發，進行地毯式之檔案關聯性、格式與排版優化。
 ---
@@ -59,10 +59,19 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
 
 ### 4. 專案記憶與追溯防線 (`memory.md`、`traceability_matrix.md`、`system_specification.md`)
 *   **檢查點**：
-    1. 確認 `memory.md` 記錄了最近一次的結構或規章變更，日期與內容與實際異動一致。
-    2. 確認 `traceability_matrix.md` 格式符合 `docs/TEMPLATE_SKILL.md` 第二節中的範本定義（包含 REQ 編號、六階段追溯欄位）。
-    3. 確認 `system_specification.md` 格式符合範本定義，包含 IEEE 830 六章完整結構（緒論、整體描述、具體需求、系統特性、驗收標準、附錄）。
-    4. 確認 `system_specification.md` 中所有引用之文件（UML 圖、API 規格、DB Schema、UI Prototype）皆已轉換為可點擊之相對超連結，點選後可直達目標檔案。
+    1. **memory.md 會話記錄完整性檢查（Session Recording）**：
+       - 依據 `docs/TEMPLATE_SKILL.md` 第五節「專案記憶記錄協議」，AI 代理必須在每次對話 session 結束時寫入 `memory.md`。
+       - 檢查當前 `memory.md` 最後一條記錄的時間戳是否為**本次 session 期間**（與當前系統時間差距 < 24 小時且日期一致）。
+       - 若最後記錄時間戳距今超過 24 小時，或無本次 session 的記錄 → ❌ 表示本 session 尚未寫入記錄，需立即補寫。
+       - 補寫內容必須包含：本次 session 開始/結束時間、討論主題摘要、關鍵決策、產出檔案清單。
+    2. **memory.md 五大區塊完整性檢查**：
+       - 確認 `memory.md` 包含五個必要區塊：專案概覽、對話歷程（含時間戳）、關鍵決策紀錄、當前狀態、Git 版本歷程。
+       - 任一區塊缺失 → ❌ 需補齊。
+    3. 確認 `memory.md` 記錄了最近一次的結構或規章變更，日期與內容與實際異動一致。
+    4. 確認 `traceability_matrix.md` 格式符合 `docs/TEMPLATE_SKILL.md` 第二節中的範本定義（包含 REQ 編號、六階段追溯欄位）。
+    5. 確認 `system_specification.md` 格式符合範本定義，包含 IEEE 830 六章完整結構（緒論、整體描述、具體需求、系統特性、驗收標準、附錄）。
+    6. 確認 `system_specification.md` 中所有引用之文件（UML 圖、API 規格、DB Schema、UI Prototype）皆已轉換為可點擊之相對超連結，點選後可直達目標檔案。
+*   **失敗處理**：檢查點 1 失敗時，自動補寫本次 session 的會話記錄至 `memory.md`；其他檢查點失敗時立即修正。
 
 ### 5. Skill 目錄與列表防線 (`skills/README.md`、`skills/SKILLS歸類.md`)
 *   **檢查點**：
@@ -80,6 +89,34 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
        * **階段數量檢查**：確認根 `README.md` 全文不存在「七大階段」或「七個階段」字樣（僅可出現「六大核心開發階段」或「六階段」）；`00` 跨階段全域共用層不得被描述為獨立階段。
        * **自動修正**：若任何數字不一致，立即以 `skills/README.md` 標頭數字為準，更新根 `README.md` 所有不一致處。
 
+### 5.5 根 README.md 內容格式防線 (`README.md`)
+*   **前置自動掃描**：執行任何手動檢查前，**必須先執行** `scripts/align_framework.ps1 -VerboseOutput`。
+    此腳本以 `Get-ChildItem` 動態掃描實際檔案系統，自動完成以下三項修復，不再依賴手動列舉：
+    - **📂 倉庫結構 table**：與實際目錄/檔案逐項比對，缺漏自動補齊（含用途描述）
+    - **📁 標準結構 tree vs 倉庫結構 table**：交叉比對目錄清單，不一致則輸出警告
+    - **📋 必要章節完整性**：驗證 11 個必要章節 + @security-check/@security-load 指令存在
+    - **📏 快速開始步驟數**：確認 5 步驟完整
+    - **🔲 Code block 閉合**：檢查反引號配對
+*   **檢查點**：腳本執行後，確認根 `README.md` 各區塊內容格式正確、無斷行亂碼、表格與實際目錄結構一致。此組檢查補充 Group 5 僅檢查 Skill 數量、Group 11 僅檢查安全章節的不足。
+    1. **🎮 指令系統表格完整性檢查**：
+       - 確認 `## 🎮 指令系統` 下方是標準 Markdown 表格（`| 指令 | 用途 | 範例 |`），所有指令皆為 `| ... |` 表格列格式。
+       - **嚴禁**指令以 `- **...**` bullet 格式出現在表格中（破壞表格結構）。
+       - 確認以下指令全部存在且為表格列：`@help`、`@stages`、`@00 ~ @06`、`@[階段]/[快捷]`、`@init`、`@restore`、`@baseline`、`@security-check`、`@security-load`。
+    2. **🚀 快速開始段落完整性檢查**：
+       - 確認 `## 🚀 快速開始` 下方 5 個子步驟（建立新專案、選取階段 Skill、選擇資安防護等級、依照階段進行開發、建立 Baseline 快照）文件齊全。
+       - **嚴禁**任何步驟文字中出現殘留跳脫序列（如 `` `n ``、`\n`、`nAI`、`n→`、`n``` 等 C 風格換行符號）。
+       - 確認第 3 點「選擇資安防護等級」為純文字段落（非 code block），內容可讀。
+    3. **📂 倉庫結構 vs 實際目錄一致性檢查**：
+       - 以 `Get-ChildItem -Directory` 掃描根目錄**所有頂層目錄**，以 `Get-ChildItem -File` 掃描根目錄**所有頂層檔案**（排除 `.git`、`node_modules` 等隱藏/非追蹤目錄，但保留 `.agents`、`.vscode`、`.gitignore`）。
+       - 逐項比對 `## 📂 倉庫結構` 表格中的「路徑」欄位與實際掃描結果，**以實際結構為權威來源**。
+       - 任何存在於實際目錄但表格缺漏的目錄或檔案 → ❌ 需自動補齊至表格，含適當用途說明。
+       - 任何存在於表格但實際目錄已不存在的路徑 → ⚠️ 輸出警告並詢問是否移除。
+    4. **Markdown 語法正確性檢查**：
+       - 確認全文無 ANSI 跳脫碼殘留（如 `[33m`、`[0m`）。
+       - 確認所有 code block（` ``` `）正確閉合，無未配對反引號。
+       - 確認所有 Markdown 表格列以 `|` 開始與結束。
+*   **失敗處理**：任一檢查失敗，立即自動修正（補表格列、刪跳脫序列、補漏列目錄），修正後輸出 `[FIXED]` 摘要。
+
 ### 6. `.agents/skills/` 結構與內容防線 (`.agents/skills/0*_*/SKILL.md`)
 *   **檢查點**：
     1. 確認 `.agents/skills/` 目錄結構與 `docs/TEMPLATE_SKILL.md` 完全對齊：包含 `00_cross_phase` 至 `06_maintenance` 共 7 個目錄，以及 `reg/`、`bug/` 等子目錄。
@@ -92,6 +129,34 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     1. 確認各階段 inputs/ 目錄皆包含承接上游 outputs/ 的 brief 檔案（非僅 .gitkeep）。
     2. 確認 brief 檔案中明確引用上游階段 outputs/ 的具體檔案路徑，形成完整追溯鏈。
     3. 傳遞鏈依序檢查：01→02、02→03、03→04、04→05、05→06，確保無斷鏈。
+
+### 7.5 安全需求跨階段傳播防線（設計→實作安全繼承檢查）
+*   **檢查點**：確保 Phase 2 設計階段定義的安全需求，完整傳播到 Phase 3 實作階段的執行指引中。此組檢查補強 Group 7 僅檢查「檔案存在」的不足。
+    1. **安全 brief 傳遞檢查**：
+       - 若 `phase_gates.json` 中 `security_baseline.enabled` 為 `true`，則確認 Phase 3 `inputs/` 目錄存在 `design_brief.md`。
+       - `design_brief.md` 必須引用 Phase 2 安全設計產出（`api_spec.md` 中的安全需求章節、`db_schema.sql` 中的安全欄位）。
+       - 若 brief 不存在或未引用安全需求 → ❌ 自動從 Phase 2 outputs 萃取安全需求補寫。
+    2. **專案 SKILL.md 安全繼承檢查**：
+       - 逐一檢查 `demo_project/.agents/skills/0*_*/SKILL.md`（或當前專案對應路徑）。
+       - 若 `security_baseline.enabled` 為 `true`，則每個階段的專案 SKILL.md 必須包含「安全防護整合（條件式）」段落，內容須引用對應構面的參考文件路徑。
+       - 若專案 SKILL.md 為空白或僅含「尚未導入任何 Skill」→ ❌ 自動從框架層 SKILL.md（`.agents/skills/0*_*/SKILL.md`）複製安全整合段落。
+    3. **Generator 安全指令可達性檢查**：
+    4. **📦 安全產出物完整性檢查**：若 `security_baseline.enabled` 為 `true`，依當前階段檢查必要安全產出：
+       - Phase 1：`outputs/security_requirements.md`（CIA 定義 + 威脅建模範圍）
+       - Phase 2：`outputs/threat_model.md`（STRIDE 分析 + 攻擊樹）
+       - Phase 3：`outputs/security_check_report.md` + `outputs/security_scan_report.json`
+       - Phase 4：`outputs/dast_report.md` + `outputs/zap_report.html`（若 ZAP 可用）
+       - Phase 5：`outputs/sbom.json` + `outputs/.env.example` + `outputs/security_deployment_checklist.md`
+       - Phase 6：`outputs/security_trend.md` + `outputs/vulnerability_advisory.md`
+       - 若任一必要產出不存在 → ❌ 提示補產生（呼叫對應腳本或 @security-check）
+    5. **🔙 安全回溯完整性檢查**
+：若 `security_baseline.enabled` 為 `true` 且存在已完成階段（`phase_gates.json` 中 status=completed），則：
+       - 確認所有已完成階段的專案 `SKILL.md` 皆已含「安全防護整合」段落（非僅當前階段）。
+       - 若任一已完成階段缺少安全段落 → ❌ 自動補寫（視為中途導入遺漏）。
+
+       - 確認 Phase 3 框架 SKILL.md 中 Generator 的第 9 項「[條件式] 安全實作」存在且內容完整（含帳號鎖定、日誌、輸入驗證、HTTPS、密碼雜湊、RBAC）。
+       - 確認 Evaluator 的安全檢查權重（20%）中包含條件式安全檢查項目。
+*   **失敗處理**：任一檢查失敗，立即自動補寫 brief 或複製安全段落，修正後輸出 `[FIXED]` 摘要。
 
 ### 8. 全域日誌與快照防線 (`logs/`、`snapshots/`、`baseline/`)
 *   **檢查點**：
@@ -131,7 +196,7 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 當觸發「執行整個駕馭工程的框架優化」時，AI 代理必須執行以下步驟：
 
 ### 步驟一：靜態分析與關聯稽核 (Cross-Audit)
-1. 讀取上述 9 大檢查組（含根 README.md 在內共涵蓋 20+ 組核心檔案與目錄）的內容。
+1. 讀取上述 13 大檢查組（含根 README.md 在內共涵蓋 35+ 組核心檔案與目錄）的內容。
 2. 比對各超連結路徑，若有實體檔案移動或重命名，必須自動更新所有引用處的超連結。
 3. 檢查名詞定義（如 SSDLC 階段名稱、目錄名稱、Skill 名稱）在各檔案間是否一致，列出不連貫的清單。
 4. 檢查 `docs/TEMPLATE_SKILL.md` 目錄樹與實際專案目錄結構是否一致。
@@ -155,7 +220,9 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
     2. 逐條驗證對應的檔案、目錄、腳本、設定欄位是否存在。
     3. 區分「框架層級範本」（正確應為空白/佔位）與「專案實例」（應有實際內容）。
     4. 產出落差清單：已落實 ✅ / 未落實 ❌ / 無需落實（框架範本）⬚。
-    5. 落差清單中的 ❌ 項目，依 CORE_RULES 錯誤分類判定為 B 類錯誤，需立即修復或標記為已知限制。
+    5. 落差清單中的 ❌ 項目，依 CORE_RULES 錯誤分類判定為 B 類錯誤。
+    6. **安全關卡阻斷機制檢查**：確認 `phase_gates.json` 中 `security_baseline` 包含 `min_security_score` 與 `block_on_fail` 欄位；確認 `CORE_RULES.md` 包含「安全防護關卡阻斷機制」章節；確認 Phase 3 Evaluator 包含安全關卡檢查邏輯。
+，需立即修復或標記為已知限制。
 *   **檢查範例**：
     | 規範條目 | 狀態 | 說明 |
     |:---|:---|:---|
@@ -163,6 +230,40 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
     | YAML → SRS 自動生成器 | ✅ | scripts/generate_srs.py |
     | logs/ 含對話紀錄 | ✅ | demo_project/logs/conversation_*.md |
     | Baseline 驗證語言無關適配 | ✅ | CORE_RULES 三-4-4 語言對照表 |
+
+
+### 11. Security-Principles 資安防護基準對齊防線 (`external-resources/Security-Principles/`)
+*   **檢查點**：此為 @optimize 的安全專項對齊檢查，確保 Security-Principles Skill 與整體 SSDLC 框架完整融合，檔案、指令、文件三層一致。
+    1. **目錄完整性檢查**：確認 `external-resources/Security-Principles/` 下 19 個檔案齊全：
+       - `SKILL.md`、`README.md`（雙核心說明檔）
+       - `agents/skill.yaml`（UI 中繼資料）
+       - `references/` 下 8 份構面參考文件（`01_access_control.md` ~ `08_organizational.md`）
+       - `references/source/` 下 4 份原始 PDF
+       - `assets/` 下 3 份等級檢核表（`checklist_general.md`、`checklist_medium.md`、`checklist_high.md`）
+       - `scripts/generate_checklist.py`（檢核表產生工具）
+    2. **指令文件三點一致性檢查**：確認 `@security-check` 與 `@security-load` 在以下三處的參數、行為、口語觸發完全一致：
+       - `.agents/AGENTS.md`（Section 9：@security-check、Section 10：@security-load）
+       - `docs/commands_reference.md`（指令表格 + 口語觸發詞彙 + 更新日誌）
+       - `external-resources/Security-Principles/SKILL.md`（使用方式章節）
+    3. **階段 Skill 安全整合檢查**：逐一確認 6 個階段 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`）皆包含「安全防護整合（條件式）」段落，且 `security_baseline.enabled` 條件閘門正確運作。
+    4. **phase_gates.json 安全區塊完整性檢查**：確認 `phase_gates.json` 根層級包含 `security_baseline` 區塊，且 `enabled`、`level`、`domains`、`skill_path`、`initialized_at` 欄位結構完整。
+    5. **根 README.md 倉庫結構與安全章節自動對齊檢查**：確認根 `README.md` 的 `## 📂 倉庫結構` 表格與實際目錄/檔案完全一致（以 `Get-ChildItem` 動態掃描為準），並包含「🛡️ 資安防護基準」章節，且涵蓋以下全部子章節與內容：
+       - 「### 8 大安全構面」總覽表（構面 1-8，構面 7 為 22 項、構面 8 為 14 項非軟體因子，含適用 SSDLC 階段）
+       - 「### 層次全景圖」（組織管理面 → 管理制度面 → SSDLC 軟體開發層 → 實體環境面 → 供應鏈面）
+       - 「### 三等級檢核」（普58/中70/高80，含適用場景說明）
+       - 「### 雙軌運作模式」（主動融入 + 事後稽核 + 彈性導入三模式表格）
+       - 「### 資通安全責任等級對照」（含 checklist_general/medium/high 檔名與軟體/非軟體措施數）
+       - 「### 非軟體面向安全因子」（組織管理/管理制度/實體環境/供應鏈四面向，共 14 項）
+       - 「### 來源文件」（4 份原始 PDF 及其來源機關）
+       - @security-check 與 @security-load 雙指令在「🎮 指令系統」表格中存在
+       - 口語觸發詞彙含「載入資安構面」「導入安全防護」「執行資安檢核」
+    6. **memory.md 安全記錄完整性檢查**：確認 `memory.md` 包含 Security-Principles Skill 建立記錄，涵蓋背景、產出路徑、檔案數量、指令新增等完整歷史。
+    7. **跨參考完整性檢查**：
+       - Security-Principles 內部 `SKILL.md` ↔ `README.md` 的等級對照表（普58/中70/高80）、構面表格（8構面）、控制措施數量互相一致。
+       - `00_cross_phase/SKILL.md` 中 @security-check 與 @security-load 的流程定義，與 `.agents/AGENTS.md` Sections 9-10 一致。
+       - 各階段 `SKILL.md` 的安全整合段落引用路徑（`external-resources/Security-Principles/`）正確可達。
+    8. **檔案數量一致性檢查**：Security-Principles 目錄實際檔案數（19）與 `README.md`、`SKILL.md`、`memory.md` 中描述的數量一致，無缺漏或殘留。
+*   **失敗處理**：任一檢查失敗即於對話中輸出「Security-Principles 對齊失敗報告」，包含失敗項目、根因分析、建議修復方案。涉及指令不一致者，以 `.agents/AGENTS.md` 為權威來源自動修正。
 
 ### 步驟四：產出報告與同步 Baseline (Report & Sync)
 1. 於對話中輸出框架優化成果報告（以「Status + Root Cause + Suggested Fix」格式說明修補處）。

@@ -1,4 +1,4 @@
-# 專案記憶 (Project Memory)
+﻿# 專案記憶 (Project Memory)
 
 > 本檔案為專案級 AI 協作對話記憶。所有使用者與 AI 代理之間的互動、決策、進度均記錄於此。
 > 若對話中斷，下一 session 的 AI 代理必須先讀取本檔案以接續作業。
@@ -11,9 +11,9 @@
 |:---|:---|
 | 專案名稱 | 員工基本資料管理系統 (Employee CRUD) |
 | 建立日期 | 2026-06-27 |
-| 當前版本 | baseline-v0.3.0 |
+| 當前版本 | baseline-v5 |
 | 技術棧 | Python 3.13 + Flask 3.x + SQLite + Jinja2 + pytest + Playwright |
-| 當前階段 | 全階段完成（01～06 已走完一輪） |
+| 當前階段 | 全階段完成 + 普級資安防護基準導入（90.5% 符合率） |
 
 ---
 
@@ -70,6 +70,104 @@
 
 ---
 
+
+### Session 3 — 2026-06-28 16:30：安全強化實作
+
+#### [16:30] 普級檢核修復啟動
+- 依據 `outputs/security_report_general.md` 不符合項目，逐項修復
+- 優先級：鑑別 > 機敏保護 > 安全標頭 > 輸入驗證
+
+#### [16:35] 登入驗證實作
+- 新增 `templates/login.html` + `/login` 路由
+- 密碼 SHA-256 雜湊（werkzeug.security）
+- Session 管理：30 分鐘逾時
+- `@login_required` 裝飾器保護所有 CRUD 路由
+
+#### [16:40] 帳戶鎖定機制
+- 5 次失敗 → 鎖定 15 分鐘
+- 記錄於 app.log
+
+#### [16:45] Security Headers
+- nosniff / DENY / XSS-Protection 全數啟用
+
+#### [16:50] SQLi / XSS 防禦
+- 參數化查詢 + Jinja2 autoescape
+- Email 格式驗證、名稱長度限制
+
+#### [17:00] SAST (bandit)
+- 0 HIGH / 0 MEDIUM / 2 LOW
+
+#### [17:10] 威脅模型 (STRIDE)
+- 產出 `02_system_design/outputs/threat_model.md`
+- 6 威脅類別，8 項威脅 + 緩解措施
+
+### Session 4 — 2026-06-28 17:20：完整安全驗證
+
+#### [17:20] SBOM 產生
+- `outputs/sbom.json`：89 組件，全數標註版本與授權
+
+#### [17:25] Secret 掃描
+- `scripts/security/pre_commit_secrets.py`：無機敏殘留
+
+#### [17:30] DAST 動態測試
+- SQLi/XSS payload 全數阻擋，安全標頭驗證通過
+
+#### [17:35] Phase 3 普級安全檢核
+- `outputs/security_check_phase3_general.md`
+- **21 項適用，19 項符合 → 90.5%**
+- 2 項不符合：HTTPS（開發環境）、debug mode
+
+#### [17:40] 安全部署檢查清單
+- `05_deployment/outputs/security_deployment_checklist.md`：12 項
+
+#### [17:45] 安全趨勢監控
+- `06_maintenance/outputs/security_trend.md`
+
+#### [17:49] Baseline v4 → v5
+- v4：登入 + 安全防護版
+- v5：SBOM + SAST + DAST 最終版
+
+### Session 5 — 2026-06-28 18:00：框架對齊與記憶補強
+
+#### [18:12] @optimize 第一輪
+- README.md 從 Git 恢復（8e7b8a4）
+- 倉庫結構：4→7 檔案、5→11 目錄
+- 快速開始：4→5 步驟
+
+#### [18:18] outputs/ 標準化
+- 正規化為「跨階段安全產出彙整區」
+- 雙層定位：框架層無 / 專案層有
+
+#### [18:30] memory.md 記錄規則補強
+- TEMPLATE_SKILL.md + Harness_Optimization_SKILL.md 同步更新
+- Group 4 新增會話記錄檢查
+
+### 安全產出總覽（12 項）
+
+| # | 產出 | 路徑 |
+|:--|------|------|
+| 1 | 威脅模型 (STRIDE) | `02_system_design/outputs/threat_model.md` |
+| 2 | 安全需求規格 | `01_planning_and_analysis/outputs/security_requirements.md` |
+| 3 | SAST 報告 | bandit 掃描（app.py, 0H/0M/2L） |
+| 4 | SBOM | `outputs/sbom.json`（89 組件） |
+| 5 | Secret 掃描 | 無機敏殘留 |
+| 6 | DAST 報告 | SQLi/XSS payload 全阻擋 |
+| 7 | Phase 2 安全檢核 | `outputs/security_check_phase2_general.md` |
+| 8 | Phase 3 安全檢核 | `outputs/security_check_phase3_general.md`（90.5%） |
+| 9 | 安全掃描報告 JSON | `outputs/security_scan_report.json` |
+| 10 | 安全部署檢查清單 | `05_deployment/outputs/security_deployment_checklist.md`（12 項） |
+| 11 | 安全趨勢監控 | `06_maintenance/outputs/security_trend.md` |
+| 12 | 三等級檢核報告 | `outputs/security_report_*.md`（普/中/高） |
+
+### 最終安全評分
+
+| 等級 | 適用項 | 符合 | 比率 |
+|:---|:--:|:--:|:--:|
+| 普 (General) | 21 | 19 | **90.5%** |
+| 中 (Medium)  | 28 | 19 | 67.9% |
+| 高 (High)    | 35 | 19 | 54.3% |
+
+
 ## 三、 關鍵決策紀錄
 
 | 決策 | 內容 | 日期 |
@@ -93,9 +191,9 @@
 | 01 規劃 | ✅ 完成 | 10 項需求全追溯 |
 | 02 設計 | ✅ 完成 | 7 項標準產出 |
 | 03 開發 | ✅ 完成 | app.py + 3 templates |
-| 04 測試 | ✅ 完成 | 14/14 PASS |
-| 05 部署 | ✅ 完成 | run.bat 可一鍵啟動 |
-| 06 監控 | ✅ 完成 | 日誌機制就緒 |
+| 04 測試 | ✅ 完成 | 14/14 PASS + SAST/DAST 通過 |
+| 05 部署 | ✅ 完成 | run.bat + 安全部署檢查清單（12項） |
+| 06 監控 | ✅ 完成 | 日誌機制 + 安全趨勢監控 |
 
 ### 下一步建議
 - 啟動 App 測試：`cd 03_implementation_and_coding/outputs && python app.py`
@@ -114,4 +212,25 @@
 | baseline-v0.2.0 | traceability + system_spec 根目錄化 |
 | baseline-v0.2.1 | Playwright UI 測試 |
 | baseline-v0.2.2 | 需求/bug 統一表格化 |
-| baseline-v0.3.0 | SRS IEEE 830 + 全案連結化 + @baseline |
+| baseline-v5 | SRS IEEE 830 + 全案連結化 + @baseline |
+
+
+### Session 2 — 2026-06-28：資安防護基準整合
+
+#### [15:49] Security-Principles Skill 導入
+- 匯入 `external-resources/Security-Principles` 資安防護基準 Skill
+- 基於數位發展部資通安全署《資通系統防護基準驗證實務 v1.3》（115年6月）
+- 涵蓋 7 大安全構面、80 項控制措施
+
+#### [15:49] 三等級檢核執行
+- 普級 (General)：5/58 通過 (8.6%) — 24 項不符合
+- 中級 (Medium) ：5/70 通過 (7.1%) — 35 項不符合
+- 高級 (High)   ：5/80 通過 (6.3%) — 45 項不符合
+- 報告產出至 `outputs/security_report_*.md`
+
+#### [15:49] 檢核發現 — TOP 5 高風險
+1. 無身分驗證機制 — 系統完全開放
+2. debug=True 上線 — 資訊洩漏
+3. secret_key 明文硬編碼 — session 可偽造
+4. 無 HTTPS — 明文傳輸
+5. 無備份/備援 — 單點故障

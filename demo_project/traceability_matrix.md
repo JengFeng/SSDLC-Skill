@@ -27,5 +27,6 @@
 | 05→06 | requirements.txt + run.bat | maintenance_brief.md | ✅ |
 
 | 2026-06-27 | @04/04 | playwright（瀏覽器 UI 自動化測試） |
+| 2026-06-28 | @security-check (general/medium/high) | Security-Principles (資安防護基準 7構面/80項) |
 
 
