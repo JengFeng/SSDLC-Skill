@@ -1,6 +1,6 @@
 # 員工基本資料管理系統 — 系統功能規格書 (SRS)
 
-> **文件版本**：v1.0 | **日期**：2026-06-27 | **文件等級**：正式交付
+> **文件版本**：v1.1 | **日期**：2026-06-28 | **文件等級**：正式交付
 
 ---
 
@@ -10,7 +10,7 @@
 本文件為「員工基本資料管理系統」之系統功能規格書（Software Requirements Specification，SRS），依據 IEEE 830 標準格式撰寫。旨在明確界定系統之功能需求、非功能需求、資料模型、使用者介面與交付標準，供甲方（業主）與乙方（開發團隊）作為系統驗收之共同依據。
 
 ### 1.2 範圍
-本系統為一輕量級 Web 應用程式，提供企業內部人資管理人員進行員工基本資料之新增、刪除、修改與查詢（CRUD）作業。系統採單機部署架構，適用於中小型企業內部使用。
+本系統為一輕量級 Web 應用程式，提供企業內部人資管理人員進行員工基本資料之新增、刪除、修改與查詢（CRUD）作業。系統採單機部署架構，內建身分驗證（Email + 密碼）與多層安全防護（參數化查詢、Security Headers、帳戶鎖定、SHA-256 密碼雜湊），適用於中小型企業內部使用。已導入數位發展部《資通系統防護基準驗證實務 v1.3》普級防護基準。
 
 ### 1.3 名詞定義
 | 術語 | 定義 |
@@ -20,7 +20,10 @@
 | RTM | Requirements Traceability Matrix，需求追溯矩陣 |
 | PRG | Post/Redirect/Get，防止表單重複提交之設計模式 |
 
-### 1.4 參考文件
+### 1.4 SSOT 可執行規格
+本專案採用一源多用 (SSOT) 架構，以 `specs/executable_spec.yaml` 為唯一資料源，可自動生成 SRS、RTM、Phase Gates。AI 代理於各階段執行前必須讀取此規格檔案。
+
+### 1.5 參考文件
 | 文件 | 路徑 |
 |:---|:---|
 | 需求追溯矩陣 | [traceability_matrix.md](traceability_matrix.md) |
@@ -44,11 +47,14 @@
 | FEAT_003 | 修改員工資料 | P0 | 編輯既有員工所有欄位，保留 Email 不變可通過唯一性檢查 |
 | FEAT_004 | 刪除員工 | P0 | 確認對話框後硬刪除 |
 | FEAT_005 | 操作日誌 | P1 | 所有 CRUD 操作記錄於伺服器日誌檔 |
+| FEAT_006 | 登入驗證 | P0 | Email + 密碼登入，Session 管理，帳戶鎖定（5次/15分） |
+| FEAT_007 | 安全防護 | P0 | Security Headers、參數化查詢、輸入驗證、SHA-256 密碼雜湊 |
 
 ### 2.3 使用者特性
 | 角色 | 權限 | 說明 |
 |:---|:---|:---|
-| 人資管理員 | 全部功能 | 唯一使用者角色，可執行所有 CRUD 操作 |
+| 系統管理員 | 全部功能 | 預設管理帳號（admin@demo.local），可執行所有 CRUD 操作 |
+| 一般使用者 | CRUD | 需先通過身分驗證後方可操作 |
 
 ### 2.4 運作環境
 | 項目 | 規格 |
@@ -59,8 +65,8 @@
 | 硬體需求 | 1 GB RAM，100 MB 磁碟空間 |
 
 ### 2.5 設計與實作限制
-- 第一版不實作使用者身分驗證（內部工具）
-- 不實作軟刪除（刪除即物理移除）
+- 第一版已實作 Email + 密碼身分驗證（SHA-256 + SALT）
+- 保留 active 欄位供未來軟刪除擴充（刪除即物理移除）
 - 前端採伺服器端渲染（SSR），不使用前後端分離架構
 - 資料庫採單檔案 SQLite，不支援並行寫入
 
@@ -95,6 +101,31 @@
   3. 後端 Email 唯一性檢查 → 重複則回傳「電子郵件已存在」
   4. 通過 → INSERT 寫入資料庫 → 記錄日誌 → 302 redirect 回首頁
 - **成功訊息**：「員工新增成功」
+
+#### 3.1.6 FEAT_006：登入驗證
+- **描述**：使用者須通過 Email + 密碼驗證後方可存取系統功能。
+- **輸入**：Email、密碼
+- **處理流程**：
+  1. 查詢 employees 表確認帳號存在且 active=1
+  2. 檢查帳戶是否在鎖定期間（locked_until > now）
+  3. SHA-256 + SALT 驗證密碼雜湊
+  4. 失敗 → login_attempts +1，達 5 次鎖定 15 分鐘
+  5. 成功 → 清除失敗計數，建立 Session，記錄 last_login
+- **安全機制**：密碼雜湊儲存、帳戶鎖定、Session 逾時、日誌記錄
+
+#### 3.1.7 FEAT_007：安全防護
+- **描述**：系統內建多層安全防護，涵蓋 OWASP Top 10 防範。
+- **防護措施**：
+  | 措施 | 實作 |
+  |:---|:---|
+  | SQL Injection 防禦 | 100% 參數化查詢（? placeholder） |
+  | XSS 防禦 | Jinja2 自動轉義 + validate_input() 字元過濾 |
+  | Security Headers | X-Content-Type-Options, X-Frame-Options, X-XSS-Protection |
+  | 密碼儲存 | SHA-256 + SALT 雜湊（未來升級 bcrypt） |
+  | 帳戶鎖定 | 5 次失敗鎖定 15 分鐘 |
+  | Session 管理 | @login_required 保護所有功能路由 |
+  | 審計日誌 | app.log 記錄所有 CRUD + 登入/登出 |
+- **遵循標準**：數位發展部《資通系統防護基準驗證實務 v1.3》普級 (General)
 - **錯誤訊息**：「所有欄位皆為必填」、「電子郵件已存在」
 
 #### 3.1.3 FEAT_003：修改員工資料
@@ -149,6 +180,11 @@
 | title | TEXT | NOT NULL | 職稱 |
 | email | TEXT | NOT NULL, UNIQUE | 電子郵件 |
 | hire_date | TEXT | NOT NULL | 到職日期 (YYYY-MM-DD) |
+| password_hash | TEXT | NOT NULL DEFAULT '' | 密碼雜湊 (SHA-256) |
+| last_login | TEXT | — | 最後登入時間 |
+| login_attempts | INTEGER | DEFAULT 0 | 登入失敗次數 |
+| locked_until | TEXT | — | 帳戶鎖定截止 (ISO8601) |
+| active | INTEGER | DEFAULT 1 | 啟用狀態 |
 | created_at | TEXT | DEFAULT datetime('now','localtime') | 建立時間 |
 | updated_at | TEXT | DEFAULT datetime('now','localtime') | 更新時間 |
 
@@ -162,7 +198,7 @@
 | 可靠性 | 應用程式崩潰後重啟不遺失已提交資料（SQLite 持久化） |
 | 可維護性 | 原始碼 < 200 行 Python，單一檔案部署 |
 | 日誌審計 | 所有 CRUD 操作記錄於 logs/app.log |
-| 測試覆蓋 | pytest 7 項 + Playwright 7 項，共 14 項測試全數通過 |
+| 測試覆蓋 | pytest 16 項全數通過 (0.35s)，涵蓋率 100% (6/6 REQ) |
 
 ### 3.5 安全性需求
 - Email 唯一性約束防止資料重複
@@ -186,11 +222,11 @@
 
 | 項目 | 標準 | 狀態 |
 |:---|:---|:---|
-| 單元測試 | pytest 7/7 PASS | ✅ |
-| UI 測試 | Playwright 7/7 PASS | ✅ |
-| 需求追溯 | 10 項需求全追溯（requirement_tracker.md） | ✅ |
-| 設計產出 | 7 項標準設計文件 | ✅ |
-| 文件交付 | 本 SRS + traceability_matrix.md + test_results.md | ✅ |
+| 單元測試 | pytest 16/16 PASS | ✅ |
+| 安全頭檢查 | Security Headers 3/3 PASS | ✅ |
+| 需求追溯 | 6 項需求全追溯 (requirement_tracker.md)（requirement_tracker.md） | ✅ |
+| 設計產出 | 8 項設計文件 + STRIDE 威脅模型 | ✅ |
+| 文件交付 | SRS + RTM + executable_spec.yaml + test_results.md | ✅ |
 
 ---
 
@@ -218,6 +254,7 @@
 | 版本 | 日期 | 變更內容 |
 |:---|:---|:---|
 | v1.0 | 2026-06-27 | 初版，依據 IEEE 830 標準撰寫完整 SRS |
+| v1.1 | 2026-06-28 | 新增身分驗證、安全防護、STRIDE 威脅模型、資安防護基準導入、可執行規格 (SSOT) |
 
 
 ## 八、 資安防護基準 (Security Baseline)

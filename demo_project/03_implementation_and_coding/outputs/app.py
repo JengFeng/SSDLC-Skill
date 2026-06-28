@@ -94,6 +94,19 @@ def init_db():
             logger.info("Default admin: admin@demo.local / Admin@1234")
     logger.info("Database initialized (secure schema)")
 
+
+@app.context_processor
+def inject_stats():
+    """Inject dashboard statistics into all templates that extend base.html"""
+    with gdb() as c:
+        total = c.execute("SELECT COUNT(*) FROM employees").fetchone()[0]
+        depts = c.execute("SELECT COUNT(DISTINCT department) FROM employees").fetchone()[0]
+        recent = c.execute(
+            "SELECT COUNT(*) FROM employees WHERE created_at >= date('now','localtime','start of month')"
+        ).fetchone()[0]
+    return {"stats": {"total": total, "departments": depts, "recent": recent}}
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Login with password verification"""

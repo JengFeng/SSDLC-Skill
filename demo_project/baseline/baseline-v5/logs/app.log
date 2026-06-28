@@ -92,3 +92,84 @@
 2026-06-28 19:53:01,553 [INFO] Login: admin@demo.local
 2026-06-28 19:53:01,554 [INFO] 127.0.0.1 - - [28/Jun/2026 19:53:01] "[32mPOST /login HTTP/1.1[0m" 302 -
 2026-06-28 19:53:01,564 [INFO] 127.0.0.1 - - [28/Jun/2026 19:53:01] "GET / HTTP/1.1" 200 -
+2026-06-28 20:53:01,427 [INFO] Database initialized (secure schema)
+2026-06-28 20:53:01,427 [INFO] App 啟動
+2026-06-28 20:53:01,460 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-28 20:53:01,460 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-28 20:53:01,469 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 20:53:01,713 [INFO] Database initialized (secure schema)
+2026-06-28 20:53:01,713 [INFO] App 啟動
+2026-06-28 20:53:01,736 [WARNING]  * Debugger is active!
+2026-06-28 20:53:01,739 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 20:53:07,058 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:07] "GET /login HTTP/1.1" 200 -
+2026-06-28 20:53:17,615 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:17] "GET /login HTTP/1.1" 200 -
+2026-06-28 20:53:45,183 [INFO] Login: admin@demo.local
+2026-06-28 20:53:45,184 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:45] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-06-28 20:53:45,190 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:45] "GET / HTTP/1.1" 200 -
+2026-06-28 20:53:48,282 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:48] "GET /add HTTP/1.1" 200 -
+2026-06-28 20:53:49,752 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:49] "GET / HTTP/1.1" 200 -
+2026-06-28 20:53:52,655 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:52] "GET /?q= HTTP/1.1" 200 -
+2026-06-28 20:53:54,712 [INFO] 127.0.0.1 - - [28/Jun/2026 20:53:54] "GET /edit/1 HTTP/1.1" 200 -
+2026-06-28 21:01:10,410 [INFO]  * Detected change in 'D:\\00AI協作\\SSDLC_Skill\\demo_project\\baseline\\baseline-v5\\app.py', reloading
+2026-06-28 21:01:10,410 [INFO]  * Detected change in 'D:\\00AI協作\\SSDLC_Skill\\demo_project\\baseline\\baseline-v5\\app.py', reloading
+2026-06-28 21:01:10,452 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 21:01:10,494 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 21:01:10,720 [INFO] Database initialized (secure schema)
+2026-06-28 21:01:10,720 [INFO] App 啟動
+2026-06-28 21:01:10,747 [WARNING]  * Debugger is active!
+2026-06-28 21:01:10,751 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 21:01:10,751 [INFO] Database initialized (secure schema)
+2026-06-28 21:01:10,751 [INFO] App 啟動
+2026-06-28 21:01:10,778 [WARNING]  * Debugger is active!
+2026-06-28 21:01:10,782 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 21:01:32,112 [INFO]  * Detected change in 'D:\\00AI協作\\SSDLC_Skill\\demo_project\\baseline\\baseline-v5\\app.py', reloading
+2026-06-28 21:01:32,112 [INFO]  * Detected change in 'D:\\00AI協作\\SSDLC_Skill\\demo_project\\baseline\\baseline-v5\\app.py', reloading
+2026-06-28 21:01:32,175 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 21:01:32,191 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 21:01:32,423 [INFO] Database initialized (secure schema)
+2026-06-28 21:01:32,424 [INFO] App 啟動
+2026-06-28 21:01:32,435 [INFO] Database initialized (secure schema)
+2026-06-28 21:01:32,435 [INFO] App 啟動
+2026-06-28 21:01:32,447 [WARNING]  * Debugger is active!
+2026-06-28 21:01:32,451 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 21:01:32,460 [WARNING]  * Debugger is active!
+2026-06-28 21:01:32,463 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 21:03:36,031 [INFO] Database initialized (secure schema)
+2026-06-28 21:03:36,032 [INFO] App 啟動
+2026-06-28 21:03:36,064 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-28 21:03:36,064 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-28 21:03:36,073 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 21:03:36,301 [INFO] Database initialized (secure schema)
+2026-06-28 21:03:36,301 [INFO] App 啟動
+2026-06-28 21:03:36,322 [WARNING]  * Debugger is active!
+2026-06-28 21:03:36,325 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 21:03:37,427 [INFO] 127.0.0.1 - - [28/Jun/2026 21:03:37] "GET /login HTTP/1.1" 200 -
+2026-06-28 21:03:41,763 [INFO] 127.0.0.1 - - [28/Jun/2026 21:03:41] "GET /login HTTP/1.1" 200 -
+2026-06-28 21:04:07,126 [INFO] Login: admin@demo.local
+2026-06-28 21:04:07,127 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:07] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-06-28 21:04:07,142 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:07] "GET / HTTP/1.1" 200 -
+2026-06-28 21:04:20,182 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:20] "GET /?q= HTTP/1.1" 200 -
+2026-06-28 21:04:22,112 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:22] "GET /?q= HTTP/1.1" 200 -
+2026-06-28 21:04:22,944 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:22] "GET /add HTTP/1.1" 200 -
+2026-06-28 21:04:39,543 [INFO] 新增員工: gfgfd
+2026-06-28 21:04:39,544 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:39] "[32mPOST /add HTTP/1.1[0m" 302 -
+2026-06-28 21:04:39,550 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:39] "GET / HTTP/1.1" 200 -
+2026-06-28 21:04:49,819 [INFO] 127.0.0.1 - - [28/Jun/2026 21:04:49] "GET /add HTTP/1.1" 200 -
+2026-06-28 21:06:57,116 [INFO] Database initialized (secure schema)
+2026-06-28 21:06:57,117 [INFO] App 啟動
+2026-06-28 21:06:57,153 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-28 21:06:57,153 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-28 21:06:57,162 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-28 21:06:57,402 [INFO] Database initialized (secure schema)
+2026-06-28 21:06:57,402 [INFO] App 啟動
+2026-06-28 21:06:57,427 [WARNING]  * Debugger is active!
+2026-06-28 21:06:57,430 [INFO]  * Debugger PIN: 142-713-570
+2026-06-28 21:06:58,368 [INFO] 127.0.0.1 - - [28/Jun/2026 21:06:58] "GET /login HTTP/1.1" 200 -
+2026-06-28 21:07:03,019 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:03] "GET /login HTTP/1.1" 200 -
+2026-06-28 21:07:18,897 [INFO] Login: admin@demo.local
+2026-06-28 21:07:18,897 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:18] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-06-28 21:07:18,910 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:18] "GET / HTTP/1.1" 200 -
+2026-06-28 21:07:20,859 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:20] "GET /add HTTP/1.1" 200 -

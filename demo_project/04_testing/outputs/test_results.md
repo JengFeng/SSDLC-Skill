@@ -1,23 +1,51 @@
-# 測試執行結果報告
-## 執行資訊：2026-06-27 | pytest 9.0.2 + Playwright | Python 3.13.5
-## 結果：14/14 PASS (4.40s)
-### A. API 功能測試 (pytest) — 7/7
-| TC | 項目 | 狀態 |
-|:---|:---|:---|
-| TC_001 | 空資料庫顯示提示 | ✅ |
-| TC_002 | 新增員工 | ✅ |
-| TC_003 | Email 重複拒絕 | ✅ |
-| TC_004 | 關鍵字搜尋 | ✅ |
-| TC_005 | 修改員工 | ✅ |
-| TC_006 | 刪除員工 | ✅ |
-| TC_007 | 空白欄位驗證 | ✅ |
-### B. 瀏覽器 UI 互動測試 (Playwright) — 7/7
-| TC_UI | 項目 | 狀態 |
-|:---|:---|:---|
-| TC_UI_001 | 頁面載入 + 空狀態 | ✅ |
-| TC_UI_002 | 表單填寫新增 | ✅ |
-| TC_UI_003 | 搜尋過濾 | ✅ |
-| TC_UI_004 | Email 重複 UI 提示 | ✅ |
-| TC_UI_005 | 編輯流程 | ✅ |
-| TC_UI_006 | 刪除 + 確認對話框 | ✅ |
-| TC_UI_007 | 空白欄位驗證提示 | ✅ |
+# 測試結果報告 (Test Results)
+
+> Phase 04: Testing | 2026-06-28 | TDD Verified
+
+## 測試摘要
+
+| 項目 | 數值 |
+|:---|:---|
+| 測試框架 | pytest 9.0.2 |
+| 總測試數 | 16 |
+| 通過 | 16 |
+| 失敗 | 0 |
+| 執行時間 | 0.29s |
+| 需求涵蓋率 | 6/6 REQ (100%)
+
+## 測試分類
+
+### 認證測試 (REQ-005)
+| 測試 | 結果 |
+|:---|:---|
+| test_login_page_loads | PASSED |
+| test_login_success | PASSED |
+| test_login_wrong_password | PASSED |
+| test_login_nonexistent_user | PASSED |
+| test_protected_route_redirects | PASSED |
+
+### 員工列表 (REQ-001)
+| 測試 | 結果 |
+|:---|:---|
+| test_list_returns_200 | PASSED |
+| test_list_contains_employees | PASSED |
+| test_search_by_name | PASSED |
+| test_search_no_results | PASSED |
+
+### 新增員工 (REQ-002) 
+| 測試 | 結果 |
+|:---|:---|
+| test_add_page_loads | PASSED |
+| test_add_success | PASSED |
+| test_add_duplicate_email | PASSED |
+
+### 修改/刪除/安全 (REQ-003/004/006)
+| 測試 | 結果 |
+|:---|:---|
+| test_edit_page_loads | PASSED |
+| test_edit_success | PASSED |
+| test_delete_success | PASSED |
+| test_security_headers | PASSED |
+
+## TDD 循環驗證
+16 次 RED -> GREEN -> REFACTOR 循環，全部通過。

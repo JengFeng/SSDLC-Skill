@@ -60,7 +60,7 @@ description: 部署階段，負責建置成品打包、多服務依賴部署、�
 
 ## 二、 輸入與輸出規範
 
-*   **輸入路徑 (`inputs/`)**：存放此階段人類輸入的環境配置參數與金鑰。
+*   **輸入路徑 (`inputs/`)**：存放此階段人類輸入的環境配置參數與金鑰，以及 SSOT 規格（`specs/executable_spec.yaml`）。
 *   **輸出路徑 (`outputs/`)**：
     *   `build_manifest.json`：建置組態項目清單（含 SHA-256）。
     *   `signature_status.json`：數位簽章驗證結果。

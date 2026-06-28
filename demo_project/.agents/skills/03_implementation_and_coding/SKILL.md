@@ -21,7 +21,7 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
 
 ### 1. Planner (規劃代理)
 *   **任務**：
-    1.  讀取設計階段產出的 `openapi.yaml`、`db_schema.sql` 與 `ui_model.json`。
+    1.  讀取設計階段產出的 `api_spec.md`、`db_schema.sql` 與 `ui_prototype.html`。
     2.  將開發工作拆解為微小的代碼實作任務。
     3.  分析跨模組依賴關係，標註任務間的相依性與整合順序。
     4.  **Skill 上下文推薦**：分析技術棧與設計規格，主動向使用者推薦：

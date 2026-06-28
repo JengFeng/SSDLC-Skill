@@ -1,4 +1,4 @@
-﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 88 個 AI 協作 Skill</strong>
@@ -83,11 +83,14 @@
 | `@[階段]/[快1],[快2]` | 聯合導入多個 Skill | `@04/01,03,07` |
 | `@init [路徑]` | 建立全新 SSDLC 專案目錄 | `@init ./my-app` |
 | `@restore [latest\|N\|timestamp]` | 回溯工作目錄至指定快照（SHA-256 驗證 + git diff 補丁還原） | `@restore latest` |
+| `@optimize` | ⚠️ 框架建造者專用：執行全案地毯式關聯檢查與修復 | `@optimize` |
+| `@unlock [階段代碼]` | ⚠️ 框架建造者專用：強制解鎖指定階段關卡 | `@unlock 03` |
 | `@baseline` | 建立可獨立執行專案快照 | `@baseline` |
+| `@CheckSpec` | 檢查四種規格（YAML/Feature/SRS/RTM）完整性與交叉一致性 | `@CheckSpec` |
 | `@security-check [general\|medium\|high]` | 載入資安防護基準檢核表，逐項比對並產出報告 | `@security-check medium` |
 | `@security-load [等級] [構面1,構面2,...]` | 階段中途彈性導入資安防護基準，可選定構面與等級 | `@security-load medium 1,4,6` |
 
-**自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「顯示指令集」、「建立基線」、「執行架構優化」即可觸發對應指令。
+**自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「檢查規格」「四規格檢查」、「顯示指令集」、「建立基線」、「執行架構優化」即可觸發對應指令。
 
 ---
 
@@ -191,7 +194,11 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 - ✅ **7 項設計產出**（DB Schema、ER 圖、API 規格、UI 雛型、3 UML 圖）
 - ✅ **雙軌測試全數通過**：pytest（7 API 測試）+ Playwright（7 UI 測試）
 - 🔒 **安全驗證全數通過**：登入驗證、Session 管理、帳戶鎖定、SQLi/XSS 防禦、Security Headers（nosniff/DENY/XSS）
-- 🔒 **Phase 3 普級檢核 90.5%**（21 項適用，19 項符合）+ SBOM 89 組件 + 威脅模型（STRIDE）+ 12 安全產出文件
+- 🔒 **Phase 3 普級檢核 90.5%**（21 項適用，19 項符合，2 項階段性延遲）
+  - ⚠️ 其中 2 項未完全符合（項次 13 加密機制、項次 67 HTTPS/TLS 1.2+）的原因：
+    涉及正式 TLS/HTTPS 憑證部署，屬於 Phase 3 本機開發階段無法取得正式網域憑證的階段性限制，
+    待 Phase 5 部署至真實環境時即可完成驗證，非設計或實作缺陷。
+  + SBOM 89 組件 + 威脅模型（STRIDE）+ 12 安全產出文件
 
 ---
 
@@ -308,7 +315,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 | 路徑 | 用途 |
 |:---|:---|
-| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
+| `.agents/` | 專案規章守則（AGENTS.md：全局行為準則、SSOT 監控、指令清單）與 7 階段 Skill 定義 |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD，已導入普級資安防護基準） |
@@ -316,7 +323,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | `external-resources/` | 外部 Skill 原始來源備份，含 Security-Principles 資安防護基準 |
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告，@init 時於專案內建立） |
-| `scripts/` | 輔助腳本（generate_srs.py、generate_checklist.py）+ 🔒 安全工具鏈 |
+| `scripts/` | 輔助腳本（check_spec_integrity.py、align_framework.ps1、generate_srs.py）+ 🔒 安全工具鏈 |
 | `skills/` | 88 個 Skill 實體（含 README.md 與歸類索引） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
@@ -346,5 +353,12 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 <p align="center">
   <sub>Built with Harness Engineering · Powered by AI Collaboration</sub>
 </p>
+
+
+
+
+
+
+
 
 

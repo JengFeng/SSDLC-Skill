@@ -316,3 +316,15 @@ Write-Host ""
 $exitCode = if ($warnings.Count -gt 0) { 2 } else { 0 }
 Pop-Location
 exit $exitCode
+# ============================================================
+# STEP 6: Command System Consistency Check
+# ============================================================
+Write-Host "[STEP 6] Command system consistency check..." -ForegroundColor Cyan
+$pyResult = python scripts/check_readme_commands.py 2>&1
+$pyExit = $LASTEXITCODE
+$pyResult | ForEach-Object { Write-Host "  $_" }
+if ($pyExit -ne 0) {
+    Write-Warn "Command table inconsistency detected. See above for details."
+} else {
+    Write-Host "  [PASS] README command table matches commands_reference.md" -ForegroundColor Green
+}

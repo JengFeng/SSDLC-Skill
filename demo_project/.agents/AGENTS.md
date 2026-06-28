@@ -1,4 +1,4 @@
-﻿# 專案開發規則與防線規範 (AGENTS.md)
+# 專案開發規則與防線規範 (AGENTS.md)
 
 👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
@@ -16,14 +16,26 @@ graph TD
     B -->|發現不連貫 / 斷裂| C["Planner: 產出不連貫報告與修正清單"]
     C --> D["Generator: 執行跨階段同步修正"]
     D --> E["Evaluator: 進行全局審核與評分"]
-    E -->|審核通過| F["放行至下一階段 / 提交"]
+    E -->|審核通過| G["🛡️ SSOT 完整性檢查<br/>(check_spec_integrity.py)"]
+    G -->|通過| F["放行至下一階段 / 提交"]
+    G -->|異常| H["⚠️ 產出提醒報告<br/>詢問使用者：退回修正 or 直接放行？"]
+    H -->|使用者選擇退回| C
+    H -->|使用者選擇放行| F
     E -->|未通過| C
-    B -->|完全連貫| F
+    B -->|完全連貫| G
 ```
 
 ### 1. 外層：全域主控 Global Agent（唯一頂層）
 *   **全域掌控與追溯**：負責安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC）的全域掌控、需求追溯、版本同步與 IIS 站台規格同步。
 *   **階段切換與 Baseline 鎖定**：每階段驗證穩定後，封存其穩定可執行的 Baseline。前一階段產生 Baseline，方可切換權限進入下一階段。
+
+    **🛡️ 階段完成後自動 SSOT 完整性提醒**：
+    1.  **Evaluator 通過後**：AI 代理自動執行 `python scripts/check_spec_integrity.py --mode B`（階段產出一致性檢查）。
+    2.  **進入下一階段前**：AI 代理自動執行 `python scripts/check_spec_integrity.py --mode C`（追溯鏈完整性檢查）。
+    3.  **若檢查發現異常**：⚠️ AI 代理產出提醒報告（列出缺失/不一致項目），並**詢問使用者**：「是否退回上階段修正，或直接放行進入下一階段？」
+        - 使用者選擇**退回修正** → 退回 Planner，修正後重新提交 Evaluator。
+        - 使用者選擇**直接放行** → 放行進入下一階段，異常項目記錄於 `phase_gates.json` 供後續追蹤。
+    4.  **檢查通過後**：寫入 `phase_gates.json` 紀錄（`ssot_integrity_checked: true`）。
 
 ### 2. 內層：安全軟體開發生命週期六階段（通稱 SSDLC）局部 PDCA（各階段獨立運作）
 *   軟體開發生命週期切割為安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC），每一階段獨立執行一套 Plan -> Generator -> Evaluator 的 PDCA 閉環。
@@ -33,12 +45,73 @@ graph TD
 
 ---
 
-## 二、 活系統規格書 (Living Specification) 同步規範
+## 二、 系統規格書同步與 SSOT 銜接規範
 
-為了將系統需求與自動化測試完美結合，專案使用 `system_specification.md` 作為活文件（Living Documentation）：
-1.  **規格即測試**：此文件必須包含 Gherkin 語法（Given/When/Then）的 `gherkin` 程式碼區塊。
-2.  **狀態回寫**：每次執行測試治具（Harness）後，治具程式必須自動解析測試結果，將各功能模組的測試狀態（如：`[已通過]`、`[未通過]`）寫回 `system_specification.md`。
-3.  **上線防線**：Evaluator 將會拒絕合併任何在 `system_specification.md` 中仍包含 `[未通過]` 狀態之 Scenario 的 PR。
+### 2.1 活系統規格書 (Living Specification)
+
+為了將系統需求與自動化測試完美結合，專案使用 system_specification.md 作為活文件：
+
+1.  **規格即測試**：此文件必須包含 Gherkin 語法（Given/When/Then）的場景區塊。
+2.  **狀態回寫**：每次執行測試治具（Harness）後，治具程式必須自動解析測試結果，將各功能模組的測試狀態寫回 system_specification.md。
+3.  **上線防線**：Evaluator 將會拒絕合併任何在 system_specification.md 中仍包含未通過狀態之 Scenario 的 PR。
+
+### 2.2 SSOT 三軌規格架構
+
+| 軌道 | 檔案 | 格式 | 讀者 |
+|:---|:---|:---|:---|
+| 結構化可執行規格 | specs/executable_spec.yaml | YAML | AI |
+| 行為化可執行規格 | specs/features/requirements.feature | Gherkin | AI |
+| 人可讀系統規格書 | system_specification.md | Markdown | 人類 |
+
+### 2.3 階段銜接機制 (spec_ref.md)
+
+每個階段的 inputs/ 目錄必須包含 spec_ref.md，記錄本階段必讀的 SSOT 規格路徑。
+AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀取即執行者，Evaluator 判定為 B 類錯誤。
+
+@init 指令執行時，AI 必須自動為 00-06 共 7 個階段生成 inputs/spec_ref.md。
+
+### 2.3.5 專案規格 ↔ 框架模板同步規則
+
+> 根層級 `specs/executable_spec.yaml` 為 `@init` 建立新專案時複製用的**空白模板**。專案層級（如 `demo_project/specs/executable_spec.yaml`）為該專案的**實際 SSOT**。兩者須保持結構同步。
+
+*   **同步觸發時機**：當專案層級 `executable_spec.yaml` 發生以下結構性變更時，必須同步回根層級模板：
+    1.  `requirements` 結構新增/調整（如新增需求欄位、變更需求分類）。
+    2.  `phases` 階段的 `outputs` 定義變更（新增/移除標準產出）。
+    3.  `security_controls` 安全控制項結構調整。
+    4.  YAML schema 版本號變更。
+*   **不需同步的情況**：僅變更需求內容（如需求描述、數量），未動到 YAML 結構定義。
+*   **AI 代理執行規範**：上述觸發條件發生時，於 Evaluator 通過後自動比對專案層級與根層級模板的 YAML 結構，若結構不一致則提示使用者是否同步。使用者確認後，將專案層級的結構更新至根層級模板（保留模板佔位值）。
+*   **雙向追溯**：變更記錄寫入 `memory.md`，標註 `[TEMPLATE_SYNC]` 標籤。
+
+### 2.4 SSOT 完整性監控機制（🛡️ 自動提醒 + 使用者決策）
+
+> ℹ️ **以下 4 個檢查點 AI 代理會自動執行。** 若檢查發現異常，AI 代理會產出提醒報告，並**詢問使用者**要「退回修正」還是「直接放行」。此為「提醒 + 互動決策」機制，由使用者做最終決定。
+
+為確保規格在開發過程中不被遺漏、移動或損毀，AI 代理會在以下檢查點自動執行規格完整性驗證並回報結果：
+
+#### 檢查點 A：階段啟動時（Planner 執行前）
+- 檢查 inputs/spec_ref.md 指向的所有規格檔案是否存在
+- 檢查 executable_spec.yaml 是否為有效 YAML
+- 檢查 requirements.feature 場景數是否與 executable_spec.yaml 中需求數一致
+- 若任一檢查失敗 → 暫停執行，輸出缺失清單
+
+#### 檢查點 B：階段完成時（Evaluator 執行後）
+- 檢查本階段產出是否與 SSOT 定義的需求/API/資料模型一致
+- 檢查所有 Mermaid 圖表語法（三個 backtick 配對正確）
+- 檢查階段產出檔案清單是否與 executable_spec.yaml 中 phases.[階段].outputs 一致
+- 若發現不一致 → B 類錯誤
+
+#### 檢查點 C：跨階段交接時
+- 檢查下一階段 inputs/ 是否包含 spec_ref.md
+- 檢查 traceability_matrix.md 追溯鏈是否完整
+- 若追溯鏈斷裂 → 禁止進入下一階段
+
+#### 檢查點 D：Git 提交前（Pre-commit Hook）
+- 執行規格完整性掃描腳本：python scripts/check_spec_integrity.py
+- 檢查 executable_spec.yaml vs 實際目錄結構是否一致
+- 產出 integrity_report.md 於 logs/ 目錄
+- 若檢查失敗 → 拒絕提交
+
 
 ---
 
@@ -282,7 +355,20 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 
 
 
-### 9. 資安防護基準檢核指令：`@security-check`
+### 9. 四規格完整性檢查指令：`@CheckSpec`
+*   **指令定義**：檢查四種規格（結構化可執行規格 executable_spec.yaml、行為可執行規格 requirements.feature、系統規格書 system_specification.md、追溯矩陣 requirement_tracker.md）的完整性與交叉一致性，產出摘要報告。
+*   **參數說明**：無參數。執行 `python scripts/check_spec_integrity.py --mode S`。
+*   **口語觸發**：「檢查規格」、「CheckSpec」、「規格完整性」、「四規格檢查」。
+*   **AI 代理執行規範**：
+    1.  檢查四種規格檔案是否存在於正確路徑。
+    2.  驗證 executable_spec.yaml 的 YAML 語法有效性。
+    3.  檢查 requirements.feature 的 Gherkin 結構（Feature/Scenario 數量）。
+    4.  檢查 system_specification.md 是否參照所有 REQ 需求。
+    5.  檢查 requirement_tracker.md 的追溯鏈完整性。
+    6.  執行四規格交叉一致性比對（YAML ⇄ Feature ⇄ SRS ⇄ RTM）。
+    7.  產出四規格摘要報告，列出各規格狀態與異常項目。
+
+### 10. 資安防護基準檢核指令：`@security-check`
 *   **指令定義**：載入 Security-Principles Skill 之對應等級檢核表，根據當前 SSDLC 階段篩選適用安全構面，逐項比對系統產出是否符合控制措施要求，並產出檢核報告。
 *   **參數說明**：
     | 參數 | 行為 |
@@ -298,10 +384,16 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     3.  根據當前 SSDLC 階段，篩選適用構面（參照 Security-Principles SKILL.md 中 7 構面 vs SSDLC 階段對照表）。
     4.  逐項比對系統產出是否符合控制措施，標記 ✅符合 / ❌不符合 / ➖不適用 / ⬚未涵蓋。
     5.  產出檢核報告（`outputs/security_check_report.md`），含摘要統計、逐項結果、重點風險、改善建議。
-    6.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
+    6.  **⚠️ 階段性限制免責聲明（必須執行）**：若檢核結果存在 ⚠️ 部分符合或 ❌ 不符合項目，且其原因**非屬軟體設計或開發實作缺陷**（如：需正式 TLS 憑證但處於本機開發階段、涉及硬體/機房實體安全非軟體可控、需組織管理程序非系統功能可達成），則檢核報告中必須：
+        - 在「統計」段落後新增「## 階段性限制說明」章節。
+        - 逐項列出每一項非完全符合的項目，明確標註**不符合原因**與**是否為階段性限制**。
+        - 若屬階段性限制（如 Phase 3 無法取得正式憑證），須加註「待 Phase N 部署至真實環境後重新驗證」。
+        - 若屬非軟體因子（如硬體/實體/組織管理面），須加註「非軟體開發範疇，屬 {對應面向} 管控」。
+        - **目的**：避免檢核報告因階段性或非軟體因素呈現未 100% 符合，導致閱讀者誤判為設計或實作缺陷。
+    7.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
 *   **相容性檢查**：執行前自動比對 Security-Principles 控制措施與現有 6 階段 Skill 規則，若發現衝突則顯示 `[WARN]` 警示並暫停等候使用者確認。
 
-### 10. 彈性安全防護導入指令：`@security-load`
+### 11. 彈性安全防護導入指令：`@security-load`
 *   **指令定義**：於任一 SSDLC 階段中途導入 Security-Principles 資安防護基準，支援選定特定構面與等級，非強制全選。適用於 @init 時未導入、或僅需針對特定安全面向強化的場景。
 *   **參數說明**：
     | 參數 | 行為 |
@@ -330,3 +422,15 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     - `@security-load medium` → 全構面中級導入
     - `@security-load general 1,4,6` → 僅導入存取控制+識別鑑別+通訊保護，普級
     - `@security-load high 2,3` → 僅導入日誌+備援，高級
+
+---
+
+
+
+
+
+
+
+
+
+

@@ -1,56 +1,61 @@
-# API 規格
-| 方法 | 路徑 | 說明 |
-|:---|:---|:---|
-| GET | / | 列表 + 搜尋(?q=) |
-| GET/POST | /add | 新增表單 |
-| GET/POST | /edit/<id> | 編輯表單 |
-| POST | /delete/<id> | 刪除 |
+# API 規格文件 (Enhanced)
 
----
+> Phase 02: System Design | 2026-06-28 | Security-General Baseline
 
-## 🔒 安全需求規格 (CIA + OWASP)
+## 端點總覽
 
-### 機密性 (Confidentiality)
-- 所有 API 端點強制使用 HTTPS / TLS 1.2+
-- 身分驗證資訊（密碼）禁止明文傳輸
-- 資料庫連線字串由環境變數管理，禁止寫入程式碼
+| Method | Path | 描述 | 認證 | 安全 |
+|:---|:---|:---|:---|:---|
+| GET | /login | 登入頁面 | 無 | Rate-limit 建議 |
+| POST | /login | 登入驗證 | 無 | 帳戶鎖定、密碼雜湊 |
+| GET | /logout | 登出並清除 Session | Session | Session.clear() |
+| GET | / | 員工列表 (支援 ?q= 搜尋) | Session | @login_required |
+| GET | /add | 新增員工表單 | Session | @login_required |
+| POST | /add | 新增員工 (form data) | Session | 輸入驗證、Email 唯一 |
+| GET | /edit/<id> | 編輯員工表單 (預載) | Session | @login_required |
+| POST | /edit/<id> | 更新員工 | Session | 輸入驗證 |
+| POST | /delete/<id> | 刪除員工 | Session | CSRF 防護 |
 
-### 完整性 (Integrity)
-- 所有輸入參數進行伺服器端驗證（SQL Injection / XSS 防範）
-- 資料寫入操作（新增/修改/刪除）使用 POST 方法
+## 回應格式
 
-### 可用性 (Availability)
-- API 回應時間目標 < 2 秒
-- 錯誤時僅回傳統一 JSON 格式：`{"error": "簡短訊息", "code": "ERR_CODE"}`，不洩漏系統內部資訊
+### POST /login (登入成功)
+- Status: 302 → /
+- Session: user_id, user_name
+- Flash: "Welcome, {name}!"
 
-### OWASP Top 10 對照
-| OWASP 風險 | 對應控制措施 |
-|-----------|------------|
-| A03:2021 Injection | 使用參數化查詢（SQLite ? placeholder） |
-| A07:2021 Identification Failures | 帳戶鎖定（5 次失敗 / 15 分鐘）、密碼複雜度政策 |
-| A02:2021 Cryptographic Failures | HTTPS/TLS 1.2+、bcrypt 密碼雜湊 |
-| A05:2021 Security Misconfiguration | 環境變數管理 DB 連線、關閉 debug 模式 |
+### POST /login (登入失敗)
+- Status: 200 (重新渲染 login.html)
+- Flash error: "Invalid credentials" / "Account locked"
 
----
+### GET / (員工列表)
+- Status: 200
+- 渲染 index.html，傳入 employees (list of dict) + query (str)
 
-## 🔑 帳號與密碼政策
+### POST /add (新增員工)
+- Request Body: form data (name, department, title, email, hire_date)
+- 成功: 302 → / + flash success
+- 失敗 (Email 重複): 200 + flash error "電子郵件已存在"
+- 失敗 (必填缺漏): 200 + flash error "所有欄位皆為必填"
 
-| 政策 | 規格 |
-|------|------|
-| 密碼複雜度 | 最少 8 字元，含大小寫字母 + 數字 |
-| 密碼效期 | 90 天強制變更 |
-| 密碼歷史 | 禁止與前 3 次相同 |
-| 首次登入 | 強制變更預設密碼 |
-| 帳戶鎖定 | 連續失敗 5 次後鎖定 15 分鐘 |
-| 閒置停用 | 連續 180 天未登入自動禁用 |
-| 共用禁止 | 禁止共用帳號，一人一帳號 |
+### POST /edit/<id> (更新員工)
+- Request Body: form data (name, department, title, email, hire_date)
+- 成功: 302 → / + flash success
+- 失敗 (Email 重複): 200 + flash error
 
----
+### POST /delete/<id> (刪除員工)
+- Request Body: 無 (表單 POST)
+- 成功: 302 → / + flash success
+- 記錄: app.log
 
-## 🔐 傳輸安全
+## 全域安全標頭
 
-| 要求 | 規格 |
-|------|------|
-| 傳輸協定 | HTTPS / TLS 1.2 以上 |
-| 憑證管理 | 使用公鑰憑證（CA 簽發） |
-| 遠端管理 | SSH 加密連線 |
+| Header | Value |
+|:---|:---|
+| X-Content-Type-Options | nosniff |
+| X-Frame-Options | DENY |
+| X-XSS-Protection | 1; mode=block |
+
+## 錯誤處理統一格式
+- Flash message (category: "error" | "success")
+- 記錄至 logs/app.log
+- HTTP 狀態碼依情境 (200/302/400/401)

@@ -1,4 +1,4 @@
-﻿# AI 協作對話指令集參照表 (Command Reference)
+# AI 協作對話指令集參照表 (Command Reference)
 
 本文件整理了專案中所有可用的對話指令。未來協作時，除了手動打字，您亦可直接用語音或口語進行操作：
 - 說出「**讀取指令集**」、「**查詢可用指令**」或「**叫出指令對照表**」→ AI 代理自動呈獻此參照表。
@@ -6,6 +6,7 @@
 - 說出「**建立基線**」、「**新建 Baseline**」、「**儲存專案快照**」→ AI 代理自動執行 @baseline，建立可獨立執行的完整專案快照，並於建立完成後自動觸發基線可執行性驗證（run.bat 語法、Python 匯入、模板完整性檢查）。
 - 說出「**回溯快照**」、「**還原快照**」、「**退回上一步**」、「**載入快照**」、「**回復到之前的快照**」或「**復原工作目錄**」→ AI 代理自動執行 @restore，列出可用快照並引導回溯還原。
 - 說出「**載入資安構面**」、「**導入安全防護**」或「**只加存取控制和日誌**」→ AI 代理自動執行 @security-load，列出構面清單或依指定等級/構面導入。`n- 說出「**執行資安檢核**」、「**資通安全稽核**」或「**安全檢核**」→ AI 代理自動執行 @security-check，依專案選定等級進行 7 構面逐項比對，產出檢核報告。`n- 說出「**強制解鎖階段 {N}**」、「**跳過階段關卡**」→ ⚠️ 框架建造者專用。AI 代理顯示警告提示，確認後強制解鎖指定階段。
+- 說出「**檢查規格**」、「**CheckSpec**」、「**規格完整性**」或「**四規格檢查**」→ AI 代理自動執行 @CheckSpec，檢查四種規格（結構化可執行規格、行為可執行規格、SRS、RTM）的完整性與交叉一致性。
 
 ---
 
@@ -14,11 +15,12 @@
 | 指令語法 | 參數說明 | 系統行為 (AI 代理動作) | 範例 |
 | :--- | :--- | :--- | :--- |
 | **`@baseline`** | 無 | 建立可獨立執行的完整專案快照至 `baseline/` 目錄（全域快照）。階段級 Baseline 為可選功能，由 `@init` 時設定 `phase_baseline_enabled` 開關控制。（含原始碼、模板、資料庫、部署腳本），自動遞增版本號，保留最近 3 份，舊版自動清理。**🔍 建立完成後自動執行基線可執行性驗證（啟動測試、HTTP 可用性檢查），若驗證失敗則立即回報並提供修復建議。** 口語觸發：「建立基線」、「新建 Baseline」。 | `@baseline` |
+| **`@CheckSpec`** | 無 | 檢查四種規格（executable_spec.yaml / requirements.feature / system_specification.md / requirement_tracker.md）的完整性與交叉一致性，產出摘要報告。口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。 | `@CheckSpec` |
 | **`@help`** | 無 | 立即顯示本指令集參照表的完整內容，方便快速查閱所有可用指令與語法。 | `@help` |
 | **`@init [相對路徑]`** | 新專案的建立路徑 | 讀取專案範本結構，在指定路徑下建立完整的 SSDLC 目錄與必要之基礎控制檔案。建立完成後依序引導：(1) 詢問是否啟用階段級 Baseline（預設否），(2) 詢問是否導入資安防護基準 Security-Principles（選定 general/medium/high），(3) 詢問是否立即配置各階段 Skill（展示可用快捷編號清單）。 | `@init ./my_new_project` |
 | **`@optimize`** | 無 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描實際檔案系統並自動修復 README 倉庫結構/章節完整性，再對整個 SSDLC 框架範本執行 10 大檢查組的地毯式關聯檢查與修正。**僅限框架建造者使用，專案開發者請勿呼叫。** 執行前將顯示警告提示，確認後方執行。 | `@optimize` |
 | **`@restore`** | `latest` / `N`（1~5） / `YYYYMMDD-HHMMSS` | 回溯工作目錄至指定執行快照。自動 `git stash` 保留未提交變更 → `git apply` 載入差異補丁 → SHA-256 驗證還原完整性。口語觸發：「回溯快照」「還原快照」「退回上一步」。 | `@restore latest` |
-| **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，逐項比對系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
+| **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，逐項比對系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
 | **`@security-load [等級] [構面1,構面2,...]`** | 等級：`general` / `medium` / `high`；構面：`1`~`8`（逗號分隔，省略=全選）；無參數=列出構面清單 | 於任一階段中途導入資安防護基準，支援選定特定構面。執行相容性檢查後寫入當前階段 `SKILL.md`，並更新 `phase_gates.json`。口語觸發：「載入資安構面」「只加存取控制」「導入安全防護」。 | `@security-load medium 1,4,6` |
 | **`@stages`** | 無 | 立即輸出 SSDLC 六大開發階段與跨階段全域共用分類（00_cross_phase）的代碼及中文名稱對照表。 | `@stages` |
 | **`@unlock [階段代碼]`** | `01` 到 `06` 的階段雙位數代碼 | ⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制。適用情境：框架調試、緊急 Hotfix、階段重建。**專案開發者日常流程中永遠不需使用。** 執行前顯示警告提示，確認後解鎖並記錄於 `phase_gates.json` 與 `logs/ai_adjustment_*.md`。 | `@unlock 03` |
@@ -130,7 +132,42 @@
 - **每次解鎖留下審計記錄**：所有解鎖事件記錄於 `phase_gates.json` 與 `logs/ai_adjustment_*.md`，可供回溯
 
 
-## 四、 指令集擴充歷史記錄
+## 四、 @CheckSpec 指令使用說明
+
+### 檢查的四種規格
+
+| 規格類型 | 檔案 | 讀者 | 說明 |
+|:---|:---|:---|:---|
+| **結構化可執行規格** | `executable_spec.yaml` | 🤖 AI | YAML 格式，定義需求清單、API 規格、資料模型、安全控制 |
+| **行為可執行規格** | `requirements.feature` | 🤖 AI | Gherkin 語法，Given-When-Then 場景描述 |
+| **系統規格書 (SRS)** | `system_specification.md` | 👤 人類 | 人可讀的完整系統規格文件 |
+| **追溯矩陣 (RTM)** | `requirement_tracker.md` | 🔗 追溯 | 需求與實作的雙向追溯鏈 |
+
+### 檢查項目
+
+| 檢查項目 | 說明 |
+|:---|:---|
+| **檔案存在性** | 四種規格檔案是否存在於正確路徑 |
+| **YAML 有效性** | `executable_spec.yaml` 是否為合法 YAML 語法 |
+| **Gherkin 語法** | `requirements.feature` 的 Feature/Scenario 結構是否正確 |
+| **SRS 參照完整性** | `system_specification.md` 是否參照所有 REQ 需求 |
+| **追溯鏈完整性** | `requirement_tracker.md` 是否追溯所有需求 |
+| **交叉一致性** | YAML 需求 ⇄ Feature 場景 ⇄ SRS ⇄ RTM 四向交叉比對 |
+
+### 使用範例
+
+- `@CheckSpec` → 執行四規格完整性與交叉一致性檢查，產出摘要報告
+
+### 執行流程
+
+1. AI 代理執行 `python scripts/check_spec_integrity.py --mode S`
+2. 依序檢查：檔案存在性 → Gherkin 語法 → SRS 參照 → 追溯鏈 → 交叉一致性
+3. 產出四規格摘要報告（含各規格狀態、通過/失敗統計）
+4. 若有異常項目，列出清單供使用者檢視
+
+---
+
+## 五、 指令集擴充歷史記錄
 
 *   **2026-06-27 (Baseline 自動驗證強化)**：`@baseline` 建立完成後自動執行基線可執行性驗證（run.bat 語法、Python 匯入、HTTP 啟動測試、模板完整性），失敗時立即回報修復建議。
 *   **2026-06-27 (@help 指令新增)**：新增 `@help` 指令，快速顯示指令集參照表。
@@ -151,6 +188,12 @@
     *   新增 `@init` 執行後自動啟動各開發階段的 Skill 配置引導對話。
     *   新增自然語言與語音語意喚起 `commands_reference.md` 對照表機制，並將喚出指引整合至開頭前言中。
 
+*   **2026-06-28 (@CheckSpec 四規格完整性檢查)**：
+    *   新增 `@CheckSpec` 指令，檢查四種規格的完整性與交叉一致性。
+    *   強化 `check_spec_integrity.py`：新增 Gherkin 語法檢查、SRS 參照檢查、四規格交叉一致性檢查。
+    *   新增模式 S（@CheckSpec 四規格），支援中英文 Gherkin 關鍵字。
+    *   口語觸發詞彙新增：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。
+
 *   **2026-06-28 (@security-load 彈性導入)**：
     *   新增 @security-load 指令，支援中途選定等級與特定構面導入安全防護。
     *   口語觸發詞彙新增：「載入資安構面」「導入安全防護」「只加存取控制」。
@@ -164,6 +207,13 @@
 *   **2026-06-27 (@unlock 使用說明補強)**：
     *   核心指令表補上 `@restore` 與 `@unlock` 兩條指令列。
     *   新增「
+
+
+
+
+
+
+
 
 
 

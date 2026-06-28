@@ -22,7 +22,7 @@ description: 系統設計階段，負責承接正規化需求並產出七項標�
 
 ### 1. Planner (規劃代理)
 *   **任務**：
-    1.  讀取 01 階段輸出的 `outputs/formal_requirements.md` 與 `reg/requirement_tracker.md`，作為設計輸入。
+    1.  讀取 01 階段輸出的 `outputs/formal_requirements.md` 與 `reg/requirement_tracker.md`，以及 SSOT 規格（`specs/executable_spec.yaml`、`specs/features/requirements.feature`），作為設計輸入。
     2.  根據需求規格規劃七項標準設計產出（DB Schema、ER 圖、API 規格、UI 雛型、3 UML 圖）。
     3.  選定本階段適用的 Skill（資料庫設計、API 設計、UI 設計、UML 繪圖）。**UI 設計 Skill 推薦**：Planner 應分析對話上下文與需求規格，若專案涉及前端介面、網頁、或使用者互動，**主動向使用者推薦**載入 `frontend-app-builder` Skill（產出高品質、現代化介面雛型：漸層背景、動畫、SVG 圖示、Google Fonts、RWD）。使用者可決定採用、跳過、或選用其他 UI Skill。若專案為純 API/後端則不推薦。
     4.  **[條件式] 安全設計規劃**：若 `security_baseline.enabled` 為 `true`，讀取構面 1/4/6 控制措施，規劃 RBAC 角色矩陣、認證流程、加密架構（TLS/憑證/資料加密），納入設計簡報。
@@ -59,7 +59,6 @@ description: 系統設計階段，負責承接正規化需求並產出七項標�
 
 ## 二、 輸入與輸出規範
 
-*   **輸入路徑 (`inputs/`)**：承接 01 階段 outputs（`formal_requirements.md`、`requirement_tracker.md`）。
 *   **輸出路徑 (`outputs/`)**：
     | 產出 | 檔案 | 格式 |
     |:---|:---|:---|

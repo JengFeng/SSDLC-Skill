@@ -41,6 +41,11 @@ description: 規劃與需求分析階段，負責原始需求釐清、口語需�
     2.  將口語需求萃取為正規化規格：萃取功能需求（做什麼）、業務規則（不違背什麼）、邊界條件（不做什麼）。
     3.  **[條件式] 安全需求寫入**：若 `phase_gates.json` 中 `security_baseline.enabled` 為 `true`，則讀取 `external-resources/Security-Principles/assets/checklist_*.md` 對應等級之構面 5（系統與服務獲得）控制措施，將安全需求（CIA、威脅建模、OWASP）納入 `formal_requirements.md`。
     3.  產出正規化需求規格書 `outputs/formal_requirements.md`（含功能清單、資料模型、技術棧定義）。
+    4.  **SSOT 雙軌規格產出（關鍵）**：產出兩份規格供後續階段使用：
+        - 👤 **人可讀**：`system_specification.md`（SRS 系統規格書，IEEE 830 格式）
+        - 🤖 **AI 可執行（結構化）**：`specs/executable_spec.yaml`（YAML SSOT，含需求、資料模型、API、安全控制、Phase Gates）
+    5.  - 🤖 **AI 可執行（行為化）**：`specs/features/requirements.feature`（Gherkin Given-When-Then 場景規格）（YAML SSOT，含需求、資料模型、API、安全控制、Phase Gates）
+    5.  確保 SSOT 規格與正規化需求完全一致，為後續所有階段的唯一資料源。
     4.  將所有需求登錄至 `reg/requirement_tracker.md` 統一追蹤表（REQ ID、日期、來源、優先級、描述、狀態）。
     5.  完成後儲存執行快照至根目錄的 `snapshots/` 目錄。
 
@@ -65,6 +70,8 @@ description: 規劃與需求分析階段，負責原始需求釐清、口語需�
     *   需求相關的 RFP 文件、會議記錄、參考文件。
 *   **輸出路徑 (`outputs/`)**：
     *   `formal_requirements.md`：正規化需求規格書（含功能清單、資料模型、技術棧）。
+*   `system_specification.md`：👤 人可讀 SRS 系統規格書（IEEE 830）。
+*   `specs/executable_spec.yaml`：🤖 AI 可執行規格（SSOT，一源多用）。
 *   **需求歷程 (`reg/`)**：
     *   `requirement_tracker.md`：統一需求追蹤表（REQ ID | 日期 | 來源 | 優先級 | 描述 | 對應設計 | 對應實作 | 對應測試 | 狀態）。
     *   `grill_me_session.md`：grill-me 釐清對話記錄（如有執行）。

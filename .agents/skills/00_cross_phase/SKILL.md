@@ -50,7 +50,29 @@ description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的
     *   `agent_state_snapshot.json`：langgraph Agent 狀態快照（如有）。
     *   `diff_report.md`：diffsync 跨階段差異比對報告（如有）。
 
-## 三、 可用技能
+
+## 三、 SSOT 雙軌規格管理規範
+
+### 1. 一源多用架構
+
+以 specs/executable_spec.yaml 為唯一資料源：
+
+| 規格 | 讀者 | 用途 |
+|:---|:---|:---|
+| executable_spec.yaml | AI 代理 | 結構化規格（需求/API/資料模型/安全控制） |
+| requirements.feature | AI 代理 | 行為化規格（Gherkin Given-When-Then 場景） |
+| system_specification.md | 人類 | 交付驗收文件 |
+
+### 2. 產出與讀取規範
+
+Phase 01 Generator 產出 SSOT。Phase 02-06 Planner 執行前必須讀取。
+各階段 inputs/ 必須含 spec_ref.md 指向 SSOT。
+
+### 3. 一致性檢查
+
+Evaluator 檢查產出與 SSOT 一致性。不一致即 B 類錯誤。規格先行原則。
+
+## 四、 可用技能
 
 | 快捷 | 技能名稱 | 用途 |
 |:---|:---|:---|
@@ -68,7 +90,7 @@ description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的
 | 12 | security-principles | 資通系統防護基準檢核（7構面/80項控制措施，支援普/中/高三等級） |
 | 11 | using-superpowers | Skill 尋找與使用引導 |
 
-## 四、 資安防護基準整合規範 (Security-Principles)
+## 五、 資安防護基準整合規範 (Security-Principles)
 
 ### 1. 初始化階段引用（@init 指令）
 

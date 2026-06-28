@@ -67,7 +67,7 @@ description: 維護與監控階段，負責線上運行日誌收集與分析、�
 
 ## 二、 輸入與輸出規範
 
-*   **輸入路徑 (`inputs/`)**：存放此階段由人類或監控系統登錄的 Bug 或新需求 `BUG_*.md` / `REQ_*.md`。
+*   **輸入路徑 (`inputs/`)**：存放此階段由人類或監控系統登錄的 Bug 或新需求 `BUG_*.md` / `REQ_*.md`，以及 SSOT 規格（`specs/executable_spec.yaml`）。
 *   **輸出路徑 (`outputs/`)**：
     *   `incident_report.md`：故障分析與根源報告。
     *   `patch_changelog.md`：修補日誌。

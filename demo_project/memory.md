@@ -234,3 +234,26 @@
 3. secret_key 明文硬編碼 — session 可偽造
 4. 無 HTTPS — 明文傳輸
 5. 無備份/備援 — 單點故障
+
+
+---
+
+## 🔑 示範帳號資訊 (Demo Credentials)
+
+> 最後更新：2026-06-28
+
+| 項目 | 值 |
+|:---|:---|
+| 登入 URL | http://127.0.0.1:5000/login |
+| Email | admin@demo.local |
+| 密碼 | Admin@1234 |
+| 角色 | SystemAdmin (Administrator) |
+| 安全基準 | General Baseline (90.5%) |
+
+### 啟動方式
+```batch
+cd demo_project\baseline\baseline-v5
+run.bat
+```
+
+> ⚠️ 此為示範用預設帳號，正式環境請立即更換密碼。

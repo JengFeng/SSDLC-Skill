@@ -1,46 +1,45 @@
-# 員工管理系統 — 活動圖 (Activity Diagram)
+# 活動圖 (Activity Diagram)
+
+> Phase 02: System Design | 2026-06-28
 
 ```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 60, "rankSpacing": 70, "padding": 20}, "themeVariables": {"fontSize": "17px", "fontFamily": "Inter, Noto Sans TC, sans-serif"}}}%%
 flowchart TD
-    START((開始)) --> ENTER[進入員工管理首頁]
-    ENTER --> LIST[顯示員工列表]
-    LIST --> CHECK{是否有員工資料?}
-    CHECK -->|是| TABLE[顯示表格與搜尋框]
-    CHECK -->|否| EMPTY[顯示「尚無員工資料」]
-    TABLE --> CHOICE{選擇操作}
-    EMPTY --> CHOICE
+    START([開始]) --> LOGIN_PAGE[顯示登入頁面]
+    LOGIN_PAGE --> INPUT[輸入 Email + 密碼]
+    INPUT --> CHECK_USER{帳號存在?}
+    CHECK_USER -->|否| FLASH1[Flash: Invalid credentials]
+    FLASH1 --> LOGIN_PAGE
+    CHECK_USER -->|是| CHECK_LOCK{帳戶鎖定?}
+    CHECK_LOCK -->|是| FLASH2[Flash: Account locked]
+    FLASH2 --> LOGIN_PAGE
+    CHECK_LOCK -->|否| CHECK_PWD{密碼正確?}
+    CHECK_PWD -->|否| INC_ATTEMPT[失敗次數 +1]
+    INC_ATTEMPT --> CHECK_ATTEMPTS{達 5 次?}
+    CHECK_ATTEMPTS -->|是| SET_LOCK[鎖定 15 分鐘]
+    SET_LOCK --> LOGIN_PAGE
+    CHECK_ATTEMPTS -->|否| LOGIN_PAGE
+    CHECK_PWD -->|是| RESET_ATTEMPTS[清除失敗次數]
+    RESET_ATTEMPTS --> SET_SESSION[建立 Session]
+    SET_SESSION --> DASHBOARD[員工管理儀表板]
 
-    CHOICE -->|搜尋| SEARCH[輸入關鍵字]
-    SEARCH --> FILTER[過濾列表]
-    FILTER --> RETURN[返回員工列表]
-
-    CHOICE -->|新增| ADDFORM[填寫表單<br/>5 個欄位]
-    ADDFORM --> VALIDATE{所有欄位已填?}
-    VALIDATE -->|否| ERR_REQUIRED[提示：所有欄位皆為必填]
-    VALIDATE -->|是| DUPCHECK{Email 重複?}
-    DUPCHECK -->|是| ERR_DUP[提示：電子郵件已存在]
-    DUPCHECK -->|否| INSERT[寫入資料庫]
-    INSERT --> OK_ADD[顯示：員工新增成功]
-    OK_ADD --> RETURN
-
-    CHOICE -->|修改| EDITCLICK[點選編輯按鈕]
-    EDITCLICK --> EDITFORM[修改表單內容]
-    EDITFORM --> UPDATE[更新資料庫]
-    UPDATE --> OK_EDIT[顯示：員工資料更新成功]
-    OK_EDIT --> RETURN
-
-    CHOICE -->|刪除| DELCLICK[點選刪除按鈕]
-    DELCLICK --> CONFIRM{確認刪除?}
-    CONFIRM -->|是| DELETE[從資料庫刪除]
-    DELETE --> OK_DEL[顯示：員工已刪除]
-    CONFIRM -->|否| CANCEL[取消操作]
-    OK_DEL --> RETURN
-    CANCEL --> RETURN
-
-    RETURN --> END((結束))
+    DASHBOARD --> CHOICE{使用者操作}
+    CHOICE -->|搜尋| SEARCH[關鍵字過濾]
+    SEARCH --> DASHBOARD
+    CHOICE -->|新增| ADD_FORM[新增表單]
+    ADD_FORM --> VALIDATE{驗證通過?}
+    VALIDATE -->|否| ADD_FORM
+    VALIDATE -->|是| INSERT[(INSERT)]
+    INSERT --> DASHBOARD
+    CHOICE -->|編輯| EDIT_FORM[編輯表單預載]
+    EDIT_FORM --> EDIT_SAVE{儲存?}
+    EDIT_SAVE -->|取消| DASHBOARD
+    EDIT_SAVE -->|確認| UPDATE[(UPDATE)]
+    UPDATE --> DASHBOARD
+    CHOICE -->|刪除| CONFIRM_DEL{確認刪除?}
+    CONFIRM_DEL -->|取消| DASHBOARD
+    CONFIRM_DEL -->|確認| DELETE_RECORD[(DELETE)]
+    DELETE_RECORD --> DASHBOARD
+    CHOICE -->|登出| LOGOUT[清除 Session]
+    LOGOUT --> LOGIN_PAGE
 ```
-
-## 說明
-- 完整覆蓋 CRUD 四種操作流程
-- 含兩個驗證決策點（必填檢查、Email 唯一性）
-- 刪除操作含確認對話框

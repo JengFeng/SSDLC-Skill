@@ -21,7 +21,7 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
 
 ### 1. Planner (規劃代理)
 *   **任務**：
-    1.  讀取 03 階段輸出的原始碼與單元測試結果 `outputs/unit_test_results.xml`，作為測試輸入。
+    1.  讀取 03 階段輸出的原始碼與單元測試結果 `outputs/unit_test_results.xml`，以及 SSOT 規格（`specs/executable_spec.yaml`、`specs/features/requirements.feature`），作為測試輸入。
     2.  根據 `reg/requirement_tracker.md` 的需求追溯鏈，規劃雙軌測試範圍（API 端點覆蓋 + UI 互動覆蓋）。
     3.  **Skill 上下文推薦**：分析專案類型與測試需求，主動向使用者推薦：
     - 有前端/瀏覽器 UI → 推薦 `Playwright`（預錄腳本自動化測試，高覆蓋率）
@@ -59,7 +59,7 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
 
 ## 二、 輸入與輸出規範
 
-*   **輸入路徑 (`inputs/`)**：承接 03 階段 outputs（原始碼、`unit_test_results.xml`、`task_list.json`）。
+*   **輸入路徑 (`inputs/`)**：承接 03 階段 outputs（原始碼、`unit_test_results.xml`、`task_list.json`），以及 SSOT 規格（`specs/executable_spec.yaml`、`specs/features/requirements.feature`）。
 *   **輸出路徑 (`outputs/`)**：
     *   `test_api.py`：pytest API 功能測試腳本。
     *   `test_ui.py`：Playwright 瀏覽器 UI 測試腳本。

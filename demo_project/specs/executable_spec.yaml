@@ -1,304 +1,170 @@
-# =============================================================================
-# 可執行規格母版 — 員工基本資料管理系統 (Demo Project)
-# =============================================================================
+# SSDLC 可執行規格 (SSOT) — Employee Management System
+# 一源多用：此 YAML 為唯一資料源，自動生成 SRS、RTM、Phase Gates、Test Cases
+# Phase 01-06 所有 AI 代理必須以此為執行依據
+
 project:
-  name: "員工基本資料管理系統"
-  version: "1.0.0"
-  created: "2026-06-27"
-  last_updated: "2026-06-27"
-  current_phase: "completed"
-  description: "輕量級 Web CRUD 應用，Python Flask + SQLite + Jinja2，提供員工基本資料新增/刪除/修改/查詢"
+  name: "Employee Management System"
+  version: "1.1.0"
+  created: "2026-06-28"
+  methodology: "TDD + SSDLC + Security-Principles"
+  security_baseline: "General (普級)"
+  security_compliance: "資通系統防護基準驗證實務 v1.3"
+  security_coverage: "90.5%"
 
-# =============================================================================
-# 階段 01：規劃與需求分析 ✅ completed
-# =============================================================================
-phase_01_planning:
-  status: completed
-  baseline: "baseline/phase-01_v1/"
-  inputs:
-    raw_requirements:
-      - "01_planning_and_analysis/inputs/user_requirement_raw.md"
-    rfp_documents: []
-  outputs:
-    formal_requirements: "01_planning_and_analysis/outputs/formal_requirements.md"
-    requirement_tracker: "01_planning_and_analysis/reg/requirement_tracker.md"
-  requirements:
-    - id: "REQ_001"
-      description: "員工列表與關鍵字搜尋（姓名/部門/Email 模糊比對）"
-      priority: P0
-      source: "01_planning_and_analysis/inputs/user_requirement_raw.md"
-      acceptance_criteria:
-        - "首頁顯示所有員工表格列表"
-        - "搜尋框可依姓名、部門、Email 模糊比對"
-        - "無員工時顯示提示訊息"
-    - id: "REQ_002"
-      description: "新增員工（五項必填欄位 + Email 唯一性檢查）"
-      priority: P0
-      source: "01_planning_and_analysis/inputs/user_requirement_raw.md"
-      acceptance_criteria:
-        - "表單含姓名、部門、職稱、Email、到職日五欄位"
-        - "所有欄位必填，空白提交顯示錯誤"
-        - "Email 重複時拒絕並顯示提示"
-        - "成功後 redirect 回首頁"
-    - id: "REQ_003"
-      description: "修改員工資料"
-      priority: P0
-      source: "01_planning_and_analysis/inputs/user_requirement_raw.md"
-      acceptance_criteria:
-        - "可編輯既有員工所有欄位"
-        - "保留 Email 不變時可通過唯一性檢查"
-    - id: "REQ_004"
-      description: "刪除員工（確認對話框）"
-      priority: P0
-      source: "01_planning_and_analysis/inputs/user_requirement_raw.md"
-      acceptance_criteria:
-        - "點選刪除彈出瀏覽器確認對話框"
-        - "確認後物理刪除資料"
-    - id: "REQ_005"
-      description: "Email 唯一性約束"
-      priority: P0
-      source: "01_planning_and_analysis/reg/grill_me_session.md"
-      acceptance_criteria:
-        - "資料庫層級 UNIQUE 約束"
-        - "重複 Email 觸發 IntegrityError"
-    - id: "REQ_006"
-      description: "ER 模型設計"
-      priority: P1
-      source: "設計規範"
-      acceptance_criteria:
-        - "employees 表含 id/name/department/title/email/hire_date/created_at/updated_at"
-    - id: "REQ_007"
-      description: "UI 雛型設計"
-      priority: P1
-      source: "設計規範"
-      acceptance_criteria:
-        - "互動式 HTML 雛型（Bootstrap）"
-        - "含列表頁、表單頁兩畫面"
-    - id: "REQ_008"
-      description: "使用案例設計"
-      priority: P1
-      source: "設計規範"
-      acceptance_criteria:
-        - "人資管理員 × 5 用例（列表/新增/修改/刪除/搜尋）"
-    - id: "REQ_009"
-      description: "業務流程設計"
-      priority: P1
-      source: "設計規範"
-      acceptance_criteria:
-        - "CRUD 完整業務流程活動圖"
-    - id: "REQ_010"
-      description: "互動時序設計"
-      priority: P1
-      source: "設計規範"
-      acceptance_criteria:
-        - "新增員工 MVC 三層互動時序圖"
-  evaluator:
-    passed: true
-    scores:
-      coverage: 40
-      clarity: 30
-      traceability: 20
-      format: 10
-    errors:
-      type_a: []
-      type_b: []
+tech_stack:
+  backend: "Python 3.13 + Flask 3.x"
+  database: "SQLite"
+  frontend: "Jinja2 SSR + frontend-app-builder CSS"
+  testing: "pytest 9.x (API) + Playwright 1.x (UI)"
+  security: "SHA-256 + SALT, 參數化查詢, Security Headers, Session"
 
-# =============================================================================
-# 階段 02：系統設計 ✅ completed
-# =============================================================================
-phase_02_design:
-  status: completed
-  baseline: "baseline/phase-02_v1/"
-  inputs:
-    requirements:
-      - "01_planning_and_analysis/outputs/formal_requirements.md"
-  outputs:
-    db_schema: "02_system_design/outputs/db_schema.sql"
-    er_diagram: "02_system_design/outputs/er_diagram.md"
-    api_spec: "02_system_design/outputs/api_spec.md"
-    ui_prototype: "02_system_design/outputs/ui_prototype.html"
-    use_case_diagram: "02_system_design/outputs/use_case_diagram.md"
-    activity_diagram: "02_system_design/outputs/activity_diagram.md"
-    sequence_diagram: "02_system_design/outputs/sequence_diagram.md"
-  database:
-    tables:
-      - name: "employees"
-        columns:
-          - {name: "id", type: "INTEGER", constraints: "PRIMARY KEY AUTOINCREMENT"}
-          - {name: "name", type: "TEXT", constraints: "NOT NULL"}
-          - {name: "department", type: "TEXT", constraints: "NOT NULL"}
-          - {name: "title", type: "TEXT", constraints: "NOT NULL"}
-          - {name: "email", type: "TEXT", constraints: "NOT NULL UNIQUE"}
-          - {name: "hire_date", type: "TEXT", constraints: "NOT NULL"}
-          - {name: "created_at", type: "TEXT", constraints: "DEFAULT datetime('now','localtime')"}
-          - {name: "updated_at", type: "TEXT", constraints: "DEFAULT datetime('now','localtime')"}
-  api:
-    endpoints:
-      - {method: "GET", path: "/", description: "員工列表與搜尋", query: "?q=關鍵字", response: "HTML"}
-      - {method: "GET", path: "/add", description: "新增表單", response: "HTML"}
-      - {method: "POST", path: "/add", description: "提交新增", request: "Form 5欄位", response: "302→/ 或 200錯誤"}
-      - {method: "GET", path: "/edit/<id>", description: "編輯表單", response: "HTML"}
-      - {method: "POST", path: "/edit/<id>", description: "提交修改", request: "Form 5欄位", response: "302→/ 或 200錯誤"}
-      - {method: "POST", path: "/delete/<id>", description: "刪除員工", response: "302→/"}
-  evaluator:
-    passed: true
-    scores:
-      completeness: 100
-      consistency: 100
-      traceability: 100
-    errors:
-      type_a: []
-      type_b: []
+# ── 功能需求 (SSOT) ──
+requirements:
+  - id: "REQ-001"
+    name: "員工列表與搜尋"
+    priority: "P0"
+    description: "顯示所有員工，支援關鍵字搜尋（姓名/部門/Email）"
+    test_ids: ["TC-001", "TC-002", "TC-003"]
 
-# =============================================================================
-# 階段 03：開發與編碼 ✅ completed
-# =============================================================================
-phase_03_implementation:
-  status: completed
-  baseline: "baseline/phase-03_v1/"
-  inputs:
-    design_outputs:
-      - "02_system_design/outputs/db_schema.sql"
-      - "02_system_design/outputs/api_spec.md"
-      - "02_system_design/outputs/ui_prototype.html"
-  outputs:
-    task_list: null
-    source_files:
-      - "03_implementation_and_coding/outputs/app.py"
-      - "03_implementation_and_coding/outputs/templates/base.html"
-      - "03_implementation_and_coding/outputs/templates/index.html"
-      - "03_implementation_and_coding/outputs/templates/form.html"
-    unit_test_results: null
-    lint_report: null
-  modules:
-    - name: "app"
-      path: "03_implementation_and_coding/outputs/app.py"
-      dependencies: ["flask", "sqlite3", "jinja2"]
-  evaluator:
-    passed: true
-    scores:
-      spec_compliance: 35
-      code_quality: 25
-      test_coverage: 20
-      security: 20
-    errors:
-      type_a: []
-      type_b: []
+  - id: "REQ-002"
+    name: "新增員工"
+    priority: "P0"
+    description: "表單輸入五項欄位，Email 唯一驗證"
+    test_ids: ["TC-004", "TC-005"]
+    security: ["input_validation", "sql_injection_prevention"]
 
-# =============================================================================
-# 階段 04：測試驗證 ✅ completed
-# =============================================================================
-phase_04_testing:
-  status: completed
-  baseline: "baseline/phase-04_v1/"
-  inputs:
-    source_code:
-      - "03_implementation_and_coding/outputs/app.py"
-      - "03_implementation_and_coding/outputs/templates/"
-  outputs:
-    test_api: "04_testing/outputs/test_employee_crud.py"
-    test_ui: "04_testing/outputs/test_ui_playwright.py"
-    test_results: "04_testing/outputs/test_results.md"
-  test_results:
-    api:
-      total: 7
-      passed: 7
-      failed: 0
-      coverage_pct: 100
-    ui:
-      total: 7
-      passed: 7
-      failed: 0
-  bugs:
-    - {id: "BUG_001", severity: "Trivial", description: "搜尋無結果時顯示空白表格而非提示", status: "fixed"}
-  evaluator:
-    passed: true
-    scores:
-      requirement_coverage: 35
-      dual_track_pass_rate: 30
-      bug_tracking: 20
-      regression_strategy: 15
-    errors:
-      type_a: []
-      type_b: []
+  - id: "REQ-003"
+    name: "修改員工"
+    priority: "P0"
+    description: "表單預載 → 編輯 → 更新"
+    test_ids: ["TC-006"]
 
-# =============================================================================
-# 階段 05：部署發布 ✅ completed
-# =============================================================================
-phase_05_deployment:
-  status: completed
-  baseline: "baseline/phase-05_v1/"
-  inputs:
-    test_results:
-      - "04_testing/outputs/test_results.md"
-  outputs:
-    build_manifest: null
-    signature_status: null
-    deployment_topology: null
-  artifacts:
-    - {path: "05_deployment/outputs/requirements.txt", sha256: "<未計算>"}
-    - {path: "05_deployment/outputs/run.bat", sha256: "<未計算>"}
-    - {path: "03_implementation_and_coding/outputs/app.py", sha256: "<未計算>"}
-  evaluator:
-    passed: true
-    scores:
-      config_baseline: 30
-      availability: 30
-      signature: 20
-      config_correctness: 20
-    errors:
-      type_a: []
-      type_b: []
+  - id: "REQ-004"
+    name: "刪除員工"
+    priority: "P0"
+    description: "確認對話框後硬刪除"
+    test_ids: ["TC-007"]
+    security: ["csrf_prevention"]
 
-# =============================================================================
-# 階段 06：維護監控 ✅ completed
-# =============================================================================
-phase_06_maintenance:
-  status: completed
-  baseline: "baseline/phase-06_v1/"
-  inputs:
-    deployment_outputs:
-      - "05_deployment/outputs/requirements.txt"
-      - "05_deployment/outputs/run.bat"
-  outputs:
-    incident_report: null
-    patch_changelog: null
-    monitoring_dashboard: null
-  monitors:
-    - {name: "應用程式日誌", threshold: "所有 CRUD 操作記錄於 logs/app.log", current_value: "正常"}
-  incidents: []
-  evaluator:
-    passed: true
-    scores:
-      regression_testing: 30
-      monitoring_effectiveness: 25
-      error_extraction: 25
-      artifact_verification: 20
-    errors:
-      type_a: []
-      type_b: []
+  - id: "REQ-005"
+    name: "登入驗證"
+    priority: "P0"
+    description: "Email + 密碼登入，Session 管理"
+    test_ids: ["TC-UI-001", "TC-UI-002"]
+    security: ["password_hashing", "account_lockout", "session_management"]
 
-# =============================================================================
-# 全域追溯與變更紀錄
-# =============================================================================
+  - id: "REQ-006"
+    name: "安全防護"
+    priority: "P0"
+    description: "Security Headers、輸入過濾、參數化查詢"
+    test_ids: ["TC-UI-003"]
+    security: ["xss_prevention", "security_headers", "sql_injection_prevention"]
+
+# ── 資料模型 (SSOT) ──
+data_model:
+  employees:
+    columns:
+      - {name: id, type: INTEGER, constraints: "PK AUTOINCREMENT"}
+      - {name: name, type: TEXT, constraints: "NOT NULL"}
+      - {name: department, type: TEXT, constraints: "NOT NULL"}
+      - {name: title, type: TEXT, constraints: "NOT NULL"}
+      - {name: email, type: TEXT, constraints: "NOT NULL UNIQUE"}
+      - {name: password_hash, type: TEXT, constraints: "NOT NULL DEFAULT ''"}
+      - {name: hire_date, type: TEXT, constraints: "NOT NULL"}
+      - {name: last_login, type: TEXT}
+      - {name: login_attempts, type: INTEGER, constraints: "DEFAULT 0"}
+      - {name: locked_until, type: TEXT}
+      - {name: active, type: INTEGER, constraints: "DEFAULT 1"}
+      - {name: created_at, type: TEXT, constraints: "DEFAULT now"}
+      - {name: updated_at, type: TEXT, constraints: "DEFAULT now"}
+
+# ── API 端點 (SSOT) ──
+api_endpoints:
+  - {method: GET, path: "/login", auth: false, description: "登入頁面"}
+  - {method: POST, path: "/login", auth: false, description: "登入驗證"}
+  - {method: GET, path: "/logout", auth: "Session", description: "登出"}
+  - {method: GET, path: "/", auth: "Session", description: "員工列表"}
+  - {method: GET, path: "/add", auth: "Session", description: "新增表單"}
+  - {method: POST, path: "/add", auth: "Session", description: "新增員工"}
+  - {method: GET, path: "/edit/<id>", auth: "Session", description: "編輯表單"}
+  - {method: POST, path: "/edit/<id>", auth: "Session", description: "更新員工"}
+  - {method: POST, path: "/delete/<id>", auth: "Session", description: "刪除員工"}
+
+# ── 安全控制 (SSOT) ──
+security_controls:
+  authentication:
+    mechanism: "Email + Password"
+    hashing: "SHA-256 + SALT"
+    session: "Flask Session (server-side)"
+    lockout: "5 attempts / 15 minutes"
+
+  headers:
+    X_Content_Type_Options: "nosniff"
+    X_Frame_Options: "DENY"
+    X_XSS_Protection: "1; mode=block"
+
+  input_validation:
+    sql_injection: "100% parameterized queries"
+    xss: "Jinja2 auto-escaping + validate_input()"
+    email: "UNIQUE constraint + format validation"
+
+  auditing:
+    mechanism: "app.log"
+    events: ["login", "logout", "create", "update", "delete"]
+
+# ── Phase Gates (SSOT) ──
+phases:
+  "01_planning":
+    status: completed
+    inputs: ["user_requirement_raw.md"]
+    outputs: ["formal_requirements.md", "requirement_tracker.md", "grill_me_session.md", "security_requirements.md"]
+    score: 100
+
+  "02_design":
+    status: completed
+    inputs: ["formal_requirements.md", "executable_spec.yaml"]
+    outputs: ["db_schema.sql", "er_diagram.md", "api_spec.md", "ui_prototype.html", "use_case_diagram.md", "activity_diagram.md", "sequence_diagram.md", "threat_model.md"]
+    score: 100
+
+  "03_implementation":
+    status: completed
+    inputs: ["api_spec.md", "db_schema.sql", "ui_prototype.html", "executable_spec.yaml"]
+    outputs: ["app.py", "templates/"]
+    score: 100
+
+  "04_testing":
+    status: completed
+    inputs: ["app.py", "executable_spec.yaml"]
+    outputs: ["test_employee_crud.py", "test_results.md", "bug_tracker.md"]
+    score: 100
+
+  "05_deployment":
+    status: completed
+    inputs: ["app.py", "test_results.md", "executable_spec.yaml"]
+    outputs: ["run.bat", "requirements.txt", "security_deployment_checklist.md", ".env.example"]
+    score: 100
+
+  "06_maintenance":
+    status: completed
+    inputs: ["app.py", "security_deployment_checklist.md", "executable_spec.yaml"]
+    outputs: ["monitoring_guide.md", "security_trend.md"]
+    score: 100
+
+# ── 追溯矩陣 (SSOT) ──
 traceability:
-  matrix:
-    - {req: "REQ_001", source: "reg/requirement_tracker.md", spec: "formal_requirements.md", design: "api_spec.md GET /", impl: "app.py index()", test: "TC_001,004 + TC_UI_001,003", status: "已驗證"}
-    - {req: "REQ_002", source: "reg/requirement_tracker.md", spec: "formal_requirements.md", design: "api_spec.md POST /add", impl: "app.py add()", test: "TC_002,007 + TC_UI_002,007", status: "已驗證"}
-    - {req: "REQ_003", source: "reg/requirement_tracker.md", spec: "formal_requirements.md", design: "api_spec.md POST /edit", impl: "app.py edit()", test: "TC_005 + TC_UI_005", status: "已驗證"}
-    - {req: "REQ_004", source: "reg/requirement_tracker.md", spec: "formal_requirements.md", design: "api_spec.md POST /delete", impl: "app.py delete()", test: "TC_006 + TC_UI_006", status: "已驗證"}
-    - {req: "REQ_005", source: "grill-me", spec: "Email 唯一", design: "db_schema.sql UNIQUE", impl: "IntegrityError", test: "TC_003 + TC_UI_004", status: "已驗證"}
-    - {req: "REQ_006", source: "設計規範", spec: "ER 模型", design: "er_diagram.md", impl: "db_schema.sql", test: "—", status: "設計完成"}
-    - {req: "REQ_007", source: "設計規範", spec: "UI 雛型", design: "ui_prototype.html", impl: "templates/", test: "—", status: "設計完成"}
-    - {req: "REQ_008", source: "設計規範", spec: "用例", design: "use_case_diagram.md", impl: "api_spec.md", test: "—", status: "設計完成"}
-    - {req: "REQ_009", source: "設計規範", spec: "流程", design: "activity_diagram.md", impl: "app.py CRUD", test: "—", status: "設計完成"}
-    - {req: "REQ_010", source: "設計規範", spec: "互動", design: "sequence_diagram.md", impl: "app.py add()", test: "TC_002", status: "設計完成"}
-  last_alignment_check: "2026-06-27"
+  total_requirements: 6
+  fully_traced: 6
+  test_coverage: "100% (16 tests / 6 REQs)"
+  matrix_file: "requirement_tracker.md"
 
+# ── 變更紀錄 ──
 change_log:
-  - {version: "0.1.0", date: "2026-06-27", phase: "01_planning_and_analysis", summary: "專案初始化，完成 10 項需求正規化", files_changed: ["formal_requirements.md", "requirement_tracker.md"]}
-  - {version: "0.2.0", date: "2026-06-27", phase: "02_system_design", summary: "完成 7 項設計產出（DB Schema + ER + API + UI + 3 UML）", files_changed: ["db_schema.sql", "er_diagram.md", "api_spec.md", "ui_prototype.html", "use_case_diagram.md", "activity_diagram.md", "sequence_diagram.md"]}
-  - {version: "0.3.0", date: "2026-06-27", phase: "03_implementation_and_coding", summary: "完成 Flask CRUD 實作（app.py + 3 templates + SQLite）", files_changed: ["app.py", "templates/"]}
-  - {version: "0.4.0", date: "2026-06-27", phase: "04_testing", summary: "雙軌測試全數通過（pytest 7/7 + Playwright 7/7）", files_changed: ["test_employee_crud.py", "test_ui_playwright.py", "test_results.md"]}
-  - {version: "0.5.0", date: "2026-06-27", phase: "05_deployment", summary: "部署產物準備（requirements.txt + run.bat）", files_changed: ["requirements.txt", "run.bat"]}
-  - {version: "1.0.0", date: "2026-06-27", phase: "06_maintenance", summary: "監控指南完成，全專案交付", files_changed: ["monitoring_guide.md"]}
+  - version: "1.1.0"
+    date: "2026-06-28"
+    changes:
+      - "SSOT 架構建立：executable_spec.yaml 為唯一資料源"
+      - "雙軌規格：人可讀 SRS + AI 可執行 YAML"
+      - "全流程 PDCA 重跑 (Phase 01-06)"
+      - "TDD: 16/16 PASSED"
+      - "STRIDE 威脅模型"
+      - "資安防護基準導入 (General 90.5%)"
