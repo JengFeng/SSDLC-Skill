@@ -173,3 +173,17 @@
 2026-06-28 21:07:18,897 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:18] "[32mPOST /login HTTP/1.1[0m" 302 -
 2026-06-28 21:07:18,910 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:18] "GET / HTTP/1.1" 200 -
 2026-06-28 21:07:20,859 [INFO] 127.0.0.1 - - [28/Jun/2026 21:07:20] "GET /add HTTP/1.1" 200 -
+2026-06-29 16:02:51,186 [INFO] Default admin: admin@demo.local / Admin@1234
+2026-06-29 16:02:51,197 [INFO] Database initialized (secure schema)
+2026-06-29 16:02:51,198 [INFO] App 啟動
+2026-06-29 16:02:51,496 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-29 16:02:51,496 [INFO] [33mPress CTRL+C to quit[0m
+2026-06-29 16:02:51,633 [INFO]  * Restarting with watchdog (windowsapi)
+2026-06-29 16:02:52,993 [INFO] Database initialized (secure schema)
+2026-06-29 16:02:52,993 [INFO] App 啟動
+2026-06-29 16:02:53,064 [WARNING]  * Debugger is active!
+2026-06-29 16:02:53,073 [INFO]  * Debugger PIN: 120-026-535
+2026-06-29 16:02:53,148 [INFO] 127.0.0.1 - - [29/Jun/2026 16:02:53] "[32mGET / HTTP/1.1[0m" 302 -
+2026-06-29 16:02:53,189 [INFO] 127.0.0.1 - - [29/Jun/2026 16:02:53] "GET /login HTTP/1.1" 200 -
+2026-06-29 16:02:54,248 [INFO] 127.0.0.1 - - [29/Jun/2026 16:02:54] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
