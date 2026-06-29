@@ -1,4 +1,4 @@
-# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 88 個 AI 協作 Skill</strong>
@@ -311,54 +311,31 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 ---
 
 
+
 ## 📂 倉庫結構
 
 | 路徑 | 用途 |
-|:---|:---|
-| `.agents/` | 專案規章守則（AGENTS.md：全局行為準則、SSOT 監控、指令清單）與 7 階段 Skill 定義 |
+|:---|:---|| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD，已導入普級資安防護基準） |
 | `docs/` | 核心文件（CORE_RULES、TEMPLATE_SKILL、commands_reference、Harness_Optimization_SKILL） |
 | `external-resources/` | 外部 Skill 原始來源備份，含 Security-Principles 資安防護基準 |
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
-| `outputs/` | 跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告，@init 時於專案內建立） |
-| `scripts/` | 輔助腳本（check_spec_integrity.py、align_framework.ps1、generate_srs.py）+ 🔒 安全工具鏈 |
+| `outputs/` | 跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告） |
+| `scripts/` | 輔助腳本 + 🔒 安全工具鏈（align_framework.ps1、pre_commit_secrets.py、run_security_scan.py 等） |
 | `skills/` | 88 個 Skill 實體（含 README.md 與歸類索引） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
 
 | 根目錄檔案 | 用途 |
-|:---|:---|
-| `.gitignore` | Git 忽略規則（排除 __pycache__、.env、*.db 等） |
-| `AGENTS.md` | 專案入口規章（指向 `.agents/AGENTS.md` 與 `docs/CORE_RULES.md`） |
+|:---|:---|| `.gitignore` | Git 忽略規則（排除 __pycache__、.env、*.db 等） |
+| `AGENTS.md` | 專案入口規章（指向 .agents/AGENTS.md 與 docs/CORE_RULES.md） |
+| `hr_system.db-shm` | (待定義) |
+| `hr_system.db-wal` | (待定義) |
 | `memory.md` | 全域記憶檔（開發歷程、決策記錄、Skill 建立記錄） |
 | `phase_gates.json` | 階段關卡狀態（各階段鎖定/完成 + security_baseline 安全區塊） |
 | `README.md` | 本檔案：專案總覽與使用說明 |
 | `system_specification.md` | 系統功能規格書 SRS（IEEE 830 標準） |
-| `traceability_matrix.md` | 全域需求追溯矩陣（RTM，六階段對應） |## 📄 授權與來源
-
-本專案為開源專案，基於以下 GitHub 開放原始碼資源進行整合與歸類：
-
-- **Anthropic 官方 Skills**：取自 [anthropics/skills](https://github.com/anthropics/skills) 開源倉庫（17 個）
-- **Anthropic 官方插件**：取自 [claude-plugins-official](https://github.com/anthropics/claude-plugins-official)（2 個）
-- **Benson 自建 Skills**：取自 Benson 個人開源倉庫（28 個）  
-  > ⚠️ **注意**：Benson 自建 Skill 的原始倉庫連結需經 Benson 本人授權後方可公開存取。
-- **GitHub 社群 Skills**：取自各開放原始碼專案（41 個）
-
-本框架的 SSDLC 階段架構設計與 Skill 歸類方法為原創整理成果，Skill 內容著作權歸屬各原始開源專案。
-
----
-
-<p align="center">
-  <sub>Built with Harness Engineering · Powered by AI Collaboration</sub>
-</p>
-
-
-
-
-
-
-
-
-
+| `traceability_matrix.md` | 全域需求追溯矩陣（RTM，六階段對應） |
+| `待辦事項.md` | (待定義) |

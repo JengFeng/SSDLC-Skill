@@ -30,12 +30,17 @@ graph TD
 *   **階段切換與 Baseline 鎖定**：每階段驗證穩定後，封存其穩定可執行的 Baseline。前一階段產生 Baseline，方可切換權限進入下一階段。
 
     **🛡️ 階段完成後自動 SSOT 完整性提醒**：
-    1.  **Evaluator 通過後**：AI 代理自動執行 `python scripts/check_spec_integrity.py --mode B`（階段產出一致性檢查）。
-    2.  **進入下一階段前**：AI 代理自動執行 `python scripts/check_spec_integrity.py --mode C`（追溯鏈完整性檢查）。
+    1.  **Evaluator 通過後**：AI 代理自動執行 `python scripts/check_spec_integrity.py --project <專案目錄> --mode B`（階段產出一致性檢查）。若在專案目錄內執行，可省略 `--project` 參數由腳本自動偵測。
+    2.  **進入下一階段前**：AI 代理自動執行 `python scripts/check_spec_integrity.py --project <專案目錄> --mode C`（追溯鏈完整性檢查）。
     3.  **若檢查發現異常**：⚠️ AI 代理產出提醒報告（列出缺失/不一致項目），並**詢問使用者**：「是否退回上階段修正，或直接放行進入下一階段？」
         - 使用者選擇**退回修正** → 退回 Planner，修正後重新提交 Evaluator。
         - 使用者選擇**直接放行** → 放行進入下一階段，異常項目記錄於 `phase_gates.json` 供後續追蹤。
     4.  **檢查通過後**：寫入 `phase_gates.json` 紀錄（`ssot_integrity_checked: true`）。
+    5.  **自動建立 Baseline**：Evaluator 通過且 SSOT 檢查（`check_spec_integrity.py --mode B`）全部通過後，AI 代理自動執行 `@baseline` 指令，建立本階段穩定快照至 `baseline/phase-{N}_v{M}/`。
+        *   若 `baseline/` 目錄不存在，自動建立。
+        *   版本號自動遞增（v1 → v2 → ...）。
+        *   保留最近 3 份 Baseline，舊版自動清理。
+        *   建立完成後自動執行基線可執行性驗證（參考 `commands_reference.md` 第二章第 5 節）。
 
 ### 2. 內層：安全軟體開發生命週期六階段（通稱 SSDLC）局部 PDCA（各階段獨立運作）
 *   軟體開發生命週期切割為安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC），每一階段獨立執行一套 Plan -> Generator -> Evaluator 的 PDCA 閉環。
@@ -67,6 +72,14 @@ graph TD
 
 每個階段的 inputs/ 目錄必須包含 spec_ref.md，記錄本階段必讀的 SSOT 規格路徑。
 AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀取即執行者，Evaluator 判定為 B 類錯誤。
+
+### 2.2.5 Phase 01 完成後自動同步 SSOT 規則
+
+*   Phase 01 Evaluator 通過後，AI 代理必須自動執行以下同步：
+    1.  將 `outputs/formal_requirements.md` 中的 FR/NFR 清單寫入 `specs/executable_spec.yaml` 的 `phase_01_planning.requirements` 段落。
+    2.  將 `outputs/formal_requirements.md` 中的接受準則 (Acceptance Criteria) 轉換為 Gherkin 語法（Given/When/Then），寫入 `specs/features/requirements.feature`。
+    3.  更新 `specs/executable_spec.yaml` 的 `project.last_updated` 與 `version`。
+*   此為強制步驟，未執行者 Evaluator 於 Phase 02 Checkpoint A 偵測到空白規格時，判定為 B 類錯誤。
 
 @init 指令執行時，AI 必須自動為 00-06 共 7 個階段生成 inputs/spec_ref.md。
 
@@ -197,6 +210,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 *   **AI 代理執行規範**：
     1.  自動掃描全域或專案 Skill 庫中，歸屬於該開發階段的所有可用 Skill。
     2.  **快捷編號分配**：AI 代理必須按字母/數字順序對掃描出的所有可用 Skill 進行排序，並為其分配雙位數快捷編號（由 `01` 開始，如 `01`, `02`, `03` ...）。
+    *   **⚠️ 防呆**：嚴禁在快捷編號前加上任何字母前綴（如 S01、No.01、#01 等），僅允許純雙位數數字。若 AI 代理輸出時誤加前綴，視為格式錯誤，必須立即修正後重新輸出。
     3.  **富資訊解析**：AI 必須動態讀取這些可用 Skill 之 `SKILL.md` 檔案，解析其 YAML Frontmatter 中的 `description`（用途描述）欄位。
     4.  條列式輸出各 Skill 的「快捷編號 — 實體名稱 — 用途描述」與「導入指令範例」。
     5.  提供對應的導入指令範例，提示使用者進行導入。

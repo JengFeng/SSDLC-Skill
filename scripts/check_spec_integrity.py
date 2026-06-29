@@ -21,11 +21,36 @@ from datetime import datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class SpecIntegrityChecker:
-    def __init__(self, target_phase=None, mode="D"):
+    def __init__(self, target_phase=None, mode="D", project=None):
         self.target_phase = target_phase
         self.mode = mode
         self.issues = []
         self.passes = []
+        self.project_base = self._resolve_project(project)
+
+    def _resolve_project(self, project):
+        """解析專案根目錄：接受 --project 參數，未指定時自動偵測當前工作目錄"""
+        if project:
+            if os.path.isabs(project):
+                return project
+            return os.path.join(ROOT, project)
+
+        # 自動偵測：從當前工作目錄向上尋找 SSDLC 專案根目錄
+        cwd = os.getcwd()
+        check_dir = cwd
+        while True:
+            has_tm = os.path.exists(os.path.join(check_dir, "traceability_matrix.md"))
+            has_ss = os.path.exists(os.path.join(check_dir, "system_specification.md"))
+            has_specs = os.path.isdir(os.path.join(check_dir, "specs"))
+            if has_tm and has_ss and has_specs:
+                return check_dir
+            parent = os.path.dirname(check_dir)
+            if parent == check_dir:
+                break
+            check_dir = parent
+
+        print("[WARN] 無法自動偵測 SSDLC 專案，使用預設 demo_project/")
+        return os.path.join(self.project_base)
 
     def log(self, level, msg):
         prefix = {"OK": "  [PASS]", "WARN": "  [WARN]", "ERR": "  [FAIL]"}
@@ -39,13 +64,13 @@ class SpecIntegrityChecker:
         """檢查點 A：SSOT 規格檔案是否存在"""
         print("\n=== 檢查點 A：規格檔案存在性 ===")
         files = [
-            "demo_project/specs/executable_spec.yaml",
-            "demo_project/specs/features/requirements.feature",
-            "demo_project/system_specification.md",
-            "demo_project/specs/README.md",
+            "specs/executable_spec.yaml",
+            "specs/features/requirements.feature",
+            "system_specification.md",
+            "specs/README.md",
         ]
         for f in files:
-            fp = os.path.join(ROOT, f)
+            fp = os.path.join(self.project_base, f)
             if os.path.exists(fp):
                 self.log("OK", f"存在: {f}")
             else:
@@ -54,7 +79,7 @@ class SpecIntegrityChecker:
     def check_yaml_valid(self):
         """檢查 executable_spec.yaml 是否有效"""
         print("\n=== YAML 有效性檢查 ===")
-        yaml_path = os.path.join(ROOT, "demo_project", "specs", "executable_spec.yaml")
+        yaml_path = os.path.join(self.project_base, "specs", "executable_spec.yaml")
         try:
             with open(yaml_path, encoding="utf-8") as f:
                 spec = yaml.safe_load(f)
@@ -74,7 +99,7 @@ class SpecIntegrityChecker:
             (4,"testing"),(5,"deployment"),(6,"maintenance")
         ]]
         for p in phases:
-            ref = os.path.join(ROOT, "demo_project", p, "inputs", "spec_ref.md")
+            ref = os.path.join(self.project_base, p, "inputs", "spec_ref.md")
             if os.path.exists(ref):
                 with open(ref, encoding="utf-8") as f:
                     c = f.read()
@@ -115,7 +140,7 @@ class SpecIntegrityChecker:
             if not dir_name: continue
 
             outputs = phase_data.get("outputs", [])
-            base = os.path.join(ROOT, "demo_project", dir_name)
+            base = os.path.join(self.project_base, dir_name)
             for out in outputs:
                 if out == "templates/":
                     tpl_dir = os.path.join(base, "templates")
@@ -141,7 +166,7 @@ class SpecIntegrityChecker:
     def check_mermaid_syntax(self):
         """檢查 Mermaid 圖表語法"""
         print("\n=== Mermaid 語法檢查 ===")
-        diagram_dir = os.path.join(ROOT, "demo_project", "02_system_design", "outputs")
+        diagram_dir = os.path.join(self.project_base, "02_system_design", "outputs")
         if not os.path.isdir(diagram_dir):
             self.log("WARN", "02_system_design/outputs 目錄不存在")
             return
@@ -164,7 +189,7 @@ class SpecIntegrityChecker:
     def check_traceability(self):
         """檢查點 C：追溯鏈完整性"""
         print("\n=== 檢查點 C：追溯鏈 ===")
-        rtm_path = os.path.join(ROOT, "demo_project", "01_planning_and_analysis", "reg", "requirement_tracker.md")
+        rtm_path = os.path.join(self.project_base, "01_planning_and_analysis", "reg", "requirement_tracker.md")
         if not os.path.exists(rtm_path):
             self.log("ERR", "requirement_tracker.md 缺失")
             return
@@ -183,7 +208,7 @@ class SpecIntegrityChecker:
     def check_feature_gherkin(self):
         """檢查 requirements.feature 的 Gherkin 語法與場景數"""
         print("\n=== Gherkin 語法與場景檢查 ===")
-        feat_path = os.path.join(ROOT, "demo_project", "specs", "features", "requirements.feature")
+        feat_path = os.path.join(self.project_base, "specs", "features", "requirements.feature")
         if not os.path.exists(feat_path):
             self.log("ERR", "requirements.feature 缺失")
             return 0
@@ -197,7 +222,7 @@ class SpecIntegrityChecker:
     def check_srs_references(self):
         """檢查 system_specification.md 是否參照所有需求"""
         print("\n=== SRS 需求參照完整性 ===")
-        srs_path = os.path.join(ROOT, "demo_project", "system_specification.md")
+        srs_path = os.path.join(self.project_base, "system_specification.md")
         if not os.path.exists(srs_path):
             self.log("ERR", "system_specification.md 缺失")
             return
@@ -217,7 +242,7 @@ class SpecIntegrityChecker:
         """檢查四種規格之間的交叉一致性"""
         print("\n=== 四規格交叉一致性 ===")
 
-        yaml_path = os.path.join(ROOT, "demo_project", "specs", "executable_spec.yaml")
+        yaml_path = os.path.join(self.project_base, "specs", "executable_spec.yaml")
         yaml_count = 0
         if os.path.exists(yaml_path):
             try:
@@ -227,7 +252,7 @@ class SpecIntegrityChecker:
             except:
                 pass
 
-        feat_path = os.path.join(ROOT, "demo_project", "specs", "features", "requirements.feature")
+        feat_path = os.path.join(self.project_base, "specs", "features", "requirements.feature")
         feat_count = 0
         if os.path.exists(feat_path):
             with open(feat_path, encoding="utf-8") as f:
@@ -236,7 +261,7 @@ class SpecIntegrityChecker:
 
         if yaml_count > 0 and feat_count > 0:
             # Check YAML requirement IDs appear in feature file
-            feat_path2 = os.path.join(ROOT, "demo_project", "specs", "features", "requirements.feature")
+            feat_path2 = os.path.join(self.project_base, "specs", "features", "requirements.feature")
             with open(feat_path2, encoding="utf-8") as f:
                 feat_content = f.read()
             missing_in_feat = []
@@ -249,7 +274,7 @@ class SpecIntegrityChecker:
             else:
                 self.log("OK", f"YAML 需求 ({yaml_count}) 全數參照於 Feature ({feat_count} Scenario)")
 
-        rtm_path = os.path.join(ROOT, "demo_project", "01_planning_and_analysis", "reg", "requirement_tracker.md")
+        rtm_path = os.path.join(self.project_base, "01_planning_and_analysis", "reg", "requirement_tracker.md")
         if os.path.exists(rtm_path) and yaml_count > 0:
             with open(rtm_path, encoding="utf-8") as f:
                 rtm = f.read()
@@ -262,7 +287,7 @@ class SpecIntegrityChecker:
             else:
                 self.log("OK", f"RTM 完整追溯所有 {yaml_count} 項 YAML 需求")
 
-        srs_path = os.path.join(ROOT, "demo_project", "system_specification.md")
+        srs_path = os.path.join(self.project_base, "system_specification.md")
         if os.path.exists(srs_path) and os.path.exists(rtm_path):
             with open(srs_path, encoding="utf-8") as f:
                 srs = f.read()
@@ -290,8 +315,8 @@ class SpecIntegrityChecker:
         ]
 
         for name, fname, desc in specs:
-            fp = os.path.join(ROOT, "demo_project", fname) if fname != "requirement_tracker.md" \
-                else os.path.join(ROOT, "demo_project", "01_planning_and_analysis", "reg", "requirement_tracker.md")
+            fp = os.path.join(self.project_base, fname) if fname != "requirement_tracker.md" \
+                else os.path.join(self.project_base, "01_planning_and_analysis", "reg", "requirement_tracker.md")
             status = "存在" if os.path.exists(fp) else "缺失"
             print(f"  {name}")
             print(f"     檔案: {fname}")
@@ -337,10 +362,11 @@ class SpecIntegrityChecker:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SSOT Spec Integrity Checker")
+    parser.add_argument("--project", default=None, help="目標專案目錄（未指定時自動偵測）")
     parser.add_argument("--phase", default=None, help="目標階段 (01-06)")
     parser.add_argument("--mode", default="D", choices=["A","B","C","D","S"], help="檢查模式 (S=@CheckSpec 四規格)")
     args = parser.parse_args()
 
-    checker = SpecIntegrityChecker(target_phase=args.phase, mode=args.mode)
+    checker = SpecIntegrityChecker(target_phase=args.phase, mode=args.mode, project=args.project)
     sys.exit(checker.run())
 
