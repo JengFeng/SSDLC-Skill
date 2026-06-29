@@ -1,0 +1,54 @@
+name: PR Labeler
+
+# SSDLC Phase Labels
+"phase:01":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/01_planning_and_analysis/**"
+          - ".agents/skills/01_planning_and_analysis/**"
+
+"phase:02":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/02_system_design/**"
+          - ".agents/skills/02_system_design/**"
+
+"phase:03":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/03_implementation_and_coding/**"
+          - ".agents/skills/03_implementation_and_coding/**"
+
+"phase:04":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/04_testing/**"
+          - ".agents/skills/04_testing/**"
+
+"phase:05":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/05_deployment/**"
+          - ".agents/skills/05_deployment/**"
+
+"phase:06":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/06_maintenance/**"
+          - ".agents/skills/06_maintenance/**"
+
+"ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"
+
+"docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "**/*.md"
+
+"scripts":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "scripts/**"
