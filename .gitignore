@@ -50,3 +50,7 @@ check-skills.log
 # 測試專案目錄，不入庫
 myPrj*/
 
+
+# SQLite WAL & SHM temporary files
+*.db-wal
+*.db-shm
