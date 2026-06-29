@@ -59,8 +59,8 @@ namespace TWNPPublic.ViewModels.Alert
         public string? AlertEmail3 { get; set; } = string.Empty;
         [EmailAddress(ErrorMessage = "請確定您的信箱格式")]
         public string? AlertEmail4 { get; set; } = string.Empty;
-        [EmailAddress(ErrorMessage = "請確定您的信箱格式")]
-        public string? AlertEmail5 { get; set; } = string.Empty;
+       // [EmailAddress(ErrorMessage = "請確定您的信箱格式")]
+        //public string? AlertEmail5 { get; set; } = string.Empty;
         public string? onoffswitch1 { get; set; } = string.Empty; //日用水量(前日24:00至昨日23:00) 
         public string? onoffswitch2 { get; set; } = string.Empty; //上月用水量
         public string? onoffswitch3 { get; set; } = string.Empty; //連續三日無用水

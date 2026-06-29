@@ -390,18 +390,13 @@
     }
 
     async function btnSearch() {
-        JsonDatas = []; //清空資料
+        JsonDatas = []; // 清空資料
         let model = {
             startDate: $("#inputStartTime").val(),
             endDate: $("#inputEndTime").val(),
             Type: $('#form-name').val(),
             TimeType: '',
         };
-
-        // if ($("#form-name").val() == 'year') {
-        //     model.Sdate =  $("#inputStartTime").val()+"-01-01";
-        //     model.Edate =  $("#inputEndTime").val()+"-12-31";
-        // }
 
         // 呼叫 validateDateRange 來檢查日期範圍是否有效
         console.log("開始日期:", $("#inputStartTime").val());
@@ -415,10 +410,10 @@
         }
 
         let promises = []; // 用來存儲所有的 QueryData() 呼叫
-        
+
         // 疊加1
         let QueryDataItem = {
-            SeriesName: '查詢日期',//$('#form-name').val(),
+            SeriesName: '查詢日期',
             DataID: '1',
             StartDate: $("#inputStartTime").val(),
             EndDate: $("#inputEndTime").val(),
@@ -427,35 +422,26 @@
         promises.push(QueryData(QueryDataItem, model)); // 加入 Promise 陣列
 
         // 取得所有勾選的 checkbox 值 (套疊曲線)
-        checkedValues = [];
-        checkedValues = Array.from(document.querySelectorAll(".checkbox-group input[type='checkbox']:checked"))
+        let checkedValues = Array.from(document.querySelectorAll(".checkbox-group input[type='checkbox']:checked"))
             .map(cb => cb.value);
         console.log(checkedValues);
+
         checkedValues.forEach(value => {
             switch (value) {
                 case "day":
                     model.TimeType = 'day';
-                    let QueryDataItem2 = {
-                        SeriesName: '前一日',
-                        DataID: '2',
-                    };
-                    promises.push(QueryData(QueryDataItem2, model)); // 加入 Promise 陣列
+                    let QueryDataItem2 = { SeriesName: '前一日', DataID: '2' };
+                    promises.push(QueryData(QueryDataItem2, model));
                     break;
                 case "month":
                     model.TimeType = 'month';
-                    let QueryDataItem3 = {
-                        SeriesName: '前一個月',
-                        DataID: '3',
-                    };
-                    promises.push(QueryData(QueryDataItem3, model)); // 加入 Promise 陣列
+                    let QueryDataItem3 = { SeriesName: '前一個月', DataID: '3' };
+                    promises.push(QueryData(QueryDataItem3, model));
                     break;
                 case "year":
                     model.TimeType = 'year';
-                    let QueryDataItem4 = {
-                        SeriesName: '前一年',
-                        DataID: '4',
-                    };
-                    promises.push(QueryData(QueryDataItem4, model)); // 加入 Promise 陣列
+                    let QueryDataItem4 = { SeriesName: '前一年', DataID: '4' };
+                    promises.push(QueryData(QueryDataItem4, model));
                     break;
                 default:
                     console.log("未知選項");
@@ -466,10 +452,8 @@
         await Promise.all(promises);
         SetStationData();
 
-        //同用水種別上年度同期平均用水量
-        let checkedWaterValues = [];
-        $('#c').text('');
-        checkedWaterValues = Array.from(document.querySelectorAll(".checkbox-group-water input[type='checkbox']:checked"))
+        // 同用水種別上年度同期平均用水量
+        let checkedWaterValues = Array.from(document.querySelectorAll(".checkbox-group-water input[type='checkbox']:checked"))
             .map(cb => cb.value);
 
         checkedWaterValues.forEach(value => {
@@ -484,8 +468,6 @@
     }
 
     function QueryWaterTypeData(){
-
-        // 同用水種別上年度同期平均用水量
         let model = {
             StartDate: $("#inputStartTime").val(),
             EndDate: $("#inputEndTime").val(),
@@ -494,52 +476,39 @@
         $.post(GetWebSiteURL('@Url.Action("QueryWaterTypeData", "Quality")'), model, function (result) {
             console.log(result);
             if (result.Success) {
-
                 if (result.Data == null || result.Data.length == 0) {
                     $('#c').text('同用水種別上年度同期平均用水量:-度');
-                }
-                else {
+                } else {
                     $('#c').html('同用水種別上年度同期平均用水量:<span style="color: #721c24;">' + result.Data.AVG_LASTYEARQTY + '</span>度');
                 }
-
-                $("#waterTypeContainer").show(); // 取得數據後顯示區塊
-            }
-            else {
-                //$("#spanError").text('此時間段尚無資料');
+                $("#waterTypeContainer").show();
+            } else {
                 $('#c').text('同用水種別上年度同期平均用水量:-度');
-                $("#waterTypeContainer").show(); // 取得數據後顯示區塊
+                $("#waterTypeContainer").show();
             }
         });
     }
 
     // 使用起訖時間來查詢資料
     function QueryData(QueryDataItem, model) {
-        return new Promise((resolve, reject) => { // 確保函式回傳 Promise
+        return new Promise((resolve, reject) => {
             GetUserWaterData(model).then(Datas => {
                 console.log("Datas:", Datas);
                 QueryDataItem.Datas = Datas;
                 if (QueryDataItem.SeriesName == '查詢日期') {
                     var title = '';
-                    if ($("#form-name").val() == 'hour') {
-                        title = $("#inputStartTime").val();
-                    }
-                    else if ($("#form-name").val() == 'day') {
-                        title = $("#inputStartTime").val()+"~"+$("#inputEndTime").val();
-                    }
-                    else if ($("#form-name").val() == 'week' || $("#form-name").val() == 'month') {
-                        title = $("#inputStartTime").val() + "~" + $("#inputEndTime").val();
-                    }
-                    else if ($("#form-name").val() == 'year') {
-                        title = $("#inputStartTime").val() + "~" + $("#inputEndTime").val();
-                    }
+                    let currentMode = $("#form-name").val();
+                    if (currentMode == 'hour') title = $("#inputStartTime").val();
+                    else title = $("#inputStartTime").val() + "~" + $("#inputEndTime").val();
+
                     $('#a').html('(' + title + ') 之<span style="color: #0c5460;">【最低】</span>之時段:' + Datas.lowData);
                     $('#b').html('(' + title + ')' + ' 之<span style="color: #0c5460;">【最高】</span>之時段:' + Datas.heighData);
                 }
-                JsonDatas.push(QueryDataItem); // 加入陣列
-                resolve(); // **通知這個 QueryData() 已完成**
+                JsonDatas.push(QueryDataItem);
+                resolve();
             }).catch(error => {
                 console.log("取得數據時發生錯誤:", error);
-                reject(error); // **發生錯誤時，拒絕 Promise**
+                reject(error);
             });
         });
     }
@@ -547,20 +516,18 @@
     // 取得用水量資料
     function GetUserWaterData(model) {
         console.log('☆☆☆☆☆取得用水量資料☆☆☆☆☆');
-
         let url = GetWebSiteURL('@Url.Action("WaterNoteTableChart2", "Dashboard")');
 
         return new Promise((resolve, reject) => {
             $.post(url, model, function (result) {
                 $("#spanError").text('');
-
                 if (result.Success) {
                     if (!result.Data || result.Data.length === 0) {
                         $("#spanError").text('此時間段尚無資料');
                         myChart.clear();
-                        resolve([]); // 回傳空陣列，表示沒有資料
+                        resolve([]);
                     } else {
-                        resolve(result.Data); // 正確回傳數據
+                        resolve(result.Data);
                     }
                 } else {
                     alert(result.Message);
@@ -577,310 +544,151 @@
         });
     }
 
-    //畫出Chart圖
-    function SetStationData() {
+    // 新增的資料清洗加工核心函式
+    function ProcessAndPushData(Source_Data, Datas, dataID) {
+        if (!Datas || !Datas.result) return;
 
-        //console.log('☆☆☆☆☆畫出Chart圖☆☆☆☆☆');//
-        if (!JsonDatas || JsonDatas == null || JsonDatas.length < 1 || JsonDatas[0].Datas == null || JsonDatas[0].Datas.result == null || JsonDatas[0].Datas.result.length < 1)
-            return;
-        console.log('1(JsonDatas)' + JsonDatas);
-        // 定義排序規則
-        const sortOrder = ["查詢日期", "前一日", "前一個月", "前一年"];
+        Datas.result.forEach(function (d) {
+            if (d.Y == null) return; // 過濾掉無效的空資料
 
-        // 依據 sortOrder 排序 JsonDatas
-        JsonDatas.sort((a, b) => {
-            return sortOrder.indexOf(a.SeriesName) - sortOrder.indexOf(b.SeriesName);
-        });
-        console.log('2(JsonDatas)' + JsonDatas);
-        var divID = 'mychart';//div的ID
-        var colors = ['#5470C6', '#91CC75', '#EE6666'];//Y軸色彩
-        var Datasets = [];//所有資料及篩選功能
-        var yAxis_Array = [];//多個Y軸(這邊沒使用)
-        var Series = [];//所有序列
-        var xName = $("#form-name").val();
-        switch (xName) {
-            case 'hour':
-                xName = '時間(小時)';
-                break;
-            case 'day':
-                xName = '時間(日期)';
-                break;
-            case 'week':
-                xName = '時間(週)';
-                break;
-            case 'month':
-                xName = '時間(月份)';
-                break;
-            default:
-                xName = '時間(年份)';
-        };
+            let X = d.X; // 原始後端回傳時間，例如 "2026-01-16T08:00:00"
+            let currentMode = $("#form-name").val(); // 獲取當前觀測的時間維度
 
-    
-        $('#' + divID).show();//顯示Chart圖區塊
-
-        var Source_Data = [["Date", "X", "Y", "DataID"]];//資料欄位設定
-
-        //每一組資料
-        for (var i = 0; i < JsonDatas.length; i++) {
-
-            var Item = JsonDatas[i];
-            var Datas = JsonDatas[i].Datas;//API取得的資料
-            //沒資料時跳過
-            if (Datas == undefined || Datas.result == null || Datas.result == undefined || Datas.result.length < 1)
-                continue;
-
-            //轉換資料
-            Datas.result.forEach(function (d) {
-                if (d.Y == null)
-                    return;//continue的效果
-                let X = d.X;
-                if ($("#form-name").val() == 'hour') X = d.X.split('T')[1].substring(0, 5);//d.X.replace('T', ' ');
-                if ($("#form-name").val() == 'day' || $("#form-name").val() == 'week' || $("#form-name").val() == 'month') {
-                    //X = d.X.split('T')[0];
-                    const datePart = d.X.split('T')[0]; // 取得日期部分 "2024-01-16"
-                    const parts = datePart.split('-');  // 取得 ["2024", "01", "16"]
-                    const monthDay = parts[1] + '-' + parts[2]; // 組合成 "01-16"
-                    X = monthDay.replace('-', '/');
-                }
-                if ($("#form-name").val() == 'year') {
-                    //X = d.X.split('T')[0];
-                    const datePart = d.X.split('T')[0]; // 取得日期部分 "2024-01-16"
-                    const parts = datePart.split('-');  // 取得 ["2024", "01", "16"]
-                    const monthDay = parts[0]; // 組合成 "2024"
-                    X = monthDay.replace('-', '/');
-                }
-               
-                let Y = d.Y;//d.Y.toFixed(2);
-                let DataID = Item.DataID;
-                let strDate2 = new Date(d.X);
-                Source_Data.push([strDate2, X, Y, DataID]);
-            });
-            console.log(Source_Data);
-
-            //塞入資料篩選條件
-            Datasets.push(
-                {
-                    id: Item.DataID,               //對應series中的datasetId
-                    fromDatasetId: "Datasets_",    //對應[Datasets陣列]中的id
-                    transform: {  //篩選資料
-                        type: "filter",
-                        config: { dimension: "DataID", value: Item.DataID }//要篩選Source_Data裡的哪個欄位以及哪個值
-
-                    }
-                }
-            );
-
-            //序列
-            Series.push(
-                {
-                    type: "bar",
-                    name: Item.SeriesName, //序列顯示名稱
-                    datasetId: Item.DataID, //對應[Datasets陣列]中的id
-                    yAxisIndex: 0,//第幾個Y軸
-                    showSymbol: false,
-                    encode: {
-                        x: "X",
-                        y: "Y",
-                        itemName: "Date",
-                        tooltip: ["Y"]
-                    }
-                }
-            );
-
-            //設定Y軸樣式
-            if (i == 0) {
-                //設定Y軸樣式
-                yAxis_Array.push({
-                    type: 'value',
-                    // name: Datas.yAxisLabel.replace('cmd', 'CMD'),//Item.NODETYPE.replace('計', '') + '(' + Datas.yAxisLabel.replace('cmd', 'CMD') + ')',
-                    position: 'top',
-                    alignTicks: true,
-                    offset: 0,//Y軸水平位移
-                    //nameLocation: 'center',
-                    name: '用水度數(度)',
-                    axisLine: {//Y軸垂直線
-                        show: true,
-                        lineStyle: {
-                            color: colors[i]
-                        }
-                    },
-                    axisLabel: {
-                        formatter: '{value} '
-                    }
-                }
-                )//yAxis_Array.push END
+            // 情境 A：小時維度 -> 跨日對齊。必須切除日期，只保留時分 "08:00"
+            if (currentMode == 'hour') {
+                X = d.X.split('T')[1].substring(0, 5);
             }
-        
+            // 情境 B：日、週、月維度 -> 跨年對齊。將 "2026-01-16" 格式化為 "01/16"
+            else if (currentMode == 'day' || currentMode == 'week' || currentMode == 'month') {
+                const datePart = d.X.split('T')[0]; // 提取 "2026-01-16"
+                const parts = datePart.split('-');  // 拆分為 ['2026', '01', '16']
+                X = parts[1] + '/' + parts[2];      // 拼裝為 "01/16"
+            }
+            // 情境 C：年度維度 -> 大跨度趨勢對比。只保留年份字串 "2026"
+            else if (currentMode == 'year') {
+                const datePart = d.X.split('T')[0];
+                X = datePart.split('-')[0]; // 提取 "2026"
+            }
+
+            let Y = d.Y;
+            let rawDate = new Date(d.X); // 保留原始時間戳記物件
+
+            // 灌入全域二維陣列
+            Source_Data.push([rawDate, X, Y, dataID]);
+        });
+    }
+
+    // 畫出 Chart 圖 (整合重構後精簡重點的實作)
+    function SetStationData() {
+        if (!JsonDatas || JsonDatas.length < 1 || !JsonDatas[0].Datas || !JsonDatas[0].Datas.result || JsonDatas[0].Datas.result.length < 1) {
+            return;
         }
 
+        // 1. 定義排序規則並排序 JsonDatas
+        const sortOrder = ["查詢日期", "前一日", "前一個月", "前一年"];
+        JsonDatas.sort((a, b) => sortOrder.indexOf(a.SeriesName) - sortOrder.indexOf(b.SeriesName));
 
-        //塞入所有資料集
-        Datasets.splice(0, 0, {
-            id: "Datasets_",
-            source: Source_Data
-        });
+        // 2. 顯示圖表區塊
+        var divID = 'mychart';
+        $('#' + divID).show();
 
-        window.onresize = function () {
-            myChart.resize();
-        };
+        // 3. 初始化全域中央資料集 (每次渲染皆為新實例，避免資料重複疊加)
+        var Source_Data = [["Date", "X", "Y", "DataID"]];
 
-        myChart.clear();
+        // 4. 呼叫資料清洗函式灌入資料
+        for (var i = 0; i < JsonDatas.length; i++) {
+            ProcessAndPushData(Source_Data, JsonDatas[i].Datas, JsonDatas[i].DataID);
+        }
 
-        //圖表設定
+        // 5. 動態對應 X 軸名稱
+        var xName = $("#form-name").val();
+        const xNameMap = { 'hour': '時間(小時)', 'day': '時間(日期)', 'week': '時間(週)', 'month': '時間(月份)' };
+        xName = xNameMap[xName] || '時間(年份)';
+
+        // 6. 初始化基礎 Option 設定與 MasterDataset
         var option = {
-            grid: [
-                {
-                    show: true,
-                    bottom: 80, 
-                    containLabel: true
-                }// { left: '7%',right: '7%', top: '7%',bottom: '7%', width: '38%', height: '38%' },
-            ],//Chart圖主體padding
-            dataset: Datasets,//
-            title: {
-                show:false,
-                padding: 10, //标题内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距
-                text: "1223",// 設定圖表的標題
-                left: 'center'
-
-            },     // 標題
-            //tooltip: {
-            //    trigger: 'axis'
-            //},//
-            xAxis: {
-                name: xName,// 坐标轴名称
-                nameLocation: 'end', // 坐标轴名称显示位置。'start'、'middle'、'end'
-                type: 'category'  //'value' 数值轴，适用于连续数据。'category' 类目轴，适用于离散的类目数据。time' 时间轴，适用于连续的时序数据，与数值轴相比时间轴带有时间的格式化，在刻度计算上也有所不同，例如会根据跨度的范围来决定使用月，星期，日还是小时范围的刻度。'log' 对数轴。适用于对数数据。
-            },// X 軸
-            yAxis: yAxis_Array,// Y 軸
-            toolbox: {
-                show: true,           // 是否顯示工具欄套件
-                orient: 'horizontal', // 圖例方向 horizontal, vertical
-                feature: {
-                    //saveAsImage: {},  // 僅啟動，使用預設
-                    saveAsImage: {
-                        show: true,                 // 是否顯示
-                        type: 'png',                // 圖片格式(png, jpeg)
-                        title: '另存為圖片',         // 工具名稱
-                        name: '範例折線圖',          // 圖片名稱(預設 title.text)
-                        backgroundColor: '#ffffff'  // 圖片背景顏色(預設 BackgroundColor，無設定以白色為主)
-                    },  // 保存圖片
-                    restore: {
-                        show: false,     // 是否顯示
-                        title: "還原",  // 工具名稱
-                    },      // 還原配置
-                    dataView: {
-                        show: false,                         // 是否顯示
-                        title: '資料檢視',                   // 工具名稱
-                        readOnly: false,                    // 是否唯讀
-                        lang: ['資料顯示', '關閉', '更新'],
-                        backgroundColor: "#FFFFFF",         // 背景顏色
-                        textareaColor: "#D5D5D5",           // 輸入背景顏色
-                        textareaBorderColor: '#1E1E1E',     // 輸入邊框顏色
-                        textColor: "#000",                  // 文字顏色
-                        buttonColor: "#4472C4",             // 按鈕顏色
-                        buttonTextColor: "#fff",            // 按鈕文字顏色
-                    },     // 資料檢視(顯示統計圖之統計資料，編輯後可動態更新)
-                    magicType: {
-                        show: true, // 是否顯示
-                        title: {
-                            line: '切換為折線圖',
-                            bar: '切換為長條圖',
-                            //stack: '切換為堆疊模式',
-                            //tiled: '切換為平鋪模式'
-                        },  // 工具名稱
-                        type: ['line', 'bar']  // 切換類型(line:折線圖, bar:長條圖, stack:堆疊模式, tiled:平鋪模式）
-                    },    // 切換類型
-                    dataZoom: {
-                        show: false, // 是否顯示
-                        title: {
-                            zoom: '切換縮放模式',
-                            back: '還原上一步縮放動作'
-                        },    // 工具名稱
-                        emphasis: {
-                            iconStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 1)'
-                            }
-                        }
-                    }      // 縮放(僅供直角坐標系統)
-                },          // 工具類型
-                top: 'top',                // top, middle, bottom, y%
-                left: 'right',             // left, center, right, x%
-                padding: [0,0, 0, 0],   // [上, 右, 下, 左]
-            },   // 工具
-            dataZoom: [
-                // {
-                //     type: 'slider',
-                //     show: true,
-                //     xAxisIndex: [0],
-                //     start: 0,
-                //     end: 100,
-                //     bottom: '10%' // 調整 dataZoom 到圖表下方 10%
-                // },
-                // // {
-                // //     type: 'slider',
-                // //     show: true,
-                // //     yAxisIndex: [0],
-                // //     left: '93%',
-                // //     start: 0,
-                // //     end: 100
-                // // },
-                // // //{
-                // // //    type: 'inside',
-                // // //    xAxisIndex: [0],
-                // // //    start: 1,
-                // // //    end: 35
-                // // //},
-                // // {
-                // //     type: 'inside',
-                // //     yAxisIndex: [0],
-                // //     start: 29,
-                // //     end: 36
-                // // }
-            ],  // 縮放功能
+            grid: [{ show: true, bottom: 80, containLabel: true }],
+            legend: { type: 'scroll', orient: 'horizontal', top: 'bottom', left: 'center', padding: [0, 0, 15, 0] },
             tooltip: {
-                trigger: 'axis'    // item, axis
-                , axisPointer: {   // 坐标轴指示器，坐标轴触发有效
-                    type: 'cross'  //shadow' // 默认为直线，可选为：'line' | 'shadow'
-                }
-
-                //,enterable: true, // 鼠标是否可进入提示框浮层中
-
-                //被計算過後a0的值就是標準差
-                , formatter: function (param) {
+                trigger: 'axis',
+                axisPointer: { type: 'cross' },
+                formatter: function (param) {
                     var list = param.length == undefined ? [param] : param;
                     var temp = '';
                     for (var i = 0; i < list.length; i++) {
-
                         if (i == 0) temp += list[i].axisValueLabel;
-                        var value = '{0}[{1}]：{2}'
+                        // list[i].data[2] 對應 Source_Data 裡的 "Y" 欄位
+                        var value = '{0}[{1}]：{2} 度'
                             .replace('{0}', list[i].marker)
                             .replace('{1}', list[i].seriesName)
                             .replace('{2}', list[i].data[2]);
-
                         temp += '<br />' + value;
                     }
                     return temp;
                 }
-            },//提示訊息
-            legend: {
-                type: 'scroll',             //圖例有scroll Bar 'plain'：普通图例。缺省就是普通图例。
-                orient: 'horizontal',       // 圖例方向 horizontal, vertical
-                top: 'bottom',              // top, middle, bottom, y%
-                left: 'center',             // left, center, right, x%
-                padding: [0, 0, 15, 0]       // [上, 右, 下, 左]
-                //,formatter: function (name) {
-                //        return  name;
-                //}
-            },    // 圖例
-            series: Series    // 序列內容
+            },
+            dataset: [
+                {
+                    id: "MasterDataset_Source",
+                    source: Source_Data // 注入清洗完畢的全域大陣列
+                }
+            ],
+            xAxis: {
+                type: 'category',
+                name: xName,
+                nameLocation: 'end'
+            },
+            yAxis: {
+                type: 'value',
+                name: '用水度數(度)',
+                position: 'top',
+                axisLine: { show: true }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: { show: true, type: 'png', title: '另存為圖片', name: '用水量對比圖' },
+                    magicType: { show: true, title: { line: '切換為折線圖', bar: '切換為長條圖' }, type: ['line', 'bar'] }
+                }
+            },
+            series: [] // 動態推入
+        };
 
-        };//圖表設定 結束
-        //產出圖表
-        console.log(Series);
-        console.log(option);
-        myChart.setOption(option);
+        // 7. 疊代指標包，建立分流過濾通道與 Series
+        JsonDatas.forEach(Item => {
+            // 關鍵步驟 A：建立「衍生數據集過濾轉接器」
+            option.dataset.push({
+                id: `Dataset_Filter_Route_${Item.DataID}`,
+                fromDatasetId: "MasterDataset_Source",
+                transform: {
+                    type: "filter",
+                    config: { dimension: "DataID", value: Item.DataID }
+                }
+            });
+
+            // 關鍵步驟 B：建立 Series 設定，拋棄傳統 data 屬性
+            option.series.push({
+                type: "bar", // 預設為長條圖，可透過工具列切換成折線圖
+                name: Item.SeriesName,
+                datasetId: `Dataset_Filter_Route_${Item.DataID}`, // 綁定分流通道 ID
+                showSymbol: false,
+                encode: {
+                    x: "X",
+                    y: "Y",
+                    itemName: "Date",
+                    tooltip: ["Y"]
+                }
+            });
+        });
+
+        // 8. 視窗縮放自適應
+        window.onresize = function () {
+            myChart.resize();
+        };
+
+        // 9. 執行最終渲染 (使用 true 完全覆蓋舊配置)
+        myChart.clear();
+        myChart.setOption(option, true);
     }
 
     function padLeft(word, lenght, char) {

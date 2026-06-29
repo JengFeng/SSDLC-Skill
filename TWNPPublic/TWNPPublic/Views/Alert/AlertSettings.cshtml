@@ -117,7 +117,7 @@
         $("#AlertEmail2").val('');
         $("#AlertEmail3").val('');
         $("#AlertEmail4").val('');
-        $("#AlertEmail5").val('');
+        //$("#AlertEmail5").val('');
 
         $("#myonoffswitch1").prop('checked', false);
         $("#myonoffswitch2").prop('checked', false);
@@ -214,7 +214,7 @@
                 $("#AlertEmail2").val(result.Data.AlertEmails[1]);
                 $("#AlertEmail3").val(result.Data.AlertEmails[2]);
                 $("#AlertEmail4").val(result.Data.AlertEmails[3]);
-                $("#AlertEmail5").val(result.Data.AlertEmails[4]);
+                //$("#AlertEmail5").val(result.Data.AlertEmails[4]);
 
                 const alertValues = [
                     result.Data.AlertValueYesterday,
@@ -463,7 +463,7 @@
             AlertEmail2:$("input[name='AlertEmail2']").val(),
             AlertEmail3:$("input[name='AlertEmail3']").val(),
             AlertEmail4:$("input[name='AlertEmail4']").val(),
-            AlertEmail5:$("input[name='AlertEmail5']").val(),
+            //AlertEmail5:$("input[name='AlertEmail5']").val(),
 
             // //設定管理
             // onoffswitch1:$("input[name='onoffswitch1']:checked").val(),
@@ -658,10 +658,10 @@
                                     <input type="text" class="form-control" id="AlertEmail4" name="AlertEmail4" placeholder="some@mail.com" autocomplete="off">
                                     <span class="text-danger" id="dangerAlertEmail4"></span>
                                 </div>
-                                <div class="col mb-2">
+                                @* <div class="col mb-2">
                                     <input type="text" class="form-control" id="AlertEmail5" name="AlertEmail5" placeholder="some@mail.com" autocomplete="off">
                                     <span class="text-danger" id="dangerAlertEmail5"></span>
-                                </div>
+                                </div> *@
                             </div>
                             
                         </div>

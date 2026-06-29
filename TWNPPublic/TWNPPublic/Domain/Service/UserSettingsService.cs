@@ -147,7 +147,7 @@ namespace TWNPPublic.Domain.Service
                         // 歸戶：更新其他 DB 的密碼/電話/郵件
                         this.UpdateWmmmdbSttngrp(accountInfo.B_ACCOUNT, hashedPassword, model.Email, model.PhoneNumber, isPasswordChanged);
                     }
-                    else if (isPasswordChanged)
+                    else
                     {
                         // 一般水號：更新其他 DB 的密碼/電話/郵件
                         this.UpdateWmmmdbImCmuserPassword(accountInfo.B_ACCOUNT, hashedPassword, model.Email, model.PhoneNumber, isPasswordChanged);
@@ -336,6 +336,18 @@ namespace TWNPPublic.Domain.Service
                               ,tel = @Tel
                          WHERE sttn_grp_id = @SttnGrpId";
 
+            ////調整密碼更新SQL，讓它只更新密碼欄位，其他欄位保持不變
+            //string mainsql = isPasswordChanged
+            //                ? @"UPDATE Test_sttngrp
+            //               SET login_pwd = @LoginPwd
+            //                  ,email = @Email
+            //                  ,tel = @Tel
+            //             WHERE sttn_grp_id = @SttnGrpId"
+            //                : @"UPDATE Test_sttngrp
+            //               SET email = @Email
+            //                  ,tel = @Tel
+            //             WHERE sttn_grp_id = @SttnGrpId";
+
             object obj = new
             {
                 SttnGrpId = sttnGrpId,
@@ -353,13 +365,25 @@ namespace TWNPPublic.Domain.Service
             string mainsql = isPasswordChanged ?
                       @"UPDATE WMMMDB.dbo.im_cmuser
                        SET password = @Password 
-                           ,email = @Email
+                           ,email_1 = @Email
                            ,phone_1 = @Tel
                        WHERE user_id = @Account" :
                        @"UPDATE WMMMDB.dbo.im_cmuser
-                       SET email = @Email
+                       SET email_1 = @Email
                            ,phone_1 = @Tel
                        WHERE user_id = @Account";
+
+            ////調整密碼更新SQL，讓它只更新密碼欄位，其他欄位保持不變
+            //string mainsql = isPasswordChanged ?
+            //          @"UPDATE Test_im_cmuser
+            //           SET password = @Password 
+            //               ,email_1 = @Email
+            //               ,phone_1 = @Tel
+            //           WHERE user_id = @Account" :
+            //           @"UPDATE Test_im_cmuser
+            //           SET email_1 = @Email
+            //               ,phone_1 = @Tel
+            //           WHERE user_id = @Account";
 
             object obj = new
             {

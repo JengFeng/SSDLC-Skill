@@ -146,8 +146,8 @@ namespace TWNPPublic.Controllers
                     Mails.Add(model.AlertEmail3);
                 if (model.AlertEmail4 != null)
                     Mails.Add(model.AlertEmail4);
-                if (model.AlertEmail5 != null)
-                    Mails.Add(model.AlertEmail5);
+                //if (model.AlertEmail5 != null)
+                //    Mails.Add(model.AlertEmail5);
 
                 //Set處理
 
@@ -435,7 +435,7 @@ namespace TWNPPublic.Controllers
                 bool isGroupedAccount = userManageService.IsSttnGrpIdExist(aspNetUser.Name) != null;
                 if (!isGroupedAccount) {
                     //更新其他資料庫手機信箱
-                    alertService.UpdateImCmuserContactInfo(model.WaterNo, model.AlertPhone,model.AlertEmail1,model.AlertEmail2,model.AlertEmail3,model.AlertEmail4,model.AlertEmail5);
+                    alertService.UpdateImCmuserContactInfo(model.WaterNo, model.AlertPhone,model.AlertEmail1,model.AlertEmail2,model.AlertEmail3,model.AlertEmail4);
                 }
 
                 return Json(Success("更新成功"));

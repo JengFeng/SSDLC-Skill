@@ -181,7 +181,7 @@ namespace TWNPPublic.Controllers
                         List<B_ALART_SETTING> alertsetitems = new List<B_ALART_SETTING>();
                         var QualifyDate = userManageService.GetPhMeterQualifyDateByWaterNo(aspNetUser.CurrentWaterNo.ToString());
                         string updatedDate = "";
-                        if (QualifyDate.QUALIFY_DATE.HasValue)
+                        if (QualifyDate!= null && QualifyDate.QUALIFY_DATE.HasValue)
                         {
                             // 將日期轉換為字串並去掉時間部分，再加上 8 年
                             updatedDate = QualifyDate.QUALIFY_DATE.Value.AddYears(8).ToString("yyyy-MM-dd");

@@ -372,16 +372,23 @@ namespace TWNPPublic.Domain.Service
             object obj = new { SN = AccountSN, WaterNo };
             return dataAccess.Execute(mainsql, obj);
         }
-        public int UpdateImCmuserContactInfo(string waterNo, string phone, string email1, string email2, string email3, string email4, string email5)
+        public int UpdateImCmuserContactInfo(string waterNo, string phone, string email1, string email2, string email3, string email4)
         {
             string sql = @"UPDATE WMMMDB.dbo.im_cmuser 
                            SET phone_2 = @Phone,
-                               email_1 = @Email1,
-                               email_2 = @Email2,
-                               email_3 = @Email3,
-                               email_4 = @Email4,
-                               email_5 = @Email5
+                               email_2 = @Email1,
+                               email_3 = @Email2,
+                               email_4 = @Email3,
+                               email_5 = @Email4
                            WHERE user_id = @WaterNo";
+
+            //string sql = @"UPDATE Test_im_cmuser 
+            //               SET phone_2 = @Phone,
+            //                   email_2 = @Email1,
+            //                   email_3 = @Email2,
+            //                   email_4 = @Email3,
+            //                   email_5 = @Email4
+            //               WHERE user_id = @WaterNo";
 
             var parameters = new
             {
@@ -391,7 +398,7 @@ namespace TWNPPublic.Domain.Service
                 Email2 = email2?.Trim() ?? string.Empty,
                 Email3 = email3?.Trim() ?? string.Empty,
                 Email4 = email4?.Trim() ?? string.Empty,
-                Email5 = email5?.Trim() ?? string.Empty
+                //Email5 = email5?.Trim() ?? string.Empty
             };
 
             return dataAccess.Execute(sql, parameters);
@@ -415,6 +422,6 @@ namespace TWNPPublic.Domain.Service
         public ListedAlertSetViewModel GetAertSetByAccountSNAndWaterNo(int SN, string WaterNo);
         //public ListedAlertSetViewModel GetAlertSetByWaterNo(string WaterNO);
 
-        public int UpdateImCmuserContactInfo(string waterNo, string phone, string email1, string email2, string email3, string email4, string email5);
+        public int UpdateImCmuserContactInfo(string waterNo, string phone, string email1, string email2, string email3, string email4);
     }
 }
