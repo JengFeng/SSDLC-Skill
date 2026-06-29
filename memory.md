@@ -1,5 +1,42 @@
 ﻿# AI 寫作自動化軟體作業流程 — 腦力激盪記錄
 
+## 2026-06-29：員工基本資料管理系統 — 需求訪談彙整
+
+### 訪談背景
+- 訪談對象：人力資源部主管 (HRM)、人力資源部專員 (HR Specialist)
+- 現行痛點：資料分散（Excel + 紙本 + 多系統）、手動核對法規更新耗時、缺乏統一生命週期視圖
+
+### 核心功能需求 (7 項)
+1. **員工主檔 CRUD** — 含身分證字號、出生日期、部門、職稱等 20+ 欄位
+2. **生命週期管理** — 調職/升遷/調薪/離職異動軌跡，Append-Only 不可覆蓋
+3. **學經歷與證照** — 多筆記錄 + 附件上傳（上限 5MB，限定 PDF/JPG）
+4. **員工自助 (ESS)** — 自行修改非機密聯絡欄位
+5. **RBAC 三層權控** — 一般員工 / HR 專員（無薪資權限）/ HR 主管（全欄位）
+6. **人事報表** — 年資分佈、部門結構、壽星清單、離職率統計 + 圖表
+7. **Excel 匯出** — 依角色權限自動遮蔽無權欄位
+
+### 非功能需求 (8 項)
+- 🔒 台灣個資法合規、AES-256 欄位加密、HTTPS 全站
+- 🔒 不可竄改 Audit Trail（CRUD + 檢視全記錄）
+- 🔗 Windows AD SSO 整合（LDAP）
+- ⚡ 單筆查詢 ≤2s / 報表 ≤5s
+- 📱 RWD 響應式（PC/平板/手機）
+- 🔒 Session 30min 逾時、暴力破解鎖定
+- 📋 離職資料保留 5 年政策
+
+### 正規化文件
+- 原始訪談紀錄：`myPrj/01_planning_and_analysis/inputs/user_requirement_raw.md`
+- 正規化規格書：`myPrj/01_planning_and_analysis/outputs/formal_requirements.md`
+- 需求追溯表：`myPrj/01_planning_and_analysis/reg/requirement_tracker.md`
+
+### 待確認事項
+- AD 網域參數（Base DN, Bind Account）
+- 附件儲存方式（DB BLOB / NAS）
+- 薪資系統是否需介接
+- 高階主管界定標準
+- 員工總數與成長率
+- 排班系統介接需求
+
 本文件用於記錄關於「AI 寫作自動化軟體作業流程」的討論與規劃。本流程旨在遵循軟體工程的規範與生命週期，建立一套具備可重用性、可測試性與高可靠性的自動化寫作系統。
 
 ---
@@ -854,7 +891,8 @@ app = Flask(__name__, template_folder=os.path.join(APP_DIR, "templates"))
 
 ### 修正
 - pp.py：template_folder 改為 APP_DIR/templates，LOG_DIR 改為 APP_DIR/logs
-- un.bat：標題 v3 → v5
+- 
+un.bat：標題 v3 → v5
 - 驗證：HTTP 200 ✅，登入表單 ✅，Security Headers ✅
 ## v1.1.0 ~ v1.1.1 規則補強與架構對齊 (2026-06-28 全日晚間)
 
