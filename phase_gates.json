@@ -40,7 +40,7 @@
     }
   },
   "phase_baseline_enabled": false,
-    "security_baseline": {
+  "security_baseline": {
     "skill_path": "external-resources/Security-Principles",
     "description": "專案初始化後由 @init 流程詢問使用者是否導入，選定等級 (general/medium/high) 後自動寫入",
     "enabled": false,
@@ -49,5 +49,11 @@
     "skill": "Security-Principles",
     "min_security_score": 70,
     "block_on_fail": true
+  },
+  "io_management": {
+    "enabled": false,
+    "description": "@init 時詢問使用者是否啟用輸入與輸出檔案管理。若未啟用，所有階段不強制執行 IO 勾稽檢查。",
+    "skill_path": ".agents/skills",
+    "initialized_at": null
   }
 }

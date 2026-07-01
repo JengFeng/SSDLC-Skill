@@ -156,6 +156,44 @@ Evaluator 檢查產出與 SSOT 一致性。不一致即 B 類錯誤。規格先�
 
 包含：
 - SKILL.md — 主技能定義
-- eferences/ — 7 構面詳細控制措施
+- 
+eferences/ — 7 構面詳細控制措施
 - ssets/ — 普/中/高三等級檢核表
 - scripts/generate_checklist.py — 檢核表產生工具
+---
+
+## 六、 階段間輸入與輸出檔案管理規範 (Contract Management)
+
+### 1. IO 檔案檔案結構
+
+各階段在 `.agents/skills/0*_*/` 下維護 `io_files.yaml`，明確定義該階段的輸入需求（inputs）與輸出承諾（outputs）。框架提供模板IO 檔案，使用者可透過 `io_files.override.yaml` 覆蓋。
+
+### 2. Planner 職責
+
+*   **Skill 選定後自動引導**：每次 `@[phase] [skill_codes]` 執行後，若該階段尚無IO 檔案，Planner 自動引導 IO 定義對話。
+*   **自動建議**：根據該階段的模板 `io_files.yaml` 與選定的 Skill 組合，產生建議的 inputs/outputs 清單（含必填/可選標記）。
+*   **確認流程**：以編號清單方式顯示，使用者輸入要保留的編號，確認後寫入。
+
+### 3. Generator 職責
+
+*   讀取 `io_files.yaml`，確認所有 `required: true` 的輸入檔案已存在於 `inputs/`。
+*   產出時確保所有 `required: true` 的輸出檔案正確生成於 `outputs/`。
+*   產出完成後，將實際產出清單與IO 檔案比對，缺漏者記錄為 A 類錯誤。
+
+### 4. Evaluator 職責
+
+*   **IO 檔案兌現檢查**：比對實際產出與IO 檔案宣告的 outputs，缺漏者標記。
+*   **Mode E 觸發**：Evaluator 通過後自動執行 `python scripts/check_spec_integrity.py --mode E`，進行跨階段 IO 勾稽。
+*   **下游影響分析**：若本階段IO 檔案有變更，自動檢查下游階段是否受影響，產出警告。
+
+### 5. 可用指令
+
+| 指令 | 用途 |
+|:---|:---|
+| `@io show [phase]` | 檢視階段IO 檔案 |
+| `@io set [phase]` | 互動式定義/修改IO 檔案 |
+| `@io [phase]` | 跨階段 IO 勾稽檢查 |
+| `@io diff [A] [B]` | 兩階段IO 檔案差異比對 |
+| `@[phase] in: f1, f2?` | 快速定義輸入 |
+| `@[phase] out: f1, f2` | 快速定義輸出 |
+

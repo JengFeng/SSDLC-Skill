@@ -403,7 +403,7 @@ name: Harness Engineering CI
 ### 7. 安全軟體開發生命週期六階段（通稱 SSDLC）名詞對正與統一正名 (2026-06-26)
 為使本專案的規格體系與開發語彙完全一致，決定依據使用者的指示進行全局的名詞對齊與統一正名：
 *   **統一正名**：將專案中所有舊的「六大固定階段」、「六大標準階段」、「軟體開發六階段」等稱呼，統一正名為「安全軟體開發生命週期六階段」，通稱「SSDLC」。
-*   **階段名詞對齊**：將 6 個階段的名稱在全域規章、指導守則與索引表中，統一對正為： `01 : 規劃與需求分析`、`02 : 系統設計`、`03 : 開發與編碼`、`04 : 測試驗證`、`05 : 部署發布`、`06 : 維護監控`。
+*   **階段名詞對齊**：將 6 個階段的名稱在全域規章、指導守則與索引表中，統一對正為： `01 : 規劃與需求分析`、`02 : 系統設計`、`03 : 開發與編碼`、`04 : 測試驗證`、`05 : 部署發布`、`06 : 維護與營運`。
 *   **相關文件同步**：此正名變更已同步更新至docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)、專案規章 [.agents/AGENTS.md](file:///.agents/AGENTS.md) 以及技能目錄索引表 [skills/README.md](file:///d:/00AI協作/SSDLC_Skill/skills/README.md)。未來在對話中呼叫 `@stages` 時，AI 代理將會以此正名後的標準清單進行輸出與對照。
 *   **檢核結果上傳與全局掌握補強**：在指導守則 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 中，進一步補強了頂層與內層的資料流向規範。明文規定在 SSDLC 各階段應用 Plan、Generator、Evaluator 後，該階段之完整檢核結果必須自動上傳至上一層之全域主控 Agent，以利其隨時掌握與稽核全局狀態。
 *   **核心用途與 Skill 屬性定義補強**：依據上傳之定稿與專版 PDF 內容，將 SSDLC 六個階段中各階段的「核心用途」以及該階段所採用的 Skill 所應具備之「特性、關鍵詞與重要屬性」以通則化（平台無關）形式補充寫入指導守則 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 的第二節中，完善了本專案的軟體工程規格描述。
@@ -967,3 +967,313 @@ un.bat：標題 v3 → v5
 | **盲點修正** | Harness_Optimization 硬編碼→動態、四規格擴增、符號統一 |
 | **架構對齊** | README 10 指令到位、tree 重組、Demo 說明 |
 | **GitHub** | v1.1.0 commit + v1.1.1 Release（中英雙語） |
+---
+
+## 2026-07-01：SSDLC 雙層駕馭工程架構 — 優化腦力激盪
+
+### 背景
+針對現有 SSDLC 雙層解耦架構（外層全域 Agent + 內層六階段 PDCA 閉環）進行全面性架構審視，聚焦七大優化方向。下列為初步分析與建議，待與使用者逐一深入討論後定案。
+
+### 當前架構回顧（已確認之亮點）
+- **雙層解耦設計**：外層全域 Agent 管控追溯與階段切換，內層六階段獨立 PDCA 閉環，職責切割清晰
+- **SSOT 完整防線**：四規格交叉檢查（YAML ↔ Gherkin ↔ SRS ↔ RTM）、雙檔同步強制規則（.agents/AGENTS.md ↔ docs/commands_reference.md）
+- **快照/Baseline 管理**：自動化基線建立、版本遞增、保留最近 3 份 / 5 筆、可執行性驗證
+- **資安整合**：Security-Principles 三等級 8 構面完整融合，@security-check / @security-load 雙指令
+- **錯誤分類機制**：A 類重試 3 次、B 類升級全域迭代上限 2 輪
+- **Harness Optimization**：20+ 檢查組地毯式關聯掃描（@optimize）
+
+### 優化方向彙整（7 大建議）
+
+#### 1. 階段間邊界IO 檔案（Inter-Phase Contract）
+- **現況問題**：每個階段的 `inputs/` 與 `outputs/` 目錄存在，但依賴關係僅以 SKILL.md 內文字描述（如 Phase 03 Planner 手寫「讀取 Phase 02 產出的 api_spec.md」），缺乏機器可驗證的IO 檔案定義
+- **現況實例**：
+  - Phase 01 outputs: `formal_requirements.md`, `system_specification.md`, `executable_spec.yaml`, `requirements.feature`
+  - Phase 02 隱含消費: `formal_requirements.md`, `requirement_tracker.md`, `executable_spec.yaml`, `requirements.feature`
+  - Phase 02 outputs: `db_schema.sql`, `er_diagram.md`, `api_spec.md`, `ui_prototype.html`, `use_case_diagram.md`, `activity_diagram.md`, `sequence_diagram.md`（+ 條件式 3 份安全產出）
+  - Phase 03 隱含消費: `api_spec.md`, `db_schema.sql`, `ui_prototype.html`
+- **提案**：為每個階段新增 `io_files.yaml`，定義三層IO 檔案：
+  1. **Promise（輸出IO 檔案）**：保證產出哪些檔案，含型別、必填驗證規則、錯誤等級
+  2. **Expectation（輸入IO 檔案）**：需上游階段提供哪些交付物及其用途
+  3. **Cross-Phase Validation（交叉驗證）**：跨階段一致性規則
+- **效益**：斷鏈預警自動化、格式保證可程式化、回溯影響分析可反向查詢、平行化排程有基礎
+- **子議題待討論**：IO 檔案放獨立檔案 or 嵌入 SKILL.md Frontmatter / 驗證時機（Generator 前 or Evaluator 時 or 兩者）/ @optimize 是否自動建立初始 io_files.yaml
+
+#### 2. 平行化處理機制
+- **現況問題**：嚴格線性串行（Phase 1→2→3→4→5→6），但實務上 Phase 3-4 或 Phase 5-6 可部分平行
+- **提案**：在 `phase_gates.json` 中新增 `parallelism` 區塊，允許定義可平行階段群組與合併檢查點（synchronization point）
+
+#### 3. Token 成本量化監控
+- **現況問題**：提到「Token 控制依靠快照複用 + 錯誤分類 + 迭代次數上限」，但無量化記錄，無法判斷各階段 Token 消耗瓶頸
+- **提案**：在 `phase_gates.json` 中加入 `token_budget` 區塊（estimated / actual / remaining），讓 @optimize 產出 Token 消耗分析報告
+
+#### 4. Harness Optimization 增量檢查模式
+- **現況問題**：@optimize 為全量地毯式檢查（20+ 檢查組），框架穩定後成本過高，缺少增量模式
+- **提案**：新增 `@optimize --incremental`，透過 Git diff 與上次 @optimize 結果比對，僅檢查有異動的檔案關聯
+
+#### 5. IIS/Windows 部署適配通則化
+- **現況問題**：CORE_RULES.md 聲明「平台無關通則、無殘留 Windows 特定描述」，但 .agents/AGENTS.md 仍多次提及 Windows/IIS 特定內容（IIS 站台日誌、Windows 事件日誌雙軌驗證），存在平台通則 vs 實作細節界線模糊
+- **提案**：將 Windows/IIS 特定實作細節下沉至 `05_deployment/SKILL.md` 與 `06_maintenance/SKILL.md`，CORE_RULES.md 與 .agents/AGENTS.md 僅保留「雙軌日誌審計追溯」的通則性原則
+
+#### 6. 框架建置者 vs 專案開發者角色權限
+- **現況問題**：僅指令層級警告提示（@optimize / @unlock 的「框架建造者專用」），無實際角色切換或阻擋機制
+- **提案**：引入 `@role` 指令（builder / developer），phase_gates.json 記錄當前角色，依角色動態決定指令可用性
+
+#### 7. Baseline 結構化 Diff 審查
+- **現況問題**：@baseline 建立後自動驗證可執行性，但缺少 Baseline 之間的結構化差異審查（v1→v2 哪些規格異動？追溯鏈影響範圍？）
+- **提案**：新增 `@baseline-diff v1 v2` 指令，自動比對兩份 Baseline 的四規格差異，產出結構化 diff 報告
+
+### 後續行動
+- [ ] 與使用者逐一討論七大方向優先級
+- [ ] 選定首個優化方向進行深度設計
+- [ ] 確認適用的 `.agents/AGENTS.md` 與 `docs/commands_reference.md` 雙檔同步範圍
+
+### 2026-07-01：Contract 系統設計進度 — 指令命名定案
+
+- **主指令定案**：`@io`（替代原本的 `@io`）
+  - 語意：Input / Output 勾稽檢查
+  - 理由：最短、最直覺，一看就懂是檢查各階段的輸入輸出對齊
+  - 口語觸發：「幫我檢查 IO」、「執行 IO 勾稽」
+
+### 設計方向確認（已定案）
+| 項目 | 決策 |
+|:-----|:-----|
+| IO 檔案存放位置 | 獨立 `io_files.yaml` + `io_files.override.yaml`（支援覆蓋層） |
+| 互動模式 | 清單式一次顯示全部 inputs/outputs 供勾選 |
+| 自動觸發 | @io 手動 + @io set 修改時自動 + Evaluator 通過後自動（Mode E） |
+| @optimize 是否納入 | 待討論 |
+
+### Contract 子指令體系（4 指令）
+
+| 指令 | 用途 | 一句話 |
+|:-----|:-----|:------|
+| `@io show [phase]` | 檢視階段IO 檔案 | 查看 Phase N 的 inputs/outputs 清單 |
+| `@io set [phase]` | 定義/修改階段IO 檔案 | 互動式重定義該階段的輸入輸出要求 |
+| `@io [phase]` | 跨階段 IO 勾稽檢查 | 以 Phase N 為中心，檢查上游輸出→下游輸入是否對齊 |
+| `@io diff [A] [B]` | 兩階段IO 檔案差異比對 | 比對 Phase A vs Phase B 的IO 檔案差異 |
+
+### @io 跨階段 IO 勾稽檢查 — 詳細說明
+
+- **用途**：當你修改了某個階段的產出規格，想知道會不會影響下游
+- **運作邏輯**：以指定階段為中心，雙向掃描：
+  - 向上檢查：本階段的 inputs 在上游階段是否都有對應的 outputs
+  - 向下檢查：本階段的 outputs 是否滿足所有下游階段的 inputs
+- **使用時機**：
+  - 修改了 Phase 02 的產出清單 → `@io 02` 看 Phase 03 會不會斷鏈
+  - 跳過某階段手寫了交付物 → `@io 03` 確認輸入都到位
+  - Phase N Evaluator 通過後自動觸發
+
+### @io diff [A] [B] — 詳細說明
+
+- **用途**：比對兩個階段的IO 檔案差異，用在：
+  - 專案疊代時：v1 的 Phase 02 contract vs v2 的 Phase 02 contract 改了什麼？
+  - 不同專案間：專案 A Phase 03 vs 專案 B Phase 03 的輸入要求有何不同？
+  - 模板 vs 實作：框架模板 contract vs 實際專案 override 的差異
+- **輸出格式**：
+
+  ```
+  === Phase 02 (v1) vs Phase 02 (v2) ===
+  inputs:
+    + deploy_config.md          (v2 新增)
+    - ui_prototype.html         (v2 移除)
+    ~ api_spec.md: required=true → required=false  (v2 放寬)
+  outputs:
+    + rbac_matrix.md            (v2 新增)
+  ```
+
+### Contract 系統實作完成 (2026-07-01)
+
+#### 實作範圍
+
+| # | 項目 | 狀態 |
+|:--|:-----|:----|
+| 1 | 7 份 `io_files.yaml`（Phase 00~06） | ✅ |
+| 2 | `check_spec_integrity.py` Mode E | ✅ |
+| 3 | `.agents/AGENTS.md` Section 12 | ✅ |
+| 4 | `docs/commands_reference.md` Section 5 + 核心表 | ✅ |
+| 5 | `00_cross_phase/SKILL.md` Section 6 | ✅ |
+
+#### 新增/修改檔案清單
+
+- `.agents/skills/00_cross_phase/io_files.yaml` — 新增
+- `.agents/skills/01_planning_and_analysis/io_files.yaml` — 新增
+- `.agents/skills/02_system_design/io_files.yaml` — 新增
+- `.agents/skills/03_implementation_and_coding/io_files.yaml` — 新增
+- `.agents/skills/04_testing/io_files.yaml` — 新增
+- `.agents/skills/05_deployment/io_files.yaml` — 新增
+- `.agents/skills/06_maintenance/io_files.yaml` — 新增
+- `scripts/check_spec_integrity.py` — 修改（新增 Mode E）
+- `.agents/AGENTS.md` — 修改（新增 Section 12）
+- `docs/commands_reference.md` — 修改（新增 Section 5 + 核心表 + 歷史）
+- `.agents/skills/00_cross_phase/SKILL.md` — 修改（新增 Section 6）
+
+#### 設計決策記錄
+
+- 指令名稱：`@io`（替代 `@io`），語意直覺
+- IO 檔案格式：獨立 `io_files.yaml` + `io_files.override.yaml` 覆蓋層
+- 互動模式：編號清單重新設定（非逐項微調）
+- 快速語法：`@03 in: f1, f2?` / `@03 out: f1, f2`（`?` = 可選）
+- 自動觸發：@io set 時自動 / Evaluator 後自動（Mode E）/ 手動 @io
+- 勾稽方向：向上（上游輸出 → 本階段輸入）+ 向下（本階段輸出 → 下游輸入）
+
+### @io list 指令新增 (2026-07-01)
+
+- 新增 `@io list [phase]` 指令，列出各階段預設 IO 速查表
+- 不帶參數：顯示全部 6 階段 IO（含必填/可選標記）
+- 帶參數：只顯示指定階段
+- Skill 選定後自動顯示當前階段預設 IO
+- 更新檔案：commands_reference.md（核心表 + 速查表 + 使用說明）、.agents/AGENTS.md（12.7）、README.md
+
+### 2026-07-01 最終盤點與對齊
+
+#### 變更檔案清單（10 檔案）
+
+| 檔案 | 異動類型 |
+|:-----|:---------|
+| `.agents/AGENTS.md` | 修改：Section 12 (@io)、Section 13 (架構回饋)、@init 流程 |
+| `.agents/skills/00_cross_phase/SKILL.md` | 修改：Section 6 (契約管理)、@io 指令表 |
+| `.agents/skills/06_maintenance/SKILL.md` | 修改：Phase 06 改名「維護與營運」 |
+| `README.md` | 修改：指令表、倉庫結構、觸發詞彙、待辦事項用途 |
+| `docs/CORE_RULES.md` | 修改：Phase 06 改名 |
+| `docs/commands_reference.md` | 修改：核心表、Section 5 (@io)、速查表、快速語法 |
+| `memory.md` | 修改：全程設計記錄 |
+| `phase_gates.json` | 修改：新增 io_management 區塊 |
+| `scripts/check_spec_integrity.py` | 修改：新增 Mode E |
+| `待辦事項.md` | 新增：架構回饋待辦清單 |
+
+#### 對齊檢查結果
+
+- Mode E (`check_spec_integrity.py --mode E`)：14 pass / 0 fail
+- `io_files.yaml` WARN 符合設計（不預先產生）
+- 跨檔案 @io 指令覆蓋：全數到位
+- 殘留舊名稱：已清除
+- Phase 06 統一為「維護與營運」
+
+### @snapshot 指令新增 + Baseline vs Snapshot 差異釐清 (2026-07-01)
+
+- 新增 `@snapshot` 指令：手動建立即時快照（git diff patch + SHA-256 清單）
+- 存放於 `snapshots/`，保留最近 5 筆
+- 釐清 Baseline（基線）與 Snapshot（快照）差異：
+  - Baseline = 完整專案存檔，階段里程碑，`baseline/`，保留 3 份
+  - Snapshot = 輕量記錄點，修改前安全網，`snapshots/`，保留 5 筆
+- 更新檔案：commands_reference.md（Section 6 + 核心表 + 前言）、.agents/AGENTS.md（Section 6.5）、README.md（指令表 + 差異說明）
+
+### 2026-07-01 後續優化：AGENTS.md 缺漏修正 + 通用 Skill 體系 + G 前綴混搭
+
+#### AGENTS.md 三項缺漏修正
+
+- **12.7 @io list 位置修正**：從檔案開頭（第 8 行）移至 Section 12 內（第 570 行），與 @io 體系正確關聯
+- **Section 12/13 順序互換**：Section 12 (@io) 移至 Section 13 (架構回饋) 之前，符合邏輯順序
+- **12.3 指令表補列 @io list**：原表僅 show/set/check/diff，補上 @io list 條目；修正 @io diff 關鍵字誤觸導致的重複插入
+
+#### 通用 Skill 跨階段複用體系
+
+**5 個高優先 Skill 複製至 00_cross_phase**（原位保留不刪）：
+
+| Skill | 用途 | 跨階段通用理由 |
+|:---|:---|:---|
+| `docx` | Word 文件處理 | 任何階段都要產報告/規格書/檢核表 |
+| `pdf` | PDF 處理與 OCR | 任何階段正式交付物皆為 PDF |
+| `xlsx` | Excel 試算表 | 檢核表/測試矩陣/SBOM 全階段需要 |
+| `pptx` | 簡報製作 | 每階段審查簡報/結案彙報 |
+| `file-organizer` | 檔案歸納 | 所有階段通用基礎需求 |
+
+**skills/README.md 全面更新**：
+- 標頭總數說明：新增「5 個具跨階段通用性，同時歸類於 Phase 01 與全域層」
+- Phase 01 五項標記 🌐 通用
+- 跨階段區塊新增「文件產製類通用 Skill」子區塊（編號 [[12]]–[[16]]）
+- 文末新增「通用性評估指南」：三維度判斷表 + 歸類原則
+
+#### G 前綴通用 Skill 混搭機制
+
+**設計理念**：在任一階段查詢 @01~06 時，一併顯示 skills/00_cross_phase/ 的通用 Skill（G01, G02...），支援與階段專屬 Skill 以逗號混搭導入。
+
+**使用語法**：
+- 查詢：@02 → 顯示專屬 Skill + 🌐 通用 Skill（G01, G02...）
+- 混搭：@02/01,03,G01,G04 → Phase 02 的 01,03 + 通用 git + TDD
+- 單獨：@03/G01,G02 → 只將通用 Skill 引入 Phase 03
+
+**實作範圍（3 檔案同步）**：
+
+| 檔案 | 更新內容 |
+|:---|:---|
+| `.agents/AGENTS.md` | Section 2 新增 6.通用 Skill 一併顯示 + 7.導入提示；Section 3 新增 2.5 G 前綴混搭規則 |
+| `docs/commands_reference.md` | 核心表新增語法列；前言新增口語觸發；防呆更新相容 G 前綴 |
+| `README.md` | 指令表 @00~@06 說明更新、新增 G 前綴混搭列 |
+
+#### 設計決策記錄
+
+- **G 前綴**：單一字母區分通用 vs 階段專屬，不破壞現有逗號語法
+- **不搬不移**：通用 Skill 複製到 00_cross_phase，原位保留，兩邊同時存在
+- **通用性判斷**：>=3 階段有明確場景 + 不依賴特定階段上下文 + 文書產製屬性 → 列入通用
+- **中優先 10 個暫緩**：明確決定先執行高優先 5 個，其餘後續視需要再評估
+- **G 前綴防呆**：若 Gxx 不存在，提示「通用 Skill 中無編號 [Gxx]」並列出可用範圍
+
+#### 檔案異動清單
+
+| 檔案 | 異動 |
+|:---|:---|
+| `.agents/AGENTS.md` | 修改：Section 2 + Section 3 G 前綴規則；Section 12.3/12.7 修正 |
+| `skills/00_cross_phase/` | 新增：docx/pdf/xlsx/pptx/file-organizer（5 目錄） |
+| `skills/README.md` | 修改：標頭、Phase 01 標記、跨階段區塊、通用性評估指南 |
+| `docs/commands_reference.md` | 修改：核心表、前言、防呆 |
+| `README.md` | 修改：指令表 |
+
+#### 已記錄待辦事項（6 項）
+
+| # | 內容 |
+|:--|:---|
+| 1 | 平行化處理機制（Phase 3-4/5-6 部分平行） |
+| 2 | Token 成本量化監控（phase_gates.json token_budget） |
+| 3 | @optimize 增量檢查模式（--incremental） |
+| 4 | IIS/Windows 部署通則化 |
+| 5 | 角色權限控管（@role builder/developer） |
+| 6 | Baseline 結構化 Diff 審查（@baseline-diff）
+
+
+### 2026-07-02：AI 代理執行模式比較分析（四大模式）
+
+> 背景：討論現有 SSDLC 框架的 P→G→E 執行模式是否需要加入動態路由彈性。
+
+#### 業界四大模式總覽
+
+| 模式 | 代表工具 | 做法 | 優點 | 缺點 |
+|:---|:---|:---|:---|:---|
+| **A. 單一代理自修正** | Claude Code、Cursor Agent、GitHub Copilot | 一個模型包辦規劃→實作→自我檢查，錯了就自己修 | 快、簡單、適合小任務 | 沒有制衡、幻覺風險高 |
+| **B. 先規劃後執行** | Cline Plan/Act、Copilot Workspace | 先出計畫給人審，確認後才動手 | 人可控、不會暴衝 | 小事也強制兩段式，太慢 |
+| **C. 多代理管線** | Devin（早期）、SSDLC 框架（現行） | Planner→Generator→Evaluator 固定三關 | 品質把關嚴謹、分工明確 | 小事也強制跑三關，僵化 |
+| **D. 動態調度** | LangGraph、OpenAI Agents SDK | 一個調度者判斷任務大小，決定要叫誰、跳過誰 | 大小任務彈性適配、速度和品質兼顧 | 調度邏輯複雜 |
+
+#### 業界演進趨勢
+
+```
+2023-2024              2024-2025              2025+
+固定管線               先規劃後執行            動態調度
+P→G→E 鐵三角           Plan→Act              Orchestrator
+(Pattern C)            (Pattern B)           (Pattern D)
+```
+
+#### SSDLC 框架現況：Pattern C（最嚴謹版本）
+
+- Planner → Generator → Evaluator 固定順序，不可跳過
+- Generator「只執行不判斷不檢查不修改」鐵律
+- Evaluator 不過就退回，A/B 類分級重試
+- 6 階段依序，前一階段產 Baseline 才能進下一階段
+- 外層全域主控 Global Agent 監控
+
+#### 動態路由建議方案（待評估）
+
+在現有 P/G/E 三角色之上加入任務路由器（Orchestrator）：
+
+| 任務類型 | 路徑 | 觸發條件 |
+|:---|:---|:---|
+| 小修改（改變數名、修 typo） | G→E（跳 Planner） | 不影響規格、不影響架構 |
+| 僅調整規格 | P（僅 Planner） | 只改文件不改程式碼 |
+| 新功能 / 大重構 | P→G→E（完整三關） | 預設路徑 |
+| 僅審查現有產出 | E（僅 Evaluator） | 事後稽核 |
+
+#### 決策
+
+- ✅ 現階段**保留 Pattern C**（現有嚴格管線設計）
+- 📋 已列入待辦事項 #7，待系統穩定運行後再評估是否導入動態路由
+- 📝 此分析已記錄於 memory.md 供後續快速查閱
+

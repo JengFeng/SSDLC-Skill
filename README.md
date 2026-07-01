@@ -35,7 +35,7 @@
 | `03` | 開發與編碼 | AI 輔助程式碼實作、Linter、Formatter、單元測試 |
 | `04` | 測試驗證 | pytest、Playwright、Cypress、SonarQube、覆蓋率 |
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
-| `06` | 維護監控 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
+| `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
 > **合計 88 個 Skill**：Anthropic 官方 17 個 + Benson 自建 28 個 + GitHub 社群 41 個 + Anthropic 官方插件 2 個
 
@@ -70,7 +70,7 @@
 | | 效能/瓶頸問題 | `systematic-debugging` | 根因分析與 Hotfix |
 | **全域** | 安全/資安檢核 | `Security-Principles` | 資通系統防護基準（普/中/高） |
 
-## 🎮 指令系統
+## 🎮 [指令系統](docs/commands_reference.md)
 
 所有指令以 `@` 開頭，支援自然語言口語觸發：
 
@@ -78,10 +78,12 @@
 |:---|:---|:---|
 | `@help` | 顯示完整指令集參照表 | `@help` |
 | `@stages` | 列出六大階段代碼對照表 | `@stages` |
-| `@00` ~ `@06` | 查看指定階段所有可用 Skill | `@02` |
+| `@00` ~ `@06` | 查看指定階段所有可用 Skill（含通用 Skill G01, G02...） | `@02` |
 | `@[階段]/[快捷]` | 導入單個 Skill 至專案 | `@01/03` |
 | `@[階段]/[快1],[快2]` | 聯合導入多個 Skill | `@04/01,03,07` |
+| `@[階段]/[快],G[快],...` | 混搭導入階段 Skill + 通用 Skill（G 前綴） | `@02/01,G01,G03` |
 | `@init [路徑]` | 建立全新 SSDLC 專案目錄 | `@init ./my-app` |
+| `@snapshot` | 手動建立即時快照（git diff + SHA-256） | `@snapshot` |
 | `@restore [latest\|N\|timestamp]` | 回溯工作目錄至指定快照（SHA-256 驗證 + git diff 補丁還原） | `@restore latest` |
 | `@optimize` | ⚠️ 框架建造者專用：執行全案地毯式關聯檢查與修復 | `@optimize` |
 | `@unlock [階段代碼]` | ⚠️ 框架建造者專用：強制解鎖指定階段關卡 | `@unlock 03` |
@@ -89,8 +91,17 @@
 | `@CheckSpec` | 檢查四種規格（YAML/Feature/SRS/RTM）完整性與交叉一致性 | `@CheckSpec` |
 | `@security-check [general\|medium\|high]` | 載入資安防護基準檢核表，逐項比對並產出報告 | `@security-check medium` |
 | `@security-load [等級] [構面1,構面2,...]` | 階段中途彈性導入資安防護基準，可選定構面與等級 | `@security-load medium 1,4,6` |
+| `@io [phase]` | 跨階段 IO 勾稽檢查 | `@io 02` |
+| `@io show [phase]` | 檢視階段 IO 檔案清單 | `@io show 03` |
+| `@io set [phase]` | 互動式設定階段 IO 檔案 | `@io set 03` |
+| `@io diff [A] [B]` | 比對兩個階段 IO 檔案差異 | `@io diff 02 03` |
+| `@io list [phase]` | 列出各階段預設 IO 速查表 | `@io list` |
+| `in:` / `out:` 快速語法 | 一行定義輸入輸出（`?`=可選） | `@03 in: api_spec, ui?` |
+**自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「檢查規格」「四規格檢查」、「顯示指令集」、「建立基線」、「建立快照」、「存快照」、「執行架構優化」、「檢查 IO」「設定 IO」「列出 IO」「比對 IO」即可觸發對應指令。
 
-**自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「檢查規格」「四規格檢查」、「顯示指令集」、「建立基線」、「執行架構優化」即可觸發對應指令。
+> **Baseline（基線）vs Snapshot（快照）**：`@baseline` 建立完整專案備份（原始碼+模板+部署腳本），是階段里程碑存檔；`@snapshot` 建立輕量快照（git diff + SHA-256），是修改前的安全記錄點。基線保留最近 3 份，快照保留最近 5 筆。
+
+
 
 ---
 
@@ -136,7 +147,7 @@
 │   ├── SKILL.md                                # 階段 Skill 定義
 │   ├── inputs/                                 # 承接 04 階段 outputs
 │   └── outputs/                                # 建置產物清單與簽章報告輸出區
-├── 06_maintenance/                             # 第六階段：維護監控
+├── 06_maintenance/                             # 第六階段：維護與營運
 │   ├── SKILL.md                                # 階段 Skill 定義
 │   ├── inputs/                                 # 承接 05 階段 outputs
 │   └── outputs/                                # 故障分析與修補日誌輸出區
@@ -177,7 +188,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 亦可於開發中途使用 `@security-load` 彈性導入特定構面。
 
 ### 4. 依照階段進行開發
-從口述需求 → 正規化規格 → 系統設計 → 程式碼實作 → 雙軌測試 → 部署發布 → 維護監控，每個階段都會留下完整的輸入/輸出記錄。
+從口述需求 → 正規化規格 → 系統設計 → 程式碼實作 → 雙軌測試 → 部署發布 → 維護與營運，每個階段都會留下完整的輸入/輸出記錄。
 
 ### 5. 建立 Baseline 快照
 ```
@@ -312,10 +323,12 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 
 
+
 ## 📂 倉庫結構
 
 | 路徑 | 用途 |
-|:---|:---|| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
+|:---|:---|
+| `.github/` | (待定義) |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD，已導入普級資安防護基準） |
@@ -331,11 +344,44 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | 根目錄檔案 | 用途 |
 |:---|:---|| `.gitignore` | Git 忽略規則（排除 __pycache__、.env、*.db 等） |
 | `AGENTS.md` | 專案入口規章（指向 .agents/AGENTS.md 與 docs/CORE_RULES.md） |
-| `hr_system.db-shm` | (待定義) |
-| `hr_system.db-wal` | (待定義) |
 | `memory.md` | 全域記憶檔（開發歷程、決策記錄、Skill 建立記錄） |
 | `phase_gates.json` | 階段關卡狀態（各階段鎖定/完成 + security_baseline 安全區塊） |
 | `README.md` | 本檔案：專案總覽與使用說明 |
 | `system_specification.md` | 系統功能規格書 SRS（IEEE 830 標準） |
 | `traceability_matrix.md` | 全域需求追溯矩陣（RTM，六階段對應） |
-| `待辦事項.md` | (待定義) |
+| `待辦事項.md` | 架構回饋待辦清單。實際專案執行過程中若發現框架原始瑕疵或缺陷，可透過指令將問題與建議修正方案直接反饋至此，供架構建造者後續優化參考。 |
+
+---
+
+## 📝 近期更新記錄（2026-07-02）
+
+### 🏗️ 架構強化
+
+| 項目 | 說明 |
+|:---|:---|
+| **跨階段通用 Skill 體系** | 5 個文件產製 Skill（docx/pdf/xlsx/pptx/file-organizer）複製至 `skills/00_cross_phase/`，支援 G 前綴混搭導入（`@02/01,G01,G03`），任一階段皆可選用通用 Skill |
+| **@io 階段 IO 檔案管理** | 新增 `@io show/set/list/diff` 指令體系，`io_files.yaml` 定義階段輸入輸出，支援跨階段勾稽檢查與可選啟用 |
+| **活系統規格書全階段同步** | `system_specification.md` 從僅 Phase 01 更新，擴展為 6 階段全部自動同步，確保規格書隨開發進度持續生長 |
+| **CORE_RULES 補強** | 補入 IO 管理機制、跨階段 Skill 層、Phase 03/06 規格同步規則，與 AGENTS.md 完全互補 |
+
+### 🔧 功能新增
+
+| 項目 | 說明 |
+|:---|:---|
+| **Phase 02 PlantUML 輸出** | 追加 4 個 `.puml` 可選輸出（ER/用例/活動/時序圖），選取 plantuml Skill 時自動雙格式產出 |
+| **Phase 02 Excel Schema** | 新增 `db_schema.xlsx` 可選輸出（多 Sheet：總覽 + 各資料表欄位定義），選取 xlsx Skill 時產出 |
+| **UI 雛型智慧判定** | Planner 自動判定系統類型（前端/後端/混合），決定 `ui_prototype.html` 為必填或可選 |
+| **G 前綴通用 Skill 混搭** | 查詢任階段時一併顯示通用 Skill（G01~G16），支援逗號混搭導入 |
+| **模板保護機制** | `.agents/skills/[phase]/SKILL.md` 框架範本受嚴格保護，Skill 合併僅發生於專案目錄 |
+
+### 📋 維護修正
+
+| 項目 | 說明 |
+|:---|:---|
+| **Phase 06 定義修正** | 從窄化的「監控」修正為完整「維護與營運」（日誌分析 + Hotfix + 回歸測試 + 監控 + BCP） |
+| **UI 檢查清單通用化** | Phase 02 SKILL.md 移除 Demo 專案的特定 REQ 編號，改為通用需求類別檢查清單 |
+| **AGENTS.md 結構修正** | 修正 Section 12/13 順序、@io list 浮動位置、12.3 指令表漏列 |
+| **待辦事項機制** | 新增架構回饋機制，支援開發者將框架問題直接反饋至 `待辦事項.md` |
+| **Baseline vs Snapshot 釐清** | 明確定義：Baseline = 完整專案存檔（階段里程碑），Snapshot = 輕量記錄點（修改前安全網） |
+| **代理執行模式分析** | 記錄業界四大 AI 代理執行模式比較（Pattern A~D），現階段保留嚴格 PDCA 管線 |
+

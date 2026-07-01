@@ -4,6 +4,7 @@
 
 本文件定義了本專案在 SSDLC 開發生命週期中，各 AI 代理（Planner、Generator、Evaluator）必須嚴格遵守的全局行為準則，特別是「全局連貫性檢核與修正大工程」、「版本管控與組態管理」、「活系統規格書同步」以及「Windows Server + IIS 部署環境適配」的執行規範，以防止規格脫節與需求追溯遺漏。
 
+
 ---
 
 ## 一、 全局連貫性工程 (Global Alignment Engineering) 規範
@@ -73,15 +74,26 @@ graph TD
 每個階段的 inputs/ 目錄必須包含 spec_ref.md，記錄本階段必讀的 SSOT 規格路徑。
 AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀取即執行者，Evaluator 判定為 B 類錯誤。
 
-### 2.2.5 Phase 01 完成後自動同步 SSOT 規則
+### 2.2.5 每階段完成後自動同步 SSOT 規則（活系統規格書）
 
-*   Phase 01 Evaluator 通過後，AI 代理必須自動執行以下同步：
-    1.  將 `outputs/formal_requirements.md` 中的 FR/NFR 清單寫入 `specs/executable_spec.yaml` 的 `phase_01_planning.requirements` 段落。
-    2.  將 `outputs/formal_requirements.md` 中的接受準則 (Acceptance Criteria) 轉換為 Gherkin 語法（Given/When/Then），寫入 `specs/features/requirements.feature`。
-    3.  更新 `specs/executable_spec.yaml` 的 `project.last_updated` 與 `version`。
-*   此為強制步驟，未執行者 Evaluator 於 Phase 02 Checkpoint A 偵測到空白規格時，判定為 B 類錯誤。
+> `system_specification.md` 為活文件（Living Specification），每個 SSDLC 階段 Evaluator 通過後，AI 代理必須將該階段的關鍵產出摘要自動同步回寫，確保規格書隨開發進度持續生長，而非停留在 Phase 01。
 
-@init 指令執行時，AI 必須自動為 00-06 共 7 個階段生成 inputs/spec_ref.md。
+**同步時機**：各階段 Evaluator 通過後，AI 代理自動執行。
+
+| 階段 | 同步內容 | 寫入目標 |
+|:---|:---|:---|
+| **Phase 01** | FR/NFR 清單 → YAML；Acceptance Criteria → Gherkin | `executable_spec.yaml` + `requirements.feature` |
+| **Phase 02** | DB Schema 摘要（資料表清單 + 關聯）、API 端點清單、架構圖參照 | `system_specification.md` |
+| **Phase 03** | 技術棧（語言/框架/資料庫）、模組結構、關鍵實作決策 | `system_specification.md` |
+| **Phase 04** | 測試覆蓋摘要（覆蓋率/通過率）、已知限制與技術債 | `system_specification.md` |
+| **Phase 05** | 部署架構（環境/容器/CI/CD）、環境參數（URL/Port/憑證） | `system_specification.md` |
+| **Phase 06** | 維護記錄摘要（Hotfix 歷程、變更原因）、回歸測試結果、營運監控指標（CPU/記憶體/回應時間/錯誤率）、維運 SLA | `system_specification.md` |
+
+**AI 代理執行規範**：
+1.  Evaluator 通過後，檢查當前期段對應的同步內容是否已寫入目標檔案。
+2.  若尚未寫入，自動從該階段 `outputs/` 目錄萃取摘要內容，以 Markdown 格式 append 至 `system_specification.md` 的對應章節。
+3.  同步完成後更新 `system_specification.md` 的 `last_updated` 時間戳。
+4.  此為強制步驟。未執行者，Evaluator 於下一階段 Checkpoint C 偵測到規格落後時，判定為 B 類錯誤。
 
 ### 2.3.5 專案規格 ↔ 框架模板同步規則
 
@@ -202,7 +214,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
         *   `03` : 開發與編碼 (implementation_and_coding)
         *   `04` : 測試驗證 (testing)
         *   `05` : 部署發布 (deployment)
-        *   `06` : 維護監控 (maintenance)
+        *   `06` : 維護與營運 (maintenance)
     2.  說明如何使用 `@[階段代碼]` 進行進一步查詢，以及使用 `@[階段代碼]/[快捷編號]` 進行導入。
 
 ### 2. 階段 Skill 查詢指令：`@[階段雙位數代碼]`
@@ -214,9 +226,24 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
     3.  **富資訊解析**：AI 必須動態讀取這些可用 Skill 之 `SKILL.md` 檔案，解析其 YAML Frontmatter 中的 `description`（用途描述）欄位。
     4.  條列式輸出各 Skill 的「快捷編號 — 實體名稱 — 用途描述」與「導入指令範例」。
     5.  提供對應的導入指令範例，提示使用者進行導入。
+    6.  **🌐 通用 Skill 一併顯示**：在列出階段專屬 Skill 後，AI 代理必須同時掃描 `skills/00_cross_phase/` 目錄，將所有通用 Skill 以 `G` 前綴快捷編號（`G01`, `G02`, `G03` ...）列於「🌐 通用 Skill（所有階段皆可選用）」區塊中，供使用者一併選用。
+        ```
+        📂 Phase 02 系統設計 專屬 Skill：
+          01  db_schema_design       資料庫結構設計
+          ...
+
+        🌐 通用 Skill（所有階段皆可選用）：
+          G01  git                   版本控制與 Baseline 管理
+          G02  brainstorming         腦力激盪與創意展開
+          G03  docx                  Word 文件處理
+          G04  pdf                   PDF 處理與 OCR
+          ...
+        ```
+    7.  **導入提示**：在輸出清單後，提示使用者可使用 `@02/01,G01,G03` 語法混搭階段專屬與通用 Skill。
+
 
 ### 3. 直接與聯合導入 Skill 指令：`@[階段雙位數代碼]/[快捷編號]` 或 `@[階段雙位數代碼]/[快捷編號_1],[快捷編號_2]`
-*   **指令定義**：將指定的單個或多個 Skill（以逗號 `,` 聯合參數組合）部署至當前專案對應的階段目錄，並合併規範與登錄追溯。
+*   **指令定義**：將指定的單個或多個 Skill（以逗號 `,` 聯合參數組合）部署至當前專案對應的階段目錄。支援 `G` 前綴混搭通用 Skill（如 `@02/01,G01,G03`），將通用 Skill 從 `skills/00_cross_phase/` 引入至指定階段，並合併規範與登錄追溯。
 *   **AI 代理執行規範**：
     0.  **專案初始化防呆 (Project Init Guard)**：執行前，AI 必須檢查當前工作目錄是否為已初始化之 SSDLC 專案（根目錄須具備 `traceability_matrix.md`、`system_specification.md` 及 SSDLC 階段目錄結構）。若非已初始化專案，必須中止導入，並提示使用者：「當前目錄尚未初始化為 SSDLC 專案，請先執行 `@init [路徑]` 建立專案工作目錄後再導入 Skill。」
     1.  **安全網防禦**：執行前，AI 必須呼叫 Git 檢查工作區狀態...。若有未提交之變更，必須自動建立暫存 Git tag（格式為 `temp-baseline-YYYYMMDD-HHMMSS`）作為 Baseline。
@@ -224,12 +251,18 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
         *   若使用者輸入非雙位數快捷編號（例如輸入了完整的 Skill 資料夾名稱），AI 代理必須友善提示，例如：「請使用快捷編號進行導入，例如使用 `@01/01` 代替 `@01/skill_categorizer`」。
         *   若指令中包含逗號 `,`，AI 代理必須將其視為聯合導入，並依逗號拆分所有快捷編號。
         *   若其中有任何一個快捷編號在該階段不存在，AI 代理必須明確在對話中指出：「未找到編號為 [未找到的快捷編號] 的 Skill，請確保逗號兩側皆為有效的快捷編號。正確語法範例為：`@[階段]/[快捷編號1],[快捷編號2]`」，並列出該開發階段所有可用的快捷編號與實體名稱對照清單，中止導入流程，防止因輸入錯誤而導入失敗。
-    3.  **快捷編號還原**：AI 代理在部署前，必須在內部自動將快捷編號還原為對應的實體 Skill 資料夾名稱。
+    2.5. **🌐 G 前綴通用 Skill 混搭**：
+        *   `G` 前綴快捷編號（如 `G01`, `G02`）代表 `skills/00_cross_phase/` 中的通用 Skill。
+        *   可與階段專屬 Skill 以逗號混搭：`@02/01,03,G01,G04`（導入 Phase 02 的 01,03 + 通用 Skill G01, G04）。
+        *   可單獨導入通用 Skill：`@03/G01,G02`（只將通用 Skill git + brainstorming 引入 Phase 03）。
+        *   若 `G` 前綴編號在通用 Skill 清單中不存在，AI 代理必須提示：「通用 Skill 中無編號 [Gxx]，可用通用 Skill 清單：G01~G[最後編號]」。
+        *   `G` 前綴 Skill 的部署來源為 `skills/00_cross_phase/[實體名稱]/`，其餘部署邏輯與階段專屬 Skill 相同。    3.  **快捷編號還原**：AI 代理在部署前，必須在內部自動將快捷編號還原為對應的實體 Skill 資料夾名稱。
     4.  **檔案部署**：將所指定的單個或多個 Skill 資料夾內的所有檔案與子目錄，複製到目標專案對應開發階段 的目錄下。
     5.  **SKILL.md 動態合併**：
         *   依序讀取所選之各 Skill 的 `SKILL.md` 內容。
         *   將其 instructions 與規範分別以 `## [Skill 實體名稱] 規範` 為標題封裝，動態追加合併至該開發階段目錄下的 `SKILL.md` 中，並加上導入註記。
         *   同步更新 `.agents/skills/[階段]/SKILL.md`，加入該 Skill 的用途描述與快捷編號對照。
+        *   **⚠️ 模板保護（必須嚴格遵守）**：`.agents/skills/[階段]/SKILL.md` 為框架層級之階段範本，僅允許於檔案尾端的元數據區塊追加 Skill 用途描述與快捷編號對照。**嚴禁修改、刪除、或覆蓋**範本中既有的 Planner / Generator / Evaluator 固有規範內容（包含代理人職責、執行鐵律、審查標準、條件式規則等）。專案的 Skill 內容合併僅發生於專案目錄下的 `SKILL.md`，框架範本永遠保持其原始結構完整性。
         *   若某階段尚未有 `SKILL.md`，則依據 `TEMPLATE_SKILL.md` 範本初始化後再行合併。
     6.  **衝突處理**：動態合併時若出現重疊或矛盾的 instructions，以全局規章 `.agents/AGENTS.md` 為最高準則；若無法自動判定，必須列出衝突點由使用者手動裁決，嚴禁自行腦補。
     7.  **重複導入防護**：若目標目錄已存在同名 Skill，AI 必須提示使用者進行「覆蓋（Overwrite）」或「放棄（Abort）」。
@@ -242,7 +275,13 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
     2.  於指定路徑下建立完整的 SSDLC 目錄結構與 `.gitkeep`。
     3.  自動生成基礎控制檔案：`traceability_matrix.md`、`system_specification.md`、`memory.md`，以及在根目錄建立引導檔 `AGENTS.md`（指向實體規章 `.agents/AGENTS.md`）。
     4.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
-     5.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
+     5.  **📋 階段輸入與輸出檔案管理詢問**：詢問使用者「是否啟用階段輸入與輸出檔案管理（@io）？」
+        *   若使用者同意（io_management.enabled 設為 	rue）：AI 代理根據各階段 SKILL.md 的既有定義，自動產生 io_files.yaml 至專案對應階段目錄。後續 Skill 選定時自動引導 IO 定義。
+        *   若使用者跳過（io_management.enabled 設為 alse）：所有階段不強制執行 IO 勾稽檢查，產出格式不設限，使用者自行管理階段間的資料傳遞。
+        *   **目的**：讓新手不受IO 檔案格式約束，進階使用者可按需啟用結構化勾稽。
+        *   後續可透過 @io set [phase] 隨時啟用或修改。
+
+    6.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
         *   適用安全構面清單（依各階段對照表）
         *   對應參考文件路徑（`external-resources/Security-Principles/references/0X_*.md`）
         *   對應等級檢核表路徑
@@ -339,6 +378,20 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
         *   ⚠️ SHA-256 不符（列出檔案清單）
         *   ❌ 檔案缺失（列出檔案清單）
     6.  **回溯完成報告**：輸出回溯結果摘要（快照時間戳、還原檔案數、驗證通過/失敗清單、衝突檔案清單）。
+
+### 6.5 建立即時快照指令：`@snapshot`
+*   **指令定義**：手動建立即時快照（git diff patch + SHA-256 檔案清單），作為 git 操作前的安全網或臨時記錄點。
+*   **口語觸發**：「建立快照」、「存快照」、「記錄點」。
+*   **AI 代理執行規範**：
+    1.  **執行 git diff**：產出當前工作目錄與 HEAD 的差異補丁。
+    2.  **計算 SHA-256**：對所有已追蹤檔案計算雜湊值。
+    3.  **寫入快照**：存入 `snapshots/snapshot_YYYYMMDD-HHMMSS.md`（索引）+ `diff_YYYYMMDD-HHMMSS.patch`（補丁）。
+    4.  **自動清理**：超過 5 筆時，刪除最舊的一對檔案。
+*   **與 Baseline 的差異**：
+    - **快照**：輕量、即時、局部。記錄 git diff + 檔案清單。用於「等一下要改東西，先存個記錄點」。
+    - **基線**：完整、里程碑、可獨立執行。含原始碼 + 模板 + 部署腳本。用於「這個階段做完了，封存」。
+*   **使用範例**：`@snapshot`
+
 
 ### 7. 專案基線快照指令：`@baseline`
 *   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
@@ -446,5 +499,163 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 
 
 
+
+
+
+
+---
+
+### 12. 階段間IO 檔案定義與勾稽指令：`@io`
+
+#### 12.1 設計理念
+
+> ⚠️ **選擇性啟用**：階段輸入與輸出檔案管理為選用功能。在 @init 初始化時 AI 代理會詢問「是否啟用階段輸入與輸出檔案管理？」，使用者可選擇跳過。若 phase_gates.json 中 io_management.enabled 為 alse，所有階段不強制執行 IO 勾稽檢查，產出格式與檔案內容不設限，新手也能自由使用。後續可隨時透過 @io set 啟用。
+
+每個 SSDLC 階段的 `inputs/` 與 `outputs/` 目錄定義了階段間的資料傳遞關係。為避免隱含式依賴導致斷鏈，本指令體系將各階段的「輸入需求」與「輸出承諾」顯式定義為 `io_files.yaml`，並提供 `@io` 進行跨階段勾稽檢查。
+
+**核心原則**：上游階段的 `outputs` 必須滿足所有下游階段的 `inputs` 宣告，但 `io_files.yaml` 中的 `from_phase` 僅為建議來源而非強制來源 — 只要檔案到位、符合IO 檔案要求，即可跳過上游階段。
+
+#### 12.2 IO 檔案檔案結構
+
+存放在 `.agents/skills/0*_*/io_files.yaml`，格式如下：
+
+```yaml
+phase: "03"
+name: "開發與編碼"
+inputs:
+  - id: api_spec
+    path: ../02_system_design/outputs/api_spec.md
+    required: true       # true=必填, false=可選
+    purpose: "API 端點定義"
+outputs:
+  - id: source_code
+    path: outputs/src/
+    required: true
+    description: "應用程式原始碼"
+```
+
+使用者可透過 `io_files.override.yaml` 進行覆蓋，系統優先讀取覆蓋層。
+
+#### 12.3 指令規範
+
+| 指令 | 用途 | 口語觸發 |
+|:-----|:-----|:--------|
+| `@io show [phase]` | 檢視階段IO 檔案 | 「查看IO 檔案」「顯示 IO」 |
+| `@io set [phase]` | 互動式定義/修改階段IO 檔案 | 「設定IO 檔案」「定義 IO」 |
+| `@io [phase]` | 跨階段 IO 勾稽檢查 | 「檢查 IO」「IO 勾稽」 |
+| `@io diff [A] [B]` | 兩階段IO 檔案差異比對 | 「比對IO 檔案」「IO 檔案差異」 |
+| `@io list [phase]` | 列出各階段預設 IO 速查表，供快速瀏覽與選取 | 「列出 IO」「各階段 IO」 |
+
+#### 12.4 `in:` / `out:` 快速定義語法
+
+在 Skill 選定後，可透過簡潔語法定義該階段的輸入輸出：
+
+```
+@03 in: formal_requirements, api_spec, db_schema, ui_prototype?
+@03 out: src, tests, task_list
+```
+
+- **`in:`**：本階段需要的輸入檔案（來自上游）
+- **`out:`**：本階段將產出的交付物
+- **`?`**：檔名後加 `?` 表示可選（optional），不加則為必填（required）
+
+**AI 代理執行規範**：
+
+1.  **自動建議**：Skill 選定後，AI 代理根據該階段的模板 `io_files.yaml` 產生建議清單，以編號清單方式顯示。
+2.  **重新設定模式**：顯示當前IO 檔案的編號清單，使用者輸入要保留的編號（逗號分隔），未選到的會移除。也可混合文字新增項目。
+    ```
+    🤖 AI：Phase 03 IO 目前設定 ──────────────
+      in:  ① formal_requirements   ② api_spec
+           ③ db_schema              ④ ui_prototype?
+      out: ① src  ② tests  ③ task_list
+    ─────────────────────────────────────────
+      in:  要哪些？（例: 1,2,3,4）
+      out: 要哪些？（例: 1,2,3）
+    ```
+3.  **確認寫入**：重新設定後顯示變更摘要，確認後寫入 `io_files.yaml`（或 `io_files.override.yaml`）。
+4.  **使用者自行設定**：若使用者說「你幫我設定」，AI 代理根據 Skill 組合自動判斷必填/可選項目，寫入後顯示結果讓使用者確認或微調。
+5.  **Skill 選定時自動觸發**：每次 `@[phase] [skill_codes]` 執行後，若該階段尚無IO 檔案，AI 代理自動引導 IO 定義。
+
+#### 12.5 `@io [phase]` 跨階段勾稽
+
+以指定階段為中心，雙向掃描：
+
+- **向上檢查**：本階段的 `inputs`（必填項）在上游階段是否有對應的 `outputs`
+- **向下檢查**：本階段的 `outputs` 是否滿足所有下游階段的 `inputs`
+- **檔案存在性**：各階段宣告的必填產出檔案是否實際存在
+- **IO 檔案檔案完整性**：所有階段皆有 `io_files.yaml`
+
+執行時機：
+- 手動觸發：`@io 02`
+- `@io set` 修改IO 檔案後自動觸發
+- Evaluator 通過後自動觸發（`check_spec_integrity.py --mode E`）
+
+#### 12.6 `@io diff [A] [B]`
+
+比對兩個階段IO 檔案的差異，用於：
+- 專案疊代：v1 vs v2 的IO 檔案變更
+- 不同專案間：A 專案 vs B 專案同階段的IO 檔案比較
+
+輸出新增/移除/變更項目清單。
+
+
+#### 12.7 `@io list [phase]` 預設 IO 速查
+
+*   **指令定義**：列出各階段的預設輸入輸出檔案清單，供使用者快速瀏覽與選取。
+*   **口語觸發**：「列出 IO」、「顯示 IO 清單」、「各階段 IO」。
+*   **AI 代理執行規範**：
+    1.  不帶參數：顯示全部 6 階段的 IO 速查表（含必填/可選標記）。
+    2.  帶參數：只顯示指定階段的 IO 清單。
+    3.  在 Skill 選定後自動顯示當前階段的預設 IO，讓使用者可直接採用或微調。
+
+---
+
+### 13. 架構回饋機制：`待辦事項.md`
+
+#### 13.1 用途
+
+本機制用於收集實際專案在套用 SSDLC 框架過程中發現的**架構層級問題**（瑕疵、缺陷、改善建議），讓開發者將回饋直接寫入根目錄的 `待辦事項.md`，供架構建造者後續排程優化。
+
+> 此機制僅針對**框架本身的問題**（如 SKILL.md 規範矛盾、指令行為不符預期、目錄結構缺失）。專案層級的 Bug 或需求變更應走正常的 SSDLC 階段流程，不應寫入此處。
+
+#### 13.2 AI 代理引導規範
+
+當使用者表達以下意圖時，AI 代理應主動引導回饋流程：
+
+*   **口語觸發**：「回報框架問題」「架構有問題」「反饋建議」「這個框架的設計有瑕疵」「建議修正」
+
+**引導步驟**：
+
+1.  **確認分類**：詢問使用者這是「瑕疵」「缺陷」還是「改善建議」。
+2.  **收集資訊**：引導使用者提供：
+    - 在哪個階段/檔案發現問題
+    - 具體的問題描述
+    - 預期的正確行為是什麼
+    - 建議的修正方案（可選）
+3.  **寫入待辦事項**：將收集到的資訊依標準格式寫入 `待辦事項.md` 的「待辦清單」表格，自動遞增編號。
+4.  **確認寫入**：顯示寫入內容，讓使用者確認後存檔。
+
+#### 13.3 寫入格式
+
+每筆回饋以 Markdown 表格列形式寫入：
+
+| # | 日期 | 來源 | 分類 | 問題描述 | 建議修正 | 狀態 |
+|:-:|:-----|:-----|:-----|:---------|:---------|:-----|
+| 1 | 2026-07-01 | demo_project | 瑕疵 | Phase 02 SKILL.md 與 io_files.yaml 產出數量不一致 | 統一為 7 項標準產出 | 待處理 |
+
+#### 13.4 使用範例
+
+```
+使用者：這個框架的 Phase 03 規範有問題，in 沒有要求 api_spec 但 out 卻說要對齊它
+
+AI：收到，我來幫你回報這個框架問題。
+
+    分類：瑕疵（規範矛盾）
+    問題：Phase 03 SKILL.md 中 inputs 未宣告 api_spec.md，
+          但 Generator 任務中卻要求讀取 Phase 02 的 api_spec.md
+    建議：在 Phase 03 inputs 規範中補上 api_spec.md
+
+    是否寫入待辦事項.md？ [Enter] 確認
+```
 
 

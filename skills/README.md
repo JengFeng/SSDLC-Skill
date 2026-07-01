@@ -1,6 +1,6 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（41）、Anthropic 官方插件（2）等來源之技能（共 88 個）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（41）、Anthropic 官方插件（2）等來源之技能（共 88 個獨立 Skill，其中 docx/pdf/xlsx/pptx/file-organizer 等 5 個具跨階段通用性，同時歸類於 Phase 01 與全域層）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
@@ -12,13 +12,17 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/doc-coauthoring) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring)
 * **[internal-comms](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/internal-comms)**：內部溝通撰寫資源。提供狀態報告、事件報告及專案更新等內部通訊文件格式。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/internal-comms) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/internal-comms)
-* **[docx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/docx)**：Word 文件處理。讀取、編輯、操作與排版 `.docx` 檔案。
+* **[docx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/docx)**：Word 文件處理。讀取、編輯、操作與排版 `.docx` 檔案。 🌐 通用
+
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/docx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/docx)
-* **[xlsx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/xlsx)**：Excel 試算表處理。進行資料分析、公式計算、格式化與表格清洗。
+* **[xlsx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/xlsx)**：Excel 試算表處理。進行資料分析、公式計算、格式化與表格清洗。 🌐 通用
+
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/xlsx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/xlsx)
-* **[pdf](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/pdf)**：PDF 處理與 OCR。支援 PDF 檔案的拆合、表單填寫與 OCR 文字提取。
+* **[pdf](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/pdf)**：PDF 處理與 OCR。支援 PDF 檔案的拆合、表單填寫與 OCR 文字提取。 🌐 通用
+
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/pdf) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pdf)
-* **[pptx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。
+* **[pptx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。 🌐 通用
+
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/pptx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pptx)
 
 ### Benson 自建技能 (11)
@@ -36,7 +40,8 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/workplan-doc) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/workplan-doc)
 * **[meeting-record](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/meeting-record)**：會議記錄整理工具。將語音轉文字之會議逐字稿整理為結構化知識庫筆記與 HTML/CSS 簡報。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/meeting-record) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/meeting-record)
-* **[file-organizer](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/file-organizer)**：專案文件整理器。將專案中混亂的檔案依據定義的標準結構進行自動化分類。
+* **[file-organizer](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/file-organizer)**：專案文件整理器。將專案中混亂的檔案依據定義的標準結構進行自動化分類。 🌐 通用
+
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/file-organizer) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/file-organizer)
 * **[work-review](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/work-review)**：工作整合報告。整合 Outlook 信件、行事曆、LINE 與工項紀錄以產出每日（Daily）或每週（Weekly）的工作報告。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/work-review) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/work-review)
@@ -233,9 +238,30 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/06_maintenance/logparser) / [原始 GitHub 倉庫](https://github.com/Microsoft/LogParser-Studio-References)
 
 ## 跨階段全域共用 Skill
-本階段技能用於跨階段的狀態管理、版本控制與程式碼差異比對。
+本階段 Skill 涵蓋跨階段通用工具（版本控制、多 Agent 協作、文件產製、TDD 流程等），適用於所有 SSDLC 開發階段。
+
+
+### 文件產製類通用 Skill（5）— 同時歸類於 Phase 01 規劃與需求分析
+
+> 以下 Skill 具備跨階段通用性，可在任一 SSDLC 階段選用。於 Phase 01 中亦保留原位，不影響既有流程。
+
+* **[[12] docx](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/docx)**：Word 文件處理。讀取、編輯、操作與排版 `.docx` 檔案。🌐 通用
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/docx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/docx)
+
+* **[[13] xlsx](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/xlsx)**：Excel 試算表處理。進行資料分析、公式計算、格式化與表格清洗。🌐 通用
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/xlsx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/xlsx)
+
+* **[[14] pdf](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/pdf)**：PDF 處理與 OCR。支援 PDF 檔案的拆合、表單填寫與 OCR 文字提取。🌐 通用
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/pdf) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pdf)
+
+* **[[15] pptx](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。🌐 通用
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/anthropics-skills/skills/pptx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pptx)
+
+* **[[16] file-organizer](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/file-organizer)**：專案檔案歸納整理。自動分類、命名與目錄結構化管理。🌐 通用
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/file-organizer) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/file-organizer)
 
 ### GitHub 推薦開源工具技能 (11)
+
 * **[[01] langgraph](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/langgraph)**：複雜狀態多 Agent 協作工作流的圖形狀態管理引擎。
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/langgraph) / [原始 GitHub 倉庫](https://github.com/langchain-ai/langgraph)
 * **[[02] git](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/git)**：全域版本控制、分支管理與 Baseline 基線封存追溯工具。
@@ -259,3 +285,21 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/00_cross_phase/using-superpowers) / [原始 GitHub 倉庫](https://github.com/obra/superpowers)
 
 
+
+
+---
+
+## 通用性評估指南
+
+> 後續新增 Skill 時，依以下原則判斷是否需同時歸類於跨階段全域層：
+
+| 評估維度 | 判斷標準 | 範例 |
+|:---|:---|:---|
+| **多階段使用頻率** | 該 Skill 是否在 ≥3 個 SSDLC 階段有明確使用場景？ | docx：Phase 01 需求書 → 02 設計文件 → 04 測試報告 → 06 維運手冊 |
+| **階段無關性** | 該 Skill 的核心功能是否不依賴特定階段的上下文？ | file-organizer：檔案歸納不涉及特定階段邏輯 |
+| **文件產製屬性** | 是否為通用文書/簡報/試算表產出工具？ | pdf/pptx/xlsx：所有階段都可能產出正式交付物 |
+
+**歸類原則**：
+- ✅ 符合上述條件 → 同時歸類於原階段 **與** `00_cross_phase`（兩邊各保留一份）
+- ❌ 僅在單一階段使用 → 僅歸類於該階段
+- ⚠️ 不確定 → 先歸類於原階段，實際使用後再評估是否提升為通用

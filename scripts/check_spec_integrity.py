@@ -6,10 +6,11 @@
   B - 階段完成後：產出與 SSOT 一致性
   C - 跨階段交接：追溯鏈完整性
   D - Git 提交前：目錄結構 vs YAML 定義一致性
+  E - @io：跨階段契約輸入輸出勾稽
   S - @CheckSpec：四規格完整性與交叉一致性（結構化+行為+SRS+RTM）
 
 用法：
-  python scripts/check_spec_integrity.py [--phase 01-06] [--mode A|B|C|D|S]
+  python scripts/check_spec_integrity.py [--phase 01-06] [--mode A|B|C|D|E|S]
 """
 
 import os
@@ -301,6 +302,182 @@ class SpecIntegrityChecker:
                 if not srs_ok: self.log("ERR", "SRS -> RTM 方向不一致")
                 if not rtm_ok: self.log("ERR", "RTM -> SRS 方向不一致")
 
+
+
+    def check_contract_io(self):
+        """檢查點 E：跨階段契約輸入輸出勾稽"""
+        skills_base = os.path.join(ROOT, ".agents", "skills")
+        phases_order = [
+            "01_planning_and_analysis", "02_system_design",
+            "03_implementation_and_coding", "04_testing",
+            "05_deployment", "06_maintenance"
+        ]
+
+        # Load all contracts
+        contracts = {}
+        for phase_dir in phases_order:
+            contract_path = os.path.join(skills_base, phase_dir, "io_files.yaml")
+            if not os.path.exists(contract_path):
+                self.log("WARN", f"${phase_dir}/io_files.yaml 不存在，跳過")
+                continue
+            try:
+                with open(contract_path, encoding="utf-8") as f:
+                    contracts[phase_dir] = yaml.safe_load(f)
+            except Exception as e:
+                self.log("ERR", f"${phase_dir}/io_files.yaml 解析失敗: ${e}")
+                continue
+
+        if len(contracts) < 2:
+            self.log("WARN", "契約數量不足（需至少 2 份），跳過 IO 勾稽")
+            return
+
+        # Check upstream -> downstream alignment
+        print("\n--- 需求（上游輸出）vs 消費（下游輸入）對齊 ---")
+        for i, phase_dir in enumerate(phases_order):
+            if phase_dir not in contracts:
+                continue
+            current = contracts[phase_dir]
+
+            # Check inputs: does upstream produce what we need?
+            for inp in current.get("inputs", []):
+                if not inp.get("required", True):
+                    continue
+                found = False
+                # Look backwards through upstream phases
+                for j in range(i - 1, -1, -1):
+                    upstream = contracts.get(phases_order[j])
+                    if not upstream:
+                        continue
+                    for out in upstream.get("outputs", []):
+                        out_path = os.path.normpath(
+                            os.path.join(skills_base, phases_order[j], out["path"])
+                        )
+                        inp_path = os.path.normpath(
+                            os.path.join(skills_base, phase_dir, inp["path"])
+                        )
+                        if out_path == inp_path:
+                            found = True
+                            break
+                    if found:
+                        break
+                if found:
+                    self.log("OK", f"${inp['id']}: ${phase_dir} input ← 上游已宣告輸出")
+                else:
+                    self.log("WARN", f"${inp['id']}: ${phase_dir} 需要但上游無階段宣告此輸出")
+
+            # Check outputs: do actual files exist?
+            for out in current.get("outputs", []):
+                if not out.get("required", True):
+                    continue
+                out_path = os.path.join(skills_base, phase_dir, out["path"])
+                # Normalize and check existence (skip directories, check only files)
+                if out_path.endswith("/"):
+                    if os.path.isdir(out_path):
+                        self.log("OK", f"${out['id']}: 目錄存在 ${out['path']}")
+                    else:
+                        self.log("WARN", f"${out['id']}: 目錄不存在 ${out['path']}（可能尚未產出）")
+                elif os.path.exists(out_path):
+                    self.log("OK", f"${out['id']}: 檔案存在 ${out['path']}")
+                else:
+                    self.log("WARN", f"${out['id']}: 檔案不存在 ${out['path']}（可能尚未產出）")
+
+        # Check default contract file existence for all phases
+        print("\n--- 契約檔案存在性 ---")
+        all_phases = ["00_cross_phase"] + phases_order
+        for p in all_phases:
+            cp = os.path.join(skills_base, p, "io_files.yaml")
+            if os.path.exists(cp):
+                self.log("OK", f"${p}/io_files.yaml 存在")
+            else:
+                self.log("ERR", f"${p}/io_files.yaml 缺失")
+
+
+    def check_contract_io(self):
+        """檢查點 E：跨階段契約輸入輸出勾稽"""
+        skills_base = os.path.join(ROOT, ".agents", "skills")
+        phases_order = [
+            "01_planning_and_analysis", "02_system_design",
+            "03_implementation_and_coding", "04_testing",
+            "05_deployment", "06_maintenance"
+        ]
+
+        # Load all contracts
+        contracts = {}
+        for phase_dir in phases_order:
+            contract_path = os.path.join(skills_base, phase_dir, "io_files.yaml")
+            if not os.path.exists(contract_path):
+                self.log("WARN", f"{phase_dir}/io_files.yaml 不存在，跳過")
+                continue
+            try:
+                with open(contract_path, encoding="utf-8") as f:
+                    contracts[phase_dir] = yaml.safe_load(f)
+            except Exception as e:
+                self.log("ERR", f"{phase_dir}/io_files.yaml 解析失敗: {e}")
+                continue
+
+        if len(contracts) < 2:
+            self.log("WARN", "契約數量不足（需至少 2 份），跳過 IO 勾稽")
+            return
+
+        # Check upstream -> downstream alignment
+        print("\n--- 上游輸出 vs 下游輸入對齊 ---")
+        for i, phase_dir in enumerate(phases_order):
+            if phase_dir not in contracts:
+                continue
+            current = contracts[phase_dir]
+
+            # Check inputs: does upstream produce what we need?
+            for inp in current.get("inputs", []):
+                if not inp.get("required", True):
+                    continue
+                found = False
+                for j in range(i - 1, -1, -1):
+                    upstream = contracts.get(phases_order[j])
+                    if not upstream:
+                        continue
+                    for out in upstream.get("outputs", []):
+                        out_path = os.path.normpath(
+                            os.path.join(skills_base, phases_order[j], out["path"])
+                        )
+                        inp_path = os.path.normpath(
+                            os.path.join(skills_base, phase_dir, inp["path"])
+                        )
+                        if out_path == inp_path:
+                            found = True
+                            break
+                    if found:
+                        break
+                if found:
+                    self.log("OK", f"{inp['id']}: {phase_dir} input <- 上游已宣告輸出")
+                else:
+                    self.log("WARN", f"{inp['id']}: {phase_dir} 需要但上游無宣告")
+
+            # Check outputs: do actual files exist?
+            for out in current.get("outputs", []):
+                if not out.get("required", True):
+                    continue
+                out_path = os.path.join(skills_base, phase_dir, out["path"])
+                if out_path.endswith("/"):
+                    if os.path.isdir(out_path):
+                        self.log("OK", f"{out['id']}: 目錄存在 {out['path']}")
+                    else:
+                        self.log("WARN", f"{out['id']}: 目錄不存在 {out['path']}")
+                elif os.path.exists(out_path):
+                    self.log("OK", f"{out['id']}: 檔案存在 {out['path']}")
+                else:
+                    self.log("WARN", f"{out['id']}: 檔案不存在 {out['path']}")
+
+        # Check contract file existence for all phases
+        print("\n--- 契約檔案存在性 ---")
+        all_phases = ["00_cross_phase"] + phases_order
+        for p in all_phases:
+            cp = os.path.join(skills_base, p, "io_files.yaml")
+            if os.path.exists(cp):
+                self.log("OK", f"{p}/io_files.yaml 存在")
+            else:
+                self.log("ERR", f"{p}/io_files.yaml 缺失")
+
+
     def print_spec_summary(self):
         """輸出四規格摘要報告"""
         print("\n" + "=" * 60)
@@ -325,7 +502,7 @@ class SpecIntegrityChecker:
             print()
 
     def run(self):
-        mode_names = {"A":"規格存在性","B":"產出一致性","C":"追溯鏈","D":"全掃描","S":"@CheckSpec 四規格"}
+        mode_names = {"A":"規格存在性","B":"產出一致性","C":"追溯鏈","D":"全掃描","E":"@io 跨階段契約","E":"@io 跨階段契約","S":"@CheckSpec 四規格"}
         print(f"SSOT 規格完整性檢查 - {datetime.now().isoformat()}")
         print(f"   模式: {self.mode} ({mode_names.get(self.mode, self.mode)}) | 目標階段: {self.target_phase or '全部'}")
         print("=" * 50)
@@ -338,6 +515,19 @@ class SpecIntegrityChecker:
             self.check_phase_outputs()
         if self.mode in ("C", "D"):
             self.check_traceability()
+
+        
+        if self.mode == "E":
+            print("\n" + "=" * 50)
+            print("  Mode E：@io 跨階段契約勾稽")
+            print("=" * 50)
+            self.check_contract_io()
+
+        if self.mode == "E":
+            print("\n" + "=" * 50)
+            print("  Mode E：@io 跨階段契約 IO 勾稽")
+            print("=" * 50)
+            self.check_contract_io()
 
         if self.mode == "S":
             print("\n" + "=" * 50)
@@ -364,9 +554,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SSOT Spec Integrity Checker")
     parser.add_argument("--project", default=None, help="目標專案目錄（未指定時自動偵測）")
     parser.add_argument("--phase", default=None, help="目標階段 (01-06)")
-    parser.add_argument("--mode", default="D", choices=["A","B","C","D","S"], help="檢查模式 (S=@CheckSpec 四規格)")
+    parser.add_argument("--mode", default="D", choices=["A","B","C","D","E","S"], help="檢查模式 (S=@CheckSpec 四規格)")
     args = parser.parse_args()
 
     checker = SpecIntegrityChecker(target_phase=args.phase, mode=args.mode, project=args.project)
     sys.exit(checker.run())
+
 
