@@ -67,6 +67,15 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
 *   **Bug 追蹤 (`bug/`)**：
     *   `bug_tracker.md`：統一缺陷追蹤表（Bug ID | 發現日期 | 嚴重度 | 描述 | 重現步驟 | 根因 | 修復方案 | 狀態 | 修復日期）。
 
+> 📋 **IO 檔案管理（選擇性功能）**：
+> 若使用者已透過以下任一方式啟用 IO 檔案合約管理：
+> ① `@init` 時同意啟用 ② `@io set [phase]` ③ `@[phase] in:/out:` 快速定義語法，
+> 則
+> 本階段的 inputs/outputs 定義將由 `io_files.yaml` 取代上述預設值，
+> Planner / Generator / Evaluator 須遵循
+> [00_cross_phase/SKILL.md 第六節](file:///d:/00AI協作/SSDLC_Skill/.agents/skills/00_cross_phase/SKILL.md) 的合約管理規範。
+> 若未啟用，本段不適用，照上述預設值執行。
+
 ## 三、 Bug 追蹤規範
 
 所有測試缺陷統一記錄於 `bug/bug_tracker.md` 單一表格，不另建獨立 .md 檔案。

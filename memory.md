@@ -1277,3 +1277,54 @@ P→G→E 鐵三角           Plan→Act              Orchestrator
 - 📋 已列入待辦事項 #7，待系統穩定運行後再評估是否導入動態路由
 - 📝 此分析已記錄於 memory.md 供後續快速查閱
 
+
+
+## 2026-07-02：UI/UX Pro Max 外部技能導入與架構對齊強化
+
+### 背景
+使用者要求從 GitHub 導入 `nextlevelbuilder/ui-ux-pro-max-skill`（MIT v2.6.2），包含 7 個設計智慧子技能，並依 SSDLC 六階段分類整合。
+
+### 執行內容
+
+#### 1. 外部資源下載
+- `external-resources/ui-ux-pro-max-skill/`：完整下載 7 子技能（ui-ux-pro-max / brand / design / design-system / ui-styling / slides / banner-design），含 Python 搜尋引擎 + 14 個 CSV 資料庫，清理 `.git` 目錄
+
+#### 2. 技能分類部署（依 skills/SKILLS歸類.md 規則）
+- `skills/00_cross_phase/`：ui-ux-pro-max、slides
+- `skills/02_system_design/`：brand、design、design-system、ui-styling、banner-design
+- `skills/03_implementation_and_coding/`：ui-styling（雙歸屬）
+
+#### 3. 文件更新
+- **根 README.md**：總數 88→95、GitHub 社群 41→48、上下文感知推薦表 +4 條、近期更新記錄新增、Banner 修正
+- **skills/README.md**：開頭摘要更新（來源統計 + 雙歸屬 6 + 群組摘要）、各階段新增技能條目（含本機＋GitHub 雙來源追溯）
+- **skills/SKILLS歸類.md**：Phase 00/02/03 清單更新；SOP 從 3 條簡略步驟重寫為 6 大步驟（前置掃描→關鍵字比對歸類→複製→skills/README→SKILLS歸類→根 README→最終驗證），含 1.1 關鍵字比對法、1.2 全域性判斷、1.3 雙歸屬判斷、1.4 相依性檢查
+- **docs/Harness_Optimization_SKILL.md**：Check 5 擴充 4 條強制規則（skills/README 開頭統計、SKILLS歸類清單更新、推薦表評估、三檔交叉驗證）；新增角色定位說明（@optimize 為最後檢核關卡，非主要同步機制）
+
+#### 4. IO 檔案管理強化（選擇性功能 opt-in）
+- **Phase 00 Section 六**：新增 `### 0. 啟用條件`（三種啟用方式），Planner/Generator/Evaluator 各職責補上「未啟用則跳過」指示
+- **Phase 01~06 各階段 SKILL.md**：在 `## 二、輸入與輸出規範` 結尾加入 IO 管理引用提醒（三種啟用方式 + 指向 Phase 00 Section 六）
+
+#### 5. 安全性確認
+- `.agents/skills/` 目錄經 git diff + SHA256 檢查，確認無污染殘留
+- 多次執行 @optimize（Harness Optimization）全數通過
+- `check_spec_integrity.py --mode B` 通過
+
+### 關鍵設計決策
+- 外部技能不直接放入 `.agents/skills/`，而是放在 `external-resources/` 作為唯一來源，`skills/` 下為分類部署的複本
+- SKILLS歸類.md SOP 設計為 AI 代理可自主讀取執行，不需人類引導
+- @optimize 定位為最終驗證關卡，主要同步工作應在 SOP 階段完成
+- IO 檔案管理為選擇性功能（opt-in），預設不啟用，避免 AI 強制套用
+
+### 變更檔案清單
+| 檔案 | 變更類型 |
+|:------|:------|
+| external-resources/ui-ux-pro-max-skill/ | 新增 |
+| skills/00_cross_phase/{ui-ux-pro-max,slides}/ | 新增 |
+| skills/02_system_design/{brand,design,design-system,ui-styling,banner-design}/ | 新增 |
+| skills/03_implementation_and_coding/ui-styling/ | 新增（雙歸屬） |
+| README.md | 修改 |
+| skills/README.md | 修改 |
+| skills/SKILLS歸類.md | 修改 |
+| docs/Harness_Optimization_SKILL.md | 修改 |
+| .agents/skills/00_cross_phase/SKILL.md | 修改 |
+| .agents/skills/01~06_*/SKILL.md | 修改（各階段加入 IO 引用） |

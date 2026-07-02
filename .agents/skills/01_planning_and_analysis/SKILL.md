@@ -76,6 +76,15 @@ description: 規劃與需求分析階段，負責原始需求釐清、口語需�
     *   `requirement_tracker.md`：統一需求追蹤表（REQ ID | 日期 | 來源 | 優先級 | 描述 | 對應設計 | 對應實作 | 對應測試 | 狀態）。
     *   `grill_me_session.md`：grill-me 釐清對話記錄（如有執行）。
 
+> 📋 **IO 檔案管理（選擇性功能）**：
+> 若使用者已透過以下任一方式啟用 IO 檔案合約管理：
+> ① `@init` 時同意啟用 ② `@io set [phase]` ③ `@[phase] in:/out:` 快速定義語法，
+> 則
+> 本階段的 inputs/outputs 定義將由 `io_files.yaml` 取代上述預設值，
+> Planner / Generator / Evaluator 須遵循
+> [00_cross_phase/SKILL.md 第六節](file:///d:/00AI協作/SSDLC_Skill/.agents/skills/00_cross_phase/SKILL.md) 的合約管理規範。
+> 若未啟用，本段不適用，照上述預設值執行。
+
 ## 三、 需求追蹤規範
 
 所有需求統一記錄於 `reg/requirement_tracker.md` 單一表格，不另建獨立 .md 檔案。

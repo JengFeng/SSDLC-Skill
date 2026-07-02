@@ -1,14 +1,14 @@
 ﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 88 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 95 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 88 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 95 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -18,7 +18,7 @@
 
 ## 🧩 開發階段架構
 
-本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **88 個** AI 協作 Skill。
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **95 個** AI 協作 Skill。
 
 ### 🌐 跨階段全域共用
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 88 個 Skill**：Anthropic 官方 17 個 + Benson 自建 28 個 + GitHub 社群 41 個 + Anthropic 官方插件 2 個
+> **合計 95 個 Skill**：Anthropic 官方 17 個 + Benson 自建 28 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
 
 ---
 
@@ -56,19 +56,24 @@
 | **02 設計** | UI/前端/網頁/畫面 | `frontend-app-builder` | 高品質現代化 UI（漸層/動畫/SVG/RWD） |
 | | 資料視覺化/圖表 | `build-web-data-visualization` | 圖表選擇與設計 |
 | | UML/架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
+| | 配色/字型/風格/UX | `ui-ux-pro-max` | 84 風格 + 161 色板 + 73 字型配對即時查詢 |
+| | Design Token/CSS 變數 | `design-system` | 三層 token 架構（primitive→semantic→component） |
 | **03 開發** | React/Next.js | `react-best-practices` | 效能最佳化（memo/Suspense/Image） |
 | | shadcn/ui 組件 | `shadcn` | 組件管理與樣式設計 |
+| | Tailwind/響應式/暗色模式 | `ui-styling` | shadcn + Tailwind utilities + 無障礙實作參考 |
 | | Postgres/Supabase | `supabase-postgres-best-practices` | 查詢最佳化與索引設計 |
 | | Stripe 金流 | `stripe-best-practices` | API 選擇與安全整合 |
 | **04 測試** | 前端/瀏覽器 UI | `Playwright` | 預錄腳本自動化測試，高覆蓋率 |
 | | API/後端 | `pytest` | API 端點測試與回歸 |
 | | Bug/測試失敗 | `systematic-debugging` | 系統性根因分析與修復 |
 | | 測試先行/TDD | `test-driven-development` | 紅綠重構循環 |
+| | UI 驗收/視覺 QA | `ui-ux-pro-max` | Pre-Delivery Checklist（對比度/touch/CLS） |
 | **05 部署** | CI/CD 管線 | `circleci` | 自動化建置、測試、部署 |
 | | Expo/App 上架 | `expo-deployment` | App Store/Play Store 發佈 |
 | **06 維護** | 線上錯誤追蹤 | `sentry` | 即時錯誤監控與事件分析 |
 | | 效能/瓶頸問題 | `systematic-debugging` | 根因分析與 Hotfix |
 | **全域** | 安全/資安檢核 | `Security-Principles` | 資通系統防護基準（普/中/高） |
+| | 簡報/投影片製作 | `slides` | HTML 簡報 + Chart.js 圖表（跨階段通用） |
 
 ## 🎮 [指令系統](docs/commands_reference.md)
 
@@ -345,7 +350,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告） |
 | `scripts/` | 輔助腳本 + 🔒 安全工具鏈（align_framework.ps1、pre_commit_secrets.py、run_security_scan.py 等） |
-| `skills/` | 88 個 Skill 實體（含 README.md 與歸類索引） |
+| `skills/` | 95 個 Skill 實體（含 README.md 與歸類索引） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
 
@@ -381,6 +386,12 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | **UI 雛型智慧判定** | Planner 自動判定系統類型（前端/後端/混合），決定 `ui_prototype.html` 為必填或可選 |
 | **G 前綴通用 Skill 混搭** | 查詢任階段時一併顯示通用 Skill（G01~G16），支援逗號混搭導入 |
 | **模板保護機制** | `.agents/skills/[phase]/SKILL.md` 框架範本受嚴格保護，Skill 合併僅發生於專案目錄 |
+
+### 🆕 外部 Skill 新增
+
+| 項目 | 說明 |
+|:---|:---|
+| **UI/UX Pro Max 技能組** | 新增 7 個設計智慧技能（ui-ux-pro-max/brand/design/design-system/ui-styling/slides/banner-design），來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT v2.6.2），歸入 Phase 00/02/03 |
 
 ### 📋 維護修正
 

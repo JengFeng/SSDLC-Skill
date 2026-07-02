@@ -164,36 +164,51 @@ eferences/ — 7 構面詳細控制措施
 
 ## 六、 階段間輸入與輸出檔案管理規範 (Contract Management)
 
-### 1. IO 檔案檔案結構
+> ⚠️ **選擇性功能（Opt-in）**：本規範為**選擇性套用**，非強制。僅在使用者明確啟用 IO 檔案管理後才生效。若使用者未啟用，Planner / Generator / Evaluator 應跳過本節所有規則，照原流程執行，不得強制要求或自動引導 IO 定義。
 
-各階段在 `.agents/skills/0*_*/` 下維護 `io_files.yaml`，明確定義該階段的輸入需求（inputs）與輸出承諾（outputs）。框架提供模板IO 檔案，使用者可透過 `io_files.override.yaml` 覆蓋。
+### 0. 啟用條件
 
-### 2. Planner 職責
+IO 檔案管理僅在以下任一條件成立時啟用：
 
-*   **Skill 選定後自動引導**：每次 `@[phase] [skill_codes]` 執行後，若該階段尚無IO 檔案，Planner 自動引導 IO 定義對話。
+1. **使用者主動觸發**：執行 `@io set [phase]` 指令，明確為指定階段定義 IO 檔案。
+2. **@init 時使用者同意**：專案初始化時，Planner 詢問「是否啟用階段 IO 檔案管理？」，使用者回答「是」。
+3. **快速定義語法觸發**：使用者使用 `@[phase] in: f1, f2?` 或 `@[phase] out: f1, f2` 語法。
+
+若以上條件皆不成立，則 IO 檔案管理**視為未啟用**，以下 1-5 節不適用。
+
+### 1. IO 檔案結構
+
+當 IO 檔案管理啟用後，各階段在 `.agents/skills/0*_*/` 下維護 `io_files.yaml`，明確定義該階段的輸入需求（inputs）與輸出承諾（outputs）。框架提供模板 IO 檔案，使用者可透過 `io_files.override.yaml` 覆蓋預設值。
+
+### 2. Planner 職責（僅在 IO 檔案管理啟用時）
+
+*   **@init 時詢問**：專案初始化時，Planner 應詢問使用者是否啟用 IO 檔案管理（預設答案為「否」）。若使用者同意，則繼續以下步驟；若不同意，則跳過本節。
+*   **Skill 選定後引導**（若已啟用）：每次 `@[phase] [skill_codes]` 執行後，若該階段尚無 IO 檔案，Planner 引導 IO 定義對話。
 *   **自動建議**：根據該階段的模板 `io_files.yaml` 與選定的 Skill 組合，產生建議的 inputs/outputs 清單（含必填/可選標記）。
 *   **確認流程**：以編號清單方式顯示，使用者輸入要保留的編號，確認後寫入。
 
-### 3. Generator 職責
+### 3. Generator 職責（僅在 IO 檔案管理啟用時）
 
 *   讀取 `io_files.yaml`，確認所有 `required: true` 的輸入檔案已存在於 `inputs/`。
 *   產出時確保所有 `required: true` 的輸出檔案正確生成於 `outputs/`。
-*   產出完成後，將實際產出清單與IO 檔案比對，缺漏者記錄為 A 類錯誤。
+*   產出完成後，將實際產出清單與 IO 檔案比對，缺漏者記錄為 A 類錯誤。
+*   **若 IO 檔案管理未啟用**：Generator 照原流程產出，不需檢查 `io_files.yaml`。
 
-### 4. Evaluator 職責
+### 4. Evaluator 職責（僅在 IO 檔案管理啟用時）
 
-*   **IO 檔案兌現檢查**：比對實際產出與IO 檔案宣告的 outputs，缺漏者標記。
+*   **IO 檔案兌現檢查**：比對實際產出與 IO 檔案宣告的 outputs，缺漏者標記。
 *   **Mode E 觸發**：Evaluator 通過後自動執行 `python scripts/check_spec_integrity.py --mode E`，進行跨階段 IO 勾稽。
-*   **下游影響分析**：若本階段IO 檔案有變更，自動檢查下游階段是否受影響，產出警告。
+*   **下游影響分析**：若本階段 IO 檔案有變更，自動檢查下游階段是否受影響，產出警告。
+*   **若 IO 檔案管理未啟用**：Evaluator 跳過 IO 檔案相關檢查，照原標準審查流程執行。
 
 ### 5. 可用指令
 
 | 指令 | 用途 |
 |:---|:---|
-| `@io show [phase]` | 檢視階段IO 檔案 |
-| `@io set [phase]` | 互動式定義/修改IO 檔案 |
+| `@io show [phase]` | 檢視階段 IO 檔案 |
+| `@io set [phase]` | 互動式定義/修改 IO 檔案（觸發啟用） |
 | `@io [phase]` | 跨階段 IO 勾稽檢查 |
-| `@io diff [A] [B]` | 兩階段IO 檔案差異比對 |
-| `@[phase] in: f1, f2?` | 快速定義輸入 |
-| `@[phase] out: f1, f2` | 快速定義輸出 |
+| `@io diff [A] [B]` | 兩階段 IO 檔案差異比對 |
+| `@[phase] in: f1, f2?` | 快速定義輸入（觸發啟用） |
+| `@[phase] out: f1, f2` | 快速定義輸出（觸發啟用） |
 

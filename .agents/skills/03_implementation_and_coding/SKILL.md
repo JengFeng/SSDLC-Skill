@@ -93,3 +93,12 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
 *   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
     *   `outputs/security_check_report.md` — Phase 3 資安防護基準檢核報告（@security-check 產出）
     *   `outputs/security_scan_report.json` — SAST + 依賴掃描報告（run_security_scan.py 產出）
+
+> 📋 **IO 檔案管理（選擇性功能）**：
+> 若使用者已透過以下任一方式啟用 IO 檔案合約管理：
+> ① `@init` 時同意啟用 ② `@io set [phase]` ③ `@[phase] in:/out:` 快速定義語法，
+> 則
+> 本階段的 inputs/outputs 定義將由 `io_files.yaml` 取代上述預設值，
+> Planner / Generator / Evaluator 須遵循
+> [00_cross_phase/SKILL.md 第六節](file:///d:/00AI協作/SSDLC_Skill/.agents/skills/00_cross_phase/SKILL.md) 的合約管理規範。
+> 若未啟用，本段不適用，照上述預設值執行。

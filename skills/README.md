@@ -1,6 +1,6 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（41）、Anthropic 官方插件（2）等來源之技能（共 88 個獨立 Skill，其中 docx/pdf/xlsx/pptx/file-organizer 等 5 個具跨階段通用性，同時歸類於 Phase 01 與全域層）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 95 個獨立 Skill，其中 docx/pdf/xlsx/pptx/file-organizer 等 5 個具跨階段通用性，ui-styling 同時歸類於 Phase 02 與 Phase 03，共計 6 個雙歸屬 Skill）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
@@ -115,6 +115,19 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/02_system_design/openapi_generator) / [原始 GitHub 倉庫](https://github.com/OpenAPITools/openapi-generator)
 
 
+### UI/UX Pro Max 設計智慧技能 (5)
+* **[[05] brand](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/brand)**：品牌識別指南 — 品牌聲音 / 視覺識別 / 訊息框架 / 資產管理 / 一致性檢查。內含 11 份參考文件與品牌模板。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/brand) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+* **[[06] design](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/design)**：通用設計工具包 — Logo 設計（55 風格）/ CIP 企業識別（50 交付物）/ 圖示設計 / 社群素材。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/design) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+* **[[07] design-system](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/design-system)**：Design Token 架構 — 三層 token（primitive→semantic→component）/ CSS 變數 / 元件規格 / Tailwind 整合。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/design-system) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+* **[[08] ui-styling](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/ui-styling)**：前端樣式參考 — shadcn/ui 元件 / Tailwind CSS / 響應式佈局 / 暗色模式 / 無障礙組件。 🌐 雙歸屬（Phase 02 設計規範 + Phase 03 實作落地）
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/ui-styling) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+* **[[09] banner-design](file:///d:/00AI協作/SSDLC_Skill/skills/02_system_design/banner-design)**：多格式橫幅設計 — 22 風格 / 社群+廣告+網頁+印刷 / AI 生成視覺素材。 ⚠️ 依賴 ui-ux-pro-max
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/banner-design) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
+
 ## 3. 開發與編碼
 本階段技能用於開發任務管理、程式碼實作、MCP 伺服器建置、API 規格查詢與自訂技能管理。
 
@@ -165,6 +178,11 @@
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/github-skills/03_implementation_and_coding/code-simplifier) / [原始 GitHub 倉庫](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)
 
 * **[proposal-pptx](file:///d:/00AI協作/SSDLC_Skill/skills/01_planning_and_analysis/proposal-pptx)**：服務建議簡報一站式產出。基於 Anthropic 官方 `pptx` skill 的包裝擴充。
+
+### UI/UX Pro Max 前端實作技能 (1)
+* **[[17] ui-styling](file:///d:/00AI協作/SSDLC_Skill/skills/03_implementation_and_coding/ui-styling)**：前端樣式落地實作 — shadcn/ui 元件開發 / Tailwind CSS 工具類 / 響應式佈局 / 暗色模式實作。 🌐 雙歸屬（Phase 02 設計規範 + Phase 03 實作落地）
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/ui-styling) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
   * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-pptx) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-pptx)
 ## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
@@ -286,6 +304,13 @@
 
 
 
+
+
+### UI/UX Pro Max 全域設計技能 (2)
+* **[[13] ui-ux-pro-max](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/ui-ux-pro-max)**：設計智慧搜尋引擎 — Python 搜尋引擎 + 14 個 CSV 資料庫（84 風格 / 161 色板 / 73 字型配對 / 99 UX 指南 / 25 圖表類型 / 17 技術棧）。支援 `product`/`style`/`typography`/`color`/`landing`/`chart`/`ux` 七大領域即時查詢。 ⚠️ 為其他 UI/UX 技能的基礎依賴。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+* **[[18] slides](file:///d:/00AI協作/SSDLC_Skill/skills/00_cross_phase/slides)**：HTML 簡報製作 — Chart.js 資料視覺化 / 文案公式 / 版型策略 / 響應式簡報。所有階段皆可用於製作專案簡報。
+  * **追溯來源**：[本機外部資源目錄](file:///d:/00AI協作/SSDLC_Skill/external-resources/ui-ux-pro-max-skill/.claude/skills/slides) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 
 ---
 

@@ -76,3 +76,12 @@ description: 維護與營運階段，負責線上運行日誌收集與分析、�
 *   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
     *   `outputs/security_trend.md` — 安全趨勢報告（歷次 @security-check 分數變化圖）
     *   `outputs/vulnerability_advisory.md` — 漏洞通報與修補記錄（CVE ID、影響評估、修補狀態）
+
+> 📋 **IO 檔案管理（選擇性功能）**：
+> 若使用者已透過以下任一方式啟用 IO 檔案合約管理：
+> ① `@init` 時同意啟用 ② `@io set [phase]` ③ `@[phase] in:/out:` 快速定義語法，
+> 則
+> 本階段的 inputs/outputs 定義將由 `io_files.yaml` 取代上述預設值，
+> Planner / Generator / Evaluator 須遵循
+> [00_cross_phase/SKILL.md 第六節](file:///d:/00AI協作/SSDLC_Skill/.agents/skills/00_cross_phase/SKILL.md) 的合約管理規範。
+> 若未啟用，本段不適用，照上述預設值執行。

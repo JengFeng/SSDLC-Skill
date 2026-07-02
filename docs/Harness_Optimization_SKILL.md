@@ -73,7 +73,10 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     6. 確認 `system_specification.md` 中所有引用之文件（UML 圖、API 規格、DB Schema、UI Prototype）皆已轉換為可點擊之相對超連結，點選後可直達目標檔案。
 *   **失敗處理**：檢查點 1 失敗時，自動補寫本次 session 的會話記錄至 `memory.md`；其他檢查點失敗時立即修正。
 
-### 5. Skill 目錄與列表防線 (`skills/README.md`、`skills/SKILLS歸類.md`)
+### 5. Skill 目錄與列表防線 (`skills/README.md`、`skills/SKILLS歸類.md`、根 `README.md` 推薦表)
+
+> 📌 **角色定位**：本檢查組為**最後一致性驗證關卡**，負責偵測並修復因分類階段遺漏導致的數字不一致。新增 Skill 時的同步更新（`skills/README.md` 開頭統計、`skills/SKILLS歸類.md` 清單、根 `README.md` 總數與推薦表）應在分類階段依照 `skills/SKILLS歸類.md` 的「執行步驟 SOP」完成，本檢查僅做最終核對與補救。若本檢查發現不一致，表示 SOP 步驟 3-5 未完整執行。
+
 *   **檢查點**：
     1. 確認 `skills/README.md` 內所有 Skill 名稱皆為指向本機 `skills/` 實體路徑的可點擊超連結。
     2. 確認階段名稱為 SSDLC 六階段正名，且包含 `00_cross_phase` 跨階段全域共用分類。
@@ -88,6 +91,17 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
          4. **倉庫結構段**：`N 個 Skill 實體` 中的 N。
        * **階段數量檢查**：確認根 `README.md` 全文不存在「七大階段」或「七個階段」字樣（僅可出現「六大核心開發階段」或「六階段」）；`00` 跨階段全域共用層不得被描述為獨立階段。
        * **自動修正**：若任何數字不一致，立即以 `skills/README.md` 標頭數字為準，更新根 `README.md` 所有不一致處。
+        * **📊 skills/README.md 開頭統計數字驗證**（強制執行）：確認 `skills/README.md` 開頭段落中的來源細項數字（`Anthropic 官方（N）、Benson 自建（N）、GitHub 社群（N）、Anthropic 官方插件（N）…共 N 個`）與實際 `skills/` 目錄下各階段的 `SKILL.md` 數量總和一致（扣除雙歸屬重複計數後）。
+        * **📋 skills/SKILLS歸類.md 分類清單更新驗證**（強制執行）：當新增外部 Skill 時，必須確認 `skills/SKILLS歸類.md` 中對應階段的「**技能清單**」已包含新增的技能名稱，不可遺漏。各階段清單數量加總應與 `skills/README.md` 宣告的總數一致（允許因雙歸屬導致清單總數 > 唯一技能數）。
+        * **🧠 根 README.md 上下文感知推薦表更新評估**（強制執行）：每次新增 Skill 後，必須檢查根 `README.md` 的「## 🧠 上下文感知 Skill 推薦對照表」是否需要更新。評估標準：
+          1. 新 Skill 的使用場景是否為高頻操作（如設計/開發/測試階段的常用查詢或實作工具）
+          2. 新 Skill 是否填補了推薦表中的空白情境
+          3. 若符合條件，必須在對應階段新增推薦條目（含情境關鍵詞、Skill 名稱、說明）
+        * **🔢 三檔交叉驗證**（強制執行）：新增 Skill 後，以下三份檔案中的 Skill 總數必須一致：
+          - 根 `README.md`（Banner 行 + 專案概述 + 來源段 + 倉庫結構段的 N）
+          - `skills/README.md`（開頭段落總數）
+          - 實際 `skills/` 目錄檔案數（`Get-ChildItem -Directory -Recurse -Filter "SKILL.md"` 扣除雙歸屬重複）
+          不一致時，以實際檔案數為準自動修正兩份 README，並輸出 [WARN] 提醒：「分類階段同步遺漏，已自動補正。請確認 `skills/SKILLS歸類.md` SOP 步驟 3-5 是否完整執行。」
 
 ### 5.5 根 README.md 內容格式防線 (`README.md`)
 *   **前置自動掃描**：執行任何手動檢查前，**必須先執行** `scripts/align_framework.ps1 -VerboseOutput`。
