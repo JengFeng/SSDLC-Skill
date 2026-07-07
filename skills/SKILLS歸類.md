@@ -1,4 +1,4 @@
-# 技能歸類技能 (Skill Categorizer)
+﻿# 技能歸類技能 (Skill Categorizer)
 
 本文件定義了將外部下載的技能檔案（例如來自 `anthropics/skills`、`Benson-skill` 或 `github-skills`）自動歸類至安全軟體開發生命週期六階段（通稱 SSDLC）各階段與全域共用分類的標準作業流程。
 
@@ -9,7 +9,7 @@
 3. `03_implementation_and_coding` (第三階段：開發與編碼)
 4. `04_testing` (第四階段：測試驗證)
 5. `05_deployment` (第五階段：部署發布)
-6. `06_maintenance` (第六階段：維護監控)
+6. `06_maintenance` (第六階段：維護與營運)
 7. `00_cross_phase` (跨階段全域共用)
 
 ## 技能分類規則與映射表
@@ -116,9 +116,10 @@
 
 1. **若該來源類別尚無子標題**：建立新子標題（如 `### UI/UX Pro Max 設計智慧技能 (N)`）。
 2. **新增技能條目**：依現有格式新增，包含：
-   - 可點擊的本機路徑連結（`file:///...skills/<phase>/<skill-name>`）
+   - 可點擊的本機路徑連結（`skills/<phase>/<skill-name>`）
    - 技能功能用途描述
    - 來源出處（**本機外部資源目錄** + **原始 GitHub 倉庫**）
+   - 路徑規則：從 `skills/README.md` 出發，所有連結必須使用 repo-root 相對路徑；技能連結使用 `skills/<phase>/<skill-name>`，本機外部資源連結使用 `../external-resources/...`，跨目錄文件連結使用 `../docs/...` 或 `../.agents/...`，嚴禁使用 Windows 絕對路徑或 `file:///`。
    - 若有雙歸屬，加註 `🌐 雙歸屬（Phase XX + Phase YY）`
    - 若有依賴，加註 `⚠️ 依賴 <skill-name>`
 3. **順序編號**：若該條目有快捷編號（如 `[[13] ui-ux-pro-max]`），確保編號與 `00_cross_phase/SKILL.md` 中的快捷編號一致。

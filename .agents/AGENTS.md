@@ -1,6 +1,6 @@
 # 專案開發規則與防線規範 (AGENTS.md)
 
-👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
+👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](../docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
 本文件定義了本專案在 SSDLC 開發生命週期中，各 AI 代理（Planner、Generator、Evaluator）必須嚴格遵守的全局行為準則，特別是「全局連貫性檢核與修正大工程」、「版本管控與組態管理」、「活系統規格書同步」以及「Windows Server + IIS 部署環境適配」的執行規範，以防止規格脫節與需求追溯遺漏。
 
@@ -27,7 +27,7 @@ graph TD
 ```
 
 ### 1. 外層：全域主控 Global Agent（唯一頂層）
-*   **全域掌控與追溯**：負責安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC）的全域掌控、需求追溯、版本同步與 IIS 站台規格同步。
+*   **全域掌控與追溯**：負責 SSDLC 六階段的全域掌控、需求追溯、版本同步與 IIS 站台規格同步。
 *   **階段切換與 Baseline 鎖定**：每階段驗證穩定後，封存其穩定可執行的 Baseline。前一階段產生 Baseline，方可切換權限進入下一階段。
 
     **🛡️ 階段完成後自動 SSOT 完整性提醒**：
@@ -37,16 +37,16 @@ graph TD
         - 使用者選擇**退回修正** → 退回 Planner，修正後重新提交 Evaluator。
         - 使用者選擇**直接放行** → 放行進入下一階段，異常項目記錄於 `phase_gates.json` 供後續追蹤。
     4.  **檢查通過後**：寫入 `phase_gates.json` 紀錄（`ssot_integrity_checked: true`）。
-    5.  **自動建立 Baseline**：Evaluator 通過且 SSOT 檢查（`check_spec_integrity.py --mode B`）全部通過後，AI 代理自動執行 `@baseline` 指令，建立本階段穩定快照至 `baseline/phase-{N}_v{M}/`。
+    5.  **自動建立 Baseline**：Evaluator 通過且 SSOT 檢查（`check_spec_integrity.py --mode B`）全部通過後，AI 代理自動執行 `@baseline` 指令，建立本階段穩定快照至 `baseline/phase-{NN}/baseline-v{N}/`。
         *   若 `baseline/` 目錄不存在，自動建立。
         *   版本號自動遞增（v1 → v2 → ...）。
         *   保留最近 3 份 Baseline，舊版自動清理。
         *   建立完成後自動執行基線可執行性驗證（參考 `commands_reference.md` 第二章第 5 節）。
 
 ### 2. 內層：安全軟體開發生命週期六階段（通稱 SSDLC）局部 PDCA（各階段獨立運作）
-*   軟體開發生命週期切割為安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC），每一階段獨立執行一套 Plan -> Generator -> Evaluator 的 PDCA 閉環。
+*   軟體開發生命週期切割為 SSDLC 六階段，每一階段獨立執行一套 Plan -> Generator -> Evaluator 的 PDCA 閉環。
 *   **Plan 階段 (PDCA-P)**：承接上階段交付物與 Baseline，定義目標與交付物，執行 Skill 複選，並進行 Windows/IIS 環境靜態黑白名單衝突檢核。如果選取了互斥 Skill，直接判定為 B 類根源錯誤，不進入執行以節省 Token。
-*   **Generator 階段 (PDCA-D)**：作為唯一執行層，遵循「只執行、不判斷、不檢查、不修改」之鐵律。執行完成後自動儲存 Windows 本地絕對路徑快照至各該階段的 `snapshots/` 目錄，回溯時直接載入快照以降低 Token 消耗。
+*   **Generator 階段 (PDCA-D)**：作為唯一執行層，遵循「只執行、不自行擴大修改範圍」之鐵律。執行完成後自動儲存 Windows 本地絕對路徑快照至各該階段的 `snapshots/` 目錄，回溯時直接載入快照以降低 Token 消耗。
 *   **Evaluator 階段 (PDCA-C & PDCA-A)**：負責成果規格檢核與 Windows/IIS 流程軌跡完整性檢核。補充 IIS 站台日誌、進程日誌與 Windows 事件日誌雙軌驗證機制。
 
 ---
@@ -129,7 +129,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 #### 檢查點 C：跨階段交接時
 - 檢查下一階段 inputs/ 是否包含 spec_ref.md
 - 檢查 traceability_matrix.md 追溯鏈是否完整
-- 若追溯鏈斷裂 → 禁止進入下一階段
+- 若追溯鏈斷裂 → 原則禁止進入下一階段；如需放行，必須使用 `@unlock` 並記錄原因。
 
 #### 檢查點 D：Git 提交前（Pre-commit Hook）
 - 執行規格完整性掃描腳本：python scripts/check_spec_integrity.py
@@ -150,7 +150,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 *   **提交規範**：每次提交時，必須確保當前階段的 `traceability_matrix.md` 狀態為最新，且通過自動化測試治具的驗證。
 
 ### 2. 組態基準與 Windows 權限稽核
-*   **組態基線標記**：在各階段交接或發布時，必須對當前程式碼與文件建立 `git tag` 基線（格式為 `baseline-vX.Y.Z`）。
+*   **組態基線標記**：在各階段交接或發布時，必須對當前程式碼與文件建立 `git tag` 基線（格式為 `baseline-phase{NN}-vN`）。
 *   **發布前雜湊比對**：比對實體產物與 `outputs/build_manifest.json` 記錄的 SHA-256 雜湊值。若不符則強制拒絕發布。
 *   **Windows 與 IIS 權限管控**：適配 Windows 原生 NTFS 檔案讀寫權限與 IIS 匿名存取 (IUSR) 安全網，並於 Plan 階段前置檢核路徑編碼與檔案鎖定狀態，防止 403/404 異常。
 
@@ -163,7 +163,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 *   **業務邊界**：規劃時必須明確定義「系統不做什麼」，以防止 AI 生成冗餘程式碼。
 
 ### 2. Generator (執行代理)
-*   **只執行，不思考**：嚴格依照任務清單與 YAML 規格進行開發，禁止擅自修改系統架構，完成後必須自動呼叫編譯與驗證指令。
+*   **執行但不擴大範圍**：嚴格依照任務清單與 YAML 規格進行開發，禁止擅自修改系統架構。完成後可執行預定義的編譯、測試與驗證指令，但不得自行解讀結果並改變架構；驗證結果交由 Evaluator 判定。
 *   **最小變更原則**：僅修改與任務相關的程式碼，禁止在未授權情況下重構無關模組。
 
 ### 3. Evaluator (審查代理)
@@ -201,7 +201,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 ### 0. 指令參照查詢指令：`@help`
 *   **指令定義**：立即顯示指令集參照表的完整內容，方便使用者快速查閱所有可用指令與語法。
 *   **AI 代理執行規範**：
-    1.  AI 代理必須讀取 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容。
+    1.  AI 代理必須讀取 [commands_reference.md](docs/commands_reference.md) 的完整內容。
     2.  將內容以結構化方式呈現於對話中，包含所有指令的語法、參數與用途說明。
 
 ### 1\. 階段查詢指令：`@stages`
@@ -271,13 +271,13 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 ### 4. 專案初始化指令：`@init [相對路徑]`
 *   **指令定義**：自動建立指定路徑之標準專案目錄結構與基礎檔案，並引導後續階段 Skill 配置。
 *   **AI 代理執行規範**：
-    1.  讀取 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
+    1.  讀取 [TEMPLATE_SKILL.md](docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
     2.  於指定路徑下建立完整的 SSDLC 目錄結構與 `.gitkeep`。
     3.  自動生成基礎控制檔案：`traceability_matrix.md`、`system_specification.md`、`memory.md`，以及在根目錄建立引導檔 `AGENTS.md`（指向實體規章 `.agents/AGENTS.md`）。
     4.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
      5.  **📋 階段輸入與輸出檔案管理詢問**：詢問使用者「是否啟用階段輸入與輸出檔案管理（@io）？」
-        *   若使用者同意（io_management.enabled 設為 	rue）：AI 代理根據各階段 SKILL.md 的既有定義，自動產生 io_files.yaml 至專案對應階段目錄。後續 Skill 選定時自動引導 IO 定義。
-        *   若使用者跳過（io_management.enabled 設為 alse）：所有階段不強制執行 IO 勾稽檢查，產出格式不設限，使用者自行管理階段間的資料傳遞。
+        *   若使用者同意（io_management.enabled 設為 true）：AI 代理根據各階段 SKILL.md 的既有定義，自動產生 io_files.yaml 至專案對應階段目錄。後續 Skill 選定時自動引導 IO 定義。
+        *   若使用者跳過（io_management.enabled 設為 false）：所有階段不強制執行 IO 勾稽檢查，產出格式不設限，使用者自行管理階段間的資料傳遞。
         *   **目的**：讓新手不受IO 檔案格式約束，進階使用者可按需啟用結構化勾稽。
         *   後續可透過 @io set [phase] 隨時啟用或修改。
 
@@ -289,15 +289,15 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
         *   **目的**：確保後續各階段 Generator/Evaluator 執行時，能讀取到安全實作要求，避免「設計有定義、程式未實作」的斷鏈。
 
 
-### 5. 自然語言與語音喚出協議
+### 6.1 自然語言與語音喚出協議
 *   **語意觸發規範**：AI 代理在與使用者對話時，必須主動識別使用者的自然語言或語音口語輸入：
-    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
-    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
+    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
+    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
 
 
 
 
-### 4.5 上下文感知 Skill 推薦機制
+### 6.2 上下文感知 Skill 推薦機制
 
 > **設計理念**：不將特定 Skill 強制綁定到階段流程中，而是讓 AI 代理根據對話上下文**智慧推薦**，由使用者決定是否採用。保持彈性，避免寫死。
 
@@ -345,16 +345,15 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 各階段 `SKILL.md` 的 Planner 已經從「預設調用」全面改成「看情況推薦」，要不要用由你決定。
 
 
-### 5. 框架優化指令：`@optimize`
-*   **指令定義**：⚠️ **框架建造者專用**。觸發 Harness Optimization，對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。
-*   **口語觸發**：「幫我執行駕馭工程框架優化檢查」、「Harness Optimization」、「對齊所有」、「對齊架構」、「幫我對齊架構」、「檢查全案關聯」、「規範落實度檢查」、「CORE_RULES 落差掃描」。
-*   **AI 代理執行規範**：
+### 6.3 框架優化指令：`@optimize`
+*   **指令定義**：⚠️ **框架建造者專用**。觸發 Harness Optimization，對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。本指令亦可由自然語言觸發，觸發語意參照「自然語言與語音喚出協議」。
+*   **口語觸發**：「對齊所有」、「對齊架構」、「幫我對齊架構」、「規範落實度檢查」、「CORE_RULES 落差掃描」。其他語意見「自然語言與語音喚出協議」。
     1.  執行前必須確認當前工作目錄為框架根目錄。
     2.  顯示警告提示：「⚠️ 框架建造者專用指令。@optimize 將對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。此指令僅限框架建造者使用，專案開發者請勿呼叫。」
     3.  取得使用者確認後，**首先執行 `scripts/align_framework.ps1` 進行動態掃描與自動修復**（倉庫結構 table ↔ 實際檔案系統對齊、標準結構 tree 交叉比對、必要章節完整性驗證），再依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
     4.  修復完成後輸出報告，並自動建立 Git 暫存基線，寫入 memory.md。
     5.  最後執行 CORE_RULES 規範 vs 實際落實落差掃描做為收斂性終檢：逐條比對 CORE_RULES.md 中所有「必須」、「自動」、「強制」等可執行規範條目是否已在專案中實際落實，產出落差清單（已落實 ✅ / 未落實 ❌ / 無需落實 ⬚），❌ 項目判定為 B 類錯誤並立即修復。
-
+### 6.4 快照回溯指令：`@restore`
 ### 6. 快照回溯指令：`@restore`
 *   **指令定義**：回溯工作目錄至指定的執行快照，快速還原至先前穩定狀態，不需重跑整個 Plan 階段。
 *   **口語觸發**：「回溯快照」、「還原快照」、「退回上一步」、「載入快照」、「回復到之前的快照」、「還原到 X 分鐘前的狀態」、「回到上一個 snapshot」、「復原工作目錄」。
@@ -378,7 +377,6 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
         *   ⚠️ SHA-256 不符（列出檔案清單）
         *   ❌ 檔案缺失（列出檔案清單）
     6.  **回溯完成報告**：輸出回溯結果摘要（快照時間戳、還原檔案數、驗證通過/失敗清單、衝突檔案清單）。
-
 ### 6.5 建立即時快照指令：`@snapshot`
 *   **指令定義**：手動建立即時快照（git diff patch + SHA-256 檔案清單），作為 git 操作前的安全網或臨時記錄點。
 *   **口語觸發**：「建立快照」、「存快照」、「記錄點」。
@@ -392,13 +390,12 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     - **基線**：完整、里程碑、可獨立執行。含原始碼 + 模板 + 部署腳本。用於「這個階段做完了，封存」。
 *   **使用範例**：`@snapshot`
 
-
 ### 7. 專案基線快照指令：`@baseline`
 *   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
 *   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
 *   **AI 代理執行規範**：
     1.  計算下一個版本號（baseline-v1, v2, v3...）。
-    2.  複製完整可執行專案（原始碼 + 依賴清單 + 啟動腳本 + 必要資源檔）至 `baseline/baseline-v{N}/`。複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
+    2.  複製完整可執行專案（原始碼 + 依賴清單 + 啟動腳本 + 必要資源檔）至 `baseline/phase-{NN}/baseline-v{N}/`。複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
     3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
     4.  保留最近 3 份 baseline，自動清理最舊版本。
     5.  寫入 memory.md 紀錄。
@@ -423,7 +420,8 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 
 
 ### 9. 四規格完整性檢查指令：`@CheckSpec`
-*   **指令定義**：檢查四種規格（結構化可執行規格 executable_spec.yaml、行為可執行規格 requirements.feature、系統規格書 system_specification.md、追溯矩陣 requirement_tracker.md）的完整性與交叉一致性，產出摘要報告。
+> 註：SSOT 核心規格採三軌架構；`@CheckSpec` 以「三軌 SSOT + 一份追溯矩陣」進行四規格完整性檢查。
+*   **指令定義**：檢查四種規格（結構化可執行規格 executable_spec.yaml、行為可執行規格 requirements.feature、系統規格書 system_specification.md、追溯矩陣 traceability_matrix.md）的完整性與交叉一致性，產出摘要報告。
 *   **參數說明**：無參數。執行 `python scripts/check_spec_integrity.py --mode S`。
 *   **口語觸發**：「檢查規格」、「CheckSpec」、「規格完整性」、「四規格檢查」。
 *   **AI 代理執行規範**：
@@ -431,7 +429,7 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     2.  驗證 executable_spec.yaml 的 YAML 語法有效性。
     3.  檢查 requirements.feature 的 Gherkin 結構（Feature/Scenario 數量）。
     4.  檢查 system_specification.md 是否參照所有 REQ 需求。
-    5.  檢查 requirement_tracker.md 的追溯鏈完整性。
+    5.  檢查 traceability_matrix.md 的追溯鏈完整性。
     6.  執行四規格交叉一致性比對（YAML ⇄ Feature ⇄ SRS ⇄ RTM）。
     7.  產出四規格摘要報告，列出各規格狀態與異常項目。
 
@@ -515,7 +513,7 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 
 **核心原則**：上游階段的 `outputs` 必須滿足所有下游階段的 `inputs` 宣告，但 `io_files.yaml` 中的 `from_phase` 僅為建議來源而非強制來源 — 只要檔案到位、符合IO 檔案要求，即可跳過上游階段。
 
-#### 12.2 IO 檔案檔案結構
+#### 12.2 IO 檔案結構
 
 存放在 `.agents/skills/0*_*/io_files.yaml`，格式如下：
 
@@ -549,7 +547,7 @@ outputs:
 #### 12.4 `in:` / `out:` 快速定義語法
 
 在 Skill 選定後，可透過簡潔語法定義該階段的輸入輸出：
-
+> 注意：`@03 in:` / `@03 out:` 屬於 `@io set 03` 的語法糖，不等同於 `@03` 階段 Skill 查詢指令。
 ```
 @03 in: formal_requirements, api_spec, db_schema, ui_prototype?
 @03 out: src, tests, task_list
@@ -583,7 +581,7 @@ outputs:
 - **向上檢查**：本階段的 `inputs`（必填項）在上游階段是否有對應的 `outputs`
 - **向下檢查**：本階段的 `outputs` 是否滿足所有下游階段的 `inputs`
 - **檔案存在性**：各階段宣告的必填產出檔案是否實際存在
-- **IO 檔案檔案完整性**：所有階段皆有 `io_files.yaml`
+- **IO 檔案完整性**：所有階段皆有 `io_files.yaml`
 
 執行時機：
 - 手動觸發：`@io 02`
@@ -657,5 +655,6 @@ AI：收到，我來幫你回報這個框架問題。
 
     是否寫入待辦事項.md？ [Enter] 確認
 ```
+
 
 

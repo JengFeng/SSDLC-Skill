@@ -1,4 +1,5 @@
-# 可執行規格目錄 (Executable Specification)
+
+> 本檔案為說明文件，僅用於說明 `specs/` 目錄中可執行規格與傳統軟體規格的差異與優點，並不會直接影響框架執行。
 
 本目錄實現記憶中定義的「雙格式規格」架構：
 
@@ -6,7 +7,7 @@
 人類可讀層 (Human Layer)                    機器可讀層 (Machine Layer)
 ─────────────────────────                   ─────────────────────────
 system_specification.md  ←──自動生成───   executable_spec.yaml (SSOT)
-(傳統 SRS, IEEE 830)                       (YAML, 結構化資料)
+(傳統 SRS)                                   (YAML, 結構化資料)
         ↑                                         ↑
         │                                         │
   甲方/人類閱讀                               AI 代理讀取/寫入
@@ -81,8 +82,6 @@ phase_04_testing.evaluator.scores:
 3. 更新版本號與變更紀錄
 4. 寫入 Gherkin 狀態（`[已通過]` / `[未通過]`）
 
-
-
 ## 傳統 SA 多格式 vs YAML SSOT 單一母版
 
 ### 傳統作法：各階段各自產出不同格式
@@ -129,7 +128,7 @@ YAML 母版的定位是 **「規格層的 SSOT」**，不是「全檔案備份�
 | `formal_requirements.md` | `phase_01.requirements`（需求 + 驗收條件） |
 | `api_spec.md` | `phase_02.api.endpoints` |
 | `test_results.md` | `phase_04.test_results`（結構化通過/失敗統計） |
-| `requirement_tracker.md` | `phase_01.requirements`（REQ ID、優先級、來源） |
+| `traceability_matrix.md` | `phase_01.requirements`（REQ ID、優先級、來源） |
 | `bug_tracker.md` | `phase_04.bugs` |
 | Gherkin `.feature` | `phase_01.requirements[].acceptance_criteria` → Given/When/Then |
 
@@ -152,4 +151,4 @@ YAML 不該去存 SQL 語法或 Python 程式碼 — 那些是實作產物，由
 - **驗證基準**：Evaluator 以 YAML 中的 acceptance_criteria 與 test_results 進行比對
 
 > 💡 **正確理解**：把 YAML 母版從 git clone 取出 → 可自動生成所有規格文件，但程式碼原始檔仍須從 git 倉庫取得。
-
+# 可執行規格目錄 (Executable Specification)

@@ -13,13 +13,13 @@ description: 執行整個駕馭工程的框架優化。當使用者說「幫我�
 
 ## 一、 核心檢查對照與關聯防線 (Linkage & Consistency)
 
-AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目錄）進行地毯式關聯性檢查，發現不一致或超連結失效時，必須立即進行同步優化：
+AI 代理必須依序對以下 11 大檢查組（涵蓋 20+ 組核心檔案與目錄）進行地毯式關聯性檢查，發現不一致或超連結失效時，必須立即進行同步優化：
 
 ### 1. 最高指導守則防線 (`docs/CORE_RULES.md`)
 *   **檢查點**：
     1. 確認所有規章文件（`.agents/AGENTS.md`、`AGENTS.md`、`TEMPLATE_SKILL.md`）頂部皆有關聯宣告指向本文件，且均視其為最高指導框架原則。
     2. 確認內容為平台無關的「通用進程駐留」、「檔案鎖定檢核」、「雙軌日誌」等通則，無殘留 Windows 特定描述。
-    3. 確認 6 個開發階段已對正為「第一階段：規劃與需求分析」至「第六階段：維護監控」的顯性中文標記。
+    3. 確認 6 個開發階段已對正為「第一階段：規劃與需求分析」至「第六階段：維護與營運」的顯性中文標記。
     4. 確認各階段的核心用途與 Skill 屬性描述，與 `.agents/skills/0*_*/SKILL.md` 中各階段 SKILL.md 的職責定義一致，無缺漏或矛盾。
 
 ### 2. 規章鏈與引導防線 (`.agents/AGENTS.md`、`AGENTS.md`、`docs/commands_reference.md`)
@@ -40,14 +40,14 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     2. 確認目錄樹下方的 `### 目錄結構組態說明與防線註釋` 包含 9 條註釋，完整涵蓋 CORE_RULES、AGENTS 鏈、Harness_Optimization_SKILL、snapshots/logs、baseline、reg、bug、00_cross_phase。
     3. 確認第三節 `三、 AI 協作對話與執行協議` 中對 `snapshots/`、`logs/`、`baseline/` 的路徑引用已更新為根目錄層級（非各階段內），且 `@stages` 描述包含 `00_cross_phase`。
 
-### 3.5 系統設計產出完整性檢查 (02_system_design/outputs/)
+### 4. 系統設計產出完整性檢查 (02_system_design/outputs/)
 *   **檢查點（附加於第 3 組 TEMPLATE_SKILL.md 防線）**：
     1. 確認 02_system_design/outputs/ 至少包含七項標準產出：db_schema.sql、er_diagram.md、api_spec.md、ui_prototype.html、use_case_diagram.md、activity_diagram.md、sequence_diagram.md。
     2. 確認 er_diagram.md 使用 Mermaid erDiagram 語法，欄位與 db_schema.sql 一致。
     3. 確認 ui_prototype.html 為可獨立開啟的互動式 HTML 雛型（Bootstrap 或等效框架）。
 
 
-### 3.6 可執行規格 YAML SSOT 防線 (`specs/executable_spec.yaml`)
+### 5. 可執行規格 YAML SSOT 防線 (`specs/executable_spec.yaml`)
 *   **檢查點（附加於第 3 組 TEMPLATE_SKILL.md 防線）**：
     1. 確認 `specs/executable_spec.yaml` 存在且為有效 YAML 語法。
     2. 確認 YAML 包含全部 9 個頂層區塊：`project`、`phase_01~06`、`traceability`、`change_log`。
@@ -57,7 +57,7 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
     6. 確認跨階段一致性：下游 `inputs` 引用的檔案路徑存在於上游 `outputs` 中。
     7. 確認 `specs/README.md` 存在，內容包含雙格式架構說明。
 
-### 4. 專案記憶與追溯防線 (`memory.md`、`traceability_matrix.md`、`system_specification.md`)
+### 6. 專案記憶與追溯防線 (`memory.md`、`traceability_matrix.md`、`system_specification.md`)
 *   **檢查點**：
     1. **memory.md 會話記錄完整性檢查（Session Recording）**：
        - 依據 `docs/TEMPLATE_SKILL.md` 第五節「專案記憶記錄協議」，AI 代理必須在每次對話 session 結束時寫入 `memory.md`。
@@ -69,11 +69,11 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
        - 任一區塊缺失 → ❌ 需補齊。
     3. 確認 `memory.md` 記錄了最近一次的結構或規章變更，日期與內容與實際異動一致。
     4. 確認 `traceability_matrix.md` 格式符合 `docs/TEMPLATE_SKILL.md` 第二節中的範本定義（包含 REQ 編號、六階段追溯欄位）。
-    5. 確認 `system_specification.md` 格式符合範本定義，包含 IEEE 830 六章完整結構（緒論、整體描述、具體需求、系統特性、驗收標準、附錄）。
+    5. 確認 `system_specification.md` 格式符合範本定義，包含六章完整結構（緒論、整體描述、具體需求、系統特性、驗收標準、附錄）。
     6. 確認 `system_specification.md` 中所有引用之文件（UML 圖、API 規格、DB Schema、UI Prototype）皆已轉換為可點擊之相對超連結，點選後可直達目標檔案。
 *   **失敗處理**：檢查點 1 失敗時，自動補寫本次 session 的會話記錄至 `memory.md`；其他檢查點失敗時立即修正。
 
-### 5. Skill 目錄與列表防線 (`skills/README.md`、`skills/SKILLS歸類.md`、根 `README.md` 推薦表)
+### 7. Skill 目錄與列表防線 (`skills/README.md`、`skills/SKILLS歸類.md`、根 `README.md` 推薦表)
 
 > 📌 **角色定位**：本檢查組為**最後一致性驗證關卡**，負責偵測並修復因分類階段遺漏導致的數字不一致。新增 Skill 時的同步更新（`skills/README.md` 開頭統計、`skills/SKILLS歸類.md` 清單、根 `README.md` 總數與推薦表）應在分類階段依照 `skills/SKILLS歸類.md` 的「執行步驟 SOP」完成，本檢查僅做最終核對與補救。若本檢查發現不一致，表示 SOP 步驟 3-5 未完整執行。
 
@@ -103,7 +103,7 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
           - 實際 `skills/` 目錄檔案數（`Get-ChildItem -Directory -Recurse -Filter "SKILL.md"` 扣除雙歸屬重複）
           不一致時，以實際檔案數為準自動修正兩份 README，並輸出 [WARN] 提醒：「分類階段同步遺漏，已自動補正。請確認 `skills/SKILLS歸類.md` SOP 步驟 3-5 是否完整執行。」
 
-### 5.5 根 README.md 內容格式防線 (`README.md`)
+### 8. 根 README.md 內容格式防線 (`README.md`)
 *   **前置自動掃描**：執行任何手動檢查前，**必須先執行** `scripts/align_framework.ps1 -VerboseOutput`。
     此腳本以 `Get-ChildItem` 動態掃描實際檔案系統，自動完成以下三項修復，不再依賴手動列舉：
     - **📂 倉庫結構 table**：與實際目錄/檔案逐項比對，缺漏自動補齊（含用途描述）
@@ -134,25 +134,25 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
        - 確認所有 Markdown 表格列以 `|` 開始與結束。
 *   **失敗處理**：任一檢查失敗，立即自動修正（補表格列、刪跳脫序列、補漏列目錄），修正後輸出 `[FIXED]` 摘要。
 
-### 6. `.agents/skills/` 結構與內容防線 (`.agents/skills/0*_*/SKILL.md`)
+### 9. `.agents/skills/` 結構與內容防線 (`.agents/skills/0*_*/SKILL.md`)
 *   **檢查點**：
     1. 確認 `.agents/skills/` 目錄結構與 `docs/TEMPLATE_SKILL.md` 完全對齊：包含 `00_cross_phase` 至 `06_maintenance` 共 7 個目錄，以及 `reg/`、`bug/` 等子目錄。
     2. 逐一檢查 00 至 06 各階段目錄下的 `SKILL.md` 是否存在且內容完整。
     3. 逐一比對各階段 `SKILL.md` 中的代理人職責定義，與 `docs/CORE_RULES.md` 中該階段的「核心用途」及「Skill 屬性」是否一致，確保無缺漏（特別注意 AI 輔助寫碼/Linter/Formatter、多服務部署/IaC、日誌收集/APM 監控等近期補強項目）。
     4. 確認 `skills/` 目錄下的 Skill 歸類與 `.agents/skills/` 的階段定義一致，無歸屬錯誤。
 
-### 7. 階段間交付物傳遞鏈防線 (`*_*/inputs/`、`*_*/outputs/`)
+### 10. 階段間交付物傳遞鏈防線 (`*_*/inputs/`、`*_*/outputs/`)
 *   **檢查點**：
     1. 確認各階段 inputs/ 目錄皆包含承接上游的四種規格參照與 brief 檔案（非僅 .gitkeep）：
        - 結構化可執行規格（`executable_spec.yaml`）：確認各階段 spec_ref.md 參照此檔案。
        - 行為可執行規格（`requirements.feature`）：確認各階段 spec_ref.md 參照 Gherkin 場景檔。
        - 系統規格書 SRS（`system_specification.md`）：確認各階段 spec_ref.md 參照人可讀規格書。
-       - 追溯矩陣 RTM（`requirement_tracker.md`）：確認各階段可追溯需求鏈。
+       - 追溯矩陣 RTM（`traceability_matrix.md`）：確認各階段可追溯需求鏈。
        - 階段銜接 brief（`design_brief.md` / `spec_ref.md`）：確認明確引用上游階段 outputs/ 的具體檔案路徑。
     2. 確認 brief 檔案中明確引用上游階段 outputs/ 的具體檔案路徑，形成完整追溯鏈。
     3. 傳遞鏈依序檢查：01→02、02→03、03→04、04→05、05→06，確保無斷鏈。
 
-### 7.5 安全需求跨階段傳播防線（設計→實作安全繼承檢查）
+### 11. 安全需求跨階段傳播防線（設計→實作安全繼承檢查）
 *   **檢查點**：確保 Phase 2 設計階段定義的安全需求，完整傳播到 Phase 3 實作階段的執行指引中。此組檢查補強 Group 7 僅檢查「檔案存在」的不足。
     1. **安全 brief 傳遞檢查**：
        - 若 `phase_gates.json` 中 `security_baseline.enabled` 為 `true`，則確認 Phase 3 `inputs/` 目錄存在 `design_brief.md`。
@@ -180,11 +180,10 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
        - 確認 Evaluator 的安全檢查權重（20%）中包含條件式安全檢查項目。
 *   **失敗處理**：任一檢查失敗，立即自動補寫 brief 或複製安全段落，修正後輸出 `[FIXED]` 摘要。
 
-### 8. 全域日誌與快照防線 (`logs/`、`snapshots/`、`baseline/`)
+### 12. 全域日誌與快照防線 (`logs/`、`snapshots/`、`baseline/`)
 *   **檢查點**：
     1. 確認專案根目錄 `logs/` 目錄存在且非空（應包含應用程式日誌如 `app.log`）。
     2. 確認 `snapshots/` 目錄存在且包含 snapshot_*.md + diff_*.patch 配對檔案（保留最近 5 筆）。驗證最新快照的 SHA-256 檔案清單與當前工作目錄一致（無檔案遺漏或雜湊不符）。
-    3. 確認 `baseline/` 目錄存在且已建立 Git tag（格式 `baseline-vX.Y.Z`）。
     4. 各階段應用程式日誌應統一輸出至全域 `logs/`，不應殘留於各階段 `outputs/` 中。
     5. **@restore 指令交叉引用完整性**：確認以下檔案中皆存在 `@restore` 指令定義與說明：
        * `docs/commands_reference.md`：核心指令表 + 防呆規則
@@ -193,11 +192,11 @@ AI 代理必須依序對以下 9 大檢查組（涵蓋 20+ 組核心檔案與目
        * `docs/CORE_RULES.md`：快照回溯機制提及 `@restore`
     6. 確認 `docs/commands_reference.md` 中的 `@restore` 防呆規則與 `.agents/AGENTS.md` 的執行規範一致（警告提示、git stash、SHA-256 驗證流程）。
 
-### 9. Baseline 可執行性驗證防線 (`baseline/*/run.bat`、`baseline/*/app.py`)
-*   **檢查點**：
+    3. **應用程式啟動測試**：依專案技術棧自動偵測啟動方式（例如 Python、Node.js、Java 等），對對應預設端口發出 HTTP GET 請求，確認回應狀態碼為 200，回應內容為有效 HTML。
+### 13. Baseline 可執行性驗證防線 (`baseline/*/run.bat`、`baseline/*/app.py`)
     1. **run.bat 語法與編碼檢查**：確認 `baseline/` 下各版本 `run.bat` 使用 UTF-8 BOM 編碼、首行含 `chcp 65001`、`cd /d "%~dp0"` 指向自身目錄、結尾含 `taskkill` 清理邏輯。
     2. **Python 匯入檢查**：對每個 baseline 版本執行 `python -c "import <模組>"`（從該 baseline 目錄執行），確認無 `ModuleNotFoundError` 或 `SyntaxError`。
-    3. **Flask 啟動測試**：背景啟動 baseline app，對 `http://127.0.0.1:5000` 發出 HTTP GET 請求，確認回應狀態碼為 200，回應內容含 `</html>` 標籤。
+    3. **應用程式啟動測試**：依專案技術棧自動偵測啟動方式（Python/Node/Java 等），對對應預設端口發出 HTTP GET 請求，確認回應狀態碼為 200，回應內容為有效 HTML。
     4. **模板完整性檢查**：確認 `baseline/*/templates/` 目錄存在且含 `index.html`、`form.html`、`base.html`，各模板內容為有效 HTML。
     5. **靜態資源檢查**：確認 `baseline/*/requirements.txt` 存在且內含 `flask` 依賴宣告。
     6. **路徑一致性檢查**：確認 baseline 中 `app.py` 使用 `os.path.abspath(__file__)` 絕對路徑（非脆弱相對路徑），日誌與 DB 路徑指向正確的根層級 `logs/` 與自身目錄。
@@ -209,7 +208,7 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 
 1.  **唯一語境**：一律使用台灣繁體中文（如：最佳化、專案、資訊、檔案），嚴禁使用簡體字與大陸用語。
 2.  **空格規範**：中文字元與英文、半形數字之間必須保留一個半形空格；全形標點與其他字元之間不加空格；超連結前後保留空格以利閱讀。
-3.  **語氣限制**：維持務實冷靜語氣。嚴禁使用 Emoji，且不重複使用標點符號。
+3.  **語氣限制**：維持務實冷靜語氣。**產出文件（如交付文件、規格書、正式報告）嚴禁使用 Emoji**；框架說明、指令文件與範本中的 Emoji 則允許作為輔助標示，且不重複使用標點符號。
 
 ---
 
@@ -236,7 +235,7 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
 3. 若任一 baseline 版本驗證失敗，先嘗試自動修復（修正編碼、路徑、依賴缺失），修復後重新驗證。
 
 
-### 10. CORE_RULES 規範 vs 實際落實落差掃描 (Spec-Implementation Gap Analysis)
+### 14. CORE_RULES 規範 vs 實際落實落差掃描 (Spec-Implementation Gap Analysis)
 *   **檢查點**：此為 @optimize 的收斂性終檢，逐條比對 CORE_RULES.md 中的每一項可執行規範是否已在專案中實際落實。
     1. 掃描 CORE_RULES.md 全文，萃取所有「必須」、「自動」、「強制」等可執行規範條目。
     2. 逐條驗證對應的檔案、目錄、腳本、設定欄位是否存在。
@@ -254,7 +253,7 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
     | Baseline 驗證語言無關適配 | ✅ | CORE_RULES 三-4-4 語言對照表 |
 
 
-### 11. Security-Principles 資安防護基準對齊防線 (`external-resources/Security-Principles/`)
+### 15. Security-Principles 資安防護基準對齊防線 (`external-resources/Security-Principles/`)
 *   **檢查點**：此為 @optimize 的安全專項對齊檢查，確保 Security-Principles Skill 與整體 SSDLC 框架完整融合，檔案、指令、文件三層一致。
     1. **目錄完整性檢查**：確認 `external-resources/Security-Principles/` 下 19 個檔案齊全：
        - `SKILL.md`、`README.md`（雙核心說明檔）

@@ -1,4 +1,4 @@
-﻿---
+---
 name: 03_implementation_and_coding
 description: 開發與編碼階段，負責將設計規格拆解為微小任務，進行 AI 輔助程式碼實作、代碼規範檢查、自動格式化、單元測試撰寫以及跨模組依賴整合管理。
 ---
@@ -7,7 +7,7 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
 
 本技能定義了開發團隊在開發與編碼階段的標準作業程序（SOP）與代理職責。
 
-> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
+> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
 
 ## 一、 代理人職責規範
 
@@ -100,5 +100,6 @@ description: 開發與編碼階段，負責將設計規格拆解為微小任務�
 > 則
 > 本階段的 inputs/outputs 定義將由 `io_files.yaml` 取代上述預設值，
 > Planner / Generator / Evaluator 須遵循
-> [00_cross_phase/SKILL.md 第六節](file:///d:/00AI協作/SSDLC_Skill/.agents/skills/00_cross_phase/SKILL.md) 的合約管理規範。
+> [00_cross_phase/SKILL.md 第六節](../00_cross_phase/SKILL.md) 的合約管理規範。
 > 若未啟用，本段不適用，照上述預設值執行。
+

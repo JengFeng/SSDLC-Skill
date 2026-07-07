@@ -1,4 +1,4 @@
-﻿---
+---
 name: 06_maintenance
 description: 維護與監控階段，負責線上運行日誌收集與分析、錯誤原因萃取、系統硬體與效能監控、程式執行軌跡追蹤、熱修補（Hotfix）程式編寫及回歸測試。
 ---
@@ -7,7 +7,7 @@ description: 維護與監控階段，負責線上運行日誌收集與分析、�
 
 本技能定義了開發團隊在維護與監控階段的標準作業程序（SOP）與代理職責。
 
-> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
+> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
 
 ## 一、 代理人職責規範
 
@@ -76,3 +76,4 @@ description: 維護與監控階段，負責線上運行日誌收集與分析、�
 *   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
     *   `outputs/security_trend.md` — 安全趨勢報告（歷次 @security-check 分數變化圖）
     *   `outputs/vulnerability_advisory.md` — 漏洞通報與修補記錄（CVE ID、影響評估、修補狀態）
+

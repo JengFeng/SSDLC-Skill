@@ -1,4 +1,4 @@
-﻿---
+---
 name: 05_deployment
 description: 部署階段，負責建置成品打包、多服務依賴部署、伺服器組態自動產生、遠端批次部署、數位簽章寫入及部署環境型態完整性（SHA-256）驗證。
 ---
@@ -7,7 +7,7 @@ description: 部署階段，負責建置成品打包、多服務依賴部署、�
 
 本技能定義了開發團隊在部署階段的標準作業程序（SOP）與代理職責。
 
-> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
+> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
 
 ## 一、 代理人職責規範
 
@@ -70,3 +70,4 @@ description: 部署階段，負責建置成品打包、多服務依賴部署、�
     *   `outputs/sbom.json` — 軟體物料清單（CycloneDX 格式）
     *   `outputs/.env.example` — 環境變數範本（不含真實密鑰）
     *   `outputs/security_deployment_checklist.md` — 部署安全檢核表（TLS、憑證、Secret 管理、防火牆規則）
+

@@ -1,4 +1,4 @@
-# AI 協作對話指令集參照表 (Command Reference)
+﻿# AI 協作對話指令集參照表 (Command Reference)
 
 本文件整理了專案中所有可用的對話指令。未來協作時，除了手動打字，您亦可直接用語音或口語進行操作：
 - 說出「**讀取指令集**」、「**查詢可用指令**」或「**叫出指令對照表**」→ AI 代理自動呈獻此參照表。
@@ -24,7 +24,7 @@
 | 指令語法 | 參數說明 | 系統行為 (AI 代理動作) | 範例 |
 | :--- | :--- | :--- | :--- |
 | **`@baseline`** | 無 | 建立可獨立執行的完整專案快照至 `baseline/` 目錄（全域快照）。階段級 Baseline 為可選功能，由 `@init` 時設定 `phase_baseline_enabled` 開關控制。（含原始碼、模板、資料庫、部署腳本），自動遞增版本號，保留最近 3 份，舊版自動清理。**🔍 建立完成後自動執行基線可執行性驗證（啟動測試、HTTP 可用性檢查），若驗證失敗則立即回報並提供修復建議。** **🔄 自動觸發**：每次階段 Evaluator 通過後自動執行，不需使用者手動呼叫。口語觸發：「建立基線」、「新建 Baseline」。 | `@baseline` |
-| **`@CheckSpec`** | 無 | 檢查四種規格（executable_spec.yaml / requirements.feature / system_specification.md / requirement_tracker.md）的完整性與交叉一致性，產出摘要報告。口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。 | `@CheckSpec` |
+| **`@CheckSpec`** | 無 | 檢查四種規格（executable_spec.yaml / requirements.feature / system_specification.md / traceability_matrix.md）的完整性與交叉一致性，產出摘要報告。口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。 | `@CheckSpec` |
 | **`@help`** | 無 | 立即顯示本指令集參照表的完整內容，方便快速查閱所有可用指令與語法。 | `@help` |
 | **`@init [相對路徑]`** | 新專案的建立路徑 | 讀取專案範本結構，在指定路徑下建立完整的 SSDLC 目錄與必要之基礎控制檔案。建立完成後依序引導：(1) 詢問是否啟用階段級 Baseline（預設否），(2) 詢問是否導入資安防護基準 Security-Principles（選定 general/medium/high），(3) 詢問是否立即配置各階段 Skill（展示可用快捷編號清單）。 | `@init ./my_new_project` |
 | **`@optimize`** | 無 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描實際檔案系統並自動修復 README 倉庫結構/章節完整性，再對整個 SSDLC 框架範本執行 10 大檢查組的地毯式關聯檢查與修正。**僅限框架建造者使用，專案開發者請勿呼叫。** 執行前將顯示警告提示，確認後方執行。 | `@optimize` |
@@ -91,14 +91,14 @@
 
 ### 5. Baseline 建立後自動驗證防呆 (Baseline Auto-Verify)
 *   **觸發時機**：每次 `@baseline` 完成快照建立後自動執行，無需使用者額外呼叫。
-*   **語言適配說明**：以下為 Python Flask 專案的預設驗證規則。若專案使用其他語言或框架（Java / Node.js / Go / C# 等），AI 代理應自動偵測專案技術棧，並將驗證項目替換為對應語言的等效檢查（詳見 CORE_RULES.md 三-4-3 語言適配對照表）。
+*   **語言適配說明**：以下以 Python Flask 專案為範例。若專案使用其他語言或框架（Java / Node.js / Go / C# 等），AI 代理應自動偵測專案技術棧，並將驗證項目替換為對應語言的等效檢查（詳見 CORE_RULES.md 三-4-3 語言適配對照表）。
 *   **通用驗證項目**（不限語言，所有專案皆執行）：
     1. **啟動腳本語法檢查**：確認啟動腳本存在、編碼正確、路徑引用有效。
     2. **依賴清單完整性**：確認依賴宣告檔存在且格式正確（`requirements.txt` / `package.json` / `pom.xml` / `go.mod` 等）。
     3. **程式碼編譯或語法檢查**：依技術棧執行（Python: `import`；Java: `javac`；Node.js: `node --check`；Go: `go build`）。
     4. **服務啟動與 HTTP 回應檢查**：背景啟動應用，對其預設埠號發出 HTTP GET，確認回應 200。
     5. **必要資源檔案完整性**：確認專案所需的模板、靜態資源、設定檔等存在。
-*   **Python Flask 特定檢查**（`demo_project` 預設）：`run.bat` 語法 → `python -c "import app"` → `http://127.0.0.1:5000` → `templates/*.html` → `requirements.txt` 含 `flask`
+*   **Python Flask 範例檢查**（`demo_project` 預設）：`run.bat` 語法 → `python -c "import app"` → `http://127.0.0.1:5000` → `templates/*.html` → `requirements.txt` 含 `flask`
 *   **失敗處理**：任一檢查失敗即中止並輸出「Baseline 驗證失敗報告」。
 *   **成功處理**：所有檢查通過後輸出「✅ Baseline vX 驗證通過」摘要。
 
@@ -160,7 +160,7 @@
 | **結構化可執行規格** | `executable_spec.yaml` | 🤖 AI | YAML 格式，定義需求清單、API 規格、資料模型、安全控制 |
 | **行為可執行規格** | `requirements.feature` | 🤖 AI | Gherkin 語法，Given-When-Then 場景描述 |
 | **系統規格書 (SRS)** | `system_specification.md` | 👤 人類 | 人可讀的完整系統規格文件 |
-| **追溯矩陣 (RTM)** | `requirement_tracker.md` | 🔗 追溯 | 需求與實作的雙向追溯鏈 |
+| **追溯矩陣 (RTM)** | `traceability_matrix.md` | 🔗 追溯 | 需求與實作的雙向追溯鏈 |
 
 ### 檢查項目
 
@@ -170,7 +170,7 @@
 | **YAML 有效性** | `executable_spec.yaml` 是否為合法 YAML 語法 |
 | **Gherkin 語法** | `requirements.feature` 的 Feature/Scenario 結構是否正確 |
 | **SRS 參照完整性** | `system_specification.md` 是否參照所有 REQ 需求 |
-| **追溯鏈完整性** | `requirement_tracker.md` 是否追溯所有需求 |
+| **追溯鏈完整性** | `traceability_matrix.md` 是否追溯所有需求 |
 | **交叉一致性** | YAML 需求 ⇄ Feature 場景 ⇄ SRS ⇄ RTM 四向交叉比對 |
 
 ### 使用範例
@@ -257,14 +257,14 @@ out: 要哪些？（例: 1,2,3）
 | 2 | out | system_specification.md | 人可讀 SRS 系統規格書 |
 | 3 | out | executable_spec.yaml | AI 可執行結構化規格（SSOT） |
 | 4 | out | requirements.feature | AI 可執行行為化規格（Gherkin） |
-| 5 | out | requirement_tracker.md | 需求追溯表 |
+| 5 | out | traceability_matrix.md | 需求追溯表 |
 
 **Phase 02 — 系統設計**
 
 | 編號 | 種類 | 檔案 | 說明 |
 |:---:|:-----|:-----|:-----|
 | 1 | in | formal_requirements.md | 正規化需求規格書（來自 Phase 01） |
-| 2 | in | requirement_tracker.md | 需求追溯表（來自 Phase 01） |
+| 2 | in | traceability_matrix.md | 需求追溯表（來自 Phase 01） |
 | 3 | in | executable_spec.yaml | 結構化規格（來自 Phase 01） |
 | 4 | in | requirements.feature | 行為化規格（來自 Phase 01） |
 | 1 | out | db_schema.sql | 資料庫結構定義（Table、欄位、PK、FK） |
@@ -300,7 +300,7 @@ out: 要哪些？（例: 1,2,3）
 | 1 | in | src/ | 原始碼（來自 Phase 03） |
 | 2 | in | executable_spec.yaml | 結構化規格（SSOT） |
 | 3 | in | requirements.feature | 行為化規格（驗收場景） |
-| 4 | in | requirement_tracker.md | 需求追溯表（確認測試覆蓋） |
+| 4 | in | traceability_matrix.md | 需求追溯表（確認測試覆蓋） |
 | 5 | in | unit_test_results.xml `?` | 單元測試結果（供回歸參照） |
 | 1 | out | test_api.py | pytest API 功能測試腳本 |
 | 2 | out | test_ui.py `?` | Playwright UI 測試腳本（無 UI 可跳過） |
@@ -432,7 +432,7 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
 | 內含 | git diff patch + SHA-256 清單 | 原始碼 + 模板 + 資料庫 + 部署腳本 |
 | 用途 | 修改前存個記錄點，出事快速回溯 | 階段里程碑，可獨立執行部署 |
 | 觸發 | 手動 `@snapshot` / Generator 完成後自動 | 手動 `@baseline` / Evaluator 通過後自動 |
-| 存放 | `snapshots/` | `baseline/phase-{N}_v{M}/` |
+| 存放 | `snapshots/` | `baseline/phase-{NN}/baseline-v{N}/` |
 | 保留 | 最近 5 筆 | 最近 3 份 |
 | 大小 | 小（數 KB ~ 數 MB） | 大（完整專案） |
 
@@ -496,18 +496,4 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
     *   新增 `in:` / `out:` 快速定義語法（`?` 可選符號）。
     *   新增 `check_spec_integrity.py --mode E`（跨階段IO 檔案 IO 勾稽）。
     *   口語觸發詞彙新增：「檢查 IO」「IO 勾稽」「設定IO 檔案」「定義 IO」「查看IO 檔案」「比對IO 檔案」。
-
-*   **2026-06-27 (@unlock 使用說明補強)**：
-    *   核心指令表補上 `@restore` 與 `@unlock` 兩條指令列。
-    *   新增「
-
-
-
-
-
-
-
-
-
-
 

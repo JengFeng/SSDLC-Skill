@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """SSOT 規格完整性檢查腳本 (Spec Integrity Check)
 
 檢查點：
@@ -190,9 +190,9 @@ class SpecIntegrityChecker:
     def check_traceability(self):
         """檢查點 C：追溯鏈完整性"""
         print("\n=== 檢查點 C：追溯鏈 ===")
-        rtm_path = os.path.join(self.project_base, "01_planning_and_analysis", "reg", "requirement_tracker.md")
+        rtm_path = os.path.join(self.project_base, "traceability_matrix.md")
         if not os.path.exists(rtm_path):
-            self.log("ERR", "requirement_tracker.md 缺失")
+            self.log("ERR", "traceability_matrix.md 缺失")
             return
 
         with open(rtm_path, encoding="utf-8") as f:
@@ -275,7 +275,7 @@ class SpecIntegrityChecker:
             else:
                 self.log("OK", f"YAML 需求 ({yaml_count}) 全數參照於 Feature ({feat_count} Scenario)")
 
-        rtm_path = os.path.join(self.project_base, "01_planning_and_analysis", "reg", "requirement_tracker.md")
+        rtm_path = os.path.join(self.project_base, "traceability_matrix.md")
         if os.path.exists(rtm_path) and yaml_count > 0:
             with open(rtm_path, encoding="utf-8") as f:
                 rtm = f.read()
@@ -488,12 +488,12 @@ class SpecIntegrityChecker:
             ("結構化可執行規格", "executable_spec.yaml", "YAML（需求/API/資料模型/安全控制）"),
             ("行為可執行規格",   "requirements.feature",    "Gherkin（Given-When-Then 場景）"),
             ("系統規格書 (SRS)",  "system_specification.md",  "人可讀"),
-            ("追溯矩陣 (RTM)",   "requirement_tracker.md",   "需求追溯"),
+            ("追溯矩陣 (RTM)",   "traceability_matrix.md",   "需求追溯"),
         ]
 
         for name, fname, desc in specs:
-            fp = os.path.join(self.project_base, fname) if fname != "requirement_tracker.md" \
-                else os.path.join(self.project_base, "01_planning_and_analysis", "reg", "requirement_tracker.md")
+            fp = os.path.join(self.project_base, fname)
+                else os.path.join(self.project_base, "traceability_matrix.md")
             status = "存在" if os.path.exists(fp) else "缺失"
             print(f"  {name}")
             print(f"     檔案: {fname}")

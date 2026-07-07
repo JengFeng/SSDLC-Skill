@@ -134,7 +134,7 @@
 ├── 01_planning_and_analysis/                   # 第一階段：規劃與需求分析
 │   ├── SKILL.md                                # 階段 Skill 定義
 │   ├── inputs/                                 # 原始需求輸入區
-│   ├── reg/                                    # 需求歷程記錄區（requirement_tracker.md）
+│   ├── reg/                                    # 需求歷程記錄區（traceability_matrix.md）
 │   └── outputs/                                # 正規化規格輸出區
 ├── 02_system_design/                           # 第二階段：系統設計
 │   ├── SKILL.md                                # 階段 Skill 定義
@@ -215,7 +215,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 框架內含一個完整的驗證用 demo 專案（`demo_project/`），以 **Python Flask + SQLite + Jinja2** 實作員工基本資料 CRUD 管理頁面，並通過：
 
-- ✅ **10 項需求追溯**（requirement_tracker.md）
+- ✅ **10 項需求追溯**（traceability_matrix.md）
 - ✅ **7 項設計產出**（DB Schema、ER 圖、API 規格、UI 雛型、3 UML 圖）
 - ✅ **雙軌測試全數通過**：pytest（7 API 測試）+ Playwright（7 UI 測試）
 - 🔒 **安全驗證全數通過**：登入驗證、Session 管理、帳戶鎖定、SQLi/XSS 防禦、Security Headers（nosniff/DENY/XSS）

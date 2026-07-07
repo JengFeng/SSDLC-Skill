@@ -1,6 +1,6 @@
 # 專案開發規則與防線規範 (AGENTS.md)
 
-👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
+👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](../../docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
 本文件定義了本專案在 SSDLC 開發生命週期中，各 AI 代理（Planner、Generator、Evaluator）必須嚴格遵守的全局行為準則，特別是「全局連貫性檢核與修正大工程」、「版本管控與組態管理」、「活系統規格書同步」以及「Windows Server + IIS 部署環境適配」的執行規範，以防止規格脫節與需求追溯遺漏。
 
@@ -176,7 +176,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 ### 0. 指令參照查詢指令：`@help`
 *   **指令定義**：立即顯示指令集參照表的完整內容，方便使用者快速查閱所有可用指令與語法。
 *   **AI 代理執行規範**：
-    1.  AI 代理必須讀取 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容。
+    1.  AI 代理必須讀取 [commands_reference.md](../../docs/commands_reference.md) 的完整內容。
     2.  將內容以結構化方式呈現於對話中，包含所有指令的語法、參數與用途說明。
 
 ### 1\. 階段查詢指令：`@stages`
@@ -224,7 +224,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 ### 4. 專案初始化指令：`@init [相對路徑]`
 *   **指令定義**：自動建立指定路徑之標準專案目錄結構與基礎檔案，並引導後續階段 Skill 配置。
 *   **AI 代理執行規範**：
-    1.  讀取 [TEMPLATE_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
+    1.  讀取 [TEMPLATE_SKILL.md](../../docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
     2.  於指定路徑下建立完整的 SSDLC 目錄結構與 `.gitkeep`。
     3.  自動生成基礎控制檔案：`traceability_matrix.md`、`system_specification.md`、`memory.md`，以及在根目錄建立引導檔 `AGENTS.md`（指向實體規章 `.agents/AGENTS.md`）。
     4.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
@@ -238,8 +238,8 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 
 ### 5. 自然語言與語音喚出協議
 *   **語意觸發規範**：AI 代理在與使用者對話時，必須主動識別使用者的自然語言或語音口語輸入：
-    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](file:///d:/00AI協作/SSDLC_Skill/docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
-    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](file:///d:/00AI協作/SSDLC_Skill/docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
+    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](../../docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
+    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](../../docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
 
 
 
@@ -424,6 +424,7 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     - `@security-load high 2,3` → 僅導入日誌+備援，高級
 
 ---
+
 
 
 

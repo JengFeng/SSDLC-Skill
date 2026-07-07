@@ -1,4 +1,4 @@
-# 駕馭工程 Harness Engineering | 雙層六階段完整正式規格書 (通則性核心指導守則)
+﻿# 駕馭工程 Harness Engineering | 雙層六階段完整正式規格書 (通則性核心指導守則)
 
 本文件定義了本專案在自動化軟體開發全流程架構與企業級 Agent 工作流中，各 AI 代理（Planner、Generator、Evaluator）與安全軟體開發生命週期各階段都必須嚴格遵循的最高指導框架原則。所有子規章、階段定義與實作規範皆不得與本守則衝突。
 
@@ -135,7 +135,7 @@ Evaluator 判定本階段產出通過（所有審查項目達標）後，**自�
 1. 更新 `traceability_matrix.md`（本階段需求追溯狀態寫回）。
 2. 更新 `system_specification.md`（本階段測試/驗收狀態寫回）。
 3. 歸檔本階段對話紀錄與 AI 調整紀錄至 `logs/`。
-4. 建立本階段 Baseline（`baseline/phase-{N}_v{M}/`）。
+4. 建立本階段 Baseline（`baseline/phase-{NN}/baseline-v{N}/`）。
 5. 釋放下一階段切換權限（更新 `phase_gates.json`）。
 
 ---
@@ -238,7 +238,7 @@ AI 代理在執行過程中，每當做出以下自主判斷時，必須即時�
 不同於專案全域的 `@baseline` 指令，**階段級 Baseline** 是階段切換的前置條件：
 
 * **觸發時機**：本階段 Evaluator 判定通過後自動觸發。
-* **存放路徑**：`baseline/phase-{階段代碼}_v{流水號}/`（例如 `baseline/phase-01_v1/`、`baseline/phase-03_v2/`）。
+* **存放路徑**：`baseline/phase-{NN}/baseline-v{N}/`（例如 `baseline/phase-01/baseline-v1/`、`baseline/phase-03/baseline-v2/`）。
 * **包含內容**：
   * 本階段 `outputs/` 目錄完整複本。
   * 本階段 `SKILL.md`（含已導入的 Skill 配置）。
@@ -287,7 +287,7 @@ AI 代理在執行過程中，每當做出以下自主判斷時，必須即時�
   "phases": {
     "01_planning_and_analysis": {
       "status": "completed",
-      "baseline": "baseline/phase-01_v1/",
+      "baseline": "baseline/phase-01/baseline-v1/",
       "evaluator_score": { "coverage": 40, "clarity": 30, "traceability": 20, "format": 10 },
       "completed_at": "YYYY-MM-DDTHH:MM:SS"
     },
@@ -353,7 +353,7 @@ Evaluator 判定本階段通過
          │         └─ logs/iteration_log.md（追加）
          │
          ├─→ [4] 建立階段 Baseline
-         │         ├─ baseline/phase-{NN}_v{M}/
+         │         ├─ baseline/phase-{NN}/baseline-v{N}/
          │         ├─ MANIFEST.md（含 SHA-256 驗證）
          │         └─ snapshot + diff pair
          │
@@ -458,10 +458,10 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
   * 錯誤日誌、人機對話紀錄與版本差異（存放於根目錄的 `logs/` 目錄，記錄臨時錯誤、對話與程式碼 Baseline 差異）。
   * 階段交付物與驗證報告（存放於本階段的 `outputs/` 目錄）。
 * **全域 Agent 接收並同步更新**：
-  * 需求追溯鏈（更新至根目錄的 [traceability_matrix.md](file:///d:/00AI協作/SSDLC_Skill/traceability_matrix.md)）。
-  * 規格文件（更新至根目錄的 [system_specification.md](file:///d:/00AI協作/SSDLC_Skill/system_specification.md)）。
+  * 需求追溯鏈（更新至根目錄的 `traceability_matrix.md`）。
+  * 規格文件（更新至根目錄的 `system_specification.md`）。
   * 對話紀錄與變更日誌（歸檔至根目錄的 `logs/` 目錄）。
-  * 階段 Baseline（建立於根目錄的 `baseline/phase-{NN}_v{M}/`）。
+  * 階段 Baseline（建立於根目錄的 `baseline/phase-{NN}/baseline-v{N}/`）。
   * 階段關卡狀態（更新至根目錄的 `phase_gates.json`）。
 
 ### 2. 快照與日誌儲存規則

@@ -1,4 +1,4 @@
-﻿---
+---
 name: 01_planning_and_analysis
 description: 規劃與需求分析階段，負責原始需求釐清、口語需求正規化、需求追溯矩陣建置、Skill 複選與階段交付物定義。
 ---
@@ -7,7 +7,7 @@ description: 規劃與需求分析階段，負責原始需求釐清、口語需�
 
 本技能定義了開發團隊在規劃與需求分析階段的標準作業程序（SOP）與代理職責。
 
-> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](file:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
+> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
 
 ## 一、 代理人職責規範
 
@@ -82,7 +82,7 @@ description: 規劃與需求分析階段，負責原始需求釐清、口語需�
 > 則
 > 本階段的 inputs/outputs 定義將由 `io_files.yaml` 取代上述預設值，
 > Planner / Generator / Evaluator 須遵循
-> [00_cross_phase/SKILL.md 第六節](file:///d:/00AI協作/SSDLC_Skill/.agents/skills/00_cross_phase/SKILL.md) 的合約管理規範。
+> [00_cross_phase/SKILL.md 第六節](../00_cross_phase/SKILL.md) 的合約管理規範。
 > 若未啟用，本段不適用，照上述預設值執行。
 
 ## 三、 需求追蹤規範
@@ -99,3 +99,4 @@ description: 規劃與需求分析階段，負責原始需求釐清、口語需�
 
 *   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
     *   `outputs/security_requirements.md` — 安全需求規格（CIA 等級定義、威脅建模範圍、法規遵循清單）
+
