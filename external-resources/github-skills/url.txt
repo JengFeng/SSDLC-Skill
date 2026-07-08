@@ -1,0 +1,2 @@
+https://github.com (社群 Skill 彙整，多來源彙集)
+License: 各 Skill 獨立授權，詳見各 SKILL.md
