@@ -44,10 +44,13 @@ description: >
 **執行步驟**：
 1. 載入對應等級檢核表（`assets/checklist_*.md`）
 2. 根據當前 SSDLC 階段，篩選適用構面（參照下方對照表）
-3. 逐項比對系統產出是否符合控制措施要求
-4. 產出檢核報告（含符合/不符合/不適用、佐證說明）
+3. 逐項比對系統產出是否符合控制措施要求（**比對範圍參照 
+references/check_scope_per_domain.md**，每個構面的比對對象、比對方式與判定基準均有明確定義）
+4. 產出檢核報告至 outputs/security_check_report.md（**報告格式參照 assets/security_check_report_template.md**，含檢核摘要、逐項結果、階段性限制說明、重點風險、改善建議）
 5. **⚠️ 階段性限制免責聲明（必須執行）**：若檢核結果存在部分符合或不符合項目，且其原因非屬軟體設計或開發實作缺陷（如：需正式 TLS 憑證但處於本機開發階段、涉及硬體/機房實體安全、需組織管理程序），則報告必須包含「階段性限制說明」章節，逐項標註不符合原因與是否為階段性限制，避免閱讀者誤判為設計或實作缺陷。
-6. 存入當前階段 `outputs/security_check_report.md`
+
+6. **⚠️ 構面 8 處理規則**：構面 8（組織、實體與供應鏈安全）為「非軟體因子」，在軟體開發專案中預設標記為 ➖ 不適用。僅當專案明確涉及外部服務商整合時，才對「供應鏈管理」子類別進行存在性檢查。檢核報告中構面 8 獨立成章，並在階段性限制說明中統一註明。
+7. 存入當前階段 `outputs/security_check_report.md`
 
 ### 2.5 階段中途彈性導入（@security-load）
 
@@ -114,6 +117,6 @@ python scripts/generate_checklist.py high
 - `references/05_acquisition.md` — 系統與服務獲得
 - `references/06_comm_protection.md` — 系統與通訊保護
 - `references/07_integrity.md` — 系統與資訊完整性
-- eferences/08_organizational.md — 組織、實體與供應鏈安全（非軟體開發因子）
+- `references/08_organizational.md` — 組織、實體與供應鏈安全（非軟體開發因子）
 - `references/source/` — 原始 PDF 文件
-- eferences/08_organizational.md — 組織/實體/供應鏈補充篇
+- `references/08_organizational.md` — 組織/實體/供應鏈補充篇

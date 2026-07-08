@@ -60,8 +60,6 @@ myPrj*/
 # 排除原始碼內容，保留 url.txt 和 README.md 索引
 external-resources/anthropics-skills/*
 !external-resources/anthropics-skills/url.txt
-external-resources/Benson-skill-main_FromBensonSupport/*
-!external-resources/Benson-skill-main_FromBensonSupport/url.txt
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
 external-resources/ui-ux-pro-max-skill/*

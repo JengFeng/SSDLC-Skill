@@ -1435,6 +1435,103 @@ P→G→E 鐵三角           Plan→Act              Orchestrator
 ### 影響範圍
 AGENTS.md 已補入記憶落實條款；memory.md 新增本次調整紀錄；backups/BACKUP_MANIFEST.md 於本次同步檢視。
 
+# AI 寫作自動化軟體作業流程 — 腦力激盪記錄
+
+## 2026-07-08：外部資源管理體系建立與全案架構對齊
+
+### 工作背景
+本日工作涵蓋三大主軸：(1) 外部第三方資源管理體系的完整建立、(2) @security-check 檢查內容定義的補強、(3) 全案架構對齊與文件同步治理。
+
+---
+
+### 一、外部第三方資源管理體系
+
+#### 1.1 AnySearch Skill 引入與移除
+- 從 GitHub 下載 anysearch-ai/anysearch-skill (v2.1.0, Apache 2.0) 至 external-resources/anysearch-skill/
+- 確認免費方案：1,000 次請求/天、20 QPS，API Key 免費申請
+- 最終評估短時間無使用需求，已移除
+
+#### 1.2 external-resources/README.md 建立
+- 新增第三方資源聲明、指令操作說明、API Key 安全聲明、引用警語模板、安裝指引
+- 引用警語模板供他人 fork 時直接複製使用
+
+#### 1.3 external-resources/SKILL.md 建立（v1.1.0）
+- 定義 @external-resource 指令體系的完整操作規範
+- 三個子指令：add（引入）、remove（移除）、list（查詢）
+- 引入 6 步驟流程（分析→下載→更新 README→更新 gitignore→更新警語→驗證）
+- 移除流程（確認→刪除目錄→清理 README→清理 gitignore→報告）
+- 目錄結構規範與 Git 追蹤規則
+
+#### 1.4 .gitignore negation 規則
+- 排除第三方原始碼但保留 url.txt 索引
+- 使用 external-resources/* + !external-resources/*/url.txt 格式
+- Benson 和 anysearch 已清理乾淨
+
+#### 1.5 指令集三檔同步
+@external-resource 指令同步更新至：
+- docs/commands_reference.md：核心指令表 3 列 + 口語觸發 3 條 + 更新記錄
+- .agents/AGENTS.md：第 14 節：指令總覽 + AI 執行規範 + 安全合規
+- 根目錄 README.md：指令表 3 列 + 自然語言觸發清單
+
+---
+
+### 二、@security-check 檢查內容定義補強
+
+#### 2.1 新增檔案
+- Security-Principles/references/check_scope_per_domain.md：7 個構面的比對範圍定義（比對對象、比對方式、判定基準、具體檢查項目）
+- Security-Principles/assets/security_check_report_template.md：標準報告模板（檢核摘要、8 構面逐項表格、階段性限制說明、重點風險、改善建議）
+
+#### 2.2 構面 8 處理規則
+- 構面 8（組織、實體與供應鏈安全）在軟體開發專案中預設標記為不適用
+- 僅當專案涉及外部服務商整合時才檢查「供應鏈管理」子類別
+- 檢核報告中構面 8 獨立成章
+
+#### 2.3 更新檔案
+- Security-Principles/SKILL.md：執行步驟加入比對範圍引用、報告模板引用、構面 8 規則
+- .agents/AGENTS.md：@security-check 段落加入三項引用 + 構面 8 規則
+- docs/commands_reference.md：核心指令表 @security-check 列補入比對範圍與報告模板
+- Security-Principles/README.md：目錄結構 +2 檔案、檔案說明表格 +2 列、事後稽核說明更新
+
+---
+
+### 三、全案架構對齊
+
+#### 3.1 指令集三檔同步強制規則升級
+- docs/CORE_RULES.md 第 1-6 節：「雙檔同步」升級為「三檔同步」
+- 三軌文件：.agents/AGENTS.md + docs/commands_reference.md + 根目錄 README.md
+- 紅框問題修正：三軌文件定義完整列出 3 個檔案
+
+#### 3.2 README + SKILL 目錄同步檢查通則（新增）
+- docs/CORE_RULES.md 新增第 6 條強制同步規則
+- .agents/AGENTS.md @optimize 新增第 5 步檢查
+- 掃描範圍：全專案所有目錄（排除 .agents/skills/ 階段模板）
+- 比對三項：(a) 章節主題結構對照 (b) 引用一致性 (c) 異動同步
+
+#### 3.3 殘留清理
+- Benson 殘留：external-resources/README.md、.gitignore、SKILL.md、commands_reference.md 全面清除
+- AnySearch 殘留：SKILL.md 範例替換為 ui-ux-pro-max-skill、commands_reference.md 同步
+- <skill-name> 角括號：.agents/AGENTS.md 改為 [skill-name] 避免視覺混淆
+- eferences/08_organizational.md：Security-Principles/SKILL.md 反引號斷裂修正
+
+#### 3.4 Git 同步
+- 遠端有 1 個新 commit（chore: 移除 Benson 敏感來源技能），已 pull 同步
+- 多次 commit + push 至 origin/main
+
+---
+
+### 影響範圍
+- 新增檔案：3（SKILL.md、check_scope_per_domain.md、report_template.md）
+- 修改框架規章：4（CORE_RULES.md、.agents/AGENTS.md、commands_reference.md、README.md）
+- 修改外部資源文件：3（external-resources/README.md、Security-Principles/SKILL.md、Security-Principles/README.md）
+- 清理殘留：5（Benson 目錄、anysearch 引用、角括號、反引號斷裂、gitignore）
+
+### 目標效益
+- 建立完整的外部第三方資源管理生命週期（引入→使用→移除）
+- @security-check 從「知道要跑」升級為「知道要查什麼、怎麼查、報告長什麼樣」
+- 框架級文件同步從「雙檔」升級為「三檔」+「目錄級 README+SKILL 同步」
+- 全案殘留清理完畢，三方一致性驗證通過
+
+
 > **歷史紀錄說明**：本文件部分早期紀錄仍保留 file:/// 絕對路徑寫法，僅供還原當時調整脈絡；現行規則已統一採 repo 內相對路徑，實際執行與審查請以現行檔案連結為準。
 
 

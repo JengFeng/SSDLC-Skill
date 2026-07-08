@@ -1,4 +1,4 @@
-﻿# AI 協作對話指令集參照表 (Command Reference)
+# AI 協作對話指令集參照表 (Command Reference)
 
 本文件整理了專案中所有可用的對話指令。未來協作時，除了手動打字，您亦可直接用語音或口語進行操作：
 - 說出「**讀取指令集**」、「**查詢可用指令**」或「**叫出指令對照表**」→ AI 代理自動呈獻此參照表。
@@ -15,6 +15,9 @@
 - 說出「**查看 IO**」、「**顯示 IO 檔案**」→ AI 代理自動執行 @io show，檢視指定階段的 IO 檔案清單。
 - 說出「**比對 IO**」、「**IO 差異**」→ AI 代理自動執行 @io diff，比對兩個階段的 IO 檔案差異。
 - 說出「**帶通用 Skill**」、「**混搭 G**」或「**加通用 git**」→ AI 代理引導以 `G` 前綴混搭通用 Skill 導入。
+- 說出「**引入外部 Skill**」、「**新增第三方資源**」、「**下載新的 Skill**」、「**加入外部 Skill**」→ AI 代理自動執行 @external-resource add，依 `external-resources/SKILL.md` 工作流程下載、登記並合規檢查外部第三方資源。
+- 說出「**移除外部 Skill**」、「**刪除第三方資源**」→ AI 代理自動執行 @external-resource remove，清理指定外部資源的目錄、資源清單與 `.gitignore` 規則。
+- 說出「**查看外部資源**」、「**列出第三方 Skill**」→ AI 代理自動執行 @external-resource list，列出所有外部資源的名稱、來源、授權與狀態。
 - 說出「**列出 IO**」、「**各階段 IO**」→ AI 代理自動執行 @io list，列出各階段預設 IO 速查表。
 
 ---
@@ -30,7 +33,7 @@
 | **`@optimize`** | 無 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描實際檔案系統並自動修復 README 倉庫結構/章節完整性，再對整個 SSDLC 框架範本執行 10 大檢查組的地毯式關聯檢查與修正。**僅限框架建造者使用，專案開發者請勿呼叫。** 執行前將顯示警告提示，確認後方執行。 | `@optimize` |
 | **`@snapshot`** | 無 | 手動建立即時快照（git diff patch + SHA-256 清單）。口語觸發：「建立快照」「存快照」「記錄點」。 | `@snapshot` |
 | **`@restore`** | `latest` / `N`（1~5） / `YYYYMMDD-HHMMSS` | 回溯工作目錄至指定執行快照。自動 `git stash` 保留未提交變更 → `git apply` 載入差異補丁 → SHA-256 驗證還原完整性。口語觸發：「回溯快照」「還原快照」「退回上一步」。 | `@restore latest` |
-| **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，逐項比對系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
+| **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，**參照 `check_scope_per_domain.md` 逐項比對**系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`（**報告格式參照 `security_check_report_template.md`**）。構面 8（非軟體因子）在軟體專案中預設標記為不適用。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
 | **`@security-load [等級] [構面1,構面2,...]`** | 等級：`general` / `medium` / `high`；構面：`1`~`8`（逗號分隔，省略=全選）；無參數=列出構面清單 | 於任一階段中途導入資安防護基準，支援選定特定構面。執行相容性檢查後寫入當前階段 `SKILL.md`，並更新 `phase_gates.json`。口語觸發：「載入資安構面」「只加存取控制」「導入安全防護」。 | `@security-load medium 1,4,6` |
 | **`@stages`** | 無 | 立即輸出 SSDLC 六大開發階段與跨階段全域共用分類（00_cross_phase）的代碼及中文名稱對照表。 | `@stages` |
 | **`@unlock [階段代碼]`** | `01` 到 `06` 的階段雙位數代碼 | ⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制。適用情境：框架調試、緊急 Hotfix、階段重建。**專案開發者日常流程中永遠不需使用。** 執行前顯示警告提示，確認後解鎖並記錄於 `phase_gates.json` 與 `logs/ai_adjustment_*.md`。 | `@unlock 03` |
@@ -44,6 +47,9 @@
 | **`@io diff [A] [B]`** | 兩個階段代碼（`01`~`06`） | 比對兩個階段 IO 檔案差異（新增 / 移除 / 變更）。 | `@io diff 02 03` |
 | **`@io list [phase]`** | phase: `00`~`06`，省略 = 全顯示 | 列出各階段預設 IO 速查表，供快速瀏覽與選取。 | `@io list` |
 | **`in:` / `out:` 快速語法** | `in:`=輸入，`out:`=輸出，`?`=可選 | Skill 選定後一行定義 IO。`@03 in: api_spec, db_schema, ui?` | `@03 in: api_spec, db_schema, ui?` |
+| **`@external-resource add <URL>`** | GitHub repo 連結 | 將外部第三方 Skill 下載至 `external-resources/` 目錄，自動更新資源清單、`.gitignore` 排除規則與 `url.txt` 索引。完整工作流程參照 `external-resources/SKILL.md`。口語觸發：「引入外部 Skill」「新增第三方資源」「下載新的 Skill」。 | `@external-resource add https://github.com/owner/repo` |
+| **`@external-resource remove <名稱>`** | Skill 目錄名稱 | 移除指定外部第三方 Skill，同步清理 `README.md` 資源清單、`.gitignore` 規則與 `url.txt`。口語觸發：「移除外部 Skill」「刪除第三方資源」。 | `@external-resource remove ui-ux-pro-max-skill` |
+| **`@external-resource list`** | 無 | 列出 `external-resources/` 下所有第三方資源的名稱、來源、授權與狀態。口語觸發：「列出外部資源」「查看第三方 Skill」。 | `@external-resource list` |
 
 ### SSDLC 階段代碼參照
 
@@ -497,3 +503,7 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
     *   新增 `check_spec_integrity.py --mode E`（跨階段IO 檔案 IO 勾稽）。
     *   口語觸發詞彙新增：「檢查 IO」「IO 勾稽」「設定IO 檔案」「定義 IO」「查看IO 檔案」「比對IO 檔案」。
 
+*   **2026-07-08 (@external-resource 外部資源管理工作流程)**：
+    *   新增 `@external-resource add/remove/list` 指令體系，支援外部第三方 Skill 的引入、移除與列表查詢。
+    *   完整工作流程定義於 `external-resources/SKILL.md`。
+    *   口語觸發詞彙新增：「引入外部 Skill」「新增第三方資源」「下載新的 Skill」「移除外部 Skill」「查看外部資源」。

@@ -352,7 +352,8 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     2.  顯示警告提示：「⚠️ 框架建造者專用指令。@optimize 將對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。此指令僅限框架建造者使用，專案開發者請勿呼叫。」
     3.  取得使用者確認後，**首先執行 `scripts/align_framework.ps1` 進行動態掃描與自動修復**（倉庫結構 table ↔ 實際檔案系統對齊、標準結構 tree 交叉比對、必要章節完整性驗證），再依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
     4.  修復完成後輸出報告，並自動建立 Git 暫存基線，寫入 memory.md。
-    5.  最後執行 CORE_RULES 規範 vs 實際落實落差掃描做為收斂性終檢：逐條比對 CORE_RULES.md 中所有「必須」、「自動」、「強制」等可執行規範條目是否已在專案中實際落實，產出落差清單（已落實 ✅ / 未落實 ❌ / 無需落實 ⬚），❌ 項目判定為 B 類錯誤並立即修復。
+    5.  **README + SKILL 目錄同步檢查（通則）**：掃描全專案，找出所有同時存在 `README.md` 與 `SKILL.md` 的目錄（排除 `.agents/skills/` 階段模板目錄），逐組比對以下三項：(a) **結構對照**：兩檔案是否涵蓋相同的章節主題（指令定義、使用方式、執行步驟等），缺少的章節需補入或提醒使用者確認；(b) **引用一致性**：兩檔案中提到的檔案路徑、指令名稱、口語觸發詞是否一致，不一致的需統一；(c) **新增/移除同步**：最近一次異動時，另一個檔案是否有對應更新，缺失的需補入。若發現不一致或缺漏，產出清單並提醒使用者確認修補。
+    6.  最後執行 CORE_RULES 規範 vs 實際落實落差掃描做為收斂性終檢：逐條比對 CORE_RULES.md 中所有「必須」、「自動」、「強制」等可執行規範條目是否已在專案中實際落實，產出落差清單（已落實 ✅ / 未落實 ❌ / 無需落實 ⬚），❌ 項目判定為 B 類錯誤並立即修復。
 ### 6.4 快照回溯指令：`@restore`
 ### 6. 快照回溯指令：`@restore`
 *   **指令定義**：回溯工作目錄至指定的執行快照，快速還原至先前穩定狀態，不需重跑整個 Plan 階段。
@@ -447,15 +448,16 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     1.  讀取 `phase_gates.json`，確認 `security_baseline.enabled` 為 `true`。若未啟用，提示使用者先執行 `@init` 並導入 Security-Principles。
     2.  載入對應等級檢核表（`external-resources/Security-Principles/assets/checklist_*.md`）。
     3.  根據當前 SSDLC 階段，篩選適用構面（參照 Security-Principles SKILL.md 中 7 構面 vs SSDLC 階段對照表）。
-    4.  逐項比對系統產出是否符合控制措施，標記 ✅符合 / ❌不符合 / ➖不適用 / ⬚未涵蓋。
-    5.  產出檢核報告（`outputs/security_check_report.md`），含摘要統計、逐項結果、重點風險、改善建議。
+    4.  逐項比對系統產出是否符合控制措施，標記 ✅符合 / ❌不符合 / ➖不適用 / ⬚未涵蓋。**比對範圍參照** `external-resources/Security-Principles/references/check_scope_per_domain.md`，每個構面的比對對象、比對方式與判定基準均有明確定義。
+    5.  產出檢核報告（`outputs/security_check_report.md`），**報告格式參照** `external-resources/Security-Principles/assets/security_check_report_template.md`，含檢核摘要、逐項結果、階段性限制說明、重點風險、改善建議。
     6.  **⚠️ 階段性限制免責聲明（必須執行）**：若檢核結果存在 ⚠️ 部分符合或 ❌ 不符合項目，且其原因**非屬軟體設計或開發實作缺陷**（如：需正式 TLS 憑證但處於本機開發階段、涉及硬體/機房實體安全非軟體可控、需組織管理程序非系統功能可達成），則檢核報告中必須：
         - 在「統計」段落後新增「## 階段性限制說明」章節。
         - 逐項列出每一項非完全符合的項目，明確標註**不符合原因**與**是否為階段性限制**。
         - 若屬階段性限制（如 Phase 3 無法取得正式憑證），須加註「待 Phase N 部署至真實環境後重新驗證」。
         - 若屬非軟體因子（如硬體/實體/組織管理面），須加註「非軟體開發範疇，屬 {對應面向} 管控」。
         - **目的**：避免檢核報告因階段性或非軟體因素呈現未 100% 符合，導致閱讀者誤判為設計或實作缺陷。
-    7.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
+    7.  **⚠️ 構面 8 處理規則**：構面 8（組織、實體與供應鏈安全）為「非軟體因子」，在軟體開發專案中預設標記為 ➖ 不適用。僅當專案明確涉及外部服務商整合時，才對「供應鏈管理」子類別進行存在性檢查。檢核報告中構面 8 獨立成章，並在階段性限制說明中統一註明。
+    8.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
 *   **相容性檢查**：執行前自動比對 Security-Principles 控制措施與現有 6 階段 Skill 規則，若發現衝突則顯示 `[WARN]` 警示並暫停等候使用者確認。
 
 ### 11. 彈性安全防護導入指令：`@security-load`
@@ -657,4 +659,48 @@ AI：收到，我來幫你回報這個框架問題。
 ```
 
 
+
+### 14. 外部第三方資源管理指令：@external-resource
+
+本指令體系用於管理 external-resources/ 目錄下的所有外部第三方 Skill，涵蓋引入、移除與列表查詢。完整工作流程與規範定義於 external-resources/SKILL.md。
+
+#### 14.1 指令總覽
+
+| 指令 | 功能 | 口語觸發 |
+|:-----|:-----|:---------|
+| @external-resource add <URL> | 從 GitHub 下載並引入第三方 Skill | 「引入外部 Skill」「新增第三方資源」「下載新的 Skill」 |
+| @external-resource remove <名稱> | 移除指定第三方 Skill | 「移除外部 Skill」「刪除第三方資源」 |
+| @external-resource list | 列出所有外部資源 | 「查看外部資源」「列出第三方 Skill」 |
+
+#### 14.2 AI 代理執行規範
+
+@external-resource add <URL>：
+1. 讀取 external-resources/SKILL.md 的完整工作流程
+2. Clone 或下載來源 repo 至暫存目錄
+3. 閱讀來源 README，確認授權、功能、API Key 需求
+4. 執行衝突檢核：比對 external-resources/ 現有目錄
+5. 將原始碼複製至 external-resources/[skill-name]/，移除 .git 與 .github/
+6. 建立 url.txt（含 GitHub URL、版本號、授權類型）
+7. 更新 external-resources/README.md 資源清單表格
+8. 更新 .gitignore 排除 + negation 規則
+9. 更新引用警語模板
+10. 執行 6 項驗證檢查並向使用者報告結果
+
+@external-resource remove <名稱>：
+1. 刪除 external-resources/[skill-name]/ 目錄
+2. 從 README.md 資源清單與引用警語模板中移除該列
+3. 從 .gitignore 中移除該目錄的排除 + negation 規則（共 2 行）
+4. 向使用者報告清理結果
+
+@external-resource list：
+1. 掃描 external-resources/ 目錄下所有子目錄
+2. 讀取每個子目錄的 url.txt 索引（若有）
+3. 以表格形式列出：目錄名、GitHub 來源、授權類型、功能簡述
+
+#### 14.3 安全與合規規則
+
+*   第三方原始碼不得提交至 Git（由 .gitignore 排除），僅追蹤 url.txt 索引
+*   API Key 存放於 .env 檔案，不得提交至版本控制
+*   引入前必須檢查授權合規性（不得與框架現有授權衝突）
+*   若發現功能重疊，必須告知使用者並由使用者決定是否引入
 

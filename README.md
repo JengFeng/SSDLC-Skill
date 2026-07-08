@@ -1,4 +1,4 @@
-﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 67 個 AI 協作 Skill</strong>
@@ -102,6 +102,9 @@
 | `@io diff [A] [B]` | 比對兩個階段 IO 檔案差異 | `@io diff 02 03` |
 | `@io list [phase]` | 列出各階段預設 IO 速查表 | `@io list` |
 | `in:` / `out:` 快速語法 | 一行定義輸入輸出（`?`=可選） | `@03 in: api_spec, ui?` |
+| `@external-resource add <URL>` | 引入外部第三方 Skill（下載+登記+合規檢查） | `@external-resource add https://github.com/owner/repo` |
+| `@external-resource remove <名稱>` | 移除外部第三方 Skill（清理目錄+資源清單+gitignore） | `@external-resource remove ui-ux-pro-max-skill` |
+| `@external-resource list` | 列出所有外部資源清單 | `@external-resource list` |
 
 > **自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「檢查規格」「四規格檢查」、「顯示指令集」、「建立基線」、「建立快照」、「存快照」、「執行架構優化」、「檢查 IO」「設定 IO」「列出 IO」「比對 IO」即可觸發對應指令。
 
@@ -367,7 +370,18 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 ---
 
-## 📝 近期更新記錄（2026-07-02）
+
+### 🆕 外部資源管理指令（2026-07-08）
+
+| 項目 | 說明 |
+|:---|:---|
+| **@external-resource 指令體系** | 新增 add/remove/list 三個子指令，支援外部第三方 Skill 的引入、移除與列表查詢，完整工作流程定義於 external-resources/SKILL.md |
+| **external-resources/README.md** | 新增第三方資源聲明、指令操作說明、引用警語模板與安裝指引 |
+| **.gitignore negation 規則** | 排除第三方原始碼但保留 url.txt 索引，確保來源可追溯 |
+| **雙檔同步** | @external-resource 指令同步更新至 commands_reference.md、.agents/AGENTS.md 與根目錄 README.md |
+| **架構對齊** | 清理 Benson/AnySearch 殘留、修正角括號視覺混淆、三方一致性驗證通過 |
+
+## 📝 近期更新記錄（2026-07-08）
 
 ### 🏗️ 架構強化
 
