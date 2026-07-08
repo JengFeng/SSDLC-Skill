@@ -1,14 +1,14 @@
 ﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 95 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 67 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 95 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 67 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 95 個 Skill**：Anthropic 官方 17 個 + Benson 自建 28 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
+> **合計 67 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
 
 ---
 

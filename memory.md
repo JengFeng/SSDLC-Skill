@@ -1,5 +1,89 @@
 # AI 寫作自動化軟體作業流程 — 腦力激盪記錄
 
+## 2026-07-08：Benson 敏感來源技能全面移除紀錄
+
+### 移除背景
+因 `external-resources/Benson-skill-main_FromBensonSupport/` 目錄下之技能檔案含有敏感性資料，依據使用者指示，已全面移除該來源之所有技能實體與文件引用，以確保專案安全性。
+
+### 已移除之技能完整清單（共 28 個獨立 Skill + 1 個跨階段複製）
+
+#### Phase 01 — 規劃與需求分析（12 個）
+| # | 技能名稱 | 功能用途 | 原始路徑 |
+|---|---------|---------|---------|
+| 1 | `grill-me` | 需求釐清與拷問 | `skills/01_planning_and_analysis/grill-me` |
+| 2 | `project-pulse` | 專案把脈與問答 | `skills/01_planning_and_analysis/project-pulse` |
+| 3 | `rfp-builder` | 需求說明書與經費概算表產生器 | `skills/01_planning_and_analysis/rfp-builder` |
+| 4 | `proposal-doc` | 服務建議書撰寫工具 | `skills/01_planning_and_analysis/proposal-doc` |
+| 5 | `quote-builder` | 報價單產生器 | `skills/01_planning_and_analysis/quote-builder` |
+| 6 | `workplan-doc` | 工作執行計畫書產生器 | `skills/01_planning_and_analysis/workplan-doc` |
+| 7 | `meeting-record` | 會議記錄整理工具 | `skills/01_planning_and_analysis/meeting-record` |
+| 8 | `work-review` | 工作整合報告 | `skills/01_planning_and_analysis/work-review` |
+| 9 | `bcp-drill-doc` | BCP 演練紀錄表產生器 | `skills/01_planning_and_analysis/bcp-drill-doc` |
+| 10 | `handover` | AI 工作記憶交班 | `skills/01_planning_and_analysis/handover` |
+| 11 | `proposal-pptx` | 服務建議簡報一站式產出 | `skills/01_planning_and_analysis/proposal-pptx` |
+| 12 | `file-organizer` | 專案文件整理器（亦複製至 Phase 00） | `skills/01_planning_and_analysis/file-organizer` |
+
+#### Phase 02 — 系統設計（7 個）
+| # | 技能名稱 | 功能用途 | 原始路徑 |
+|---|---------|---------|---------|
+| 13 | `bootstrap-ui` | Bootstrap 互動式原型設計 | `skills/02_system_design/bootstrap-ui` |
+| 14 | `sa-design` | 系統分析設計（SA/SD） | `skills/02_system_design/sa-design` |
+| 15 | `easymap` | GIS 圖台開發助理 | `skills/02_system_design/easymap` |
+| 16 | `image-gen` | 通用圖片生成 | `skills/02_system_design/image-gen` |
+| 17 | `proposal-narration` | 提案影音輔助產生器 | `skills/02_system_design/proposal-narration` |
+| 18 | `ekb-note-tts` | 知識庫筆記配音 | `skills/02_system_design/ekb-note-tts` |
+| 19 | `ai-news-video` | AI 新聞影音產出 | `skills/02_system_design/ai-news-video` |
+
+#### Phase 03 — 開發與編碼（7 個）
+| # | 技能名稱 | 功能用途 | 原始路徑 |
+|---|---------|---------|---------|
+| 20 | `project-dev-manager` | 專案開發管理 | `skills/03_implementation_and_coding/project-dev-manager` |
+| 21 | `eip-item-builder` | EIP 工項自動建置 | `skills/03_implementation_and_coding/eip-item-builder` |
+| 22 | `ekb-note` | EKB 知識庫讀寫工具 | `skills/03_implementation_and_coding/ekb-note` |
+| 23 | `fortigate-api-spec` | FortiGate REST API 查詢 | `skills/03_implementation_and_coding/fortigate-api-spec` |
+| 24 | `fortigate-qa` | FortiGate 設定檔自然語言問答 | `skills/03_implementation_and_coding/fortigate-qa` |
+| 25 | `benson-skill-sync` | 技能同步與封裝工具 | `skills/03_implementation_and_coding/benson-skill-sync` |
+| 26 | `project-dashboard` | 專案進度儀表板 | `skills/03_implementation_and_coding/project-dashboard` |
+
+#### Phase 04 — 測試驗證（1 個）
+| # | 技能名稱 | 功能用途 | 原始路徑 |
+|---|---------|---------|---------|
+| 27 | `service-sqa` | 自主系統與資安檢測 | `skills/04_testing/service-sqa` |
+
+#### Phase 06 — 維護與營運（2 個）
+| # | 技能名稱 | 功能用途 | 原始路徑 |
+|---|---------|---------|---------|
+| 28 | `isms-audit-prep` | 資安稽核準備助理 | `skills/06_maintenance/isms-audit-prep` |
+| 29 | `eip-line-radar` | EIP LINE 訊號雷達 | `skills/06_maintenance/eip-line-radar` |
+
+#### Phase 00 — 跨階段全域共用（1 個跨階段複製）
+| # | 技能名稱 | 功能用途 | 原始路徑 |
+|---|---------|---------|---------|
+| 30 | `file-organizer` | 專案檔案歸納整理（Phase 01 之跨階段複製） | `skills/00_cross_phase/file-organizer` |
+
+### 已同步更新之文件清單
+| 檔案路徑 | 變更類型 | 說明 |
+|---------|---------|------|
+| `external-resources/Benson-skill-main_FromBensonSupport/` | **整目錄刪除** | 移除原始敏感來源 |
+| `skills/SKILLS歸類.md` | 修改 | 移除 Benson 來源描述及 06 階段技能清單 |
+| `skills/README.md` | 修改 | 移除所有「Benson 自建技能」段落，總數 95→67 |
+| `README.md` | 修改 | 更新技能總數及來源統計 |
+| `docs/Harness_Optimization_SKILL.md` | 修改 | 移除比對基準中的 Benson 參照 |
+| `scripts/check-readme-sync.ps1` | 修改 | 移除 Benson 變數及比對邏輯 |
+| `memory.md` | 修改 | 移除 Benson/Anthropic 混合引用 |
+| `myPrj/01_planning_and_analysis/meeting-record/` | **整目錄刪除** | 移除專案中的技能副本 |
+| `myPrj/02_system_design/bootstrap-ui/` | **整目錄刪除** | 移除專案中的技能副本 |
+| `myPrj/02_system_design/sa-design/` | **整目錄刪除** | 移除專案中的技能副本 |
+| `myPrj/02_system_design/SKILL.md` | 修改 | 移除 bootstrap-ui 及 sa-design 規範 |
+| `myPrj/03_implementation_and_coding/project-dashboard/` | **整目錄刪除** | 移除專案中的技能副本 |
+| `myPrj/03_implementation_and_coding/project-dev-manager/` | **整目錄刪除** | 移除專案中的技能副本 |
+| `myPrj/03_implementation_and_coding/SKILL.md` | 修改 | 移除 project-dev-manager 規範 |
+
+### 後續建議
+> ⚠️ 若未來需重新引入上述技能，請務必從合法、公開之來源取得，並逐一進行資安檢核後再行匯入。原始 GitHub 倉庫為 `https://github.com/MMBenson/Benson-skill`，但引入前應先確認授權條款與敏感內容風險。
+
+---
+
 ## 2026-06-29：員工基本資料管理系統 — 需求訪談彙整
 
 ### 訪談背景
@@ -410,7 +494,7 @@ name: Harness Engineering CI
 *   **階段標題標號優化**：在 [CORE_RULES.md](ffile:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 中，將內層六階段的條列標題優化為「第一階段：規劃與需求分析」、「第二階段：系統設計」等顯性標記，以求結構與指引邏輯更加明確清晰。
 *   **測試驗證階段屬性補強**：在 [CORE_RULES.md](ffile:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 的第四階段（測試驗證）中，擴充了核心用途與所採用 Skill 的重要屬性，補齊了 API 與 Web 服務（Web Services）測試、以及傳統單機版應用程式（Desktop App）UI 自動化測試的描述，使其不偏限於 Web 測試，能全面涵蓋各類型軟體的驗證防線。
 *   **技能歸類與索引實體對齊**：依據 [SKILLS歸類.md](ffile:///d:/00AI協作/SSDLC_Skill/skills/SKILLS歸類.md) 規章之規範，已將本機 `external-resources/github-skills/` 中 31 個推薦開源工具技能實體複製歸類至 `skills/` 下對應的開發階段子資料夾（包含六個開發階段，以及建立新分類 `skills/00_cross_phase/` 以存放跨階段全域共用技能）。同時重新編排 [skills/README.md](ffile:///d:/00AI協作/SSDLC_Skill/skills/README.md) 索引表，將所有技能名稱均轉化為指向本機 `skills/` 實體路徑之超連結，並補齊跨階段全域共用技能段落的追溯說明。
-*   **歸類規章同步與優化**：為配合全域共用技能與正名變更，已同步修改並優化 [SKILLS歸類.md](ffile:///d:/00AI協作/SSDLC_Skill/skills/SKILLS歸類.md) 規章內容。在其「階段與共用分類定義」與「技能分類規則與映射表」中加入了 `00_cross_phase` 跨階段全域共用分類，並對齊了 SSDLC 六階段的標準名詞，同時將 31 個推薦開源工具 Skill 與 Benson/Anthropic 原生 Skill 併同寫入對應的映射清單中，以利後續歸類作業遵循。
+*   **歸類規章同步與優化**：為配合全域共用技能與正名變更，已同步修改並優化 [SKILLS歸類.md](ffile:///d:/00AI協作/SSDLC_Skill/skills/SKILLS歸類.md) 規章內容。在其「階段與共用分類定義」與「技能分類規則與映射表」中加入了 `00_cross_phase` 跨階段全域共用分類，並對齊了 SSDLC 六階段的標準名詞，同時將 31 個推薦開源工具 Skill 與 Anthropic 原生 Skill 併同寫入對應的映射清單中，以利後續歸類作業遵循。
 *   **專案範本目錄結構對齊**：依據 [CORE_RULES.md](ffile:///d:/00AI協作/SSDLC_Skill/docs/CORE_RULES.md) 的基準防線與使用者偏好，更新了 [docs/TEMPLATE_SKILL.md](ffile:///d:/00AI協作/SSDLC_Skill/docs/TEMPLATE_SKILL.md) 的標準專案目錄結構。在其中加入了 `baseline/` 基準備份存放區，以及 `docs/` 資料夾下的 `bug/` 與 `reg/` 記錄子目錄，同時將 6 個 SSDLC 階段的名稱進行了標準名詞對正。
 
 ## 十、 專案結構範本註釋說明與對話執行協議優化 (2026-06-26)

@@ -7,17 +7,16 @@ $issues = @()
 $skillsText = Get-Content "skills/README.md" -Raw -Encoding UTF8
 $headerLines = ($skillsText -split "`n")[0..5] -join " "
 
-$sTotal = 0; $sAnthropic = 0; $sBenson = 0; $sGithub = 0; $sPlugin = 0
+$sTotal = 0; $sAnthropic = 0; $sGithub = 0; $sPlugin = 0
 
-if ($headerLines -match '\uFF08(\d+)\uFF09.*?\uFF08(\d+)\uFF09.*?\uFF08(\d+)\uFF09.*?\uFF08(\d+)\uFF09') {
+if ($headerLines -match '\uFF08(\d+)\uFF09.*?\uFF08(\d+)\uFF09.*?\uFF08(\d+)\uFF09') {
     $sAnthropic = [int]$Matches[1]
-    $sBenson    = [int]$Matches[2]
-    $sGithub    = [int]$Matches[3]
-    $sPlugin    = [int]$Matches[4]
+    $sGithub    = [int]$Matches[2]
+    $sPlugin    = [int]$Matches[3]
     if ($headerLines -match '\uFF08\u5171 (\d+)') {
         $sTotal = [int]$Matches[1]
     }
-    Write-Host "skills/README.md: total=$sTotal (A=$sAnthropic B=$sBenson G=$sGithub P=$sPlugin)"
+    Write-Host "skills/README.md: total=$sTotal (A=$sAnthropic G=$sGithub P=$sPlugin)"
 } else {
     Write-Host "[BLOCK] Cannot parse skills/README.md header"
     exit 2
@@ -38,9 +37,6 @@ if ($rootText -match '\*\*(\d+)\s*\w*\*\* AI') {
 # Source breakdown
 if ($rootText -match 'Anthropic \S+ \uFF08(\d+)') {
     $n = [int]$Matches[1]; if ($n -ne $sAnthropic) { $issues += "Anthropic: $n -> $sAnthropic" }
-}
-if ($rootText -match 'Benson \S+ \uFF08(\d+)') {
-    $n = [int]$Matches[1]; if ($n -ne $sBenson) { $issues += "Benson: $n -> $sBenson" }
 }
 $gitMatches = [regex]::Matches($rootText, 'GitHub \S+ \uFF08(\d+)')
 foreach ($m in $gitMatches) {
@@ -73,7 +69,7 @@ if ($repoMatch.Success) {
 if ($rootText -match '\u4E03\u5927') { $issues += "Still says 7 stages (should be 6 core + cross-phase)" }
 
 if ($issues.Count -eq 0) {
-    Write-Host "[OK] READMEs synced: total=$sTotal ($sAnthropic+$sBenson+$sGithub+$sPlugin)" -ForegroundColor Green
+    Write-Host "[OK] READMEs synced: total=$sTotal ($sAnthropic+$sGithub+$sPlugin)" -ForegroundColor Green
     exit 0
 }
 Write-Host ("SYNC ISSUES (" + $issues.Count + "):") -ForegroundColor Yellow

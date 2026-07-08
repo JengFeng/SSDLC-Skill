@@ -1,6 +1,6 @@
 ﻿# 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、Benson 自建（28）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 95 個獨立 Skill，其中 docx/pdf/xlsx/pptx/file-organizer 等 5 個具跨階段通用性，ui-styling 同時歸類於 Phase 02 與 Phase 03，共計 6 個雙歸屬 Skill）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 67 個獨立 Skill，其中 docx/pdf/xlsx/pptx 等 4 個具跨階段通用性，ui-styling 同時歸類於 Phase 02 與 Phase 03，共計 5 個雙歸屬 Skill）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
@@ -24,31 +24,6 @@
 * **[pptx](skills/01_planning_and_analysis/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。 🌐 通用
 
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/pptx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pptx)
-
-### Benson 自建技能 (11)
-* **[grill-me](skills/01_planning_and_analysis/grill-me)**：需求釐清與拷問。在動手開發前，先讀文件並逐點拷問使用者以釐清需求，並將結論回寫。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/grill-me) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/grill-me)
-* **[project-pulse](skills/01_planning_and_analysis/project-pulse)**：專案把脈與問答。作為單一專案問答入口，串接知識庫、討論區與工項等來源進行分層作答。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/project-pulse) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/project-pulse)
-* **[rfp-builder](skills/01_planning_and_analysis/rfp-builder)**：需求說明書與經費概算表產生器。撰寫系統需求說明書（RFP）與預算表並輸出為 Word 文件。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/rfp-builder) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/rfp-builder)
-* **[proposal-doc](skills/01_planning_and_analysis/proposal-doc)**：服務建議書撰寫工具。內建去 AI 痕跡規則，撰寫高品質服務建議書並輸出為 Word 文件。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-doc) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-doc)
-* **[quote-builder](skills/01_planning_and_analysis/quote-builder)**：報價單產生器。產生政府或企業估價報價單 Excel 檔案，內建多種職級人月單價與管理費稅率計算。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/quote-builder) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/quote-builder)
-* **[workplan-doc](skills/01_planning_and_analysis/workplan-doc)**：工作執行計畫書產生器。得標後第一份交付文件，包含需求訪談、導入規章與專案時程規畫。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/workplan-doc) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/workplan-doc)
-* **[meeting-record](skills/01_planning_and_analysis/meeting-record)**：會議記錄整理工具。將語音轉文字之會議逐字稿整理為結構化知識庫筆記與 HTML/CSS 簡報。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/meeting-record) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/meeting-record)
-* **[file-organizer](skills/01_planning_and_analysis/file-organizer)**：專案文件整理器。將專案中混亂的檔案依據定義的標準結構進行自動化分類。 🌐 通用
-
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/file-organizer) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/file-organizer)
-* **[work-review](skills/01_planning_and_analysis/work-review)**：工作整合報告。整合 Outlook 信件、行事曆、LINE 與工項紀錄以產出每日（Daily）或每週（Weekly）的工作報告。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/work-review) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/work-review)
-* **[bcp-drill-doc](skills/01_planning_and_analysis/bcp-drill-doc)**：BCP 演練紀錄表產生器。自動產生營運持續計畫（BCP）的演練紀錄表文件。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/bcp-drill-doc) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/bcp-drill-doc)
-* **[handover](skills/01_planning_and_analysis/handover)**：AI 工作記憶交班。跨會話（Session）、裝置或 AI 代理的記憶與脈絡交班技能。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/handover) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/handover)
 
 ---
 
@@ -84,22 +59,6 @@
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/algorithmic-art) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/algorithmic-art)
 * **[slack-gif-creator](skills/02_system_design/slack-gif-creator)**：動畫 GIF 產生器。製作與驗證適用於 Slack 的動態 GIF 規格。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/slack-gif-creator) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator)
-
-### Benson 自建技能 (7)
-* **[bootstrap-ui](skills/02_system_design/bootstrap-ui)**：Bootstrap 互動式原型設計。使用 Bootstrap 5 快速建立前端 UI 與互動式 HTML 雛形畫面。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/bootstrap-ui) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/bootstrap-ui)
-* **[sa-design](skills/02_system_design/sa-design)**：系統分析設計（SA/SD）。吃 HTML 雛形，反推並產生實體關係模型（ER Model）、資料字典、系統架構圖與 API spec 文件。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/sa-design) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/sa-design)
-* **[easymap](skills/02_system_design/easymap)**：GIS 圖台開發助理。針對 Easymap 7 GIS 圖台提供開發支援與架構設計輔助。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/easymap) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/easymap)
-* **[image-gen](skills/02_system_design/image-gen)**：通用圖片生成。配合 AI 繪圖工具生成相關專案示意圖或 UI 設計參考圖。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/image-gen) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/image-gen)
-* **[proposal-narration](skills/02_system_design/proposal-narration)**：提案影音輔助產生器。將提案簡報 PPTX / PDF 轉為含有自動生成語音旁白的 MP4 影音檔。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-narration) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-narration)
-* **[ekb-note-tts](skills/02_system_design/ekb-note-tts)**：知識庫筆記配音。將 EKB 知識庫內的筆記轉換為配上 AI 語音講解的語音資源。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/ekb-note-tts) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/ekb-note-tts)
-* **[ai-news-video](skills/02_system_design/ai-news-video)**：AI 新聞影音產出。自動抓取每週 AI 新聞並產出影片腳本、配音配樂與 MP4 檔案。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/ai-news-video) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/ai-news-video)
 
 ---
 
@@ -141,22 +100,6 @@
 * **[skill-creator](skills/03_implementation_and_coding/skill-creator)**：AI 技能開發。建立新技能、測試與優化 SKILL.md 的觸發精準度。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/skill-creator) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 
-### Benson 自建技能 (7)
-* **[project-dev-manager](skills/03_implementation_and_coding/project-dev-manager)**：專案開發管理。管理與追蹤開發任務，從需求討論、程式碼修改到開發進度控管的標準流程。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/project-dev-manager) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/project-dev-manager)
-* **[eip-item-builder](skills/03_implementation_and_coding/eip-item-builder)**：EIP 工項自動建置。直接對接 EIP 內部工項追蹤系統進行工項的自動派案與紀錄。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/eip-item-builder) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/eip-item-builder)
-* **[ekb-note](skills/03_implementation_and_coding/ekb-note)**：EKB 知識庫讀寫工具。提供讀取與寫入 Benson 自建 EKB 知識庫（系統分析筆記與開發規範紀錄）的端點。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/ekb-note) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/ekb-note)
-* **[fortigate-api-spec](skills/03_implementation_and_coding/fortigate-api-spec)**：FortiGate REST API 查詢。提供 FortiOS API 規格與參數的快速查閱，輔助整合式開發。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/fortigate-api-spec) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/fortigate-api-spec)
-* **[fortigate-qa](skills/03_implementation_and_coding/fortigate-qa)**：FortiGate 設定檔自然語言問答。解析 FortiGate 備份設定檔並進行安全規則問答與設定除錯。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/fortigate-qa) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/fortigate-qa)
-* **[benson-skill-sync](skills/03_implementation_and_coding/benson-skill-sync)**：技能同步與封裝工具。一鍵將本機 `~/.claude/skills` 下的新技能自動複製、打包、產生 README 並推送至 GitHub Marketplace。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/benson-skill-sync) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/benson-skill-sync)
-* **[project-dashboard](skills/03_implementation_and_coding/project-dashboard)**：專案進度儀表板。自動掃描專案目錄並產出包含 WBS、甘特圖、專案資產與健檢報告的互動式進度網頁。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/project-dashboard) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/project-dashboard)
-
 ---
 
 
@@ -177,23 +120,16 @@
 * **[[16] code-simplifier](skills/03_implementation_and_coding/code-simplifier)**：程式碼簡化與精煉。在保留所有功能的前提下，提升程式碼清晰度、一致性與可維護性。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/03_implementation_and_coding/code-simplifier) / [原始 GitHub 倉庫](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)
 
-* **[proposal-pptx](skills/01_planning_and_analysis/proposal-pptx)**：服務建議簡報一站式產出。基於 Anthropic 官方 `pptx` skill 的包裝擴充。
-
 ### UI/UX Pro Max 前端實作技能 (1)
 * **[[17] ui-styling](skills/03_implementation_and_coding/ui-styling)**：前端樣式落地實作 — shadcn/ui 元件開發 / Tailwind CSS 工具類 / 響應式佈局 / 暗色模式實作。 🌐 雙歸屬（Phase 02 設計規範 + Phase 03 實作落地）
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/ui-styling) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/proposal-pptx) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/proposal-pptx)
 ## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
 
 ### Anthropic 官方技能 (1)
 * **[webapp-testing](skills/04_testing/webapp-testing)**：網頁應用測試。利用 Playwright 對本機應用程式進行自動化 UI 驗證、除錯與截圖。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/webapp-testing) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/webapp-testing)
-
-### Benson 自建技能 (1)
-* **[service-sqa](skills/04_testing/service-sqa)**：自主系統與資安檢測。模擬品質保證工程師（QA）對 PHP Web App 執行功能驗證、越權測試、CRUD 完整性以及安全弱點掃描。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/service-sqa) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/service-sqa)
 
 ---
 
@@ -238,13 +174,6 @@
 ## 6. 維護與營運
 本階段技能用於系統上線後的資安內部稽核準備，以及線上運行訊號與討論輿情監控。
 
-### Benson 自建技能 (2)
-* **[isms-audit-prep](skills/06_maintenance/isms-audit-prep)**：資安稽核準備助理。引導完成內部資安稽核流程準備，產出查檢清單 Excel 文件。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/isms-audit-prep) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/isms-audit-prep)
-* **[eip-line-radar](skills/06_maintenance/eip-line-radar)**：EIP LINE 訊號雷達。掃描與挖掘上線後相關 LINE 群組討論，執行問題通報與輿情監控。
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/eip-line-radar) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/eip-line-radar)
-
-
 ### GitHub 推薦開源工具技能 (4)
 * **[[01] elk_stack](skills/06_maintenance/elk_stack)**：線上日誌集中化收集、Elasticsearch 檢索與日誌異常分析。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/06_maintenance/elk_stack) / [原始 GitHub 倉庫](https://github.com/elastic/elasticsearch)
@@ -274,9 +203,6 @@
 
 * **[[15] pptx](skills/00_cross_phase/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。🌐 通用
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/pptx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pptx)
-
-* **[[16] file-organizer](skills/00_cross_phase/file-organizer)**：專案檔案歸納整理。自動分類、命名與目錄結構化管理。🌐 通用
-  * **追溯來源**：[本機外部資源目錄](../external-resources/Benson-skill-main_FromBensonSupport/plugins/benson-skills/skills/file-organizer) / [原始 GitHub 倉庫](https://github.com/MMBenson/Benson-skill/tree/main/plugins/benson-skills/skills/file-organizer)
 
 ### GitHub 推薦開源工具技能 (11)
 

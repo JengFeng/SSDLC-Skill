@@ -1,6 +1,6 @@
 ﻿# 技能歸類技能 (Skill Categorizer)
 
-本文件定義了將外部下載的技能檔案（例如來自 `anthropics/skills`、`Benson-skill` 或 `github-skills`）自動歸類至安全軟體開發生命週期六階段（通稱 SSDLC）各階段與全域共用分類的標準作業流程。
+本文件定義了將外部下載的技能檔案（例如來自 `anthropics/skills` 或 `github-skills`）自動歸類至安全軟體開發生命週期六階段（通稱 SSDLC）各階段與全域共用分類的標準作業流程。
 
 ## 安全軟體開發生命週期（SSDLC）階段與共用分類定義
 本專案依據專案最高指導原則，將開發流程與技能管理劃分為以下六個階段與一個全域共用分類：
@@ -36,7 +36,7 @@
 
 ### 6. 06_maintenance
 * **適用技能**：線上故障分析、進程異常修復、運行日誌收集與格式化、指標監控告警。
-* **技能清單**：`elk_stack`、`prometheus_grafana`、`opentelemetry`、`logparser`、`isms-audit-prep`、`eip-line-radar`。
+* **技能清單**：`elk_stack`、`prometheus_grafana`、`opentelemetry`、`logparser`。
 
 ### 7. 00_cross_phase
 * **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制以及程式碼差異比對。
@@ -105,7 +105,7 @@
 
 `skills/README.md` 開頭段落為全文件的總覽摘要，每次新增 Skill 後必須同步更新以下全部欄位：
 
-1. **來源細項統計數字**：`Anthropic 官方（N）、Benson 自建（N）、GitHub 社群（N）、Anthropic 官方插件（N）` → 根據實際新增的 Skill 來源遞增對應數字。
+1. **來源細項統計數字**：`Anthropic 官方（N）、GitHub 社群（N）、Anthropic 官方插件（N）` → 根據實際新增的 Skill 來源遞增對應數字。
 2. **技能總數**：`共 N 個獨立 Skill` → 遞增總數。
 3. **雙歸屬技能清單與計數**：`其中 <skill-A>/<skill-B>/... 等 N 個具跨階段通用性` → 若新增了雙歸屬技能，必須在此列出技能名稱並更新計數。格式範例：`其中 docx/pdf/xlsx/pptx/file-organizer 等 5 個具跨階段通用性，ui-styling 同時歸類於 Phase 02 與 Phase 03，共計 6 個雙歸屬 Skill`。
 4. **新增技能群組摘要**（若有）：若新增的技能來自同一個來源套件（如 UI/UX Pro Max 7 個子技能），應在開頭段落中簡述。格式範例：`本次新增 nextlevelbuilder/ui-ux-pro-max-skill（MIT v2.6.2）之 7 個設計智慧技能，歸入 Phase 00/02/03`。

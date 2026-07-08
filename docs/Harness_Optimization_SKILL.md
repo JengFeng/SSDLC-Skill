@@ -83,15 +83,15 @@ AI 代理必須依序對以下 11 大檢查組（涵蓋 20+ 組核心檔案與�
     3. 確認 `skills/SKILLS歸類.md` 中的 7 個分類（6 階段 + 1 全域）與 `skills/README.md` 的實際目錄結構一致，映射清單無缺漏。
     4. **根 README Skill 數量同步檢查**（強制執行，不可跳過）：
        * **自動化先行**：優先執行 `scripts/check-readme-sync.ps1`，機械比對以下所有數字點。若腳本無法執行，則改以人工逐項比對。
-       * **比對基準**：以 `skills/README.md` 標頭行宣告的來源細項數字為準（格式：`Anthropic 官方（N）、Benson 自建（N）、GitHub 社群（N）、Anthropic 官方插件（N）…共 N 個`）。
+       * **比對基準**：以 `skills/README.md` 標頭行宣告的來源細項數字為準（格式：`Anthropic 官方（N）、GitHub 社群（N）、Anthropic 官方插件（N）…共 N 個`）。
        * **檢查點清單**（根 `README.md` 中以下六處數字必須完全一致）：
          1. **Banner 行**：`六大階段 SSDLC × N 個 AI 協作 Skill` 中的 N。
          2. **專案概述段**：`合計 **N 個** AI 協作 Skill` 中的 N。
-         3. **授權與來源段**：Anthropic 官方、Anthropic 官方插件、Benson 自建、GitHub 社群各自的數字，以及 `合計 N 個 Skill` 總數。
+         3. **授權與來源段**：Anthropic 官方、Anthropic 官方插件、GitHub 社群各自的數字，以及 `合計 N 個 Skill` 總數。
          4. **倉庫結構段**：`N 個 Skill 實體` 中的 N。
        * **階段數量檢查**：確認根 `README.md` 全文不存在「七大階段」或「七個階段」字樣（僅可出現「六大核心開發階段」或「六階段」）；`00` 跨階段全域共用層不得被描述為獨立階段。
        * **自動修正**：若任何數字不一致，立即以 `skills/README.md` 標頭數字為準，更新根 `README.md` 所有不一致處。
-        * **📊 skills/README.md 開頭統計數字驗證**（強制執行）：確認 `skills/README.md` 開頭段落中的來源細項數字（`Anthropic 官方（N）、Benson 自建（N）、GitHub 社群（N）、Anthropic 官方插件（N）…共 N 個`）與實際 `skills/` 目錄下各階段的 `SKILL.md` 數量總和一致（扣除雙歸屬重複計數後）。
+        * **📊 skills/README.md 開頭統計數字驗證**（強制執行）：確認 `skills/README.md` 開頭段落中的來源細項數字（`Anthropic 官方（N）、GitHub 社群（N）、Anthropic 官方插件（N）…共 N 個`）與實際 `skills/` 目錄下各階段的 `SKILL.md` 數量總和一致（扣除雙歸屬重複計數後）。
         * **📋 skills/SKILLS歸類.md 分類清單更新驗證**（強制執行）：當新增外部 Skill 時，必須確認 `skills/SKILLS歸類.md` 中對應階段的「**技能清單**」已包含新增的技能名稱，不可遺漏。各階段清單數量加總應與 `skills/README.md` 宣告的總數一致（允許因雙歸屬導致清單總數 > 唯一技能數）。
         * **🧠 根 README.md 上下文感知推薦表更新評估**（強制執行）：每次新增 Skill 後，必須檢查根 `README.md` 的「## 🧠 上下文感知 Skill 推薦對照表」是否需要更新。評估標準：
           1. 新 Skill 的使用場景是否為高頻操作（如設計/開發/測試階段的常用查詢或實作工具）
