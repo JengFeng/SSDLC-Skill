@@ -1,24 +1,50 @@
 # AI 協作對話指令集參照表 (Command Reference)
 
 本文件整理了專案中所有可用的對話指令。未來協作時，除了手動打字，您亦可直接用語音或口語進行操作：
+
+#### ⭐ 指令集查詢與框架優化
+
 - 說出「**讀取指令集**」、「**查詢可用指令**」或「**叫出指令對照表**」→ AI 代理自動呈獻此參照表。
 - 說出「**幫我執行駕馭工程框架優化檢查**」、「**Harness Optimization**」、「**對齊所有**」、「**對齊架構**」、「**幫我對齊架構**」、「**檢查全案關聯**」、「**規範落實度檢查**」或「**CORE_RULES 落差掃描**」→ ⚠️ 框架建造者專用。AI 代理將顯示警告提示，確認後依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
-- 說出「**建立基線**」、「**新建 Baseline**」、「**儲存專案快照**」→ AI 代理自動執行 @baseline，建立可獨立執行的完整專案快照，並於建立完成後自動觸發基線可執行性驗證（run.bat 語法、Python 匯入、模板完整性檢查）。
-- 說出「**回溯快照**」、「**還原快照**」、「**退回上一步**」、「**載入快照**」、「**回復到之前的快照**」或「**復原工作目錄**」→ AI 代理自動執行 @restore，列出可用快照並引導回溯還原。
-- 說出「**建立快照**」、「**存快照**」或「**記錄點**」→ AI 代理自動執行 @snapshot，建立即時 git diff patch 快照與 SHA-256 檔案清單，保留最近 5 筆。
-- 說出「**載入資安構面**」、「**導入安全防護**」或「**只加存取控制和日誌**」→ AI 代理自動執行 @security-load，列出構面清單或依指定等級/構面導入。
-- 說出「**執行資安檢核**」、「**資通安全稽核**」或「**安全檢核**」→ AI 代理自動執行 @security-check，依專案選定等級進行 7 構面逐項比對，產出檢核報告。
-- 說出「**強制解鎖階段 {N}**」、「**跳過階段關卡**」→ ⚠️ 框架建造者專用。AI 代理顯示警告提示，確認後強制解鎖指定階段。
+
+#### 🚀 專案初始化與階段管理
+
 - 說出「**檢查規格**」、「**CheckSpec**」、「**規格完整性**」或「**四規格檢查**」→ AI 代理自動執行 @CheckSpec，檢查四種規格（結構化可執行規格、行為可執行規格、SRS、RTM）的完整性與交叉一致性。
+- 說出「**檢查 REQ-003**」、「**確認 REQ-005 有沒有對齊**」、「**只檢查第三個需求**」→ AI 代理自動執行 @CheckSpec --req REQ-003，僅針對指定需求執行四向交叉檢查。
+- 說出「**強制解鎖階段 {N}**」、「**跳過階段關卡**」→ ⚠️ 框架建造者專用。AI 代理顯示警告提示，確認後強制解鎖指定階段。
+
+#### 🏗️ 基線與快照管理
+
+- 說出「**建立基線**」、「**新建 Baseline**」、「**儲存專案快照**」→ AI 代理自動執行 @baseline，建立可獨立執行的完整專案快照，並於建立完成後自動觸發基線可執行性驗證（run.bat 語法、Python 匯入、模板完整性檢查）。
+- 說出「**建立快照**」、「**存快照**」或「**記錄點**」→ AI 代理自動執行 @snapshot，建立即時 git diff patch 快照與 SHA-256 檔案清單，保留最近 5 筆。
+- 說出「**回溯快照**」、「**還原快照**」、「**退回上一步**」、「**載入快照**」、「**回復到之前的快照**」或「**復原工作目錄**」→ AI 代理自動執行 @restore，列出可用快照並引導回溯還原。
+
+#### 🔧 Skill 查詢與導入
+
+- 說出「**帶通用 Skill**」、「**混搭 G**」或「**加通用 git**」→ AI 代理引導以 `G` 前綴混搭通用 Skill 導入。
+- 說出「**導入這個外部 Skill**」、「**把這個 Skill 加入內建**」、「**import-skill**」、「**收錄成內建 Skill**」→ AI 代理自動執行 `@import-skill <skill-name>`。
+- 說出「**列出可匯入 Skill**」、「**有哪些外部 Skill 可匯入**」→ AI 代理自動執行 `@import-skill-list`。
+- 說出「**移除內建 Skill**」、「**把 Skill 退回外部資源**」→ AI 代理自動執行 `@import-skill-remove <skill-name>`。
+
+#### 📂 IO 檔案管理
+
 - 說出「**檢查 IO**」、「**IO 勾稽**」→ AI 代理自動執行 @io，以指定階段為中心進行跨階段 IO 勾稽檢查。
 - 說出「**設定 IO**」、「**定義 IO 檔案**」→ AI 代理自動執行 @io set，互動式定義或修改階段 IO 檔案。
 - 說出「**查看 IO**」、「**顯示 IO 檔案**」→ AI 代理自動執行 @io show，檢視指定階段的 IO 檔案清單。
 - 說出「**比對 IO**」、「**IO 差異**」→ AI 代理自動執行 @io diff，比對兩個階段的 IO 檔案差異。
-- 說出「**帶通用 Skill**」、「**混搭 G**」或「**加通用 git**」→ AI 代理引導以 `G` 前綴混搭通用 Skill 導入。
+- 說出「**列出 IO**」、「**各階段 IO**」→ AI 代理自動執行 @io list，列出各階段預設 IO 速查表。
+
+#### 🛡️ 資安防護
+
+- 說出「**載入資安構面**」、「**導入安全防護**」或「**只加存取控制和日誌**」→ AI 代理自動執行 @security-load，列出構面清單或依指定等級/構面導入。
+- 說出「**執行資安檢核**」、「**資通安全稽核**」或「**安全檢核**」→ AI 代理自動執行 @security-check，依專案選定等級進行 7 構面逐項比對，產出檢核報告。
+
+#### 🌐 外部資源管理
+
 - 說出「**引入外部 Skill**」、「**新增第三方資源**」、「**下載新的 Skill**」、「**加入外部 Skill**」→ AI 代理自動執行 @external-resource add，依 `external-resources/SKILL.md` 工作流程下載、登記並合規檢查外部第三方資源。
 - 說出「**移除外部 Skill**」、「**刪除第三方資源**」→ AI 代理自動執行 @external-resource remove，清理指定外部資源的目錄、資源清單與 `.gitignore` 規則。
 - 說出「**查看外部資源**」、「**列出第三方 Skill**」→ AI 代理自動執行 @external-resource list，列出所有外部資源的名稱、來源、授權與狀態。
-- 說出「**列出 IO**」、「**各階段 IO**」→ AI 代理自動執行 @io list，列出各階段預設 IO 速查表。
+
 
 ---
 
@@ -26,30 +52,33 @@
 
 | 指令語法 | 參數說明 | 系統行為 (AI 代理動作) | 範例 |
 | :--- | :--- | :--- | :--- |
+| **`@io [phase]`** | phase: `01`~`06` | 跨階段 IO 勾稽檢查。雙向檢查上游輸出是否滿足下游輸入。 | `@io 02` |
+| **`@io diff [A] [B]`** | 兩個階段代碼（`01`~`06`） | 比對兩個階段 IO 檔案差異（新增 / 移除 / 變更）。 | `@io diff 02 03` |
+| **`@io list [phase]`** | phase: `00`~`06`，省略 = 全顯示 | 列出各階段預設 IO 速查表，供快速瀏覽與選取。 | `@io list` |
+| **`@io set [phase]`** | phase: `00`~`06` | 互動式設定階段 IO 檔案。顯示編號清單，使用者勾選保留項目。 | `@io set 03` |
+| **`@io show [phase]`** | phase: `00`~`06` | 檢視指定階段的 IO 檔案清單（inputs / outputs）。 | `@io show 03` |
+| **`@external-resource add <URL>`** | GitHub repo 連結 | 將外部第三方 Skill 下載至 `external-resources/` 目錄，自動更新資源清單、`.gitignore` 排除規則與 `url.txt` 索引。完整工作流程參照 `external-resources/SKILL.md`。口語觸發：「引入外部 Skill」「新增第三方資源」「下載新的 Skill」。 | `@external-resource add https://github.com/owner/repo` |
+| **`@external-resource list`** | 無 | 列出 `external-resources/` 下所有第三方資源的名稱、來源、授權與狀態。口語觸發：「列出外部資源」「查看第三方 Skill」。 | `@external-resource list` |
+| **`@external-resource remove <名稱>`** | Skill 目錄名稱 | 移除指定外部第三方 Skill，同步清理 `README.md` 資源清單、`.gitignore` 規則與 `url.txt`。口語觸發：「移除外部 Skill」「刪除第三方資源」。 | `@external-resource remove ui-ux-pro-max-skill` |
+| **`@import-skill <skill-name>`** | Skill 目錄名稱 | 將 `external-resources/` 中指定外部 Skill 匯入 `skills/` 成為框架內建 Skill。自動執行歸類判斷、複製目錄、更新三檔。口語觸發：「導入 Skill」「收錄成內建 Skill」。 | `@import-skill markitdown` |
+| **`@import-skill-list`** | 無 | 掃描 `external-resources/` 與 `skills/`，列出尚未匯入框架內建的外部 Skill 清單。口語觸發：「列出可匯入 Skill」。 | `@import-skill-list` |
+| **`@import-skill-remove <skill-name>`** | Skill 目錄名稱 | 從 `skills/` 移除指定內建 Skill，回退至外部資源池，並同步更新三檔。口語觸發：「移除內建 Skill」「把 Skill 退回外部資源」。 | `@import-skill-remove markitdown` |
+| **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，**參照 `check_scope_per_domain.md` 逐項比對**系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`（**報告格式參照 `security_check_report_template.md`**）。構面 8（非軟體因子）在軟體專案中預設標記為不適用。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
+| **`@security-load [等級] [構面1,構面2,...]`** | 等級：`general` / `medium` / `high`；構面：`1`~`8`（逗號分隔，省略=全選）；無參數=列出構面清單 | 於任一階段中途導入資安防護基準，支援選定特定構面。執行相容性檢查後寫入當前階段 `SKILL.md`，並更新 `phase_gates.json`。口語觸發：「載入資安構面」「只加存取控制」「導入安全防護」。 | `@security-load medium 1,4,6` |
 | **`@baseline`** | 無 | 建立可獨立執行的完整專案快照至 `baseline/` 目錄（全域快照）。階段級 Baseline 為可選功能，由 `@init` 時設定 `phase_baseline_enabled` 開關控制。（含原始碼、模板、資料庫、部署腳本），自動遞增版本號，保留最近 3 份，舊版自動清理。**🔍 建立完成後自動執行基線可執行性驗證（啟動測試、HTTP 可用性檢查），若驗證失敗則立即回報並提供修復建議。** **🔄 自動觸發**：每次階段 Evaluator 通過後自動執行，不需使用者手動呼叫。口語觸發：「建立基線」、「新建 Baseline」。 | `@baseline` |
-| **`@CheckSpec`** | 無 | 檢查四種規格（executable_spec.yaml / requirements.feature / system_specification.md / traceability_matrix.md）的完整性與交叉一致性，產出摘要報告。口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。 | `@CheckSpec` |
+| **`@CheckSpec [--req REQ-NNN]`** | 無：全量檢查 / `--req REQ-003`：僅檢查指定需求 | 檢查四種規格（executable_spec.yaml / requirements.feature / system_specification.md / traceability_matrix.md）的完整性與交叉一致性，產出摘要報告。口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。 | `@CheckSpec` |
 | **`@help`** | 無 | 立即顯示本指令集參照表的完整內容，方便快速查閱所有可用指令與語法。 | `@help` |
 | **`@init [相對路徑]`** | 新專案的建立路徑 | 讀取專案範本結構，在指定路徑下建立完整的 SSDLC 目錄與必要之基礎控制檔案。建立完成後依序引導：(1) 詢問是否啟用階段級 Baseline（預設否），(2) 詢問是否導入資安防護基準 Security-Principles（選定 general/medium/high），(3) 詢問是否立即配置各階段 Skill（展示可用快捷編號清單）。 | `@init ./my_new_project` |
 | **`@optimize`** | 無 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描實際檔案系統並自動修復 README 倉庫結構/章節完整性，再對整個 SSDLC 框架範本執行 10 大檢查組的地毯式關聯檢查與修正。**僅限框架建造者使用，專案開發者請勿呼叫。** 執行前將顯示警告提示，確認後方執行。 | `@optimize` |
-| **`@snapshot`** | 無 | 手動建立即時快照（git diff patch + SHA-256 清單）。口語觸發：「建立快照」「存快照」「記錄點」。 | `@snapshot` |
 | **`@restore`** | `latest` / `N`（1~5） / `YYYYMMDD-HHMMSS` | 回溯工作目錄至指定執行快照。自動 `git stash` 保留未提交變更 → `git apply` 載入差異補丁 → SHA-256 驗證還原完整性。口語觸發：「回溯快照」「還原快照」「退回上一步」。 | `@restore latest` |
-| **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，**參照 `check_scope_per_domain.md` 逐項比對**系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`（**報告格式參照 `security_check_report_template.md`**）。構面 8（非軟體因子）在軟體專案中預設標記為不適用。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
-| **`@security-load [等級] [構面1,構面2,...]`** | 等級：`general` / `medium` / `high`；構面：`1`~`8`（逗號分隔，省略=全選）；無參數=列出構面清單 | 於任一階段中途導入資安防護基準，支援選定特定構面。執行相容性檢查後寫入當前階段 `SKILL.md`，並更新 `phase_gates.json`。口語觸發：「載入資安構面」「只加存取控制」「導入安全防護」。 | `@security-load medium 1,4,6` |
+| **`@snapshot`** | 無 | 手動建立即時快照（git diff patch + SHA-256 清單）。口語觸發：「建立快照」「存快照」「記錄點」。 | `@snapshot` |
 | **`@stages`** | 無 | 立即輸出 SSDLC 六大開發階段與跨階段全域共用分類（00_cross_phase）的代碼及中文名稱對照表。 | `@stages` |
 | **`@unlock [階段代碼]`** | `01` 到 `06` 的階段雙位數代碼 | ⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制。適用情境：框架調試、緊急 Hotfix、階段重建。**專案開發者日常流程中永遠不需使用。** 執行前顯示警告提示，確認後解鎖並記錄於 `phase_gates.json` 與 `logs/ai_adjustment_*.md`。 | `@unlock 03` |
+| **`in:` / `out:` 快速語法** | `in:`=輸入，`out:`=輸出，`?`=可選 | Skill 選定後一行定義 IO。`@03 in: api_spec, db_schema, ui?` | `@03 in: api_spec, db_schema, ui?` |
 | **`@[階段]`** | `00` 到 `06` 的階段雙位數代碼 | 掃描庫中該階段所有可用 Skill，按字母/數字順序為其編配雙位數快捷編號。同時顯示 `skills/00_cross_phase/` 通用 Skill（`G01`, `G02` ...）。以「快捷編號 — 實體名稱 — 用途描述」富資訊格式列出。 | `@02` |
 | **`@[階段]/[快捷編號]`** | 階段代碼與特定的雙位數快捷編號 | AI 代理將快捷編號還原為實體名稱後，直接將該 Skill 的檔案部署至專案對應目錄，並將 instructions 動態追加合併至該階段的 `SKILL.md` 中。**⚠️ 🚫 強制防呆：導入前強制檢查當前目錄是否為已初始化之 SSDLC 專案，若非專案目錄則強制中止、嚴禁繞過，提示使用者先執行 `@init`。** | `@01/01` |
 | **`@[階段]/[快捷編號_1],[快捷編號_2]`** | 逗號相連的多個快捷編號 | 聯合導入。依次部署多個 Skill，並將它們的 instructions 以各自標題獨立封裝追加合併至目標 `SKILL.md`。**⚠️ 防呆：導入前須確認當前目錄為已初始化之專案（具備 `traceability_matrix.md`、`system_specification.md` 及 SSDLC 階段目錄），否則強制中止、嚴禁繞過，提示使用者必須先執行 `@init [路徑]` 建立專案後再導入。** | `@02/01,02` |
 | **`@[階段]/[快捷],G[快捷],...`** | `G` 前綴 = `00_cross_phase` 通用 Skill，可與階段快捷混搭 | 混搭導入。階段專屬 Skill 與通用 Skill（`G` 前綴）可混合以逗號串接。通用 Skill 從 `skills/00_cross_phase/` 部署至指定階段。**⚠️ 防呆同上**。 | `@02/01,G01,G03` |
-| **`@io [phase]`** | phase: `01`~`06` | 跨階段 IO 勾稽檢查。雙向檢查上游輸出是否滿足下游輸入。 | `@io 02` |
-| **`@io show [phase]`** | phase: `00`~`06` | 檢視指定階段的 IO 檔案清單（inputs / outputs）。 | `@io show 03` |
-| **`@io set [phase]`** | phase: `00`~`06` | 互動式設定階段 IO 檔案。顯示編號清單，使用者勾選保留項目。 | `@io set 03` |
-| **`@io diff [A] [B]`** | 兩個階段代碼（`01`~`06`） | 比對兩個階段 IO 檔案差異（新增 / 移除 / 變更）。 | `@io diff 02 03` |
-| **`@io list [phase]`** | phase: `00`~`06`，省略 = 全顯示 | 列出各階段預設 IO 速查表，供快速瀏覽與選取。 | `@io list` |
-| **`in:` / `out:` 快速語法** | `in:`=輸入，`out:`=輸出，`?`=可選 | Skill 選定後一行定義 IO。`@03 in: api_spec, db_schema, ui?` | `@03 in: api_spec, db_schema, ui?` |
-| **`@external-resource add <URL>`** | GitHub repo 連結 | 將外部第三方 Skill 下載至 `external-resources/` 目錄，自動更新資源清單、`.gitignore` 排除規則與 `url.txt` 索引。完整工作流程參照 `external-resources/SKILL.md`。口語觸發：「引入外部 Skill」「新增第三方資源」「下載新的 Skill」。 | `@external-resource add https://github.com/owner/repo` |
-| **`@external-resource remove <名稱>`** | Skill 目錄名稱 | 移除指定外部第三方 Skill，同步清理 `README.md` 資源清單、`.gitignore` 規則與 `url.txt`。口語觸發：「移除外部 Skill」「刪除第三方資源」。 | `@external-resource remove ui-ux-pro-max-skill` |
-| **`@external-resource list`** | 無 | 列出 `external-resources/` 下所有第三方資源的名稱、來源、授權與狀態。口語觸發：「列出外部資源」「查看第三方 Skill」。 | `@external-resource list` |
 
 ### SSDLC 階段代碼參照
 
@@ -182,6 +211,7 @@
 ### 使用範例
 
 - `@CheckSpec` → 執行四規格完整性與交叉一致性檢查，產出摘要報告
+- `@CheckSpec --req REQ-003` → 僅針對 REQ-003 執行增量交叉檢查，快速確認單一需求的四向對齊狀態
 
 ### 執行流程
 

@@ -704,3 +704,42 @@ AI：收到，我來幫你回報這個框架問題。
 *   引入前必須檢查授權合規性（不得與框架現有授權衝突）
 *   若發現功能重疊，必須告知使用者並由使用者決定是否引入
 
+﻿
+### 15. 外部 Skill 納入框架指令：`@import-skill`
+
+本指令體系用於將 `external-resources/` 中已下載的外部 Skill，正式納入 `skills/` 成為框架內建可用 Skill。
+
+#### 15.1 指令總覽
+
+| 指令 | 功能 | 口語觸發 |
+|:-----|:-----|:---------|
+| `@import-skill <skill-name>` | 將指定外部 Skill 匯入框架內建 Skill | 「導入這個外部 Skill」「把這個 Skill 加入內建」「import-skill」「收錄成內建 Skill」 |
+| `@import-skill-list` | 列出可匯入但尚未納入內建的外部 Skill | 「列出可匯入 Skill」「有哪些外部 Skill 可匯入」 |
+| `@import-skill-remove <skill-name>` | 從內建 Skill 移除，回退至外部資源池 | 「移除內建 Skill」「把 Skill 退回外部資源」 |
+
+#### 15.2 AI 代理執行規範
+
+`@import-skill <skill-name>`：
+1. 掃描 `external-resources/<skill-name>/` 是否存在
+2. 讀取 `SKILL.md`、`README.md`、`url.txt`，確認功能與授權
+3. 執行歸類判斷（參照 `skills/SKILLS歸類.md`）：單階段或 `00_cross_phase` 雙歸屬
+4. 複製至 `skills/<phase>/<skill-name>/`
+5. 更新 `skills/README.md`、`SKILLS歸類.md`、根目錄 `README.md`
+6. 執行一致性驗證（三檔同步、Skill 總數一致）
+
+`@import-skill-list`：
+1. 掃描 `external-resources/` 下所有子目錄
+2. 比對 `skills/` 已有 Skill，列出尚未匯入者
+3. 以表格輸出：目錄名、授權、功能簡述、建議歸屬階段
+
+`@import-skill-remove <skill-name>`：
+1. 確認 `skills/<phase>/<skill-name>/` 存在
+2. 刪除該 Skill 目錄
+3. 更新 `skills/README.md`、`SKILLS歸類.md`、根目錄 `README.md`
+4. 向使用者報告清理結果
+
+#### 15.3 安全與合規規則
+
+*   匯入前必須確認授權無衝突
+*   若功能與現有 Skill 高度重疊，必須告知使用者並由使用者決定是否匯入
+*   匯入後必須完成三檔同步驗證

@@ -1,4 +1,4 @@
-# External Resources（外部第三方資源）
+﻿# External Resources（外部第三方資源）
 
 本目錄收錄本框架所引用的第三方外部 Skill 與資源。所有原始碼、腳本與第三方組件之智慧財產權均歸各原始作者所有，本框架僅基於其授權條款進行合理使用。
 
@@ -12,6 +12,7 @@
 |:-----|:-----|:-----|:-----|
 | `anthropics-skills/` | [anthropics/skills](https://github.com/anthropics/skills) | See `THIRD_PARTY_NOTICES.md` | Anthropic 官方 Skill 合集（17 個） |
 | `github-skills/` | GitHub 社群彙整 | — | GitHub 社群 Skill 合集（48 個） |
+| `markitdown/` | [microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT | Microsoft 輕量 Markdown 轉換工具（文件/簡報/試算表轉 Markdown） |
 | `Security-Principles/` | 本框架自建 | — | 數位發展部資通安全署防護基準 Skill |
 | `ui-ux-pro-max-skill/` | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 | UI/UX 設計智慧技能組（7 個） |
 
@@ -88,6 +89,7 @@ AI 代理將依序執行：
 | 資源 | 來源 | 授權 |
 |:-----|:-----|:-----|
 | Anthropic Skills | [github.com/anthropics/skills](https://github.com/anthropics/skills) | See THIRD_PARTY_NOTICES.md |
+| MarkItDown | [github.com/microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT |
 | UI/UX Pro Max | [github.com/nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 |
 
 - 所有第三方 Skill 的原始碼與詳細授權請參見 `external-resources/` 目錄下各自的 `LICENSE` 與 `THIRD_PARTY_NOTICES.md`。
@@ -104,6 +106,8 @@ external-resources/anthropics-skills/*
 !external-resources/anthropics-skills/url.txt
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
+external-resources/markitdown/*
+!external-resources/markitdown/url.txt
 external-resources/ui-ux-pro-max-skill/*
 !external-resources/ui-ux-pro-max-skill/url.txt
 ```

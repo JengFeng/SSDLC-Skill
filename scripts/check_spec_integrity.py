@@ -22,12 +22,14 @@ from datetime import datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class SpecIntegrityChecker:
-    def __init__(self, target_phase=None, mode="D", project=None):
+    def __init__(self, target_phase=None, mode="D", project=None, req_filter=None):
         self.target_phase = target_phase
         self.mode = mode
         self.issues = []
         self.passes = []
+        self.fix_hints = []
         self.project_base = self._resolve_project(project)
+        self.req_filter = req_filter
 
     def _resolve_project(self, project):
         """解析專案根目錄：接受 --project 參數，未指定時自動偵測當前工作目錄"""
@@ -193,18 +195,43 @@ class SpecIntegrityChecker:
         rtm_path = os.path.join(self.project_base, "traceability_matrix.md")
         if not os.path.exists(rtm_path):
             self.log("ERR", "traceability_matrix.md 缺失")
+            self.fix_hints.append("缺失 traceability_matrix.md → 執行 @init 或手動建立追溯矩陣")
             return
 
         with open(rtm_path, encoding="utf-8") as f:
             rtm = f.read()
 
-        for i in range(1, 7):
-            tag = f"REQ-00{i}"
+        # OPT-1: 動態讀取需求數量
+        yaml_req_count = self._get_yaml_req_count()
+        req_ids = self._get_req_ids(yaml_req_count)
+
+        for tag in req_ids:
+            # OPT-5: 增量檢查
+            if self.req_filter and tag != self.req_filter:
+                continue
             count = rtm.count(tag)
             if count >= 2:
                 self.log("OK", f"{tag} 已追溯")
             else:
                 self.log("ERR", f"{tag} 追溯不足 (出現 {count} 次)")
+                self.fix_hints.append(f"{tag} 追溯不足 → 在 traceability_matrix.md 中補列 {tag} 的實作與驗證欄位")
+
+
+    def _get_yaml_req_count(self):
+        """動態從 YAML 讀取需求總數"""
+        yaml_path = os.path.join(self.project_base, "specs", "executable_spec.yaml")
+        if os.path.exists(yaml_path):
+            try:
+                with open(yaml_path, encoding="utf-8") as f:
+                    spec = yaml.safe_load(f)
+                return len(spec.get("requirements", []))
+            except:
+                pass
+        return 6
+
+    def _get_req_ids(self, count):
+        """產生 REQ-001 ~ REQ-NNN"""
+        return [f"REQ-{i:03d}" for i in range(1, count + 1)]
 
     def check_feature_gherkin(self):
         """檢查 requirements.feature 的 Gherkin 語法與場景數"""
@@ -226,67 +253,108 @@ class SpecIntegrityChecker:
         srs_path = os.path.join(self.project_base, "system_specification.md")
         if not os.path.exists(srs_path):
             self.log("ERR", "system_specification.md 缺失")
+            self.fix_hints.append("缺失 system_specification.md → 執行 @init 或手動建立 SRS 規格書")
             return
         with open(srs_path, encoding="utf-8") as f:
             content = f.read()
+
+        yaml_req_count = self._get_yaml_req_count()
+        req_ids = self._get_req_ids(yaml_req_count)
         missing = []
-        for i in range(1, 7):
-            tag = f"REQ-00{i}"
+        for tag in req_ids:
+            if self.req_filter and tag != self.req_filter:
+                continue
             if tag not in content:
                 missing.append(tag)
         if missing:
             self.log("ERR", f"SRS 缺少需求參照: {', '.join(missing)}")
+            for m in missing:
+                self.fix_hints.append(f"SRS 缺少 {m} → 在 system_specification.md 中新增 {m} 相關章節")
         else:
-            self.log("OK", "SRS 包含所有 REQ-001 ~ REQ-006 參照")
+            self.log("OK", f"SRS 包含所有 REQ-001 ~ REQ-{yaml_req_count:03d} 參照")
+
 
     def check_cross_spec_consistency(self):
-        """檢查四種規格之間的交叉一致性"""
+        """檢查四種規格之間的交叉一致性（含動態需求、結構檢查、標題比對）"""
         print("\n=== 四規格交叉一致性 ===")
 
         yaml_path = os.path.join(self.project_base, "specs", "executable_spec.yaml")
+        spec = None
         yaml_count = 0
+        yaml_req_ids = []
         if os.path.exists(yaml_path):
             try:
                 with open(yaml_path, encoding="utf-8") as f:
                     spec = yaml.safe_load(f)
-                yaml_count = len(spec.get("requirements", []))
+                reqs = spec.get("requirements", [])
+                yaml_count = len(reqs)
+                yaml_req_ids = [r.get("id", f"REQ-{i+1:03d}") for i, r in enumerate(reqs)]
             except:
                 pass
 
+        req_ids = yaml_req_ids if yaml_req_ids else self._get_req_ids(self._get_yaml_req_count())
+
         feat_path = os.path.join(self.project_base, "specs", "features", "requirements.feature")
+        feat_content = ""
         feat_count = 0
         if os.path.exists(feat_path):
             with open(feat_path, encoding="utf-8") as f:
-                content = f.read()
-            feat_count = len([l for l in content.split("\n") if l.strip().startswith("Scenario:") or l.strip().startswith("場景:")])
+                feat_content = f.read()
+            feat_count = len([l for l in feat_content.split("\n") if l.strip().startswith("Scenario:") or l.strip().startswith("場景:")])
 
         if yaml_count > 0 and feat_count > 0:
-            # Check YAML requirement IDs appear in feature file
-            feat_path2 = os.path.join(self.project_base, "specs", "features", "requirements.feature")
-            with open(feat_path2, encoding="utf-8") as f:
-                feat_content = f.read()
             missing_in_feat = []
-            for i in range(1, yaml_count + 1):
-                tag = f"REQ-00{i}"
+            for tag in req_ids:
+                if self.req_filter and tag != self.req_filter:
+                    continue
                 if tag not in feat_content:
                     missing_in_feat.append(tag)
             if missing_in_feat:
                 self.log("ERR", f"Feature 缺少需求參照: {', '.join(missing_in_feat)}")
+                for m in missing_in_feat:
+                    self.fix_hints.append(f"Feature 缺少 {m} → 在 requirements.feature 中新增對應 Scenario")
             else:
                 self.log("OK", f"YAML 需求 ({yaml_count}) 全數參照於 Feature ({feat_count} Scenario)")
+
+        if feat_content and feat_count > 0:
+            import re as _re
+            gw_steps = len(_re.findall(r"(?:Given|When|Then|And|But|假設|當|則|而且|但是)", feat_content, _re.IGNORECASE))
+            if gw_steps < feat_count * 2:
+                self.log("WARN", f"Scenario 步驟不足: {feat_count} Scenario 僅有 {gw_steps} 個 Given/When/Then")
+                self.fix_hints.append("Scenario 步驟不足 → 確保每個 Scenario 至少有 Given + When + Then")
+            else:
+                self.log("OK", f"Scenario 結構完整: {feat_count} Scenario, {gw_steps} 個步驟")
 
         rtm_path = os.path.join(self.project_base, "traceability_matrix.md")
         if os.path.exists(rtm_path) and yaml_count > 0:
             with open(rtm_path, encoding="utf-8") as f:
                 rtm = f.read()
             untraced = []
-            for i in range(1, yaml_count + 1):
-                if f"REQ-00{i}" not in rtm:
-                    untraced.append(f"REQ-00{i}")
+            for tag in req_ids:
+                if self.req_filter and tag != self.req_filter:
+                    continue
+                if tag not in rtm:
+                    untraced.append(tag)
             if untraced:
                 self.log("ERR", f"RTM 缺少追溯: {', '.join(untraced)}")
+                for u in untraced:
+                    self.fix_hints.append(f"RTM 缺少 {u} → 在 traceability_matrix.md 中補列實作與驗證欄位")
             else:
                 self.log("OK", f"RTM 完整追溯所有 {yaml_count} 項 YAML 需求")
+
+            empty_fields = []
+            for tag in req_ids:
+                if self.req_filter and tag != self.req_filter:
+                    continue
+                for line in rtm.split("\n"):
+                    if tag in line:
+                        cells = [c.strip() for c in line.split("|") if c.strip()]
+                        if len(cells) < 4:
+                            empty_fields.append(tag)
+                        break
+            if empty_fields:
+                self.log("WARN", f"RTM 追溯欄位不完整: {', '.join(empty_fields)}")
+                self.fix_hints.append("RTM 追溯欄位不完整 → 確認每條記錄包含 需求ID | 實作 | 驗證 | 狀態")
 
         srs_path = os.path.join(self.project_base, "system_specification.md")
         if os.path.exists(srs_path) and os.path.exists(rtm_path):
@@ -294,15 +362,38 @@ class SpecIntegrityChecker:
                 srs = f.read()
             with open(rtm_path, encoding="utf-8") as f:
                 rtm = f.read()
-            srs_ok = all(f"REQ-00{i}" in srs for i in range(1, yaml_count + 1)) if yaml_count else False
-            rtm_ok = all(f"REQ-00{i}" in rtm for i in range(1, yaml_count + 1)) if yaml_count else False
+            srs_ok = all(tag in srs for tag in req_ids) if yaml_count else False
+            rtm_ok = all(tag in rtm for tag in req_ids) if yaml_count else False
             if srs_ok and rtm_ok:
                 self.log("OK", "SRS - RTM 雙向參照一致")
             else:
-                if not srs_ok: self.log("ERR", "SRS -> RTM 方向不一致")
-                if not rtm_ok: self.log("ERR", "RTM -> SRS 方向不一致")
+                if not srs_ok:
+                    self.log("ERR", "SRS → RTM 方向不一致")
+                    self.fix_hints.append("SRS 與 RTM 不一致 → 檢查 SRS 是否遺漏了某些 REQ 章節")
+                if not rtm_ok:
+                    self.log("ERR", "RTM → SRS 方向不一致")
+                    self.fix_hints.append("RTM 與 SRS 不一致 → 檢查 RTM 追溯是否與 SRS 內容對應")
 
-
+        if spec and spec.get("requirements") and feat_content:
+            print("\n=== 需求標題關鍵字比對 ===")
+            import re as _re2
+            stop_words = {"the","a","an","is","are","of","to","for","and","or","in","on","at","with","by"}
+            for req in spec["requirements"]:
+                rid = req.get("id", "")
+                if self.req_filter and rid != self.req_filter:
+                    continue
+                title = req.get("title", "")
+                if not title:
+                    continue
+                keywords = [w.lower() for w in _re2.split(r"[\s\-_]+", title) if len(w) > 2 and w.lower() not in stop_words]
+                keywords = keywords[:5]
+                feat_lower = feat_content.lower()
+                matched = sum(1 for kw in keywords if kw in feat_lower)
+                if matched >= 2:
+                    self.log("OK", f"{rid} 標題關鍵字相符 ({matched}/{len(keywords)}): {title}")
+                else:
+                    self.log("WARN", f"{rid} 標題關鍵字不足 ({matched}/{len(keywords)}): {title}")
+                    self.fix_hints.append(f"{rid} 標題關鍵字不符 → 確認 Feature 中有 {rid} 對應的 Scenario")
 
     def check_contract_io(self):
         """檢查點 E：跨階段契約輸入輸出勾稽"""
@@ -493,7 +584,6 @@ class SpecIntegrityChecker:
 
         for name, fname, desc in specs:
             fp = os.path.join(self.project_base, fname)
-                else os.path.join(self.project_base, "traceability_matrix.md")
             status = "存在" if os.path.exists(fp) else "缺失"
             print(f"  {name}")
             print(f"     檔案: {fname}")
@@ -523,12 +613,7 @@ class SpecIntegrityChecker:
             print("=" * 50)
             self.check_contract_io()
 
-        if self.mode == "E":
-            print("\n" + "=" * 50)
-            print("  Mode E：@io 跨階段契約 IO 勾稽")
-            print("=" * 50)
-            self.check_contract_io()
-
+        
         if self.mode == "S":
             print("\n" + "=" * 50)
             print("  @CheckSpec 模式：四規格完整性 + 交叉一致性")
@@ -555,9 +640,10 @@ if __name__ == "__main__":
     parser.add_argument("--project", default=None, help="目標專案目錄（未指定時自動偵測）")
     parser.add_argument("--phase", default=None, help="目標階段 (01-06)")
     parser.add_argument("--mode", default="D", choices=["A","B","C","D","E","S"], help="檢查模式 (S=@CheckSpec 四規格)")
+    parser.add_argument("--req", default=None, help="增量检查：仅检查指定需求 ID（如 REQ-003）")
     args = parser.parse_args()
 
-    checker = SpecIntegrityChecker(target_phase=args.phase, mode=args.mode, project=args.project)
+    checker = SpecIntegrityChecker(target_phase=args.phase, mode=args.mode, project=args.project, req_filter=args.req)
     sys.exit(checker.run())
 
 

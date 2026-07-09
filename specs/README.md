@@ -56,6 +56,45 @@ specs/
     └── .gitkeep
 ```
 
+## 規格異動時機
+
+### `executable_spec.yaml`（結構化可執行規格）
+
+| 異動時機 | 誰來改 | 說明 |
+|:---|:---|:---|
+| **Phase 01 需求釐清** | AI Planner + Generator | 初次建立需求清單、API 規格、資料模型 |
+| **需求變更** | AI Planner + Generator | 甲方追加/修改需求時，回到 Phase 01 更新 YAML |
+| **Phase 02 設計補充** | AI Generator | 寫入資料庫 Schema、API endpoints 細節 |
+| **Phase 03~06 產出回寫** | AI Generator/Evaluator | 各階段完成後，回寫 test_results、bugs 等欄位 |
+| **規格審查修正** | 框架建造者 | Evaluator 發現規格不足時，修正 acceptance_criteria |
+
+> **重要原則**：`executable_spec.yaml` 是 SSOT（Single Source of Truth），所有下游文件（SRS、RTM、Gherkin）都由此檔案自動生成，**嚴禁手動修改下游文件**。
+
+### `requirements.feature`（Gherkin 行為規格）
+
+| 異動時機 | 誰來改 | 說明 |
+|:---|:---|:---|
+| **Phase 01 需求完成** | AI 代理自動生成 | 從 YAML 的 acceptance_criteria 轉換為 Given/When/Then |
+| **需求異動** | AI 代理重新生成 | YAML 變更後，自動重新生成對應 Scenario |
+| **Phase 04 測試失敗** | AI Generator | 測試結果回饋後，可能需補充或修正 Scenario |
+
+> **產生規則**：每個 YAML requirement 的 `acceptance_criteria` 欄位 → 對應一個 Feature Scenario。YAML 變了，`.feature` 就要跟著重新生成。
+
+### 異動連鎖關係圖
+
+`requirements.feature` 不是獨立存在的，它跟其他規格文件有明確的依賴關係：
+
+```
+executable_spec.yaml (SSOT)
+    |
+    +-- 自動生成 --> system_specification.md (SRS)
+    +-- 自動生成 --> requirements.feature (Gherkin)
+    +-- 自動生成 --> traceability_matrix.md (RTM)
+    |
+    +-- 任何變更 --> 上述三份文件同步更新
+```
+
+> **Warning** 勿手動編輯：不要直接修改 requirements.feature / system_specification.md / traceability_matrix.md 中由 YAML 自動生成的內容，否則下次生成時會覆蓋你的手動修改。若有格式調整需求，應先修改 YAML 中的對應欄位。
 ## 使用方式
 
 ### 各階段 AI 代理讀取規範
@@ -151,4 +190,3 @@ YAML 不該去存 SQL 語法或 Python 程式碼 — 那些是實作產物，由
 - **驗證基準**：Evaluator 以 YAML 中的 acceptance_criteria 與 test_results 進行比對
 
 > 💡 **正確理解**：把 YAML 母版從 git clone 取出 → 可自動生成所有規格文件，但程式碼原始檔仍須從 git 倉庫取得。
-# 可執行規格目錄 (Executable Specification)

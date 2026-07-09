@@ -1,4 +1,4 @@
-﻿# 技能歸類技能 (Skill Categorizer)
+# 技能歸類技能 (Skill Categorizer)
 
 本文件定義了將外部下載的技能檔案（例如來自 `anthropics/skills` 或 `github-skills`）自動歸類至安全軟體開發生命週期六階段（通稱 SSDLC）各階段與全域共用分類的標準作業流程。
 
@@ -39,8 +39,8 @@
 * **技能清單**：`elk_stack`、`prometheus_grafana`、`opentelemetry`、`logparser`。
 
 ### 7. 00_cross_phase
-* **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制以及程式碼差異比對。
-* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`。
+* **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制、程式碼差異比對以及跨格式文件轉 Markdown。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`、`markitdown`。
 
 ## 執行步驟 SOP（完整版）
 

@@ -1535,3 +1535,72 @@ AGENTS.md 已補入記憶落實條款；memory.md 新增本次調整紀錄；bac
 > **歷史紀錄說明**：本文件部分早期紀錄仍保留 file:/// 絕對路徑寫法，僅供還原當時調整脈絡；現行規則已統一採 repo 內相對路徑，實際執行與審查請以現行檔案連結為準。
 
 
+
+
+---
+
+## 2026-07-09: skills/README.md 全域流水號統一、commands_reference.md 重排、check_spec_integrity 五項優化、文件清理與對齊
+
+### 1. skills/README.md 全域流水號統一
+- **問題**: 各批 Skill (Anthropic/GitHub/UI-UX Pro Max) 各自獨立計數, 導致編號跳號 (如 13->18->19)
+- **處理**: 將所有 72 筆 Skill 條目重新編為 [[01]]~[[72]] 連續流水號
+- **同步修復**: markitdown 追溯來源縮排錯誤 (4空格->2空格), slides 追溯來源錯位
+- **影響**: skills/README.md, 不影響指令系統 (指令快捷編號是 AI 代理每次動態掃描分配的)
+
+### 2. docs/commands_reference.md 重排
+
+#### 2.1 口語指令區: 依功能分為 7 組
+- Star 指令集查詢與框架優化 (讀取指令集, Harness Optimization)
+- Rocket 專案初始化與階段管理 (CheckSpec, 強制解鎖)
+- 建築 基線與快照管理 (建立基線, 建立快照, 回溯快照)
+- Wrench Skill 查詢與導入 (通用 Skill, import-skill 三指令)
+- 文件夾 IO 檔案管理 (檢查/設定/查看/比對/列出 IO)
+- 資安防護 (資安構面載入, 資安檢核)
+- 大洋洲 外部資源管理 (external-resource add/remove/list)
+
+#### 2.2 核心指令對照表: 27 行 A-Z 排序
+- @io 系列群組化 (01-05)
+- @external-resource 系列群組化 (06-08)
+- @import-skill 系列群組化 (09-11), 含新增的 3 行
+- @security 系列群組化 (12-13)
+- 其餘 @ 指令按字母排序
+- @[階段] 系列放最後 (模板型指令)
+
+#### 2.3 @CheckSpec 增量檢查補充
+- 口語指令區新增: 「檢查 REQ-003」「確認 REQ-005 有沒有對齊」
+- 核心對照表語法欄位更新為 @CheckSpec [--req REQ-NNN]
+- 使用說明新增 --req 範例
+
+### 3. check_spec_integrity.py 五項優化
+- **動態需求數量**: 新增 _get_yaml_req_count() + _get_req_ids(), 取代硬編碼 6
+- **修復建議**: 新增 fix_hints 佇列, 每個 FAIL 附帶具體修復提示
+- **Scenario 結構檢查**: 計算 Given/When/Then 步驟數, 不足則警告
+- **標題關鍵字比對**: 從 YAML 需求標題提取關鍵字, 比對 Feature 是否有相符
+- **增量檢查**: 新增 --req REQ-003 參數, 只針對特定需求做四向交叉比對
+
+### 4. README.md 修正
+- Skill 總數: 96 -> 68 (L21, L360 兩處修正)
+- scripts/ 描述: 從「輔助腳本」更新為「框架核心工具腳本」+ 安全工具鏈
+- 倉庫結構表 skills/ 數量同步為 68
+
+### 5. specs/README.md 新增「規格異動時機」章節
+- executable_spec.yaml 異動時機表 (5 種場景)
+- requirements.feature 異動時機表 (3 種場景)
+- 異動連鎖關係圖 (SSOT -> SRS/Gherkin/RTM 自動生成鏈)
+- 勿手動編輯警告
+- 清除底部殘留標題
+
+### 6. 目錄清理
+- 已刪除: export/ (30 個臨時 patch 腳本), .tmp_markitdown/ (重複的 markitdown repo 副本)
+- 確認保留: scripts/ (框架核心工具, 不宜移動)
+
+### 7. 對齊架構檢查結果
+- 執行 align_framework.ps1 -VerboseOutput
+- 修復項目: 0
+- Skill 數量三處交叉驗證一致: README 68 / skills/README.md 68 / 實際 72 筆索引 (含雙歸屬)
+
+### 影響範圍
+- 修改文件: 5 (skills/README.md, docs/commands_reference.md, README.md, specs/README.md, memory.md)
+- 修改腳本: 1 (scripts/check_spec_integrity.py)
+- 刪除目錄: 2 (export/, .tmp_markitdown/)
+- 新增章節: 1 (specs/README.md 規格異動時機)

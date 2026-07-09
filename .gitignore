@@ -1,4 +1,4 @@
-# 敏感檔
+﻿# 敏感檔
 **/.env
 **/*.key
 **/credentials.json
@@ -64,3 +64,7 @@ external-resources/github-skills/*
 !external-resources/github-skills/url.txt
 external-resources/ui-ux-pro-max-skill/*
 !external-resources/ui-ux-pro-max-skill/url.txt
+
+external-resources/markitdown/*
+!external-resources/markitdown/url.txt
+

@@ -1,14 +1,14 @@
-# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 67 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 68 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 67 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 68 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -18,7 +18,7 @@
 
 ## 🧩 開發階段架構
 
-本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **95 個** AI 協作 Skill。
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **68 個** AI 協作 Skill。
 
 ### 🌐 跨階段全域共用
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 67 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
+> **合計 68 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
 
 ---
 
@@ -105,8 +105,11 @@
 | `@external-resource add <URL>` | 引入外部第三方 Skill（下載+登記+合規檢查） | `@external-resource add https://github.com/owner/repo` |
 | `@external-resource remove <名稱>` | 移除外部第三方 Skill（清理目錄+資源清單+gitignore） | `@external-resource remove ui-ux-pro-max-skill` |
 | `@external-resource list` | 列出所有外部資源清單 | `@external-resource list` |
+| `@import-skill <skill-name>` | 將外部 Skill 匯入框架內建 Skill | `@import-skill markitdown` |
+| `@import-skill-list` | 列出可匯入但尚未納入內建的外部 Skill | `@import-skill-list` |
+| `@import-skill-remove <skill-name>` | 從內建 Skill 移除並回退至外部資源池 | `@import-skill-remove markitdown` |
 
-> **自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「檢查規格」「四規格檢查」、「顯示指令集」、「建立基線」、「建立快照」、「存快照」、「執行架構優化」、「檢查 IO」「設定 IO」「列出 IO」「比對 IO」即可觸發對應指令。
+> **自然語言觸發**：說出「載入資安構面」「導入安全防護」、「執行資安檢核」「檢查規格」「四規格檢查」、「顯示指令集」、「建立基線」、「建立快照」、「存快照」、「執行架構優化」、「檢查 IO」「設定 IO」「列出 IO」「比對 IO」、「導入 Skill」、「收錄成內建 Skill」、「列出可匯入 Skill」即可觸發對應指令。
 
 > **Baseline（基線）vs Snapshot（快照）**：`@baseline` 建立完整專案備份（原始碼+模板+部署腳本），是階段里程碑存檔；`@snapshot` 建立輕量快照（git diff + SHA-256），是修改前的安全記錄點。基線保留最近 3 份，快照保留最近 5 筆。
 
@@ -341,12 +344,15 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 
 
+
+
 ## 📂 倉庫結構
 
 | 路徑 | 用途 |
-|:---|:---|
+|:---|:---|| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
 | `.github/` | (待定義) |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
+| `backups/` | (待定義) |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD，已導入普級資安防護基準） |
 | `docs/` | 核心文件（CORE_RULES、TEMPLATE_SKILL、commands_reference、Harness_Optimization_SKILL） |
@@ -354,7 +360,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告） |
 | `scripts/` | 輔助腳本 + 🔒 安全工具鏈（align_framework.ps1、pre_commit_secrets.py、run_security_scan.py 等） |
-| `skills/` | 95 個 Skill 實體（含 README.md 與歸類索引） |
+| `skills/` | 88 個 Skill 實體（含 README.md 與歸類索引） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
 
@@ -366,21 +372,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | `README.md` | 本檔案：專案總覽與使用說明 |
 | `system_specification.md` | 系統功能規格書 SRS（IEEE 830 標準） |
 | `traceability_matrix.md` | 全域需求追溯矩陣（RTM，六階段對應） |
-| `待辦事項.md` | 架構回饋待辦清單。實際專案執行過程中若發現框架原始瑕疵或缺陷，可透過指令將問題與建議修正方案直接反饋至此，供架構建造者後續優化參考。 |
-
----
-
-
-### 🆕 外部資源管理指令（2026-07-08）
-
-| 項目 | 說明 |
-|:---|:---|
-| **@external-resource 指令體系** | 新增 add/remove/list 三個子指令，支援外部第三方 Skill 的引入、移除與列表查詢，完整工作流程定義於 external-resources/SKILL.md |
-| **external-resources/README.md** | 新增第三方資源聲明、指令操作說明、引用警語模板與安裝指引 |
-| **.gitignore negation 規則** | 排除第三方原始碼但保留 url.txt 索引，確保來源可追溯 |
-| **雙檔同步** | @external-resource 指令同步更新至 commands_reference.md、.agents/AGENTS.md 與根目錄 README.md |
-| **架構對齊** | 清理 Benson/AnySearch 殘留、修正角括號視覺混淆、三方一致性驗證通過 |
-
+| `待辦事項.md` | (待定義) |
 ## 📝 近期更新記錄（2026-07-08）
 
 ### 🏗️ 架構強化
@@ -418,4 +410,3 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | **待辦事項機制** | 新增架構回饋機制，支援開發者將框架問題直接反饋至 `待辦事項.md` |
 | **Baseline vs Snapshot 釐清** | 明確定義：Baseline = 完整專案存檔（階段里程碑），Snapshot = 輕量記錄點（修改前安全網） |
 | **代理執行模式分析** | 記錄業界四大 AI 代理執行模式比較（Pattern A~D），現階段保留嚴格 PDCA 管線 |
-

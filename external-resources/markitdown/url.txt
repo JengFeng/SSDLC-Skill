@@ -1,0 +1,4 @@
+https://github.com/microsoft/markitdown
+Version: latest (shallow clone)
+License: MIT
+
