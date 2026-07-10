@@ -1,437 +1,195 @@
-# 專案開發規則與防線規範 (AGENTS.md)
+# 員工基本資料管理系統 — AI 代理開發規則 (AGENTS.md)
 
-👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](../../docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
+> **專案**：員工基本資料管理系統（Employee HR Management System）
+> **技術棧**：Python 3.12+ / Flask 3.x / SQLite / Bootstrap 5 / Chart.js
+> **部署**：本機 Flask 開發伺服器（`http://localhost:5000`）
+> **SSDLC 狀態**：全部 6 階段已完成 ✅
 
-本文件定義了本專案在 SSDLC 開發生命週期中，各 AI 代理（Planner、Generator、Evaluator）必須嚴格遵守的全局行為準則，特別是「全局連貫性檢核與修正大工程」、「版本管控與組態管理」、「活系統規格書同步」以及「Windows Server + IIS 部署環境適配」的執行規範，以防止規格脫節與需求追溯遺漏。
-
----
-
-## 一、 全局連貫性工程 (Global Alignment Engineering) 規範
-
-本系統採用「外層全域 Agent + 內層階段性局部駕馭工程 PDCA 迴圈」之雙層解耦架構。系統在每個 SSDLC 階段的產出物提交前，必須觸發「全局連貫性大循環」進行交叉驗證與修正：
-
-```mermaid
-graph TD
-    A["階段產出異動 / 階段交接"] --> B["Planner: 執行連貫性稽核 (Cross-Audit)"]
-    B -->|發現不連貫 / 斷裂| C["Planner: 產出不連貫報告與修正清單"]
-    C --> D["Generator: 執行跨階段同步修正"]
-    D --> E["Evaluator: 進行全局審核與評分"]
-    E -->|審核通過| G["🛡️ SSOT 完整性檢查<br/>(check_spec_integrity.py)"]
-    G -->|通過| F["放行至下一階段 / 提交"]
-    G -->|異常| H["⚠️ 產出提醒報告<br/>詢問使用者：退回修正 or 直接放行？"]
-    H -->|使用者選擇退回| C
-    H -->|使用者選擇放行| F
-    E -->|未通過| C
-    B -->|完全連貫| G
-```
-
-### 1. 外層：全域主控 Global Agent（唯一頂層）
-*   **全域掌控與追溯**：負責安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC）的全域掌控、需求追溯、版本同步與 IIS 站台規格同步。
-*   **階段切換與 Baseline 鎖定**：每階段驗證穩定後，封存其穩定可執行的 Baseline。前一階段產生 Baseline，方可切換權限進入下一階段。
-
-    **🛡️ 階段完成後自動 SSOT 完整性提醒**：
-    1.  **Evaluator 通過後**：AI 代理自動執行 `python scripts/check_spec_integrity.py --mode B`（階段產出一致性檢查）。
-    2.  **進入下一階段前**：AI 代理自動執行 `python scripts/check_spec_integrity.py --mode C`（追溯鏈完整性檢查）。
-    3.  **若檢查發現異常**：⚠️ AI 代理產出提醒報告（列出缺失/不一致項目），並**詢問使用者**：「是否退回上階段修正，或直接放行進入下一階段？」
-        - 使用者選擇**退回修正** → 退回 Planner，修正後重新提交 Evaluator。
-        - 使用者選擇**直接放行** → 放行進入下一階段，異常項目記錄於 `phase_gates.json` 供後續追蹤。
-    4.  **檢查通過後**：寫入 `phase_gates.json` 紀錄（`ssot_integrity_checked: true`）。
-
-### 2. 內層：安全軟體開發生命週期六階段（通稱 SSDLC）局部 PDCA（各階段獨立運作）
-*   軟體開發生命週期切割為安全軟體開發生命週期安全軟體開發生命週期六階段（通稱 SSDLC），每一階段獨立執行一套 Plan -> Generator -> Evaluator 的 PDCA 閉環。
-*   **Plan 階段 (PDCA-P)**：承接上階段交付物與 Baseline，定義目標與交付物，執行 Skill 複選，並進行 Windows/IIS 環境靜態黑白名單衝突檢核。如果選取了互斥 Skill，直接判定為 B 類根源錯誤，不進入執行以節省 Token。
-*   **Generator 階段 (PDCA-D)**：作為唯一執行層，遵循「只執行、不判斷、不檢查、不修改」之鐵律。執行完成後自動儲存 Windows 本地絕對路徑快照至各該階段的 `snapshots/` 目錄，回溯時直接載入快照以降低 Token 消耗。
-*   **Evaluator 階段 (PDCA-C & PDCA-A)**：負責成果規格檢核與 Windows/IIS 流程軌跡完整性檢核。補充 IIS 站台日誌、進程日誌與 Windows 事件日誌雙軌驗證機制。
+本文件定義本專案在 SSDLC 開發生命週期中，各 AI 代理（Planner、Generator、Evaluator）必須嚴格遵守的行為準則。
 
 ---
 
-## 二、 系統規格書同步與 SSOT 銜接規範
+## 一、全局連貫性工程規範
 
-### 2.1 活系統規格書 (Living Specification)
+本專案採用「外層全域 Agent + 內層階段 PDCA 迴圈」雙層架構。
 
-為了將系統需求與自動化測試完美結合，專案使用 system_specification.md 作為活文件：
+### 1.1 外層：全域主控 Global Agent
 
-1.  **規格即測試**：此文件必須包含 Gherkin 語法（Given/When/Then）的場景區塊。
-2.  **狀態回寫**：每次執行測試治具（Harness）後，治具程式必須自動解析測試結果，將各功能模組的測試狀態寫回 system_specification.md。
-3.  **上線防線**：Evaluator 將會拒絕合併任何在 system_specification.md 中仍包含未通過狀態之 Scenario 的 PR。
+- **全域掌控**：負責 SSDLC 六階段的全域需求追溯、規格同步、版本同步。
+- **階段切換**：每階段驗證穩定後，封存 Baseline。前一階段產生 Baseline 方可進入下一階段。
+- **SSOT 完整性檢查**：
+  1. 階段完成後 → 執行交叉一致性檢查
+  2. 進入下一階段前 → 執行追溯鏈完整性檢查
+  3. 若檢查異常 → 產出報告，詢問使用者「退回修正」或「直接放行」
+  4. 檢查通過後 → 寫入 `phase_gates.json`（`ssot_integrity_checked: true`）
 
-### 2.2 SSOT 三軌規格架構
+### 1.2 內層：六階段 PDCA 閉環
+
+每一階段獨立執行 Plan → Generator → Evaluator：
+
+| 角色 | 職責 |
+|:---|:---|
+| **Planner** | 承接上階段交付物，定義目標與交付物，執行 Skill 選取與衝突檢核 |
+| **Generator** | 唯一執行層，遵循「只執行、不判斷、不檢查、不修改」鐵律 |
+| **Evaluator** | 成果規格檢核、流程軌跡完整性檢核、自動化測試驗證 |
+
+---
+
+## 二、規格書同步與 SSOT 規範
+
+### 2.1 三軌規格架構
 
 | 軌道 | 檔案 | 格式 | 讀者 |
 |:---|:---|:---|:---|
-| 結構化可執行規格 | specs/executable_spec.yaml | YAML | AI |
-| 行為化可執行規格 | specs/features/requirements.feature | Gherkin | AI |
-| 人可讀系統規格書 | system_specification.md | Markdown | 人類 |
+| 結構化可執行規格 | `specs/executable_spec.yaml` | YAML | AI |
+| 行為化可執行規格 | `specs/features/requirements.feature` | Gherkin | AI |
+| 人可讀系統規格書 | `system_specification.md` | Markdown | 人類 |
 
-### 2.3 階段銜接機制 (spec_ref.md)
+### 2.2 階段銜接機制 (spec_ref.md)
 
-每個階段的 inputs/ 目錄必須包含 spec_ref.md，記錄本階段必讀的 SSOT 規格路徑。
-AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀取即執行者，Evaluator 判定為 B 類錯誤。
+- 每個階段的 `inputs/` 目錄必須包含 `spec_ref.md`，記錄本階段必讀的 SSOT 規格路徑。
+- AI 代理執行前必須先讀取 `spec_ref.md` 中列出的所有規格。
+- 未讀取即執行者 → Evaluator 判定為 B 類錯誤。
 
-@init 指令執行時，AI 必須自動為 00-06 共 7 個階段生成 inputs/spec_ref.md。
+### 2.3 SSOT 完整性檢查點
 
-### 2.3.5 專案規格 ↔ 框架模板同步規則
-
-> 根層級 `specs/executable_spec.yaml` 為 `@init` 建立新專案時複製用的**空白模板**。專案層級（如 `demo_project/specs/executable_spec.yaml`）為該專案的**實際 SSOT**。兩者須保持結構同步。
-
-*   **同步觸發時機**：當專案層級 `executable_spec.yaml` 發生以下結構性變更時，必須同步回根層級模板：
-    1.  `requirements` 結構新增/調整（如新增需求欄位、變更需求分類）。
-    2.  `phases` 階段的 `outputs` 定義變更（新增/移除標準產出）。
-    3.  `security_controls` 安全控制項結構調整。
-    4.  YAML schema 版本號變更。
-*   **不需同步的情況**：僅變更需求內容（如需求描述、數量），未動到 YAML 結構定義。
-*   **AI 代理執行規範**：上述觸發條件發生時，於 Evaluator 通過後自動比對專案層級與根層級模板的 YAML 結構，若結構不一致則提示使用者是否同步。使用者確認後，將專案層級的結構更新至根層級模板（保留模板佔位值）。
-*   **雙向追溯**：變更記錄寫入 `memory.md`，標註 `[TEMPLATE_SYNC]` 標籤。
-
-### 2.4 SSOT 完整性監控機制（🛡️ 自動提醒 + 使用者決策）
-
-> ℹ️ **以下 4 個檢查點 AI 代理會自動執行。** 若檢查發現異常，AI 代理會產出提醒報告，並**詢問使用者**要「退回修正」還是「直接放行」。此為「提醒 + 互動決策」機制，由使用者做最終決定。
-
-為確保規格在開發過程中不被遺漏、移動或損毀，AI 代理會在以下檢查點自動執行規格完整性驗證並回報結果：
-
-#### 檢查點 A：階段啟動時（Planner 執行前）
-- 檢查 inputs/spec_ref.md 指向的所有規格檔案是否存在
-- 檢查 executable_spec.yaml 是否為有效 YAML
-- 檢查 requirements.feature 場景數是否與 executable_spec.yaml 中需求數一致
-- 若任一檢查失敗 → 暫停執行，輸出缺失清單
-
-#### 檢查點 B：階段完成時（Evaluator 執行後）
-- 檢查本階段產出是否與 SSOT 定義的需求/API/資料模型一致
-- 檢查所有 Mermaid 圖表語法（三個 backtick 配對正確）
-- 檢查階段產出檔案清單是否與 executable_spec.yaml 中 phases.[階段].outputs 一致
-- 若發現不一致 → B 類錯誤
-
-#### 檢查點 C：跨階段交接時
-- 檢查下一階段 inputs/ 是否包含 spec_ref.md
-- 檢查 traceability_matrix.md 追溯鏈是否完整
-- 若追溯鏈斷裂 → 禁止進入下一階段
-
-#### 檢查點 D：Git 提交前（Pre-commit Hook）
-- 執行規格完整性掃描腳本：python scripts/check_spec_integrity.py
-- 檢查 executable_spec.yaml vs 實際目錄結構是否一致
-- 產出 integrity_report.md 於 logs/ 目錄
-- 若檢查失敗 → 拒絕提交
-
+| 檢查點 | 時機 | 檢查內容 |
+|:---|:---|:---|
+| **A** | 階段啟動時 | spec_ref.md 指向的檔案是否存在、YAML 有效性、Feature 場景數一致 |
+| **B** | 階段完成時 | 產出與 SSOT 定義的需求/API/資料模型一致、Mermaid 語法正確 |
+| **C** | 跨階段交接時 | spec_ref.md 存在、追溯鏈完整 |
+| **D** | Git 提交前 | 規格完整性掃描、executable_spec.yaml vs 目錄結構 |
 
 ---
 
-## 三、 版本管控與組態管理 (Configuration Management) 規範
+## 三、版本管控與組態管理
 
-為了確保系統型態的完整度，防止任何未經授權的修改或版本防線漂移：
+### 3.1 Git 規範
 
-### 1. 全產物 Git 版本管理與 Windows 快照機制
-*   **分支規定**：所有開發工作必須在非 `main` 分支上進行。禁止直接推送至 `main`。
-*   **本地快照管理**：全面停用 Docker 容器機制。各階段的快照與執行軌跡（包含配置參數、快照、錯誤日誌與版本差異等）應存放在各階段的 `snapshots/` 與 `logs/` 目錄下。快照儲存與版本管控改用 Windows 本地檔案系統的時間戳快照機制（本機保留最近 5 筆快照，並自動清理舊資料防止儲存膨脹），並與本地 Git 倉庫進行比對。階段結束後必須自動向上回傳全域 Agent。
-*   **提交規範**：每次提交時，必須確保當前階段的 `traceability_matrix.md` 狀態為最新，且通過自動化測試治具的驗證。
+- 所有開發在非 `main` 分支上進行，禁止直接推送 `main`。
+- 每次提交確保 `traceability_matrix.md` 狀態最新。
+- 階段交接或發布時建立 `git tag`（格式 `baseline-vX.Y.Z`）。
 
-### 2. 組態基準與 Windows 權限稽核
-*   **組態基線標記**：在各階段交接或發布時，必須對當前程式碼與文件建立 `git tag` 基線（格式為 `baseline-vX.Y.Z`）。
-*   **發布前雜湊比對**：比對實體產物與 `outputs/build_manifest.json` 記錄的 SHA-256 雜湊值。若不符則強制拒絕發布。
-*   **Windows 與 IIS 權限管控**：適配 Windows 原生 NTFS 檔案讀寫權限與 IIS 匿名存取 (IUSR) 安全網，並於 Plan 階段前置檢核路徑編碼與檔案鎖定狀態，防止 403/404 異常。
+### 3.2 本機快照與備份
 
----
-
-## 四、 代理基本行為守則 (Harness Rules)
-
-### 1. Planner (規劃代理)
-*   **規劃優先**：任何需求變更或 Bug 修復，必須先由 Planner 更新 YAML 規格書並產出任務清單，嚴禁直接動手寫原始碼。
-*   **業務邊界**：規劃時必須明確定義「系統不做什麼」，以防止 AI 生成冗餘程式碼。
-
-### 2. Generator (執行代理)
-*   **只執行，不思考**：嚴格依照任務清單與 YAML 規格進行開發，禁止擅自修改系統架構，完成後必須自動呼叫編譯與驗證指令。
-*   **最小變更原則**：僅修改與任務相關的程式碼，禁止在未授權情況下重構無關模組。
-
-### 3. Evaluator (審查代理)
-*   **只審查，不改稿**：客觀且挑剔地逐條對照 YAML 規格與編譯品質。評分未達標者一律退回。
+- 快照存放於各階段 `snapshots/`，保留最近 5 筆，自動清理舊資料。
+- 資料庫備份存放於 `06_maintenance/outputs/backups/`，保留最近 30 份。
+- 備份腳本：`python 06_maintenance/outputs/backup.py`
 
 ---
 
-## 五、 上下文管理與防錯紀律（含 A/B 類錯誤分級重試）
+## 四、代理基本行為守則
 
-1.  **強制重置上下文**：在每個模組或階段任務完成後，必須立即重置對話上下文，防止長對話累積認知幻覺。
-2.  **重置後重新讀取**：重置上下文後，必須強制重新讀取本 `AGENTS.md` 規則檔案，確保 AI 隨時遵循專案紀律。
-3.  **基準與安全網**：在進行任何程式碼或規格變更前，必須先建立基準 (Baseline)，若驗證失敗且無法立即修復，必須在 5 分鐘內完全還原至基準 (Baseline) 狀態。
-4.  **錯誤二分類機制與分級重試**：
-    *   **A 類錯誤（執行層臨時錯誤）**：
-        *   包括：參數錯誤、IIS 逾時、Windows 進程中斷、權限異常、網路連線中斷、DOM 找不到元素、執行短暫衝突等。
-        *   **重試規則**：允許局部重試最多 3 次。回溯點僅退回 Generator，不重跑 Plan。重試採用指數退避，新錯誤重置計數器。滿 3 次失敗則升級為 B 類錯誤處理。
-    *   **B 類錯誤（規劃層根源錯誤）**：
-        *   包括：Skill 互斥、需求矛盾、設計缺陷、架構問題等。
-        *   **重試規則**：直接跳過局部重試，立即升級全域迭代（重跑該階段完整 PDCA）。全域自動迭代上限為 2 輪，滿 2 輪仍失敗則自動暫停、移交人工處理。
-5.  **IIS 專屬部署與環境衝突檢核**：
-    *   在 Plan 階段執行靜態衝突檢查。
-    *   **Docker 與 IIS 互斥規則**：`Docker 部署環境` 與 `IIS 部署操作` 為互斥關係，禁止同時選用，否則直接判定為 B 類錯誤攔截，避免環境配置衝突。
-    *   **IIS 專屬部署規則**：為防止 IIS 原生回收機制中斷長任務，必須設定應用程式集為進程駐留、關閉自動回收，並啟用 IIS 站台日誌與 Windows 系統事件日誌雙軌記錄，以支援問題追溯。
-6.  **階段結果自動回傳與快照日誌清理**：
-    *   每一輪局部 PDCA 完成後，該階段之完整檢核結果（包含 Skill 配置參數、執行快照、錯誤日誌、版本差異、人機對話紀錄與驗證報告等，存放在 `snapshots/` 與 `logs/` 目錄）必須自動上傳至全域主控 Agent。
-    *   全域 Agent 接收並同步更新需求追溯鏈、規格文件、對話紀錄與新版 Baseline 穩定版本。
-    *   系統必須嚴格執行物理目錄中快照最近 5 筆的保留規則，並自動清理舊資料，以防範儲存空間膨脹。
+### 4.1 Planner（規劃代理）
+
+- 任何需求變更或 Bug 修復，必須先更新規格書並產出任務清單。
+- 規劃時明確定義「系統不做什麼」，防止生成冗餘程式碼。
+
+### 4.2 Generator（執行代理）
+
+- 嚴格依照任務清單與規格進行開發，禁止擅自修改系統架構。
+- 最小變更原則：僅修改與任務相關的程式碼，禁止重構無關模組。
+- 完成後自動呼叫驗證指令。
+
+### 4.3 Evaluator（審查代理）
+
+- 客觀且挑剔地逐條對照規格與品質。評分未達標者一律退回。
+- 只審查，不改稿。
 
 ---
 
-## 六、 引導式專案初始化與階段 Skill 配置規範 (AI 代理對話指令協議)
+## 五、錯誤分級與重試機制
 
-為極簡化專案配置流程，AI 代理在與使用者對話時，必須主動辨識並執行以下對話指令：
+| 類型 | 定義 | 處理 |
+|:---|:---|:---|
+| **A 類** | 執行層臨時錯誤（參數錯誤、逾時、連線中斷、DOM 找不到元素） | 局部重試最多 3 次，指數退避。滿 3 次升級為 B 類 |
+| **B 類** | 規劃層根源錯誤（需求矛盾、設計缺陷、架構問題） | 全域迭代（重跑完整 PDCA），上限 2 輪。滿 2 輪自動暫停、移交人工 |
 
-### 0. 指令參照查詢指令：`@help`
-*   **指令定義**：立即顯示指令集參照表的完整內容，方便使用者快速查閱所有可用指令與語法。
-*   **AI 代理執行規範**：
-    1.  AI 代理必須讀取 [commands_reference.md](../../docs/commands_reference.md) 的完整內容。
-    2.  將內容以結構化方式呈現於對話中，包含所有指令的語法、參數與用途說明。
+---
 
-### 1\. 階段查詢指令：`@stages`
-*   **指令定義**：查詢 SSDLC 各開發階段之代碼與中文名稱對照。
-*   **AI 代理執行規範**：
-    1.  必須立即輸出以下對照表（六大核心開發階段 + 跨階段全域共用層）：
-        *   `00` : 跨階段全域共用 (cross_phase)
-        *   `01` : 規劃與需求分析 (planning_and_analysis)
-        *   `02` : 系統設計 (system_design)
-        *   `03` : 開發與編碼 (implementation_and_coding)
-        *   `04` : 測試驗證 (testing)
-        *   `05` : 部署發布 (deployment)
-        *   `06` : 維護監控 (maintenance)
-    2.  說明如何使用 `@[階段代碼]` 進行進一步查詢，以及使用 `@[階段代碼]/[快捷編號]` 進行導入。
+## 六、專案特有規範
 
-### 2. 階段 Skill 查詢指令：`@[階段雙位數代碼]`
-*   **指令定義**：查詢指定階段的可用 Skill 清單與用途說明（例如：`@01`）。
-*   **AI 代理執行規範**：
-    1.  自動掃描全域或專案 Skill 庫中，歸屬於該開發階段的所有可用 Skill。
-    2.  **快捷編號分配**：AI 代理必須按字母/數字順序對掃描出的所有可用 Skill 進行排序，並為其分配雙位數快捷編號（由 `01` 開始，如 `01`, `02`, `03` ...）。
-    3.  **富資訊解析**：AI 必須動態讀取這些可用 Skill 之 `SKILL.md` 檔案，解析其 YAML Frontmatter 中的 `description`（用途描述）欄位。
-    4.  條列式輸出各 Skill 的「快捷編號 — 實體名稱 — 用途描述」與「導入指令範例」。
-    5.  提供對應的導入指令範例，提示使用者進行導入。
+### 6.1 技術棧約束
 
-### 3. 直接與聯合導入 Skill 指令：`@[階段雙位數代碼]/[快捷編號]` 或 `@[階段雙位數代碼]/[快捷編號_1],[快捷編號_2]`
-*   **指令定義**：將指定的單個或多個 Skill（以逗號 `,` 聯合參數組合）部署至當前專案對應的階段目錄，並合併規範與登錄追溯。
-*   **AI 代理執行規範**：
-    0.  **專案初始化防呆 (Project Init Guard)**：執行前，AI 必須檢查當前工作目錄是否為已初始化之 SSDLC 專案（根目錄須具備 `traceability_matrix.md`、`system_specification.md` 及 SSDLC 階段目錄結構）。若非已初始化專案，必須中止導入，並提示使用者：「當前目錄尚未初始化為 SSDLC 專案，請先執行 `@init [路徑]` 建立專案工作目錄後再導入 Skill。」
-    1.  **安全網防禦**：執行前，AI 必須呼叫 Git 檢查工作區狀態...。若有未提交之變更，必須自動建立暫存 Git tag（格式為 `temp-baseline-YYYYMMDD-HHMMSS`）作為 Baseline。
-    2.  **快捷編號與逗號 (,) 防呆提醒與錯誤處理**：
-        *   若使用者輸入非雙位數快捷編號（例如輸入了完整的 Skill 資料夾名稱），AI 代理必須友善提示，例如：「請使用快捷編號進行導入，例如使用 `@01/01` 代替 `@01/skill_categorizer`」。
-        *   若指令中包含逗號 `,`，AI 代理必須將其視為聯合導入，並依逗號拆分所有快捷編號。
-        *   若其中有任何一個快捷編號在該階段不存在，AI 代理必須明確在對話中指出：「未找到編號為 [未找到的快捷編號] 的 Skill，請確保逗號兩側皆為有效的快捷編號。正確語法範例為：`@[階段]/[快捷編號1],[快捷編號2]`」，並列出該開發階段所有可用的快捷編號與實體名稱對照清單，中止導入流程，防止因輸入錯誤而導入失敗。
-    3.  **快捷編號還原**：AI 代理在部署前，必須在內部自動將快捷編號還原為對應的實體 Skill 資料夾名稱。
-    4.  **檔案部署**：將所指定的單個或多個 Skill 資料夾內的所有檔案與子目錄，複製到目標專案對應開發階段 的目錄下。
-    5.  **SKILL.md 動態合併**：
-        *   依序讀取所選之各 Skill 的 `SKILL.md` 內容。
-        *   將其 instructions 與規範分別以 `## [Skill 實體名稱] 規範` 為標題封裝，動態追加合併至該開發階段目錄下的 `SKILL.md` 中，並加上導入註記。
-        *   同步更新 `.agents/skills/[階段]/SKILL.md`，加入該 Skill 的用途描述與快捷編號對照。
-        *   若某階段尚未有 `SKILL.md`，則依據 `TEMPLATE_SKILL.md` 範本初始化後再行合併。
-    6.  **衝突處理**：動態合併時若出現重疊或矛盾的 instructions，以全局規章 `.agents/AGENTS.md` 為最高準則；若無法自動判定，必須列出衝突點由使用者手動裁決，嚴禁自行腦補。
-    7.  **重複導入防護**：若目標目錄已存在同名 Skill，AI 必須提示使用者進行「覆蓋（Overwrite）」或「放棄（Abort）」。
-    8.  **組態追溯**：在 `traceability_matrix.md` 中一次性登錄此次（或此批）Skill 導入的快捷編號、實體名稱、時間與版本。
+- **後端**：Python 3.12+ / Flask 3.x（禁止擅自更換框架）
+- **資料庫**：SQLite（WAL 模式 + 外鍵約束）— 禁止改用其他資料庫除非需求明確變更
+- **前端**：Bootstrap 5 + Jinja2 SSR + Chart.js（禁止引入 React/Vue 等重型框架除非需求明確）
+- **認證**：本機備援 bcrypt 登入 + AD SSO stub（待部署後設定 LDAPS）
+- **加密**：AES-256 Fernet（`crypto_utils.py`），金鑰存放於 `.env`
+- **測試**：pytest（API）+ Playwright（UI）
 
-### 4. 專案初始化指令：`@init [相對路徑]`
-*   **指令定義**：自動建立指定路徑之標準專案目錄結構與基礎檔案，並引導後續階段 Skill 配置。
-*   **AI 代理執行規範**：
-    1.  讀取 [TEMPLATE_SKILL.md](../../docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
-    2.  於指定路徑下建立完整的 SSDLC 目錄結構與 `.gitkeep`。
-    3.  自動生成基礎控制檔案：`traceability_matrix.md`、`system_specification.md`、`memory.md`，以及在根目錄建立引導檔 `AGENTS.md`（指向實體規章 `.agents/AGENTS.md`）。
-    4.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
-     5.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
-        *   適用安全構面清單（依各階段對照表）
-        *   對應參考文件路徑（`external-resources/Security-Principles/references/0X_*.md`）
-        *   對應等級檢核表路徑
-        *   參照框架層 `SKILL.md` 安全整合段落的提示
-        *   **目的**：確保後續各階段 Generator/Evaluator 執行時，能讀取到安全實作要求，避免「設計有定義、程式未實作」的斷鏈。
+### 6.2 資料庫操作規範
 
+- 所有 SQL 使用 `?` 佔位符（參數化查詢），嚴禁字串拼接。
+- `employee_history` 與 `audit_log` 為 Append-Only，僅允許 INSERT，禁止 UPDATE/DELETE。
+- 機敏欄位（身分證、生日、地址、薪資、銀行帳號）必須經 AES-256 加密後儲存。
+- 連線管理：每執行緒獨立 `sqlite3.connect()`，WAL 模式。
 
-### 5. 自然語言與語音喚出協議
-*   **語意觸發規範**：AI 代理在與使用者對話時，必須主動識別使用者的自然語言或語音口語輸入：
-    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](../../docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
-    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](../../docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
+### 6.3 安全規範
 
+- **登入安全**：5 次失敗鎖定 15 分鐘、Session 30 分鐘逾時
+- **RBAC**：四層角色（employee / hr_specialist / hr_manager / admin），API 層欄位級遮蔽
+- **CSP 標頭**：`default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:`
+- **資安防護基準**：普級 (general)，檢核表 `external-resources/Security-Principles/assets/checklist_general.md`
 
+### 6.4 目錄結構
 
-
-### 4.5 上下文感知 Skill 推薦機制
-
-> **設計理念**：不將特定 Skill 強制綁定到階段流程中，而是讓 AI 代理根據對話上下文**智慧推薦**，由使用者決定是否採用。保持彈性，避免寫死。
-
-#### 完整情境對照表
-
-| 階段 | 情境關鍵詞 | 推薦 Skill | 說明 |
-|:---|:---|:---|:---|
-| **01 規劃** | 需求模糊/缺口多 | `grill-me` | 結構化缺口拷問，強制釐清模糊點 |
-| | 創意發想/探索 | `brainstorming` | 腦力激盪與創意展開 |
-| | 大量文件/RFP | `langchain` | 文件分析與處理 |
-| **02 設計** | UI/前端/網頁/畫面 | `frontend-app-builder` | 高品質現代化 UI（漸層/動畫/SVG/RWD） |
-| | 資料視覺化/圖表 | `build-web-data-visualization` | 圖表選擇與設計 |
-| | UML/架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
-| **03 開發** | React/Next.js | `react-best-practices` | 效能最佳化（memo/Suspense/Image） |
-| | shadcn/ui 組件 | `shadcn` | 組件管理與樣式設計 |
-| | Postgres/Supabase | `supabase-postgres-best-practices` | 查詢最佳化與索引設計 |
-| | Stripe 金流 | `stripe-best-practices` | API 選擇與安全整合 |
-| **04 測試** | 前端/瀏覽器 UI | `Playwright` | 預錄腳本自動化測試，高覆蓋率 |
-| | API/後端 | `pytest` | API 端點測試與回歸 |
-| | Bug/測試失敗 | `systematic-debugging` | 系統性根因分析與修復 |
-| | 測試先行/TDD | `test-driven-development` | 紅綠重構循環 |
-| **05 部署** | CI/CD 管線 | `circleci` | 自動化建置、測試、部署 |
-| | Expo/App 上架 | `expo-deployment` | App Store/Play Store 發佈 |
-| **06 維護** | 線上錯誤追蹤 | `sentry` | 即時錯誤監控與事件分析 |
-| | 效能/瓶頸問題 | `systematic-debugging` | 根因分析與 Hotfix |
-| **全域** | 安全/資安檢核 | Security-Principles | 資通系統防護基準（普/中/高） |
-| | 版本控制/回溯 | Git + `@restore` + `@baseline` | SSOT 快照與還原 |
-
-#### 推薦流程（白話版）
-
-> AI 就像一個有經驗的隊友。聽你描述需求時，發現「這情況用某個工具會更好」，就會順口問你一句「要不要試試這個？」。你可以說好、說不用、或說換別的。不強迫、不自動套用。
-
-實際例子：
 ```
-你：「幫我做一個員工登入頁面」
-AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
-     它可以做漸層背景、動畫那種現代化的頁面，比基礎樣式好看很多。」
-你：「好，用這個」   ← 採用
-你：「不用，簡單就好」 ← 跳過
-你：「有沒有別的？」 ← 換其他
+myPrj/
+├── AGENTS.md                    # 引導檔 → .agents/AGENTS.md
+├── .agents/AGENTS.md            # ⬅ 本檔案（AI 代理必讀）
+├── phase_gates.json             # 階段關卡狀態
+├── system_specification.md      # 系統規格書（SSOT）
+├── traceability_matrix.md       # 需求追溯矩陣
+├── memory.md                    # 專案記憶/對話歷程
+├── specs/                       # 可執行規格
+│   ├── executable_spec.yaml
+│   └── features/requirements.feature
+├── 01_planning_and_analysis/    # 需求分析
+├── 02_system_design/            # 系統設計
+├── 03_implementation_and_coding/# 實作編碼（主程式目錄）
+│   └── outputs/
+│       ├── app.py               # Flask 主應用
+│       ├── models.py            # SQLite 資料庫操作層
+│       ├── config.py            # 組態設定
+│       ├── crypto_utils.py      # AES-256 加解密
+│       ├── db_init.py           # 資料庫初始化
+│       ├── templates/           # Jinja2 模板（11 頁）
+│       ├── .env                 # 環境變數（🔒 含加密金鑰）
+│       ├── run.bat              # Windows 啟動腳本
+│       ├── start.sh             # Linux/Mac 啟動腳本
+│       └── hr_system.db         # SQLite 資料庫
+├── 04_testing/                  # 測試驗證
+├── 05_deployment/               # 部署
+│   └── outputs/deployment_guide.md
+└── 06_maintenance/              # 維護
+    └── outputs/
+        ├── operations_manual.md
+        ├── create_admin.py
+        ├── backup.py
+        └── health_check.py
 ```
 
-#### 階段整合
+### 6.5 常用指令
 
-各階段 `SKILL.md` 的 Planner 已經從「預設調用」全面改成「看情況推薦」，要不要用由你決定。
-
-
-### 5. 框架優化指令：`@optimize`
-*   **指令定義**：⚠️ **框架建造者專用**。觸發 Harness Optimization，對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。
-*   **口語觸發**：「幫我執行駕馭工程框架優化檢查」、「Harness Optimization」、「對齊所有」、「對齊架構」、「幫我對齊架構」、「檢查全案關聯」、「規範落實度檢查」、「CORE_RULES 落差掃描」。
-*   **AI 代理執行規範**：
-    1.  執行前必須確認當前工作目錄為框架根目錄。
-    2.  顯示警告提示：「⚠️ 框架建造者專用指令。@optimize 將對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。此指令僅限框架建造者使用，專案開發者請勿呼叫。」
-    3.  取得使用者確認後，**首先執行 `scripts/align_framework.ps1` 進行動態掃描與自動修復**（倉庫結構 table ↔ 實際檔案系統對齊、標準結構 tree 交叉比對、必要章節完整性驗證），再依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
-    4.  修復完成後輸出報告，並自動建立 Git 暫存基線，寫入 memory.md。
-    5.  最後執行 CORE_RULES 規範 vs 實際落實落差掃描做為收斂性終檢：逐條比對 CORE_RULES.md 中所有「必須」、「自動」、「強制」等可執行規範條目是否已在專案中實際落實，產出落差清單（已落實 ✅ / 未落實 ❌ / 無需落實 ⬚），❌ 項目判定為 B 類錯誤並立即修復。
-
-### 6. 快照回溯指令：`@restore`
-*   **指令定義**：回溯工作目錄至指定的執行快照，快速還原至先前穩定狀態，不需重跑整個 Plan 階段。
-*   **口語觸發**：「回溯快照」、「還原快照」、「退回上一步」、「載入快照」、「回復到之前的快照」、「還原到 X 分鐘前的狀態」、「回到上一個 snapshot」、「復原工作目錄」。
-*   **參數說明**：
-    | 參數 | 行為 |
-    |:---|:---|
-    | 無（預設） | 列出最近 5 筆快照（時間戳 + Git HEAD + 階段上下文），讓使用者選擇回溯目標 |
-    | `latest` | 直接回溯到最新快照，跳過選擇步驟 |
-    | `N`（1~5） | 回溯到倒數第 N 筆快照（1 = 最新，2 = 次新…） |
-    | `YYYYMMDD-HHMMSS` | 回溯到指定時間戳的快照 |
-*   **AI 代理執行規範**：
-    1.  **快照定位**：掃描 `snapshots/` 目錄，讀取所有 `snapshot_*.md`，依時間戳排序。
-    2.  **摘要顯示**（無參數時）：列出最近 5 筆快照的摘要資訊（時間戳、Git HEAD 前 7 碼、檔案數量、執行階段、測試結果）。
-    3.  **⚠️ 警告提示**：回溯將覆蓋當前工作目錄變更。AI 代理必須顯示警告：「⚠️ 回溯至 [時間戳] 快照將覆蓋當前工作目錄的未提交變更。系統將自動執行 git stash 保留這些變更。確認回溯？」
-    4.  **安全網**：
-        *   自動執行 `git stash` 保留當前未提交變更（stash message 格式：`pre-restore-YYYYMMDD-HHMMSS`）。
-        *   載入目標快照配對的 `diff_*.patch`：`git apply snapshots/diff_[timestamp].patch`。
-        *   若 `git apply` 失敗（檔案衝突），輸出衝突檔案清單，不強制覆蓋，提示使用者手動處理。
-    5.  **完整性驗證**：載入後比對快照中的 SHA-256 檔案清單與當前工作目錄檔案，輸出驗證報告：
-        *   ✅ SHA-256 一致
-        *   ⚠️ SHA-256 不符（列出檔案清單）
-        *   ❌ 檔案缺失（列出檔案清單）
-    6.  **回溯完成報告**：輸出回溯結果摘要（快照時間戳、還原檔案數、驗證通過/失敗清單、衝突檔案清單）。
-
-### 7. 專案基線快照指令：`@baseline`
-*   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
-*   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
-*   **AI 代理執行規範**：
-    1.  計算下一個版本號（baseline-v1, v2, v3...）。
-    2.  複製完整可執行專案（原始碼 + 依賴清單 + 啟動腳本 + 必要資源檔）至 `baseline/baseline-v{N}/`。複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
-    3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
-    4.  保留最近 3 份 baseline，自動清理最舊版本。
-    5.  寫入 memory.md 紀錄。
-
-
-
-
-
-### 8. 階段強制解鎖指令：`@unlock`
-*   **指令定義**：⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制，繞過正常的階段切換檢查。
-*   **口語觸發**：「強制解鎖階段 {N}」、「跳過階段關卡 {N}」、「略過階段 {N} 檢查」。
-*   **AI 代理執行規範**：
-    1.  讀取 `phase_gates.json`，確認目標階段的當前狀態。
-    2.  顯示警告提示：「⚠️ 強制解鎖將繞過階段關卡檢查，可能導致需求追溯斷裂與規格不一致。確認強制解鎖階段 {N}？」
-    3.  **使用者確認後**：
-        *   將目標階段 `status` 更新為 `in_progress`（不自動建立缺失的階段 Baseline）。
-        *   在 `phase_gates.json` 中記錄解鎖事件（含時間戳、操作理由）。
-        *   在 `logs/ai_adjustment_{date}.md` 中記錄此次強制解鎖。
-    4.  若使用者取消，則不執行任何變更。
-
-
-
-
-### 9. 四規格完整性檢查指令：`@CheckSpec`
-*   **指令定義**：檢查四種規格（結構化可執行規格 executable_spec.yaml、行為可執行規格 requirements.feature、系統規格書 system_specification.md、追溯矩陣 requirement_tracker.md）的完整性與交叉一致性，產出摘要報告。
-*   **參數說明**：無參數。執行 `python scripts/check_spec_integrity.py --mode S`。
-*   **口語觸發**：「檢查規格」、「CheckSpec」、「規格完整性」、「四規格檢查」。
-*   **AI 代理執行規範**：
-    1.  檢查四種規格檔案是否存在於正確路徑。
-    2.  驗證 executable_spec.yaml 的 YAML 語法有效性。
-    3.  檢查 requirements.feature 的 Gherkin 結構（Feature/Scenario 數量）。
-    4.  檢查 system_specification.md 是否參照所有 REQ 需求。
-    5.  檢查 requirement_tracker.md 的追溯鏈完整性。
-    6.  執行四規格交叉一致性比對（YAML ⇄ Feature ⇄ SRS ⇄ RTM）。
-    7.  產出四規格摘要報告，列出各規格狀態與異常項目。
-
-### 10. 資安防護基準檢核指令：`@security-check`
-*   **指令定義**：載入 Security-Principles Skill 之對應等級檢核表，根據當前 SSDLC 階段篩選適用安全構面，逐項比對系統產出是否符合控制措施要求，並產出檢核報告。
-*   **參數說明**：
-    | 參數 | 行為 |
-    |:---|:---|
-    | `general` | 普級檢核（58 項控制措施） |
-    | `medium` | 中級檢核（70 項控制措施） |
-    | `high` | 高級檢核（80 項控制措施） |
-    | 無（預設） | 使用專案初始化時選定的等級（讀取 `phase_gates.json` 中 `security_baseline.level`） |
-*   **口語觸發**：「執行資安檢核」、「資通安全稽核」、「以普級防護基準檢查」、「安全檢核」。
-*   **AI 代理執行規範**：
-    1.  讀取 `phase_gates.json`，確認 `security_baseline.enabled` 為 `true`。若未啟用，提示使用者先執行 `@init` 並導入 Security-Principles。
-    2.  載入對應等級檢核表（`external-resources/Security-Principles/assets/checklist_*.md`）。
-    3.  根據當前 SSDLC 階段，篩選適用構面（參照 Security-Principles SKILL.md 中 7 構面 vs SSDLC 階段對照表）。
-    4.  逐項比對系統產出是否符合控制措施，標記 ✅符合 / ❌不符合 / ➖不適用 / ⬚未涵蓋。
-    5.  產出檢核報告（`outputs/security_check_report.md`），含摘要統計、逐項結果、重點風險、改善建議。
-    6.  **⚠️ 階段性限制免責聲明（必須執行）**：若檢核結果存在 ⚠️ 部分符合或 ❌ 不符合項目，且其原因**非屬軟體設計或開發實作缺陷**（如：需正式 TLS 憑證但處於本機開發階段、涉及硬體/機房實體安全非軟體可控、需組織管理程序非系統功能可達成），則檢核報告中必須：
-        - 在「統計」段落後新增「## 階段性限制說明」章節。
-        - 逐項列出每一項非完全符合的項目，明確標註**不符合原因**與**是否為階段性限制**。
-        - 若屬階段性限制（如 Phase 3 無法取得正式憑證），須加註「待 Phase N 部署至真實環境後重新驗證」。
-        - 若屬非軟體因子（如硬體/實體/組織管理面），須加註「非軟體開發範疇，屬 {對應面向} 管控」。
-        - **目的**：避免檢核報告因階段性或非軟體因素呈現未 100% 符合，導致閱讀者誤判為設計或實作缺陷。
-    7.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
-*   **相容性檢查**：執行前自動比對 Security-Principles 控制措施與現有 6 階段 Skill 規則，若發現衝突則顯示 `[WARN]` 警示並暫停等候使用者確認。
-
-### 11. 彈性安全防護導入指令：`@security-load`
-*   **指令定義**：於任一 SSDLC 階段中途導入 Security-Principles 資安防護基準，支援選定特定構面與等級，非強制全選。適用於 @init 時未導入、或僅需針對特定安全面向強化的場景。
-*   **參數說明**：
-    | 參數 | 行為 |
-    |:---|:---|
-    | 無（預設） | 列出 8 大安全構面清單（含各等級控制措施數），供使用者選擇 |
-    | `[等級]` | 全構面導入（7 軟體構面），等級為 general/medium/high |
-    | `[等級] [構面1,構面2,...]` | 僅導入指定構面（1-8），逗號分隔 |
-*   **口語觸發**：「導入安全防護」、「載入資安構面」、「只加存取控制和日誌」、「針對 Phase 3 強化安全」。
-*   **AI 代理執行規範**：
-    1.  **無參數**：讀取 `external-resources/Security-Principles/README.md` 中的構面對照表，列出 8 構面清單（含各等級控制措施數與簡介），提示使用者選擇等級與構面。
-    2.  **讀取 phase_gates.json**：若 `security_baseline` 不存在則自動建立（`enabled: true`）。
-    3.  **載入選定構面**：根據參數，讀取對應 `references/0X_*.md`，篩選指定等級的控制措施。
-    4.  **相容性檢查**：比對選定構面的控制措施與當前階段已載入 Skill 內容，偵測重複規則 → `[INFO]` 提示、衝突規則 → `[WARN]` 警示暫停。
-    5.  **寫入當前階段**：更新當前階段 `SKILL.md` 中「安全防護整合（條件式）」段落的適用構面清單。
-    5.5 **🔙 回溯補寫已完成階段**：若 `@security-load` 在非 Phase 1 階段執行（即先前階段已完成但未啟用安全防護），AI 代理必須自動回溯補寫「安全防護整合（條件式）」段落至所有已完成階段的專案 `SKILL.md`：
-        - 讀取 `phase_gates.json`，確認哪些階段的 `status` 為 `completed`
-        - 對每個已完成階段，依該階段適用構面（參照 Security-Principles 構面對照表），寫入安全整合段落
-        - 對已完成階段，自動產生 `design_brief.md`（萃取該階段產出中的既有安全相關內容）
-        - 補寫完成後輸出回溯摘要（階段編號、補入構面、補寫檔案清單）
-        - **目的**：確保中途導入安全防護時，不會出現「前面階段已完成但無安全設計」的斷鏈。
-
-    6.  **更新 phase_gates.json**：記錄 `security_baseline.domains`（選定構面編號）、`security_baseline.level`。
-    7.  **產出階段檢核表**：呼叫 `scripts/generate_checklist.py <等級> --domains <構面清單>` 產生該階段專屬檢核表。
-*   **使用範例**：
-    - `@security-load` → 列出構面清單供選擇
-    - `@security-load medium` → 全構面中級導入
-    - `@security-load general 1,4,6` → 僅導入存取控制+識別鑑別+通訊保護，普級
-    - `@security-load high 2,3` → 僅導入日誌+備援，高級
+| 操作 | 指令 |
+|:---|:---|
+| 啟動系統 | `run.bat`（Win）/ `./start.sh`（Linux/Mac） |
+| 初始化資料庫 | `python db_init.py` |
+| 建立管理員 | `python 06_maintenance/outputs/create_admin.py` |
+| 備份資料庫 | `python 06_maintenance/outputs/backup.py` |
+| 健康檢查 | `python 06_maintenance/outputs/health_check.py` |
+| 規格完整性檢查 | `python scripts/check_spec_integrity.py --mode S` |
 
 ---
 
+## 七、上下文管理紀律
 
+1. **階段完成後重置上下文**：每個模組或階段任務完成後，立即重置對話上下文。
+2. **重置後重新讀取**：必須強制重新讀取本 `AGENTS.md`。
+3. **變更前建立基準**：進行任何程式碼或規格變更前，先建立 Baseline。驗證失敗且無法立即修復時，5 分鐘內完全還原。
+4. **最小上下文原則**：每次對話僅載入與當前任務相關的檔案，避免多餘資訊干擾。
 
+---
 
-
-
-
-
-
-
-
+> 📌 **規章版本**：v1.0 | **最後更新**：2026-06-29 | **適用專案**：員工基本資料管理系統 (myPrj)

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ '編輯' if mode=='edit' else '新增' }}員工{% endblock %}
+{% block content %}
+<h5 class="mb-3">{{ '✏️ 編輯' if mode=='edit' else '➕ 新進員工報到' }}</h5>
+<div class="card"><div class="card-body"><form method="POST" class="row g-3">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="col-md-4"><label class="form-label">工號 <span class="text-danger">*</span></label><input name="employee_code" class="form-control" value="{{ employee.employee_code if employee else '' }}" required></div>
+  <div class="col-md-4"><label class="form-label">中文姓名 <span class="text-danger">*</span></label><input name="name_zh" class="form-control" value="{{ employee.name_zh if employee else '' }}" required></div>
+  <div class="col-md-4"><label class="form-label">英文姓名</label><input name="name_en" class="form-control" value="{{ employee.name_en or '' if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">身分證字號 <span class="text-danger">*</span></label><input name="id_number" class="form-control" value="{{ employee.id_number if employee else '' }}" required></div>
+  <div class="col-md-4"><label class="form-label">出生日期 <span class="text-danger">*</span></label><input type="date" name="birth_date" class="form-control" value="{{ employee.birth_date if employee else '' }}" required></div>
+  <div class="col-md-4"><label class="form-label">性別</label><select name="gender" class="form-select"><option value="">—</option><option value="M" {{ 'selected' if employee and employee.gender=='M' }}>男</option><option value="F" {{ 'selected' if employee and employee.gender=='F' }}>女</option></select></div>
+  <div class="col-md-4"><label class="form-label">公司 Email <span class="text-danger">*</span></label><input type="email" name="email_company" class="form-control" value="{{ employee.email_company if employee else '' }}" required></div>
+  <div class="col-md-4"><label class="form-label">個人 Email</label><input type="email" name="email_personal" class="form-control" value="{{ employee.email_personal or '' if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">手機</label><input name="phone_mobile" class="form-control" value="{{ employee.phone_mobile or '' if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">分機</label><input name="phone_extension" class="form-control" value="{{ employee.phone_extension or '' if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">通訊地址</label><input name="address_contact" class="form-control" value="{{ employee.address_contact or '' if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">部門 <span class="text-danger">*</span></label><select name="department_id" class="form-select" required>{% for d in departments %}<option value="{{ d.id }}" {{ 'selected' if employee and employee.department_id==d.id }}>{{ d.name }}</option>{% endfor %}</select></div>
+  <div class="col-md-4"><label class="form-label">職稱 <span class="text-danger">*</span></label><input name="title" class="form-control" value="{{ employee.title if employee else '' }}" required></div>
+  <div class="col-md-4"><label class="form-label">到職日 <span class="text-danger">*</span></label><input type="date" name="hire_date" class="form-control" value="{{ employee.hire_date if employee else '' }}" required></div>
+  <hr><h6>緊急聯絡人</h6>
+  <div class="col-md-4"><label class="form-label">姓名</label><input name="emergency_contact_name" class="form-control" value="{{ employee.emergency_contact_name if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">電話</label><input name="emergency_contact_phone" class="form-control" value="{{ employee.emergency_contact_phone if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">關係</label><select name="emergency_contact_relation" class="form-select"><option value="">—</option><option>父母</option><option>配偶</option><option>子女</option><option>兄弟姐妹</option></select></div>
+  {% if session.role in ('hr_manager','admin') %}
+  <hr><h6>薪資與銀行</h6>
+  <div class="col-md-4"><label class="form-label">薪資</label><input name="salary" class="form-control" value="{{ employee.salary if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">銀行代碼</label><input name="bank_code" class="form-control" value="{{ employee.bank_code if employee else '' }}"></div>
+  <div class="col-md-4"><label class="form-label">銀行帳號</label><input name="bank_account" class="form-control" value="{{ employee.bank_account if employee else '' }}"></div>
+  {% endif %}
+  <div class="col-12 text-end">
+    <a href="{{ url_for('employee_list_page') }}" class="btn btn-secondary">取消</a>
+    <button type="submit" class="btn btn-primary ms-2">儲存</button>
+  </div>
+</form></div></div>
+{% endblock %}

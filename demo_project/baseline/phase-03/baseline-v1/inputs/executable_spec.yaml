@@ -1,0 +1,110 @@
+# =============================================================================
+# 可執行規格母版 (Executable Specification - SSOT)
+# =============================================================================
+# 專案：員工基本資料管理系統 (myPrj)
+# 本檔案為專案唯一資料源（Single Source of Truth）
+# =============================================================================
+
+project:
+  name: "員工基本資料管理系統"
+  version: "0.2.0"
+  created: "2026-06-29"
+  last_updated: "2026-06-29T15:20:00"
+  current_phase: "02_system_design"
+  description: "企業內部人資管理 Web 應用，提供員工基本資料 CRUD、生命週期管理、RBAC 權控、AD SSO 整合、人事報表與稽核軌跡。"
+
+phase_01_planning:
+  status: completed
+  baseline: null
+  inputs:
+    raw_requirements: ["01_planning_and_analysis/inputs/user_requirement_raw.md"]
+  outputs:
+    formal_requirements: "01_planning_and_analysis/outputs/formal_requirements.md"
+    requirement_tracker: "01_planning_and_analysis/reg/requirement_tracker.md"
+  requirements:
+    - id: "REQ-001"
+      description: "員工主檔 CRUD — 支援 HR 對員工基本資料之新增、查詢、修改、刪除（含 20+ 欄位）"
+      priority: P0
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "HR 專員可於 1 分鐘內完成一筆新進員工完整建檔"
+        - "Email 與工號全系統唯一，重複時回傳明確錯誤訊息"
+    - id: "REQ-002"
+      description: "員工生命週期管理 — 自動記錄調動/升遷/調薪/離職等異動軌跡（Append-Only）"
+      priority: P0
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "任何員工資料異動後，稽核日誌於 1 秒內可見完整軌跡"
+        - "歷史記錄不可修改或刪除"
+    - id: "REQ-003"
+      description: "學經歷與證照管理 — 多筆學歷/經歷/證照登錄與附件上傳（PDF/JPG ≤5MB）"
+      priority: P1
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "單一員工可登錄多筆學歷/經歷/證照"
+        - "附件上傳限 PDF/JPG/PNG，上限 5MB"
+    - id: "REQ-004"
+      description: "員工自助服務 (ESS) — 一般員工可檢視個人資料並修改非機密聯絡欄位"
+      priority: P1
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "一般員工可修改手機、通訊地址、緊急聯絡人"
+        - "一般員工無法修改薪資、評核等機敏欄位"
+    - id: "REQ-005"
+      description: "角色權限控管 (RBAC) — 三層角色，欄位級 ACL"
+      priority: P0
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "一般員工無法存取他人機敏資料（含直接 API 呼叫）"
+        - "HR 專員無薪資/評核/離職原因檢視權限"
+        - "HR 主管具備全欄位完整讀寫"
+    - id: "REQ-006"
+      description: "人事報表與統計 — 年資分佈/部門結構/壽星清單/離職率"
+      priority: P1
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "主管可於 3 次點擊內取得報表並匯出 Excel"
+        - "報表支援日期區間與部門篩選"
+    - id: "REQ-007"
+      description: "資料匯出 — Excel (.xlsx)，依角色權限自動遮蔽無權欄位"
+      priority: P1
+      source: "HR 需求訪談 2026-06-29"
+      acceptance_criteria:
+        - "匯出內容依登入角色自動遮蔽無權欄位"
+  evaluator:
+    passed: true
+    scores: { coverage: 95, clarity: 95, traceability: 95, format: 95 }
+    errors: { type_a: [], type_b: [] }
+
+phase_02_design:
+  status: completed
+  baseline: null
+  inputs:
+    requirements: ["01_planning_and_analysis/outputs/formal_requirements.md"]
+  outputs:
+    db_schema: "02_system_design/outputs/db_schema.sql"
+    er_diagram: "02_system_design/outputs/er_diagram.md"
+    api_spec: "02_system_design/outputs/api_spec.md"
+    ui_prototype: "02_system_design/outputs/ui_prototype.html"
+    use_case_diagram: "02_system_design/outputs/use_case_diagram.md"
+    activity_diagram: "02_system_design/outputs/activity_diagram.md"
+    sequence_diagram: "02_system_design/outputs/sequence_diagram.md"
+  database:
+    tables: [employees, departments, employee_history, employee_education, employee_experience, employee_certification, audit_log]
+  api:
+    endpoints: ["GET /employees", "GET /employees/:id", "POST /employees", "PUT /employees/:id", "PATCH /employees/:id", "DELETE /employees/:id", "GET /employees/:id/history", "POST /employees/:id/history", "GET /employees/:id/education", "POST /employees/:id/education", "GET /employees/:id/experience", "POST /employees/:id/experience", "GET /employees/:id/certifications", "POST /employees/:id/certifications", "GET /me", "PATCH /me", "GET /reports/*", "GET /export/*", "GET /departments", "POST /departments", "GET /audit-logs"]
+  evaluator:
+    passed: true
+    scores: { completeness: 95, consistency: 95, traceability: 95 }
+    errors: { type_a: [], type_b: [] }
+
+phase_03_implementation: { status: pending, baseline: null }
+phase_04_testing: { status: pending, baseline: null }
+phase_05_deployment: { status: pending, baseline: null }
+phase_06_maintenance: { status: pending, baseline: null }
+
+security_controls:
+  data_encryption: ["AES-256 欄位級加密", "bcrypt 密碼雜湊", "TLS 1.2+ HTTPS"]
+  access_control: ["RBAC 三層", "AD SSO LDAPS", "Session 30min 逾時"]
+  audit: ["audit_log Append-Only", "employee_history Append-Only", "pgAudit Trigger"]
+  compliance: ["台灣個資法", "勞動基準法 5年保留", "資通系統防護基準普級"]

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}儀表板 — 員工基本資料管理系統{% endblock %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+{% block content %}
+<h5 class="mb-3">📊 人事儀表板</h5>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3"><div class="card border-start border-primary border-4 p-3"><small class="text-muted">總員工人數</small><h3 class="mb-0 mt-1" id="stat-total">-</h3></div></div>
+  <div class="col-6 col-md-3"><div class="card border-start border-success border-4 p-3"><small class="text-muted">本月新進</small><h3 class="mb-0 mt-1" id="stat-new">-</h3></div></div>
+  <div class="col-6 col-md-3"><div class="card border-start border-danger border-4 p-3"><small class="text-muted">本月離職</small><h3 class="mb-0 mt-1" id="stat-left">-</h3></div></div>
+  <div class="col-6 col-md-3"><div class="card border-start border-warning border-4 p-3"><small class="text-muted">當月壽星</small><h3 class="mb-0 mt-1" id="stat-birthday">-</h3></div></div>
+</div>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card p-3"><h6>部門人力結構</h6><canvas id="chartDept" height="220"></canvas></div></div>
+  <div class="col-md-6"><div class="card p-3"><h6>年資分佈</h6><canvas id="chartYear" height="220"></canvas></div></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+async function loadDashboard(){
+  try{
+    let deptRes = await fetch('/api/v1/reports/department-structure');
+    if(deptRes.ok){
+      let deptData = await deptRes.json();
+      let total = deptData.reduce((s,d)=>s+d.count,0);
+      document.getElementById('stat-total').textContent = total;
+      new Chart(document.getElementById('chartDept'),{type:'doughnut',data:{labels:deptData.map(d=>d.department),datasets:[{data:deptData.map(d=>d.count),backgroundColor:['#2c5f8a','#5dade2','#f39c12','#27ae60','#e74c3c','#8e44ad']}]}});
+    }
+    let yearRes = await fetch('/api/v1/reports/year-distribution');
+    if(yearRes.ok){
+      let yearData = await yearRes.json();
+      new Chart(document.getElementById('chartYear'),{type:'bar',data:{labels:yearData.map(d=>d.label),datasets:[{label:'人數',data:yearData.map(d=>d.count),backgroundColor:'#2c5f8a'}]}});
+    }
+    let birthdayRes = await fetch('/api/v1/reports/birthday-this-month');
+    if(birthdayRes.ok){
+      let bData = await birthdayRes.json();
+      document.getElementById('stat-birthday').textContent = bData.length;
+    }
+  }catch(e){console.error(e)}
+}
+loadDashboard();
+</script>
+{% endblock %}

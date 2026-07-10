@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}員工明細 — {{ employee.name_zh }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0">👁️ {{ employee.name_zh }} ({{ employee.employee_code }})</h5>
+  <div>
+    {% if session.role in ('hr_specialist','hr_manager','admin') %}
+    <a href="{{ url_for('employee_edit_page', emp_id=employee.id) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i> 編輯</a>
+    {% endif %}
+    <a href="{{ url_for('employee_list_page') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> 返回</a>
+  </div>
+</div>
+<div class="card mb-3"><div class="card-body">
+<ul class="nav nav-tabs">
+  <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-basic">基本資料</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-history">異動歷程</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-edu">學經歷</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-cert">證照</a></li>
+</ul>
+<div class="tab-content mt-3">
+<div class="tab-pane fade show active" id="tab-basic">
+  <div class="row g-3">
+    <div class="col-md-3"><small class="text-muted">工號</small><p>{{ employee.employee_code }}</p></div>
+    <div class="col-md-3"><small class="text-muted">姓名</small><p>{{ employee.name_zh }}</p></div>
+    <div class="col-md-3"><small class="text-muted">性別</small><p>{{ '男' if employee.gender=='M' else '女' if employee.gender=='F' else '-' }}</p></div>
+    <div class="col-md-3"><small class="text-muted">部門</small><p>{{ employee.department_id }}</p></div>
+    <div class="col-md-4"><small class="text-muted">職稱</small><p>{{ employee.title }}</p></div>
+    <div class="col-md-4"><small class="text-muted">Email</small><p>{{ employee.email_company }}</p></div>
+    <div class="col-md-4"><small class="text-muted">手機</small><p>{{ employee.phone_mobile or '-' }}</p></div>
+    <div class="col-md-4"><small class="text-muted">到職日</small><p>{{ employee.hire_date }}</p></div>
+    <div class="col-md-4"><small class="text-muted">狀態</small><p><span class="badge bg-{{ 'success' if employee.status=='在職' else 'secondary' }}">{{ employee.status }}</span></p></div>
+  </div>
+</div>
+<div class="tab-pane fade" id="tab-history">
+  <table class="table table-sm"><thead><tr><th>日期</th><th>類型</th><th>異動前</th><th>異動後</th><th>原因</th></tr></thead>
+  <tbody>{% for h in history %}<tr><td>{{ h.change_date }}</td><td>{{ h.change_type }}</td><td>{{ h.old_value }}</td><td>{{ h.new_value }}</td><td>{{ h.reason or '-' }}</td></tr>{% endfor %}</tbody></table>
+</div>
+<div class="tab-pane fade" id="tab-edu">
+  <h6>學歷</h6><table class="table table-sm"><thead><tr><th>學校</th><th>科系</th><th>學位</th><th>起迄</th></tr></thead>
+  <tbody>{% for e in education %}<tr><td>{{ e.school_name }}</td><td>{{ e.major or '-' }}</td><td>{{ e.degree or '-' }}</td><td>{{ e.start_date or '-' }} ~ {{ e.end_date or '-' }}</td></tr>{% endfor %}</tbody></table>
+  <h6 class="mt-3">經歷</h6><table class="table table-sm"><thead><tr><th>公司</th><th>職稱</th><th>起迄</th></tr></thead>
+  <tbody>{% for e in experience %}<tr><td>{{ e.company_name }}</td><td>{{ e.title or '-' }}</td><td>{{ e.start_date or '-' }} ~ {{ e.end_date or '-' }}</td></tr>{% endfor %}</tbody></table>
+</div>
+<div class="tab-pane fade" id="tab-cert">
+  <table class="table table-sm"><thead><tr><th>證照</th><th>發證單位</th><th>有效期限</th></tr></thead>
+  <tbody>{% for c in certifications %}<tr><td>{{ c.cert_name }}</td><td>{{ c.issuing_org or '-' }}</td><td>{{ c.expiry_date or '-' }}</td></tr>{% endfor %}</tbody></table>
+</div>
+</div></div></div>
+{% endblock %}

@@ -42,6 +42,8 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
     4.  產出雙套測試腳本：`outputs/test_api.py`（pytest）與 `outputs/test_ui.py`（Playwright）。
     5.  完成後儲存執行快照至根目錄的 `snapshots/` 目錄。
     6.  **[條件式] 安全測試執行**：若 `security_baseline.enabled` 為 `true`，執行 SAST 原始碼安全檢測、弱點掃描、OWASP Top 10 漏洞驗證，產出 `outputs/security_test_report.md`。
+    7.  **🔄 測試報告自動同步（強制）**：每次 pytest 或 Playwright 執行完成後，必須自動解析測試輸出，將通過/失敗/跳過統計、修復歷程與執行日期更新至 `outputs/test_results.md`。若報告日期早於測試腳本最後修改日期，Evaluator 應判定為報告過期（B 類錯誤）。
+    8.  **📦 一鍵測試執行檔產出（強制）**：每次 Generator 執行完成後，必須自動產生 `outputs/run_tests.bat`，讓非開發人員可雙擊執行完整雙軌測試。標準行為：自動啟動 Flask → 執行 pytest API 測試 → 執行 Playwright UI 測試 → 清理 Flask 程序 → 開啟 `test_results.md`。編碼必須為 UTF-8 BOM，首行含 `chcp 65001`，`cd /d "%~dp0"` 指向自身目錄。
 
 ### 3. Evaluator (審查代理)
 *   **任務**：進行測試結果審查、Bug 分類與回歸測試策略制定。
@@ -64,6 +66,8 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
     *   `test_api.py`：pytest API 功能測試腳本。
     *   `test_ui.py`：Playwright 瀏覽器 UI 測試腳本。
     *   `test_results.md`：雙套測試結果報告（含通過/失敗統計、覆蓋率）。
+    *   `run_tests.bat`：一鍵雙軌測試執行檔（雙擊即可自動啟動 Flask → 跑 pytest → 跑 Playwright → 清理 → 開啟報告），供非開發人員進行人工 review。
+    *   `run_app.bat`：一鍵啟動主程式執行檔（雙擊即可自動啟動 Flask → 開啟瀏覽器 → 登入頁面），供人工 reviewer 直接操作驗證系統功能。
 *   **Bug 追蹤 (`bug/`)**：
     *   `bug_tracker.md`：統一缺陷追蹤表（Bug ID | 發現日期 | 嚴重度 | 描述 | 重現步驟 | 根因 | 修復方案 | 狀態 | 修復日期）。
 

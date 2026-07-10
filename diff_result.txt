@@ -1,0 +1,7 @@
+
+InputObject                                           Side
+-----------                                           ----
+03_implementation_and_coding\outputs\hr_system.db     In myPrj only
+03_implementation_and_coding\outputs\hr_system.db-shm In myPrj only
+03_implementation_and_coding\outputs\hr_system.db-wal In myPrj only
+

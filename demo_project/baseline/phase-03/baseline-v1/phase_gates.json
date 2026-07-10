@@ -1,0 +1,58 @@
+{
+  "project": "myPrj",
+  "last_updated": "2026-07-10T00:00:00",
+  "phases": {
+    "01_planning_and_analysis": {
+      "status": "completed",
+      "baseline": null,
+      "evaluator_score": 95,
+      "completed_at": "2026-06-29T14:00:00",
+      "ssot_integrity_checked": true
+    },
+    "02_system_design": {
+      "status": "completed",
+      "baseline": null,
+      "evaluator_score": 95,
+      "completed_at": "2026-06-29T14:17:00",
+      "ssot_integrity_checked": true
+    },
+    "03_implementation_and_coding": {
+      "status": "completed",
+      "baseline": null,
+      "evaluator_score": 92,
+      "completed_at": "2026-06-29T15:45:00",
+      "ssot_integrity_checked": true
+    },
+    "04_testing": {
+      "status": "completed",
+      "baseline": null,
+      "evaluator_score": 92,
+      "completed_at": "2026-06-29T15:58:00",
+      "ssot_integrity_checked": true
+    },
+    "05_deployment": {
+      "status": "completed",
+      "baseline": null,
+      "evaluator_score": 90,
+      "completed_at": "2026-06-29T16:50:00",
+      "ssot_integrity_checked": true
+    },
+    "06_maintenance": {
+      "status": "completed",
+      "baseline": null,
+      "evaluator_score": 92,
+      "completed_at": "2026-06-29T17:00:00",
+      "ssot_integrity_checked": true
+    }
+  },
+  "phase_baseline_enabled": false,
+  "security_baseline": {
+    "skill_path": "../external-resources/Security-Principles",
+    "description": "資通系統防護基準（普級）— 已於 @init 時導入",
+    "enabled": true,
+    "level": "general",
+    "initialized_at": "2026-06-29",
+    "skill": "Security-Principles",
+    "min_security_score": 70
+  }
+}
