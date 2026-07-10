@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}員工列表{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0">👥 員工列表</h5>
+  <a href="{{ url_for('employee_add_page') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> 新增員工</a>
+</div>
+<div class="card"><div class="card-body p-2">
+  <form class="row g-2 mb-3" method="GET">
+    <div class="col-md-3"><input name="q" class="form-control form-control-sm" placeholder="🔍 搜尋姓名/Email" value="{{ request.args.get('q','') }}"></div>
+    <div class="col-md-2"><select name="department_id" class="form-select form-select-sm"><option value="">全部部門</option></select></div>
+    <div class="col-md-2"><select name="status" class="form-select form-select-sm"><option value="">全部狀態</option><option value="在職">在職</option><option value="留停">留停</option><option value="離職">離職</option></select></div>
+    <div class="col-md-2"><button class="btn btn-outline-secondary btn-sm w-100">搜尋</button></div>
+    <div class="col-md-3 text-end"><a href="{{ url_for('api_export_employees', q=request.args.get('q','')) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-download"></i> 匯出 Excel</a></div>
+  </form>
+  <div class="table-responsive"><table class="table table-hover table-sm mb-0">
+    <thead class="table-light"><tr><th>工號</th><th>姓名</th><th>部門</th><th>職稱</th><th>Email</th><th>到職日</th><th>狀態</th><th></th></tr></thead>
+    <tbody>
+    {% for emp in data.data %}
+    <tr>
+      <td>{{ emp.employee_code }}</td><td>{{ emp.name_zh }}</td><td>{{ emp.department_id }}</td><td>{{ emp.title }}</td>
+      <td>{{ emp.email_company }}</td><td>{{ emp.hire_date }}</td>
+      <td><span class="badge bg-{{ 'success' if emp.status=='在職' else 'secondary' if emp.status=='留停' else 'dark' }}">{{ emp.status }}</span></td>
+      <td><div class="btn-group btn-group-sm">
+        <a href="{{ url_for('employee_view', emp_id=emp.id) }}" class="btn btn-outline-info"><i class="bi bi-eye"></i></a>
+        <a href="{{ url_for('employee_edit_page', emp_id=emp.id) }}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
+      </div></td>
+    </tr>
+    {% endfor %}
+    </tbody></table></div>
+  <div class="d-flex justify-content-between p-2"><small class="text-muted">共 {{ data.total }} 筆</small></div>
+</div></div>
+{% endblock %}

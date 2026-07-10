@@ -1,9 +1,0 @@
-# 用例圖
-```plantuml
-@startuml
-left to right direction
-actor "人資管理員" as HR
-rectangle 員工管理系統 { usecase "查詢列表" as UC1; usecase "搜尋" as UC2; usecase "新增" as UC3; usecase "修改" as UC4; usecase "刪除" as UC5 }
-HR --> UC1; HR --> UC2; UC2 ..> UC1 : <<extend>>; HR --> UC3; HR --> UC4; HR --> UC5
-@enduml
-```

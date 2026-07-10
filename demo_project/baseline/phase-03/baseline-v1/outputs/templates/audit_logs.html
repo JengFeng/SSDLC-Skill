@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}稽核日誌{% endblock %}
+{% block content %}
+<h5 class="mb-3">🔍 稽核日誌</h5>
+<div class="card"><div class="card-body">
+<div class="row g-2 mb-3">
+  <div class="col-md-2"><select id="audit-action" class="form-select form-select-sm"><option value="">全部操作</option><option>CREATE</option><option>READ</option><option>UPDATE</option><option>DELETE</option><option>LOGIN</option><option>LOGOUT</option><option>EXPORT</option><option>VIEW_SENSITIVE</option></select></div>
+  <div class="col-md-2"><button class="btn btn-outline-secondary btn-sm w-100" onclick="loadAudit()">搜尋</button></div>
+</div>
+<div class="table-responsive"><table class="table table-sm table-hover"><thead class="table-light"><tr><th>時間</th><th>操作人</th><th>操作</th><th>資源</th></tr></thead>
+<tbody id="audit-tbody"></tbody></table></div>
+</div></div>
+{% endblock %}
+{% block scripts %}
+<script>
+async function loadAudit(){
+  let action = document.getElementById('audit-action').value;
+  let url = '/api/v1/audit-logs' + (action ? '?action='+action : '');
+  let res = await fetch(url); let data = await res.json();
+  let html = '';
+  data.data.forEach(r=>{ html += `<tr><td>${r.created_at}</td><td>${r.actor_username}</td><td><span class="badge bg-info">${r.action}</span></td><td>${r.resource_type}:${r.resource_id||''}</td></tr>`; });
+  document.getElementById('audit-tbody').innerHTML = html || '<tr><td colspan="4" class="text-center text-muted">無記錄</td></tr>';
+}
+loadAudit();
+</script>
+{% endblock %}

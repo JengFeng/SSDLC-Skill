@@ -1,166 +1,58 @@
 {
-  "project": "員工基本資料管理系統",
-  "last_updated": "2026-06-28T19:00:00",
+  "project": "demo_project",
+  "last_updated": "2026-07-10T18:00:00",
   "phases": {
     "01_planning_and_analysis": {
       "status": "completed",
-      "baseline": "baseline/phase-01_v1/",
-      "evaluator_score": {
-        "coverage": 40,
-        "clarity": 30,
-        "traceability": 20,
-        "format": 10
-      },
-      "completed_at": "2026-06-27T12:00:00"
+      "baseline": "phase-01/baseline-v1",
+      "evaluator_score": 95,
+      "completed_at": "2026-07-10T10:00:00",
+      "ssot_integrity_checked": true
     },
     "02_system_design": {
       "status": "completed",
-      "baseline": "baseline/phase-02_v1/",
-      "evaluator_score": {
-        "completeness": 100,
-        "consistency": 100,
-        "traceability": 100
-      },
-      "completed_at": "2026-06-27T13:00:00"
+      "baseline": "phase-02/baseline-v1",
+      "evaluator_score": 95,
+      "completed_at": "2026-07-10T12:00:00",
+      "ssot_integrity_checked": true
     },
     "03_implementation_and_coding": {
       "status": "completed",
-      "baseline": "baseline/phase-03_v1/",
-      "evaluator_score": {
-        "spec_compliance": 35,
-        "code_quality": 25,
-        "test_coverage": 20,
-        "security": 20
-      },
-      "completed_at": "2026-06-27T14:00:00"
+      "baseline": "phase-03/baseline-v1",
+      "evaluator_score": 92,
+      "completed_at": "2026-07-10T14:00:00",
+      "ssot_integrity_checked": true
     },
     "04_testing": {
       "status": "completed",
-      "baseline": "baseline/phase-04_v1/",
-      "evaluator_score": {
-        "requirement_coverage": 35,
-        "dual_track_pass_rate": 30,
-        "bug_tracking": 20,
-        "regression_strategy": 15
-      },
-      "completed_at": "2026-06-27T15:00:00"
+      "baseline": "phase-04/baseline-v1",
+      "evaluator_score": 92,
+      "completed_at": "2026-07-10T16:00:00",
+      "ssot_integrity_checked": true
     },
     "05_deployment": {
-      "status": "completed",
-      "baseline": "baseline/phase-05_v1/",
-      "evaluator_score": {
-        "config_baseline": 30,
-        "availability": 30,
-        "signature": 20,
-        "config_correctness": 20
-      },
-      "completed_at": "2026-06-27T16:00:00"
+      "status": "pending",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null,
+      "ssot_integrity_checked": false
     },
     "06_maintenance": {
-      "status": "completed",
-      "baseline": "baseline/phase-06_v1/",
-      "evaluator_score": {
-        "regression_testing": 30,
-        "monitoring_effectiveness": 25,
-        "error_extraction": 25,
-        "artifact_verification": 20
-      },
-      "completed_at": "2026-06-27T17:00:00"
+      "status": "pending",
+      "baseline": null,
+      "evaluator_score": null,
+      "completed_at": null,
+      "ssot_integrity_checked": false
     }
   },
-  "phase_baseline_enabled": true,
+  "phase_baseline_enabled": false,
   "security_baseline": {
-    "level": "medium",
+    "skill_path": "../external-resources/Security-Principles",
+    "description": "資通系統防護基準（普級）— 已於 @init 時導入",
     "enabled": true,
+    "level": "general",
+    "initialized_at": "2026-06-29",
     "skill": "Security-Principles",
-    "skill_path": "external-resources/Security-Principles",
-    "last_checks": [
-      {
-        "checked_at": "2026-06-28T15:49:00",
-        "passed": 5,
-        "rate": "8.6%",
-        "level": "general",
-        "failed": 24,
-        "total": 58
-      },
-      {
-        "checked_at": "2026-06-28T15:49:00",
-        "passed": 5,
-        "rate": "7.1%",
-        "level": "medium",
-        "failed": 35,
-        "total": 70
-      },
-      {
-        "checked_at": "2026-06-28T15:49:00",
-        "passed": 5,
-        "rate": "6.3%",
-        "level": "high",
-        "failed": 45,
-        "total": 80
-      },
-      {
-        "phase": "02_system_design",
-        "failed": 4,
-        "level": "general",
-        "total": 29,
-        "passed": 22,
-        "rate": "75.9%",
-        "checked_at": "2026-06-28T18:00:00",
-        "not_applicable": 3
-      },
-      {
-        "rate": "100%",
-        "level": "general",
-        "phase": "03_implementation_and_coding",
-        "checks": [
-          {
-            "result": "pass",
-            "item": "HTTP 200 Response"
-          },
-          {
-            "result": "pass",
-            "item": "Security Headers (nosniff/DENY/XSS)"
-          },
-          {
-            "result": "pass",
-            "item": "CRUD Operations"
-          },
-          {
-            "result": "pass",
-            "item": "SQL Injection Defense"
-          },
-          {
-            "result": "pass",
-            "item": "XSS Defense"
-          },
-          {
-            "result": "pass",
-            "item": "Input Validation Logging"
-          },
-          {
-            "result": "pass",
-            "item": "DB Schema (security columns)"
-          }
-        ],
-        "checked_at": "2026-06-28T18:30:00",
-        "total": 7,
-        "test_type": "security_verification",
-        "passed": 7,
-        "failed": 0
-      },
-      {
-        "checked_at": "2026-06-28T19:00:00",
-        "passed": 19,
-        "level": "general",
-        "min_score_met": true,
-        "phase": "03_implementation_and_coding",
-        "total": 21,
-        "rate": "90.5%"
-      }
-    ],
-    "initialized_at": "2026-06-28T15:49:00",
-    "min_security_score": 70,
-    "block_on_fail": true
+    "min_security_score": 70
   }
 }

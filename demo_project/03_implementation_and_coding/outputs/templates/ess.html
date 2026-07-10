@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}ESS 自助服務{% endblock %}
+{% block content %}
+<h5 class="mb-3">👤 個人資料（員工自助服務）</h5>
+<div class="alert alert-info small"><i class="bi bi-info-circle"></i> 您目前以 <strong>{{ session.role }}</strong> 身分登入。僅可修改聯絡資訊欄位。</div>
+<div class="card"><div class="card-body"><form method="POST" class="row g-3">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="col-md-3"><label class="form-label">工號</label><input class="form-control" value="{{ employee.employee_code }}" readonly></div>
+  <div class="col-md-3"><label class="form-label">姓名</label><input class="form-control" value="{{ employee.name_zh }}" readonly></div>
+  <div class="col-md-3"><label class="form-label">部門</label><input class="form-control" value="{{ employee.department_id }}" readonly></div>
+  <div class="col-md-3"><label class="form-label">職稱</label><input class="form-control" value="{{ employee.title }}" readonly></div>
+  <div class="col-md-4"><label class="form-label">Email</label><input class="form-control" value="{{ employee.email_company }}" readonly></div>
+  <div class="col-md-2"><label class="form-label">分機</label><input name="phone_extension" class="form-control bg-warning bg-opacity-10" value="{{ employee.phone_extension or '' }}"></div>
+  <div class="col-md-6"><label class="form-label">📱 手機</label><input name="phone_mobile" class="form-control bg-warning bg-opacity-10" value="{{ employee.phone_mobile or '' }}"></div>
+  <div class="col-12"><label class="form-label">🏠 通訊地址</label><input name="address_contact" class="form-control bg-warning bg-opacity-10" value="{{ employee.address_contact or '' }}"></div>
+  <hr><h6>緊急聯絡人</h6>
+  <div class="col-md-4"><label class="form-label">姓名</label><input name="emergency_contact_name" class="form-control bg-warning bg-opacity-10" value="{{ employee.emergency_contact_name or '' }}"></div>
+  <div class="col-md-4"><label class="form-label">電話</label><input name="emergency_contact_phone" class="form-control bg-warning bg-opacity-10" value="{{ employee.emergency_contact_phone or '' }}"></div>
+  <div class="col-md-4"><label class="form-label">關係</label><select name="emergency_contact_relation" class="form-select bg-warning bg-opacity-10">
+    <option value="">—</option><option>父母</option><option>配偶</option><option>子女</option><option>兄弟姐妹</option>
+  </select></div>
+  <div class="col-12 text-end"><button type="submit" class="btn btn-primary">儲存變更</button></div>
+</form></div></div>
+{% endblock %}

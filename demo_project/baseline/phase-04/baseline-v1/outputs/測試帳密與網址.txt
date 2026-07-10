@@ -1,0 +1,41 @@
+============================================
+  員工基本資料管理系統 — 測試參考資訊
+  更新日期：2026-07-10
+============================================
+
+【測試帳號】
+  系統管理員：admin@demo.local / Admin@1234（最高權限）
+  HR 經理　：hr.demo.local / Hr@1234（人力資源管理）
+  一般員工　：test@company.com / Test@1234（員工自助）
+
+【系統網址】
+  本機　　：http://127.0.0.1:5000
+  區網　　：http://192.168.55.175:5000
+
+【主要頁面】
+  登入頁　：http://127.0.0.1:5000/login
+  儀表板　：http://127.0.0.1:5000/
+  員工列表：http://127.0.0.1:5000/employees
+  ESS自助 ：http://127.0.0.1:5000/me
+  報表　　：http://127.0.0.1:5000/reports
+
+【一鍵執行檔】
+  run_app.bat   → 啟動主程式（雙擊即可操作系統）
+  run_tests.bat → 執行完整雙軌測試（API 38項 + UI 10項）
+
+【API 測試端點】
+  GET    /api/employees           員工列表
+  GET    /api/employees/<id>      單一員工
+  POST   /api/employees           新增員工
+  PUT    /api/employees/<id>      更新員工
+  DELETE /api/employees/<id>      刪除員工
+  POST   /login/local             備援登入
+  GET    /api/me                  個人資料(ESS)
+  PUT    /api/me                  更新個人資料(ESS)
+
+【技術資訊】
+  後端　　：Python 3.14 + Flask 3.x
+  資料庫　：SQLite (WAL mode)
+  前端　　：Bootstrap 5 + Chart.js + Jinja2
+  安全防護：CSRF + bcrypt + AES-256 + Rate Limiting
+  資安等級：普級 (General)

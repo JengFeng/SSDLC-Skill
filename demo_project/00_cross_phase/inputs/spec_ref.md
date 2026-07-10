@@ -1,14 +1,14 @@
-# 可執行規格引用 (Spec Reference)
+# 階段規格參照 (spec_ref.md) — 00_cross_phase
 
-> 跨階段全域技能執行前，AI 代理必須讀取以下 SSOT 規格檔案。
+> 本檔案定義跨階段全域共用層執行前必須讀取的 SSOT 規格路徑。
+> AI 代理執行前必須先讀取本檔案中列出的所有規格，未讀取即執行者，Evaluator 判定為 B 類錯誤。
 
-## 必要讀取
+## 必讀規格清單
 
-| 規格 | 路徑 | 類型 |
+| 優先序 | 檔案路徑 | 說明 |
 |:---|:---|:---|
-| 結構化可執行規格 | [executable_spec.yaml](../specs/executable_spec.yaml) | YAML（需求/API/資料模型/安全控制） |
-| 行為可執行規格 | [requirements.feature](../specs/features/requirements.feature) | Gherkin（Given-When-Then 場景） |
-| 系統規格書 (SRS) | [system_specification.md](../system_specification.md) | 人可讀 |
-| 追溯矩陣 (RTM) | [requirement_tracker.md](../01_planning_and_analysis/reg/requirement_tracker.md) | 需求追溯 |
-
-> 若未讀取上述規格即開始執行，產出可能與整體設計不一致。
+| 1 | `../specs/executable_spec.yaml` | YAML SSOT 母版（唯一資料源） |
+| 2 | `../specs/features/requirements.feature` | Gherkin BDD 可執行規格 |
+| 3 | `../.agents/AGENTS.md` | 專案規章守則 |
+| 4 | `../traceability_matrix.md` | 全域需求追溯矩陣 |
+| 5 | `../phase_gates.json` | 階段關卡管控檔案 |

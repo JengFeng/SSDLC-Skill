@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}人事報表{% endblock %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+{% block content %}
+<h5 class="mb-3">📈 人事報表中心</h5>
+<div class="card mb-3"><div class="card-body py-2"><div class="row g-2 align-items-end">
+  <div class="col-md-2"><label class="form-label small mb-0">年度</label><select id="rpt-year" class="form-select form-select-sm"><option>2026</option><option>2025</option></select></div>
+  <div class="col-md-2"><button class="btn btn-primary btn-sm w-100" onclick="loadReports()">產出報表</button></div>
+</div></div></div>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card p-3"><h6>📉 離職率統計</h6><canvas id="chartTurnover" height="220"></canvas></div></div>
+  <div class="col-md-6"><div class="card p-3"><h6>🎂 當月壽星</h6><div id="birthday-list"></div></div></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+async function loadReports(){
+  let year = document.getElementById('rpt-year').value;
+  let toRes = await fetch('/api/v1/reports/turnover-rate?year='+year);
+  if(toRes.ok){
+    let td = await toRes.json();
+    new Chart(document.getElementById('chartTurnover'),{type:'line',data:{labels:td.monthly.map(m=>m.month+'月'),datasets:[{label:'離職率(%)',data:td.monthly.map(m=>m.rate),borderColor:'#e74c3c',tension:.3}]}});
+  }
+  let bRes = await fetch('/api/v1/reports/birthday-this-month');
+  if(bRes.ok){
+    let bd = await bRes.json();
+    let html = '<table class="table table-sm"><thead><tr><th>姓名</th><th>部門</th><th>生日</th></tr></thead><tbody>';
+    bd.forEach(b=>{ html += `<tr><td>${b.name_zh}</td><td>${b.department_id}</td><td>${b.birthday}</td></tr>`; });
+    html += '</tbody></table>';
+    document.getElementById('birthday-list').innerHTML = html;
+  }
+}
+loadReports();
+</script>
+{% endblock %}

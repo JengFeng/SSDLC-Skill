@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}部門管理{% endblock %}
+{% block content %}
+<h5 class="mb-3">🏢 部門管理</h5>
+<div class="card"><div class="card-body">
+<table class="table table-sm"><thead><tr><th>ID</th><th>部門名稱</th><th>上級部門</th><th>主管</th></tr></thead>
+<tbody>
+{% for d in departments %}
+<tr><td>{{ d.id }}</td><td>{{ d.name }}</td><td>{{ d.parent_id or '—' }}</td><td>{{ d.manager_id or '—' }}</td></tr>
+{% endfor %}
+</tbody></table>
+</div></div>
+{% endblock %}
