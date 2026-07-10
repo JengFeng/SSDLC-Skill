@@ -1,3 +1,80 @@
+
+
+## 2026-07-11：框架規範全面優化 + 待辦清單整頓 + @optimize 增量模式實作
+
+### 1. GitHub 同步
+- 從遠端拉取 v1.2.1、v1.2.2 標籤 + 2 筆新提交（Phase 01-04 完整實作 + 框架規則補強）
+- Fast-forward 合併至 e990321
+
+### 2. 架構對齊檢查（@optimize 完整流程）
+- 執行 align_framework.ps1：修復項目 0、警告項目 0
+- 11 大檢查組全部通過（CORE_RULES 防線、規章鏈、YAML SSOT、安全整合、超連結有效性等）
+- 修復 6 個斷裂連結：`.agents/AGENTS.md`（4 個 `docs/` → `../docs/`）+ `TEMPLATE_SKILL.md`（2 個 `docs/` → 同目錄引用）
+- 核心規則（框架歸框架、專案歸專案、反饋走待辦、目錄辨識）在三個檔案中全部到位
+
+### 3. 待辦事項 #11 修正：Phase 產出報告缺少自動同步規則
+- `.agents/AGENTS.md` 新增 3 處修正：
+  - 2.2.5 Phase 04 測試報告自動同步規則
+  - 檢查點 B 新增報告過期檢查
+  - `@security-check` 新增第 9 項（強制覆寫 + 日期戳更新）+ 第 10 項（過期檢查）
+
+### 4. 待辦事項 #12 確認：測試階段缺少 .bat
+- 確認 `.agents/skills/04_testing/SKILL.md` 已有完整規範（L46、L69、L70）
+- demo_project 下實際 .bat 檔案已存在
+
+### 5. 待辦事項 #5 修正：Baseline 結構化 Diff 審查
+- 新增 `@baseline-diff` 指令規範（§7.5）：比對兩個 Baseline 版本的四規格差異
+- commands_reference.md + README.md 同步更新
+
+### 6. 待辦事項 #9+#10 修正：Baseline/快照階段化管理 + 口語化參數
+- `@snapshot` 新增 `--phase NN`、`--latest`、`--project` 參數
+- `@baseline` 新增 `--phase NN`、`--project`、`--latest` 參數
+- commands_reference.md + README.md 同步更新
+
+### 7. 待辦事項 #5（新）角色權限控管 修正
+- 新增 `@role` 指令（§8.5）：builder/developer 角色切換
+- `@optimize`、`@unlock` 新增角色權限檢查（developer 被阻擋）
+- `phase_gates.json` 新增 `current_role: "developer"` 欄位
+- commands_reference.md + README.md 同步更新
+
+### 8. 待辦事項 #3 修正：@optimize 增量檢查模式
+- `@optimize` 新增 `--incremental`（Git diff 增量檢查）+ `--files`（指定檔案）參數
+- 口語觸發更新為「執行增量架構對齊」「只對異動檔案做架構對齊」「增量檢查框架」
+- commands_reference.md + README.md 同步更新
+
+### 9. 四條核心規則寫入框架
+- 框架歸框架、專案歸專案、反饋走待辦、目錄辨識
+- 寫入 `.agents/AGENTS.md`（完整版）+ `commands_reference.md`（摘要）+ `README.md`（摘要）
+- 目錄辨識改用 `docs/` 下框架專屬檔案判斷（避免 phase_gates.json 雙重存在問題）
+
+### 10. @init 步驟補齊
+- 第 4 步新增「使用者角色初始化」：自動寫入 `current_role: "developer"`
+- 步驟編號自動遞增（原 4→5、5→6、6→7）
+
+### 11. iteration_log.md 整頓
+- 框架根目錄 `logs/iteration_log.md` 補上「自動產生說明」段落
+- demo_project `logs/iteration_log.md` 新增空白模板
+- 從 demo_project `memory.md` 回溯補齊 27 筆迭代紀錄（2026-06-29 初版 + 2026-07-10 重新分析）
+
+### 12. 指令集排序與格式修正
+- commands_reference.md 核心指令對照表依 A-Z 排序（37 筆）
+- README.md 指令總覽表依 A-Z 排序（28 筆）
+- 修復 SSDLC 階段代碼參照表格跑版（移除混入表格的附帶說明行 3 行）
+
+### 13. 待辦清單整頓
+- 已修正項目（#5、#9、#10、#11、#12）從待辦清單移至已處理記錄
+- 重新編號：待辦清單 6 筆（#1~#6）+ 已處理記錄 6 筆
+
+### 14. 檔案清理
+- 刪除暫存檔：missing_in_demo.txt、extra_in_demo.txt、diff_result.txt（git rm --cached）
+- 刪除 demo_project/ 下其他暫存檔（如有）
+
+### 影響範圍
+- 修改框架主體：.agents/AGENTS.md、docs/commands_reference.md、docs/TEMPLATE_SKILL.md、README.md、phase_gates.json、待辦事項.md
+- 新增檔案：demo_project/logs/iteration_log.md
+- 更新檔案：logs/iteration_log.md（補充說明段落）
+- 不涉及 demo_project 內容修改（除 iteration_log.md 補齊外）
+
 # AI 寫作自動化軟體作業流程 — 腦力激盪記錄
 
 ## 2026-07-08：Benson 敏感來源技能全面移除紀錄

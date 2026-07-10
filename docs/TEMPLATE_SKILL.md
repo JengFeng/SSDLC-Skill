@@ -35,7 +35,8 @@
 │   └── .gitkeep
 │
 ├── logs/                                       # 全域日誌區（conversation_*.md 對話紀錄 + ai_adjustment_*.md AI 調整紀錄 + iteration_log.md 迭代日誌 + 應用程式日誌）
-│   └── .gitkeep
+│   ├── .gitkeep
+│   └── iteration_log.md                        # 迭代日誌（Generator/Evaluator 完成後自動寫入）
 │
 ├── phase_gates.json                            # 階段關卡管控檔案（記錄各階段完成狀態、Baseline 參照、切換權限）
 │
@@ -247,8 +248,8 @@ AI 代理在與使用者對話時，必須主動識別並代為執行以下對�
 
 ### 5. 自然語言與語音喚出協議 (Natural Language Trigger)
 *   當 AI 代理識別到類似的口語或語音輸入時，必須主動執行對應動作：
-    1.  當識別到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」或「叫出指令對照表」等語音或口語輸入時，必須自動使用檔案讀取工具，在對話中呈現 [docs/commands_reference.md](docs/commands_reference.md) 的完整內容。
-    2.  當識別到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，必須自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](docs/Harness_Optimization_SKILL.md) 內容，對專案的各核心檔案之關聯與排版進行地毯式優化。
+    1.  當識別到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」或「叫出指令對照表」等語音或口語輸入時，必須自動使用檔案讀取工具，在對話中呈現 [commands_reference.md](commands_reference.md) 的完整內容。
+    2.  當識別到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，必須自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](Harness_Optimization_SKILL.md) 內容，對專案的各核心檔案之關聯與排版進行地毯式優化。
 
 
 

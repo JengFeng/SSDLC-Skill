@@ -1,4 +1,4 @@
-# 專案開發規則與防線規範 (AGENTS.md)
+﻿# 專案開發規則與防線規範 (AGENTS.md)
 
 👉 **最高指導框架原則**：本專案在自動化開發與 Harness 駕馭工程中的最高原則規範，已統一收錄於 docs 目錄下的 [CORE_RULES.md](../docs/CORE_RULES.md)。本文件（AGENTS.md）內的所有子規章與實作內容，皆基於此指導守則進行發展，且絕不得與其衝突。
 
@@ -95,6 +95,8 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 3.  同步完成後更新 `system_specification.md` 的 `last_updated` 時間戳。
 4.  此為強制步驟。未執行者，Evaluator 於下一階段 Checkpoint C 偵測到規格落後時，判定為 B 類錯誤。
 
+**Phase 04 測試報告自動同步（強制）**：每次 pytest 或 Playwright 執行完成後，AI 代理必須自動解析測試輸出，將通過/失敗/跳過統計、覆蓋率與執行日期更新至該專案 outputs/test_results.md。若報告日期早於測試腳本最後修改日期，Evaluator 應判定為報告過期（B 類錯誤），要求重新執行測試後再放行。
+
 ### 2.3.5 專案規格 ↔ 框架模板同步規則
 
 > 根層級 `specs/executable_spec.yaml` 為 `@init` 建立新專案時複製用的**空白模板**。專案層級（如 `demo_project/specs/executable_spec.yaml`）為該專案的**實際 SSOT**。兩者須保持結構同步。
@@ -126,6 +128,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 - 檢查階段產出檔案清單是否與 executable_spec.yaml 中 phases.[階段].outputs 一致
 - 若發現不一致 → B 類錯誤
 
+- **🔄 報告過期檢查**：檢查 outputs/ 目錄下 	est_results.md 與 security_check_report_*.md 的修改日期，若早於 inputs/ 目錄下任何原始碼檔案的最後修改日期，判定為報告過期（B 類錯誤），要求重新執行對應測試或安全檢核後再放行。
 #### 檢查點 C：跨階段交接時
 - 檢查下一階段 inputs/ 是否包含 spec_ref.md
 - 檢查 traceability_matrix.md 追溯鏈是否完整
@@ -201,7 +204,7 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 ### 0. 指令參照查詢指令：`@help`
 *   **指令定義**：立即顯示指令集參照表的完整內容，方便使用者快速查閱所有可用指令與語法。
 *   **AI 代理執行規範**：
-    1.  AI 代理必須讀取 [commands_reference.md](docs/commands_reference.md) 的完整內容。
+    1.  AI 代理必須讀取 [commands_reference.md](../docs/commands_reference.md) 的完整內容。
     2.  將內容以結構化方式呈現於對話中，包含所有指令的語法、參數與用途說明。
 
 ### 1\. 階段查詢指令：`@stages`
@@ -271,17 +274,18 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 ### 4. 專案初始化指令：`@init [相對路徑]`
 *   **指令定義**：自動建立指定路徑之標準專案目錄結構與基礎檔案，並引導後續階段 Skill 配置。
 *   **AI 代理執行規範**：
-    1.  讀取 [TEMPLATE_SKILL.md](docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
+    1.  讀取 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 中定義之標準專案目錄結構。
     2.  於指定路徑下建立完整的 SSDLC 目錄結構與 `.gitkeep`。
     3.  自動生成基礎控制檔案：`traceability_matrix.md`、`system_specification.md`、`memory.md`，以及在根目錄建立引導檔 `AGENTS.md`（指向實體規章 `.agents/AGENTS.md`）。
-    4.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
-     5.  **📋 階段輸入與輸出檔案管理詢問**：詢問使用者「是否啟用階段輸入與輸出檔案管理（@io）？」
+    4.  **👤 使用者角色初始化**：在 `phase_gates.json` 中自動寫入 `current_role: "developer"`（預設為專案開發者）。後續使用者可透過 `@role builder` 切換為框架建造者角色以執行 `@optimize`、`@unlock` 等敏感指令。此為自我管理機制，框架不區分帳號身份，完全取決於當下切換的角色。
+    5.  **初始化後的引導配置**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者是否要立即配置各開發階段的 Skill。若使用者同意，則依序對 01 至 06 階段自動列出可用 Skill 與其雙位數快捷編號清單供使用者選取（亦可隨時輸入 `跳過` 該階段），並調用直接/聯合導入邏輯完成配置；若使用者選擇跳過，則結束配置，保持初始化狀態。
+     6.  **📋 階段輸入與輸出檔案管理詢問**：詢問使用者「是否啟用階段輸入與輸出檔案管理（@io）？」
         *   若使用者同意（io_management.enabled 設為 true）：AI 代理根據各階段 SKILL.md 的既有定義，自動產生 io_files.yaml 至專案對應階段目錄。後續 Skill 選定時自動引導 IO 定義。
         *   若使用者跳過（io_management.enabled 設為 false）：所有階段不強制執行 IO 勾稽檢查，產出格式不設限，使用者自行管理階段間的資料傳遞。
         *   **目的**：讓新手不受IO 檔案格式約束，進階使用者可按需啟用結構化勾稽。
         *   後續可透過 @io set [phase] 隨時啟用或修改。
 
-    6.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
+    7.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
         *   適用安全構面清單（依各階段對照表）
         *   對應參考文件路徑（`external-resources/Security-Principles/references/0X_*.md`）
         *   對應等級檢核表路徑
@@ -291,8 +295,8 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
 
 ### 6.1 自然語言與語音喚出協議
 *   **語意觸發規範**：AI 代理在與使用者對話時，必須主動識別使用者的自然語言或語音口語輸入：
-    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
-    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
+    1.  當辨識到類似「讀取指令集」、「查詢可用指令」、「我想看指令參照表」、「有什麼對話指令可以用」或「叫出指令對照表」等語意時，AI 代理必須自動使用檔案讀取工具，讀取並在對話中呈現 [commands_reference.md](../docs/commands_reference.md) 的完整內容，以利使用者對照查閱。
+    2.  當辨識到類似「幫我執行駕馭工程框架優化檢查」、「Harness Optimization Skill」、「執行架構優化」或「進行全案關聯性檢查」等語意時，AI 代理必須**先顯示警告提示**，確認使用者為框架建造者且位於框架根目錄後，方自動讀取並執行 docs 目錄下的 [Harness_Optimization_SKILL.md](../docs/Harness_Optimization_SKILL.md) 內容，進行地毯式之檔案關聯性、格式與排版優化。
 
 
 
@@ -347,10 +351,23 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 
 ### 6.3 框架優化指令：`@optimize`
 *   **指令定義**：⚠️ **框架建造者專用**。觸發 Harness Optimization，對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。本指令亦可由自然語言觸發，觸發語意參照「自然語言與語音喚出協議」。
-*   **口語觸發**：「對齊所有」、「對齊架構」、「幫我對齊架構」、「規範落實度檢查」、「CORE_RULES 落差掃描」。其他語意見「自然語言與語音喚出協議」。
-    1.  執行前必須確認當前工作目錄為框架根目錄。
-    2.  顯示警告提示：「⚠️ 框架建造者專用指令。@optimize 將對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。此指令僅限框架建造者使用，專案開發者請勿呼叫。」
-    3.  取得使用者確認後，**首先執行 `scripts/align_framework.ps1` 進行動態掃描與自動修復**（倉庫結構 table ↔ 實際檔案系統對齊、標準結構 tree 交叉比對、必要章節完整性驗證），再依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
+*   **口語觸發**：「對齊所有」、「對齊架構」、「幫我對齊架構」、「規範落實度檢查」、「CORE_RULES 落差掃描」、「執行增量架構對齊」、「只對異動檔案做架構對齊」、「增量檢查框架」。其他語意見「自然語言與語音喚出協議」。
+*   **參數說明**：
+
+    | 參數 | 行為 |
+    |:---|:---|
+    | 無（預設） | 全量地毯式檢查（現有行為）：執行 align_framework.ps1 + 10 大檢查組 + CORE_RULES 落差掃描 |
+    | `--incremental` | 增量檢查模式：透過 `git diff HEAD` 找出異動檔案，僅對異動檔案及其關聯檔案執行檢查，大幅降低 Token 消耗 |
+    | `--files <檔案清單>` | 指定檔案檢查：僅對指定的檔案執行關聯檢查（如 `@optimize --files docs/CORE_RULES.md .agents/AGENTS.md`） |
+
+*   **AI 代理執行規範**：
+    1.  **解析參數**：判斷是全量、增量還是指定檔案模式。
+    2.  **角色權限檢查**：讀取 phase_gates.json 中的 current_role 欄位。
+        - uilder（框架建造者）：允許執行，繼續下一步。
+        - developer（專案開發者）：**阻擋執行**，輸出「❌ @optimize 為框架建造者專用指令，專案開發者請勿呼叫。如需調整權限，請先執行 @role builder 切換角色。」
+        - 欄位不存在（未設定角色）：視為 developer，阻擋執行，提示使用者先設定角色。
+    3.  顯示警告提示：「⚠️ 框架建造者專用指令。@optimize 將對整個 SSDLC 框架範本執行地毯式關聯檢查與修正。此指令僅限框架建造者使用，專案開發者請勿呼叫。」
+    4.  取得使用者確認後，**首先執行 `scripts/align_framework.ps1` 進行動態掃描與自動修復**（倉庫結構 table ↔ 實際檔案系統對齊、標準結構 tree 交叉比對、必要章節完整性驗證），再依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
     4.  修復完成後輸出報告，並自動建立 Git 暫存基線，寫入 memory.md。
     5.  **README + SKILL 目錄同步檢查（通則）**：掃描全專案，找出所有同時存在 `README.md` 與 `SKILL.md` 的目錄（排除 `.agents/skills/` 階段模板目錄），逐組比對以下三項：(a) **結構對照**：兩檔案是否涵蓋相同的章節主題（指令定義、使用方式、執行步驟等），缺少的章節需補入或提醒使用者確認；(b) **引用一致性**：兩檔案中提到的檔案路徑、指令名稱、口語觸發詞是否一致，不一致的需統一；(c) **新增/移除同步**：最近一次異動時，另一個檔案是否有對應更新，缺失的需補入。若發現不一致或缺漏，產出清單並提醒使用者確認修補。
     6.  最後執行 CORE_RULES 規範 vs 實際落實落差掃描做為收斂性終檢：逐條比對 CORE_RULES.md 中所有「必須」、「自動」、「強制」等可執行規範條目是否已在專案中實際落實，產出落差清單（已落實 ✅ / 未落實 ❌ / 無需落實 ⬚），❌ 項目判定為 B 類錯誤並立即修復。
@@ -380,30 +397,97 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
     6.  **回溯完成報告**：輸出回溯結果摘要（快照時間戳、還原檔案數、驗證通過/失敗清單、衝突檔案清單）。
 ### 6.5 建立即時快照指令：`@snapshot`
 *   **指令定義**：手動建立即時快照（git diff patch + SHA-256 檔案清單），作為 git 操作前的安全網或臨時記錄點。
-*   **口語觸發**：「建立快照」、「存快照」、「記錄點」。
+*   **口語觸發**：「建立快照」、「存快照」、「記錄點」、「對 Phase 02 建立快照」、「只存這個階段的快照」、「存最新版快照」。
+*   **參數說明**：
+    | 參數 | 行為 |
+    |:---|:---|
+    | 無（預設） | 對當前工作目錄建立全域快照（現有行為） |
+    | `--phase NN` | 僅對指定階段建立快照，快照寫入 `snapshots/phase-{NN}/` 子目錄 |
+    | `--latest` | 建立快照並自動遞增版本號（省去手動確認當前版本） |
+    | `--project` | 對整個專案建立全域快照（等同無參數行為，明確化語意） |
 *   **AI 代理執行規範**：
-    1.  **執行 git diff**：產出當前工作目錄與 HEAD 的差異補丁。
-    2.  **計算 SHA-256**：對所有已追蹤檔案計算雜湊值。
-    3.  **寫入快照**：存入 `snapshots/snapshot_YYYYMMDD-HHMMSS.md`（索引）+ `diff_YYYYMMDD-HHMMSS.patch`（補丁）。
-    4.  **自動清理**：超過 5 筆時，刪除最舊的一對檔案。
+    1.  **解析參數**：判斷是否指定 `--phase`、`--latest`、`--project`。若指定 `--phase NN`，僅對該階段的 `outputs/` 目錄執行 git diff 與 SHA-256 計算。
+    2.  **執行 git diff**：產出當前工作目錄（或指定階段目錄）與 HEAD 的差異補丁。
+    3.  **計算 SHA-256**：對所有已追蹤檔案計算雜湊值。
+    4.  **寫入快照**：
+        - 無參數或 `--project`：存入 `snapshots/snapshot_YYYYMMDD-HHMMSS.md` + `diff_YYYYMMDD-HHMMSS.patch`（現有行為）。
+        - `--phase NN`：存入 `snapshots/phase-{NN}/snapshot_YYYYMMDD-HHMMSS.md` + `diff_YYYYMMDD-HHMMSS.patch`。
+    5.  **自動清理**：每個目錄下超過 5 筆時，刪除最舊的一對檔案。
 *   **與 Baseline 的差異**：
     - **快照**：輕量、即時、局部。記錄 git diff + 檔案清單。用於「等一下要改東西，先存個記錄點」。
     - **基線**：完整、里程碑、可獨立執行。含原始碼 + 模板 + 部署腳本。用於「這個階段做完了，封存」。
-*   **使用範例**：`@snapshot`
+*   **使用範例**：
+    ```
+    @snapshot                # 全域快照（現有行為）
+    @snapshot --phase 02     # 僅對 Phase 02 建立快照
+    @snapshot --latest       # 自動遞增版本號
+    @snapshot --project      # 等同無參數，明確化語意
+    ```
 
 ### 7. 專案基線快照指令：`@baseline`
 *   **指令定義**：建立可獨立執行的完整專案快照至 `baseline/` 目錄。
-*   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」。
+*   **口語觸發**：「建立基線」、「新建 Baseline」、「儲存專案快照」、「對 Phase 02 建立基線」、「建立最新版基線」、「建立完整專案基線」。
+*   **參數說明**：
+    | 參數 | 行為 |
+    |:---|:---|
+    | 無（預設） | 建立當前階段的基線至 `baseline/phase-{NN}/baseline-v{N}/`（現有行為） |
+    | `--phase NN` | 僅對指定階段建立基線，路徑：`baseline/phase-{NN}/baseline-v{N}/` |
+    | `--project` | 彙整所有階段最終內容，建立完整專案基線至 `baseline/` |
+    | `--latest` | 自動遞增版本號（v1 → v2 → v3...），省去手動確認當前版本 |
 *   **AI 代理執行規範**：
-    1.  計算下一個版本號（baseline-v1, v2, v3...）。
-    2.  複製完整可執行專案（原始碼 + 依賴清單 + 啟動腳本 + 必要資源檔）至 `baseline/phase-{NN}/baseline-v{N}/`。複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
-    3.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
-    4.  保留最近 3 份 baseline，自動清理最舊版本。
-    5.  寫入 memory.md 紀錄。
+    1.  **解析參數**：判斷是否指定 `--phase`、`--project`、`--latest`。
+    2.  **計算版本號**：
+        - 無參數或 `--phase NN`：掃描目標 `baseline/phase-{NN}/` 目錄，計算下一個版本號。
+        - `--project`：掃描 `baseline/` 根目錄，計算下一個版本號。
+        - `--latest`：自動遞增（等同預設行為，明確化語意）。
+    3.  **複製專案**：
+        - `--phase NN`：僅複製該階段的可執行產出（原始碼 + 依賴 + 啟動腳本）至 `baseline/phase-{NN}/baseline-v{N}/`。
+        - `--project`：複製完整可執行專案（所有階段產出）至 `baseline/baseline-v{N}/`。
+        - 無參數：同 `--phase` 當前階段行為。
+    4.  複製內容依專案技術棧自動判定（Python: app.py + requirements.txt + run.bat；Node.js: package.json + server.js；Java: pom.xml + target/ 等）。
+    5.  產生 MANIFEST.md 版本資訊檔（含建立時間、Git tag、測試狀態、需求追溯）。
+    6.  保留每個 phase 目錄最近 3 份 baseline，自動清理最舊版本。
+    7.  寫入 memory.md 紀錄。
+*   **自動觸發**：每次階段 Evaluator 通過後自動執行（等同 `@baseline --phase {當前階段}`），不需使用者手動呼叫。
+*   **使用範例**：
+    ```
+    @baseline               # 建立當前階段基線（現有行為）
+    @baseline --phase 02    # 僅對 Phase 02 建立基線
+    @baseline --project     # 彙整所有階段，建立完整專案基線
+    @baseline --latest      # 自動遞增版本號
+    ```
 
+### 7.5 基線差異比對指令：`@baseline-diff`
+*   **指令定義**：比對兩個 Baseline 版本之間的四規格差異，產出結構化差異報告。
+*   **口語觸發**：「比對基線差異」、「baseline diff」、「比較版本差異」、「v1 跟 v2 差在哪」。
+*   **參數說明**：
 
+    | 參數 | 行為 |
+    |:---|:---|
+    | `v1` `v2` | 比對指定兩個版本（如 `@baseline-diff v1 v2`） |
+    | `v1` 省略 | 自動比對最新兩版（如 `@baseline-diff v2` → 比對 v1 vs v2） |
+    | 無參數 | 列出所有可用 Baseline 版本，讓使用者選擇要比對的兩個版本 |
 
-
+*   **AI 代理執行規範**：
+    1.  **版本定位**：掃描 `baseline/` 目錄，確認兩個目標版本存在。
+    2.  **四規格比對**：逐一比對以下四個核心規格檔案的內容差異：
+        - `specs/executable_spec.yaml`（結構化可執行規格）
+        - `specs/features/requirements.feature`（行為可執行規格）
+        - `system_specification.md`（系統規格書 SRS）
+        - `traceability_matrix.md`（追溯矩陣 RTM）
+    3.  **比對方式**：逐行 diff + 結構化摘要（需求新增/移除/修改、API 端點變更、資料表欄位異動、追溯鏈斷裂等）。
+    4.  **產出差異報告**：以 Markdown 表格格式輸出，包含：
+        - 檔案名稱
+        - 變更類型（新增 / 移除 / 修改）
+        - 變更摘要（具體內容）
+        - 影響範圍（涉及哪些需求或階段）
+    5.  **自動標註風險**：若差異涉及需求數量變更、API 端點移除、資料表欄位刪除等破壞性變更，在報告中以 ⚠️ 標註並提醒使用者。
+*   **使用範例**：
+    ```
+    @baseline-diff v1 v2     # 比對 v1 和 v2
+    @baseline-diff v2        # 自動比對 v1 vs v2
+    @baseline-diff           # 列出版本供選擇
+    ```
 
 ### 8. 階段強制解鎖指令：`@unlock`
 *   **指令定義**：⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制，繞過正常的階段切換檢查。
@@ -419,6 +503,46 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
 
 
 
+
+
+### 8.5 角色切換指令：`@role`
+*   **指令定義**：切換當前使用者角色，控制框架指令的可用權限。
+*   **口語觸發**：「切換角色」、「設定角色」、「我是建造者」、「我是開發者」。
+*   **參數說明**：
+
+    | 參數 | 行為 |
+    |:---|:---|
+    | `builder` | 切換為框架建造者角色，允許執行 `@optimize`、`@unlock` 等敏感指令 |
+    | `developer` | 切換為專案開發者角色，僅允許一般開發指令 |
+    | 無（預設） | 顯示當前角色與可用指令清單 |
+
+*   **AI 代理執行規範**：
+    1.  讀取 `phase_gates.json` 中的 `current_role` 欄位。
+    2.  若指定角色參數：
+        - 將 `current_role` 更新為指定值（`builder` 或 `developer`）。
+        - 輸出「✅ 角色已切換為 {角色}」+ 當前角色可用的指令清單摘要。
+    3.  若無參數：顯示當前角色，以及受限指令清單（哪些指令在當前角色下不可用）。
+    4.  若 `phase_gates.json` 中不存在 `current_role` 欄位，自動新增並預設為 `developer`。
+*   **預設行為**：
+    - 專案初始化（`@init`）時，預設角色為 `developer`。
+    - 框架建造者執行 `@role builder` 切換後方可使用 `@optimize`、`@unlock`。
+*   **⚠️ 修正範圍規則（強制）**：
+    - **框架歸框架**：`builder` 角色**只能修正框架根目錄**的內容（`.agents/AGENTS.md`、`docs/`、`skills/`、`scripts/`、`specs/`、`README.md`、`phase_gates.json`、`memory.md`、`待辦事項.md` 等框架主體檔案）。`@optimize` 僅允許在框架根目錄執行。
+    - **專案歸專案**：在專案目錄下執行任何 `@` 指令（`@baseline`、`@snapshot`、`@security-check`、`@init` 等），都是**專案層級操作**，僅影響專案目錄內的檔案，不觸及框架主體。
+    - **反饋走待辦**：在專案開發過程中發現框架缺陷或改善建議時，應透過「架構回饋機制」（參見第 13 節）將問題記錄到框架根目錄的 `待辦事項.md`，作為日後修正框架的參考，而非當下直接修改框架。
+    - **目錄辨識**：AI 代理執行指令前必須先辨識當前目錄類型：
+        - **框架根目錄**：同時具備以下條件 → 判斷為框架根目錄：
+            1. 存在 `docs/` 目錄
+            2. `docs/` 下同時存在 `CORE_RULES.md`、`commands_reference.md`、`TEMPLATE_SKILL.md`、`Harness_Optimization_SKILL.md`
+            3. 存在 `.agents/AGENTS.md`
+        - **專案目錄**：存在 `traceability_matrix.md` + `system_specification.md`，但 `docs/` 下**不具備**上述框架專屬檔案
+        - 若兩者特徵皆不符合，提示使用者確認當前目錄
+*   **使用範例**：
+    ```
+    @role              # 顯示當前角色
+    @role builder      # 切換為建造者
+    @role developer    # 切換為開發者
+    ```
 
 ### 9. 四規格完整性檢查指令：`@CheckSpec`
 > 註：SSOT 核心規格採三軌架構；`@CheckSpec` 以「三軌 SSOT + 一份追溯矩陣」進行四規格完整性檢查。
@@ -458,6 +582,8 @@ AI：「我看有 UI 設計需求，要不要載入 frontend-app-builder？
         - **目的**：避免檢核報告因階段性或非軟體因素呈現未 100% 符合，導致閱讀者誤判為設計或實作缺陷。
     7.  **⚠️ 構面 8 處理規則**：構面 8（組織、實體與供應鏈安全）為「非軟體因子」，在軟體開發專案中預設標記為 ➖ 不適用。僅當專案明確涉及外部服務商整合時，才對「供應鏈管理」子類別進行存在性檢查。檢核報告中構面 8 獨立成章，並在階段性限制說明中統一註明。
     8.  更新 `phase_gates.json` 中 `security_baseline.last_checks`。
+    9.  **🔄 報告強制覆寫與日期戳更新（強制）**：每次 @security-check 執行完成後，必須以本次檢核結果**完全覆寫** outputs/security_check_report_general.md（或 _high.md、_medium.md），不得保留舊版內容。覆寫時同步更新報告首頁的 last_updated 時間戳（格式：YYYY-MM-DD HH:MM）。若報告日期早於專案程式碼最後修改日期，應主動提醒使用者「安全報告可能過期，建議重新執行 @security-check」。
+    10. **🔄 報告過期檢查（強制）**：每次 @security-check 執行時，若偵測到 outputs/security_check_report_*.md 的修改日期**早於** inputs/ 目錄下任何原始碼檔案的最後修改日期，則在報告摘要開頭新增 [⚠️ 報告過期] 警示，標註「本報告基於舊版程式碼產出，建議重新執行檢核」。
 *   **相容性檢查**：執行前自動比對 Security-Principles 控制措施與現有 6 階段 Skill 規則，若發現衝突則顯示 `[WARN]` 警示並暫停等候使用者確認。
 
 ### 11. 彈性安全防護導入指令：`@security-load`

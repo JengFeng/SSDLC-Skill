@@ -55,5 +55,6 @@
     "description": "@init 時詢問使用者是否啟用輸入與輸出檔案管理。若未啟用，所有階段不強制執行 IO 勾稽檢查。",
     "skill_path": ".agents/skills",
     "initialized_at": null
-  }
+  },
+  "current_role": "developer"
 }
