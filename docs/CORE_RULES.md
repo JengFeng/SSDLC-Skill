@@ -452,6 +452,49 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 
 
 
+
+### 9. 引導式協作機制（Guided Workflow）
+
+> 引導式協作是本框架為新手系統分析師設計的**對話式引導機制**，透過 5 個關卡逐步帶領使用者完成每個階段的工作，並將 IO 檔案設定自動掛鉤在引導流程中。
+
+#### 9-1. 核心原則
+
+1. **MIT（Minimum Interaction Threshold）**：用最少的互動讓使用者完成最大價值的工作。
+2. **IO 掛鉤**：引導流程的關卡 2（輸入確認）和關卡 4（輸出定義）自動整合 @io 體系，啟動引導時 io_management.enabled 自動設為 true。
+3. **可中斷可恢復**：任何階段都能中途加入引導，進度記錄於 phase_gates.json 的 guided_workflow 區塊。
+4. **可隨時關閉**：使用者可透過 @guide off 退出引導模式。
+
+#### 9-2. 五關卡引導結構（每階段通用）
+
+| 關卡 | 名稱 | 引導內容 | IO 掛鉤 |
+|:----:|:-----|:---------|:--------|
+| 1 | 🎯 目標確認 | AI 說明本階段「要做什麼」、「產出什麼」、「需要什麼前置」 | 無 |
+| 2 | 📥 輸入檔案確認 | 引導使用者確認本階段需要的輸入檔案，自動帶入預設值 | ✅ 自動對應 io_files.yaml inputs |
+| 3 | 🔧 Skill 選取 | 根據目標和 I/O 需求，推薦最適合的 Skill 組合 | 無 |
+| 4 | 📤 輸出檔案定義 | 引導使用者確認本階段要產出的交付物，自動帶入預設值 | ✅ 自動對應 io_files.yaml outputs |
+| 5 | 🚀 開始執行 | 確認一切就緒，開始該階段的實際工作 | 自動觸發 @io [phase] 勾稽 |
+
+#### 9-3. 與 @io 體系的整合
+
+- 引導模式啟動時，io_management.enabled 自動設為 true，無需另外啟用。
+- 關卡 2 自動讀取 @io list [phase] 的預設輸入清單，以編號方式呈現供使用者選取。
+- 關卡 4 自動讀取 @io list [phase] 的預設輸出清單，使用者確認後自動寫入 io_files.yaml。
+- 關卡 5 完成後自動觸發 @io [phase] 進行跨階段勾稽，確認上下游對齊。
+
+#### 9-4. 階段關卡狀態更新
+
+引導進度記錄於 phase_gates.json 的 guided_workflow 區塊：
+
+    "guided_workflow": {
+      "enabled": false,
+      "current_phase": null,
+      "current_step": null,
+      "completed_steps": [],
+      "started_at": null,
+      "last_active": null
+    }
+
+
 ### 三-5. 自動備份機制（@optimize 觸發）
 
 每次執行 `@optimize`（含 `--incremental`、`--files` 參數）時，AI 代理必須在執行檢查前自動完成以下備份流程：

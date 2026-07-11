@@ -57,4 +57,14 @@
     "initialized_at": null
   },
   "current_role": "developer"
+,
+  "guided_workflow": {
+    "enabled": false,
+    "description": "引導式協作機制。@init 時詢問使用者是否啟動，或隨時透過 @guide [phase] 手動啟動。AI 依 5 個關卡（目標確認、輸入設定、Skill 選取、輸出定義、開始執行）逐步引導，自動整合 IO 管理。",
+    "current_phase": null,
+    "current_step": null,
+    "completed_steps": [],
+    "started_at": null,
+    "last_active": null
+  }
 }

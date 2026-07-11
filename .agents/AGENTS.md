@@ -285,7 +285,14 @@ AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀�
         *   **目的**：讓新手不受IO 檔案格式約束，進階使用者可按需啟用結構化勾稽。
         *   後續可透過 @io set [phase] 隨時啟用或修改。
 
-    7.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
+    7.  **🤖 引導式協作詢問（GUIDED WORKFLOW）**：目錄與基礎檔案建立完畢後，AI 代理必須主動詢問使用者：「要啟動引導式協作嗎？（建議新手使用）」
+        *   若使用者同意（guided_workflow.enabled 設為 true）：AI 代理自動進入第一階段的引導模式，依序引導使用者完成目標確認 → 輸入檔案設定 → Skill 選取 → 輸出檔案定義 → 開始執行。引導過程中自動整合 IO 管理（io_management.enabled 強制設為 true），無需另外執行 @io set。
+        *   若使用者跳過（guided_workflow.enabled 設為 false）：結束引導詢問，進入原有的 Skill 配置流程（步驟 5）。
+        *   **目的**：讓新手透過對話式引導逐步完成每個階段，避免「不知道做什麼」的困境。進階使用者可跳過。
+        *   引導模式可隨時透過 @guide off 關閉，或 @guide status 查看進度。
+        *   後續可在任何階段中途透過 @guide [phase] 隨時啟動。
+
+8.  **🔒 安全防護基準寫入**：若使用者在初始化時選擇導入 Security-Principles（`security_baseline.enabled` 設為 `true`），AI 代理必須自動將「安全防護整合（條件式）」段落寫入全部 6 個階段的專案 `SKILL.md`（`01_planning_and_analysis` ~ `06_maintenance`），內容須包含：
         *   適用安全構面清單（依各階段對照表）
         *   對應參考文件路徑（`external-resources/Security-Principles/references/0X_*.md`）
         *   對應等級檢核表路徑
@@ -877,3 +884,82 @@ AI：收到，我來幫你回報這個框架問題。
 *   匯入前必須確認授權無衝突
 *   若功能與現有 Skill 高度重疊，必須告知使用者並由使用者決定是否匯入
 *   匯入後必須完成三檔同步驗證
+
+### 13. 引導式協作機制（Guided Workflow）
+
+> 引導式協作是本框架為新手系統分析師設計的**對話式引導機制**，透過 5 個關卡逐步帶領使用者完成每個階段的工作，並將 IO 檔案設定自動掛鉤在引導流程中，避免使用者「不知道做什麼」或「漏設定 I/O」。
+
+#### 13-1. 核心原則
+
+1. **MIT（Minimum Interaction Threshold）**：用最少的互動讓使用者完成最大價值的工作。AI 像導遊一樣一步一步帶著走，不是填表。
+2. **IO 掛鉤**：引導流程的關卡 2（輸入確認）和關卡 4（輸出定義）自動整合 @io 體系，無需另外執行 @io set。啟動引導時 io_management.enabled 自動設為 true。
+3. **可中斷可恢復**：任何階段都能中途加入引導，進度記錄於 phase_gates.json 的 guided_workflow 區塊。
+4. **可隨時關閉**：使用者可隨時透過 @guide off 退出引導模式，已完成的項目保持不變。
+
+#### 13-2. 指令定義
+
+| 指令 | 參數 | 用途 | 口語觸發 |
+|:-----|:-----|:-----|:--------|
+| @guide [phase] | [phase]：可選，01~06，省略=當前階段 | 啟動指定（或當前）階段的引導式協作 | 開始引導、引導我、帶我做、下一步做什麼 |
+| @guide off | 無 | 退出引導模式 | 關閉引導、停止引導 |
+| @guide status | 無 | 查看當前階段引導進度 | 引導進度、我做到哪裡了 |
+| @guide next | 無 | 跳過/完成當前步驟，前進下一個引導步驟 | 下一步、跳過這步 |
+
+#### 13-3. 五關卡引導結構（每階段通用）
+
+| 關卡 | 名稱 | 引導內容 | IO 掛鉤 |
+|:----:|:-----|:---------|:--------|
+| 1 | 🎯 目標確認 | AI 說明本階段「要做什麼」、「產出什麼」、「需要什麼前置」 | 無 |
+| 2 | 📥 輸入檔案確認 | 引導使用者確認本階段需要的輸入檔案，自動帶入預設值 | ✅ 自動對應 io_files.yaml inputs |
+| 3 | 🔧 Skill 選取 | 根據目標和 I/O 需求，推薦最適合的 Skill 組合 | 無 |
+| 4 | 📤 輸出檔案定義 | 引導使用者確認本階段要產出的交付物，自動帶入預設值 | ✅ 自動對應 io_files.yaml outputs |
+| 5 | 🚀 開始執行 | 確認一切就緒，開始該階段的實際工作 | 自動觸發 @io [phase] 勾稽 |
+
+#### 13-4. AI 代理執行規範
+
+1. **啟動時機**：@guide [phase] 執行時，AI 代理必須先讀取當前階段的 SKILL.md 與 IO 速查表（@io list [phase]），再依序呈現 5 個關卡。
+2. **關卡 1（目標確認）**：呈現階段名稱、核心目標、前置條件。
+3. **關卡 2（輸入確認）**：列出本階段所有必填與可選的輸入檔案，詢問使用者「這些文件是否都已就緒？」。若使用者回答缺少某檔案，AI 代理應建議從上游階段產出或提供替代方案。
+4. **關卡 3（Skill 選取）**：根據使用者描述的系統類型與需求，從對應階段的 Skill 清單中推薦 2~3 個最適合的 Skill，以編號方式列出供選取。
+5. **關卡 4（輸出定義）**：列出本階段所有必填與可選的輸出檔案（附預設檔名），詢問「這些產出物你要調整嗎？要加減項目嗎？」。使用者確認後自動寫入 io_files.yaml。
+6. **關卡 5（開始執行）**：摘要顯示：階段目標、已確認的輸入、已選取的 Skill、已定義的輸出。詢問「一切就緒！要開始了嗎？」確認後觸發 @io [phase] 勾稽檢查。
+7. **進度記錄**：每個關卡完成後，更新 phase_gates.json 的 guided_workflow.completed_steps 陣列。
+8. **中斷恢復**：若使用者中斷引導，下次呼叫 @guide 或 @guide status 時，AI 代理讀取 guided_workflow 狀態，從上次未完成的關卡繼續。
+
+#### 13-5. 各階段引導內容差異
+
+**Phase 01 — 規劃與需求分析**
+- 🎯 目標：釐清需求，產出結構化規格書
+- 📥 輸入：user_requirement_raw.md（可選）、RFP 文件（可選）→ AI 問「你目前有原始需求文件嗎？」
+- 🔧 Skill 推薦：requirements-analysis、api-design、srs-generator
+- 📤 輸出：formal_requirements.md、system_specification.md、executable_spec.yaml、requirements.feature、traceability_matrix.md
+
+**Phase 02 — 系統設計**
+- 🎯 目標：把需求轉化為系統設計
+- 📥 輸入：formal_requirements.md、traceability_matrix.md、executable_spec.yaml、requirements.feature（全部來自 Phase 01）
+- 🔧 Skill 推薦：design-system、api-design、frontend-design、plantuml
+- 📤 輸出：db_schema.sql、er_diagram.md、api_spec.md、use_case_diagram.md、activity_diagram.md、sequence_diagram.md（必填）+ ui_prototype.html、*.puml、db_schema.xlsx（可選）
+
+**Phase 03 — 開發與編碼**
+- 🎯 目標：根據設計產出可執行的原始碼與單元測試
+- 📥 輸入：api_spec.md、db_schema.sql、executable_spec.yaml（必填）+ ui_prototype.html（可選）
+- 🔧 Skill 推薦：frontend-dev、flutter-dev、fullstack-dev、android-native-dev、ios-application-dev
+- 📤 輸出：src/、tests/、task_list.json（必填）+ unit_test_results.xml（可選）
+
+**Phase 04 — 測試驗證**
+- 🎯 目標：撰寫並執行自動化測試
+- 📥 輸入：src/、executable_spec.yaml、requirements.feature、traceability_matrix.md（必填）+ unit_test_results.xml（可選）
+- 🔧 Skill 推薦：webapp-testing、vision-analysis
+- 📤 輸出：test_api.py、test_results.md、bug_tracker.md（必填）+ test_ui.py（可選）
+
+**Phase 05 — 部署發布**
+- 🎯 目標：打包建置、驗證部署環境、完成發布
+- 📥 輸入：src/、db_schema.sql、executable_spec.yaml（必填）+ env_config（可選）
+- 🔧 Skill 推薦：依部署需求推薦
+- 📤 輸出：build_manifest.json、signature_status.json、deployment_topology.md
+
+**Phase 06 — 維護與營運**
+- 🎯 目標：處理線上異常、修補、新增需求追蹤
+- 📥 輸入：BUG_*.md（可選）、REQ_*.md（可選）、executable_spec.yaml
+- 🔧 Skill 推薦：依維護需求推薦
+- 📤 輸出：incident_report.md、patch_changelog.md、monitoring_dashboard.json
