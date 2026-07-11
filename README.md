@@ -154,19 +154,23 @@
 
 所有指令以 `@` 開頭，支援自然語言口語觸發：
 
-| 指令 | 用途 | 範例 |
 |:---|:---|:---|
 | `@00` ~ `@06` | 查看指定階段所有可用 Skill（含通用 Skill G01, G02...） | `@02` |
 | `@[階段]/[快捷]` | 導入單個 Skill 至專案 | `@01/03` |
 | `@[階段]/[快],G[快],...` | 混搭導入階段 Skill + 通用 Skill（G 前綴） | `@02/01,G01,G03` |
 | `in:` / `out:` 快速語法 | 一行定義輸入輸出（`?`=可選） | `@03 in: api_spec, ui?` |
 | `@[階段]/[快1],[快2]` | 聯合導入多個 Skill | `@04/01,03,07` |
+| @backup | 手動建立框架核心檔案備份（保留最近 5 份） | @backup |
 | `@baseline [--phase NN] [--project] [--latest]` | 建立可獨立執行專案快照。支援指定階段、彙整全案、自動遞增版本號 | `@baseline --phase 02` |
 | `@baseline-diff [v1] [v2]` | 比對兩個 Baseline 版本的四規格差異，自動標註破壞性變更 | `@baseline-diff v1 v2` |
 | `@CheckSpec` | 檢查四種規格（YAML/Feature/SRS/RTM）完整性與交叉一致性 | `@CheckSpec` |
 | `@external-resource add <URL>` | 引入外部第三方 Skill（下載+登記+合規檢查） | `@external-resource add https://github.com/owner/repo` |
 | `@external-resource remove <名稱>` | 移除外部第三方 Skill（清理目錄+資源清單+gitignore） | `@external-resource remove ui-ux-pro-max-skill` |
 | `@external-resource list` | 列出所有外部資源清單 | `@external-resource list` |
+| @guide [phase] | 啟動 5 關卡引導式協作（目標確認到開始執行），自動整合 IO 管理 | @guide 02 |
+| @guide off | 退出引導模式 | @guide off |
+| @guide status | 查看引導進度 | @guide status |
+| @guide next | 前進下一個引導步驟 | @guide next |
 | `@help` | 顯示完整指令集參照表 | `@help` |
 | `@import-skill <skill-name>` | 將外部 Skill 匯入框架內建 Skill | `@import-skill markitdown` |
 | `@import-skill-list` | 列出可匯入但尚未納入內建的外部 Skill | `@import-skill-list` |
@@ -178,19 +182,13 @@
 | `@io diff [A] [B]` | 比對兩個階段 IO 檔案差異 | `@io diff 02 03` |
 | `@io list [phase]` | 列出各階段預設 IO 速查表 | `@io list` |
 | `@optimize [--incremental] [--files]` | ⚠️ 框架建造者專用（需 `@role builder`）：執行全案關聯檢查。`--incremental` 僅檢查異動檔案（口語：「執行增量架構對齊」）；`--files` 指定檔案檢查 | `@optimize --incremental` |
-| `@restore [latest\|N\|timestamp]` | 回溯工作目錄至指定快照（SHA-256 驗證 + git diff 補丁還原） | `@restore latest` |
+| `@restore [latest|N|timestamp]` | 回溯工作目錄至指定快照（SHA-256 驗證 + git diff 補丁還原） | `@restore latest` |
 | `@role [builder/developer]` | 切換使用者角色：`builder`（框架建造者）/ `developer`（專案開發者，預設）。💡 自我管理機制：`@init` 預設 `developer`，需調整框架時切到 `builder`，改完切回。⚠️ **四條核心規則**：① 框架歸框架（builder 只能修正框架根目錄）② 專案歸專案（專案指令不觸及框架）③ 反饋走待辦（專案發現框架問題記錄到 `待辦事項.md`）④ 目錄辨識（AI 自動掃描 `docs/` 下框架專屬檔案判斷目錄類型）。 | `@role builder` |
-| `@security-check [general\|medium\|high]` | 載入資安防護基準檢核表，逐項比對並產出報告 | `@security-check medium` |
+| `@security-check [general|medium|high]` | 載入資安防護基準檢核表，逐項比對並產出報告 | `@security-check medium` |
 | `@security-load [等級] [構面1,構面2,...]` | 階段中途彈性導入資安防護基準，可選定構面與等級 | `@security-load medium 1,4,6` |
 | `@snapshot [--phase NN] [--latest] [--project]` | 手動建立即時快照（git diff + SHA-256）。支援指定階段建立、自動遞增版本號 | `@snapshot --phase 02` |
 | `@stages` | 列出六大階段代碼對照表 | `@stages` |
 | `@unlock [階段代碼]` | ⚠️ 框架建造者專用（需 `@role builder`）：強制解鎖指定階段關卡 | `@unlock 03` |
-| \@backup\ | 手動建立框架核心檔案備份（保留最近 5 份） | \@backup\ |
-| \@guide [phase]\ | 啟動 5 關卡引導式協作（目標確認到開始執行），自動整合 IO 管理 | \@guide 02\ |
-| \@guide off\ | 退出引導模式 | \@guide off\ |
-| \@guide status\ | 查看引導進度 | \@guide status\ |
-| \@guide next\ | 前進下一個引導步驟 | \@guide next\ |
-| 指令 | 用途 | 範例 |
 
 > **Baseline（基線）vs Snapshot（快照）**：`@baseline` 建立完整專案備份（原始碼+模板+部署腳本），是階段里程碑存檔；`@snapshot` 建立輕量快照（git diff + SHA-256），是修改前的安全記錄點。基線保留最近 3 份，快照保留最近 5 筆。
 
