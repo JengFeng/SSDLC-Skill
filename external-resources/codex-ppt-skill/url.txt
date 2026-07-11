@@ -1,0 +1,3 @@
+https://github.com/ningzimu/codex-ppt-skill
+Version: latest
+License: MIT

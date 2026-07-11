@@ -16,11 +16,11 @@
 
 ### 1. 01_planning_and_analysis
 * **適用技能**：需求場景拆解、訪談整理、文件結構化、通用文件處理、增強版文檔技能合集與靜態文檔建置。
-* **技能清單**：`langchain`、`llamaindex`、`docling`、`docusaurus`、`doc-coauthoring`、`internal-comms`、`docx`、`xlsx` / `pdf` / `pptx`、`document-skills`（docx/pdf/pptx/xlsx 增強合集）。
+* **技能清單**：`langchain`、`llamaindex`、`docling`、`docusaurus`、`doc-coauthoring`、`internal-comms`、`docx`、`xlsx` / `pdf` / `pptx`、`document-skills`、`minimax-pdf`、`minimax-docx`、`minimax-xlsx`、`pptx-generator`（docx/pdf/pptx/xlsx 增強合集）。
 
 ### 2. 02_system_design
 * **適用技能**：架構圖、流程圖、UML 圖表、資料庫設計、API 規格產生、前端視覺色彩規範、AI 設計系統文件、設計引擎 Skill 合集。
-* **技能清單**：`mermaid`、`plantuml`、`prisma`、`openapi_generator`、`frontend-design`、`theme-factory`、`brand-guidelines`、`canvas-design`、`algorithmic-art`、`slack-gif-creator`、`brand`、`design`、`design-system`、`ui-styling`、`banner-design`、`ai-news-video`、`awesome-design-md`、`open-design`。
+* **技能清單**：`mermaid`、`plantuml`、`prisma`、`openapi_generator`、`frontend-design`、`theme-factory`、`brand-guidelines`、`canvas-design`、`algorithmic-art`、`slack-gif-creator`、`brand`、`design`、`design-system`、`ui-styling`、`banner-design`、`ai-news-video`、`shader-dev`、`minimax-multimodal-toolkit`、`minimax-music-gen`、`minimax-music-playlist`、`buddy-sings`、`gif-sticker-maker`、`awesome-design-md`、`open-design`、`frontend-dev`、`fullstack-dev`、`android-native-dev`、`ios-application-dev`、`flutter-dev`、`react-native-dev`。
 
 ### 3. 03_implementation_and_coding
 * **適用技能**：AI 輔助寫碼、本地編譯、代碼規格語法與排版檢核、多模組整合管理、設計驅動前端開發。
@@ -28,7 +28,7 @@
 
 ### 4. 04_testing
 * **適用技能**：單元測試、前後端驗證、UI 自動化測試、API 與 Web 服務之 Schema 驗證、單機應用程式 UI 測試、安全漏洞靜態掃描與覆蓋率分析。
-* **技能清單**：`playwright`、`selenium`、`cypress`、`robot_framework`、`pytest`、`jest`、`sonarqube`、`coverage_py`、`webapp-testing`、`systematic-debugging`。
+* **技能清單**：`playwright`、`selenium`、`cypress`、`robot_framework`、`pytest`、`jest`、`sonarqube`、`coverage_py`、`webapp-testing`、`systematic-debugging`、`vision-analysis`。
 
 ### 5. 05_deployment
 * **適用技能**：成品建置與打包、組態管理配置、遠端批次部署與反向代理組態生成。
@@ -40,7 +40,7 @@
 
 ### 7. 00_cross_phase
 * **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制、程式碼差異比對以及跨格式文件轉 Markdown。
-* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`、`markitdown`。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`、`markitdown`、`anthropics-skills`、`github-skills`、`minimax-skills`、`ui-ux-pro-max-skill`、`codex-ppt-skill`、`guizang-ppt-skill`、`ppt-master`、`Security-Principles`。
 
 ## 執行步驟 SOP（完整版）
 

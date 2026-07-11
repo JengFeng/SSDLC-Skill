@@ -451,6 +451,16 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 - 兩者共同構成 SSOT 的完整追溯鏈
 
 
+
+### 三-5. 自動備份機制（@optimize 觸發）
+
+每次執行 `@optimize`（含 `--incremental`、`--files` 參數）時，AI 代理必須在執行檢查前自動完成以下備份流程：
+
+1. **備份對象**：框架核心檔案（`.agents/AGENTS.md`、`docs/CORE_RULES.md`、`docs/commands_reference.md`、`README.md`、`skills/SKILLS歸類.md`、`skills/README.md`）
+2. **命名規則**：`{原檔名}.backup.{YYYYMMDD-HHmmss}`
+3. **保留策略**：`backups/` 目錄最多保留 **5 份**備份，超過時自動刪除最舊的
+4. **清單更新**：備份完成後更新 `backups/BACKUP_MANIFEST.md`
+
 ## 四、 快照管理與日誌儲存規則
 
 ### 1. 階段檢核結果自動向上回傳

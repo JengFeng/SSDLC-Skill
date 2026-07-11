@@ -1,0 +1,3 @@
+https://github.com/MiniMax-AI/skills
+Version: latest
+License: MIT

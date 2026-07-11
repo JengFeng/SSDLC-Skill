@@ -78,6 +78,7 @@
 | **`@io set [phase]`** | phase: `00`~`06` | 互動式設定階段 IO 檔案。顯示編號清單，使用者勾選保留項目。 | `@io set 03` |
 | **`@io show [phase]`** | phase: `00`~`06` | 檢視指定階段的 IO 檔案清單（inputs / outputs）。 | `@io show 03` |
 | **`@optimize [--incremental] [--files <清單>]`** | 無：全量 / `--incremental`：增量 / `--files`：指定檔案 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描，再執行 10 大檢查組。`--incremental` 透過 Git diff 僅檢查異動檔案及其關聯檔案；`--files` 僅對指定檔案執行關聯檢查。**需 `@role builder` 方可執行。** 口語觸發：「對齊架構」「執行增量架構對齊」「只對異動檔案做架構對齊」。 | `@optimize --incremental` |
+| **`@backup`** | 無 | 手動建立框架核心檔案備份至 `backups/`（保留最近 5 份），更新 `BACKUP_MANIFEST.md` | `@backup` |
 | **`@restore`** | `latest` / `N`（1~5） / `YYYYMMDD-HHMMSS` | 回溯工作目錄至指定執行快照。自動 `git stash` 保留未提交變更 → `git apply` 載入差異補丁 → SHA-256 驗證還原完整性。口語觸發：「回溯快照」「還原快照」「退回上一步」。 | `@restore latest` |
 | **`@role [builder/developer]`** | `builder` / `developer` / 無參數=顯示當前角色 | 切換使用者角色。`builder` 可執行 `@optimize`、`@unlock`；`developer` 為預設角色，僅允許一般指令。`@init` 時預設為 `developer`。口語觸發：「切換角色」「我是建造者」「我是開發者」。 | `@role builder` |
 | **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，**參照 `check_scope_per_domain.md` 逐項比對**系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`（**報告格式參照 `security_check_report_template.md`**）。構面 8（非軟體因子）在軟體專案中預設標記為不適用。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
@@ -151,13 +152,6 @@
 *   **Python Flask 範例檢查**（`demo_project` 預設）：`run.bat` 語法 → `python -c "import app"` → `http://127.0.0.1:5000` → `templates/*.html` → `requirements.txt` 含 `flask`
 *   **失敗處理**：任一檢查失敗即中止並輸出「Baseline 驗證失敗報告」。
 *   **成功處理**：所有檢查通過後輸出「✅ Baseline vX 驗證通過」摘要。
-
-    *   CORE_RULES.md 新增 1-6「指令集雙檔同步強制規則」，確保 `.agents/AGENTS.md` 與 `commands_reference.md` 指令清單一致。
-*   **2026-06-27 (@baseline 指令新增 + @optimize 嚴謹限制)**：
-    *   新增 `@baseline` 指令，建立可獨立執行專案快照至 `baseline/` 目錄，保留最近 3 份。
-    *   `@optimize` 加上「框架建造者專用」嚴謹限制與警告提示。
-
-
 
 
 ## 三、 @unlock 指令使用時機與方式詳解

@@ -1,0 +1,3 @@
+https://github.com/op7418/guizang-ppt-skill
+Version: latest
+License: AGPL-3.0

@@ -62,13 +62,21 @@ external-resources/anthropics-skills/*
 !external-resources/anthropics-skills/url.txt
 external-resources/awesome-design-md/*
 !external-resources/awesome-design-md/url.txt
+external-resources/codex-ppt-skill/*
+!external-resources/codex-ppt-skill/url.txt
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
+external-resources/guizang-ppt-skill/*
+!external-resources/guizang-ppt-skill/url.txt
 external-resources/ui-ux-pro-max-skill/*
 !external-resources/ui-ux-pro-max-skill/url.txt
 
 external-resources/markitdown/*
 !external-resources/markitdown/url.txt
+external-resources/minimax-skills/*
+!external-resources/minimax-skills/url.txt
 external-resources/open-design/*
 !external-resources/open-design/url.txt
+external-resources/ppt-master/*
+!external-resources/ppt-master/url.txt
 

@@ -12,9 +12,13 @@
 |:-----|:-----|:-----|:-----|
 | `anthropics-skills/` | [anthropics/skills](https://github.com/anthropics/skills) | See `THIRD_PARTY_NOTICES.md` | Anthropic 官方 Skill 合集（17 個） |
 | `awesome-design-md/` | [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT | AI 設計系統文件集合（73+ 網站 DESIGN.md） |
-| `github-skills/` | GitHub 社群彙整 | — | GitHub 社群 Skill 合集（48 個） |
+| `codex-ppt-skill/` | [ningzimu/codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) | MIT | GPT-Image-2 圖片式 PPT 生成 Skill（整頁圖片組裝 .pptx） |
+| `github-skills/`
+| `guizang-ppt-skill/` | [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) | AGPL-3.0 | AI 網頁 PPT 生成 Skill（電子雜誌風 + 瑞士國際主義，HTML Deck） | | GitHub 社群彙整 | — | GitHub 社群 Skill 合集（48 個） |
 | `markitdown/` | [microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT | Microsoft 輕量 Markdown 轉換工具（文件/簡報/試算表轉 Markdown） |
-| `open-design/` | [nexu-io/open-design](https://github.com/nexu-io/open-design) | Apache-2.0 | AI 設計引擎 Skill 合集（150+ Skill，前端/UI/動畫/影片/簡報/PDF） |
+| `minimax-skills/` | [MiniMax-AI/skills](https://github.com/MiniMax-AI/skills) | MIT | MiniMax AI 開發技能合集（17 個：前端/全端/行動/文件/多模態/音樂） |
+| `open-design/`
+| `ppt-master/` | [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master) | MIT | AI 原生可編輯 PPTX 生成（原生圖形/動畫/圖表/表格/語音旁白） | | [nexu-io/open-design](https://github.com/nexu-io/open-design) | Apache-2.0 | AI 設計引擎 Skill 合集（150+ Skill，前端/UI/動畫/影片/簡報/PDF） |
 | `Security-Principles/` | 本框架自建 | — | 數位發展部資通安全署防護基準 Skill |
 | `ui-ux-pro-max-skill/` | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 | UI/UX 設計智慧技能組（7 個） |
 
@@ -93,6 +97,7 @@ AI 代理將依序執行：
 | Anthropic Skills | [github.com/anthropics/skills](https://github.com/anthropics/skills) | See THIRD_PARTY_NOTICES.md |
 | Awesome DESIGN.md | [github.com/VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT |
 | MarkItDown | [github.com/microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT |
+| MiniMax Skills | [github.com/MiniMax-AI/skills](https://github.com/MiniMax-AI/skills) | MIT |
 | UI/UX Pro Max | [github.com/nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 |
 
 - 所有第三方 Skill 的原始碼與詳細授權請參見 `external-resources/` 目錄下各自的 `LICENSE` 與 `THIRD_PARTY_NOTICES.md`。

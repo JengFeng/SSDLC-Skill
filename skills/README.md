@@ -1,6 +1,6 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 70 個獨立 Skill，其中 docx/pdf/xlsx/pptx 等 4 個具跨階段通用性，ui-styling 與 open-design 同時歸類於 Phase 02 與 Phase 03，共計 7 個雙歸屬 Skill，markitdown（MIT）歸入 Phase 00 跨格式文件轉 Markdown 工具）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 94 個獨立 Skill，其中 docx/pdf/xlsx/pptx/minimax-pdf/minimax-docx/minimax-xlsx/pptx-generator 等 8 個具跨階段通用性，ui-styling 與 open-design 同時歸類於 Phase 02 與 Phase 03，共計 13 個雙歸屬 Skill，markitdown（MIT）歸入 Phase 00 跨格式文件轉 Markdown 工具）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 

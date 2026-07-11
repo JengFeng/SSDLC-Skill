@@ -1,14 +1,14 @@
 ﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 70 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 94 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 70 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 94 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -18,7 +18,7 @@
 
 ## 🧩 開發階段架構
 
-本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **70 個** AI 協作 Skill。
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **94 個** AI 協作 Skill。
 
 ### 🌐 跨階段全域共用
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 70 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
+> **合計 94 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
 
 ---
 
@@ -48,32 +48,107 @@
 
 > AI 像有經驗的隊友，發現適用情境就順口問「要不要用這個？」，你可以說好、說不用、或換別的。不強迫。
 
-| 階段 | 情境關鍵詞 | 推薦 Skill | 說明 |
-|:---|:---|:---|:---|
-| **01 規劃** | 需求模糊/缺口多 | `grill-me` | 結構化缺口拷問，強制釐清模糊點 |
-| | 創意發想/探索 | `brainstorming` | 腦力激盪與創意展開 |
-| | 大量文件/RFP | `langchain` | 文件分析與處理 |
-| **02 設計** | UI/前端/網頁/畫面 | `frontend-app-builder` | 高品質現代化 UI（漸層/動畫/SVG/RWD） |
-| | 資料視覺化/圖表 | `build-web-data-visualization` | 圖表選擇與設計 |
-| | UML/架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
-| | 配色/字型/風格/UX | `ui-ux-pro-max` | 84 風格 + 161 色板 + 73 字型配對即時查詢 |
-| | Design Token/CSS 變數 | `design-system` | 三層 token 架構（primitive→semantic→component） |
-| **03 開發** | React/Next.js | `react-best-practices` | 效能最佳化（memo/Suspense/Image） |
-| | shadcn/ui 組件 | `shadcn` | 組件管理與樣式設計 |
-| | Tailwind/響應式/暗色模式 | `ui-styling` | shadcn + Tailwind utilities + 無障礙實作參考 |
-| | Postgres/Supabase | `supabase-postgres-best-practices` | 查詢最佳化與索引設計 |
-| | Stripe 金流 | `stripe-best-practices` | API 選擇與安全整合 |
-| **04 測試** | 前端/瀏覽器 UI | `Playwright` | 預錄腳本自動化測試，高覆蓋率 |
-| | API/後端 | `pytest` | API 端點測試與回歸 |
-| | Bug/測試失敗 | `systematic-debugging` | 系統性根因分析與修復 |
-| | 測試先行/TDD | `test-driven-development` | 紅綠重構循環 |
-| | UI 驗收/視覺 QA | `ui-ux-pro-max` | Pre-Delivery Checklist（對比度/touch/CLS） |
-| **05 部署** | CI/CD 管線 | `circleci` | 自動化建置、測試、部署 |
-| | Expo/App 上架 | `expo-deployment` | App Store/Play Store 發佈 |
-| **06 維護** | 線上錯誤追蹤 | `sentry` | 即時錯誤監控與事件分析 |
-| | 效能/瓶頸問題 | `systematic-debugging` | 根因分析與 Hotfix |
-| **全域** | 安全/資安檢核 | `Security-Principles` | 資通系統防護基準（普/中/高） |
-| | 簡報/投影片製作 | `slides` | HTML 簡報 + Chart.js 圖表（跨階段通用） |
+---
+
+### 📋 規劃與分析（Phase 01）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| 需求模糊 / 缺口多 | `brainstorming` | 結構化腦力激盪，強制釐清模糊點 |
+| 創意發想 / 探索 | `brainstorming` | 腦力激盪與創意展開 |
+| 大量文件 / RFP | `langchain` | 文件分析與處理 |
+| 簡報製作 | `ppt-master` | AI 原生可編輯 PPTX（圖形/動畫/圖表/語音旁白） |
+| | `pptx-generator` | PptxGenJS 程式化簡報生成 |
+| | `codex-ppt-skill` | GPT-Image-2 圖片式 PPT |
+| | `guizang-ppt-skill` | HTML 翻頁簡報（電子雜誌風/瑞士風） ⚠️ AGPL-3.0 |
+| 文件產製 | `minimax-pdf` | PDF 生成 / 填表 / 重排版 |
+| | `minimax-docx` | Word 文件建立 / 編輯 / 樣板 |
+| | `minimax-xlsx` | Excel 操作 / 分析 / 驗證 |
+
+---
+
+### 🎨 系統設計（Phase 02）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| UI / 前端 / 網頁 | `frontend-design` | 前端 UI 設計規範與實作 |
+| 設計系統 / 品牌規範 | `design-system` | 三層 token 架構（primitive → semantic → component） |
+| | `brand-guidelines` | 品牌識別系統設計 |
+| | `awesome-design-md` | 73+ 網站 DESIGN.md 設計系統參考 |
+| | `open-design` | AI 設計引擎 150+ Skill 合集 |
+| 配色 / 字型 / 風格 | `ui-ux-pro-max` | 84 風格 + 161 色板 + 73 字型配對即時查詢 |
+| UML / 架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
+| 資料庫 / API 設計 | `prisma` / `openapi_generator` | DB Schema 與 API 規格產生 |
+| 多模態內容 | `minimax-multimodal-toolkit` | 影片 / 音樂 / TTS / 圖片生成 |
+| 視覺效果 / Shader | `shader-dev` | GLSL 著色器技術（光追 / 流體 / 粒子） |
+| 橫幅 / 封面設計 | `banner-design` | 多格式橫幅設計（22 風格） |
+| 生成式藝術 | `algorithmic-art` | 生成式藝術與視覺實驗 |
+
+---
+
+### 💻 開發與編碼（Phase 03）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| React / Next.js | `frontend-dev` | 全端前端開發（UI / 動畫 / AI 媒材） |
+| Android 開發 | `android-native-dev` | Android Kotlin / Compose |
+| iOS 開發 | `ios-application-dev` | iOS UIKit / SwiftUI |
+| 跨平台開發 | `flutter-dev` | Flutter 跨平台 |
+| React Native | `react-native-dev` | React Native / Expo |
+| 全端 / 後端 | `fullstack-dev` | REST API / Auth / 即時 / DB 整合 |
+| Tailwind / 響應式 | `ui-styling` | shadcn + Tailwind + 無障礙 |
+| Claude API 整合 | `claude-api` | Anthropic API 使用指南 |
+| MCP 伺服器 | `mcp-builder` | Model Context Protocol 建置 |
+| 程式碼品質 | `eslint` / `prettier` | 語法檢查與格式化 |
+| Web Artifacts | `web-artifacts-builder` | Web 元件快速產製 |
+
+---
+
+### 🧪 測試驗證（Phase 04）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| 前端 / 瀏覽器 UI | `playwright` | 預錄腳本自動化測試 |
+| API / 後端 | `pytest` | API 端點測試與回歸 |
+| Bug / 測試失敗 | `systematic-debugging` | 系統性根因分析與修復 |
+| 測試先行 / TDD | `test-driven-development` | 紅綠重構循環 |
+| UI 驗收 / 視覺 QA | `vision-analysis` | AI 視覺分析 / UI 審查 / OCR |
+| 覆蓋率分析 | `coverage_py` | Python 測試覆蓋率分析 |
+
+---
+
+### 🚀 部署發布（Phase 05）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| 容器化 | `docker` | 容器建置與部署 |
+| 自動化部署 | `ansible` | 遠端批次部署 |
+| 反向代理 | `nginx_config_generator` | Nginx 組態生成 |
+
+---
+
+### 🔧 維護與營運（Phase 06）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| 日誌分析 | `elk_stack` / `logparser` | 日誌收集與格式化 |
+| 效能監控 | `prometheus_grafana` / `opentelemetry` | 指標監控與告警 |
+
+---
+
+### 🌐 全域共用（Phase 00）
+
+| 情境關鍵詞 | 推薦 Skill | 說明 |
+|:-----------|:-----------|:-----|
+| 安全 / 資安檢核 | `Security-Principles` | 資通系統防護基準（普 / 中 / 高） |
+| 簡報 / 投影片 | `slides` | HTML 簡報 + Chart.js（跨階段通用） |
+| 版本控制 | `git` | Git 操作與工作流 |
+| 跨格式文件轉換 | `markitdown` | PDF / Word / PPTX / Excel 轉 Markdown |
+| 程式碼差異同步 | `diffsync` | 跨階段產出物差異比對 |
+| 自主迭代研究 | `autoresearch` | AI 自主研究與分析 |
+| 計畫撰寫 | `writing-plans` | 結構化計畫文件產製 |
+| 完成前驗證 | `verification-before-completion` | 交付前完整性檢查 |
+
 
 ## 🎮 [指令系統](docs/commands_reference.md)
 
@@ -364,6 +439,8 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 
 
+
+
 ## 📂 倉庫結構
 
 | 路徑 | 用途 |
@@ -372,7 +449,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | `.tmp_clone/` | (待定義) |
 | `.tmp_clone2/` | (待定義) |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
-| `backups/` | (待定義) |
+| `backups/` | 框架核心檔案自動備份（@optimize 觸發，保留最近 5 份） |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD，已導入普級資安防護基準） |
 | `docs/` | 核心文件（CORE_RULES、TEMPLATE_SKILL、commands_reference、Harness_Optimization_SKILL） |
