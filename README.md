@@ -356,20 +356,16 @@ AI：📄 請提供 user_requirement_raw.md 的內容或路徑
 AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 ```
 
-## 🧪 Demo 專案：員工管理系統
+## 🧪 Demo 專案：員工基本資料管理系統
 
-框架內含一個完整的驗證用 demo 專案（`demo_project/`），以 **Python Flask + SQLite + Jinja2** 實作員工基本資料 CRUD 管理頁面，並通過：
+框架內含一個完整的驗證用 demo 專案（`demo_project/`），以 **Python Flask + SQLite + Jinja2** 實作員工基本資料 CRUD 管理頁面，已完成 **Phase 01~04**：
 
-- ✅ **10 項需求追溯**（traceability_matrix.md）
+- ✅ **7 項需求追溯**（REQ-001~007，適用 4 階段）+ 6 項待確認事項（OI-001~006）
 - ✅ **7 項設計產出**（DB Schema、ER 圖、API 規格、UI 雛型、3 UML 圖）
-- ✅ **雙軌測試全數通過**：pytest（7 API 測試）+ Playwright（7 UI 測試）
-- 🔒 **安全驗證全數通過**：登入驗證、Session 管理、帳戶鎖定、SQLi/XSS 防禦、Security Headers（nosniff/DENY/XSS）
-- 🔒 **Phase 3 普級檢核 90.5%**（21 項適用，19 項符合，2 項階段性延遲）
-  - ⚠️ 其中 2 項未完全符合（項次 13 加密機制、項次 67 HTTPS/TLS 1.2+）的原因：
-    涉及正式 TLS/HTTPS 憑證部署，屬於 Phase 3 本機開發階段無法取得正式網域憑證的階段性限制，
-    待 Phase 5 部署至真實環境時即可完成驗證，非設計或實作缺陷。
-  + SBOM 89 組件 + 威脅模型（STRIDE）+ 12 安全產出文件
-
+- ✅ **雙軌測試全數通過**：pytest（**38 API 測試** 100% 通過）+ Playwright（**10 UI 測試** 100% 通過）
+- 🔒 **安全檢核 83%**（24 項適用，20 項符合，4 項部分符合）+ OWASP 額外檢查 100% (10/10)
+  - ⚠️ 4 項部分符合為非軟體缺陷或需排程功能（部署待設定憟證、帳號關閉排程等）
+- 已完成 4 段 Baseline（Phase 01~04），Phase 05~06 待執行
 ---
 
 
