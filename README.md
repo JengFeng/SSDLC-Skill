@@ -559,3 +559,17 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | **待辦事項機制** | 新增架構回饋機制，支援開發者將框架問題直接反饋至 `待辦事項.md` |
 | **Baseline vs Snapshot 釐清** | 明確定義：Baseline = 完整專案存檔（階段里程碑），Snapshot = 輕量記錄點（修改前安全網） |
 | **代理執行模式分析** | 記錄業界四大 AI 代理執行模式比較（Pattern A~D），現階段保留嚴格 PDCA 管線 |
+
+## 📄 授權與來源
+
+| 標案 | 授模 |
+|:---|:---|
+| SSDLC-Skill 框架本身 | MIT License |
+| Security-Principles | MIT License |
+| Anthropic Skills | MIT License |
+| GitHub Skills | 依各 Skill 授模 |
+| MiniMax Skills | MIT License |
+| guizang-ppt-skill | AGPL-3.0 |
+| Other External Resources | 依各 Repo 授模 |
+
+> 詳細授模詳情請參照各 Skill 目錄下之 LICENSE 或 url.txt。

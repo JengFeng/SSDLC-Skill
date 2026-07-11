@@ -203,8 +203,10 @@ if ($needTableUpdate) {
 # ═══════════════════════════════════════════
 # STEP 5: Cross-reference - tree dirs vs table dirs
 # ═══════════════════════════════════════════
-$treeOnly = $treeDirs | Where-Object { $_ -notin $tableDirs -and $_ -notin $actualDirs }
-$tableOnly = $tableDirs | Where-Object { $_ -notin $treeDirs }
+# Project dirs exist in TEMPLATE_SKILL.md tree but not in repo root - exclude from warnings
+$projectOnlyDirs = @("00_cross_phase","01_planning_and_analysis","02_system_design","03_implementation_and_coding","04_testing","05_deployment","06_maintenance")
+$treeOnly = $treeDirs | Where-Object { $_ -notin $tableDirs -and $_ -notin $actualDirs -and $_ -notin $projectOnlyDirs }
+$tableOnly = $tableDirs | Where-Object { $_ -notin $treeDirs -and $_ -notin $projectOnlyDirs }
 
 if ($treeOnly) {
     Write-Warn "Tree has dirs not in table: $($treeOnly -join ', ')"
@@ -219,7 +221,7 @@ if ($tableOnly) {
 $requiredSections = @(
     @{name='專案概述'; pattern='## 📌 專案概述'},
     @{name='開發階段架構'; pattern='## 🧩 開發階段架構'},
-    @{name='指令系統'; pattern='## 🎮 指令系統'},
+    @{name='指令系統'; pattern='指令系統'},
     @{name='標準專案目錄結構'; pattern='## 📁 標準專案目錄結構'},
     @{name='快速開始'; pattern='## 🚀 快速開始'},
     @{name='Demo 專案'; pattern='## 🧪 Demo 專案'},
@@ -246,7 +248,7 @@ foreach ($sub in $securitySubs) {
 
 # Check @security-check and @security-load in command table
 $cmdSection = ''
-$cmdIdx = $readme.IndexOf('## 🎮 指令系統')
+$cmdIdx = $readme.IndexOf('指令系統')
 if ($cmdIdx -ge 0) {
     $cmdEnd = Find-NextHeading $readme ($cmdIdx + 1)
     if ($cmdEnd -lt 0) { $cmdEnd = $readme.Length }
