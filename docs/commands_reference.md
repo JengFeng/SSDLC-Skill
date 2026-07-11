@@ -66,12 +66,20 @@
 
 | 指令語法 | 參數說明 | 系統行為 (AI 代理動作) | 範例 |
 | :--- | :--- | :--- | :--- |
+| **`@[階段]`** | `00` 到 `06` 的階段雙位數代碼 | 掃描庫中該階段所有可用 Skill，按字母/數字順序為其編配雙位數快捷編號。同時顯示 `skills/00_cross_phase/` 通用 Skill（`G01`, `G02` ...）。以「快捷編號 — 實體名稱 — 用途描述」富資訊格式列出。 | `@02` |
+| **`@[階段]/[快捷],G[快捷],...`** | `G` 前綴 = `00_cross_phase` 通用 Skill，可與階段快捷混搭 | 混搭導入。階段專屬 Skill 與通用 Skill（`G` 前綴）可混合以逗號串接。通用 Skill 從 `skills/00_cross_phase/` 部署至指定階段。**⚠️ 防呆同上**。 | `@02/01,G01,G03` |
+| **`in:` / `out:` 快速語法** | `in:`=輸入，`out:`=輸出，`?`=可選 | Skill 選定後一行定義 IO。`@03 in: api_spec, db_schema, ui?` | `@03 in: api_spec, db_schema, ui?` |
+| **`@backup`** | 無 | 手動建立框架核心檔案備份至 `backups/`（保留最近 5 份），更新 `BACKUP_MANIFEST.md` | `@backup` |
 | **`@baseline [--phase NN] [--project] [--latest]`** | `--phase NN`：指定階段 / `--project`：彙整全部 / `--latest`：自動遞增版本 / 無參數：當前階段 | 建立可獨立執行的完整專案快照至 `baseline/` 目錄。`--phase NN` 僅對指定階段建立基線至 `baseline/phase-{NN}/baseline-v{N}/`；`--project` 彙整所有階段最終內容至 `baseline/`；`--latest` 自動遞增版本號。含原始碼、模板、資料庫、部署腳本，保留最近 3 份，舊版自動清理。**🔍 建立完成後自動執行基線可執行性驗證。** **🔄 自動觸發**：每次階段 Evaluator 通過後自動執行（等同 `@baseline --phase {當前階段}`）。口語觸發：「建立基線」、「新建 Baseline」、「對 Phase 02 建立基線」、「建立最新版基線」。 | `@baseline --phase 02` |
 | **`@baseline-diff [v1] [v2]`** | `v1` `v2`：指定版本 / 單一版本：自動比對前一版 / 無參數：列出版本供選擇 | 比對兩個 Baseline 版本之間的四規格差異（executable_spec.yaml、requirements.feature、system_specification.md、traceability_matrix.md），產出結構化差異報告。自動標註破壞性變更（需求移除、API 刪除等）。口語觸發：「比對基線差異」「baseline diff」「比較版本差異」。 | `@baseline-diff v1 v2` |
 | **`@CheckSpec [--req REQ-NNN]`** | 無：全量檢查 / `--req REQ-003`：僅檢查指定需求 | 檢查四種規格（executable_spec.yaml / requirements.feature / system_specification.md / traceability_matrix.md）的完整性與交叉一致性，產出摘要報告。口語觸發：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。 | `@CheckSpec` |
 | **`@external-resource add <URL>`** | GitHub repo 連結 | 將外部第三方 Skill 下載至 `external-resources/` 目錄，自動更新資源清單、`.gitignore` 排除規則與 `url.txt` 索引。完整工作流程參照 `external-resources/SKILL.md`。口語觸發：「引入外部 Skill」「新增第三方資源」「下載新的 Skill」。 | `@external-resource add https://github.com/owner/repo` |
 | **`@external-resource list`** | 無 | 列出 `external-resources/` 下所有第三方資源的名稱、來源、授權與狀態。口語觸發：「列出外部資源」「查看第三方 Skill」。 | `@external-resource list` |
 | **`@external-resource remove <名稱>`** | Skill 目錄名稱 | 移除指定外部第三方 Skill，同步清理 `README.md` 資源清單、`.gitignore` 規則與 `url.txt`。口語觸發：「移除外部 Skill」「刪除第三方資源」。 | `@external-resource remove ui-ux-pro-max-skill` |
+| **`@guide [phase]`** | phase: `01`~`06`，省略=當前階段 | 啟動引導式協作對話。依 5 個關卡（目標確認→輸入設定→Skill 選取→輸出定義→開始執行）逐步引導，自動整合 IO 管理。口語觸發：「開始引導」「引導我」「帶我做」。 | `@guide 02` |
+| **`@guide off`** | 無 | 退出引導模式，已完成項目保持不變。口語觸發：「關閉引導」「停止引導」。 | `@guide off` |
+| **`@guide status`** | 無 | 查看當前階段引導進度（已完成/待完成關卡）。口語觸發：「引導進度」「我做到哪裡了」。 | `@guide status` |
+| **`@guide next`** | 無 | 跳過/完成當前步驟，前進下一個引導步驟。口語觸發：「下一步」「跳過這步」。 | `@guide next` |
 | **`@help`** | 無 | 立即顯示本指令集參照表的完整內容，方便快速查閱所有可用指令與語法。 | `@help` |
 | **`@import-skill <skill-name>`** | Skill 目錄名稱 | 將 `external-resources/` 中指定外部 Skill 匯入 `skills/` 成為框架內建 Skill。自動執行歸類判斷、複製目錄、更新三檔。口語觸發：「導入 Skill」「收錄成內建 Skill」。 | `@import-skill markitdown` |
 | **`@import-skill-list`** | 無 | 掃描 `external-resources/` 與 `skills/`，列出尚未匯入框架內建的外部 Skill 清單。口語觸發：「列出可匯入 Skill」。 | `@import-skill-list` |
@@ -84,12 +92,7 @@
 | **`@io list [phase]`** | phase: `00`~`06`，省略 = 全顯示 | 列出各階段預設 IO 速查表，供快速瀏覽與選取。 | `@io list` |
 | **`@io set [phase]`** | phase: `00`~`06` | 互動式設定階段 IO 檔案。顯示編號清單，使用者勾選保留項目。 | `@io set 03` |
 | **`@io show [phase]`** | phase: `00`~`06` | 檢視指定階段的 IO 檔案清單（inputs / outputs）。 | `@io show 03` |
-| **`@guide [phase]`** | phase: `01`~`06`，省略=當前階段 | 啟動引導式協作對話。依 5 個關卡（目標確認→輸入設定→Skill 選取→輸出定義→開始執行）逐步引導，自動整合 IO 管理。口語觸發：「開始引導」「引導我」「帶我做」。 | `@guide 02` |
-| **`@guide off`** | 無 | 退出引導模式，已完成項目保持不變。口語觸發：「關閉引導」「停止引導」。 | `@guide off` |
-| **`@guide status`** | 無 | 查看當前階段引導進度（已完成/待完成關卡）。口語觸發：「引導進度」「我做到哪裡了」。 | `@guide status` |
-| **`@guide next`** | 無 | 跳過/完成當前步驟，前進下一個引導步驟。口語觸發：「下一步」「跳過這步」。 | `@guide next` |
 | **`@optimize [--incremental] [--files <清單>]`** | 無：全量 / `--incremental`：增量 / `--files`：指定檔案 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描，再執行 10 大檢查組。`--incremental` 透過 Git diff 僅檢查異動檔案及其關聯檔案；`--files` 僅對指定檔案執行關聯檢查。**需 `@role builder` 方可執行。** 口語觸發：「對齊架構」「執行增量架構對齊」「只對異動檔案做架構對齊」。 | `@optimize --incremental` |
-| **`@backup`** | 無 | 手動建立框架核心檔案備份至 `backups/`（保留最近 5 份），更新 `BACKUP_MANIFEST.md` | `@backup` |
 | **`@restore`** | `latest` / `N`（1~5） / `YYYYMMDD-HHMMSS` | 回溯工作目錄至指定執行快照。自動 `git stash` 保留未提交變更 → `git apply` 載入差異補丁 → SHA-256 驗證還原完整性。口語觸發：「回溯快照」「還原快照」「退回上一步」。 | `@restore latest` |
 | **`@role [builder/developer]`** | `builder` / `developer` / 無參數=顯示當前角色 | 切換使用者角色。`builder` 可執行 `@optimize`、`@unlock`；`developer` 為預設角色，僅允許一般指令。`@init` 時預設為 `developer`。口語觸發：「切換角色」「我是建造者」「我是開發者」。 | `@role builder` |
 | **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，**參照 `check_scope_per_domain.md` 逐項比對**系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`（**報告格式參照 `security_check_report_template.md`**）。構面 8（非軟體因子）在軟體專案中預設標記為不適用。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |
@@ -97,9 +100,7 @@
 | **`@snapshot [--phase NN] [--latest] [--project]`** | `--phase NN`：指定階段 / `--latest`：自動遞增版本 / `--project`：全域（預設） | 手動建立即時快照（git diff patch + SHA-256 清單）。`--phase NN` 僅對指定階段建立快照至 `snapshots/phase-{NN}/`；`--latest` 自動遞增版本號；`--project` 等同無參數。每個目錄保留最近 5 筆。口語觸發：「建立快照」「存快照」「對 Phase 02 建立快照」「存最新版快照」。 | `@snapshot --phase 02` |
 | **`@stages`** | 無 | 立即輸出 SSDLC 六大開發階段與跨階段全域共用分類（00_cross_phase）的代碼及中文名稱對照表。 | `@stages` |
 | **`@unlock [階段代碼]`** | `01` 到 `06` 的階段雙位數代碼 | ⚠️ **框架建造者專用**。強制解鎖指定階段的關卡限制。適用情境：框架調試、緊急 Hotfix、階段重建。**專案開發者日常流程中永遠不需使用。** 執行前顯示警告提示，確認後解鎖並記錄於 `phase_gates.json` 與 `logs/ai_adjustment_*.md`。 | `@unlock 03` |
-| **`in:` / `out:` 快速語法** | `in:`=輸入，`out:`=輸出，`?`=可選 | Skill 選定後一行定義 IO。`@03 in: api_spec, db_schema, ui?` | `@03 in: api_spec, db_schema, ui?` |
-| **`@[階段]`** | `00` 到 `06` 的階段雙位數代碼 | 掃描庫中該階段所有可用 Skill，按字母/數字順序為其編配雙位數快捷編號。同時顯示 `skills/00_cross_phase/` 通用 Skill（`G01`, `G02` ...）。以「快捷編號 — 實體名稱 — 用途描述」富資訊格式列出。 | `@02` |
-| **`@[階段]/[快捷],G[快捷],...`** | `G` 前綴 = `00_cross_phase` 通用 Skill，可與階段快捷混搭 | 混搭導入。階段專屬 Skill 與通用 Skill（`G` 前綴）可混合以逗號串接。通用 Skill 從 `skills/00_cross_phase/` 部署至指定階段。**⚠️ 防呆同上**。 | `@02/01,G01,G03` |
+| 指令語法 | 參數說明 | 系統行為 (AI 代理動作) | 範例 |
 
 >
 > **⚠️ 修正範圍規則**：`builder` **只能修正框架根目錄**的內容（`.agents/`、`docs/`、`skills/`、`scripts/`、`specs/` 等框架主體），**不能直接修正專案目錄**內的內容。在專案中發現框架問題時，應透過「待辦事項」機制反饋到框架根目錄的 `待辦事項.md`，而非當下直接修改框架。
