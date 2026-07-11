@@ -154,23 +154,24 @@
 
 所有指令以 `@` 開頭，支援自然語言口語觸發：
 
+| 指令 | 用途 | 範例 |
 |:---|:---|:---|
 | `@00` ~ `@06` | 查看指定階段所有可用 Skill（含通用 Skill G01, G02...） | `@02` |
 | `@[階段]/[快捷]` | 導入單個 Skill 至專案 | `@01/03` |
 | `@[階段]/[快],G[快],...` | 混搭導入階段 Skill + 通用 Skill（G 前綴） | `@02/01,G01,G03` |
 | `in:` / `out:` 快速語法 | 一行定義輸入輸出（`?`=可選） | `@03 in: api_spec, ui?` |
 | `@[階段]/[快1],[快2]` | 聯合導入多個 Skill | `@04/01,03,07` |
-| @backup | 手動建立框架核心檔案備份（保留最近 5 份） | @backup |
+| `@backup` | 手動建立框架核心檔案備份（保留最近 5 份） | `@backup` |
 | `@baseline [--phase NN] [--project] [--latest]` | 建立可獨立執行專案快照。支援指定階段、彙整全案、自動遞增版本號 | `@baseline --phase 02` |
 | `@baseline-diff [v1] [v2]` | 比對兩個 Baseline 版本的四規格差異，自動標註破壞性變更 | `@baseline-diff v1 v2` |
 | `@CheckSpec` | 檢查四種規格（YAML/Feature/SRS/RTM）完整性與交叉一致性 | `@CheckSpec` |
 | `@external-resource add <URL>` | 引入外部第三方 Skill（下載+登記+合規檢查） | `@external-resource add https://github.com/owner/repo` |
 | `@external-resource remove <名稱>` | 移除外部第三方 Skill（清理目錄+資源清單+gitignore） | `@external-resource remove ui-ux-pro-max-skill` |
 | `@external-resource list` | 列出所有外部資源清單 | `@external-resource list` |
-| @guide [phase] | 啟動 5 關卡引導式協作（目標確認到開始執行），自動整合 IO 管理 | @guide 02 |
-| @guide off | 退出引導模式 | @guide off |
-| @guide status | 查看引導進度 | @guide status |
-| @guide next | 前進下一個引導步驟 | @guide next |
+| `@guide [phase]` | 啟動 5 關卡引導式協作（目標確認到開始執行），自動整合 IO 管理 | `@guide 02` |
+| `@guide off` | 退出引導模式 | `@guide off` |
+| `@guide status` | 查看引導進度 | `@guide status` |
+| `@guide next` | 前進下一個引導步驟 | `@guide next` |
 | `@help` | 顯示完整指令集參照表 | `@help` |
 | `@import-skill <skill-name>` | 將外部 Skill 匯入框架內建 Skill | `@import-skill markitdown` |
 | `@import-skill-list` | 列出可匯入但尚未納入內建的外部 Skill | `@import-skill-list` |
@@ -368,8 +369,6 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 - 🔒 **安全檢核 83%**（24 項適用，20 項符合，4 項部分符合）+ OWASP 額外檢查 100% (10/10)
   - ⚠️ 4 項部分符合為非軟體缺陷或需排程功能（部署待設定憟證、帳號關閉排程等）
 - 已完成 4 段 Baseline（Phase 01~04），Phase 05~06 待執行
----
-
 
 ---
 

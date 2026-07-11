@@ -1,4 +1,4 @@
----
+﻿---
 name: 04_testing
 description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 + Playwright UI 測試）、Bug 追蹤與分類、測試覆蓋率報告產出，以及回歸測試策略制定。
 ---
@@ -7,7 +7,7 @@ description: 測試驗證階段，負責雙軌測試執行（pytest API 測試 +
 
 本技能定義了開發團隊在測試驗證階段的標準作業程序（SOP）與代理職責。
 
-> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
+> ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
 
 ## 一、 代理人職責規範
 

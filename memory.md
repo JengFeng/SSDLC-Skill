@@ -1,3 +1,28 @@
+﻿
+
+
+## 2026-07-11（Session 2）：SKILL.md 連結修復 + README 格式清理 + 架構對齊驗證
+
+### 1. .agents/skills/ 各階段 SKILL.md 連結修復
+- **問題**: 00_cross_phase 以外的 6 個階段（01~06）的 CORE_RULES.md 連結路徑錯誤
+  - 00_cross_phase 正確：../../../docs/CORE_RULES.md（往上 3 層到根目錄再到 docs/）
+  - 01~06 錯誤：../../docs/CORE_RULES.md（往上 2 層到 .agents/，再找不到 docs/）
+- **處理**: 統一修正 01~06 的連結路徑為 ../../../docs/CORE_RULES.md，與 00 一致
+- **連帶修復**: 連結文字從損壞的 
+.md 恢復為 CORE_RULES.md（含內文引用「依 CORE_RULES.md 規範」）
+- **影響檔案**: .agents/skills/01~06/SKILL.md 共 6 個
+
+### 2. README.md 格式清理
+- **Demo 專案區段雙重分隔線**: 「已完成 4 段 Baseline」和「資安防護基準」之間有兩行 --- 造成多餘空行，已刪除一行
+
+### 3. 架構對齊驗證
+- 執行 lign_framework.ps1 --incremental
+- 結果：修復項目 0、警告項目 0
+- 上方 5 條 WARN 為腳本已知侷限（dotfile 目錄未在 Tree 掃描範圍、指令表匹配邏輯差異），非實際缺失
+
+### 影響範圍
+- 修改檔案: 7 個 SKILL.md + README.md
+- 尚未 commit（待使用者確認後統一提交）
 
 
 ## 2026-07-11：框架規範全面優化 + 待辦清單整頓 + @optimize 增量模式實作
