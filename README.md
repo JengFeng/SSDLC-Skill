@@ -491,11 +491,12 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 ## 📂 倉庫結構
 
+### 目錄結構
+
 | 路徑 | 用途 |
-|:---|:---|| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
-| `.github/` | (待定義) |
-| `.tmp_clone/` | (待定義) |
-| `.tmp_clone2/` | (待定義) |
+|:---|:---|
+| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
+| `.github/` | GitHub 設定 |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
 | `backups/` | 框架核心檔案自動備份（@optimize 觸發，保留最近 5 份） |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
@@ -503,21 +504,24 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `docs/` | 核心文件（CORE_RULES、TEMPLATE_SKILL、commands_reference、Harness_Optimization_SKILL） |
 | `external-resources/` | 外部 Skill 原始來源備份，含 Security-Principles 資安防護基準 |
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
-| `outputs/` | 跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告） |
-| `scripts/` | 輔助腳本 + 🔒 安全工具鏈（align_framework.ps1、pre_commit_secrets.py、run_security_scan.py 等） |
-| `skills/` | 88 個 Skill 實體（含 README.md 與歸類索引） |
+| `outputs/` | 跨階段安全產出強整區（SBOM、安全檢核報告、安全掃描報告） |
+| `scripts/` | 框架核心工具腳本（check_spec_integrity.py 規格完整性檢查、align_framework.ps1 框架對齊引擎、generate_srs.py SRS 自動生成）+ 🔒 安全工具鏈 |
+| `skills/` | 94 個 Skill 實體（含 README.md 與歸類索引，13 雙归屬） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
 
+### 根目錄檔案
+
 | 根目錄檔案 | 用途 |
-|:---|:---|| `.gitignore` | Git 忽略規則（排除 __pycache__、.env、*.db 等） |
+|:---|:---|
+| `.gitignore` | Git 忽略規則（排除 __pycache__、.env、*.db 等） |
 | `AGENTS.md` | 專案入口規章（指向 .agents/AGENTS.md 與 docs/CORE_RULES.md） |
 | `memory.md` | 全域記憶檔（開發歷程、決策記錄、Skill 建立記錄） |
-| `phase_gates.json` | 階段關卡狀態（各階段鎖定/完成 + security_baseline 安全區塊） |
+| `phase_gates.json` | 階段關卡状態（各階段鎖定/完成 + security_baseline + guided_workflow） |
 | `README.md` | 本檔案：專案總覽與使用說明 |
 | `system_specification.md` | 系統功能規格書 SRS（IEEE 830 標準） |
 | `traceability_matrix.md` | 全域需求追溯矩陣（RTM，六階段對應） |
-| `待辦事項.md` | (待定義) |
+| `待辦事項.md` | 未來需求與待辦清單 |
 ## 📝 近期更新記錄（2026-07-08）
 
 ### 🏗️ 架構強化
