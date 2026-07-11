@@ -1,4 +1,4 @@
-﻿# 敏感檔
+# 敏感檔
 **/.env
 **/*.key
 **/credentials.json
@@ -60,6 +60,8 @@ myPrj*/
 # 排除原始碼內容，保留 url.txt 和 README.md 索引
 external-resources/anthropics-skills/*
 !external-resources/anthropics-skills/url.txt
+external-resources/awesome-design-md/*
+!external-resources/awesome-design-md/url.txt
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
 external-resources/ui-ux-pro-max-skill/*
@@ -67,4 +69,6 @@ external-resources/ui-ux-pro-max-skill/*
 
 external-resources/markitdown/*
 !external-resources/markitdown/url.txt
+external-resources/open-design/*
+!external-resources/open-design/url.txt
 

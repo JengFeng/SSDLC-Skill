@@ -1,14 +1,14 @@
 ﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 68 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 70 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 68 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 70 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -18,7 +18,7 @@
 
 ## 🧩 開發階段架構
 
-本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **68 個** AI 協作 Skill。
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **70 個** AI 協作 Skill。
 
 ### 🌐 跨階段全域共用
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 68 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
+> **合計 70 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
 
 ---
 
@@ -362,11 +362,15 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 
 
 
+
+
 ## 📂 倉庫結構
 
 | 路徑 | 用途 |
 |:---|:---|| `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
 | `.github/` | (待定義) |
+| `.tmp_clone/` | (待定義) |
+| `.tmp_clone2/` | (待定義) |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
 | `backups/` | (待定義) |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
@@ -383,10 +387,7 @@ AI 代理會自動建立完整目錄結構，並引導你配置各階段 Skill�
 | 根目錄檔案 | 用途 |
 |:---|:---|| `.gitignore` | Git 忽略規則（排除 __pycache__、.env、*.db 等） |
 | `AGENTS.md` | 專案入口規章（指向 .agents/AGENTS.md 與 docs/CORE_RULES.md） |
-| `diff_result.txt` | (待定義) |
-| `extra_in_demo.txt` | (待定義) |
 | `memory.md` | 全域記憶檔（開發歷程、決策記錄、Skill 建立記錄） |
-| `missing_in_demo.txt` | (待定義) |
 | `phase_gates.json` | 階段關卡狀態（各階段鎖定/完成 + security_baseline 安全區塊） |
 | `README.md` | 本檔案：專案總覽與使用說明 |
 | `system_specification.md` | 系統功能規格書 SRS（IEEE 830 標準） |

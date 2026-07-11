@@ -19,12 +19,12 @@
 * **技能清單**：`langchain`、`llamaindex`、`docling`、`docusaurus`、`doc-coauthoring`、`internal-comms`、`docx`、`xlsx` / `pdf` / `pptx`、`document-skills`（docx/pdf/pptx/xlsx 增強合集）。
 
 ### 2. 02_system_design
-* **適用技能**：架構圖、流程圖、UML 圖表、資料庫設計、API 規格產生以及前端視覺色彩規範。
-* **技能清單**：`mermaid`、`plantuml`、`prisma`、`openapi_generator`、`frontend-design`、`theme-factory`、`brand-guidelines`、`canvas-design`、`algorithmic-art`、`slack-gif-creator`、`brand`、`design`、`design-system`、`ui-styling`、`banner-design`。
+* **適用技能**：架構圖、流程圖、UML 圖表、資料庫設計、API 規格產生、前端視覺色彩規範、AI 設計系統文件、設計引擎 Skill 合集。
+* **技能清單**：`mermaid`、`plantuml`、`prisma`、`openapi_generator`、`frontend-design`、`theme-factory`、`brand-guidelines`、`canvas-design`、`algorithmic-art`、`slack-gif-creator`、`brand`、`design`、`design-system`、`ui-styling`、`banner-design`、`ai-news-video`、`awesome-design-md`、`open-design`。
 
 ### 3. 03_implementation_and_coding
-* **適用技能**：AI 輔助寫碼、本地編譯、代碼規格語法與排版檢核、多模組整合管理。
-* **技能清單**：`continue_dev`、`codellama`、`eslint`、`prettier`、`nx`、`web-artifacts-builder`、`mcp-builder`、`claude-api`、`skill-creator`、`code-simplifier`、`ui-styling`。
+* **適用技能**：AI 輔助寫碼、本地編譯、代碼規格語法與排版檢核、多模組整合管理、設計驅動前端開發。
+* **技能清單**：`continue_dev`、`codellama`、`eslint`、`prettier`、`nx`、`web-artifacts-builder`、`mcp-builder`、`claude-api`、`skill-creator`、`code-simplifier`、`ui-styling`、`open-design`。
 
 ### 4. 04_testing
 * **適用技能**：單元測試、前後端驗證、UI 自動化測試、API 與 Web 服務之 Schema 驗證、單機應用程式 UI 測試、安全漏洞靜態掃描與覆蓋率分析。

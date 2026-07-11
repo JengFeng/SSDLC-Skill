@@ -1,4 +1,4 @@
-﻿# External Resources（外部第三方資源）
+# External Resources（外部第三方資源）
 
 本目錄收錄本框架所引用的第三方外部 Skill 與資源。所有原始碼、腳本與第三方組件之智慧財產權均歸各原始作者所有，本框架僅基於其授權條款進行合理使用。
 
@@ -11,8 +11,10 @@
 | 目錄 | 來源 | 授權 | 說明 |
 |:-----|:-----|:-----|:-----|
 | `anthropics-skills/` | [anthropics/skills](https://github.com/anthropics/skills) | See `THIRD_PARTY_NOTICES.md` | Anthropic 官方 Skill 合集（17 個） |
+| `awesome-design-md/` | [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT | AI 設計系統文件集合（73+ 網站 DESIGN.md） |
 | `github-skills/` | GitHub 社群彙整 | — | GitHub 社群 Skill 合集（48 個） |
 | `markitdown/` | [microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT | Microsoft 輕量 Markdown 轉換工具（文件/簡報/試算表轉 Markdown） |
+| `open-design/` | [nexu-io/open-design](https://github.com/nexu-io/open-design) | Apache-2.0 | AI 設計引擎 Skill 合集（150+ Skill，前端/UI/動畫/影片/簡報/PDF） |
 | `Security-Principles/` | 本框架自建 | — | 數位發展部資通安全署防護基準 Skill |
 | `ui-ux-pro-max-skill/` | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 | UI/UX 設計智慧技能組（7 個） |
 
@@ -89,6 +91,7 @@ AI 代理將依序執行：
 | 資源 | 來源 | 授權 |
 |:-----|:-----|:-----|
 | Anthropic Skills | [github.com/anthropics/skills](https://github.com/anthropics/skills) | See THIRD_PARTY_NOTICES.md |
+| Awesome DESIGN.md | [github.com/VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT |
 | MarkItDown | [github.com/microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT |
 | UI/UX Pro Max | [github.com/nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 |
 

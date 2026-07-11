@@ -1,6 +1,6 @@
 # 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 68 個獨立 Skill，其中 docx/pdf/xlsx/pptx 等 4 個具跨階段通用性，ui-styling 同時歸類於 Phase 02 與 Phase 03，共計 5 個雙歸屬 Skill，markitdown（MIT）歸入 Phase 00 跨格式文件轉 Markdown 工具）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 70 個獨立 Skill，其中 docx/pdf/xlsx/pptx 等 4 個具跨階段通用性，ui-styling 與 open-design 同時歸類於 Phase 02 與 Phase 03，共計 7 個雙歸屬 Skill，markitdown（MIT）歸入 Phase 00 跨格式文件轉 Markdown 工具）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
@@ -86,6 +86,10 @@
 * **[[26] banner-design](skills/02_system_design/banner-design)**：多格式橫幅設計 — 22 風格 / 社群+廣告+網頁+印刷 / AI 生成視覺素材。 ⚠️ 依賴 ui-ux-pro-max
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/banner-design) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 
+* **[[27] awesome-design-md](skills/02_system_design/awesome-design-md)**：AI 設計系統文件集合 — 73+ 網站 DESIGN.md，涵蓋色彩/字型/組件/佈局/響應式設計規範。
+  * **追溯來源**：[本機外部資源目錄](../external-resources/awesome-design-md) / [原始 GitHub 倉庫](https://github.com/VoltAgent/awesome-design-md)
+* **[[28] open-design](skills/02_system_design/open-design)**：AI 設計引擎 Skill 合集 — 150+ Skill，前端/UI/動畫/影片/簡報/PDF/品牌/3D。 🌐 雙歸屬（Phase 02 系統設計 + Phase 03 開發實作）
+  * **追溯來源**：[本機外部資源目錄](../external-resources/open-design) / [原始 GitHub 倉庫](https://github.com/nexu-io/open-design)
 
 ## 3. 開發與編碼
 本階段技能用於開發任務管理、程式碼實作、MCP 伺服器建置、API 規格查詢與自訂技能管理。
@@ -123,6 +127,9 @@
 ### UI/UX Pro Max 前端實作技能 (1)
 * **[[37] ui-styling](skills/03_implementation_and_coding/ui-styling)**：前端樣式落地實作 — shadcn/ui 元件開發 / Tailwind CSS 工具類 / 響應式佈局 / 暗色模式實作。 🌐 雙歸屬（Phase 02 設計規範 + Phase 03 實作落地）
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/ui-styling) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
+* **[[38] open-design](skills/03_implementation_and_coding/open-design)**：AI 設計引擎 Skill 合集 — 150+ Skill，前端/UI/動畫/影片/簡報/PDF/品牌/3D。 🌐 雙歸屬（Phase 02 系統設計 + Phase 03 開發實作）
+  * **追溯來源**：[本機外部資源目錄](../external-resources/open-design) / [原始 GitHub 倉庫](https://github.com/nexu-io/open-design)
 
 ## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
