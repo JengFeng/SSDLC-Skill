@@ -511,57 +511,78 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
 
 ## 七、 指令集擴充歷史記錄
 
-*   **2026-06-27 (Baseline 自動驗證強化)**：`@baseline` 建立完成後自動執行基線可執行性驗證（run.bat 語法、Python 匯入、HTTP 啟動測試、模板完整性），失敗時立即回報修復建議。
-*   **2026-06-27 (@help 指令新增)**：新增 `@help` 指令，快速顯示指令集參照表。
-*   **2026-06-27 (框架優化指令新增)**：
-    *   新增 `@optimize` 指令，觸發 `docs/Harness_Optimization_SKILL.md` 地毯式全案關聯檢查與修復。
+> 依時間順序排列，最早的在前。
 
-*   **2026-07-10 (@baseline/@snapshot 階段化參數 + @role 角色權限)**：
-*   `@baseline` 新增 `--phase NN`、`--project`、`--latest` 參數，支援指定階段建立基線。
-*   `@snapshot` 新增 `--phase NN`、`--latest`、`--project` 參數，支援指定階段建立快照。
-*   新增 `@role` 指令，控制 `@optimize`、`@unlock` 的角色權限（builder/developer）。
-*   `@optimize`、`@unlock` 新增角色權限檢查，`developer` 角色將被阻擋。
-*   `phase_gates.json` 新增 `current_role` 欄位（預設 `developer`）。
-*   `@optimize` 新增 `--incremental`（增量檢查）與 `--files`（指定檔案）參數。
-    *   將 Harness Optimization 的自然語言喚出詞彙（駕馭工程框架優化檢查、Harness Optimization、執行架構優化、對齊所有、對齊架構、檢查全案關聯）整合至前言。
-    *   新增 `### SSDLC 階段代碼參照` 對照表，明確 01～06 與軟體開發階段名稱及目錄的對應關係。
-*   **2026-06-26 (快捷與分隔符簡化改版)**：
-    *   將 Skill 導入方式全面改為「雙位數快捷編號」對照，簡化鍵盤快速輸入與語音口語呼叫的複雜度。
-    *   將多 Skill 聯合導入的分隔連接符號由加號 `+` 改為逗號 `,`。
-    *   調整防呆提醒機制，新增對完整 Skill 名稱的友好糾錯提示，以及無效快捷編號的校對防呆提醒。
 *   **2026-06-26 (初版)**：
     *   確立全對話指令協議，完全免除本機 Python 腳本依賴。
-    *   新增 `@stages` 階段查詢指令。
-    *   新增 `@[階段]` 查詢時自動動態解析 YAML Frontmatter 中的 `description` 欄位以輸出富資訊清單。
-    *   新增 `+` 加號聯合導入與融合機制。
-    *   新增加號聯合導入防呆提醒與校對邏輯。
-    *   新增 `@init` 執行後自動啟動各開發階段的 Skill 配置引導對話。
-    *   新增自然語言與語音語意喚起 `commands_reference.md` 對照表機制，並將喚出指引整合至開頭前言中。
+    *   新增 @stages 階段查詢指令。
+    *   新增 @[階段] 查詢時自動動態解析 YAML Frontmatter 中的 description 欄位以輸出富資訊清單。
+    *   新增 + 加號創合導入與融合機制。
+    *   新增加號創合導入防呆提醒與校對邏輯。
+    *   新增 @init 執行後自動啟動各開發階段的 Skill 配置引導對話。
+    *   新增自然語言與語音語意喚起 commands_reference.md 對照表機制。
+
+*   **2026-06-26 (快捷與分雤符簡化改版)**：
+    *   將 Skill 導入方式全面改為「雙位數快簡編號」對照。
+    *   將多 Skill 聯合導入的分雤連接符號由加號 + 改為逗號 , 。
+    *   調整防呆提醒機制，新增對完整 Skill 名稱的友好簍錯提醒。
+
+*   **2026-06-27 (Baseline 自動驗證強化)**：
+    *   @baseline 建立完成後自動執行基緑可執行性驗證，run.bat 語法、Python 匯入、HTTP 啟動測試、模板完整性）。
+
+*   **2026-06-27 (@help 指令新增)**：
+    *   新增 @help 指令，快速顯示指令集參照表。
+
+*   **2026-06-27 (框架優化指令新增)**：
+    *   新增 @optimize 指令，觸發 Harness_Optimization_SKILL.md 地櫿c式全案關聯檢查與修復。
 
 *   **2026-06-28 (@CheckSpec 四規格完整性檢查)**：
-    *   新增 `@CheckSpec` 指令，檢查四種規格的完整性與交叉一致性。
-    *   強化 `check_spec_integrity.py`：新增 Gherkin 語法檢查、SRS 參照檢查、四規格交叉一致性檢查。
+    *   新增 @CheckSpec 指令，檢查四種規格的完整性與交叉一致性。
+    *   強化 check_spec_integrity.py：新增 Gherkin 語法檢查、SRS 參照檢查、四規格交叉一致性檢查。
     *   新增模式 S（@CheckSpec 四規格），支援中英文 Gherkin 關鍵字。
-    *   口語觸發詞彙新增：「檢查規格」「CheckSpec」「規格完整性」「四規格檢查」。
 
-*   **2026-06-28 (@security-load 彈性導入)**：
+*   **2026-06-28 (@security-load 弹性導入)**：
     *   新增 @security-load 指令，支援中途選定等級與特定構面導入安全防護。
-    *   口語觸發詞彙新增：「載入資安構面」「導入安全防護」「只加存取控制」。
-    *   設計兼容現有 @[階段]/[快捷] 多 Skill 聯合導入模式，含相容性檢查與衝突警示。
 
 *   **2026-06-28 (資安防護基準整合)**：
-    *   新增 `@security-check` 指令，支援 general/medium/high 三等級資安檢核。
-    *   `@init` 流程擴充：加入「是否導入資安防護基準」詢問步驟。
-    *   口語觸發詞彙新增：「執行資安檢核」「資通安全稽核」「安全檢核」。
-    *   整合 Security-Principles Skill（`external-resources/Security-Principles/`），涵蓋數位發展部資通安全署 7 構面 80 項控制措施。
+    *   新增 @security-check 指令，支援 general/medium/high 三等級資安檢核。
+    *   @init 流程擴充：加入「是否導入資安防護基準」討問步驟。
+    *   整合 Security-Principles Skill，涵該數位發展部資通安全署 7 構面 80 項控制措施。
+
 *   **2026-07-01 (@io 階段IO 檔案體系)**：
-    *   新增 7 份 `io_files.yaml`（Phase 00~06），定義各階段的 inputs/outputs IO 檔案。
-    *   新增 `@io show/set/diff` 三個子指令與 `@io` 勾稽檢查指令。
-    *   新增 `in:` / `out:` 快速定義語法（`?` 可選符號）。
-    *   新增 `check_spec_integrity.py --mode E`（跨階段IO 檔案 IO 勾稽）。
-    *   口語觸發詞彙新增：「檢查 IO」「IO 勾稽」「設定IO 檔案」「定義 IO」「查看IO 檔案」「比對IO 檔案」。
+    *   新增 7 份 io_files.yaml（Phase 00~06），定義各階段的 inputs/outputs IO 檔案。
+    *   新增 @io show/set/diff 三個子指令與 @io 勾稽檢查指令。
+    *   新增 in: / out: 快速定義語法（? 可選符號）。
 
 *   **2026-07-08 (@external-resource 外部資源管理工作流程)**：
-    *   新增 `@external-resource add/remove/list` 指令體系，支援外部第三方 Skill 的引入、移除與列表查詢。
-    *   完整工作流程定義於 `external-resources/SKILL.md`。
-    *   口語觸發詞彙新增：「引入外部 Skill」「新增第三方資源」「下載新的 Skill」「移除外部 Skill」「查看外部資源」。
+    *   新增 @external-resource add/remove/list 指令體系，支援外部第三方 Skill 的引入、移除與列表查詢。
+
+*   **2026-07-08 (指令集全面重排)**：
+    *   口語指令區依功能分為 7 組。
+    *   核心指令對照表 27 筆 A-Z 排序。
+    *   新增 SSDLC 階段代碼參照對照表。
+
+*   **2026-07-09 (@CheckSpec 增量檢查 + check_spec_integrity 五項優化)**：
+    *   @CheckSpec 新增 --req REQ-NNN 參數，支援鑲導單一需求做增量四向交叉檢查。
+    *   check_spec_integrity.py 五項優化：動態需求數量、修復建議提示、Scenario 結構檢查、標題關鍵字比對、增量檢查模式。
+
+*   **2026-07-09 (@import-skill 外部 Skill 匯入體系)**：
+    *   新增 @import-skill 指令，將 external-resources/ 中指定 Skill 匯入 skills/ 成為框架內建。
+    *   新增 @import-skill-list 指令，掃描並列出尚未匯入的外部 Skill 清單。
+    *   新增 @import-skill-remove 指令，將內建 Skill 退回外部資源池。
+
+*   **2026-07-10 (@baseline/@snapshot 階段化參數 + @role 角色權限)**：
+    *   @baseline 新增 --phase NN、--project、--latest 參數。
+    *   @snapshot 新增 --phase NN、--latest、--project 參數。
+    *   新增 @role 指令，控制 @optimize、@unlock 的角色權限（builder/developer）。
+    *   @optimize 新增 --incremental 與 --files 參數。
+
+*   **2026-07-11 (@backup/@restore 備份與回溯機制)**：
+    *   新增 @backup 指令，手動建立框架核心檔案備份至 backups/（保留最近 5 份）。
+    *   新增 @restore 指令，支援 latest/N/YYYYMMDD-HHMMSS 三種回溯方式。
+    *   @optimize 執行時自動觸發備份。
+
+*   **2026-07-11 (@guide 引導式協作系統)**：
+    *   新增 @guide [phase] 指令，啟動 5 關卡引導式協作。
+    *   新增 @guide off、@guide status、@guide next 三個子指令。
+    *   引導啟動時自動整合 IO 管理，關卡 2/4 自動帶入預設值。
