@@ -31,19 +31,66 @@
                     }
                     // 第二步:載入水號資料(確保 isGroupedAccount 已設定)
                     $.get(GetWebSiteURL('@Url.Action("ListedUserWaterNo", "UserManage")'),function(result){
-                       //console.log(result.Data);
-                        if(result.Success){
-                            $.each(result.Data,function(index,value){
-                                value["Index"] = WaterNoIndex;
-                                $("#TemplateWaterNoitem").tmpl(value).appendTo("#divWaterNoFromGroup");
-                                WaterNoIndex++;
-                            })
+                       console.log(result.Data);
+                        // if(result.Success){
+                        //     // $.each(result.Data,function(index,value){
+                        //     //     value["Index"] = WaterNoIndex;
+                        //     //     $("#TemplateWaterNoitem").tmpl(value).appendTo("#divWaterNoFromGroup");
+                        //     //     WaterNoIndex++;
+                        //     // })
 
-                            // 如果是歸戶帳號，禁用所有水號相關的輸入框
-                            if(isGroupedAccount){
-                                disableWaterNoInputs();
+                        //     // // 如果是歸戶帳號，禁用所有水號相關的輸入框
+                        //     // if(isGroupedAccount){
+                        //     //     disableWaterNoInputs();
+                        //     // }
+
+                        //      let html = "";
+
+                        //     $.each(result.Data, function(index, value){
+                        //         value["Index"] = WaterNoIndex++;
+                        //         html += $("#TemplateWaterNoitem").tmpl(value).html();
+                        //     });
+
+                        //     $("#divWaterNoFromGroup").append(html);
+
+                        //     if (isGroupedAccount) {
+                        //         disableWaterNoInputs();
+                        //     }
+                        // }
+                         if (!result.Success) return;
+
+                        const data = result.Data || [];
+                        const container = $("#divWaterNoFromGroup");
+
+                        let i = 0;
+                        const chunkSize = 20; // 每次渲染幾筆（可調 10~50）
+    
+                        function renderChunk() {
+
+                            const end = Math.min(i + chunkSize, data.length);
+
+                            for (; i < end; i++) {
+
+                                const value = data[i];
+                                value["Index"] = WaterNoIndex++;
+
+                                const $item = $("#TemplateWaterNoitem").tmpl(value);
+                                container.append($item);
+                            }
+
+                            // 還有資料 → 下一批
+                            if (i < data.length) {
+                                setTimeout(renderChunk, 0);
+                            } else {
+
+                                // 全部渲染完才做禁用（避免一邊畫一邊 disable）
+                                if (isGroupedAccount) {
+                                    disableWaterNoInputs();
+                                }
                             }
                         }
+
+                        renderChunk();
                     });
                     // 第三步:載入到期提醒設定
                     $.get(GetWebSiteURL('@Url.Action("LoadAlertSet", "UserManage")'),function(result){
