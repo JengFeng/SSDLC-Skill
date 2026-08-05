@@ -69,7 +69,7 @@ namespace TWNPPublic.Domain.Service
             return false;
         }
 
-        public List<string> CheckWaterNoNoIsApp(int AccountSN, string WaterNo)
+        public List<WaterNoInfoDto> CheckWaterNoNoIsApp(int AccountSN, string WaterNo)
         {
             //string mainsql = @"Insert Into [dbo].[B_ACCOUNT_WATER_NO]            
 			         //                       ([B_ACCOUNT_SN]
@@ -96,7 +96,12 @@ namespace TWNPPublic.Domain.Service
                 B_ACCOUNT_SN = AccountSN
             });
 
-            return result.Select(c => c.WATER_NO).ToList();
+            return result.Select(c => new WaterNoInfoDto
+            {
+                WATER_NO = c.WATER_NO,
+                NICK_NAME = c.NICK_NAME,
+                NICK_NAME_SHOW = c.NICK_NAME_SHOW
+            }).ToList();
         }
 
         /// <summary>
@@ -420,7 +425,7 @@ namespace TWNPPublic.Domain.Service
         /// <param name="AccountSN"></param>
         /// <param name="WaterNo"></param>
         /// <returns></returns>
-        public List<string> CheckWaterNoNoIsApp(int AccountSN, string WaterNo);
+        public List<WaterNoInfoDto> CheckWaterNoNoIsApp(int AccountSN, string WaterNo);
 
         /// <summary>
         /// APP用

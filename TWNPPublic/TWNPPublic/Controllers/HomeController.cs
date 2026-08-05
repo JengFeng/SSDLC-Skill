@@ -4,6 +4,7 @@ using SqlData;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Security.Principal;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Common.Helper;
 using TWNPPublic.Domain.Service;
@@ -27,15 +28,148 @@ namespace TWNPPublic.Controllers
             this.homeService = homeService;
         }
 
+        ///// <summary>
+        ///// APP用-舊1150730
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //public IActionResult LoginAPP(LoginAppVm model)
+        //{
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var ErrorMessages = ModelState.Values.Where(c => c.Errors.Count() != 0).Select(c => string.Join(",", c.Errors.Select(x => x.ErrorMessage))).ToArray();
+        //        return Json(Failed(
+        //            new
+        //            {
+        //                ErrorCode = ApiErrorCode.Invalid.ToString(),
+        //                ErrorObj = ErrorMessages
+        //            },
+        //            "欄位錯誤"
+        //            ), 1002);
+        //    }
+
+        //    model.AccessToken = FixBase64FromQueryString(model.AccessToken);
+
+        //    //檢查偸肯
+        //    if (string.IsNullOrEmpty(model.AccessToken))
+        //    {
+        //        return Json(Failed(new
+        //        {
+        //            ErrorCode = ApiErrorCode.TokenError.ToString(),
+        //        }, "Empty Token Error", 1001));
+        //    }
+
+        //    //檢查偸肯
+        //    if (!string.IsNullOrEmpty(model.AccessToken))
+        //    {
+        //        try
+        //        {
+        //            var RealToken = model.AccessToken.AesDecryptExtened(KingErrandYours);
+        //            var tokenWaterNoAndTime = RealToken.Split('_');
+
+        //            //if (RealToken.Substring(0, 2) != "7D")
+        //            //{
+        //            //    return Json(Failed(new
+        //            //    {
+        //            //        ErrorCode = ApiErrorCode.TokenError.ToString(),
+        //            //    }, "Token Error,未合法的 Token", 1001));
+        //            //}
+
+        //            string formatString = "yyyyMMddHHmmss";
+        //            string tokenDateTime = tokenWaterNoAndTime[1].ToString();
+        //            DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
+
+        //            //檢查偸肯超過6個月
+        //            if (DateTime.Now > dt.AddMonths(6))
+        //            {
+        //                homeService.DenyAccountFromApp(tokenWaterNoAndTime[0].ToString());
+        //            }
+
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            return Json(Failed(new
+        //            {
+        //                ErrorCode = ApiErrorCode.TokenError.ToString(),
+        //            }, "Token Error,解析錯誤", 1001));
+        //        }
+        //    }
+
+
+        //    //檢查是否為智慧水表
+        //    if (!homeService.CheckWaterNoIsAutoMeter(model.WaterNo))
+        //    {
+        //        return Json(Failed(new
+        //        {
+        //            ErrorCode = ApiErrorCode.NoSource.ToString(),
+        //        }, "此水號非智慧水表", 1003));
+        //    }
+
+        //    //檢查是否存在B_ACCOUNT裡、VAILD是否=1
+        //    if (!homeService.CheckWaterNoIsValid(model.WaterNo))
+        //    {
+        //        return Json(Failed(new
+        //        {
+        //            ErrorCode = ApiErrorCode.NoSource.ToString(),
+        //        }, "此帳號未開通或是暫停使用", 1004));
+        //    }
+
+
+        //    //在系統裡面有了就直接登入 而且帳號尚未被取消(VALID=1)、Token未被註銷(LOGIN_TYPE=1) 不是首次登入(INITIAL_APPLOGIN=0)、直接app登入(DIRECT_APPLOGIN=1)
+        //    var getAccount = homeService.CheckAccountNoIsApp(model.WaterNo);
+        //    //兩種情況一個真的沒有 一個被取消
+        //    if (getAccount != null && getAccount.LOGIN_TYPE == 1 && getAccount.VALID == 1 && getAccount.INITIAL_APPLOGIN == 0 && getAccount.DIRECT_APPLOGIN == 1 )
+        //    {
+        //        //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
+        //        List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, model.WaterNo);
+
+        //        List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
+        //        {
+        //            WATER_NO = waterNo,
+        //            NICK_NAME ="",
+        //            NICK_NAME_SHOW = "0"
+        //        }).ToList();
+
+        //        SetLoginSession(
+        //                    HttpContext,
+        //                    getAccount.B_ACCOUNT,
+        //                    model.WaterNo,
+        //                    waterNosList,
+        //                    getAccount.B_ACCOUNT_SN.ToString(),
+        //                    "",
+        //                    "");
+
+        //        if(getAccount.INITIAL_LOGIN == 1)
+        //        {
+        //            return RedirectToAction("Index", "Dashboard");
+        //        }
+        //        else
+        //        {
+        //            return RedirectToAction("UpdatePw", "Dashboard");
+        //        }
+        //    }
+
+        //    ViewBag.AccountNo = model.AccountNo;
+        //    ViewBag.WaterNo = model.WaterNo;
+        //    ViewBag.AccessToken = model.AccessToken;
+
+        //    TempData["AccountNo"] = model.AccountNo;
+        //    TempData["WaterNo"] = model.WaterNo;
+        //    TempData["AccessToken"] = model.AccessToken;
+
+        //    return RedirectToAction("LoginAPPs", "Home");
+        //}
+
         /// <summary>
-        /// APP用
+        /// APP用-新1150730
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         public IActionResult LoginAPP(LoginAppVm model)
         {
-
             if (!ModelState.IsValid)
             {
                 var ErrorMessages = ModelState.Values.Where(c => c.Errors.Count() != 0).Select(c => string.Join(",", c.Errors.Select(x => x.ErrorMessage))).ToArray();
@@ -48,6 +182,16 @@ namespace TWNPPublic.Controllers
                     "欄位錯誤"
                     ), 1002);
             }
+
+            //檢查AccountNo和WaterNo是否相同
+            if (model.AccountNo != model.WaterNo)
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.NoSource.ToString(),
+                }, "欄位錯誤", 1002));
+            }
+
 
             model.AccessToken = FixBase64FromQueryString(model.AccessToken);
 
@@ -68,22 +212,25 @@ namespace TWNPPublic.Controllers
                     var RealToken = model.AccessToken.AesDecryptExtened(KingErrandYours);
                     var tokenWaterNoAndTime = RealToken.Split('_');
 
-                    //if (RealToken.Substring(0, 2) != "7D")
-                    //{
-                    //    return Json(Failed(new
-                    //    {
-                    //        ErrorCode = ApiErrorCode.TokenError.ToString(),
-                    //    }, "Token Error,未合法的 Token", 1001));
-                    //}
-
                     string formatString = "yyyyMMddHHmmss";
                     string tokenDateTime = tokenWaterNoAndTime[1].ToString();
                     DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
 
-                    //檢查偸肯超過6個月
-                    if (DateTime.Now > dt.AddMonths(6))
+                    //檢查偸肯超過5分鐘
+                    if (DateTime.Now > dt.AddMinutes(5))
                     {
-                        homeService.DenyAccountFromApp(tokenWaterNoAndTime[0].ToString());
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenError.ToString(),
+                        }, "Token Error, Token 過期", 1001));
+                    }
+
+                    if (tokenWaterNoAndTime[0] != model.WaterNo)
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenError.ToString(),
+                        }, "Token Error,未合法的 Token", 1001));
                     }
 
                 }
@@ -95,7 +242,6 @@ namespace TWNPPublic.Controllers
                     }, "Token Error,解析錯誤", 1001));
                 }
             }
-
 
             //檢查是否為智慧水表
             if (!homeService.CheckWaterNoIsAutoMeter(model.WaterNo))
@@ -115,20 +261,20 @@ namespace TWNPPublic.Controllers
                 }, "此帳號未開通或是暫停使用", 1004));
             }
 
+            homeService.CreateAppUser(model.WaterNo, model.WaterNo, model.AccessToken);
 
-            //在系統裡面有了就直接登入 而且帳號尚未被取消(VALID=1)、Token未被註銷(LOGIN_TYPE=1) 不是首次登入(INITIAL_APPLOGIN=0)、直接app登入(DIRECT_APPLOGIN=1)
             var getAccount = homeService.CheckAccountNoIsApp(model.WaterNo);
-            //兩種情況一個真的沒有 一個被取消
-            if (getAccount != null && getAccount.LOGIN_TYPE == 1 && getAccount.VALID == 1 && getAccount.INITIAL_APPLOGIN == 0 && getAccount.DIRECT_APPLOGIN == 1 )
+            //兩種情況一個真的沒有 一個被取消→修改 沒有被取消、正常(VALID == 1)、非首次登入(INITIAL_APPLOGIN = 0)、是app直接登入(DIRECT_APPLOGIN=1)
+            if (getAccount != null && getAccount.LOGIN_TYPE == 1 && getAccount.VALID == 1 && getAccount.INITIAL_APPLOGIN == 0 && getAccount.DIRECT_APPLOGIN == 1)
             {
-                //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
-                List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, model.WaterNo);
+                //返回這個帳號所有WaterNo
+                List<WaterNoInfoDto> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, model.WaterNo);
 
                 List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
                 {
-                    WATER_NO = waterNo,
-                    NICK_NAME ="",
-                    NICK_NAME_SHOW = "0"
+                    WATER_NO = waterNo.WATER_NO,
+                    NICK_NAME = waterNo.NICK_NAME,
+                    NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
                 }).ToList();
 
                 SetLoginSession(
@@ -137,28 +283,19 @@ namespace TWNPPublic.Controllers
                             model.WaterNo,
                             waterNosList,
                             getAccount.B_ACCOUNT_SN.ToString(),
-                            "",
-                            "");
+                            getAccount.ST_DATE.ToString(),
+                            getAccount.EN_DATE.ToString());
 
-                if(getAccount.INITIAL_LOGIN == 1)
-                {
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                else
-                {
-                    return RedirectToAction("UpdatePw", "Dashboard");
-                }
+                return RedirectToAction("Index", "Dashboard");
+
             }
-
-            ViewBag.AccountNo = model.AccountNo;
-            ViewBag.WaterNo = model.WaterNo;
-            ViewBag.AccessToken = model.AccessToken;
-
-            TempData["AccountNo"] = model.AccountNo;
-            TempData["WaterNo"] = model.WaterNo;
-            TempData["AccessToken"] = model.AccessToken;
-
-            return RedirectToAction("LoginAPPs", "Home");
+            else
+            {
+                return Json(Failed(new
+                {
+                    ErrorCode = ApiErrorCode.TokenError.ToString(),
+                }, "Token Error,解析錯誤", 1001));
+            }
         }
 
         /// <summary>
@@ -235,13 +372,13 @@ namespace TWNPPublic.Controllers
                     if (getAccount != null && getAccount.LOGIN_TYPE == 1 && getAccount.VALID == 1 && getAccount.INITIAL_APPLOGIN == 0 && getAccount.DIRECT_APPLOGIN == 1)
                     {
                         //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
-                        List<string> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
+                        List<WaterNoInfoDto> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
 
                         List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
                         {
-                            WATER_NO = waterNo,
-                            NICK_NAME = "",
-                            NICK_NAME_SHOW = "0"
+                            WATER_NO = waterNo.WATER_NO,
+                            NICK_NAME = waterNo.NICK_NAME,
+                            NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
                         }).ToList();
 
                         SetLoginSession(
@@ -471,11 +608,23 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
-            List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            //List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            //{
+            //    WATER_NO = waterNo.ToString(),
+            //    NICK_NAME = "",
+            //    NICK_NAME_SHOW = "0"
+            //}).ToList();
+
+            var getAccount = homeService.CheckAccountNoIsApp(WaterNo);
+
+            //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
+            List<WaterNoInfoDto> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
+
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
             {
-                WATER_NO = waterNo.ToString(),
-                NICK_NAME = "",
-                NICK_NAME_SHOW = "0"
+                WATER_NO = waterNo.WATER_NO,
+                NICK_NAME = waterNo.NICK_NAME,
+                NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
             }).ToList();
 
             SetLoginSession(
@@ -551,11 +700,23 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
-            List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            //List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            //{
+            //    WATER_NO = waterNo.ToString(),
+            //    NICK_NAME = "",
+            //    NICK_NAME_SHOW = "0"
+            //}).ToList();
+
+            var getAccount = homeService.CheckAccountNoIsApp(WaterNo);
+
+            //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
+            List<WaterNoInfoDto> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
+
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
             {
-                WATER_NO = waterNo.ToString(),
-                NICK_NAME = "",
-                NICK_NAME_SHOW = "0"
+                WATER_NO = waterNo.WATER_NO,
+                NICK_NAME = waterNo.NICK_NAME,
+                NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
             }).ToList();
 
             SetLoginSession(
@@ -630,11 +791,23 @@ namespace TWNPPublic.Controllers
                 }, "Token Error,未合法的 Token", 1001));
             }
 
-            List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            //List<F_B_LOGIN_WaterNo> waterNosList = WaterNo.Select(waterNo => new F_B_LOGIN_WaterNo
+            //{
+            //    WATER_NO = waterNo.ToString(),
+            //    NICK_NAME = "",
+            //    NICK_NAME_SHOW = "0"
+            //}).ToList();
+
+            var getAccount = homeService.CheckAccountNoIsApp(WaterNo);
+
+            //看看水號有沒有，沒有的話寫到資料庫，並返回這個帳號所有WaterNo
+            List<WaterNoInfoDto> WaterNos = homeService.CheckWaterNoNoIsApp(getAccount.B_ACCOUNT_SN, WaterNo);
+
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
             {
-                WATER_NO = waterNo.ToString(),
-                NICK_NAME = "",
-                NICK_NAME_SHOW = "0"
+                WATER_NO = waterNo.WATER_NO,
+                NICK_NAME = waterNo.NICK_NAME,
+                NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
             }).ToList();
 
             SetLoginSession(

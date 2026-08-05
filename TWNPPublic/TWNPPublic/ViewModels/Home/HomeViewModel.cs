@@ -55,6 +55,13 @@ namespace TWNPPublic.ViewModels.Home
         [Required(ErrorMessage = "AccessToken 為必填")]
         public string AccessToken { get; set; } = string.Empty;
     }
+    public class WaterNoInfoDto
+    {
+        public string WATER_NO { get; set; }
+        public string NICK_NAME { get; set; }
+        public decimal? NICK_NAME_SHOW { get; set; }
+    }
+
     public enum ApiErrorCode
     {
         TokenError,
