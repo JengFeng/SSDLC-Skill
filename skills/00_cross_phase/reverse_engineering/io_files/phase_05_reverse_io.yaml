@@ -1,0 +1,32 @@
+# Phase 05 順向整合 IO 檔案定義
+# 觸發條件：@reverse（Phase 04 完成後自動）或 @reverse-deploy
+inputs:
+  - name: source_code_dir
+    description: 舊專案原始碼目錄
+    required: true
+  - name: dockerfile
+    description: Dockerfile（若有）
+    required: false
+  - name: docker_compose
+    description: docker-compose.yml（若有）
+    required: false
+  - name: deploy_scripts
+    description: 部署腳本目錄（若有）
+    required: false
+
+outputs:
+  - name: deploy_files_manifest.json
+    description: 部署檔案清單
+    required: true
+  - name: docker_analysis.md
+    description: Dockerfile 分析報告
+    required: false
+  - name: deployment_topology.md
+    description: 部署拓撲圖
+    required: true
+  - name: build_manifest.json
+    description: 建置清單
+    required: true
+  - name: deployment_report.md
+    description: 部署逆向整合報告
+    required: true

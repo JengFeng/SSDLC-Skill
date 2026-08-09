@@ -963,3 +963,21 @@ AI：收到，我來幫你回報這個框架問題。
 - 📥 輸入：BUG_*.md（可選）、REQ_*.md（可選）、executable_spec.yaml
 - 🔧 Skill 推薦：依維護需求推薦
 - 📤 輸出：incident_report.md、patch_changelog.md、monitoring_dashboard.json
+
+---
+
+#### @guide reverse — 逆向工程引導
+
+* **指令語法**：@guide reverse [專案路徑]
+* **口語觸發**：「引導我做逆向工程」「帶我逆向分析」「guide reverse」
+* **AI 代理執行步驟**：
+    1. 確認使用者提供舊專案原始碼目錄路徑
+    2. 偵測專案類型（語言、框架、結構）
+    3. 呈現逆向工程五關卡引導：
+        * **關卡 1：專案確認** — 顯示偵測到的專案類型、語言、框架、檔案結構摘要
+        * **關卡 2：素材確認** — 確認原始碼、DDL、部署腳本、測試檔案等素材是否齊全
+        * **關卡 3：逆向範圍** — 選擇完整逆向（Phase 03→02→01→04→05→06）或指定階段
+        * **關卡 4：輸出確認** — 確認逆向產出物清單（自動帶入 io_files.yaml 預設值）
+        * **關卡 5：開始逆向** — 摘要顯示一切就緒，確認後啟動 @reverse 流程
+    4. 每個關卡完成後更新 phase_gates.json 的 reverse_engineering 區塊
+    5. 關卡 5 完成後自動觸發 @reverse [專案路徑]

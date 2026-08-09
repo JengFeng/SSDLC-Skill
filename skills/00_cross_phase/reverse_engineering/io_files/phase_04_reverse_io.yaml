@@ -1,0 +1,35 @@
+# Phase 04 順向整合 IO 檔案定義
+# 觸發條件：@reverse（Phase 01 逆向完成後自動）或 @reverse-test
+inputs:
+  - name: source_code_dir
+    description: 舊專案原始碼目錄
+    required: true
+  - name: module_list.json
+    description: Phase 03 逆向產出
+    required: true
+  - name: existing_tests_dir
+    description: 現有測試目錄（自動偵測）
+    required: false
+
+outputs:
+  - name: existing_tests.json
+    description: 現有測試清單
+    required: true
+  - name: test_framework_report.json
+    description: 測試框架偵測結果
+    required: true
+  - name: coverage_report.md
+    description: 覆蓋率分析報告
+    required: false
+  - name: uncovered_modules.json
+    description: 未覆蓋模組清單
+    required: false
+  - name: test_gap_analysis.md
+    description: 測試缺口分析
+    required: true
+  - name: missing_tests.json
+    description: 缺失測試清單
+    required: true
+  - name: test_restoration_report.md
+    description: 測試逆向整合報告
+    required: true

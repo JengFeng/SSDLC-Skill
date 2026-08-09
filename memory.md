@@ -1,6 +1,110 @@
-﻿
+﻿## 2026-07-11 (Appendix): Superpowers Skill 與 SSDLC 框架三角色相容性分析
+
+### 分析背景
+使用者詢問 Codex 內建的 superpowers plugin（OpenAI 官方 Skill 套件）是否能直接對應 SSDLC 框架的三個核心角色（Planner / Generator / Evaluator），以及是否能直接整合到框架中。
+
+### Superpowers 概覽
+Superpowers 是 Codex 的官方 Skill 插件，提供通用軟體工程方法論，包含 14 支 Skill：
+- brainstorming（需求釐清與設計提案）
+- writing-plans（實作計畫撰寫，bite-sized task decomposition）
+- executing-plans（依計畫逐步執行）
+- subagent-driven-development（每任務派 subagent + 雙階段 review）
+- dispatching-parallel-agents（多獨立任務並行派發）
+- test-driven-development（紅綠重構 TDD 循環）
+- systematic-debugging（系統性除錯）
+- verification-before-completion（完成前驗證，evidence before claims）
+- requesting-code-review / receiving-code-review（代碼審查流程）
+- finishing-a-development-branch（分支完成與合併）
+- using-git-worktrees（Git worktree 隔離工作區）
+- writing-skills（Skill 撰寫指南）
+- using-superpowers（Skill 使用入口）
+
+---
+
+### 一、角色對應關係（可相容部分）
+
+| SSDLC 角色 | 職責 | Superpowers 對應 Skill | 相容度 |
+|:---|:---|:---|:---|
+| Planner（規劃代理） | 需求釐清、目標定義、Skill 選取、風險評估 | brainstorming + writing-plans | 部分相容 |
+| Generator（執行代理） | 只執行不擴散、照表操課、版本控制 | executing-plans + subagent-driven-development | 部分相容 |
+| Evaluator（審核代理） | 成果驗證、Cross-Audit、SSOT 完整性 | verification-before-completion + requesting-code-review | 部分相容 |
+
+#### Planner <-> brainstorming + writing-plans
+- Superpowers：釐清需求 -> 提出 2-3 方案 -> 用戶批准 -> 產出設計文件
+- SSDLC Planner：承接上階段交付物 -> 定義目標 -> Skill 複選 -> 產出任務清單
+- 共通點：都在動手前先釐清目標、產出結構化規劃文件、需要用戶確認
+
+#### Generator <-> executing-plans + subagent-driven-development
+- Superpowers：每任務派一個 fresh subagent -> spec review -> code quality review
+- SSDLC：Generator 嚴格照表執行 -> Evaluator 事後審核
+- 共通點：都有「執行者」和「審核者」分離的雙角色架構
+
+#### Evaluator <-> verification-before-completion + requesting-code-review
+- Superpowers：evidence before claims —— 沒跑過驗證指令就不能說完成
+- SSDLC Evaluator：check_spec_integrity.py 四規格交叉比對通過才能放行
+- 共通點：都要求有證據才能宣稱完成
+
+---
+
+### 二、核心差異（不相容部分，共 10 項）
+
+| # | 差異點 | SSDLC 框架 | Superpowers |
+|:---|:---|:---|:---|
+| 1 | 階段意識 | 6 個明確階段（01~06），有 Phase Gate 和 Baseline | 扁平的 plan->execute->verify，無階段概念 |
+| 2 | SSOT 四規格交叉比對 | check_spec_integrity.py 做 YAML/Feature/SRS/RTM 四向比對 | 完全沒有這類機制 |
+| 3 | IO 檔案管理 | 每階段有明確的 input/output 定義和勾稽檢查 | 無跨任務的 IO 管理 |
+| 4 | Baseline 快照 | @baseline / @snapshot 建立結構化版本快照（含 SHA-256） | 僅依賴 git commit |
+| 5 | 資安防護基準 | @security-check 內建 8 大構面、3 等級檢核 | 完全沒有資安概念 |
+| 6 | 階段關卡 | phase_gates.json 控制階段切換權限、角色權限 | 無階段關卡機制 |
+| 7 | 引導式協作 | @guide 5 關卡引導 + IO 自動掛鉤 | 無引導，假設使用者自己寫 plan |
+| 8 | 角色權限 | @role builder/developer 控制框架/專案修改權限 | 無角色概念 |
+| 9 | Windows/IIS 適配 | 針對 Windows Server + IIS 部署環境特別適配 | 無平台特定適配 |
+| 10 | 防呆機制 | 專案初始化防呆、Skill 互斥檢核、強制防呆攔截 | 無防呆機制 |
+
+---
+
+### 三、SSDLC 框架的獨有優勢（Superpowers 不具備）
+
+| 優勢項 | 說明 | 為什麼重要 |
+|:---|:---|:---|
+| 階段化生命週期管控 | 6 階段各有明確邊界、產出物定義、關卡機制 | 防止需求漂移、確保每階段交付品質 |
+| SSOT 完整性監控 | YAML/Feature/SRS/RTM 四規格自動交叉比對 | 確保同一份需求在不同格式中一致、不遺漏 |
+| 輸入輸出檔案管理 | 每階段定義 input/output、支持 IO 勾稽與差異比對 | 階段交接有據、避免資料斷層 |
+| 結構化 Baseline | 階段里程碑快照 + SHA-256 驗證 + 自動遞增版本號 | 可回溯、可還原、可驗證完整性 |
+| 資安防護內建 | 8 大安全構面 x 3 等級，依數位發展部基準 | 安全不是附加而是內建在流程中 |
+| 引導式新手友善 | @guide 5 關卡自動引導 + IO 自動掛鉤 | 新手不需要記指令就能上手 |
+| 角色權限分離 | builder（框架）vs developer（專案）互不越權 | 防止專案操作意外修改框架 |
+| 多 Agent 協作協定 | Planner/Generator/Evaluator 三角色交接 IO 格式明確 | 跨 Agent 協作有據可循、不產生孤島 |
+
+---
+
+### 四、建議整合方式（擇優引用，非全面相容）
+
+| 引用時機 | Superpowers Skill | 用在 SSDLC 階段 | 由誰控管觸發 |
+|:---|:---|:---|:---|
+| 需求釐清時 | brainstorming | Phase 01 規劃與需求分析 | Planner 控管 |
+| 任務拆解時 | writing-plans | Phase 01~03 各階段任務規劃 | Planner 控管 |
+| 開發執行時 | test-driven-development | Phase 03 開發與編碼 | Generator 執行 |
+| 測試除錯時 | systematic-debugging | Phase 04 測試驗證 | Generator 執行 |
+| 完成驗收時 | verification-before-completion | 各階段 Evaluator 驗收前 | Evaluator 控管 |
+| 代碼審查時 | requesting-code-review / receiving-code-review | Phase 03~04 | Evaluator 控管 |
+| 多任務並行時 | dispatching-parallel-agents | Phase 03 大量模組開發 | Planner 派發 |
+
+---
+
+### 五、結論
+
+**不適合直接整合，但可擇優引用個別 Skill 作為工具層。**
+
+- Superpowers 是通用的軟體工程 Skill 套件（plan->code->verify->PR），設計目標是讓 AI 代理能自主完成一般的軟體開發任務
+- SSDLC 框架是專為安全軟體開發生命週期設計的階段化系統，核心價值在於：階段關卡、SSOT 完整性、資安防護、Baseline 管理、IO 勾稽
+- 兩者的 DNA 不同：Superpowers 是扁平的工作流，SSDLC 是有嚴格階段邊界的管控系統
+- 如果直接讓 Superpowers 接管流程，會架空 SSDLC 的階段關卡、SSOT 檢查和資安機制
+
+**關鍵原則**：Superpowers 的 Skill 只能作為「工具」被 SSDLC 的三角色流程調用，不能反過來讓 Superpowers 的流程主導 SSDLC 的階段推進。
 
 
+---
 ## 2026-07-11（Session 2）：SKILL.md 連結修復 + README 格式清理 + 架構對齊驗證
 
 ### 1. .agents/skills/ 各階段 SKILL.md 連結修復
@@ -23,8 +127,6 @@
 ### 影響範圍
 - 修改檔案: 7 個 SKILL.md + README.md
 - 尚未 commit（待使用者確認後統一提交）
-
-
 ## 2026-07-11：框架規範全面優化 + 待辦清單整頓 + @optimize 增量模式實作
 
 ### 1. GitHub 同步
@@ -101,7 +203,71 @@
 - 不涉及 demo_project 內容修改（除 iteration_log.md 補齊外）
 
 # AI 寫作自動化軟體作業流程 — 腦力激盪記錄
+## 2026-07-09: skills/README.md 全域流水號統一、commands_reference.md 重排、check_spec_integrity 五項優化、文件清理與對齊
 
+### 1. skills/README.md 全域流水號統一
+- **問題**: 各批 Skill (Anthropic/GitHub/UI-UX Pro Max) 各自獨立計數, 導致編號跳號 (如 13->18->19)
+- **處理**: 將所有 72 筆 Skill 條目重新編為 [[01]]~[[72]] 連續流水號
+- **同步修復**: markitdown 追溯來源縮排錯誤 (4空格->2空格), slides 追溯來源錯位
+- **影響**: skills/README.md, 不影響指令系統 (指令快捷編號是 AI 代理每次動態掃描分配的)
+
+### 2. docs/commands_reference.md 重排
+
+#### 2.1 口語指令區: 依功能分為 7 組
+- Star 指令集查詢與框架優化 (讀取指令集, Harness Optimization)
+- Rocket 專案初始化與階段管理 (CheckSpec, 強制解鎖)
+- 建築 基線與快照管理 (建立基線, 建立快照, 回溯快照)
+- Wrench Skill 查詢與導入 (通用 Skill, import-skill 三指令)
+- 文件夾 IO 檔案管理 (檢查/設定/查看/比對/列出 IO)
+- 資安防護 (資安構面載入, 資安檢核)
+- 大洋洲 外部資源管理 (external-resource add/remove/list)
+
+#### 2.2 核心指令對照表: 27 行 A-Z 排序
+- @io 系列群組化 (01-05)
+- @external-resource 系列群組化 (06-08)
+- @import-skill 系列群組化 (09-11), 含新增的 3 行
+- @security 系列群組化 (12-13)
+- 其餘 @ 指令按字母排序
+- @[階段] 系列放最後 (模板型指令)
+
+#### 2.3 @CheckSpec 增量檢查補充
+- 口語指令區新增: 「檢查 REQ-003」「確認 REQ-005 有沒有對齊」
+- 核心對照表語法欄位更新為 @CheckSpec [--req REQ-NNN]
+- 使用說明新增 --req 範例
+
+### 3. check_spec_integrity.py 五項優化
+- **動態需求數量**: 新增 _get_yaml_req_count() + _get_req_ids(), 取代硬編碼 6
+- **修復建議**: 新增 fix_hints 佇列, 每個 FAIL 附帶具體修復提示
+- **Scenario 結構檢查**: 計算 Given/When/Then 步驟數, 不足則警告
+- **標題關鍵字比對**: 從 YAML 需求標題提取關鍵字, 比對 Feature 是否有相符
+- **增量檢查**: 新增 --req REQ-003 參數, 只針對特定需求做四向交叉比對
+
+### 4. README.md 修正
+- Skill 總數: 96 -> 68 (L21, L360 兩處修正)
+- scripts/ 描述: 從「輔助腳本」更新為「框架核心工具腳本」+ 安全工具鏈
+- 倉庫結構表 skills/ 數量同步為 68
+
+### 5. specs/README.md 新增「規格異動時機」章節
+- executable_spec.yaml 異動時機表 (5 種場景)
+- requirements.feature 異動時機表 (3 種場景)
+- 異動連鎖關係圖 (SSOT -> SRS/Gherkin/RTM 自動生成鏈)
+- 勿手動編輯警告
+- 清除底部殘留標題
+
+### 6. 目錄清理
+- 已刪除: export/ (30 個臨時 patch 腳本), .tmp_markitdown/ (重複的 markitdown repo 副本)
+- 確認保留: scripts/ (框架核心工具, 不宜移動)
+
+### 7. 對齊架構檢查結果
+- 執行 align_framework.ps1 -VerboseOutput
+- 修復項目: 0
+- Skill 數量三處交叉驗證一致: README 68 / skills/README.md 68 / 實際 72 筆索引 (含雙歸屬)
+
+### 影響範圍
+- 修改文件: 5 (skills/README.md, docs/commands_reference.md, README.md, specs/README.md, memory.md)
+- 修改腳本: 1 (scripts/check_spec_integrity.py)
+- 刪除目錄: 2 (export/, .tmp_markitdown/)
+- 新增章節: 1 (specs/README.md 規格異動時機)
 ## 2026-07-08：Benson 敏感來源技能全面移除紀錄
 
 ### 移除背景
@@ -185,7 +351,485 @@
 > ⚠️ 若未來需重新引入上述技能，請務必從合法、公開之來源取得，並逐一進行資安檢核後再行匯入。原始 GitHub 倉庫為 `https://github.com/MMBenson/Benson-skill`，但引入前應先確認授權條款與敏感內容風險。
 
 ---
+## 2026-07-08：框架文件一致性治理與記憶落實規則補強
 
+### 調整背景
+針對 AGENTS.md、.agents/AGENTS.md、docs/commands_reference.md、docs/CORE_RULES.md、docs/TEMPLATE_SKILL.md、docs/Harness_Optimization_SKILL.md、scripts/check_spec_integrity.py、skills/README.md、skills/SKILLS歸類.md、specs/README.md、backups/BACKUP_MANIFEST.md 進行跨檔比對與修正，處理名詞混用、路徑不一致、章節編號重複、規則衝突與流程銜接不足等問題。
+
+### 調整方向
+- 統一追溯矩陣檔名為  `traceability_matrix.md`
+- 將 Windows 絕對路徑改為 repo 內相對路徑
+- 統一 Baseline 命名、保留策略與技術棧描述
+- 統一第六階段名稱為「維護與營運」
+- 強化 Generator / Evaluator / SSOT failure handling 的規則界線
+- 新增記憶落實條款，要求優化調整須回寫 memory.md 並補列 backups/BACKUP_MANIFEST.md
+
+### 目標效益
+- 降低後續 AI 代理解讀規則歧義
+- 提高跨文件與備份歷程可追溯性
+- 讓框架優化紀錄能在下次執行時立即被採納
+
+### 影響範圍
+AGENTS.md 已補入記憶落實條款；memory.md 新增本次調整紀錄；backups/BACKUP_MANIFEST.md 於本次同步檢視。
+
+# AI 寫作自動化軟體作業流程 — 腦力激盪記錄
+## 2026-07-08：外部資源管理體系建立與全案架構對齊
+
+### 工作背景
+本日工作涵蓋三大主軸：(1) 外部第三方資源管理體系的完整建立、(2) @security-check 檢查內容定義的補強、(3) 全案架構對齊與文件同步治理。
+
+---
+
+### 一、外部第三方資源管理體系
+
+#### 1.1 AnySearch Skill 引入與移除
+- 從 GitHub 下載 anysearch-ai/anysearch-skill (v2.1.0, Apache 2.0) 至 external-resources/anysearch-skill/
+- 確認免費方案：1,000 次請求/天、20 QPS，API Key 免費申請
+- 最終評估短時間無使用需求，已移除
+
+#### 1.2 external-resources/README.md 建立
+- 新增第三方資源聲明、指令操作說明、API Key 安全聲明、引用警語模板、安裝指引
+- 引用警語模板供他人 fork 時直接複製使用
+
+#### 1.3 external-resources/SKILL.md 建立（v1.1.0）
+- 定義 @external-resource 指令體系的完整操作規範
+- 三個子指令：add（引入）、remove（移除）、list（查詢）
+- 引入 6 步驟流程（分析→下載→更新 README→更新 gitignore→更新警語→驗證）
+- 移除流程（確認→刪除目錄→清理 README→清理 gitignore→報告）
+- 目錄結構規範與 Git 追蹤規則
+
+#### 1.4 .gitignore negation 規則
+- 排除第三方原始碼但保留 url.txt 索引
+- 使用 external-resources/* + !external-resources/*/url.txt 格式
+- Benson 和 anysearch 已清理乾淨
+
+#### 1.5 指令集三檔同步
+@external-resource 指令同步更新至：
+- docs/commands_reference.md：核心指令表 3 列 + 口語觸發 3 條 + 更新記錄
+- .agents/AGENTS.md：第 14 節：指令總覽 + AI 執行規範 + 安全合規
+- 根目錄 README.md：指令表 3 列 + 自然語言觸發清單
+
+---
+
+### 二、@security-check 檢查內容定義補強
+
+#### 2.1 新增檔案
+- Security-Principles/references/check_scope_per_domain.md：7 個構面的比對範圍定義（比對對象、比對方式、判定基準、具體檢查項目）
+- Security-Principles/assets/security_check_report_template.md：標準報告模板（檢核摘要、8 構面逐項表格、階段性限制說明、重點風險、改善建議）
+
+#### 2.2 構面 8 處理規則
+- 構面 8（組織、實體與供應鏈安全）在軟體開發專案中預設標記為不適用
+- 僅當專案涉及外部服務商整合時才檢查「供應鏈管理」子類別
+- 檢核報告中構面 8 獨立成章
+
+#### 2.3 更新檔案
+- Security-Principles/SKILL.md：執行步驟加入比對範圍引用、報告模板引用、構面 8 規則
+- .agents/AGENTS.md：@security-check 段落加入三項引用 + 構面 8 規則
+- docs/commands_reference.md：核心指令表 @security-check 列補入比對範圍與報告模板
+- Security-Principles/README.md：目錄結構 +2 檔案、檔案說明表格 +2 列、事後稽核說明更新
+
+---
+
+### 三、全案架構對齊
+
+#### 3.1 指令集三檔同步強制規則升級
+- docs/CORE_RULES.md 第 1-6 節：「雙檔同步」升級為「三檔同步」
+- 三軌文件：.agents/AGENTS.md + docs/commands_reference.md + 根目錄 README.md
+- 紅框問題修正：三軌文件定義完整列出 3 個檔案
+
+#### 3.2 README + SKILL 目錄同步檢查通則（新增）
+- docs/CORE_RULES.md 新增第 6 條強制同步規則
+- .agents/AGENTS.md @optimize 新增第 5 步檢查
+- 掃描範圍：全專案所有目錄（排除 .agents/skills/ 階段模板）
+- 比對三項：(a) 章節主題結構對照 (b) 引用一致性 (c) 異動同步
+
+#### 3.3 殘留清理
+- Benson 殘留：external-resources/README.md、.gitignore、SKILL.md、commands_reference.md 全面清除
+- AnySearch 殘留：SKILL.md 範例替換為 ui-ux-pro-max-skill、commands_reference.md 同步
+- <skill-name> 角括號：.agents/AGENTS.md 改為 [skill-name] 避免視覺混淆
+- eferences/08_organizational.md：Security-Principles/SKILL.md 反引號斷裂修正
+
+#### 3.4 Git 同步
+- 遠端有 1 個新 commit（chore: 移除 Benson 敏感來源技能），已 pull 同步
+- 多次 commit + push 至 origin/main
+
+---
+
+### 影響範圍
+- 新增檔案：3（SKILL.md、check_scope_per_domain.md、report_template.md）
+- 修改框架規章：4（CORE_RULES.md、.agents/AGENTS.md、commands_reference.md、README.md）
+- 修改外部資源文件：3（external-resources/README.md、Security-Principles/SKILL.md、Security-Principles/README.md）
+- 清理殘留：5（Benson 目錄、anysearch 引用、角括號、反引號斷裂、gitignore）
+
+### 目標效益
+- 建立完整的外部第三方資源管理生命週期（引入→使用→移除）
+- @security-check 從「知道要跑」升級為「知道要查什麼、怎麼查、報告長什麼樣」
+- 框架級文件同步從「雙檔」升級為「三檔」+「目錄級 README+SKILL 同步」
+- 全案殘留清理完畢，三方一致性驗證通過
+
+
+> **歷史紀錄說明**：本文件部分早期紀錄仍保留 file:/// 絕對路徑寫法，僅供還原當時調整脈絡；現行規則已統一採 repo 內相對路徑，實際執行與審查請以現行檔案連結為準。
+
+
+
+
+---
+## 2026-07-02：UI/UX Pro Max 外部技能導入與架構對齊強化
+
+### 背景
+使用者要求從 GitHub 導入 `nextlevelbuilder/ui-ux-pro-max-skill`（MIT v2.6.2），包含 7 個設計智慧子技能，並依 SSDLC 六階段分類整合。
+
+### 執行內容
+
+#### 1. 外部資源下載
+- `external-resources/ui-ux-pro-max-skill/`：完整下載 7 子技能（ui-ux-pro-max / brand / design / design-system / ui-styling / slides / banner-design），含 Python 搜尋引擎 + 14 個 CSV 資料庫，清理 `.git` 目錄
+
+#### 2. 技能分類部署（依 skills/SKILLS歸類.md 規則）
+- `skills/00_cross_phase/`：ui-ux-pro-max、slides
+- `skills/02_system_design/`：brand、design、design-system、ui-styling、banner-design
+- `skills/03_implementation_and_coding/`：ui-styling（雙歸屬）
+
+#### 3. 文件更新
+- **根 README.md**：總數 88→95、GitHub 社群 41→48、上下文感知推薦表 +4 條、近期更新記錄新增、Banner 修正
+- **skills/README.md**：開頭摘要更新（來源統計 + 雙歸屬 6 + 群組摘要）、各階段新增技能條目（含本機＋GitHub 雙來源追溯）
+- **skills/SKILLS歸類.md**：Phase 00/02/03 清單更新；SOP 從 3 條簡略步驟重寫為 6 大步驟（前置掃描→關鍵字比對歸類→複製→skills/README→SKILLS歸類→根 README→最終驗證），含 1.1 關鍵字比對法、1.2 全域性判斷、1.3 雙歸屬判斷、1.4 相依性檢查
+- **docs/Harness_Optimization_SKILL.md**：Check 5 擴充 4 條強制規則（skills/README 開頭統計、SKILLS歸類清單更新、推薦表評估、三檔交叉驗證）；新增角色定位說明（@optimize 為最後檢核關卡，非主要同步機制）
+
+#### 4. IO 檔案管理強化（選擇性功能 opt-in）
+- **Phase 00 Section 六**：新增 `### 0. 啟用條件`（三種啟用方式），Planner/Generator/Evaluator 各職責補上「未啟用則跳過」指示
+- **Phase 01~06 各階段 SKILL.md**：在 `## 二、輸入與輸出規範` 結尾加入 IO 管理引用提醒（三種啟用方式 + 指向 Phase 00 Section 六）
+
+#### 5. 安全性確認
+- `.agents/skills/` 目錄經 git diff + SHA256 檢查，確認無污染殘留
+- 多次執行 @optimize（Harness Optimization）全數通過
+- `check_spec_integrity.py --mode B` 通過
+
+### 關鍵設計決策
+- 外部技能不直接放入 `.agents/skills/`，而是放在 `external-resources/` 作為唯一來源，`skills/` 下為分類部署的複本
+- SKILLS歸類.md SOP 設計為 AI 代理可自主讀取執行，不需人類引導
+- @optimize 定位為最終驗證關卡，主要同步工作應在 SOP 階段完成
+- IO 檔案管理為選擇性功能（opt-in），預設不啟用，避免 AI 強制套用
+
+### 變更檔案清單
+| 檔案 | 變更類型 |
+|:------|:------|
+| external-resources/ui-ux-pro-max-skill/ | 新增 |
+| skills/00_cross_phase/{ui-ux-pro-max,slides}/ | 新增 |
+| skills/02_system_design/{brand,design,design-system,ui-styling,banner-design}/ | 新增 |
+| skills/03_implementation_and_coding/ui-styling/ | 新增（雙歸屬） |
+| README.md | 修改 |
+| skills/README.md | 修改 |
+| skills/SKILLS歸類.md | 修改 |
+| docs/Harness_Optimization_SKILL.md | 修改 |
+| .agents/skills/00_cross_phase/SKILL.md | 修改 |
+| .agents/skills/01~06_*/SKILL.md | 修改（各階段加入 IO 引用） |
+## 2026-07-01：SSDLC 雙層駕馭工程架構 — 優化腦力激盪
+
+### 背景
+針對現有 SSDLC 雙層解耦架構（外層全域 Agent + 內層六階段 PDCA 閉環）進行全面性架構審視，聚焦七大優化方向。下列為初步分析與建議，待與使用者逐一深入討論後定案。
+
+### 當前架構回顧（已確認之亮點）
+- **雙層解耦設計**：外層全域 Agent 管控追溯與階段切換，內層六階段獨立 PDCA 閉環，職責切割清晰
+- **SSOT 完整防線**：四規格交叉檢查（YAML ↔ Gherkin ↔ SRS ↔ RTM）、雙檔同步強制規則（.agents/AGENTS.md ↔ docs/commands_reference.md）
+- **快照/Baseline 管理**：自動化基線建立、版本遞增、保留最近 3 份 / 5 筆、可執行性驗證
+- **資安整合**：Security-Principles 三等級 8 構面完整融合，@security-check / @security-load 雙指令
+- **錯誤分類機制**：A 類重試 3 次、B 類升級全域迭代上限 2 輪
+- **Harness Optimization**：20+ 檢查組地毯式關聯掃描（@optimize）
+
+### 優化方向彙整（7 大建議）
+
+#### 1. 階段間邊界IO 檔案（Inter-Phase Contract）
+- **現況問題**：每個階段的 `inputs/` 與 `outputs/` 目錄存在，但依賴關係僅以 SKILL.md 內文字描述（如 Phase 03 Planner 手寫「讀取 Phase 02 產出的 api_spec.md」），缺乏機器可驗證的IO 檔案定義
+- **現況實例**：
+  - Phase 01 outputs: `formal_requirements.md`, `system_specification.md`, `executable_spec.yaml`, `requirements.feature`
+  - Phase 02 隱含消費: `formal_requirements.md`, `requirement_tracker.md`, `executable_spec.yaml`, `requirements.feature`
+  - Phase 02 outputs: `db_schema.sql`, `er_diagram.md`, `api_spec.md`, `ui_prototype.html`, `use_case_diagram.md`, `activity_diagram.md`, `sequence_diagram.md`（+ 條件式 3 份安全產出）
+  - Phase 03 隱含消費: `api_spec.md`, `db_schema.sql`, `ui_prototype.html`
+- **提案**：為每個階段新增 `io_files.yaml`，定義三層IO 檔案：
+  1. **Promise（輸出IO 檔案）**：保證產出哪些檔案，含型別、必填驗證規則、錯誤等級
+  2. **Expectation（輸入IO 檔案）**：需上游階段提供哪些交付物及其用途
+  3. **Cross-Phase Validation（交叉驗證）**：跨階段一致性規則
+- **效益**：斷鏈預警自動化、格式保證可程式化、回溯影響分析可反向查詢、平行化排程有基礎
+- **子議題待討論**：IO 檔案放獨立檔案 or 嵌入 SKILL.md Frontmatter / 驗證時機（Generator 前 or Evaluator 時 or 兩者）/ @optimize 是否自動建立初始 io_files.yaml
+
+#### 2. 平行化處理機制
+- **現況問題**：嚴格線性串行（Phase 1→2→3→4→5→6），但實務上 Phase 3-4 或 Phase 5-6 可部分平行
+- **提案**：在 `phase_gates.json` 中新增 `parallelism` 區塊，允許定義可平行階段群組與合併檢查點（synchronization point）
+
+#### 3. Token 成本量化監控
+- **現況問題**：提到「Token 控制依靠快照複用 + 錯誤分類 + 迭代次數上限」，但無量化記錄，無法判斷各階段 Token 消耗瓶頸
+- **提案**：在 `phase_gates.json` 中加入 `token_budget` 區塊（estimated / actual / remaining），讓 @optimize 產出 Token 消耗分析報告
+
+#### 4. Harness Optimization 增量檢查模式
+- **現況問題**：@optimize 為全量地毯式檢查（20+ 檢查組），框架穩定後成本過高，缺少增量模式
+- **提案**：新增 `@optimize --incremental`，透過 Git diff 與上次 @optimize 結果比對，僅檢查有異動的檔案關聯
+
+#### 5. IIS/Windows 部署適配通則化
+- **現況問題**：CORE_RULES.md 聲明「平台無關通則、無殘留 Windows 特定描述」，但 .agents/AGENTS.md 仍多次提及 Windows/IIS 特定內容（IIS 站台日誌、Windows 事件日誌雙軌驗證），存在平台通則 vs 實作細節界線模糊
+- **提案**：將 Windows/IIS 特定實作細節下沉至 `05_deployment/SKILL.md` 與 `06_maintenance/SKILL.md`，CORE_RULES.md 與 .agents/AGENTS.md 僅保留「雙軌日誌審計追溯」的通則性原則
+
+#### 6. 框架建置者 vs 專案開發者角色權限
+- **現況問題**：僅指令層級警告提示（@optimize / @unlock 的「框架建造者專用」），無實際角色切換或阻擋機制
+- **提案**：引入 `@role` 指令（builder / developer），phase_gates.json 記錄當前角色，依角色動態決定指令可用性
+
+#### 7. Baseline 結構化 Diff 審查
+- **現況問題**：@baseline 建立後自動驗證可執行性，但缺少 Baseline 之間的結構化差異審查（v1→v2 哪些規格異動？追溯鏈影響範圍？）
+- **提案**：新增 `@baseline-diff v1 v2` 指令，自動比對兩份 Baseline 的四規格差異，產出結構化 diff 報告
+
+### 後續行動
+- [ ] 與使用者逐一討論七大方向優先級
+- [ ] 選定首個優化方向進行深度設計
+- [ ] 確認適用的 `.agents/AGENTS.md` 與 `docs/commands_reference.md` 雙檔同步範圍
+
+### 2026-07-01：Contract 系統設計進度 — 指令命名定案
+
+- **主指令定案**：`@io`（替代原本的 `@io`）
+  - 語意：Input / Output 勾稽檢查
+  - 理由：最短、最直覺，一看就懂是檢查各階段的輸入輸出對齊
+  - 口語觸發：「幫我檢查 IO」、「執行 IO 勾稽」
+
+### 設計方向確認（已定案）
+| 項目 | 決策 |
+|:-----|:-----|
+| IO 檔案存放位置 | 獨立 `io_files.yaml` + `io_files.override.yaml`（支援覆蓋層） |
+| 互動模式 | 清單式一次顯示全部 inputs/outputs 供勾選 |
+| 自動觸發 | @io 手動 + @io set 修改時自動 + Evaluator 通過後自動（Mode E） |
+| @optimize 是否納入 | 待討論 |
+
+### Contract 子指令體系（4 指令）
+
+| 指令 | 用途 | 一句話 |
+|:-----|:-----|:------|
+| `@io show [phase]` | 檢視階段IO 檔案 | 查看 Phase N 的 inputs/outputs 清單 |
+| `@io set [phase]` | 定義/修改階段IO 檔案 | 互動式重定義該階段的輸入輸出要求 |
+| `@io [phase]` | 跨階段 IO 勾稽檢查 | 以 Phase N 為中心，檢查上游輸出→下游輸入是否對齊 |
+| `@io diff [A] [B]` | 兩階段IO 檔案差異比對 | 比對 Phase A vs Phase B 的IO 檔案差異 |
+
+### @io 跨階段 IO 勾稽檢查 — 詳細說明
+
+- **用途**：當你修改了某個階段的產出規格，想知道會不會影響下游
+- **運作邏輯**：以指定階段為中心，雙向掃描：
+  - 向上檢查：本階段的 inputs 在上游階段是否都有對應的 outputs
+  - 向下檢查：本階段的 outputs 是否滿足所有下游階段的 inputs
+- **使用時機**：
+  - 修改了 Phase 02 的產出清單 → `@io 02` 看 Phase 03 會不會斷鏈
+  - 跳過某階段手寫了交付物 → `@io 03` 確認輸入都到位
+  - Phase N Evaluator 通過後自動觸發
+
+### @io diff [A] [B] — 詳細說明
+
+- **用途**：比對兩個階段的IO 檔案差異，用在：
+  - 專案疊代時：v1 的 Phase 02 contract vs v2 的 Phase 02 contract 改了什麼？
+  - 不同專案間：專案 A Phase 03 vs 專案 B Phase 03 的輸入要求有何不同？
+  - 模板 vs 實作：框架模板 contract vs 實際專案 override 的差異
+- **輸出格式**：
+
+  ```
+  === Phase 02 (v1) vs Phase 02 (v2) ===
+  inputs:
+    + deploy_config.md          (v2 新增)
+    - ui_prototype.html         (v2 移除)
+    ~ api_spec.md: required=true → required=false  (v2 放寬)
+  outputs:
+    + rbac_matrix.md            (v2 新增)
+  ```
+
+### Contract 系統實作完成 (2026-07-01)
+
+#### 實作範圍
+
+| # | 項目 | 狀態 |
+|:--|:-----|:----|
+| 1 | 7 份 `io_files.yaml`（Phase 00~06） | ✅ |
+| 2 | `check_spec_integrity.py` Mode E | ✅ |
+| 3 | `.agents/AGENTS.md` Section 12 | ✅ |
+| 4 | `docs/commands_reference.md` Section 5 + 核心表 | ✅ |
+| 5 | `00_cross_phase/SKILL.md` Section 6 | ✅ |
+
+#### 新增/修改檔案清單
+
+- `.agents/skills/00_cross_phase/io_files.yaml` — 新增
+- `.agents/skills/01_planning_and_analysis/io_files.yaml` — 新增
+- `.agents/skills/02_system_design/io_files.yaml` — 新增
+- `.agents/skills/03_implementation_and_coding/io_files.yaml` — 新增
+- `.agents/skills/04_testing/io_files.yaml` — 新增
+- `.agents/skills/05_deployment/io_files.yaml` — 新增
+- `.agents/skills/06_maintenance/io_files.yaml` — 新增
+- `scripts/check_spec_integrity.py` — 修改（新增 Mode E）
+- `.agents/AGENTS.md` — 修改（新增 Section 12）
+- `docs/commands_reference.md` — 修改（新增 Section 5 + 核心表 + 歷史）
+- `.agents/skills/00_cross_phase/SKILL.md` — 修改（新增 Section 6）
+
+#### 設計決策記錄
+
+- 指令名稱：`@io`（替代 `@io`），語意直覺
+- IO 檔案格式：獨立 `io_files.yaml` + `io_files.override.yaml` 覆蓋層
+- 互動模式：編號清單重新設定（非逐項微調）
+- 快速語法：`@03 in: f1, f2?` / `@03 out: f1, f2`（`?` = 可選）
+- 自動觸發：@io set 時自動 / Evaluator 後自動（Mode E）/ 手動 @io
+- 勾稽方向：向上（上游輸出 → 本階段輸入）+ 向下（本階段輸出 → 下游輸入）
+
+### @io list 指令新增 (2026-07-01)
+
+- 新增 `@io list [phase]` 指令，列出各階段預設 IO 速查表
+- 不帶參數：顯示全部 6 階段 IO（含必填/可選標記）
+- 帶參數：只顯示指定階段
+- Skill 選定後自動顯示當前階段預設 IO
+- 更新檔案：commands_reference.md（核心表 + 速查表 + 使用說明）、.agents/AGENTS.md（12.7）、README.md
+
+### 2026-07-01 最終盤點與對齊
+
+#### 變更檔案清單（10 檔案）
+
+| 檔案 | 異動類型 |
+|:-----|:---------|
+| `.agents/AGENTS.md` | 修改：Section 12 (@io)、Section 13 (架構回饋)、@init 流程 |
+| `.agents/skills/00_cross_phase/SKILL.md` | 修改：Section 6 (契約管理)、@io 指令表 |
+| `.agents/skills/06_maintenance/SKILL.md` | 修改：Phase 06 改名「維護與營運」 |
+| `README.md` | 修改：指令表、倉庫結構、觸發詞彙、待辦事項用途 |
+| `docs/CORE_RULES.md` | 修改：Phase 06 改名 |
+| `docs/commands_reference.md` | 修改：核心表、Section 5 (@io)、速查表、快速語法 |
+| `memory.md` | 修改：全程設計記錄 |
+| `phase_gates.json` | 修改：新增 io_management 區塊 |
+| `scripts/check_spec_integrity.py` | 修改：新增 Mode E |
+| `待辦事項.md` | 新增：架構回饋待辦清單 |
+
+#### 對齊檢查結果
+
+- Mode E (`check_spec_integrity.py --mode E`)：14 pass / 0 fail
+- `io_files.yaml` WARN 符合設計（不預先產生）
+- 跨檔案 @io 指令覆蓋：全數到位
+- 殘留舊名稱：已清除
+- Phase 06 統一為「維護與營運」
+
+### @snapshot 指令新增 + Baseline vs Snapshot 差異釐清 (2026-07-01)
+
+- 新增 `@snapshot` 指令：手動建立即時快照（git diff patch + SHA-256 清單）
+- 存放於 `snapshots/`，保留最近 5 筆
+- 釐清 Baseline（基線）與 Snapshot（快照）差異：
+  - Baseline = 完整專案存檔，階段里程碑，`baseline/`，保留 3 份
+  - Snapshot = 輕量記錄點，修改前安全網，`snapshots/`，保留 5 筆
+- 更新檔案：commands_reference.md（Section 6 + 核心表 + 前言）、.agents/AGENTS.md（Section 6.5）、README.md（指令表 + 差異說明）
+
+### 2026-07-01 後續優化：AGENTS.md 缺漏修正 + 通用 Skill 體系 + G 前綴混搭
+
+#### AGENTS.md 三項缺漏修正
+
+- **12.7 @io list 位置修正**：從檔案開頭（第 8 行）移至 Section 12 內（第 570 行），與 @io 體系正確關聯
+- **Section 12/13 順序互換**：Section 12 (@io) 移至 Section 13 (架構回饋) 之前，符合邏輯順序
+- **12.3 指令表補列 @io list**：原表僅 show/set/check/diff，補上 @io list 條目；修正 @io diff 關鍵字誤觸導致的重複插入
+
+#### 通用 Skill 跨階段複用體系
+
+**5 個高優先 Skill 複製至 00_cross_phase**（原位保留不刪）：
+
+| Skill | 用途 | 跨階段通用理由 |
+|:---|:---|:---|
+| `docx` | Word 文件處理 | 任何階段都要產報告/規格書/檢核表 |
+| `pdf` | PDF 處理與 OCR | 任何階段正式交付物皆為 PDF |
+| `xlsx` | Excel 試算表 | 檢核表/測試矩陣/SBOM 全階段需要 |
+| `pptx` | 簡報製作 | 每階段審查簡報/結案彙報 |
+| `file-organizer` | 檔案歸納 | 所有階段通用基礎需求 |
+
+**skills/README.md 全面更新**：
+- 標頭總數說明：新增「5 個具跨階段通用性，同時歸類於 Phase 01 與全域層」
+- Phase 01 五項標記 🌐 通用
+- 跨階段區塊新增「文件產製類通用 Skill」子區塊（編號 [[12]]–[[16]]）
+- 文末新增「通用性評估指南」：三維度判斷表 + 歸類原則
+
+#### G 前綴通用 Skill 混搭機制
+
+**設計理念**：在任一階段查詢 @01~06 時，一併顯示 skills/00_cross_phase/ 的通用 Skill（G01, G02...），支援與階段專屬 Skill 以逗號混搭導入。
+
+**使用語法**：
+- 查詢：@02 → 顯示專屬 Skill + 🌐 通用 Skill（G01, G02...）
+- 混搭：@02/01,03,G01,G04 → Phase 02 的 01,03 + 通用 git + TDD
+- 單獨：@03/G01,G02 → 只將通用 Skill 引入 Phase 03
+
+**實作範圍（3 檔案同步）**：
+
+| 檔案 | 更新內容 |
+|:---|:---|
+| `.agents/AGENTS.md` | Section 2 新增 6.通用 Skill 一併顯示 + 7.導入提示；Section 3 新增 2.5 G 前綴混搭規則 |
+| `docs/commands_reference.md` | 核心表新增語法列；前言新增口語觸發；防呆更新相容 G 前綴 |
+| `README.md` | 指令表 @00~@06 說明更新、新增 G 前綴混搭列 |
+
+#### 設計決策記錄
+
+- **G 前綴**：單一字母區分通用 vs 階段專屬，不破壞現有逗號語法
+- **不搬不移**：通用 Skill 複製到 00_cross_phase，原位保留，兩邊同時存在
+- **通用性判斷**：>=3 階段有明確場景 + 不依賴特定階段上下文 + 文書產製屬性 → 列入通用
+- **中優先 10 個暫緩**：明確決定先執行高優先 5 個，其餘後續視需要再評估
+- **G 前綴防呆**：若 Gxx 不存在，提示「通用 Skill 中無編號 [Gxx]」並列出可用範圍
+
+#### 檔案異動清單
+
+| 檔案 | 異動 |
+|:---|:---|
+| `.agents/AGENTS.md` | 修改：Section 2 + Section 3 G 前綴規則；Section 12.3/12.7 修正 |
+| `skills/00_cross_phase/` | 新增：docx/pdf/xlsx/pptx/file-organizer（5 目錄） |
+| `skills/README.md` | 修改：標頭、Phase 01 標記、跨階段區塊、通用性評估指南 |
+| `docs/commands_reference.md` | 修改：核心表、前言、防呆 |
+| `README.md` | 修改：指令表 |
+
+#### 已記錄待辦事項（6 項）
+
+| # | 內容 |
+|:--|:---|
+| 1 | 平行化處理機制（Phase 3-4/5-6 部分平行） |
+| 2 | Token 成本量化監控（phase_gates.json token_budget） |
+| 3 | @optimize 增量檢查模式（--incremental） |
+| 4 | IIS/Windows 部署通則化 |
+| 5 | 角色權限控管（@role builder/developer） |
+| 6 | Baseline 結構化 Diff 審查（@baseline-diff）
+
+
+### 2026-07-02：AI 代理執行模式比較分析（四大模式）
+
+> 背景：討論現有 SSDLC 框架的 P→G→E 執行模式是否需要加入動態路由彈性。
+
+#### 業界四大模式總覽
+
+| 模式 | 代表工具 | 做法 | 優點 | 缺點 |
+|:---|:---|:---|:---|:---|
+| **A. 單一代理自修正** | Claude Code、Cursor Agent、GitHub Copilot | 一個模型包辦規劃→實作→自我檢查，錯了就自己修 | 快、簡單、適合小任務 | 沒有制衡、幻覺風險高 |
+| **B. 先規劃後執行** | Cline Plan/Act、Copilot Workspace | 先出計畫給人審，確認後才動手 | 人可控、不會暴衝 | 小事也強制兩段式，太慢 |
+| **C. 多代理管線** | Devin（早期）、SSDLC 框架（現行） | Planner→Generator→Evaluator 固定三關 | 品質把關嚴謹、分工明確 | 小事也強制跑三關，僵化 |
+| **D. 動態調度** | LangGraph、OpenAI Agents SDK | 一個調度者判斷任務大小，決定要叫誰、跳過誰 | 大小任務彈性適配、速度和品質兼顧 | 調度邏輯複雜 |
+
+#### 業界演進趨勢
+
+```
+2023-2024              2024-2025              2025+
+固定管線               先規劃後執行            動態調度
+P→G→E 鐵三角           Plan→Act              Orchestrator
+(Pattern C)            (Pattern B)           (Pattern D)
+```
+
+#### SSDLC 框架現況：Pattern C（最嚴謹版本）
+
+- Planner → Generator → Evaluator 固定順序，不可跳過
+- Generator「只執行不判斷不檢查不修改」鐵律
+- Evaluator 不過就退回，A/B 類分級重試
+- 6 階段依序，前一階段產 Baseline 才能進下一階段
+- 外層全域主控 Global Agent 監控
+
+#### 動態路由建議方案（待評估）
+
+在現有 P/G/E 三角色之上加入任務路由器（Orchestrator）：
+
+| 任務類型 | 路徑 | 觸發條件 |
+|:---|:---|:---|
+| 小修改（改變數名、修 typo） | G→E（跳 Planner） | 不影響規格、不影響架構 |
+| 僅調整規格 | P（僅 Planner） | 只改文件不改程式碼 |
+| 新功能 / 大重構 | P→G→E（完整三關） | 預設路徑 |
+| 僅審查現有產出 | E（僅 Evaluator） | 事後稽核 |
+
+#### 決策
+
+- ✅ 現階段**保留 Pattern C**（現有嚴格管線設計）
+- 📋 已列入待辦事項 #7，待系統穩定運行後再評估是否導入動態路由
+- 📝 此分析已記錄於 memory.md 供後續快速查閱
 ## 2026-06-29：員工基本資料管理系統 — 需求訪談彙整
 
 ### 訪談背景
@@ -1155,554 +1799,154 @@ un.bat：標題 v3 → v5
 | **GitHub** | v1.1.0 commit + v1.1.1 Release（中英雙語） |
 ---
 
-## 2026-07-01：SSDLC 雙層駕馭工程架構 — 優化腦力激盪
+## 逆向工程 Skill 設計與實作 (2026-08-07)
 
-### 背景
-針對現有 SSDLC 雙層解耦架構（外層全域 Agent + 內層六階段 PDCA 閉環）進行全面性架構審視，聚焦七大優化方向。下列為初步分析與建議，待與使用者逐一深入討論後定案。
+### 設計背景
+使用者希望將「逆向工程」能力整合進 SSDLC_Skill 框架，讓舊有無完整文件的交付專案原始碼，能透過逆向分析還原六大 SSDLC 各階段交付物，逆向完成後無縫切換順向流程。
 
-### 當前架構回顧（已確認之亮點）
-- **雙層解耦設計**：外層全域 Agent 管控追溯與階段切換，內層六階段獨立 PDCA 閉環，職責切割清晰
-- **SSOT 完整防線**：四規格交叉檢查（YAML ↔ Gherkin ↔ SRS ↔ RTM）、雙檔同步強制規則（.agents/AGENTS.md ↔ docs/commands_reference.md）
-- **快照/Baseline 管理**：自動化基線建立、版本遞增、保留最近 3 份 / 5 筆、可執行性驗證
-- **資安整合**：Security-Principles 三等級 8 構面完整融合，@security-check / @security-load 雙指令
-- **錯誤分類機制**：A 類重試 3 次、B 類升級全域迭代上限 2 輪
-- **Harness Optimization**：20+ 檢查組地毯式關聯掃描（@optimize）
+### 核心設計決策
 
-### 優化方向彙整（7 大建議）
+#### Phase 00 定位討論（已結案）
+- **初版方案**：新增 Phase 00 作為逆向工程的正式階段
+- **問題發現**：Phase 00 已被定義為 `00_cross_phase`（跨階段全域共用），新增 Phase 00 會造成衝突
+- **最終決策**：不新增階段，改為在現有六階段各加「逆向模式」子 Skill
+- **決策原因**：逆向工程是從程式碼（Phase 03）往回推至設計（Phase 02）再到需求（Phase 01），符合直覺的「從程式碼往回推」流程
 
-#### 1. 階段間邊界IO 檔案（Inter-Phase Contract）
-- **現況問題**：每個階段的 `inputs/` 與 `outputs/` 目錄存在，但依賴關係僅以 SKILL.md 內文字描述（如 Phase 03 Planner 手寫「讀取 Phase 02 產出的 api_spec.md」），缺乏機器可驗證的IO 檔案定義
-- **現況實例**：
-  - Phase 01 outputs: `formal_requirements.md`, `system_specification.md`, `executable_spec.yaml`, `requirements.feature`
-  - Phase 02 隱含消費: `formal_requirements.md`, `requirement_tracker.md`, `executable_spec.yaml`, `requirements.feature`
-  - Phase 02 outputs: `db_schema.sql`, `er_diagram.md`, `api_spec.md`, `ui_prototype.html`, `use_case_diagram.md`, `activity_diagram.md`, `sequence_diagram.md`（+ 條件式 3 份安全產出）
-  - Phase 03 隱含消費: `api_spec.md`, `db_schema.sql`, `ui_prototype.html`
-- **提案**：為每個階段新增 `io_files.yaml`，定義三層IO 檔案：
-  1. **Promise（輸出IO 檔案）**：保證產出哪些檔案，含型別、必填驗證規則、錯誤等級
-  2. **Expectation（輸入IO 檔案）**：需上游階段提供哪些交付物及其用途
-  3. **Cross-Phase Validation（交叉驗證）**：跨階段一致性規則
-- **效益**：斷鏈預警自動化、格式保證可程式化、回溯影響分析可反向查詢、平行化排程有基礎
-- **子議題待討論**：IO 檔案放獨立檔案 or 嵌入 SKILL.md Frontmatter / 驗證時機（Generator 前 or Evaluator 時 or 兩者）/ @optimize 是否自動建立初始 io_files.yaml
-
-#### 2. 平行化處理機制
-- **現況問題**：嚴格線性串行（Phase 1→2→3→4→5→6），但實務上 Phase 3-4 或 Phase 5-6 可部分平行
-- **提案**：在 `phase_gates.json` 中新增 `parallelism` 區塊，允許定義可平行階段群組與合併檢查點（synchronization point）
-
-#### 3. Token 成本量化監控
-- **現況問題**：提到「Token 控制依靠快照複用 + 錯誤分類 + 迭代次數上限」，但無量化記錄，無法判斷各階段 Token 消耗瓶頸
-- **提案**：在 `phase_gates.json` 中加入 `token_budget` 區塊（estimated / actual / remaining），讓 @optimize 產出 Token 消耗分析報告
-
-#### 4. Harness Optimization 增量檢查模式
-- **現況問題**：@optimize 為全量地毯式檢查（20+ 檢查組），框架穩定後成本過高，缺少增量模式
-- **提案**：新增 `@optimize --incremental`，透過 Git diff 與上次 @optimize 結果比對，僅檢查有異動的檔案關聯
-
-#### 5. IIS/Windows 部署適配通則化
-- **現況問題**：CORE_RULES.md 聲明「平台無關通則、無殘留 Windows 特定描述」，但 .agents/AGENTS.md 仍多次提及 Windows/IIS 特定內容（IIS 站台日誌、Windows 事件日誌雙軌驗證），存在平台通則 vs 實作細節界線模糊
-- **提案**：將 Windows/IIS 特定實作細節下沉至 `05_deployment/SKILL.md` 與 `06_maintenance/SKILL.md`，CORE_RULES.md 與 .agents/AGENTS.md 僅保留「雙軌日誌審計追溯」的通則性原則
-
-#### 6. 框架建置者 vs 專案開發者角色權限
-- **現況問題**：僅指令層級警告提示（@optimize / @unlock 的「框架建造者專用」），無實際角色切換或阻擋機制
-- **提案**：引入 `@role` 指令（builder / developer），phase_gates.json 記錄當前角色，依角色動態決定指令可用性
-
-#### 7. Baseline 結構化 Diff 審查
-- **現況問題**：@baseline 建立後自動驗證可執行性，但缺少 Baseline 之間的結構化差異審查（v1→v2 哪些規格異動？追溯鏈影響範圍？）
-- **提案**：新增 `@baseline-diff v1 v2` 指令，自動比對兩份 Baseline 的四規格差異，產出結構化 diff 報告
-
-### 後續行動
-- [ ] 與使用者逐一討論七大方向優先級
-- [ ] 選定首個優化方向進行深度設計
-- [ ] 確認適用的 `.agents/AGENTS.md` 與 `docs/commands_reference.md` 雙檔同步範圍
-
-### 2026-07-01：Contract 系統設計進度 — 指令命名定案
-
-- **主指令定案**：`@io`（替代原本的 `@io`）
-  - 語意：Input / Output 勾稽檢查
-  - 理由：最短、最直覺，一看就懂是檢查各階段的輸入輸出對齊
-  - 口語觸發：「幫我檢查 IO」、「執行 IO 勾稽」
-
-### 設計方向確認（已定案）
-| 項目 | 決策 |
-|:-----|:-----|
-| IO 檔案存放位置 | 獨立 `io_files.yaml` + `io_files.override.yaml`（支援覆蓋層） |
-| 互動模式 | 清單式一次顯示全部 inputs/outputs 供勾選 |
-| 自動觸發 | @io 手動 + @io set 修改時自動 + Evaluator 通過後自動（Mode E） |
-| @optimize 是否納入 | 待討論 |
-
-### Contract 子指令體系（4 指令）
-
-| 指令 | 用途 | 一句話 |
-|:-----|:-----|:------|
-| `@io show [phase]` | 檢視階段IO 檔案 | 查看 Phase N 的 inputs/outputs 清單 |
-| `@io set [phase]` | 定義/修改階段IO 檔案 | 互動式重定義該階段的輸入輸出要求 |
-| `@io [phase]` | 跨階段 IO 勾稽檢查 | 以 Phase N 為中心，檢查上游輸出→下游輸入是否對齊 |
-| `@io diff [A] [B]` | 兩階段IO 檔案差異比對 | 比對 Phase A vs Phase B 的IO 檔案差異 |
-
-### @io 跨階段 IO 勾稽檢查 — 詳細說明
-
-- **用途**：當你修改了某個階段的產出規格，想知道會不會影響下游
-- **運作邏輯**：以指定階段為中心，雙向掃描：
-  - 向上檢查：本階段的 inputs 在上游階段是否都有對應的 outputs
-  - 向下檢查：本階段的 outputs 是否滿足所有下游階段的 inputs
-- **使用時機**：
-  - 修改了 Phase 02 的產出清單 → `@io 02` 看 Phase 03 會不會斷鏈
-  - 跳過某階段手寫了交付物 → `@io 03` 確認輸入都到位
-  - Phase N Evaluator 通過後自動觸發
-
-### @io diff [A] [B] — 詳細說明
-
-- **用途**：比對兩個階段的IO 檔案差異，用在：
-  - 專案疊代時：v1 的 Phase 02 contract vs v2 的 Phase 02 contract 改了什麼？
-  - 不同專案間：專案 A Phase 03 vs 專案 B Phase 03 的輸入要求有何不同？
-  - 模板 vs 實作：框架模板 contract vs 實際專案 override 的差異
-- **輸出格式**：
-
-  ```
-  === Phase 02 (v1) vs Phase 02 (v2) ===
-  inputs:
-    + deploy_config.md          (v2 新增)
-    - ui_prototype.html         (v2 移除)
-    ~ api_spec.md: required=true → required=false  (v2 放寬)
-  outputs:
-    + rbac_matrix.md            (v2 新增)
-  ```
-
-### Contract 系統實作完成 (2026-07-01)
-
-#### 實作範圍
-
-| # | 項目 | 狀態 |
-|:--|:-----|:----|
-| 1 | 7 份 `io_files.yaml`（Phase 00~06） | ✅ |
-| 2 | `check_spec_integrity.py` Mode E | ✅ |
-| 3 | `.agents/AGENTS.md` Section 12 | ✅ |
-| 4 | `docs/commands_reference.md` Section 5 + 核心表 | ✅ |
-| 5 | `00_cross_phase/SKILL.md` Section 6 | ✅ |
-
-#### 新增/修改檔案清單
-
-- `.agents/skills/00_cross_phase/io_files.yaml` — 新增
-- `.agents/skills/01_planning_and_analysis/io_files.yaml` — 新增
-- `.agents/skills/02_system_design/io_files.yaml` — 新增
-- `.agents/skills/03_implementation_and_coding/io_files.yaml` — 新增
-- `.agents/skills/04_testing/io_files.yaml` — 新增
-- `.agents/skills/05_deployment/io_files.yaml` — 新增
-- `.agents/skills/06_maintenance/io_files.yaml` — 新增
-- `scripts/check_spec_integrity.py` — 修改（新增 Mode E）
-- `.agents/AGENTS.md` — 修改（新增 Section 12）
-- `docs/commands_reference.md` — 修改（新增 Section 5 + 核心表 + 歷史）
-- `.agents/skills/00_cross_phase/SKILL.md` — 修改（新增 Section 6）
-
-#### 設計決策記錄
-
-- 指令名稱：`@io`（替代 `@io`），語意直覺
-- IO 檔案格式：獨立 `io_files.yaml` + `io_files.override.yaml` 覆蓋層
-- 互動模式：編號清單重新設定（非逐項微調）
-- 快速語法：`@03 in: f1, f2?` / `@03 out: f1, f2`（`?` = 可選）
-- 自動觸發：@io set 時自動 / Evaluator 後自動（Mode E）/ 手動 @io
-- 勾稽方向：向上（上游輸出 → 本階段輸入）+ 向下（本階段輸出 → 下游輸入）
-
-### @io list 指令新增 (2026-07-01)
-
-- 新增 `@io list [phase]` 指令，列出各階段預設 IO 速查表
-- 不帶參數：顯示全部 6 階段 IO（含必填/可選標記）
-- 帶參數：只顯示指定階段
-- Skill 選定後自動顯示當前階段預設 IO
-- 更新檔案：commands_reference.md（核心表 + 速查表 + 使用說明）、.agents/AGENTS.md（12.7）、README.md
-
-### 2026-07-01 最終盤點與對齊
-
-#### 變更檔案清單（10 檔案）
-
-| 檔案 | 異動類型 |
-|:-----|:---------|
-| `.agents/AGENTS.md` | 修改：Section 12 (@io)、Section 13 (架構回饋)、@init 流程 |
-| `.agents/skills/00_cross_phase/SKILL.md` | 修改：Section 6 (契約管理)、@io 指令表 |
-| `.agents/skills/06_maintenance/SKILL.md` | 修改：Phase 06 改名「維護與營運」 |
-| `README.md` | 修改：指令表、倉庫結構、觸發詞彙、待辦事項用途 |
-| `docs/CORE_RULES.md` | 修改：Phase 06 改名 |
-| `docs/commands_reference.md` | 修改：核心表、Section 5 (@io)、速查表、快速語法 |
-| `memory.md` | 修改：全程設計記錄 |
-| `phase_gates.json` | 修改：新增 io_management 區塊 |
-| `scripts/check_spec_integrity.py` | 修改：新增 Mode E |
-| `待辦事項.md` | 新增：架構回饋待辦清單 |
-
-#### 對齊檢查結果
-
-- Mode E (`check_spec_integrity.py --mode E`)：14 pass / 0 fail
-- `io_files.yaml` WARN 符合設計（不預先產生）
-- 跨檔案 @io 指令覆蓋：全數到位
-- 殘留舊名稱：已清除
-- Phase 06 統一為「維護與營運」
-
-### @snapshot 指令新增 + Baseline vs Snapshot 差異釐清 (2026-07-01)
-
-- 新增 `@snapshot` 指令：手動建立即時快照（git diff patch + SHA-256 清單）
-- 存放於 `snapshots/`，保留最近 5 筆
-- 釐清 Baseline（基線）與 Snapshot（快照）差異：
-  - Baseline = 完整專案存檔，階段里程碑，`baseline/`，保留 3 份
-  - Snapshot = 輕量記錄點，修改前安全網，`snapshots/`，保留 5 筆
-- 更新檔案：commands_reference.md（Section 6 + 核心表 + 前言）、.agents/AGENTS.md（Section 6.5）、README.md（指令表 + 差異說明）
-
-### 2026-07-01 後續優化：AGENTS.md 缺漏修正 + 通用 Skill 體系 + G 前綴混搭
-
-#### AGENTS.md 三項缺漏修正
-
-- **12.7 @io list 位置修正**：從檔案開頭（第 8 行）移至 Section 12 內（第 570 行），與 @io 體系正確關聯
-- **Section 12/13 順序互換**：Section 12 (@io) 移至 Section 13 (架構回饋) 之前，符合邏輯順序
-- **12.3 指令表補列 @io list**：原表僅 show/set/check/diff，補上 @io list 條目；修正 @io diff 關鍵字誤觸導致的重複插入
-
-#### 通用 Skill 跨階段複用體系
-
-**5 個高優先 Skill 複製至 00_cross_phase**（原位保留不刪）：
-
-| Skill | 用途 | 跨階段通用理由 |
-|:---|:---|:---|
-| `docx` | Word 文件處理 | 任何階段都要產報告/規格書/檢核表 |
-| `pdf` | PDF 處理與 OCR | 任何階段正式交付物皆為 PDF |
-| `xlsx` | Excel 試算表 | 檢核表/測試矩陣/SBOM 全階段需要 |
-| `pptx` | 簡報製作 | 每階段審查簡報/結案彙報 |
-| `file-organizer` | 檔案歸納 | 所有階段通用基礎需求 |
-
-**skills/README.md 全面更新**：
-- 標頭總數說明：新增「5 個具跨階段通用性，同時歸類於 Phase 01 與全域層」
-- Phase 01 五項標記 🌐 通用
-- 跨階段區塊新增「文件產製類通用 Skill」子區塊（編號 [[12]]–[[16]]）
-- 文末新增「通用性評估指南」：三維度判斷表 + 歸類原則
-
-#### G 前綴通用 Skill 混搭機制
-
-**設計理念**：在任一階段查詢 @01~06 時，一併顯示 skills/00_cross_phase/ 的通用 Skill（G01, G02...），支援與階段專屬 Skill 以逗號混搭導入。
-
-**使用語法**：
-- 查詢：@02 → 顯示專屬 Skill + 🌐 通用 Skill（G01, G02...）
-- 混搭：@02/01,03,G01,G04 → Phase 02 的 01,03 + 通用 git + TDD
-- 單獨：@03/G01,G02 → 只將通用 Skill 引入 Phase 03
-
-**實作範圍（3 檔案同步）**：
-
-| 檔案 | 更新內容 |
-|:---|:---|
-| `.agents/AGENTS.md` | Section 2 新增 6.通用 Skill 一併顯示 + 7.導入提示；Section 3 新增 2.5 G 前綴混搭規則 |
-| `docs/commands_reference.md` | 核心表新增語法列；前言新增口語觸發；防呆更新相容 G 前綴 |
-| `README.md` | 指令表 @00~@06 說明更新、新增 G 前綴混搭列 |
-
-#### 設計決策記錄
-
-- **G 前綴**：單一字母區分通用 vs 階段專屬，不破壞現有逗號語法
-- **不搬不移**：通用 Skill 複製到 00_cross_phase，原位保留，兩邊同時存在
-- **通用性判斷**：>=3 階段有明確場景 + 不依賴特定階段上下文 + 文書產製屬性 → 列入通用
-- **中優先 10 個暫緩**：明確決定先執行高優先 5 個，其餘後續視需要再評估
-- **G 前綴防呆**：若 Gxx 不存在，提示「通用 Skill 中無編號 [Gxx]」並列出可用範圍
-
-#### 檔案異動清單
-
-| 檔案 | 異動 |
-|:---|:---|
-| `.agents/AGENTS.md` | 修改：Section 2 + Section 3 G 前綴規則；Section 12.3/12.7 修正 |
-| `skills/00_cross_phase/` | 新增：docx/pdf/xlsx/pptx/file-organizer（5 目錄） |
-| `skills/README.md` | 修改：標頭、Phase 01 標記、跨階段區塊、通用性評估指南 |
-| `docs/commands_reference.md` | 修改：核心表、前言、防呆 |
-| `README.md` | 修改：指令表 |
-
-#### 已記錄待辦事項（6 項）
-
-| # | 內容 |
-|:--|:---|
-| 1 | 平行化處理機制（Phase 3-4/5-6 部分平行） |
-| 2 | Token 成本量化監控（phase_gates.json token_budget） |
-| 3 | @optimize 增量檢查模式（--incremental） |
-| 4 | IIS/Windows 部署通則化 |
-| 5 | 角色權限控管（@role builder/developer） |
-| 6 | Baseline 結構化 Diff 審查（@baseline-diff）
-
-
-### 2026-07-02：AI 代理執行模式比較分析（四大模式）
-
-> 背景：討論現有 SSDLC 框架的 P→G→E 執行模式是否需要加入動態路由彈性。
-
-#### 業界四大模式總覽
-
-| 模式 | 代表工具 | 做法 | 優點 | 缺點 |
-|:---|:---|:---|:---|:---|
-| **A. 單一代理自修正** | Claude Code、Cursor Agent、GitHub Copilot | 一個模型包辦規劃→實作→自我檢查，錯了就自己修 | 快、簡單、適合小任務 | 沒有制衡、幻覺風險高 |
-| **B. 先規劃後執行** | Cline Plan/Act、Copilot Workspace | 先出計畫給人審，確認後才動手 | 人可控、不會暴衝 | 小事也強制兩段式，太慢 |
-| **C. 多代理管線** | Devin（早期）、SSDLC 框架（現行） | Planner→Generator→Evaluator 固定三關 | 品質把關嚴謹、分工明確 | 小事也強制跑三關，僵化 |
-| **D. 動態調度** | LangGraph、OpenAI Agents SDK | 一個調度者判斷任務大小，決定要叫誰、跳過誰 | 大小任務彈性適配、速度和品質兼顧 | 調度邏輯複雜 |
-
-#### 業界演進趨勢
-
+#### 逆向流程架構
 ```
-2023-2024              2024-2025              2025+
-固定管線               先規劃後執行            動態調度
-P→G→E 鐵三角           Plan→Act              Orchestrator
-(Pattern C)            (Pattern B)           (Pattern D)
+使用者提供原始碼
+    │
+    ▼
+Phase 03 Reverse：程式碼分析（起點）
+    │ 產出：模組清單、API 路由、DB Schema
+    ▼
+Phase 02 Reverse：設計文件反推
+    │ 產出：ER 圖、API Spec、系統架構圖
+    ▼
+Phase 01 Reverse：需求文件反推
+    │ 產出：需求文件、SSOT 四規格、追溯矩陣
+    │ 🔒 人工審核閘口（強制暫停）
+    ▼
+Phase 04：測試整合（順向）
+    │ 產出：測試報告、覆蓋率分析
+    ▼
+Phase 05：部署解析（順向）
+    │ 產出：部署拓撲圖、建置清單
+    ▼
+Phase 06：運維解析（順向）
+    │ 產出：運維手冊、監控配置
+    ▼
+順向 SSDLC 流程（Phase 01~06 正常運作）
 ```
 
-#### SSDLC 框架現況：Pattern C（最嚴謹版本）
+### 已建立檔案清單
 
-- Planner → Generator → Evaluator 固定順序，不可跳過
-- Generator「只執行不判斷不檢查不修改」鐵律
-- Evaluator 不過就退回，A/B 類分級重試
-- 6 階段依序，前一階段產 Baseline 才能進下一階段
-- 外層全域主控 Global Agent 監控
+#### 主控 Orchestrator
+- `skills/00_cross_phase/reverse_engineering/SKILL.md` — 逆向工程主控，負責調度六個子 Skill
 
-#### 動態路由建議方案（待評估）
+#### 六個子 Skill
+1. `skills/00_cross_phase/reverse_engineering/sub_skills/phase_03_code_restore/SKILL.md` — Phase 03 逆向：程式碼分析、模組拆解、API 路由匯整、DB Schema 反推
+2. `skills/00_cross_phase/reverse_engineering/sub_skills/phase_02_design_restore/SKILL.md` — Phase 02 逆向：ER 圖、API Spec、系統架構圖、Use Case 圖反推
+3. `skills/00_cross_phase/reverse_engineering/sub_skills/phase_01_requirements_restore/SKILL.md` — Phase 01 逆向：需求文件、Gherkin 場景、SSOT 四規格、追溯矩陣反推
+4. `skills/00_cross_phase/reverse_engineering/sub_skills/phase_04_test_restore/SKILL.md` — Phase 04 順向：現有測試整合、覆蓋率分析
+5. `skills/00_cross_phase/reverse_engineering/sub_skills/phase_05_deploy_restore/SKILL.md` — Phase 05 順向：Dockerfile 解析、部署拓撲圖
+6. `skills/00_cross_phase/reverse_engineering/sub_skills/phase_06_ops_restore/SKILL.md` — Phase 06 順向：日誌/監控配置解析、運維手冊
 
-在現有 P/G/E 三角色之上加入任務路由器（Orchestrator）：
+### 設計原則
+1. **不新增階段**：逆向工程是現有六階段的「逆向模式」擴充，不改 phase_gates.json 結構
+2. **從程式碼往回推**：Phase 03 → Phase 02 → Phase 01，符合直覺
+3. **逆向完成後無縫切換**：Phase 01 逆向產出直接進入 SSOT 追溯鏈
+4. **人工審核閘口**：Phase 01 逆向完成後強制暫停，確保需求層級正確性
+5. **與現有框架完全相容**：共享 PDCA 閉環、Baseline、Snapshot、Security-Principles
 
-| 任務類型 | 路徑 | 觸發條件 |
-|:---|:---|:---|
-| 小修改（改變數名、修 typo） | G→E（跳 Planner） | 不影響規格、不影響架構 |
-| 僅調整規格 | P（僅 Planner） | 只改文件不改程式碼 |
-| 新功能 / 大重構 | P→G→E（完整三關） | 預設路徑 |
-| 僅審查現有產出 | E（僅 Evaluator） | 事後稽核 |
+### 待辦事項
+- [ ] 擴充 `phase_gates.json` 加入逆向模式標記（`mode: reverse_engineered`）
+- [ ] 擴充指令系統（`@reverse` 指令 + 口語觸發）
+- [ ] 設計逆向專用 `io_files.yaml`
+- [ ] 整合 `@guide reverse` 引導機制
+- [ ] 更新根 `README.md` + `skills/README.md`
+- [ ] 選定小型測試專案做 POC 概念驗證
+- [ ] 設計逆向專用 JSON 配置結構（`skillId: ReverseEngineering_LegacyRestore`）
 
-#### 決策
-
-- ✅ 現階段**保留 Pattern C**（現有嚴格管線設計）
-- 📋 已列入待辦事項 #7，待系統穩定運行後再評估是否導入動態路由
-- 📝 此分析已記錄於 memory.md 供後續快速查閱
-
-
-
-## 2026-07-02：UI/UX Pro Max 外部技能導入與架構對齊強化
-
-### 背景
-使用者要求從 GitHub 導入 `nextlevelbuilder/ui-ux-pro-max-skill`（MIT v2.6.2），包含 7 個設計智慧子技能，並依 SSDLC 六階段分類整合。
-
-### 執行內容
-
-#### 1. 外部資源下載
-- `external-resources/ui-ux-pro-max-skill/`：完整下載 7 子技能（ui-ux-pro-max / brand / design / design-system / ui-styling / slides / banner-design），含 Python 搜尋引擎 + 14 個 CSV 資料庫，清理 `.git` 目錄
-
-#### 2. 技能分類部署（依 skills/SKILLS歸類.md 規則）
-- `skills/00_cross_phase/`：ui-ux-pro-max、slides
-- `skills/02_system_design/`：brand、design、design-system、ui-styling、banner-design
-- `skills/03_implementation_and_coding/`：ui-styling（雙歸屬）
-
-#### 3. 文件更新
-- **根 README.md**：總數 88→95、GitHub 社群 41→48、上下文感知推薦表 +4 條、近期更新記錄新增、Banner 修正
-- **skills/README.md**：開頭摘要更新（來源統計 + 雙歸屬 6 + 群組摘要）、各階段新增技能條目（含本機＋GitHub 雙來源追溯）
-- **skills/SKILLS歸類.md**：Phase 00/02/03 清單更新；SOP 從 3 條簡略步驟重寫為 6 大步驟（前置掃描→關鍵字比對歸類→複製→skills/README→SKILLS歸類→根 README→最終驗證），含 1.1 關鍵字比對法、1.2 全域性判斷、1.3 雙歸屬判斷、1.4 相依性檢查
-- **docs/Harness_Optimization_SKILL.md**：Check 5 擴充 4 條強制規則（skills/README 開頭統計、SKILLS歸類清單更新、推薦表評估、三檔交叉驗證）；新增角色定位說明（@optimize 為最後檢核關卡，非主要同步機制）
-
-#### 4. IO 檔案管理強化（選擇性功能 opt-in）
-- **Phase 00 Section 六**：新增 `### 0. 啟用條件`（三種啟用方式），Planner/Generator/Evaluator 各職責補上「未啟用則跳過」指示
-- **Phase 01~06 各階段 SKILL.md**：在 `## 二、輸入與輸出規範` 結尾加入 IO 管理引用提醒（三種啟用方式 + 指向 Phase 00 Section 六）
-
-#### 5. 安全性確認
-- `.agents/skills/` 目錄經 git diff + SHA256 檢查，確認無污染殘留
-- 多次執行 @optimize（Harness Optimization）全數通過
-- `check_spec_integrity.py --mode B` 通過
-
-### 關鍵設計決策
-- 外部技能不直接放入 `.agents/skills/`，而是放在 `external-resources/` 作為唯一來源，`skills/` 下為分類部署的複本
-- SKILLS歸類.md SOP 設計為 AI 代理可自主讀取執行，不需人類引導
-- @optimize 定位為最終驗證關卡，主要同步工作應在 SOP 階段完成
-- IO 檔案管理為選擇性功能（opt-in），預設不啟用，避免 AI 強制套用
-
-### 變更檔案清單
-| 檔案 | 變更類型 |
-|:------|:------|
-| external-resources/ui-ux-pro-max-skill/ | 新增 |
-| skills/00_cross_phase/{ui-ux-pro-max,slides}/ | 新增 |
-| skills/02_system_design/{brand,design,design-system,ui-styling,banner-design}/ | 新增 |
-| skills/03_implementation_and_coding/ui-styling/ | 新增（雙歸屬） |
-| README.md | 修改 |
-| skills/README.md | 修改 |
-| skills/SKILLS歸類.md | 修改 |
-| docs/Harness_Optimization_SKILL.md | 修改 |
-| .agents/skills/00_cross_phase/SKILL.md | 修改 |
-| .agents/skills/01~06_*/SKILL.md | 修改（各階段加入 IO 引用） |
-
-
-## 2026-07-08：框架文件一致性治理與記憶落實規則補強
-
-### 調整背景
-針對 AGENTS.md、.agents/AGENTS.md、docs/commands_reference.md、docs/CORE_RULES.md、docs/TEMPLATE_SKILL.md、docs/Harness_Optimization_SKILL.md、scripts/check_spec_integrity.py、skills/README.md、skills/SKILLS歸類.md、specs/README.md、backups/BACKUP_MANIFEST.md 進行跨檔比對與修正，處理名詞混用、路徑不一致、章節編號重複、規則衝突與流程銜接不足等問題。
-
-### 調整方向
-- 統一追溯矩陣檔名為  `traceability_matrix.md`
-- 將 Windows 絕對路徑改為 repo 內相對路徑
-- 統一 Baseline 命名、保留策略與技術棧描述
-- 統一第六階段名稱為「維護與營運」
-- 強化 Generator / Evaluator / SSOT failure handling 的規則界線
-- 新增記憶落實條款，要求優化調整須回寫 memory.md 並補列 backups/BACKUP_MANIFEST.md
-
-### 目標效益
-- 降低後續 AI 代理解讀規則歧義
-- 提高跨文件與備份歷程可追溯性
-- 讓框架優化紀錄能在下次執行時立即被採納
-
-### 影響範圍
-AGENTS.md 已補入記憶落實條款；memory.md 新增本次調整紀錄；backups/BACKUP_MANIFEST.md 於本次同步檢視。
-
-# AI 寫作自動化軟體作業流程 — 腦力激盪記錄
-
-## 2026-07-08：外部資源管理體系建立與全案架構對齊
-
-### 工作背景
-本日工作涵蓋三大主軸：(1) 外部第三方資源管理體系的完整建立、(2) @security-check 檢查內容定義的補強、(3) 全案架構對齊與文件同步治理。
+### 來源討論文件
+- `專案逆向工程skill設計構想討論內容.md` — 完整討論構想（2026-07-16）
 
 ---
+## 逆向工程 Skill 實作進度 (2026-08-07 晚間)
 
-### 一、外部第三方資源管理體系
+### 今日完成事項
 
-#### 1.1 AnySearch Skill 引入與移除
-- 從 GitHub 下載 anysearch-ai/anysearch-skill (v2.1.0, Apache 2.0) 至 external-resources/anysearch-skill/
-- 確認免費方案：1,000 次請求/天、20 QPS，API Key 免費申請
-- 最終評估短時間無使用需求，已移除
+#### 1. SKILL.md 規格設計（7 個檔案）
+- 主控 Orchestrator：skills/00_cross_phase/reverse_engineering/SKILL.md（7.5 KB）
+- Phase 03 逆向：sub_skills/phase_03_code_restore/SKILL.md（4.5 KB）
+- Phase 02 逆向：sub_skills/phase_02_design_restore/SKILL.md（4.4 KB）
+- Phase 01 逆向：sub_skills/phase_01_requirements_restore/SKILL.md（5.1 KB）
+- Phase 04 順向：sub_skills/phase_04_test_restore/SKILL.md（2.4 KB）
+- Phase 05 順向：sub_skills/phase_05_deploy_restore/SKILL.md（2.4 KB）
+- Phase 06 順向：sub_skills/phase_06_ops_restore/SKILL.md（2.3 KB）
 
-#### 1.2 external-resources/README.md 建立
-- 新增第三方資源聲明、指令操作說明、API Key 安全聲明、引用警語模板、安裝指引
-- 引用警語模板供他人 fork 時直接複製使用
+#### 2. IO 檔案定義（6 個 YAML）
+- io_files/phase_03_reverse_io.yaml — Phase 03 逆向輸入輸出
+- io_files/phase_02_reverse_io.yaml — Phase 02 逆向輸入輸出
+- io_files/phase_01_reverse_io.yaml — Phase 01 逆向輸入輸出
+- io_files/phase_04_reverse_io.yaml — Phase 04 順向輸入輸出
+- io_files/phase_05_reverse_io.yaml — Phase 05 順向輸入輸出
+- io_files/phase_06_reverse_io.yaml — Phase 06 順向輸入輸出
 
-#### 1.3 external-resources/SKILL.md 建立（v1.1.0）
-- 定義 @external-resource 指令體系的完整操作規範
-- 三個子指令：add（引入）、remove（移除）、list（查詢）
-- 引入 6 步驟流程（分析→下載→更新 README→更新 gitignore→更新警語→驗證）
-- 移除流程（確認→刪除目錄→清理 README→清理 gitignore→報告）
-- 目錄結構規範與 Git 追蹤規則
+#### 3. 指令系統擴充
+- docs/commands_reference.md：新增 @reverse 口語觸發 + 核心指令表 + 擴充歷史
+- docs/commands_reference.md：新增 @guide reverse 口語觸發 + 核心指令表
 
-#### 1.4 .gitignore negation 規則
-- 排除第三方原始碼但保留 url.txt 索引
-- 使用 external-resources/* + !external-resources/*/url.txt 格式
-- Benson 和 anysearch 已清理乾淨
+#### 4. phase_gates.json 更新
+- 新增 everse_engineering 區塊（enabled/skill_path/description/current_phase/completed_phases/mode）
+- 為 6 個階段新增 mode 欄位（預設 null，逆向完成後設為 "reverse_engineered"）
 
-#### 1.5 指令集三檔同步
-@external-resource 指令同步更新至：
-- docs/commands_reference.md：核心指令表 3 列 + 口語觸發 3 條 + 更新記錄
-- .agents/AGENTS.md：第 14 節：指令總覽 + AI 執行規範 + 安全合規
-- 根目錄 README.md：指令表 3 列 + 自然語言觸發清單
+#### 5. .agents/AGENTS.md 更新
+- 新增 @guide reverse 引導機制（五關卡：專案確認→素材確認→逆向範圍→輸出確認→開始逆向）
 
----
+#### 6. README 文件更新
+- skills/README.md：新增 reverse_engineering 條目 + Skill 總數 94→95
+- README.md：Skill 總數 94→95 + 新增逆向工程模組區塊
 
-### 二、@security-check 檢查內容定義補強
+#### 7. 架構對齊檢查（@optimize 聚焦版）
+- 三檔指令同步：@reverse 在 .agents/AGENTS.md、commands_reference.md、README.md 一致 ✅
+- @guide reverse 同步：已補上 commands_reference.md ✅
+- phase_gates.json 結構：reverse_engineering 區塊完整 + 6 階段 mode 欄位存在 ✅
+- skills/README.md 一致性：reverse_engineering 條目存在 + Skill 總數 95 一致 ✅
+- SKILL.md 實體完整性：7 個檔案全部存在 ✅
+- io_files.yaml 完整性：6 個 IO 定義檔皆有 inputs + outputs ✅
+- memory.md 記錄完整性：設計過程、決策、檔案清單皆已記錄 ✅
 
-#### 2.1 新增檔案
-- Security-Principles/references/check_scope_per_domain.md：7 個構面的比對範圍定義（比對對象、比對方式、判定基準、具體檢查項目）
-- Security-Principles/assets/security_check_report_template.md：標準報告模板（檢核摘要、8 構面逐項表格、階段性限制說明、重點風險、改善建議）
+### 關鍵設計決策紀錄
 
-#### 2.2 構面 8 處理規則
-- 構面 8（組織、實體與供應鏈安全）在軟體開發專案中預設標記為不適用
-- 僅當專案涉及外部服務商整合時才檢查「供應鏈管理」子類別
-- 檢核報告中構面 8 獨立成章
+| 決策 | 結論 | 原因 |
+|:-----|:-----|:-----|
+| Phase 00 定位 | 不新增階段，改為在現有六階段加「逆向模式」 | Phase 00 已被 00_cross_phase 佔用，避免衝突 |
+| 逆向流程方向 | Phase 03（程式碼）→ Phase 02（設計）→ Phase 01（需求） | 從程式碼往回推，符合直覺 |
+| 與現有框架關係 | 完全相容，共享 PDCA、Baseline、Snapshot、Security-Principles | 不改現有流程，只加逆向模式 |
+| 人工審核閘口 | Phase 01 逆向完成後強制暫停 | 需求層級反推最容易有偏差 |
 
-#### 2.3 更新檔案
-- Security-Principles/SKILL.md：執行步驟加入比對範圍引用、報告模板引用、構面 8 規則
-- .agents/AGENTS.md：@security-check 段落加入三項引用 + 構面 8 規則
-- docs/commands_reference.md：核心指令表 @security-check 列補入比對範圍與報告模板
-- Security-Principles/README.md：目錄結構 +2 檔案、檔案說明表格 +2 列、事後稽核說明更新
+### 明日待辦
 
----
+| 項目 | 說明 | 優先順序 |
+|:-----|:-----|:---------|
+| POC 概念驗證 | 選定小型既有專案（1000~5000 行）做測試 | 高 |
+| 補充 @guide reverse 到 .agents/AGENTS.md 五關卡細節 | 確認五關卡內容與 io_files.yaml 對齊 | 中 |
+| 評估開源逆向工具 | SQL 反向 ER、API 自動產規格等工具可用性 | 中 |
 
-### 三、全案架構對齊
+### 所有變更檔案清單
 
-#### 3.1 指令集三檔同步強制規則升級
-- docs/CORE_RULES.md 第 1-6 節：「雙檔同步」升級為「三檔同步」
-- 三軌文件：.agents/AGENTS.md + docs/commands_reference.md + 根目錄 README.md
-- 紅框問題修正：三軌文件定義完整列出 3 個檔案
+**新增（13 個）**：
+- skills/00_cross_phase/reverse_engineering/SKILL.md
+- skills/00_cross_phase/reverse_engineering/io_files/phase_01~06_reverse_io.yaml（6 個）
+- skills/00_cross_phase/reverse_engineering/sub_skills/phase_01~06_*/SKILL.md（6 個）
 
-#### 3.2 README + SKILL 目錄同步檢查通則（新增）
-- docs/CORE_RULES.md 新增第 6 條強制同步規則
-- .agents/AGENTS.md @optimize 新增第 5 步檢查
-- 掃描範圍：全專案所有目錄（排除 .agents/skills/ 階段模板）
-- 比對三項：(a) 章節主題結構對照 (b) 引用一致性 (c) 異動同步
-
-#### 3.3 殘留清理
-- Benson 殘留：external-resources/README.md、.gitignore、SKILL.md、commands_reference.md 全面清除
-- AnySearch 殘留：SKILL.md 範例替換為 ui-ux-pro-max-skill、commands_reference.md 同步
-- <skill-name> 角括號：.agents/AGENTS.md 改為 [skill-name] 避免視覺混淆
-- eferences/08_organizational.md：Security-Principles/SKILL.md 反引號斷裂修正
-
-#### 3.4 Git 同步
-- 遠端有 1 個新 commit（chore: 移除 Benson 敏感來源技能），已 pull 同步
-- 多次 commit + push 至 origin/main
-
----
-
-### 影響範圍
-- 新增檔案：3（SKILL.md、check_scope_per_domain.md、report_template.md）
-- 修改框架規章：4（CORE_RULES.md、.agents/AGENTS.md、commands_reference.md、README.md）
-- 修改外部資源文件：3（external-resources/README.md、Security-Principles/SKILL.md、Security-Principles/README.md）
-- 清理殘留：5（Benson 目錄、anysearch 引用、角括號、反引號斷裂、gitignore）
-
-### 目標效益
-- 建立完整的外部第三方資源管理生命週期（引入→使用→移除）
-- @security-check 從「知道要跑」升級為「知道要查什麼、怎麼查、報告長什麼樣」
-- 框架級文件同步從「雙檔」升級為「三檔」+「目錄級 README+SKILL 同步」
-- 全案殘留清理完畢，三方一致性驗證通過
-
-
-> **歷史紀錄說明**：本文件部分早期紀錄仍保留 file:/// 絕對路徑寫法，僅供還原當時調整脈絡；現行規則已統一採 repo 內相對路徑，實際執行與審查請以現行檔案連結為準。
-
-
-
+**修改（6 個）**：
+- docs/commands_reference.md
+- phase_gates.json
+- .agents/AGENTS.md
+- skills/README.md
+- README.md
+- memory.md
 
 ---
-
-## 2026-07-09: skills/README.md 全域流水號統一、commands_reference.md 重排、check_spec_integrity 五項優化、文件清理與對齊
-
-### 1. skills/README.md 全域流水號統一
-- **問題**: 各批 Skill (Anthropic/GitHub/UI-UX Pro Max) 各自獨立計數, 導致編號跳號 (如 13->18->19)
-- **處理**: 將所有 72 筆 Skill 條目重新編為 [[01]]~[[72]] 連續流水號
-- **同步修復**: markitdown 追溯來源縮排錯誤 (4空格->2空格), slides 追溯來源錯位
-- **影響**: skills/README.md, 不影響指令系統 (指令快捷編號是 AI 代理每次動態掃描分配的)
-
-### 2. docs/commands_reference.md 重排
-
-#### 2.1 口語指令區: 依功能分為 7 組
-- Star 指令集查詢與框架優化 (讀取指令集, Harness Optimization)
-- Rocket 專案初始化與階段管理 (CheckSpec, 強制解鎖)
-- 建築 基線與快照管理 (建立基線, 建立快照, 回溯快照)
-- Wrench Skill 查詢與導入 (通用 Skill, import-skill 三指令)
-- 文件夾 IO 檔案管理 (檢查/設定/查看/比對/列出 IO)
-- 資安防護 (資安構面載入, 資安檢核)
-- 大洋洲 外部資源管理 (external-resource add/remove/list)
-
-#### 2.2 核心指令對照表: 27 行 A-Z 排序
-- @io 系列群組化 (01-05)
-- @external-resource 系列群組化 (06-08)
-- @import-skill 系列群組化 (09-11), 含新增的 3 行
-- @security 系列群組化 (12-13)
-- 其餘 @ 指令按字母排序
-- @[階段] 系列放最後 (模板型指令)
-
-#### 2.3 @CheckSpec 增量檢查補充
-- 口語指令區新增: 「檢查 REQ-003」「確認 REQ-005 有沒有對齊」
-- 核心對照表語法欄位更新為 @CheckSpec [--req REQ-NNN]
-- 使用說明新增 --req 範例
-
-### 3. check_spec_integrity.py 五項優化
-- **動態需求數量**: 新增 _get_yaml_req_count() + _get_req_ids(), 取代硬編碼 6
-- **修復建議**: 新增 fix_hints 佇列, 每個 FAIL 附帶具體修復提示
-- **Scenario 結構檢查**: 計算 Given/When/Then 步驟數, 不足則警告
-- **標題關鍵字比對**: 從 YAML 需求標題提取關鍵字, 比對 Feature 是否有相符
-- **增量檢查**: 新增 --req REQ-003 參數, 只針對特定需求做四向交叉比對
-
-### 4. README.md 修正
-- Skill 總數: 96 -> 68 (L21, L360 兩處修正)
-- scripts/ 描述: 從「輔助腳本」更新為「框架核心工具腳本」+ 安全工具鏈
-- 倉庫結構表 skills/ 數量同步為 68
-
-### 5. specs/README.md 新增「規格異動時機」章節
-- executable_spec.yaml 異動時機表 (5 種場景)
-- requirements.feature 異動時機表 (3 種場景)
-- 異動連鎖關係圖 (SSOT -> SRS/Gherkin/RTM 自動生成鏈)
-- 勿手動編輯警告
-- 清除底部殘留標題
-
-### 6. 目錄清理
-- 已刪除: export/ (30 個臨時 patch 腳本), .tmp_markitdown/ (重複的 markitdown repo 副本)
-- 確認保留: scripts/ (框架核心工具, 不宜移動)
-
-### 7. 對齊架構檢查結果
-- 執行 align_framework.ps1 -VerboseOutput
-- 修復項目: 0
-- Skill 數量三處交叉驗證一致: README 68 / skills/README.md 68 / 實際 72 筆索引 (含雙歸屬)
-
-### 影響範圍
-- 修改文件: 5 (skills/README.md, docs/commands_reference.md, README.md, specs/README.md, memory.md)
-- 修改腳本: 1 (scripts/check_spec_integrity.py)
-- 刪除目錄: 2 (export/, .tmp_markitdown/)
-- 新增章節: 1 (specs/README.md 規格異動時機)

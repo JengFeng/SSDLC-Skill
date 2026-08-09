@@ -1,13 +1,17 @@
-# 軟體開發流程技能目錄索引表
+﻿# 軟體開發流程技能目錄索引表
 
-本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 94 個獨立 Skill，其中 docx/pdf/xlsx/pptx/minimax-pdf/minimax-docx/minimax-xlsx/pptx-generator 等 8 個具跨階段通用性，ui-styling 與 open-design 同時歸類於 Phase 02 與 Phase 03，共計 13 個雙歸屬 Skill，markitdown（MIT）歸入 Phase 00 跨格式文件轉 Markdown 工具）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
+本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的 安全軟體開發生命週期六階段（通稱 SSDLC），將 Anthropic 官方（17）、GitHub 社群（48）、Anthropic 官方插件（2）等來源之技能（共 95 個獨立 Skill，其中 docx/pdf/xlsx/pptx/minimax-pdf/minimax-docx/minimax-xlsx/pptx-generator 等 8 個具跨階段通用性，ui-styling 與 open-design 同時歸類於 Phase 02 與 Phase 03，共計 13 個雙歸屬 Skill，markitdown（MIT）歸入 Phase 00 跨格式文件轉 Markdown 工具）進行結構化分類，並加註其原始來源以方便追溯。各階段與其包含的技能說明如下：
 
 ---
 
 ## 1. 規劃與需求分析
 本階段技能用於專案初期的需求釐清、文件協作、數據處理、提案報價與內部資訊傳遞。
 
-### Anthropic 官方技能 (6)
+
+*   **[[73] reverse_engineering](skills/00_cross_phase/reverse_engineering)**：逆向工程主控 Orchestrator。對既有無完整文件之交付專案原始碼，從 Phase 03 往回推至 Phase 01，逆向還原六大 SSDLC 各階段交付物，完成後無縫切換順向流程。包含六個子 Skill：Phase 03 程式碼分析、Phase 02 設計反推、Phase 01 需求反推、Phase 04 測試整合、Phase 05 部署解析、Phase 06 運維解析。
+    *   **追溯來源**：本專案自行設計（2026-08-07）
+    *   **指令**：@reverse [專案路徑]、@reverse-code、@reverse-design、@reverse-requirements
+    *   **口語觸發**：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」### Anthropic 官方技能 (6)
 * **[[01] doc-coauthoring](skills/01_planning_and_analysis/doc-coauthoring)**：文件協同撰寫引導。提供結構化工作流以協同撰寫提案、規格書或決策文件。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/doc-coauthoring) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring)
 * **[[02] internal-comms](skills/01_planning_and_analysis/internal-comms)**：內部溝通撰寫資源。提供狀態報告、事件報告及專案更新等內部通訊文件格式。

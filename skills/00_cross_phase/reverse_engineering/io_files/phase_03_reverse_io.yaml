@@ -1,0 +1,38 @@
+# Phase 03 逆向模式 IO 檔案定義
+# 觸發條件：@reverse 或 @reverse-code
+inputs:
+  - name: source_code_dir
+    description: 舊專案完整原始碼目錄路徑
+    required: true
+  - name: db_ddl_file
+    description: 資料庫 DDL 檔案（若有）
+    required: false
+  - name: language_hint
+    description: 程式語言提示（可選，系統自動偵測）
+    required: false
+
+outputs:
+  - name: scan_report.json
+    description: 專案掃描概覽
+    required: true
+  - name: module_list.json
+    description: 模組清單（檔名、路徑、職責描述）
+    required: true
+  - name: class_function_list.json
+    description: 類別與函數清單
+    required: true
+  - name: api_routes.json
+    description: API 路由清單
+    required: true
+  - name: db_schema_raw.sql
+    description: 反推的 DB Schema
+    required: false
+  - name: table_list.json
+    description: 資料表清單
+    required: true
+  - name: dependency_list.json
+    description: 第三方依賴清單
+    required: true
+  - name: code_analysis.md
+    description: 程式碼分析報告
+    required: true

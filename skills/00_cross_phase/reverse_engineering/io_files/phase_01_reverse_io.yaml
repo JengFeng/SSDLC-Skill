@@ -1,0 +1,44 @@
+# Phase 01 逆向模式 IO 檔案定義
+# 觸發條件：@reverse（Phase 02 完成後自動）或 @reverse-requirements
+inputs:
+  - name: er_diagram.md
+    description: Phase 02 逆向產出
+    required: true
+  - name: api_spec.md
+    description: Phase 02 逆向產出
+    required: true
+  - name: system_architecture.md
+    description: Phase 02 逆向產出
+    required: true
+  - name: use_case_diagram.md
+    description: Phase 02 逆向產出（若有）
+    required: false
+  - name: use_case_list.json
+    description: Phase 02 逆向產出（若有）
+    required: false
+  - name: code_analysis.md
+    description: Phase 03 逆向產出
+    required: true
+
+outputs:
+  - name: formal_requirements.md
+    description: 結構化需求文件
+    required: true
+  - name: executable_spec.yaml
+    description: 結構化可執行規格（SSOT 核心）
+    required: true
+  - name: requirements.feature
+    description: Gherkin 行為規格
+    required: true
+  - name: system_specification.md
+    description: 系統規格書（IEEE 830 格式）
+    required: true
+  - name: traceability_matrix.md
+    description: 需求追溯矩陣
+    required: true
+  - name: reverse_engineering_report.md
+    description: 逆向工程完成報告
+    required: true
+  - name: reverse_completion_summary.json
+    description: 完成狀態摘要
+    required: true

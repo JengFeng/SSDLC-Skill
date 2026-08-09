@@ -1,14 +1,14 @@
 ﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 94 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 95 個 AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 94 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 95 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -18,7 +18,7 @@
 
 ## 🧩 開發階段架構
 
-本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **94 個** AI 協作 Skill。
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **95 個** AI 協作 Skill。
 
 ### 🌐 跨階段全域共用
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 94 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
+> **合計 95 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
 
 ---
 
@@ -504,7 +504,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出強整區（SBOM、安全檢核報告、安全掃描報告） |
 | `scripts/` | 框架核心工具腳本（check_spec_integrity.py 規格完整性檢查、align_framework.ps1 框架對齊引擎、generate_srs.py SRS 自動生成）+ 🔒 安全工具鏈 |
-| `skills/` | 94 個 Skill 實體（含 README.md 與歸類索引，13 雙归屬） |
+| `skills/` | 95 個 Skill 實體（含 README.md 與歸類索引，13 雙归屬） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
 
@@ -571,3 +571,24 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | Other External Resources | 依各 Repo 授模 |
 
 > 詳細授模詳情請參照各 Skill 目錄下之 LICENSE 或 url.txt。
+
+
+## 🔄 逆向工程模組（2026-08-07 新增）
+
+本框架支援對既有無完整文件之交付專案原始碼，進行逆向分析還原。
+
+### 逆向流程
+- Phase 03 逆向：程式碼分析（起點）→ 模組清單、API 路由、DB Schema
+- Phase 02 逆向：設計文件反推 → ER 圖、API Spec、系統架構圖
+- Phase 01 逆向：需求文件反推 → 需求文件、SSOT 四規格、追溯矩陣
+- Phase 04~06：順向整合（測試、部署、運維）
+
+### 指令
+- @reverse [專案路徑] — 啟動完整逆向工程
+- @reverse-code [專案路徑] — 僅執行 Phase 03 程式碼分析
+- @reverse-design [Phase 03 產出] — 僅執行 Phase 02 設計反推
+- @reverse-requirements [Phase 02 產出] — 僅執行 Phase 01 需求反推
+- @guide reverse [專案路徑] — 引導式逆向工程
+
+### Skill 位置
+skills/00_cross_phase/reverse_engineering/

@@ -1,0 +1,50 @@
+# Phase 02 逆向模式 IO 檔案定義
+# 觸發條件：@reverse（Phase 03 完成後自動）或 @reverse-design
+inputs:
+  - name: module_list.json
+    description: Phase 03 逆向產出
+    required: true
+  - name: api_routes.json
+    description: Phase 03 逆向產出
+    required: true
+  - name: db_schema_raw.sql
+    description: Phase 03 逆向產出（若有）
+    required: false
+  - name: table_list.json
+    description: Phase 03 逆向產出
+    required: true
+  - name: code_analysis.md
+    description: Phase 03 逆向產出
+    required: true
+  - name: dependency_list.json
+    description: Phase 03 逆向產出
+    required: true
+
+outputs:
+  - name: er_diagram.md
+    description: Mermaid 格式 ER 圖
+    required: true
+  - name: er_description.md
+    description: ER 圖文字說明
+    required: true
+  - name: api_spec.md
+    description: API 規格文件（Markdown 格式）
+    required: true
+  - name: api_spec.yaml
+    description: OpenAPI 3.0 YAML（若有結構化資訊）
+    required: false
+  - name: system_architecture.md
+    description: 系統架構圖 + 文字說明
+    required: true
+  - name: use_case_diagram.md
+    description: Use Case 圖
+    required: false
+  - name: use_case_list.json
+    description: Use Case 清單
+    required: false
+  - name: activity_diagram.md
+    description: 活動圖
+    required: false
+  - name: sequence_diagram.md
+    description: 時序圖
+    required: false

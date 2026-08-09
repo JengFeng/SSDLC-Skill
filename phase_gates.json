@@ -6,37 +6,43 @@
       "status": "locked",
       "baseline": null,
       "evaluator_score": null,
-      "completed_at": null
+      "completed_at": null,
+      "mode": null
     },
     "02_system_design": {
       "status": "locked",
       "baseline": null,
       "evaluator_score": null,
-      "completed_at": null
+      "completed_at": null,
+      "mode": null
     },
     "03_implementation_and_coding": {
       "status": "locked",
       "baseline": null,
       "evaluator_score": null,
-      "completed_at": null
+      "completed_at": null,
+      "mode": null
     },
     "04_testing": {
       "status": "locked",
       "baseline": null,
       "evaluator_score": null,
-      "completed_at": null
+      "completed_at": null,
+      "mode": null
     },
     "05_deployment": {
       "status": "locked",
       "baseline": null,
       "evaluator_score": null,
-      "completed_at": null
+      "completed_at": null,
+      "mode": null
     },
     "06_maintenance": {
       "status": "locked",
       "baseline": null,
       "evaluator_score": null,
-      "completed_at": null
+      "completed_at": null,
+      "mode": null
     }
   },
   "phase_baseline_enabled": false,
@@ -56,8 +62,7 @@
     "skill_path": ".agents/skills",
     "initialized_at": null
   },
-  "current_role": "developer"
-,
+  "current_role": "developer",
   "guided_workflow": {
     "enabled": false,
     "description": "引導式協作機制。@init 時詢問使用者是否啟動，或隨時透過 @guide [phase] 手動啟動。AI 依 5 個關卡（目標確認、輸入設定、Skill 選取、輸出定義、開始執行）逐步引導，自動整合 IO 管理。",
@@ -66,5 +71,14 @@
     "completed_steps": [],
     "started_at": null,
     "last_active": null
+  },
+  "reverse_engineering": {
+    "initialized_at": null,
+    "mode": null,
+    "enabled": false,
+    "completed_phases": [],
+    "current_phase": null,
+    "skill_path": "skills/00_cross_phase/reverse_engineering",
+    "description": "逆向工程模式。透過 @reverse 指令啟動，從 Phase 03 往回推至 Phase 01，完成後切換順向流程。"
   }
 }

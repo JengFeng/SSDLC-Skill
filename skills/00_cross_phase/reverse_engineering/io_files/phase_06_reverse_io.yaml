@@ -1,0 +1,29 @@
+# Phase 06 順向整合 IO 檔案定義
+# 觸發條件：@reverse（Phase 05 完成後自動）或 @reverse-ops
+inputs:
+  - name: source_code_dir
+    description: 舊專案原始碼目錄
+    required: true
+  - name: logging_config
+    description: 日誌配置檔案（若有）
+    required: false
+  - name: monitoring_config
+    description: 監控配置檔案（若有）
+    required: false
+
+outputs:
+  - name: ops_files_manifest.json
+    description: 運維檔案清單
+    required: true
+  - name: logging_analysis.md
+    description: 日誌配置分析
+    required: false
+  - name: monitoring_analysis.md
+    description: 監控配置分析
+    required: false
+  - name: ops_runbook.md
+    description: 運維手冊
+    required: true
+  - name: ops_restoration_report.md
+    description: 運維逆向整合報告
+    required: true
