@@ -7,6 +7,7 @@ using SqlData;
 using System;
 using System.Globalization;
 using TWNPPublic.Common.Extension;
+using TWNPPublic.Common.Security;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Dashboard;
@@ -807,13 +808,14 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public int UpdateAccountInfo(UpdatePwVm model, int SN)
         {
+            string hashedPassword = PasswordHashUtil.HashPassword(model.PasswordNew2);
 
             string mainsql = @"Update B_ACCOUNT
                                SET APWD = @Pwd, INITIAL_LOGIN = @Initial_login
                                Where B_ACCOUNT_SN = @SN";
             object obj = new
             {
-                Pwd = model.PasswordNew2,
+                Pwd = hashedPassword,
                 SN = SN,
                 Initial_login = 1,
                 //Email = model.Email,
@@ -849,7 +851,70 @@ namespace TWNPPublic.Domain.Service
             //    }
             //}
 
-            return this.dataAccess.Execute(mainsql, obj);
+            int result = this.dataAccess.Execute(mainsql, obj);
+            if (result > 0)
+            {
+                var accountInfo = GetAccountBySN(SN);
+                if (accountInfo != null)
+                {
+                    SyncExternalPassword(accountInfo.B_ACCOUNT, hashedPassword);
+                }
+            }
+
+            return result;
+        }
+
+        private void SyncExternalPassword(string account, string hashedPassword)
+        {
+            bool isGroupedAccount = IsSttnGrpIdExist(account) != null;
+            if (isGroupedAccount)
+            {
+                UpdateWmmmdbSttngrpPassword(account, hashedPassword);
+            }
+            else
+            {
+                UpdateWmmmdbImCmuserPassword(account, hashedPassword);
+            }
+        }
+
+        private A_PH_METER_STTNGRP? IsSttnGrpIdExist(string sttnGrpId)
+        {
+            string mainsql = @"SELECT 1
+                       FROM A_PH_METER_STTNGRP
+                       WHERE sttn_grp_id = @SttnGrpId";
+
+            object obj = new { SttnGrpId = sttnGrpId };
+            return dataAccess.Query<A_PH_METER_STTNGRP>(mainsql, obj).FirstOrDefault();
+        }
+
+        private int UpdateWmmmdbSttngrpPassword(string sttnGrpId, string hashedPassword)
+        {
+            string mainsql = @"UPDATE WMMMDB.dbo.sttngrp
+                           SET login_pwd = @LoginPwd
+                         WHERE sttn_grp_id = @SttnGrpId";
+
+            object obj = new
+            {
+                SttnGrpId = sttnGrpId,
+                LoginPwd = hashedPassword
+            };
+
+            return dataAccess.Execute(mainsql, obj);
+        }
+
+        private int UpdateWmmmdbImCmuserPassword(string account, string hashedPassword)
+        {
+            string mainsql = @"UPDATE WMMMDB.dbo.im_cmuser
+                       SET password = @Password
+                       WHERE user_id = @Account";
+
+            object obj = new
+            {
+                Account = account,
+                Password = hashedPassword
+            };
+
+            return dataAccess.Execute(mainsql, obj);
         }
 
         /// <summary>

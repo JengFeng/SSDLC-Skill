@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TWNPPublic.Common.Attributes;
 using TWNPPublic.Common.Extension;
+using TWNPPublic.Common.Security;
 using TWNPPublic.Domain.Service;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
@@ -142,29 +143,27 @@ namespace TWNPPublic.Controllers
                     //     return Json(Failed("請輸入密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字"));
                     //}
 
-                    CommonFunc comm = new();
                     bool isPasswordChanged = false;
 
                     // 如果密碼欄位有值，才進行密碼更新和驗證
                     if (!string.IsNullOrWhiteSpace(model.Pwd))
                     {
-                        var newAPwd = comm.AesEncrypt(model.Pwd);
-                        isPasswordChanged = newAPwd != data.APWD;
+                        isPasswordChanged = !PasswordHashUtil.VerifyPasswordOrLegacyAes(model.Pwd, data.APWD);
                         // 檢查是否與舊密碼相同
-                        if (newAPwd != data.APWD)
+                        if (isPasswordChanged)
                         {
                             // 驗證新密碼強度
                             if (!CommonFunc.magicword(model.Pwd))
-                                return Json(Failed("請輸入密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字"));
+                                return Json(Failed("請輸入密碼長度需為10至20位元，包含大小寫英文字母、特殊符號、數字"));
                         }
                     }
                     else
                     {
                         // 如果密碼為空，保持原密碼不變
-                        model.Pwd = comm.AesDecrypt(data.APWD);
+                        isPasswordChanged = false;
                     }
 
-                    // 如果是歸戶帳號，不允許修改帳號和水號資料
+                    // 如果是歸戶帳號，不允許修改用戶水號綁定管理、自動讀表期滿通知
                     if (isGroupedAccount)
                     {
                         model.Account = data.B_ACCOUNT; // 保持原帳號

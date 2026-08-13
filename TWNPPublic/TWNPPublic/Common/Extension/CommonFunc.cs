@@ -147,7 +147,7 @@ namespace TWNPPublic.Common.Extension
 
         /// <summary>
         /// 密碼規則
-        ///     1.長度為8位元 
+        ///     1.長度為10至20位元 
         ///     2.大小寫英文字母 
         ///     3.特殊符號
         ///     4.數字
@@ -157,7 +157,7 @@ namespace TWNPPublic.Common.Extension
         public static bool magicword(string magicword)
         {
 
-            string ex = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}\[\]:; '<>?,.\/]).{8,20}$";
+            string ex = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}\[\]:; '<>?,.\/]).{10,20}$";
             return Regex.IsMatch(magicword.Trim(), ex);
         }
         #endregion

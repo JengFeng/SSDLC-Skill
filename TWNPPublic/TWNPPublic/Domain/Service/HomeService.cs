@@ -1,9 +1,10 @@
 ﻿using SqlData;
-using TWNPPublic.Common.Extension;
+using TWNPPublic.Common.Security;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
 using TWNPPublic.ViewModels.Home;
 using System.Security.Cryptography;
+using TWNPPublic.Common.Extension;
 
 namespace TWNPPublic.Domain.Service
 {
@@ -222,9 +223,15 @@ namespace TWNPPublic.Domain.Service
 
         public (bool IsSuccess, string Message, F_B_LOGIN? UserInfo) LoginByUserNameAndPassWord(string UserName, string PassWord, string remoteIpAddress)
         {
+            var account = GetBAccountByAccount(UserName);
+            if (account == null || !PasswordHashUtil.VerifyPasswordOrLegacyAes(PassWord, account.APWD))
+            {
+                return (false, "登入失敗，請確定您的帳號密碼", null);
+            }
+
             //string mainsql = @"SELECT * FROM [dbo].[F_B_LOGIN] (@UserName,@PassWord)";
             string mainsql = @"EXEC [dbo].[spB_LOGIN] @UserName, @PassWord";
-            object obj = new { UserName, PassWord };
+            object obj = new { UserName, PassWord = account.APWD };
             var result = dataAccess.Query<F_B_LOGIN>(mainsql, obj).FirstOrDefault();
 
             if (result == null)
@@ -337,8 +344,7 @@ namespace TWNPPublic.Domain.Service
 
             var pwd = CryptoGen(6);
             var Current = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-            CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(pwd);  //加密
+            string hashedPassword = PasswordHashUtil.HashPassword(pwd);
 
             string UpdateSql = @"UPDATE [dbo].[B_ACCOUNT]
                                    SET [APWD] = @APWD
@@ -368,7 +374,12 @@ namespace TWNPPublic.Domain.Service
             //改密碼
             //寄信
 
-            dataAccess.Execute(UpdateSql, new { APWD = EncryptPWD, BAccount = B_ACCOUNT, EMail = Email });
+            int updateResult = dataAccess.Execute(UpdateSql, new { APWD = hashedPassword, BAccount = B_ACCOUNT, EMail = Email });
+            if (updateResult > 0)
+            {
+                SyncExternalPassword(B_ACCOUNT, hashedPassword);
+            }
+
             return dataAccess.Execute(InsertSql, new SEND_MAIL_LIST
             {
                 TITLE = "台灣自來水公司-澎湖智慧水網密碼發送通知",
@@ -397,6 +408,67 @@ namespace TWNPPublic.Domain.Service
         public int SendMailUsingSendMailList()
         {
             throw new NotImplementedException();
+        }
+
+        private void SyncExternalPassword(string account, string hashedPassword)
+        {
+            bool isGroupedAccount = IsSttnGrpIdExist(account) != null;
+            if (isGroupedAccount)
+            {
+                UpdateWmmmdbSttngrpPassword(account, hashedPassword);
+            }
+            else
+            {
+                UpdateWmmmdbImCmuserPassword(account, hashedPassword);
+            }
+        }
+
+        private A_PH_METER_STTNGRP? IsSttnGrpIdExist(string sttnGrpId)
+        {
+            string mainsql = @"SELECT 1
+                       FROM A_PH_METER_STTNGRP
+                       WHERE sttn_grp_id = @SttnGrpId";
+
+            object obj = new { SttnGrpId = sttnGrpId };
+            return dataAccess.Query<A_PH_METER_STTNGRP>(mainsql, obj).FirstOrDefault();
+        }
+
+        private int UpdateWmmmdbSttngrpPassword(string sttnGrpId, string hashedPassword)
+        {
+            string mainsql = @"UPDATE WMMMDB.dbo.sttngrp
+                           SET login_pwd = @LoginPwd
+                         WHERE sttn_grp_id = @SttnGrpId";
+
+            //string mainsql = @"UPDATE Test_sttngrp
+            //               SET login_pwd = @LoginPwd
+            //             WHERE sttn_grp_id = @SttnGrpId";
+
+            object obj = new
+            {
+                SttnGrpId = sttnGrpId,
+                LoginPwd = hashedPassword
+            };
+
+            return dataAccess.Execute(mainsql, obj);
+        }
+
+        private int UpdateWmmmdbImCmuserPassword(string account, string hashedPassword)
+        {
+            string mainsql = @"UPDATE WMMMDB.dbo.im_cmuser
+                       SET password = @Password
+                       WHERE user_id = @Account";
+
+            //string mainsql = @"UPDATE Test_im_cmuser
+            //           SET password = @Password
+            //           WHERE user_id = @Account";
+
+            object obj = new
+            {
+                Account = account,
+                Password = hashedPassword
+            };
+
+            return dataAccess.Execute(mainsql, obj);
         }
     }
 

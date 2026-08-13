@@ -1,9 +1,9 @@
 ﻿using SqlData;
-using System.Security.Cryptography;
-using TWNPPublic.Common.Extension;
+using TWNPPublic.Common.Security;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.ViewModels.Alert;
 using TWNPPublic.ViewModels.UserManage;
+using TWNPPublic.Common.Extension;
 using static NPOI.HSSF.Util.HSSFColor;
 
 namespace TWNPPublic.Domain.Service
@@ -12,10 +12,6 @@ namespace TWNPPublic.Domain.Service
     {
         private readonly IDapperDataAccess dapperDataAccess;
         private readonly IAspNetUser aspNetUser;
-        private const int Iterations = 10000;
-        private const int SaltLength = 16;
-        private const int KeyLength = 32; // 256 bits = 32 bytes
-
         public UserManageService(IDapperDataAccess dapperDataAccess, IAspNetUser aspNetUser)
         {
             this.dapperDataAccess = dapperDataAccess;
@@ -70,17 +66,21 @@ namespace TWNPPublic.Domain.Service
         public int UpdateAccountInfo(UpdateUserManageViewModel model, int SN, bool isPasswordChanged)
         {
 
-            string mainsql = @"Update B_ACCOUNT
-                               SET APWD = @Pwd
-                                  ,EMAIL = @Email
-                                  ,CELL_PHONE = @CellPhone 
-                               Where B_ACCOUNT_SN = @SN";
+            string mainsql = isPasswordChanged
+                ? @"Update B_ACCOUNT
+                    SET APWD = @Pwd
+                       ,EMAIL = @Email
+                       ,CELL_PHONE = @CellPhone
+                    Where B_ACCOUNT_SN = @SN"
+                : @"Update B_ACCOUNT
+                    SET EMAIL = @Email
+                       ,CELL_PHONE = @CellPhone
+                    Where B_ACCOUNT_SN = @SN";
 
-            CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Pwd?.Trim());  //加密
+            string hashedPassword = isPasswordChanged ? HashPassword(model.Pwd?.Trim() ?? string.Empty) : string.Empty;
             object obj = new
             {
-                Pwd = EncryptPWD,
+                Pwd = hashedPassword,
                 Email = model.Email?.Trim(),
                 CellPhone = model.PhoneNumber?.Trim(),
                 SN = SN
@@ -141,7 +141,6 @@ namespace TWNPPublic.Domain.Service
                 if (accountInfo != null)
                 {
                     bool isGroupedAccount = this.IsSttnGrpIdExist(accountInfo.B_ACCOUNT) != null;
-                    string hashedPassword = HashPassword(model.Pwd?.Trim());  //加密
                     if (isGroupedAccount)
                     {
                         // 歸戶：更新其他 DB 的密碼/電話/郵件
@@ -182,12 +181,11 @@ namespace TWNPPublic.Domain.Service
                                        ,@EMAIL
                                        ,@CELL_PHONE
                                        ,@VALID)";
-            CommonFunc comm = new();
-            string EncryptPWD = comm.AesEncrypt(model.Pwd);  //加密
+            string hashedPassword = HashPassword(model.Pwd);
             object obj = new
             {
                 B_ACCOUNT = model.Account,
-                PWD = EncryptPWD,
+                PWD = hashedPassword,
                 CREATE_DATE = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 LAST_DATE = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 EMAIL = model.Email,
@@ -376,7 +374,7 @@ namespace TWNPPublic.Domain.Service
             ////調整密碼更新SQL，讓它只更新密碼欄位，其他欄位保持不變
             //string mainsql = isPasswordChanged ?
             //          @"UPDATE Test_im_cmuser
-            //           SET password = @Password 
+            //           SET password = @Password
             //               ,email_1 = @Email
             //               ,phone_1 = @Tel
             //           WHERE user_id = @Account" :
@@ -401,21 +399,7 @@ namespace TWNPPublic.Domain.Service
         /// </summary>
         public string HashPassword(string password)
         {
-            byte[] salt = new byte[SaltLength];
-            RandomNumberGenerator.Fill(salt);
-
-            byte[] hash = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                salt,
-                Iterations,
-                HashAlgorithmName.SHA256,
-                KeyLength
-            );
-
-            string saltBase64 = Convert.ToBase64String(salt);
-            string hashBase64 = Convert.ToBase64String(hash);
-
-            return $"{Iterations}:{saltBase64}:{hashBase64}";
+            return PasswordHashUtil.HashPassword(password);
         }
 
         /// <summary>
@@ -423,30 +407,7 @@ namespace TWNPPublic.Domain.Service
         /// </summary>
         public bool VerifyPassword(string password, string storedHash)
         {
-            try
-            {
-                var parts = storedHash.Split(':');
-                if (parts.Length != 3) return false;
-
-                int iterations = int.Parse(parts[0]);
-                byte[] salt = Convert.FromBase64String(parts[1]);
-                byte[] stored = Convert.FromBase64String(parts[2]);
-
-                byte[] computed = Rfc2898DeriveBytes.Pbkdf2(
-                    password,
-                    salt,
-                    iterations,
-                    HashAlgorithmName.SHA256,
-                    stored.Length
-                );
-
-                // 固定時間比對（避免 timing attack）
-                return CryptographicOperations.FixedTimeEquals(stored, computed);
-            }
-            catch
-            {
-                return false;
-            }
+            return PasswordHashUtil.VerifyPassword(password, storedHash);
         }
 
     }

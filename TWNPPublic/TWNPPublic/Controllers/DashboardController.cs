@@ -13,6 +13,7 @@ using System.Web;
 using System.Xml.Linq;
 using TWNPPublic.Common.Attributes;
 using TWNPPublic.Common.Extension;
+using TWNPPublic.Common.Security;
 using TWNPPublic.Domain.Service;
 using TWNPPublic.Models.Entity;
 using TWNPPublic.Models.SqlFunctions;
@@ -2118,16 +2119,14 @@ namespace TWNPPublic.Controllers
         {
             try
             {
-                CommonFunc comm = new();
                 if (ModelState.IsValid)
                 {
                     if (aspNetUser.UserId != null)
                     {
-                        vm.Pwd = comm.AesEncrypt(vm.Pwd);
                         var result = dashboardService.GetAccountBySN(aspNetUser.UserId.Value);
                         if (result != null)
                         {
-                            if (result.APWD != vm.Pwd)
+                            if (!PasswordHashUtil.VerifyPasswordOrLegacyAes(vm.Pwd, result.APWD))
                             {
                                 ModelState.AddModelError("Pwd", "舊密碼輸入錯誤");
                             }
@@ -2140,12 +2139,12 @@ namespace TWNPPublic.Controllers
 
                     if (!CommonFunc.magicword(vm.PasswordNew1))
                     {
-                        ModelState.AddModelError("PasswordNew1", "密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字");
+                        ModelState.AddModelError("PasswordNew1", "密碼長度需為10至20位元，包含大小寫英文字母、特殊符號、數字");
                     }
 
                     if (!CommonFunc.magicword(vm.PasswordNew2))
                     {
-                        ModelState.AddModelError("PasswordNew2", "密碼長度需為8位元，包含大小寫英文字母、特殊符號、數字");
+                        ModelState.AddModelError("PasswordNew2", "密碼長度需為10至20位元，包含大小寫英文字母、特殊符號、數字");
                     }
 
                     if (vm.PasswordNew1 != vm.PasswordNew2)
@@ -2164,7 +2163,6 @@ namespace TWNPPublic.Controllers
                           ), "欄位錯誤"));
                     }
 
-                    vm.PasswordNew2 = comm.AesEncrypt(vm.PasswordNew2);
                     var result2 = dashboardService.UpdateAccountInfo(vm, aspNetUser.UserId.Value);
 
                     if (result2 >= 1)

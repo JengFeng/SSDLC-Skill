@@ -935,22 +935,7 @@ namespace TWNPPublic.Controllers
 
             var remoteIpAddress = HttpContext.Connection.RemoteIpAddress;
 
-            // ===== 加入錯誤處理 =====
-            string EncryptPWD;
-            try
-            {
-                CommonFunc comm = new();
-                EncryptPWD = comm.AesEncrypt(model.Pwd);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"密碼加密失敗: {ex.Message}");
-                ModelState.AddModelError("", "系統錯誤，請稍後再試");
-                return View(model);
-            }
-            // ===== 加入錯誤處理結束 =====
-
-            var result = homeService.LoginByUserNameAndPassWord(model.UserName, EncryptPWD, remoteIpAddress.ToString());   // model.Password
+            var result = homeService.LoginByUserNameAndPassWord(model.UserName, model.Pwd, remoteIpAddress.ToString());
             if (result.IsSuccess)
             {
                 var waterNosDataList = result.UserInfo.F_B_LOGIN_WaterNos.Select(c => new F_B_LOGIN_WaterNo
