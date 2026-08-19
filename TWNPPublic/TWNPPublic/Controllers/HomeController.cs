@@ -4,6 +4,7 @@ using SqlData;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using TWNPPublic.Common.Extension;
 using TWNPPublic.Common.Helper;
@@ -21,6 +22,8 @@ namespace TWNPPublic.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService homeService;
         private readonly string KingErrandYours = "H3ll0TWN9A99";
+        private const int AuthorizationCodeValidMinutes = 5;
+        private const int AppAccessTokenValidMonths = 6;
         public HomeController(ILogger<HomeController> logger,
             IHomeService homeService)
         {
@@ -170,6 +173,19 @@ namespace TWNPPublic.Controllers
         [HttpPost]
         public IActionResult LoginAPP(LoginAppVm model)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    var ErrorMessages = ModelState.Values.Where(c => c.Errors.Count() != 0).Select(c => string.Join(",", c.Errors.Select(x => x.ErrorMessage))).ToArray();
+            //    return Json(Failed(
+            //        new
+            //        {
+            //            ErrorCode = ApiErrorCode.Invalid.ToString(),
+            //            ErrorObj = ErrorMessages
+            //        },
+            //        "欄位錯誤"
+            //        ), 1002);
+            //}
+
             if (!ModelState.IsValid)
             {
                 var ErrorMessages = ModelState.Values.Where(c => c.Errors.Count() != 0).Select(c => string.Join(",", c.Errors.Select(x => x.ErrorMessage))).ToArray();
@@ -178,9 +194,7 @@ namespace TWNPPublic.Controllers
                     {
                         ErrorCode = ApiErrorCode.Invalid.ToString(),
                         ErrorObj = ErrorMessages
-                    },
-                    "欄位錯誤"
-                    ), 1002);
+                    },"欄位錯誤", 1002 ));
             }
 
             //檢查AccountNo和WaterNo是否相同
@@ -212,17 +226,26 @@ namespace TWNPPublic.Controllers
                     var RealToken = model.AccessToken.AesDecryptExtened(KingErrandYours);
                     var tokenWaterNoAndTime = RealToken.Split('_');
 
-                    string formatString = "yyyyMMddHHmmss";
-                    string tokenDateTime = tokenWaterNoAndTime[1].ToString();
-                    DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
-
-                    //檢查偸肯超過5分鐘
-                    if (DateTime.Now > dt.AddMinutes(5))
+                    if (tokenWaterNoAndTime.Length < 2)
                     {
                         return Json(Failed(new
                         {
                             ErrorCode = ApiErrorCode.TokenError.ToString(),
-                        }, "Token Error, Token 過期", 1001));
+                        }, "Token Error,未合法的 Token", 1001));
+                    }
+
+                    string formatString = "yyyyMMddHHmmss";
+                    string tokenDateTime = tokenWaterNoAndTime[1].ToString();
+                    DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
+
+                    //檢查偸肯超過6個月
+                    if (DateTime.Now > dt.AddMonths(AppAccessTokenValidMonths))
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenExpired.ToString(),
+                            NextAction = "Authorize"
+                        }, "AccessToken 已過期，請重新授權", 1001));
                     }
 
                     if (tokenWaterNoAndTime[0] != model.WaterNo)
@@ -243,14 +266,14 @@ namespace TWNPPublic.Controllers
                 }
             }
 
-            //檢查是否為智慧水表
-            if (!homeService.CheckWaterNoIsAutoMeter(model.WaterNo))
-            {
-                return Json(Failed(new
-                {
-                    ErrorCode = ApiErrorCode.NoSource.ToString(),
-                }, "此水號非智慧水表", 1003));
-            }
+            ////檢查是否為智慧水表--//確認是否需要驗證
+            //if (!homeService.CheckWaterNoIsAutoMeter(model.WaterNo))
+            //{
+            //    return Json(Failed(new
+            //    {
+            //        ErrorCode = ApiErrorCode.NoSource.ToString(),
+            //    }, "此水號非智慧水表", 1003));
+            //}
 
             //檢查是否存在B_ACCOUNT裡、VAILD是否=1
             if (!homeService.CheckWaterNoIsValid(model.WaterNo))
@@ -334,6 +357,14 @@ namespace TWNPPublic.Controllers
                     var tokenPaser = AccessToken.AesDecryptExtened(KingErrandYours);
                     var tokenWaterNo = tokenPaser.Split('_');
 
+                    if (tokenWaterNo.Length < 2)
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenError.ToString(),
+                        }, "Token Error,未合法的 Token", 1001));
+                    }
+
                     if (tokenWaterNo[0] != WaterNo)
                     {
                         return Json(Failed(new
@@ -346,14 +377,14 @@ namespace TWNPPublic.Controllers
                     string tokenDateTime= tokenWaterNo[1].ToString();
                     DateTime dt = DateTime.ParseExact(tokenDateTime, formatString, null);
 
-                    ////檢查偸肯超過6個月(不需要，多寫的 1120920)
-                    //if (DateTime.Now > dt.AddMonths(6))
-                    //{
-                    //    return Json(Failed(new
-                    //    {
-                    //        ErrorCode = ApiErrorCode.TokenError.ToString(),
-                    //    }, "Token Error,未合法的 Token 逾時", 1001));
-                    //} //(不需要，多寫的 1120920)
+                    if (DateTime.Now > dt.AddMonths(AppAccessTokenValidMonths))
+                    {
+                        return Json(Failed(new
+                        {
+                            ErrorCode = ApiErrorCode.TokenExpired.ToString(),
+                            NextAction = "Authorize"
+                        }, "AccessToken 已過期，請重新授權", 1001));
+                    }
 
                     homeService.CreateAppUser(WaterNo, WaterNo, AccessToken);
                     //寫一個帳密到資料庫
@@ -426,11 +457,155 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
-        /// APP用 取得 AccessToken
+        /// APP用 授權入口。當 B_ACCOUNT 不存在時，會顯示外部帳密驗證頁；驗證完成後以 code 導回對方 callback。
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Authorize(string waterNo, string clientId, string state)
+        {
+            if (string.IsNullOrWhiteSpace(waterNo) || string.IsNullOrWhiteSpace(clientId))
+            {
+                return BadRequest("缺少必要參數");
+            }
+
+            var client = homeService.GetExternalClient(clientId);
+            if (client == null || !client.IsEnabled)
+            {
+                return BadRequest("clientId 不合法");
+            }
+
+            //檢查是否為智慧水表--確認是否需要驗證
+            //if (!homeService.CheckWaterNoIsAutoMeter(waterNo))
+            //{
+            //    return Redirect(BuildErrorRedirectUrl(client.CallbackUrl, "invalid_water_no", state));
+            //}
+
+            if (homeService.CheckWaterNoIsAppAuthorized(waterNo))
+            {
+                var code = CreateAuthorizationCode(waterNo, waterNo, clientId, client.CallbackUrl, state);
+                return Redirect(BuildCodeRedirectUrl(client.CallbackUrl, code, state));
+            }
+
+            if (homeService.ExistsExternalAppUser(waterNo))
+            {
+                return View("ExternalLogin", new ExternalLoginViewModel
+                {
+                    WaterNo = waterNo,
+                    ClientId = clientId,
+                    State = state
+                });
+            }
+
+            return Redirect(BuildErrorRedirectUrl(client.CallbackUrl, "invalid_water_no", state));
+        }
+
+        /// <summary>
+        /// APP用 外部帳密驗證。驗證成功後建立/啟用 B_ACCOUNT 並核發 authorization code。
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult ExternalLogin(ExternalLoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ExternalLogin", model);
+            }
+
+            var client = homeService.GetExternalClient(model.ClientId);
+            if (client == null || !client.IsEnabled)
+            {
+                ModelState.AddModelError("", "clientId 不合法");
+                return View("ExternalLogin", model);
+            }
+
+            if (!homeService.CheckExternalAppUserPassword(model.WaterNo, model.Account, model.Password))
+            {
+                ModelState.AddModelError("", "帳號或密碼錯誤，或此帳號不符合該水號");
+                return View("ExternalLogin", model);
+            }
+
+            homeService.CreateExternalBAccount(model.WaterNo, model.Account);
+
+            var code = CreateAuthorizationCode(
+                model.WaterNo,
+                model.Account,
+                model.ClientId,
+                client.CallbackUrl,
+                model.State);
+
+            return Redirect(BuildCodeRedirectUrl(client.CallbackUrl, code, model.State));
+        }
+
+        /// <summary>
+        /// APP用 以 authorization code 換取 AccessToken
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult AccessToken(AccessTokenByCodeRequest request)
+        {
+            if (request == null ||
+                string.IsNullOrWhiteSpace(request.ClientId) ||
+                string.IsNullOrWhiteSpace(request.ClientSecret) ||
+                string.IsNullOrWhiteSpace(request.Code))
+            {
+                return BadRequest(new
+                {
+                    error = "invalid_request",
+                    error_description = "缺少必要參數"
+                });
+            }
+
+            if (!homeService.CheckExternalClientSecret(request.ClientId, request.ClientSecret))
+            {
+                return Unauthorized(new
+                {
+                    error = "invalid_client",
+                    error_description = "clientId 或 clientSecret 錯誤"
+                });
+            }
+
+            var authCode = homeService.GetAuthorizationCode(request.Code);
+            if (authCode == null ||
+                authCode.Used ||
+                authCode.ExpiresAt < DateTime.Now ||
+                authCode.ClientId != request.ClientId)
+            {
+                return BadRequest(new
+                {
+                    error = "invalid_code",
+                    error_description = "code 不存在、已過期、已使用或 clientId 不符"
+                });
+            }
+
+            var updatedRows = homeService.MarkAuthorizationCodeAsUsed(request.Code);
+            if (updatedRows == 0)
+            {
+                return BadRequest(new
+                {
+                    error = "invalid_code",
+                    error_description = "code 已使用或已過期"
+                });
+            }
+
+            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string token = authCode.WaterNo + "_" + timeStamp;
+
+            return Json(new
+            {
+                access_token = token.AesEncryptExtened(KingErrandYours),
+                token_type = "Bearer",
+                expires_in = (int)TimeSpan.FromDays(180).TotalSeconds
+            });
+        }
+
+        /// <summary>
+        /// APP用 舊版 WaterNo 直接取得 AccessToken，保留供過渡期使用。
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult AccessToken(string WaterNo)
+        public IActionResult AccessTokenByWaterNo(string WaterNo)
         {
             if (string.IsNullOrEmpty(WaterNo))
             {
@@ -479,6 +654,57 @@ namespace TWNPPublic.Controllers
                 TimeStamp = TimeStamp
             };
             return Json(Success(TokenObh, "操作成功"));
+        }
+
+        private string CreateAuthorizationCode(string waterNo, string userId, string clientId, string callbackUrl, string state)
+        {
+            var code = GenerateAuthorizationCode();
+            homeService.CreateAuthorizationCode(new ExternalAuthorizationCodeDto
+            {
+                Code = code,
+                WaterNo = waterNo,
+                UserId = userId,
+                ClientId = clientId,
+                CallbackUrl = callbackUrl,
+                State = state,
+                ExpiresAt = DateTime.Now.AddMinutes(AuthorizationCodeValidMinutes),
+                Used = false
+            });
+
+            return code;
+        }
+
+        private string GenerateAuthorizationCode()
+        {
+            var bytes = RandomNumberGenerator.GetBytes(32);
+            return Convert.ToBase64String(bytes)
+                .Replace("+", "-")
+                .Replace("/", "_")
+                .Replace("=", "");
+        }
+
+        private string BuildCodeRedirectUrl(string callbackUrl, string code, string state)
+        {
+            var url = $"{callbackUrl}?code={Uri.EscapeDataString(code)}";
+
+            if (!string.IsNullOrWhiteSpace(state))
+            {
+                url += $"&state={Uri.EscapeDataString(state)}";
+            }
+
+            return url;
+        }
+
+        private string BuildErrorRedirectUrl(string callbackUrl, string error, string state)
+        {
+            var url = $"{callbackUrl}?error={Uri.EscapeDataString(error)}";
+
+            if (!string.IsNullOrWhiteSpace(state))
+            {
+                url += $"&state={Uri.EscapeDataString(state)}";
+            }
+
+            return url;
         }
 
         /// <summary>

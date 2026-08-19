@@ -1,0 +1,56 @@
+@using TWNPPublic.ViewModels.Home
+@model ExternalLoginViewModel
+@{
+    ViewData["Title"] = "APP 授權驗證";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section validation{
+<script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+<link rel="stylesheet" href="~/css/Login.css">
+
+<div class="wrap_login">
+    <div class="loginGroup animated fadeInDown">
+        <div class="InputBox">
+            <div class="logo">
+                <div class="systemTitle" style="text-align: center;">台灣自來水公司</div>
+                <div class="companyName" style="text-align: center;">水表e管家</div>
+            </div>
+            <div class="formBox">
+                <form id="formExternalLogin" autocomplete="off" method="post" action="@Url.Action("ExternalLogin","Home")">
+                    <input type="hidden" asp-for="WaterNo" />
+                    <input type="hidden" asp-for="ClientId" />
+                    <input type="hidden" asp-for="State" />
+
+                    <span class="text-danger">
+                        @Html.ValidationSummary(true)
+                    </span>
+                    <div class="form-group">
+                        <label>帳號(水號)</label>
+                        <div>
+                            @Html.TextBoxFor(m => m.Account, new { @class = "form-control", @placeholder = "請輸入您的帳號" })
+                            @Html.ValidationMessageFor(m => m.Account, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>密碼</label>
+                        <div>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "請輸入您的密碼" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="btnGroup">
+                        <a class="btn-green-o" href="javascript:;" onclick="submitExternalLoginForm()">確認</a>
+                        <a class="btn-lightGrey-o" href="@Url.Action("Login","Home")">取消</a>
+                    </div>
+                </form>
+            </div>
+        </div><!-- InputBox -->
+    </div><!-- loginGroup end -->
+</div><!-- wrap_login end-->
+<script>
+    function submitExternalLoginForm() {
+        $('#formExternalLogin').submit();
+    }
+</script>
