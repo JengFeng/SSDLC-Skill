@@ -55,51 +55,6 @@ namespace TWNPPublic.ViewModels.Home
         [Required(ErrorMessage = "AccessToken 為必填")]
         public string AccessToken { get; set; } = string.Empty;
     }
-    public class ExternalLoginViewModel
-    {
-        [Required(ErrorMessage = "WaterNo 水號 為必填")]
-        public string WaterNo { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "clientId 為必填")]
-        public string ClientId { get; set; } = string.Empty;
-
-        public string State { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "帳號為必填")]
-        public string Account { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "密碼為必填")]
-        public string Password { get; set; } = string.Empty;
-    }
-    public class AccessTokenByCodeRequest
-    {
-        [Required(ErrorMessage = "clientId 為必填")]
-        public string ClientId { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "clientSecret 為必填")]
-        public string ClientSecret { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "code 為必填")]
-        public string Code { get; set; } = string.Empty;
-    }
-    public class ExternalClientDto
-    {
-        public string ClientId { get; set; } = string.Empty;
-        public string ClientSecret { get; set; } = string.Empty;
-        public string CallbackUrl { get; set; } = string.Empty;
-        public bool IsEnabled { get; set; }
-    }
-    public class ExternalAuthorizationCodeDto
-    {
-        public string Code { get; set; } = string.Empty;
-        public string WaterNo { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
-        public string ClientId { get; set; } = string.Empty;
-        public string CallbackUrl { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
-        public DateTime ExpiresAt { get; set; }
-        public bool Used { get; set; }
-    }
     public class WaterNoInfoDto
     {
         public string WATER_NO { get; set; }
@@ -110,7 +65,6 @@ namespace TWNPPublic.ViewModels.Home
     public enum ApiErrorCode
     {
         TokenError,
-        TokenExpired,
         Invalid,
         NoSource,
         Other

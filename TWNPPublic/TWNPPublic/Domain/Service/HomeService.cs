@@ -70,16 +70,6 @@ namespace TWNPPublic.Domain.Service
             return false;
         }
 
-        public bool CheckWaterNoIsAppAuthorized(string WaterNo)
-        {
-            var account = CheckAccountNoIsApp(WaterNo);
-
-            return account != null &&
-                   account.VALID == 1 &&
-                   account.LOGIN_TYPE == 1 &&
-                   account.INITIAL_APPLOGIN == 0 &&
-                   account.DIRECT_APPLOGIN == 1;
-        }
 
         public List<WaterNoInfoDto> CheckWaterNoNoIsApp(int AccountSN, string WaterNo)
         {
@@ -220,227 +210,6 @@ namespace TWNPPublic.Domain.Service
                                Where  B_ACCOUNT = @AccountNo And Valid=1";
 
             return dataAccess.Execute(mainsql, new { AccountNo });
-        }
-
-        public ExternalClientDto? GetExternalClient(string clientId)
-        {
-            string mainsql = @"SELECT TOP (1)
-                                      ClientId,
-                                      ClientSecret,
-                                      CallbackUrl,
-                                      IsEnabled
-                               FROM [TWN].[dbo].[External_Client]
-                               WHERE ClientId = @ClientId";
-
-            return dataAccess.Query<ExternalClientDto>(mainsql, new { ClientId = clientId }).FirstOrDefault();
-        }
-
-        public bool CheckExternalClientSecret(string clientId, string clientSecret)
-        {
-            var client = GetExternalClient(clientId);
-            if (client == null || !client.IsEnabled)
-            {
-                return false;
-            }
-
-            return string.Equals(client.ClientSecret, clientSecret, StringComparison.Ordinal);
-        }
-
-        public bool ExistsExternalAppUser(string waterNo)
-        {
-            //string mainsql = @"SELECT TOP (1) 1
-            //                   FROM WMMMDB.dbo.im_cmuser
-            //                   WHERE user_id = @WaterNo
-            //                   UNION
-            //                   SELECT TOP (1) 1
-            //                   FROM WMMMDB.dbo.sttngrp
-            //                   WHERE sttn_grp_id = @WaterNo";
-
-            string mainsql = @"SELECT TOP (1) 1 AS IsExists
-                               FROM Test_im_cmuser
-                               WHERE user_id = @WaterNo
-                               UNION
-                               SELECT TOP (1) 1 AS IsExists
-                               FROM Test_sttngrp
-                               WHERE sttn_grp_id = @WaterNo";
-
-            return dataAccess.Query<ExternalAppUserExistsDto>(mainsql, new { WaterNo = waterNo }).Any();
-        }
-
-        public bool CheckExternalAppUserPassword(string waterNo, string account, string password)
-        {
-            if (!string.Equals(waterNo, account, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            //string mainsql = @"SELECT TOP (1) password
-            //                   FROM WMMMDB.dbo.im_cmuser
-            //                   WHERE user_id = @Account
-            //                   UNION ALL
-            //                   SELECT TOP (1) login_pwd AS password
-            //                   FROM WMMMDB.dbo.sttngrp
-            //                   WHERE sttn_grp_id = @Account";
-
-            string mainsql = @"SELECT TOP (1) password AS PasswordHash
-                               FROM Test_im_cmuser
-                               WHERE user_id = @Account
-                               UNION ALL
-                               SELECT TOP (1) login_pwd AS PasswordHash
-                               FROM Test_sttngrp
-                               WHERE sttn_grp_id = @Account";
-
-            var passwordHashes = dataAccess.Query<ExternalAppPasswordDto>(mainsql, new { Account = account }).ToList();
-            return passwordHashes.Any(row => PasswordHashUtil.VerifyPasswordOrLegacyAes(password, row.PasswordHash));
-        }
-
-        public void CreateExternalBAccount(string waterNo, string account)
-        {
-            var randomPassword = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
-            var passwordHash = PasswordHashUtil.HashPassword(randomPassword);
-
-            string accountSql = @"IF EXISTS (SELECT TOP (1) B_ACCOUNT_SN
-                                            FROM [TWN].[dbo].[B_ACCOUNT]
-                                            WHERE B_ACCOUNT = @B_ACCOUNT)
-                                  BEGIN
-                                      UPDATE [TWN].[dbo].[B_ACCOUNT]
-                                      SET VALID = 1,
-                                          LOGIN_TYPE = 1,
-                                          INITIAL_APPLOGIN = 0,
-                                          DIRECT_APPLOGIN = 1,
-                                          LAST_DATE = GETDATE()
-                                      WHERE B_ACCOUNT = @B_ACCOUNT
-                                  END
-                                  ELSE
-                                  BEGIN
-                                      INSERT INTO [TWN].[dbo].[B_ACCOUNT]
-                                             ([B_ACCOUNT],
-                                              [PWD],
-                                              [APWD],
-                                              [CREATE_DATE],
-                                              [LAST_DATE],
-                                              [VALID],
-                                              [LOGIN_TYPE],
-                                              [INITIAL_LOGIN],
-                                              [INITIAL_APPLOGIN],
-                                              [DIRECT_APPLOGIN],
-                                              [USERNAME])
-                                      VALUES (@B_ACCOUNT,
-                                              @PWD,
-                                              @APWD,
-                                              GETDATE(),
-                                              GETDATE(),
-                                              1,
-                                              1,
-                                              1,
-                                              0,
-                                              1,
-                                              @USERNAME)
-                                  END";
-
-            dataAccess.Execute(accountSql, new
-            {
-                B_ACCOUNT = waterNo,
-                PWD = string.Empty,
-                APWD = passwordHash,
-                USERNAME = account
-            });
-
-            //var accountInfo = GetBAccountByAccount(waterNo);
-            //if (accountInfo == null)
-            //{
-            //    return;
-            //}
-
-            //string waterNoSql = @"IF NOT EXISTS (SELECT 1
-            //                                    FROM [TWN].[dbo].[B_ACCOUNT_WATER_NO]
-            //                                    WHERE B_ACCOUNT_SN = @B_ACCOUNT_SN
-            //                                      AND WATER_NO = @WATER_NO)
-            //                      BEGIN
-            //                          INSERT INTO [TWN].[dbo].[B_ACCOUNT_WATER_NO]
-            //                                 ([B_ACCOUNT_SN],
-            //                                  [WATER_NO],
-            //                                  [VALID])
-            //                          VALUES (@B_ACCOUNT_SN,
-            //                                  @WATER_NO,
-            //                                  1)
-            //                      END
-            //                      ELSE
-            //                      BEGIN
-            //                          UPDATE [TWN].[dbo].[B_ACCOUNT_WATER_NO]
-            //                          SET VALID = 1
-            //                          WHERE B_ACCOUNT_SN = @B_ACCOUNT_SN
-            //                            AND WATER_NO = @WATER_NO
-            //                      END";
-
-            //dataAccess.Execute(waterNoSql, new
-            //{
-            //    B_ACCOUNT_SN = accountInfo.B_ACCOUNT_SN,
-            //    WATER_NO = waterNo
-            //});
-        }
-
-        public void CreateAuthorizationCode(ExternalAuthorizationCodeDto authorizationCode)
-        {
-            string mainsql = @"INSERT INTO [TWN].[dbo].[External_AuthorizationCode]
-                                      ([Code],
-                                       [WaterNo],
-                                       [UserId],
-                                       [ClientId],
-                                       [CallbackUrl],
-                                       [State],
-                                       [ExpiresAt],
-                                       [Used],
-                                       [CreatedAt])
-                               VALUES (@Code,
-                                       @WaterNo,
-                                       @UserId,
-                                       @ClientId,
-                                       @CallbackUrl,
-                                       @State,
-                                       CONVERT(datetime, @ExpiresAt, 120),
-                                       0,
-                                       GETDATE())";
-
-            dataAccess.Execute(mainsql, new
-            {
-                authorizationCode.Code,
-                authorizationCode.WaterNo,
-                authorizationCode.UserId,
-                authorizationCode.ClientId,
-                authorizationCode.CallbackUrl,
-                authorizationCode.State,
-                ExpiresAt = authorizationCode.ExpiresAt.ToString("yyyy-MM-dd HH:mm:ss")
-            });
-        }
-
-        public ExternalAuthorizationCodeDto? GetAuthorizationCode(string code)
-        {
-            string mainsql = @"SELECT TOP (1)
-                                      Code,
-                                      WaterNo,
-                                      UserId,
-                                      ClientId,
-                                      CallbackUrl,
-                                      State,
-                                      ExpiresAt,
-                                      Used
-                               FROM [TWN].[dbo].[External_AuthorizationCode]
-                               WHERE Code = @Code";
-
-            return dataAccess.Query<ExternalAuthorizationCodeDto>(mainsql, new { Code = code }).FirstOrDefault();
-        }
-
-        public int MarkAuthorizationCodeAsUsed(string code)
-        {
-            string mainsql = @"UPDATE [TWN].[dbo].[External_AuthorizationCode]
-                               SET Used = 1,
-                                   UsedAt = GETDATE()
-                               WHERE Code = @Code
-                                 AND Used = 0
-                                 AND ExpiresAt > GETDATE()";
-
-            return dataAccess.Execute(mainsql, new { Code = code });
         }
 
         public b_ACCOUNT? GetBAccountByAccount(string AcountName)
@@ -702,16 +471,6 @@ namespace TWNPPublic.Domain.Service
 
             return dataAccess.Execute(mainsql, obj);
         }
-
-        private sealed class ExternalAppUserExistsDto
-        {
-            public int IsExists { get; set; }
-        }
-
-        private sealed class ExternalAppPasswordDto
-        {
-            public string PasswordHash { get; set; } = string.Empty;
-        }
     }
 
 
@@ -756,27 +515,9 @@ namespace TWNPPublic.Domain.Service
         /// <returns></returns>
         public int DenyAccountFromApp(string AccountNo);
 
-        public ExternalClientDto? GetExternalClient(string clientId);
-
-        public bool CheckExternalClientSecret(string clientId, string clientSecret);
-
-        public bool ExistsExternalAppUser(string waterNo);
-
-        public bool CheckExternalAppUserPassword(string waterNo, string account, string password);
-
-        public void CreateExternalBAccount(string waterNo, string account);
-
-        public void CreateAuthorizationCode(ExternalAuthorizationCodeDto authorizationCode);
-
-        public ExternalAuthorizationCodeDto? GetAuthorizationCode(string code);
-
-        public int MarkAuthorizationCodeAsUsed(string code);
-
         public int SendMailUsingSendMailList(string B_ACCOUNT, string Email);
 
         public bool CheckWaterNoIsValid(string WaterNo);
-
-        public bool CheckWaterNoIsAppAuthorized(string WaterNo);
 
         /// <summary>
         /// APP用
