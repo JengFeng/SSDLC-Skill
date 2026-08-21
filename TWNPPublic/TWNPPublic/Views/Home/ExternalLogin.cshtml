@@ -1,4 +1,4 @@
-@* @using TWNPPublic.ViewModels.Home
+@using TWNPPublic.ViewModels.Home
 @model ExternalLoginViewModel
 @{
     ViewData["Title"] = "APP 授權驗證";
@@ -19,17 +19,18 @@
             </div>
             <div class="formBox">
                 <form id="formExternalLogin" autocomplete="off" method="post" action="@Url.Action("ExternalLogin","Home")">
+                    <input type="hidden" asp-for="GrantType" />
+                    <input type="hidden" asp-for="AccountNo" />
                     <input type="hidden" asp-for="WaterNo" />
-                    <input type="hidden" asp-for="ClientId" />
-                    <input type="hidden" asp-for="State" />
+                    <input type="hidden" asp-for="RedirectUri" />
 
                     <span class="text-danger">
                         @Html.ValidationSummary(true)
                     </span>
                     <div class="form-group">
-                        <label>帳號(水號)</label>
+                        <label>帳號</label>
                         <div>
-                            @Html.TextBoxFor(m => m.Account, new { @class = "form-control", @placeholder = "請輸入您的帳號" })
+                            @Html.TextBoxFor(m => m.Account, new { @class = "form-control", @readonly = "readonly" })
                             @Html.ValidationMessageFor(m => m.Account, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -40,18 +41,34 @@
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>驗證碼</label>
+                        <div class="codeGroup">
+                            <div>
+                                @Html.TextBoxFor(m => m.CapthCode, new { @class = "form-control width100", @placeholder = "驗證碼" })
+                                @Html.ValidationMessageFor(m => m.CapthCode, "", new { @class = "text-danger" })
+                            </div>
+                            <div>
+                                <img id="CapthCodes" src="@Url.Action("CreateValidate", "Home")" style="width: 40%;">
+                                <a class="btn-grey-o" href="javascript:ReloadCapth();">重新整理</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="btnGroup">
                         <a class="btn-green-o" href="javascript:;" onclick="submitExternalLoginForm()">確認</a>
-                        <a class="btn-lightGrey-o" href="@Url.Action("Login","Home")">取消</a>
+                        <a class="btn-lightGrey-o" href="@Url.Action("CancelExternalLogin","Home", new { account_no = Model.AccountNo, water_no = Model.WaterNo })">取消</a>
                     </div>
                 </form>
             </div>
-        </div><!-- InputBox -->
-    </div><!-- loginGroup end -->
-</div><!-- wrap_login end-->
+        </div>
+    </div>
+</div>
 <script>
+    function ReloadCapth() {
+        $("#CapthCodes").attr("src", GetWebSiteURL('@Url.Action("CreateValidate", "Home")') + "?" + Math.random());
+    }
+
     function submitExternalLoginForm() {
         $('#formExternalLogin').submit();
     }
 </script>
- *@

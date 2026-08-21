@@ -1,0 +1,23 @@
+@using TWNPPublic.ViewModels.Home
+@model AppTokenV4ResponseVm
+@{
+    ViewData["Title"] = "授權驗證失敗";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/Login.css">
+
+<div class="wrap_login">
+    <div class="loginGroup animated fadeInDown">
+        <div class="InputBox">
+            <div class="logo">
+                <div class="systemTitle" style="text-align: center;">台灣自來水公司</div>
+                <div class="companyName" style="text-align: center;">水表e管家</div>
+            </div>
+            <div class="formBox">
+                <div class="form-group text-danger" style="text-align: center;">
+                    @Model.message
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

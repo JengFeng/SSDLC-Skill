@@ -32,6 +32,295 @@ namespace TWNPPublic.Controllers
         }
 
         /// <summary>
+        /// APP V4 用：取得/換發金鑰。
+        /// </summary>
+        [HttpPost]
+        public IActionResult AccessToken(AppAccessTokenV4RequestVm model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
+            }
+
+            var appAccount = homeService.GetAppV4Account(model.account_no);
+            if (appAccount == null)
+            {
+                return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1002, "用戶尚未使用智慧水表"));
+            }
+
+            if (model.grant_type == "authorization_code")
+            {
+                var validToken = CreateAppTokenInfo(appAccount, model.water_no);
+                if (validToken != null && IsValidAppToken(validToken.ACCESS_TOKEN, model.water_no))
+                {
+                    return View("ExternalLoginConfirm", new AppTokenConfirmViewModel
+                    {
+                        AccountNo = model.account_no,
+                        WaterNo = model.water_no,
+                        GrantType = model.grant_type,
+                        RedirectUri = model.redirect_uri
+                    });
+                }
+
+                return View("ExternalLogin", new ExternalLoginViewModel
+                {
+                    Account = model.account_no,
+                    AccountNo = model.account_no,
+                    WaterNo = model.water_no,
+                    GrantType = model.grant_type,
+                    RedirectUri = model.redirect_uri
+                });
+            }
+
+            if (model.grant_type == "refresh_token")
+            {
+                var appToken = CreateAppTokenInfo(appAccount, model.water_no);
+                if (appToken == null || !IsValidAppToken(appToken.ACCESS_TOKEN, model.water_no))
+                {
+                    return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1005, "更新金鑰驗證失敗"));
+                }
+
+                var token = IssueAppToken(model.account_no, model.water_no);
+                return Json(CreateAppTokenResponse(model.account_no, model.water_no, 200, "換發金鑰成功", token));
+            }
+
+            return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
+        }
+
+        //[HttpGet]
+        //public IActionResult ExternalLoginConfirmPreview()
+        //{
+        //    return View("ExternalLoginConfirm", new AppTokenConfirmViewModel
+        //    {
+        //        AccountNo = "test001",
+        //        WaterNo = "12345678901",
+        //        GrantType = "authorization_code",
+        //        RedirectUri = "https://app.example.com/callback"
+        //    });
+        //}
+
+        /// <summary>
+        /// APP V4 用：已有有效金鑰時，確認後重新核發金鑰。
+        /// </summary>
+        [HttpPost]
+        public IActionResult ConfirmExternalLogin(AppTokenConfirmViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.AccountNo) || string.IsNullOrWhiteSpace(model.WaterNo))
+            {
+                return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 1001, "參數錯誤"));
+            }
+
+            var appAccount = homeService.GetAppV4Account(model.AccountNo);
+            if (appAccount == null)
+            {
+                return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 1002, "用戶尚未使用智慧水表"));
+            }
+
+            var token = IssueAppToken(model.AccountNo, model.WaterNo);
+            return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 200, "核發金鑰成功", token));
+        }
+
+        //[HttpGet]
+        //public IActionResult ExternalLoginPreview()
+        //{
+        //    return View("ExternalLogin", new ExternalLoginViewModel
+        //    {
+        //        Account = "test001",
+        //        AccountNo = "test001",
+        //        WaterNo = "12345678901",
+        //        GrantType = "authorization_code",
+        //        RedirectUri = "https://app.example.com/callback"
+        //    });
+        //}
+
+        /// <summary>
+        /// APP V4 用：帳密驗證後核發金鑰。
+        /// </summary>
+        [HttpPost]
+        public IActionResult ExternalLogin(ExternalLoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var captchaValidation = ValidateCaptcha(model.CapthCode);
+            if (!captchaValidation.IsValid)
+            {
+                ModelState.AddModelError("CapthCode", captchaValidation.ErrorMessage);
+                return View(model);
+            }
+
+            if (model.AccountNo != model.Account)
+            {
+                ModelState.AddModelError(string.Empty, "帳號或密碼錯誤");
+                return View(model);
+            }
+
+            if (!homeService.ValidateAppV4Password(model.Account, model.Password))
+            {
+                ModelState.AddModelError(string.Empty, "帳號或密碼錯誤");
+                return View(model);
+            }
+
+            var token = IssueAppToken(model.AccountNo, model.WaterNo);
+            return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 200, "核發金鑰成功", token));
+        }
+
+        public IActionResult CancelExternalLogin(string account_no, string water_no)
+        {
+            return Json(CreateAppTokenResponse(account_no, water_no, 1003, "不同意或取消授權"));
+        }
+
+        [HttpGet]
+        public IActionResult LoginAppAuthFailedPreview()
+        {
+            return View("LoginAppAuthFailed", CreateAppTokenResponse(
+                "test001",
+                "12345678901",
+                1004,
+                "授權驗證失敗(1004)"
+            ));
+        }
+
+        /// <summary>
+        /// APP V4 用：驗證 access_token 後登入自動讀表智慧水管家系統。
+        /// </summary>
+        [HttpPost]
+        public IActionResult LoginAPP(LoginAppV4Vm model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1001, "授權驗證失敗(1001)"));
+            }
+
+            model.access_token = FixBase64FromQueryString(model.access_token);
+            var token = homeService.GetAppV4TokenByAccessToken(model.account_no, model.water_no, model.access_token);
+            if (token == null || !IsValidAppToken(model.access_token, model.water_no))
+            {
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)"));
+            }
+
+            var getAccount = homeService.GetAppV4Account(model.account_no);
+            if (getAccount == null)
+            {
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)"));
+            }
+
+            List<WaterNoInfoDto> WaterNos = homeService.GetAppV4WaterNos(getAccount.B_ACCOUNT_SN, model.water_no);
+
+            List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
+            {
+                WATER_NO = waterNo.WATER_NO,
+                NICK_NAME = waterNo.NICK_NAME,
+                NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
+            }).ToList();
+
+            SetLoginSession(
+                HttpContext,
+                getAccount.B_ACCOUNT,
+                model.water_no,
+                waterNosList,
+                getAccount.B_ACCOUNT_SN.ToString(),
+                getAccount.ST_DATE.ToString(),
+                getAccount.EN_DATE.ToString()
+            );
+
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        private AppTokenInfoDto? CreateAppTokenInfo(b_ACCOUNT appAccount, string waterNo)
+        {
+            if (string.IsNullOrWhiteSpace(appAccount.PWD))
+            {
+                return null;
+            }
+
+            return new AppTokenInfoDto
+            {
+                ACCOUNT_NO = appAccount.B_ACCOUNT,
+                WATER_NO = waterNo,
+                ACCESS_TOKEN = appAccount.PWD,
+                EXPIRES_AT = appAccount.LAST_DATE.AddMonths(AppAccessTokenValidMonths),
+                VALID = appAccount.VALID
+            };
+        }
+
+        private AppTokenInfoDto IssueAppToken(string accountNo, string waterNo)
+        {
+            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string accessToken = $"{waterNo}_{timeStamp}".AesEncryptExtened(KingErrandYours);
+            DateTime expiresAt = DateTime.ParseExact(timeStamp, "yyyyMMddHHmmss", null).AddMonths(AppAccessTokenValidMonths);
+            var token = new AppTokenInfoDto
+            {
+                ACCOUNT_NO = accountNo,
+                WATER_NO = waterNo,
+                ACCESS_TOKEN = accessToken,
+                EXPIRES_AT = expiresAt,
+                VALID = 1
+            };
+
+            homeService.SaveAppV4TokenToPwd(accountNo, token.ACCESS_TOKEN);
+            return token;
+        }
+
+        private bool IsValidAppToken(string accessToken, string waterNo)
+        {
+            try
+            {
+                var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
+                var tokenParts = realToken.Split('_');
+
+                if (tokenParts.Length < 2 || tokenParts[0] != waterNo)
+                {
+                    return false;
+                }
+
+                DateTime issuedAt = DateTime.ParseExact(tokenParts[1], "yyyyMMddHHmmss", null);
+                return DateTime.Now <= issuedAt.AddMonths(AppAccessTokenValidMonths);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private AppTokenV4ResponseVm CreateAppTokenResponse(string accountNo, string waterNo, int result, string message, AppTokenInfoDto? token = null)
+        {
+            return new AppTokenV4ResponseVm
+            {
+                account_no = accountNo,
+                water_no = waterNo,
+                result = result,
+                message = message,
+                access_token = token?.ACCESS_TOKEN,
+                expires_in = GetAppTokenExpiresIn(token?.ACCESS_TOKEN),
+                refresh_token = token?.ACCESS_TOKEN
+            };
+        }
+
+        private string? GetAppTokenExpiresIn(string? accessToken)
+        {
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+                return null;
+            }
+
+            try
+            {
+                var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
+                var tokenParts = realToken.Split('_');
+                DateTime issuedAt = DateTime.ParseExact(tokenParts[1], "yyyyMMddHHmmss", null);
+                return issuedAt.AddMonths(AppAccessTokenValidMonths).ToString("yyyyMMddHHmmss");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+#if false
+        /// <summary>
         /// APP用
         /// </summary>
         /// <param name="model"></param>
@@ -253,7 +542,7 @@ namespace TWNPPublic.Controllers
                                     getAccount.B_ACCOUNT,
                                     WaterNo,
                                     waterNosList,
-                                    getAccount.B_ACCOUNT_SN.ToString(), 
+                                    getAccount.B_ACCOUNT_SN.ToString(),
                                     getAccount.ST_DATE.ToString(),
                                     getAccount.EN_DATE.ToString());
 
@@ -348,6 +637,7 @@ namespace TWNPPublic.Controllers
             };
             return Json(Success(TokenObh, "操作成功"));
         }
+#endif
 
         /// <summary>
         /// 註銷使用者登入，注意不是註銷Token

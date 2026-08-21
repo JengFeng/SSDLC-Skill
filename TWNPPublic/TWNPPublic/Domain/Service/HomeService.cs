@@ -70,6 +70,88 @@ namespace TWNPPublic.Domain.Service
             return false;
         }
 
+        public b_ACCOUNT? GetAppV4Account(string AccountNo)
+        {
+            string mainsql = @"Select Top (1) *
+                               From [TWN].[dbo].[B_ACCOUNT]
+                               Where B_ACCOUNT = @AccountNo
+                                 And VALID = 1";
+
+            return dataAccess.Query<b_ACCOUNT>(mainsql, new { AccountNo }).FirstOrDefault();
+        }
+
+        public AppTokenInfoDto? GetAppV4TokenByAccessToken(string AccountNo, string WaterNo, string AccessToken)
+        {
+            string mainsql = @"Select Top (1)
+                                      B_ACCOUNT As ACCOUNT_NO,
+                                      @WaterNo As WATER_NO,
+                                      PWD As ACCESS_TOKEN,
+                                      DateAdd(month, 6, LAST_DATE) As EXPIRES_AT,
+                                      VALID
+                               From [TWN].[dbo].[B_ACCOUNT]
+                               Where B_ACCOUNT = @AccountNo
+                                 And VALID = 1
+                                 And PWD = @AccessToken
+                                 And DateAdd(month, 6, LAST_DATE) > GETDATE()
+                               Order By LAST_DATE Desc";
+
+            return dataAccess.Query<AppTokenInfoDto>(mainsql, new { AccountNo, WaterNo, AccessToken }).FirstOrDefault();
+        }
+
+        public bool ValidateAppV4Password(string AccountNo, string Password)
+        {
+            var account = GetAppV4Account(AccountNo);
+            return account != null && PasswordHashUtil.VerifyPasswordOrLegacyAes(Password, account.APWD);
+        }
+
+        public List<WaterNoInfoDto> GetAppV4WaterNos(int AccountSN, string WaterNo)
+        {
+            string querysql = @"SELECT *
+                                FROM [TWN].[dbo].[B_ACCOUNT_WATER_NO]
+                                Where B_ACCOUNT_SN = @B_ACCOUNT_SN And VALID=1";
+
+            var result = dataAccess.Query<B_ACCOUNT_WATER_NO>(querysql, new
+            {
+                B_ACCOUNT_SN = AccountSN
+            }).ToList();
+
+            if (!result.Any(c => c.WATER_NO == WaterNo))
+            {
+                return result.Select(c => new WaterNoInfoDto
+                {
+                    WATER_NO = c.WATER_NO,
+                    NICK_NAME = c.NICK_NAME,
+                    NICK_NAME_SHOW = c.NICK_NAME_SHOW
+                }).Concat(new[]
+                {
+                    new WaterNoInfoDto
+                    {
+                        WATER_NO = WaterNo,
+                        NICK_NAME = string.Empty,
+                        NICK_NAME_SHOW = 0
+                    }
+                }).ToList();
+            }
+
+            return result.Select(c => new WaterNoInfoDto
+            {
+                WATER_NO = c.WATER_NO,
+                NICK_NAME = c.NICK_NAME,
+                NICK_NAME_SHOW = c.NICK_NAME_SHOW
+            }).ToList();
+        }
+
+        public void SaveAppV4TokenToPwd(string AccountNo, string AccessToken)
+        {
+            string mainsql = @"Update [TWN].[dbo].[B_ACCOUNT]
+                                  Set PWD = @AccessToken,
+                                      LAST_DATE = GETDATE()
+                                Where B_ACCOUNT = @AccountNo
+                                  And VALID = 1";
+
+            dataAccess.Execute(mainsql, new { AccountNo, AccessToken });
+        }
+
 
         public List<WaterNoInfoDto> CheckWaterNoNoIsApp(int AccountSN, string WaterNo)
         {
@@ -518,6 +600,16 @@ namespace TWNPPublic.Domain.Service
         public int SendMailUsingSendMailList(string B_ACCOUNT, string Email);
 
         public bool CheckWaterNoIsValid(string WaterNo);
+
+        public b_ACCOUNT? GetAppV4Account(string AccountNo);
+
+        public AppTokenInfoDto? GetAppV4TokenByAccessToken(string AccountNo, string WaterNo, string AccessToken);
+
+        public bool ValidateAppV4Password(string AccountNo, string Password);
+
+        public List<WaterNoInfoDto> GetAppV4WaterNos(int AccountSN, string WaterNo);
+
+        public void SaveAppV4TokenToPwd(string AccountNo, string AccessToken);
 
         /// <summary>
         /// APP用
