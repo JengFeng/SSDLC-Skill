@@ -51,7 +51,7 @@ namespace TWNPPublic.Controllers
             if (model.grant_type == "authorization_code")
             {
                 var validToken = CreateAppTokenInfo(appAccount, model.water_no);
-                if (validToken != null && IsValidAppToken(validToken.ACCESS_TOKEN, model.water_no))
+                if (validToken != null && IsValidAppToken(validToken.ACCESS_TOKEN, model.account_no))
                 {
                     return View("ExternalLoginConfirm", new AppTokenConfirmViewModel
                     {
@@ -75,7 +75,7 @@ namespace TWNPPublic.Controllers
             if (model.grant_type == "refresh_token")
             {
                 var appToken = CreateAppTokenInfo(appAccount, model.water_no);
-                if (appToken == null || !IsValidAppToken(appToken.ACCESS_TOKEN, model.water_no))
+                if (appToken == null || !IsValidAppToken(appToken.ACCESS_TOKEN, model.account_no))
                 {
                     return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1005, "更新金鑰驗證失敗"));
                 }
@@ -172,16 +172,16 @@ namespace TWNPPublic.Controllers
             return Json(CreateAppTokenResponse(account_no, water_no, 1003, "不同意或取消授權"));
         }
 
-        [HttpGet]
-        public IActionResult LoginAppAuthFailedPreview()
-        {
-            return View("LoginAppAuthFailed", CreateAppTokenResponse(
-                "test001",
-                "12345678901",
-                1004,
-                "授權驗證失敗(1004)"
-            ));
-        }
+        //[HttpGet]
+        //public IActionResult LoginAppAuthFailedPreview()
+        //{
+        //    return View("LoginAppAuthFailed", CreateAppTokenResponse(
+        //        "test001",
+        //        "12345678901",
+        //        1004,
+        //        "授權驗證失敗(1004)"
+        //    ));
+        //}
 
         /// <summary>
         /// APP V4 用：驗證 access_token 後登入自動讀表智慧水管家系統。
@@ -191,23 +191,33 @@ namespace TWNPPublic.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1001, "授權驗證失敗(1001)"));
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1001, "授權驗證失敗(1001)!"));
             }
 
             model.access_token = FixBase64FromQueryString(model.access_token);
             var token = homeService.GetAppV4TokenByAccessToken(model.account_no, model.water_no, model.access_token);
-            if (token == null || !IsValidAppToken(model.access_token, model.water_no))
+            if (token == null || !IsValidAppToken(model.access_token, model.account_no))
             {
-                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)"));
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)!!"));
             }
 
             var getAccount = homeService.GetAppV4Account(model.account_no);
             if (getAccount == null)
             {
-                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)"));
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)!!!"));
             }
 
             List<WaterNoInfoDto> WaterNos = homeService.GetAppV4WaterNos(getAccount.B_ACCOUNT_SN, model.water_no);
+            if (!WaterNos.Any())
+            {
+                return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)!!!!"));
+            }
+
+            //// LoginAPP 時，若傳入的 water_no 不存在於該 account_no 對應的 B_ACCOUNT_WATER_NO 綁定清單中，視為授權驗證失敗。
+            //if (!WaterNos.Any(c => c.WATER_NO == model.water_no))
+            //{
+            //    return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)"));
+            //}
 
             List<F_B_LOGIN_WaterNo> waterNosList = WaterNos.Select(waterNo => new F_B_LOGIN_WaterNo
             {
@@ -215,11 +225,12 @@ namespace TWNPPublic.Controllers
                 NICK_NAME = waterNo.NICK_NAME,
                 NICK_NAME_SHOW = waterNo.NICK_NAME_SHOW?.ToString() ?? "0"
             }).ToList();
+            var currentWaterNo = WaterNos.First().WATER_NO;
 
             SetLoginSession(
                 HttpContext,
                 getAccount.B_ACCOUNT,
-                model.water_no,
+                currentWaterNo,
                 waterNosList,
                 getAccount.B_ACCOUNT_SN.ToString(),
                 getAccount.ST_DATE.ToString(),
@@ -249,7 +260,7 @@ namespace TWNPPublic.Controllers
         private AppTokenInfoDto IssueAppToken(string accountNo, string waterNo)
         {
             string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            string accessToken = $"{waterNo}_{timeStamp}".AesEncryptExtened(KingErrandYours);
+            string accessToken = $"{accountNo}_{timeStamp}".AesEncryptExtened(KingErrandYours);
             DateTime expiresAt = DateTime.ParseExact(timeStamp, "yyyyMMddHHmmss", null).AddMonths(AppAccessTokenValidMonths);
             var token = new AppTokenInfoDto
             {
@@ -264,14 +275,14 @@ namespace TWNPPublic.Controllers
             return token;
         }
 
-        private bool IsValidAppToken(string accessToken, string waterNo)
+        private bool IsValidAppToken(string accessToken, string accountNo)
         {
             try
             {
                 var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
                 var tokenParts = realToken.Split('_');
 
-                if (tokenParts.Length < 2 || tokenParts[0] != waterNo)
+                if (tokenParts.Length < 2 || tokenParts[0] != accountNo)
                 {
                     return false;
                 }

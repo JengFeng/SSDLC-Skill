@@ -23,7 +23,7 @@
                     <span class="text-danger">
                         @Html.ValidationSummary(true)
                     </span>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label>帳號</label>
                         <div>
                             <input class="form-control" value="@Model.AccountNo" readonly="readonly" />
@@ -34,11 +34,12 @@
                         <div>
                             <input class="form-control" value="@Model.WaterNo" readonly="readonly" />
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group">
-                        <label>授權確認</label>
-                        <div>
-                            <span>此帳號已存在有效金鑰，是否重新驗證並核發新金鑰？</span>
+                        @*<label>授權確認</label>*@
+                        <div style="white-space: normal; overflow-wrap: anywhere; line-height: 1.6;">
+                            <span>已核發的驗證金鑰仍有效!!</span>
+                            <span>是否需要重新驗證取得新金鑰? 如無需要請改以呼叫 LoginAPP API 進行金鑰驗證登入。</span>
                         </div>
                     </div>
                     <div class="btnGroup">

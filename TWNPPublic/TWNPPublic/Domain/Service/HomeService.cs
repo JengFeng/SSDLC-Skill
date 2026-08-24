@@ -108,30 +108,13 @@ namespace TWNPPublic.Domain.Service
         {
             string querysql = @"SELECT *
                                 FROM [TWN].[dbo].[B_ACCOUNT_WATER_NO]
-                                Where B_ACCOUNT_SN = @B_ACCOUNT_SN And VALID=1";
+                                Where B_ACCOUNT_SN = @B_ACCOUNT_SN And VALID=1
+                                ORDER BY WATER_NO";
 
             var result = dataAccess.Query<B_ACCOUNT_WATER_NO>(querysql, new
             {
                 B_ACCOUNT_SN = AccountSN
             }).ToList();
-
-            if (!result.Any(c => c.WATER_NO == WaterNo))
-            {
-                return result.Select(c => new WaterNoInfoDto
-                {
-                    WATER_NO = c.WATER_NO,
-                    NICK_NAME = c.NICK_NAME,
-                    NICK_NAME_SHOW = c.NICK_NAME_SHOW
-                }).Concat(new[]
-                {
-                    new WaterNoInfoDto
-                    {
-                        WATER_NO = WaterNo,
-                        NICK_NAME = string.Empty,
-                        NICK_NAME_SHOW = 0
-                    }
-                }).ToList();
-            }
 
             return result.Select(c => new WaterNoInfoDto
             {
