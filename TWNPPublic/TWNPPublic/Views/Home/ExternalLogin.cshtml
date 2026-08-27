@@ -56,7 +56,7 @@
                     </div>
                     <div class="btnGroup">
                         <a class="btn-green-o" href="javascript:;" onclick="submitExternalLoginForm()">確認</a>
-                        <a class="btn-lightGrey-o" href="@Url.Action("CancelExternalLogin","Home", new { account_no = Model.AccountNo, water_no = Model.WaterNo })">取消</a>
+                        <a class="btn-lightGrey-o" href="@Url.Action("CancelExternalLogin","Home", new { account_no = Model.AccountNo, water_no = Model.WaterNo, redirect_uri = Model.RedirectUri, grant_type = Model.GrantType })">取消</a>
                     </div>
                 </form>
             </div>

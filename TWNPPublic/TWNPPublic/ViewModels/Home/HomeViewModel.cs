@@ -54,6 +54,8 @@ namespace TWNPPublic.ViewModels.Home
         [Required(ErrorMessage = "grant_type 為必填")]
         public string grant_type { get; set; } = string.Empty;
 
+        public string? refresh_token { get; set; }
+
         [Required(ErrorMessage = "account_no 為必填")]
         public string account_no { get; set; } = string.Empty;
 
@@ -96,17 +98,6 @@ namespace TWNPPublic.ViewModels.Home
         public string CapthCode { get; set; } = string.Empty;
     }
 
-    public class AppTokenConfirmViewModel
-    {
-        public string GrantType { get; set; } = string.Empty;
-
-        public string AccountNo { get; set; } = string.Empty;
-
-        public string WaterNo { get; set; } = string.Empty;
-
-        public string RedirectUri { get; set; } = string.Empty;
-    }
-
     public class AppTokenV4ResponseVm
     {
         public string account_no { get; set; } = string.Empty;
@@ -131,6 +122,8 @@ namespace TWNPPublic.ViewModels.Home
         public string WATER_NO { get; set; } = string.Empty;
 
         public string ACCESS_TOKEN { get; set; } = string.Empty;
+
+        public string REFRESH_TOKEN { get; set; } = string.Empty;
 
         public DateTime EXPIRES_AT { get; set; }
 

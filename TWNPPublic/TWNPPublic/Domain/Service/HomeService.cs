@@ -86,6 +86,7 @@ namespace TWNPPublic.Domain.Service
                                       B_ACCOUNT As ACCOUNT_NO,
                                       @WaterNo As WATER_NO,
                                       PWD As ACCESS_TOKEN,
+                                      APP_REFRESH_TOKEN As REFRESH_TOKEN,
                                       DateAdd(month, 6, LAST_DATE) As EXPIRES_AT,
                                       VALID
                                From [TWN].[dbo].[B_ACCOUNT]
@@ -96,6 +97,24 @@ namespace TWNPPublic.Domain.Service
                                Order By LAST_DATE Desc";
 
             return dataAccess.Query<AppTokenInfoDto>(mainsql, new { AccountNo, WaterNo, AccessToken }).FirstOrDefault();
+        }
+
+        public AppTokenInfoDto? GetAppV4TokenByRefreshToken(string AccountNo, string WaterNo, string RefreshToken)
+        {
+            string mainsql = @"Select Top (1)
+                                      B_ACCOUNT As ACCOUNT_NO,
+                                      @WaterNo As WATER_NO,
+                                      PWD As ACCESS_TOKEN,
+                                      APP_REFRESH_TOKEN As REFRESH_TOKEN,
+                                      DateAdd(month, 6, LAST_DATE) As EXPIRES_AT,
+                                      VALID
+                               From [TWN].[dbo].[B_ACCOUNT]
+                               Where B_ACCOUNT = @AccountNo
+                                 And VALID = 1
+                                 And APP_REFRESH_TOKEN = @RefreshToken
+                               Order By LAST_DATE Desc";
+
+            return dataAccess.Query<AppTokenInfoDto>(mainsql, new { AccountNo, WaterNo, RefreshToken }).FirstOrDefault();
         }
 
         public bool ValidateAppV4Password(string AccountNo, string Password)
@@ -124,15 +143,16 @@ namespace TWNPPublic.Domain.Service
             }).ToList();
         }
 
-        public void SaveAppV4TokenToPwd(string AccountNo, string AccessToken)
+        public void SaveAppV4TokenToPwd(string AccountNo, string AccessToken, string RefreshToken)
         {
             string mainsql = @"Update [TWN].[dbo].[B_ACCOUNT]
                                   Set PWD = @AccessToken,
+                                      APP_REFRESH_TOKEN = @RefreshToken,
                                       LAST_DATE = GETDATE()
                                 Where B_ACCOUNT = @AccountNo
                                   And VALID = 1";
 
-            dataAccess.Execute(mainsql, new { AccountNo, AccessToken });
+            dataAccess.Execute(mainsql, new { AccountNo, AccessToken, RefreshToken });
         }
 
 
@@ -588,11 +608,13 @@ namespace TWNPPublic.Domain.Service
 
         public AppTokenInfoDto? GetAppV4TokenByAccessToken(string AccountNo, string WaterNo, string AccessToken);
 
+        public AppTokenInfoDto? GetAppV4TokenByRefreshToken(string AccountNo, string WaterNo, string RefreshToken);
+
         public bool ValidateAppV4Password(string AccountNo, string Password);
 
         public List<WaterNoInfoDto> GetAppV4WaterNos(int AccountSN, string WaterNo);
 
-        public void SaveAppV4TokenToPwd(string AccountNo, string AccessToken);
+        public void SaveAppV4TokenToPwd(string AccountNo, string AccessToken, string RefreshToken);
 
         /// <summary>
         /// APP用

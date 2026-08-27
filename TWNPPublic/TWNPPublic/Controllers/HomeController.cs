@@ -22,7 +22,6 @@ namespace TWNPPublic.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService homeService;
         private readonly string KingErrandYours = "H3ll0TWN9A99";
-        private const int AuthorizationCodeValidMinutes = 5;
         private const int AppAccessTokenValidMonths = 6;
         public HomeController(ILogger<HomeController> logger,
             IHomeService homeService)
@@ -39,29 +38,17 @@ namespace TWNPPublic.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
+                return RedirectWithAppTokenResponse(model.redirect_uri, CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
             }
 
             var appAccount = homeService.GetAppV4Account(model.account_no);
             if (appAccount == null)
             {
-                return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1002, "用戶尚未使用智慧水表"));
+                return RedirectWithAppTokenResponse(model.redirect_uri, CreateAppTokenResponse(model.account_no, model.water_no, 1002, "用戶尚未使用智慧水表"));
             }
 
             if (model.grant_type == "authorization_code")
             {
-                var validToken = CreateAppTokenInfo(appAccount, model.water_no);
-                if (validToken != null && IsValidAppToken(validToken.ACCESS_TOKEN, model.account_no))
-                {
-                    return View("ExternalLoginConfirm", new AppTokenConfirmViewModel
-                    {
-                        AccountNo = model.account_no,
-                        WaterNo = model.water_no,
-                        GrantType = model.grant_type,
-                        RedirectUri = model.redirect_uri
-                    });
-                }
-
                 return View("ExternalLogin", new ExternalLoginViewModel
                 {
                     Account = model.account_no,
@@ -74,50 +61,30 @@ namespace TWNPPublic.Controllers
 
             if (model.grant_type == "refresh_token")
             {
-                var appToken = CreateAppTokenInfo(appAccount, model.water_no);
-                if (appToken == null || !IsValidAppToken(appToken.ACCESS_TOKEN, model.account_no))
+                if (string.IsNullOrWhiteSpace(model.refresh_token))
                 {
-                    return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1005, "更新金鑰驗證失敗"));
+                    return RedirectWithAppTokenResponse(model.redirect_uri, CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
+                }
+
+                model.refresh_token = FixBase64FromQueryString(model.refresh_token);
+                var appToken = homeService.GetAppV4TokenByRefreshToken(model.account_no, model.water_no, model.refresh_token);
+                if (appToken == null)
+                {
+                    return View("ExternalLogin", new ExternalLoginViewModel
+                    {
+                        Account = model.account_no,
+                        AccountNo = model.account_no,
+                        WaterNo = model.water_no,
+                        GrantType = model.grant_type,
+                        RedirectUri = model.redirect_uri
+                    });
                 }
 
                 var token = IssueAppToken(model.account_no, model.water_no);
-                return Json(CreateAppTokenResponse(model.account_no, model.water_no, 200, "換發金鑰成功", token));
+                return RedirectWithAppTokenResponse(model.redirect_uri, CreateAppTokenResponse(model.account_no, model.water_no, 200, "換發金鑰成功", token));
             }
 
-            return Json(CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
-        }
-
-        //[HttpGet]
-        //public IActionResult ExternalLoginConfirmPreview()
-        //{
-        //    return View("ExternalLoginConfirm", new AppTokenConfirmViewModel
-        //    {
-        //        AccountNo = "test001",
-        //        WaterNo = "12345678901",
-        //        GrantType = "authorization_code",
-        //        RedirectUri = "https://app.example.com/callback"
-        //    });
-        //}
-
-        /// <summary>
-        /// APP V4 用：已有有效金鑰時，確認後重新核發金鑰。
-        /// </summary>
-        [HttpPost]
-        public IActionResult ConfirmExternalLogin(AppTokenConfirmViewModel model)
-        {
-            if (string.IsNullOrWhiteSpace(model.AccountNo) || string.IsNullOrWhiteSpace(model.WaterNo))
-            {
-                return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 1001, "參數錯誤"));
-            }
-
-            var appAccount = homeService.GetAppV4Account(model.AccountNo);
-            if (appAccount == null)
-            {
-                return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 1002, "用戶尚未使用智慧水表"));
-            }
-
-            var token = IssueAppToken(model.AccountNo, model.WaterNo);
-            return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 200, "核發金鑰成功", token));
+            return RedirectWithAppTokenResponse(model.redirect_uri, CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
         }
 
         //[HttpGet]
@@ -164,12 +131,18 @@ namespace TWNPPublic.Controllers
             }
 
             var token = IssueAppToken(model.AccountNo, model.WaterNo);
-            return Json(CreateAppTokenResponse(model.AccountNo, model.WaterNo, 200, "核發金鑰成功", token));
+            var message = model.GrantType == "refresh_token" ? "換發金鑰成功" : "核發金鑰成功";
+            return RedirectWithAppTokenResponse(model.RedirectUri, CreateAppTokenResponse(model.AccountNo, model.WaterNo, 200, message, token));
         }
 
-        public IActionResult CancelExternalLogin(string account_no, string water_no)
+        public IActionResult CancelExternalLogin(string account_no, string water_no, string? redirect_uri, string? grant_type)
         {
-            return Json(CreateAppTokenResponse(account_no, water_no, 1003, "不同意或取消授權"));
+            if (grant_type == "refresh_token")
+            {
+                return RedirectWithAppTokenResponse(redirect_uri, CreateAppTokenResponse(account_no, water_no, 1005, "更新金鑰驗證失敗"));
+            }
+
+            return RedirectWithAppTokenResponse(redirect_uri, CreateAppTokenResponse(account_no, water_no, 1003, "不同意或取消授權"));
         }
 
         //[HttpGet]
@@ -252,6 +225,7 @@ namespace TWNPPublic.Controllers
                 ACCOUNT_NO = appAccount.B_ACCOUNT,
                 WATER_NO = waterNo,
                 ACCESS_TOKEN = appAccount.PWD,
+                REFRESH_TOKEN = appAccount.APP_REFRESH_TOKEN ?? string.Empty,
                 EXPIRES_AT = appAccount.LAST_DATE.AddMonths(AppAccessTokenValidMonths),
                 VALID = appAccount.VALID
             };
@@ -261,17 +235,19 @@ namespace TWNPPublic.Controllers
         {
             string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
             string accessToken = $"{accountNo}_{timeStamp}".AesEncryptExtened(KingErrandYours);
+            string refreshToken = $"{accountNo}_{timeStamp}_refresh_{Convert.ToHexString(RandomNumberGenerator.GetBytes(16))}".AesEncryptExtened(KingErrandYours);
             DateTime expiresAt = DateTime.ParseExact(timeStamp, "yyyyMMddHHmmss", null).AddMonths(AppAccessTokenValidMonths);
             var token = new AppTokenInfoDto
             {
                 ACCOUNT_NO = accountNo,
                 WATER_NO = waterNo,
                 ACCESS_TOKEN = accessToken,
+                REFRESH_TOKEN = refreshToken,
                 EXPIRES_AT = expiresAt,
                 VALID = 1
             };
 
-            homeService.SaveAppV4TokenToPwd(accountNo, token.ACCESS_TOKEN);
+            homeService.SaveAppV4TokenToPwd(accountNo, token.ACCESS_TOKEN, token.REFRESH_TOKEN);
             return token;
         }
 
@@ -280,14 +256,21 @@ namespace TWNPPublic.Controllers
             try
             {
                 var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
-                var tokenParts = realToken.Split('_');
+                var separatorIndex = realToken.LastIndexOf('_');
 
-                if (tokenParts.Length < 2 || tokenParts[0] != accountNo)
+                if (separatorIndex <= 0 || separatorIndex == realToken.Length - 1)
                 {
                     return false;
                 }
 
-                DateTime issuedAt = DateTime.ParseExact(tokenParts[1], "yyyyMMddHHmmss", null);
+                var tokenAccountNo = realToken[..separatorIndex];
+                var issuedAtText = realToken[(separatorIndex + 1)..];
+                if (tokenAccountNo != accountNo)
+                {
+                    return false;
+                }
+
+                DateTime issuedAt = DateTime.ParseExact(issuedAtText, "yyyyMMddHHmmss", null);
                 return DateTime.Now <= issuedAt.AddMonths(AppAccessTokenValidMonths);
             }
             catch
@@ -304,10 +287,37 @@ namespace TWNPPublic.Controllers
                 water_no = waterNo,
                 result = result,
                 message = message,
-                access_token = token?.ACCESS_TOKEN,
-                expires_in = GetAppTokenExpiresIn(token?.ACCESS_TOKEN),
-                refresh_token = token?.ACCESS_TOKEN
+                access_token = token?.ACCESS_TOKEN ?? string.Empty,
+                expires_in = GetAppTokenExpiresIn(token?.ACCESS_TOKEN) ?? string.Empty,
+                refresh_token = token?.REFRESH_TOKEN ?? string.Empty
             };
+        }
+
+        private IActionResult RedirectWithAppTokenResponse(string? redirectUri, AppTokenV4ResponseVm response)
+        {
+            if (string.IsNullOrWhiteSpace(redirectUri))
+            {
+                return Json(response);
+            }
+
+            var parameters = new Dictionary<string, string>
+            {
+                ["account_no"] = response.account_no ?? string.Empty,
+                ["water_no"] = response.water_no ?? string.Empty,
+                ["result"] = response.result.ToString(),
+                ["message"] = response.message ?? string.Empty,
+                ["access_token"] = response.access_token ?? string.Empty,
+                ["expires_in"] = response.expires_in ?? string.Empty,
+                ["refresh_token"] = response.refresh_token ?? string.Empty
+            };
+
+            var queryString = string.Join("&", parameters.Select(c =>
+                $"{Uri.EscapeDataString(c.Key)}={Uri.EscapeDataString(c.Value)}"));
+            var separator = redirectUri.Contains("?")
+                ? (redirectUri.EndsWith("?") || redirectUri.EndsWith("&") ? string.Empty : "&")
+                : "?";
+
+            return Redirect($"{redirectUri}{separator}{queryString}");
         }
 
         private string? GetAppTokenExpiresIn(string? accessToken)
@@ -320,8 +330,13 @@ namespace TWNPPublic.Controllers
             try
             {
                 var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
-                var tokenParts = realToken.Split('_');
-                DateTime issuedAt = DateTime.ParseExact(tokenParts[1], "yyyyMMddHHmmss", null);
+                var separatorIndex = realToken.LastIndexOf('_');
+                if (separatorIndex <= 0 || separatorIndex == realToken.Length - 1)
+                {
+                    return null;
+                }
+
+                DateTime issuedAt = DateTime.ParseExact(realToken[(separatorIndex + 1)..], "yyyyMMddHHmmss", null);
                 return issuedAt.AddMonths(AppAccessTokenValidMonths).ToString("yyyyMMddHHmmss");
             }
             catch
