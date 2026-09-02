@@ -19,6 +19,7 @@
             </div>
             <div class="formBox">
                 <form id="formExternalLogin" autocomplete="off" method="post" action="@Url.Action("ExternalLogin","Home")">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="GrantType" />
                     <input type="hidden" asp-for="AccountNo" />
                     <input type="hidden" asp-for="WaterNo" />

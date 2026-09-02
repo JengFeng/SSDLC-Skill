@@ -104,6 +104,7 @@ namespace TWNPPublic.Controllers
         /// APP V4 用：帳密驗證後核發金鑰。
         /// </summary>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(ExternalLoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -504,6 +505,7 @@ namespace TWNPPublic.Controllers
         /// <param name="LoginType"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult LoginAPPs(string AccountNo, string WaterNo, string AccessToken, int LoginType)
         {
 
@@ -1044,6 +1046,7 @@ namespace TWNPPublic.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
         {
             string Host = Request.Host.Host;
@@ -1209,6 +1212,7 @@ namespace TWNPPublic.Controllers
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ResetPw(ResetPwVm vm)
         {
             try

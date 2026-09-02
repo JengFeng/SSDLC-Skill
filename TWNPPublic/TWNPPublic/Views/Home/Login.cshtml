@@ -19,6 +19,7 @@
             </div>
             <div class="formBox">
                 <form id="formLogin" autocomplete="off" method="post" action="@Url.Action("Login","Home")">
+                    @Html.AntiForgeryToken()
                     <span class="text-danger">
                         @Html.ValidationSummary(true)
                     </span>

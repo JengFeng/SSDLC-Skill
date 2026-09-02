@@ -23,6 +23,7 @@
             </div>
             <div class="formBox">
                 <form id="FormResetPw" autocomplete="off">
+                    @Html.AntiForgeryToken()
                     <span class="text-danger" id="Other">
 
                     </span>
@@ -89,12 +90,16 @@
                     history.go(0);
                 }
                 else {
+
                      $("#Other").empty();
-                    if(data.ModelStateErrors["Other"] != null){
-                        $("#Other").text(data.ModelStateErrors["Other"]);
-                    }
-                    else if (data.ModelStateErrors != null) {
-                        Validator.showErrors(data.ModelStateErrors);
+
+                    if (data.ModelStateErrors != null) {
+                        if (data.ModelStateErrors["Other"] != null) {
+                            $("#Other").text(data.ModelStateErrors["Other"]);
+                        }
+                        else {
+                            Validator.showErrors(data.ModelStateErrors);
+                        }
                     }
                     else {
                         alert(data.Message);

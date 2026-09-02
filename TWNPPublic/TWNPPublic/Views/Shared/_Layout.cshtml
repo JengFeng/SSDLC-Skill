@@ -54,6 +54,18 @@
     <!--公用function -->
     <script src="~/js/UtilityFunction.js"></script>
 
+    <script type="text/javascript">
+        $(function () {
+            $(document).ajaxSend(function (event, jqxhr, settings) {
+                var method = (settings.type || settings.method || "GET").toUpperCase();
+                if (method === "GET" || method === "HEAD" || method === "OPTIONS" || method === "TRACE") return;
+
+                var token = $('input[name="__RequestVerificationToken"]').first().val();
+                if (token) jqxhr.setRequestHeader("RequestVerificationToken", token);
+            });
+        });
+    </script>
+
     @RenderSection("echart", required: false)
     @RenderSection("validation",required:false)
 
@@ -261,6 +273,9 @@
     </script>
 </head>
 <body>
+    <div style="display:none">
+        @Html.AntiForgeryToken()
+    </div>
     @RenderBody()
 </body>
 </html>

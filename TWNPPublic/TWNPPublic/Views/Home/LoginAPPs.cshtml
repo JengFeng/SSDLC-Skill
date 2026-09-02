@@ -19,6 +19,7 @@
                 <div class="companyName">水表e管家</div>
             </div>
             <form id="loginFrom" method="post" action="@Url.Action("LoginAPPs","Home")">
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="AccountNo" value="@ViewBag.AccountNo" />
                 <input type="hidden" name="WaterNo" value="@ViewBag.WaterNo" />
                 <input type="hidden" name="AccessToken" value="@ViewBag.AccessToken" />

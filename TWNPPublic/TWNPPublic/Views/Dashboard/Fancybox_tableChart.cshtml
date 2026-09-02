@@ -20,27 +20,18 @@
             var total = searchAreaInlineHeight;
             $('.chartTableGroup').css('height', 'calc(100% - {total}px)'.replace('{total}', total));
         });
-        $(function () {
-            var chartsTitleHeightHeight = $(".chartsTitleHeight")[0].clientHeight;
-            var total = chartsTitleHeightHeight;
-            $('.chartBox').css('height', 'calc(100% - {total}px)'.replace('{total}', total));
+        function ResizeTableChart() {
+            var chartsTitleHeight = $(".chartsTitleHeight")[0]?.clientHeight || 0;
+            $('.chartBox').css('height', 'calc(100% - {total}px)'.replace('{total}', chartsTitleHeight));
 
-            // var winHeight =  window.visualViewport.height;
-            // if (winHeight <= 780) {
-            //     $('#mychart').css('height', '200px'); 
-            // }
-            // else {
-            //     $('#mychart').css('height', '100%');
-            // }
+            var winWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+            $('#mychart').css('height', winWidth <= 400 ? '200px' : '100%');
 
-            var winWidth =  window.visualViewport.width;
-            if (winWidth <= 400) {
-                $('#mychart').css('height', '200px'); 
+            if (typeof myChart !== 'undefined' && myChart) {
+                myChart.resize();
             }
-            else {
-                $('#mychart').css('height', '100%');
-            }
-        });
+        }
+
         $(function () {
             $(".videoScroll,.chartsScroll").mCustomScrollbar({
                 autoHideScrollbar: true,
@@ -399,10 +390,15 @@
     var myChart = echarts.init(document.getElementById('mychart'));
 
     window.onresize = function () {
-        myChart.resize();
+        ResizeTableChart();
     };
 
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', ResizeTableChart);
+    }
+
     $(function () {
+        ResizeTableChart();
         LoadChart();
     });
 </script>
