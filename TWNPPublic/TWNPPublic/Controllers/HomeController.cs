@@ -66,8 +66,7 @@ namespace TWNPPublic.Controllers
                     return RedirectWithAppTokenResponse(model.redirect_uri, CreateAppTokenResponse(model.account_no, model.water_no, 1001, "參數錯誤"));
                 }
 
-                model.refresh_token = FixBase64FromQueryString(model.refresh_token);
-                var appToken = homeService.GetAppV4TokenByRefreshToken(model.account_no, model.water_no, model.refresh_token);
+                var appToken = GetAppV4TokenByRefreshToken(model.account_no, model.water_no, model.refresh_token);
                 if (appToken == null)
                 {
                     return View("ExternalLogin", new ExternalLoginViewModel
@@ -168,9 +167,8 @@ namespace TWNPPublic.Controllers
                 return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1001, "授權驗證失敗(1001)!"));
             }
 
-            model.access_token = FixBase64FromQueryString(model.access_token);
-            var token = homeService.GetAppV4TokenByAccessToken(model.account_no, model.water_no, model.access_token);
-            if (token == null || !IsValidAppToken(model.access_token, model.account_no))
+            var token = GetAppV4TokenByAccessToken(model.account_no, model.water_no, model.access_token);
+            if (token == null || !IsValidAppToken(token.ACCESS_TOKEN, model.account_no))
             {
                 return View("LoginAppAuthFailed", CreateAppTokenResponse(model.account_no, model.water_no, 1004, "授權驗證失敗(1004)!!"));
             }
@@ -214,29 +212,11 @@ namespace TWNPPublic.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
-        private AppTokenInfoDto? CreateAppTokenInfo(b_ACCOUNT appAccount, string waterNo)
-        {
-            if (string.IsNullOrWhiteSpace(appAccount.PWD))
-            {
-                return null;
-            }
-
-            return new AppTokenInfoDto
-            {
-                ACCOUNT_NO = appAccount.B_ACCOUNT,
-                WATER_NO = waterNo,
-                ACCESS_TOKEN = appAccount.PWD,
-                REFRESH_TOKEN = appAccount.APP_REFRESH_TOKEN ?? string.Empty,
-                EXPIRES_AT = appAccount.LAST_DATE.AddMonths(AppAccessTokenValidMonths),
-                VALID = appAccount.VALID
-            };
-        }
-
         private AppTokenInfoDto IssueAppToken(string accountNo, string waterNo)
         {
             string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            string accessToken = $"{accountNo}_{timeStamp}".AesEncryptExtened(KingErrandYours);
-            string refreshToken = $"{accountNo}_{timeStamp}_refresh_{Convert.ToHexString(RandomNumberGenerator.GetBytes(16))}".AesEncryptExtened(KingErrandYours);
+            string accessToken = ToBase64Url($"{accountNo}_{timeStamp}".AesEncryptExtened(KingErrandYours));
+            string refreshToken = ToBase64Url($"{accountNo}_{timeStamp}_refresh_{Convert.ToHexString(RandomNumberGenerator.GetBytes(16))}".AesEncryptExtened(KingErrandYours));
             DateTime expiresAt = DateTime.ParseExact(timeStamp, "yyyyMMddHHmmss", null).AddMonths(AppAccessTokenValidMonths);
             var token = new AppTokenInfoDto
             {
@@ -256,7 +236,7 @@ namespace TWNPPublic.Controllers
         {
             try
             {
-                var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
+                var realToken = DecryptAppToken(accessToken);
                 var separatorIndex = realToken.LastIndexOf('_');
 
                 if (separatorIndex <= 0 || separatorIndex == realToken.Length - 1)
@@ -330,7 +310,7 @@ namespace TWNPPublic.Controllers
 
             try
             {
-                var realToken = FixBase64FromQueryString(accessToken).AesDecryptExtened(KingErrandYours);
+                var realToken = DecryptAppToken(accessToken);
                 var separatorIndex = realToken.LastIndexOf('_');
                 if (separatorIndex <= 0 || separatorIndex == realToken.Length - 1)
                 {
@@ -344,6 +324,49 @@ namespace TWNPPublic.Controllers
             {
                 return null;
             }
+        }
+
+        private AppTokenInfoDto? GetAppV4TokenByAccessToken(string accountNo, string waterNo, string accessToken)
+        {
+            return homeService.GetAppV4TokenByAccessToken(accountNo, waterNo, accessToken.Trim());
+        }
+
+        private AppTokenInfoDto? GetAppV4TokenByRefreshToken(string accountNo, string waterNo, string? refreshToken)
+        {
+            if (string.IsNullOrWhiteSpace(refreshToken))
+            {
+                return null;
+            }
+
+            return homeService.GetAppV4TokenByRefreshToken(accountNo, waterNo, refreshToken.Trim());
+        }
+
+        private string DecryptAppToken(string token)
+        {
+            return FromBase64Url(token.Trim()).AesDecryptExtened(KingErrandYours);
+        }
+
+        private string ToBase64Url(string base64)
+        {
+            return base64
+                .TrimEnd('=')
+                .Replace('+', '-')
+                .Replace('/', '_');
+        }
+
+        private string FromBase64Url(string base64Url)
+        {
+            string base64 = base64Url
+                .Replace('-', '+')
+                .Replace('_', '/');
+
+            int padding = base64.Length % 4;
+            if (padding > 0)
+            {
+                base64 = base64.PadRight(base64.Length + (4 - padding), '=');
+            }
+
+            return base64;
         }
 
 #if false
