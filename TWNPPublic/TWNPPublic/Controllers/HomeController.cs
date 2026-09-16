@@ -1163,16 +1163,19 @@ namespace TWNPPublic.Controllers
                     result.UserInfo.B_ACCOUNT_SN.ToString() ?? "0",
                     result.UserInfo.ST_DATE.ToString(),
                     result.UserInfo.EN_DATE.ToString());
-
-                if (result.UserInfo.INITIAL_LOGIN == 1)
-                {
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                else
-                {
-                    return RedirectToAction("UpdatePw", "Dashboard");
-                }
                 
+                //if (result.UserInfo.INITIAL_LOGIN == 1)
+                //{
+                //    return RedirectToAction("Index", "Dashboard");
+                //}
+                //else
+                //{
+                //    return RedirectToAction("UpdatePw", "Dashboard");
+                //}
+
+                //115/09/16 改直接進入網站
+                return RedirectToAction("Index", "Dashboard");
+
             }
             else
             {

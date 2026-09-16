@@ -462,7 +462,7 @@ namespace TWNPPublic.Domain.Service
 
             return dataAccess.Execute(InsertSql, new SEND_MAIL_LIST
             {
-                TITLE = "台灣自來水公司-澎湖智慧水網密碼發送通知",
+                TITLE = "台灣自來水公司-水表E管家密碼發送通知",
                 CONTENTS = setContext,
                 IS_SEND = 0,
                 INP_DATE = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
