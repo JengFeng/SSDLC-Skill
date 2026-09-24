@@ -1,5 +1,3 @@
-name: PR Labeler
-
 # SSDLC Phase Labels
 "phase:01":
   - changed-files:

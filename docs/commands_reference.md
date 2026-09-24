@@ -35,7 +35,7 @@
 
 #### 🔄 逆向工程
 
-- 說出「**逆向分析這個專案**」、「**幫我從程式碼反推需求**」、「**還原這個舊專案的文件**」、「**reverse engineering**」或「**啟動逆向工程**」→ AI 代理自動執行 @reverse [專案路徑]，啟動逆向工程流程，從 Phase 03 往回推至 Phase 01。
+- 說出「**逆向分析這個專案**」、「**幫我從程式碼反推需求**」、「**還原這個舊專案的文件**」、「**reverse engineering**」或「**啟動逆向工程**」→ AI 代理自動執行 @reverse [專案路徑]，啟動唯讀逆向分析：Phase 03→02→01；Phase 01 後強制人工審核，確認後才盤點 Phase 04→05→06。測試/建置/部署預設不執行。
 - 說出「**只逆向程式碼分析**」、「**只分析程式碼**」或「**reverse code**」→ AI 代理自動執行 @reverse-code [專案路徑]，僅執行 Phase 03 逆向分析。
 - 說出「**只逆向設計文件**」、「**從程式碼反推設計**」或「**reverse design**」→ AI 代理自動執行 @reverse-design [Phase 03 產出目錄]，僅執行 Phase 02 逆向反推。
 - 說出「**只逆向需求文件**」、「**從設計反推需求**」或「**reverse requirements**」→ AI 代理自動執行 @reverse-requirements [Phase 02 產出目錄]，僅執行 Phase 01 逆向反推。
@@ -90,6 +90,11 @@
 | **`@guide off`** | 無 | 退出引導模式，已完成項目保持不變。口語觸發：「關閉引導」「停止引導」。 | `@guide off` |
 | **`@guide status`** | 無 | 查看當前階段引導進度（已完成/待完成關卡）。口語觸發：「引導進度」「我做到哪裡了」。 | `@guide status` |
 | **`@guide next`** | 無 | 跳過/完成當前步驟，前進下一個引導步驟。口語觸發：「下一步」「跳過這步」。 | `@guide next` |
+| **`@reverse <專案路徑> [--phase 03,02,01,04,05,06]`** | 專案路徑；可選指定階段 | 唯讀盤點既有專案。Phase 03→02→01 產生候選基線；Phase 01 後人工審核狀態同步寫入 `phase_gates.json` 與完成摘要。執行任何 04–06 指令前先用 Mode E 驗證核准狀態；啟用 IO 管理時也驗證逆向契約。預設不執行測試/建置/部署、不讀取機密值。口語觸發：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」。 | `@reverse D:/old_app --phase 03,02,01` |
+| **`@reverse status` / `@reverse stop`** | 無 | 唯讀顯示逆向進度 / 停止後續工作並保留既有產物。 | `@reverse status` |
+| **`@reverse-code <專案路徑>`** | 專案路徑 | 僅執行 Phase 03 靜態程式碼盤點。 | `@reverse-code D:/old_app` |
+| **`@reverse-design <Phase 03 產出>`** | Phase 03 產出目錄 | 僅執行 Phase 02 設計候選還原。 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |
+| **`@reverse-requirements <Phase 02 產出>`** | Phase 02 產出目錄 | 僅執行 Phase 01 候選需求與 SSOT 草案；必須經人工確認。 | `@reverse-requirements D:/old_app/outputs/phase_02_reverse` |
 | **`@guide reverse`** | `[專案路徑]` | 啟動逆向工程五關卡引導。口語觸發：「引導我做逆向工程」「帶我逆向分析」。 | `@guide reverse D:/old_app` |
 | **`@help`** | 無 | 立即顯示本指令集參照表的完整內容，方便快速查閱所有可用指令與語法。 | `@help` |
 | **`@import-skill <skill-name>`** | Skill 目錄名稱 | 將 `external-resources/` 中指定外部 Skill 匯入 `skills/` 成為框架內建 Skill。自動執行歸類判斷、複製目錄、更新三檔。口語觸發：「導入 Skill」「收錄成內建 Skill」。 | `@import-skill markitdown` |
@@ -612,4 +617,4 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
     *   新增 @reverse-requirements 指令，僅執行 Phase 01 逆向（需求文件反推）。
     *   口語觸發：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」。
     *   逆向工程 Skill 實體位於 skills/00_cross_phase/reverse_engineering/。
-    *   六個子 Skill 分別對應 Phase 03/02/01 逆向 + Phase 04/05/06 順向整合。
+    *   六個子 Skill 分別對應 Phase 03/02/01 證據還原 + Phase 04/05/06 現況盤點；來源唯讀，Phase 01 後設人工審核閘口。

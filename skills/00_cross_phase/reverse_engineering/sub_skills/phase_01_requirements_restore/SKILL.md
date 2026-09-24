@@ -2,6 +2,15 @@
 name: Reverse_Skill_RequirementsRestore
 description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API Spec、架構圖、Use Case）反推需求文件、SSOT 四規格、追溯矩陣。逆向完成後切換順向流程。
 ---
+## 共通執行防線
+
+- 預設唯讀分析來源專案；不得修改、格式化、建置、安裝依賴、啟動服務或執行來源專案程式碼。測試執行須先取得使用者明確同意，並在隔離環境執行。
+- 不讀取或複製密鑰、token、私鑰、憑證、真實個資或 `.env` 值。只記錄檔案存在與變數名稱；輸出前遮蔽疑似敏感字串。
+- 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
+- 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
+- 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
+- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
+
 
 ## 一、定位
 
@@ -37,10 +46,10 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 從設計文件反推功能需求：
 
-1. 從 API Spec 提取功能需求（每個 API 端點 = 一個功能需求）
+1. 從 API Spec 產生候選功能需求；一個端點不必然等於一項業務需求，應按證據聚合並標記推論
 2. 從 Use Case 提取使用者場景需求
 3. 從 ER 圖提取資料模型需求
-4. 從系統架構提取非功能需求（效能、可用性、安全性）
+4. 只記錄架構可支持的非功能觀察；無量測或明確配置證據時不得宣稱效能/可用性/安全需求
 
 產出：
 - `formal_requirements.md`：結構化需求文件
@@ -49,7 +58,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 將功能需求轉為行為化規格：
 
-1. 每個 API 端點生成對應的 Gherkin 場景
+1. 每項已依證據聚合的候選需求生成對應 Gherkin 場景；端點只作為追溯來源，不逐端點硬拆場景
 2. 每個 Use Case 生成 Happy Path + Edge Case
 3. 使用 Given-When-Then 格式
 
@@ -80,8 +89,8 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 1. 標記所有逆向產出為 `reverse_engineered`
 2. 產出逆向工程摘要報告
-3. 詢問使用者是否確認逆向成果
-4. 確認後切換至順向流程
+3. 將 `reverse_completion_summary.json` 與 `phase_gates.json` 的 `approval_status` 設為 `pending`，`approved_at` 設為 `null`，詢問使用者是否確認逆向成果
+4. 使用者明確確認後，兩檔同步設為 `approved` 並寫入相同的 `approved_at` ISO 時間；此時才把 Phase 01 加入 `completed_phases`，建立 Phase 04–06 的 `inputs/spec_ref.md` 指向已核准 SSOT。拒絕時設 `rejected` 並清除核准時間；修訂後回到 `pending`
 
 產出：
 - `reverse_engineering_report.md`：逆向工程完成報告
@@ -99,7 +108,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 | `system_specification.md` | 系統規格書（IEEE 830） | SSOT 追溯鏈 |
 | `traceability_matrix.md` | 需求追溯矩陣 | SSOT 追溯鏈 |
 | `reverse_engineering_report.md` | 逆向工程完成報告 | 使用者 |
-| `reverse_completion_summary.json` | 完成狀態摘要 | 主控 Orchestrator |
+| `reverse_completion_summary.json` | 候選／人工審核狀態摘要（含 approval_status、approved_at） | 主控 Orchestrator |
 
 ---
 
@@ -107,7 +116,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 逆向產出的四規格必須通過 `@CheckSpec` 檢查：
 
-1. **executable_spec.yaml**：需求 ID 唯一、無缺失欄位
+1. **executable_spec.yaml**：需求 ID 唯一、必填欄位完整，且每項需求帶有證據/推論狀態
 2. **requirements.feature**：Gherkin 語法正確、每個需求有對應場景
 3. **system_specification.md**：章節完整、與 executable_spec 一致
 4. **traceability_matrix.md**：每個需求有追溯鏈、無孤立節點
@@ -150,6 +159,6 @@ Phase 01 逆向完成後，**強制暫停**等待使用者確認：
 1. 顯示逆向成果摘要（需求數量、追溯鏈完整度）
 2. 標註自動生成 vs 人工補正的內容
 3. 詢問：「逆向成果是否正確？要修正嗎？」
-4. 使用者確認後才繼續切換順向流程
+4. 使用者確認後才將需求標記為已核准；未確認前不得切換、完成標記或建立已驗證基線
 
 **原因**：需求層級的反推最容易有偏差，必須有人工審核確保正確性。

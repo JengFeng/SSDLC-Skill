@@ -78,7 +78,10 @@
     "enabled": false,
     "completed_phases": [],
     "current_phase": null,
+    "approval_status": "not_started",
+    "approved_at": null,
+    "approval_record": "outputs/phase_01_reverse/reverse_completion_summary.json",
     "skill_path": "skills/00_cross_phase/reverse_engineering",
-    "description": "逆向工程模式。透過 @reverse 指令啟動，從 Phase 03 往回推至 Phase 01，完成後切換順向流程。"
+    "description": "唯讀證據盤點：Phase 03→02→01 產生候選基線；Phase 01 後須人工確認才可盤點 Phase 04→05→06。預設不執行來源程式碼/測試/建置/部署，不讀取機密值。"
   }
 }

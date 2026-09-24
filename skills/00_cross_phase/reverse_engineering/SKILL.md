@@ -1,179 +1,55 @@
-# 逆向工程 Reverse Engineering — 主控 Orchestrator
-
 ---
 name: ReverseEngineering
-description: 對既有無完整文件之交付專案原始碼，逆向還原六大 SSDLC 各階段交付物。從程式碼（Phase 03）往回推至設計（Phase 02）再到需求（Phase 01），逆向完成後無縫切換順向流程。
+description: 對既有專案進行唯讀證據分析，依 Phase 03→02→01 還原可追溯的程式、設計與需求基線，再經使用者確認後選擇性整理 Phase 04→05→06 的測試、部署與維運現況。
 ---
 
-## 一、定位與核心原則
+# 逆向工程 Reverse Engineering — 主控 Orchestrator
 
-本 Skill 為逆向工程的**主控 Orchestrator**，負責：
-1. 接收使用者提供的舊專案原始碼
-2. 判斷是否為逆向工程任務
-3. 依序調度六個子 Skill（Phase 03→02→01→04→05→06）
-4. 管控逆向進度與階段轉換
-5. 逆向完成後切換至順向 SSDLC 流程
+## 一、定位與適用範圍
 
-**核心原則**：不新增階段，不改現有流程。逆向工程是現有六階段的「逆向模式」擴充。
+本 Skill 分析既有專案並產生可追溯的文件基線；它不宣稱能從程式碼確定原始商業意圖。`00_cross_phase` 是目錄分類，不建立 Phase 00。預設來源唯讀，輸出隔離於指定專案的 `outputs/`。不引入 Benson Skill 或其內容。
 
----
+## 二、觸發與啟動
 
-## 二、觸發條件
+- 指令：`@reverse <專案路徑> [--phase 03,02,01,04,05,06]`；未指定階段時執行完整流程。
+- 口語：「逆向分析這個專案」「幫我從程式碼反推需求」「還原舊專案文件」。
+- 不用於新專案從零規劃、單純程式碼審查或只要求修 Bug。
+- 開始前確認來源路徑可讀、輸出路徑、排除目錄、可用素材及是否允許執行測試（預設不允許）。不要求使用者重述可由檔案判定的資訊。
+- 不覆寫來源或已有產物；遇到同名輸出先採用新版本/新目錄並報告。執行 `--phase 04`、`05`、`06` 或相應單階段指令前，一律先以 `python scripts/check_spec_integrity.py --project <專案路徑> --mode E --phase NN` 驗證人工審核閘口；未核准即拒絕執行。
 
-### 2.1 自動觸發
-- 使用者提供舊專案原始碼目錄路徑
-- 使用者說「幫我逆向分析這個專案」「還原這個舊專案的文件」「從程式碼反推需求」
+## 三、流程與人工關卡
 
-### 2.2 手動觸發
-- 指令：`@reverse [專案路徑]`
-- 口語觸發：「啟動逆向工程」「逆向還原」「reverse engineering」
+1. **Phase 03 程式碼盤點**：靜態、唯讀掃描；產出清單及來源證據。
+2. **Phase 02 設計還原**：只從已盤點證據形成設計描述，明示推論及不確定性。
+3. **Phase 01 需求基線**：從可觀察行為和設計推導候選需求，產出 SSOT 草案與追溯鏈。
+4. **強制人工審核閘口**：呈現需求、信心、缺口與推論；使用者確認前不得標記 Phase 01 完成、建立已驗證 Baseline、解鎖下游或自動進入 Phase 04。
+5. **Phase 04、05、06**：經確認後依序盤點測試、部署、運維現況；是現況盤點，不代表執行測試、部署或修改系統。每階段完成後依正常 Evaluator 與專案規章檢查。
+6. **交接**：保留逆向模式標記及證據鏈，只有使用者確認的需求才可作為已核准 SSOT；其餘維持候選/待確認。由使用者決定何時開始一般順向 SSDLC 變更。
 
-### 2.3 不觸發條件
-- 使用者提供的是新專案（從零開始）→ 走正常 Phase 01~06
-- 使用者只想做程式碼審查 → 不啟動逆向流程
+可指定階段做局部盤點；Phase 02/01 若其上游產物不足，必須標示輸入缺口，不可假稱完整。
 
----
+## 四、輸出與追溯要求
 
-## 三、執行流程（逆序遞推）
+每階段輸出至 `outputs/phase_NN_reverse/`（Phase 04–06 為 `outputs/phase_NN/`），依各子 Skill 的產物清單工作；當 `phase_gates.json` 的 `io_management.enabled=true` 時，以對應逆向 IO YAML 的 `id`/`path`/`required` 契約檢查產物及跨階段引用。IO 管理未啟用時不以缺少契約產物阻斷流程，但人工審核閘口仍強制生效。每份報告包含範圍、掃描時間、排除項、方法、證據引用、觀察/推論/待確認、限制與未解析項。跨階段以穩定 ID 對應：程式符號/端點/資料表 → 設計元素 → 候選需求 → 測試/部署/運維證據。無證據的欄位明確留空或標示未知，不捏造。
 
-```
-使用者提供原始碼
-    │
-    ▼
-┌─────────────────────────────────────────┐
-│  Phase 03 Reverse：程式碼分析（起點）    │
-│  輸入：原始碼目錄                        │
-│  輸出：模組清單、API 路由、DB Schema     │
-└─────────────────────────────────────────┘
-    │ 產出物自動成為下一階段輸入
-    ▼
-┌─────────────────────────────────────────┐
-│  Phase 02 Reverse：設計文件反推          │
-│  輸入：Phase 03 逆向產出                 │
-│  輸出：ER 圖、API Spec、系統架構圖       │
-└─────────────────────────────────────────┘
-    │ 產出物自動成為下一階段輸入
-    ▼
-┌─────────────────────────────────────────┐
-│  Phase 01 Reverse：需求文件反推          │
-│  輸入：Phase 02 逆向產出                 │
-│  輸出：需求文件、SSOT、追溯矩陣          │
-└─────────────────────────────────────────┘
-    │ 逆向完成，切換順向
-    ▼
-┌─────────────────────────────────────────┐
-│  Phase 04：測試整合（順向）              │
-│  輸入：原始碼 + 現有測試                 │
-│  輸出：測試報告、覆蓋率分析              │
-└─────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────┐
-│  Phase 05：部署解析（順向）              │
-│  輸入：部署腳本、Dockerfile、組態檔      │
-│  輸出：部署拓撲圖、建置清單              │
-└─────────────────────────────────────────┘
-    │
-    ▼
-┌─────────────────────────────────────────┐
-│  Phase 06：運維解析（順向）              │
-│  輸入：日誌配置、監控配置                │
-│  輸出：運維手冊、監控儀表板              │
-└─────────────────────────────────────────┘
-    │
-    ▼
-  順向 SSDLC 流程（Phase 01~06 正常運作）
-```
+## 五、狀態管理、錯誤與停止
 
----
+更新專案 `phase_gates.json` 的 `reverse_engineering` 狀態（enabled、mode、current_phase、completed_phases、approval_status、approved_at）；僅在專案內檔案已存在且使用者授權修改專案追蹤狀態時更新。`approval_status` 為 `not_started`、`pending`、`approved` 或 `rejected`；產出候選需求後設為 `pending`，只在使用者明確確認後設為 `approved`，並把相同 `approved_at` 寫入 `outputs/phase_01_reverse/reverse_completion_summary.json`。拒絕時設為 `rejected` 並清除核准時間；重新修訂則回到 `pending`。不得直接把所有六階段標為 completed；Phase 01 只在核准後加入 completed_phases。`@reverse status` 唯讀顯示狀態；`@reverse stop` 停止後續工作並保留已產生檔案。
 
-## 四、子 Skill 清單
+遵循 CORE_RULES 的 A/B 分級與重試上限。證據不足或外部工具不可用是限制，不得以重試掩飾；需求/設計矛盾列為待釐清。
 
-| 子 Skill | SSDLC 階段 | 核心功能 |
-|:---------|:-----------|:---------|
-| `phase_03_code_restore` | Phase 03 逆向 | 程式碼分析、模組拆解、API 路由匯整、DB Schema 反推 |
-| `phase_02_design_restore` | Phase 02 逆向 | 系統架構圖、ER 圖、API Spec、Use Case 圖反推 |
-| `phase_01_requirements_restore` | Phase 01 逆向 | 需求文件、Gherkin 場景、SSOT、追溯矩陣反推 |
-| `phase_04_test_restore` | Phase 04 順向 | 現有測試匯整、覆蓋率分析、缺失測試標註 |
-| `phase_05_deploy_restore` | Phase 05 順向 | Dockerfile 解析、部署腳本匯整、環境參數提取 |
-| `phase_06_ops_restore` | Phase 06 順向 | 日誌配置解析、監控配置匯整、運維手冊生成 |
+## 六、框架整合
 
----
+- 各子 Skill 遵循 Planner → Generator → Evaluator；Evaluator 驗證產物、來源證據與 SSOT 交叉一致性；啟用 IO 管理時執行 `check_spec_integrity.py --mode E` 驗證逆向 IO YAML。
+- Phase 01 四規格完成後執行 `@CheckSpec`；任何未通過項不標記為通過。人工核准後建立 Phase 04–06 的 `inputs/spec_ref.md`，指向已核准的 SSOT；若有既存規格，先比對再更新，不直接覆寫。
+- 使用者確認前，產物是逆向候選基線；確認後依專案規章執行必要的 SSOT 完整性檢查與 Baseline 流程。
+- Security-Principles 可用於後續安全檢核；靜態掃描只能記錄可見證據，不代表已完成安全驗證。
 
-## 五、階段間資料流
+## 七、範例
 
-每個子 Skill 的輸出自動成為下一個子 Skill 的輸入，透過 `outputs/` 目錄傳遞：
-
-```
-outputs/
-  ├── phase_03_reverse/     ← Phase 03 逆向產出
-  │   ├── module_list.json
-  │   ├── api_routes.json
-  │   ├── db_schema_raw.sql
-  │   └── code_analysis.md
-  ├── phase_02_reverse/     ← Phase 02 逆向產出
-  │   ├── er_diagram.md
-  │   ├── api_spec.md
-  │   ├── system_architecture.md
-  │   └── use_case_diagram.md
-  ├── phase_01_reverse/     ← Phase 01 逆向產出
-  │   ├── formal_requirements.md
-  │   ├── executable_spec.yaml
-  │   ├── requirements.feature
-  │   └── traceability_matrix.md
-  ├── phase_04/             ← Phase 04 產出
-  ├── phase_05/             ← Phase 05 產出
-  └── phase_06/             ← Phase 06 產出
-```
-
----
-
-## 六、錯誤處理與重試
-
-遵循 CORE_RULES.md 的錯誤分級機制：
-- **A 類錯誤**（工具執行異常）：局部重試最多 3 次
-- **B 類錯誤**（跨階段不一致）：升級全域迭代，上限 2 輪
-- **人工審核閘口**：Phase 01 逆向完成後，強制暫停等待使用者確認
-
----
-
-## 七、與現有框架的整合
-
-### 7.1 與 PDCA 閉環整合
-每個子 Skill 內部仍遵循 Planner → Generator → Evaluator 流程，只是 Planner 的規劃方向改為「逆向分析」。
-
-### 7.2 與 SSOT 整合
-Phase 01 逆向產出的 `executable_spec.yaml`、`requirements.feature`、`system_specification.md`、`traceability_matrix.md` 直接進入 SSOT 追溯鏈。
-
-### 7.3 與 Baseline 整合
-逆向完成後，自動觸發 `@baseline` 封存逆向成果。
-
-### 7.4 與 Security-Principles 整合
-逆向完成後，可透過 `@security-load` 導入資安防護基準。
-
----
-
-## 八、使用範例
-
-### 範例 1：完整逆向
-```
-使用者：@reverse D:/old_projects/legacy_app
-AI：偵測到舊專案原始碼，啟動逆向工程流程。
-    Phase 03 逆向：分析程式碼中...
-    Phase 02 逆向：反推設計文件中...
-    Phase 01 逆向：反推需求文件中...
-    逆向完成！已產出完整 SSOT 文件。
-    要繼續走順向流程（Phase 04~06）嗎？
-```
-
-### 範例 2：僅逆向部分階段
-```
-使用者：@reverse D:/old_projects/legacy_app --phase 03,02
-AI：僅執行 Phase 03 和 Phase 02 的逆向分析。
-```
-
-### 範例 3：口語觸發
-```
-使用者：幫我從這個舊專案的程式碼反推需求文件
-AI：偵測到逆向工程需求，啟動 @reverse 流程...
+```text
+@reverse D:/legacy_app
+@reverse D:/legacy_app --phase 03,02
+@reverse status
+@reverse stop
 ```

@@ -1950,3 +1950,26 @@ Phase 06：運維解析（順向）
 - memory.md
 
 ---
+
+## 逆向工程 Skill 補強 (2026-09-24)
+
+### 本次調整
+- 依 CORE_RULES.md 與 .agents/AGENTS.md 盤點並補強逆向工程主控 Skill、六個 Phase 子 Skill、六份 reverse IO YAML。
+- 統一 Phase 03→02→01 候選還原與 Phase 01 強制人工審核閘口；使用者確認後才進入 Phase 04→05→06 現況盤點。明確不新增 Phase 00。
+- 將來源專案設為唯讀；預設不執行程式碼、測試、建置或部署，不安裝依賴、不讀取/輸出機密值。要求證據引用、觀察/推論/待確認、信心與限制標記。
+- 校準各子 Skill 與 IO YAML 產物契約，修正測試執行預設、部署/維運盤點範圍及已發現的重複文字/語意偏差。
+- 同步 .agents/AGENTS.md、docs/commands_reference.md、README.md、skills/README.md、phase_gates.json 與待辦事項.md；將逆向設計待辦標為已修正，POC 留待後續。原有 Benson 待辦/資源未變更，未導入 Benson Skill。
+- 執行規章要求的 `python scripts/check_spec_integrity.py` 掃描；輸出 5 項通過、8 項既有缺失（requirements.feature 與六階段 spec_ref.md）、另有 1 項 02_system_design/outputs 缺失警告。
+
+### 變更檔案
+- `skills/00_cross_phase/reverse_engineering/SKILL.md`、六份子 Skill、六份 IO YAML；公開修改註記見 `docs/reverse_engineering_change_notes.md`
+- `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md`、`skills/README.md`、`待辦事項.md`、`memory.md`、`backups/BACKUP_MANIFEST.md`
+
+## 逆向工程 PR 合併前審查修正 (2026-09-24)
+
+- PR #2 審查指出逆向 IO 範本未接入 Mode E、缺少人工核准的機械狀態、Phase 04–06 可繞過閘口，以及無部署/維運設定時的必填產物矛盾。
+- 六份 YAML 增加 `phase`、`id`、專案相對 `path`，並在 `scripts/check_spec_integrity.py --mode E` 啟用 reverse 專用契約檢查；IO 管理關閉時只保留人工審核閘口。
+- `phase_gates.json` 與 `reverse_completion_summary.json` 以 `approval_status`、`approved_at` 同步；核准前阻擋 Phase 04–06。Phase 04–06 在 IO 管理啟用時要求 `spec_ref.md`。
+- 對齊 Phase 05 通用部署設定分析檔名，規定無部署/維運設定時仍產出可證實的空清單、缺口報告與待補說明；需求場景改為按聚合需求產生。
+- 修正 `.github/labeler.yml` 的無效頂層 `name` 欄位，PR 標題改用語義式 `docs:` 前綴。
+- 修正前公開基線為 Git commit `586e93c`；本機補強前備份仍保留於 `backups/reverse_engineering_pre_20260924-153000/`。

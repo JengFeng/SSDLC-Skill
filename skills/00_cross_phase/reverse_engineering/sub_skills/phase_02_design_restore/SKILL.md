@@ -2,6 +2,15 @@
 name: Reverse_Skill_DesignRestore
 description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單、API 路由、DB Schema）反推系統設計文件，包含 ER 圖、API Spec、系統架構圖、Use Case 圖。
 ---
+## 共通執行防線
+
+- 預設唯讀分析來源專案；不得修改、格式化、建置、安裝依賴、啟動服務或執行來源專案程式碼。測試執行須先取得使用者明確同意，並在隔離環境執行。
+- 不讀取或複製密鑰、token、私鑰、憑證、真實個資或 `.env` 值。只記錄檔案存在與變數名稱；輸出前遮蔽疑似敏感字串。
+- 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
+- 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
+- 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
+- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
+
 
 ## 一、定位
 
@@ -46,11 +55,11 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 ### Step 2：API Spec 反推
 
-從 `api_routes.json` 生成 API 規格：
+從 `api_routes.json` 生成 API 盤點；僅將有程式碼證據的欄位視為已觀察，未能確認的請求/回應 schema 標為未知：
 
 1. 整理路由清單（Method + Path + Handler）
 2. 從程式碼分析請求/回應結構
-3. 產出 OpenAPI 3.0 格式規格
+3. 有足夠證據才產出 OpenAPI 3.0 候選規格
 
 產出：
 - `api_spec.md`：API 規格文件（Markdown 格式）
@@ -73,7 +82,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 1. 從 API 路由識別使用者操作（CRUD）
 2. 從路由分組推角色（admin/user/guest）
-3. 使用 Mermaid `usecaseDiagram` 語法生成 Use Case 圖
+3. 使用 Mermaid `flowchart` 呈現角色與使用案例的關係；對無證據的角色標記「待確認」
 
 產出：
 - `use_case_diagram.md`：Use Case 圖
@@ -129,7 +138,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 - 驗證 Mermaid 語法正確性
 - 驗證 ER 圖欄位與 DB Schema 一致
 - 驗證 API Spec 與路由清單一致
-- 驗證架構圖模組與 module_list 一致
+- 驗證架構圖模組與 module_list 一致；檢查所有圖表與規格都有來源引用，推論標記清楚
 
 ---
 

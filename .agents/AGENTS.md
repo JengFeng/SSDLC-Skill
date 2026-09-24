@@ -677,6 +677,8 @@ outputs:
 
 使用者可透過 `io_files.override.yaml` 進行覆蓋，系統優先讀取覆蓋層。
 
+逆向工程的六份範本位於 `skills/00_cross_phase/reverse_engineering/io_files/phase_NN_reverse_io.yaml`，同樣使用 `id`、`path`、`required`；`path` 以目標專案根目錄為基準。啟用 `io_management.enabled` 且 `reverse_engineering.enabled` 時，`check_spec_integrity.py --mode E --phase NN --project <專案路徑>` 改讀這六份契約。未啟用 IO 管理時不檢查契約產物，但 Phase 04–06 的人工審核閘口仍由 Mode E 驗證。
+
 #### 12.3 指令規範
 
 | 指令 | 用途 | 口語觸發 |
@@ -966,6 +968,17 @@ AI：收到，我來幫你回報這個框架問題。
 
 ---
 
+#### @reverse — 既有專案唯讀逆向盤點
+
+* **指令定義**：`@reverse <專案路徑> [--phase 03,02,01,04,05,06]` 啟動完整或指定階段的逆向證據盤點；`@reverse status` 唯讀查詢進度；`@reverse stop` 停止後續工作並保留產物。`@reverse-code`、`@reverse-design`、`@reverse-requirements` 分別執行 Phase 03、02、01 局部盤點。
+* **口語觸發**：「逆向分析這個專案」「幫我從程式碼反推需求」「還原舊專案文件」「查看逆向進度」「中止逆向工程」。
+* **AI 代理執行步驟**：
+  1. 讀取 `skills/00_cross_phase/reverse_engineering/SKILL.md`、指定子 Skill 與對應 IO YAML；確認來源、輸出位置、排除範圍。
+  2. 預設唯讀掃描來源，不執行程式碼、測試、建置、部署或安裝依賴；不讀取/輸出密鑰、憑證與個資值。
+  3. 依 Phase 03→02→01 產生含證據引用、觀察/推論/待確認、信心與限制的候選產物；不得把反推結論冒充已確認需求。
+  4. Phase 01 產出候選需求後，將 `phase_gates.json` 與 `reverse_completion_summary.json` 的 `approval_status` 設為 `pending`；使用者明確核准才同步設為 `approved` 並寫入相同 `approved_at`。拒絕時設為 `rejected`、清除時間，修訂後回到 `pending`。
+  5. 執行任何 Phase 04–06 指令前，必須執行 `python scripts/check_spec_integrity.py --project <專案路徑> --mode E --phase NN` 驗證人工核准；未通過即拒絕執行。若啟用 IO 管理，也驗證逆向 IO 契約與各階段 `inputs/spec_ref.md`。不預先標記六階段完成。錯誤依 CORE_RULES.md 分級處理。
+
 #### @guide reverse — 逆向工程引導
 
 * **指令語法**：@guide reverse [專案路徑]
@@ -974,10 +987,10 @@ AI：收到，我來幫你回報這個框架問題。
     1. 確認使用者提供舊專案原始碼目錄路徑
     2. 偵測專案類型（語言、框架、結構）
     3. 呈現逆向工程五關卡引導：
-        * **關卡 1：專案確認** — 顯示偵測到的專案類型、語言、框架、檔案結構摘要
-        * **關卡 2：素材確認** — 確認原始碼、DDL、部署腳本、測試檔案等素材是否齊全
-        * **關卡 3：逆向範圍** — 選擇完整逆向（Phase 03→02→01→04→05→06）或指定階段
-        * **關卡 4：輸出確認** — 確認逆向產出物清單（自動帶入 io_files.yaml 預設值）
-        * **關卡 5：開始逆向** — 摘要顯示一切就緒，確認後啟動 @reverse 流程
-    4. 每個關卡完成後更新 phase_gates.json 的 reverse_engineering 區塊
-    5. 關卡 5 完成後自動觸發 @reverse [專案路徑]
+        * **關卡 1：專案確認** — 顯示偵測到的專案類型、語言、框架、檔案結構摘要；來源預設唯讀
+        * **關卡 2：素材確認** — 確認原始碼、DDL、部署腳本、測試檔案等素材；排除密鑰、憑證與個資值
+        * **關卡 3：逆向範圍** — 選擇 Phase 03→02→01 及經確認後的 Phase 04→05→06，或指定階段；說明 Phase 01 後有強制人工審核閘口
+        * **關卡 4：輸出確認** — 依 `skills/00_cross_phase/reverse_engineering/io_files/phase_NN_reverse_io.yaml` 確認各階段輸出與目的地
+        * **關卡 5：開始逆向** — 摘要顯示範圍、唯讀限制、輸出路徑與測試預設不執行；確認後啟動 @reverse 流程
+    4. 每個關卡完成後，僅在目標專案已有 `phase_gates.json` 且允許更新時，寫入 `reverse_engineering` 進度；不得預先將六階段標為完成
+    5. 關卡 5 確認後觸發 @reverse；Phase 01 需求候選必須暫停交由使用者審核，未確認不得解鎖或自動進入 Phase 04

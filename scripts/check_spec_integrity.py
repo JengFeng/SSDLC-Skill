@@ -15,6 +15,7 @@
 
 import os
 import sys
+import json
 import yaml
 import argparse
 from datetime import datetime
@@ -569,6 +570,102 @@ class SpecIntegrityChecker:
                 self.log("ERR", f"{p}/io_files.yaml 缺失")
 
 
+    def check_reverse_contract_io(self, gates):
+        """以專案根目錄為基準驗證逆向契約與人工審核閘口。"""
+        phase_order = ("03", "02", "01", "04", "05", "06")
+        reverse = gates.get("reverse_engineering", {})
+        completed = {str(p).zfill(2) for p in reverse.get("completed_phases", [])}
+        selected = [self.target_phase.zfill(2)] if self.target_phase else [
+            p for p in phase_order if p in completed or p == reverse.get("current_phase")
+        ]
+        if self.target_phase and selected[0] not in phase_order:
+            self.log("ERR", f"不支援的逆向階段: {self.target_phase}")
+            return
+
+        approval = reverse.get("approval_status", "not_started")
+        if approval not in ("not_started", "pending", "approved", "rejected"):
+            self.log("ERR", f"無效的逆向審核狀態: {approval}")
+            return
+        if "01" in completed and approval != "approved":
+            self.log("ERR", "Phase 01 已列為完成，但人工審核尚未核准")
+
+        if any(p in ("04", "05", "06") for p in selected):
+            if "01" not in completed:
+                self.log("ERR", "Phase 04–06 須先完成已核准的 Phase 01")
+            record = reverse.get("approval_record") or "outputs/phase_01_reverse/reverse_completion_summary.json"
+            record = str(record).replace("\\", "/")
+            if os.path.isabs(record) or record == ".." or record.startswith("../") or "/../" in record:
+                self.log("ERR", f"逆向審核紀錄路徑不安全: {record}")
+                record = "outputs/phase_01_reverse/reverse_completion_summary.json"
+            record_path = os.path.join(self.project_base, record)
+            try:
+                with open(record_path, encoding="utf-8") as f:
+                    summary = json.load(f)
+            except (OSError, ValueError) as exc:
+                self.log("ERR", f"逆向人工審核紀錄無法讀取: {exc}")
+                summary = {}
+            stamp = reverse.get("approved_at")
+            if approval == "approved" and stamp and summary.get("approval_status") == "approved" and summary.get("approved_at") == stamp:
+                self.log("OK", "Phase 01 人工審核狀態與摘要一致")
+            else:
+                self.log("ERR", "Phase 04–06 須先取得 Phase 01 人工核准，且 phase_gates.json 與摘要的審核狀態/時間一致")
+
+        if not gates.get("io_management", {}).get("enabled", False):
+            self.log("OK", "IO 管理未啟用；跳過逆向 IO 契約檢查（人工審核閘口仍生效）")
+            return
+
+        contract_dir = os.path.join(ROOT, "skills", "00_cross_phase", "reverse_engineering", "io_files")
+        contracts = {}
+        for phase in phase_order:
+            contract_path = os.path.join(contract_dir, f"phase_{phase}_reverse_io.yaml")
+            try:
+                with open(contract_path, encoding="utf-8") as f:
+                    contract = yaml.safe_load(f)
+                if not isinstance(contract, dict) or str(contract.get("phase")) != phase:
+                    raise ValueError("phase 欄位與檔名不一致")
+                for kind in ("inputs", "outputs"):
+                    items = contract.get(kind)
+                    if not isinstance(items, list):
+                        raise ValueError(f"{kind} 必須為清單")
+                    seen = set()
+                    for item in items:
+                        if not isinstance(item, dict) or not all(k in item for k in ("id", "path", "required")):
+                            raise ValueError(f"{kind} 項目缺少 id/path/required")
+                        path = str(item["path"]).replace("\\", "/")
+                        if not path or os.path.isabs(path) or path == ".." or path.startswith("../") or "/../" in path:
+                            raise ValueError(f"不安全的相對路徑: {path}")
+                        if item["id"] in seen:
+                            raise ValueError(f"重複 id: {item['id']}")
+                        seen.add(item["id"])
+                contracts[phase] = contract
+                self.log("OK", f"Phase {phase} 逆向 IO 契約可解析")
+            except (OSError, ValueError, yaml.YAMLError) as exc:
+                self.log("ERR", f"Phase {phase} 逆向 IO 契約無效: {exc}")
+
+        produced = {}
+        for phase in phase_order:
+            if phase not in contracts:
+                continue
+            for item in contracts[phase]["outputs"]:
+                produced[str(item["path"])] = phase
+        for phase in selected:
+            if phase not in contracts:
+                continue
+            for item in contracts[phase]["inputs"]:
+                if not item["required"]:
+                    continue
+                path = str(item["path"])
+                if path != "." and item["id"] != "spec_ref.md" and produced.get(path) not in phase_order[:phase_order.index(phase)]:
+                    self.log("ERR", f"Phase {phase} 必填輸入無上游產出: {item['id']} ({path})")
+                if not os.path.exists(os.path.join(self.project_base, path)):
+                    self.log("ERR", f"Phase {phase} 必填輸入不存在: {path}")
+        for phase in completed:
+            if phase not in contracts:
+                continue
+            for item in contracts[phase]["outputs"]:
+                if item["required"] and not os.path.exists(os.path.join(self.project_base, item["path"])):
+                    self.log("ERR", f"Phase {phase} 已完成但必填產出不存在: {item['path']}")
+
     def print_spec_summary(self):
         """輸出四規格摘要報告"""
         print("\n" + "=" * 60)
@@ -611,7 +708,16 @@ class SpecIntegrityChecker:
             print("\n" + "=" * 50)
             print("  Mode E：@io 跨階段契約勾稽")
             print("=" * 50)
-            self.check_contract_io()
+            gate_path = os.path.join(self.project_base, "phase_gates.json")
+            try:
+                with open(gate_path, encoding="utf-8") as f:
+                    gates = json.load(f)
+            except (OSError, ValueError):
+                gates = {}
+            if gates.get("reverse_engineering", {}).get("enabled", False):
+                self.check_reverse_contract_io(gates)
+            else:
+                self.check_contract_io()
 
         
         if self.mode == "S":
