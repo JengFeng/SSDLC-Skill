@@ -1,36 +1,61 @@
+phase: "03"
+mode: reverse_engineering
+path_base: project_root
 # Phase 03 逆向模式 IO；來源專案唯讀。
 inputs:
   - name: source_code_dir
+    id: source_code_dir
+    path: .
     description: 舊專案根目錄
     required: true
   - name: db_ddl_file
+    id: db_ddl_file
+    path: .
     description: 已提供的 DDL；不存在時嘗試從 ORM 靜態分析
     required: false
   - name: language_hint
+    id: language_hint
+    path: .
     description: 語言/框架提示；省略則依可見檔案偵測
     required: false
 outputs:
   - name: scan_report.json
+    id: scan_report.json
+    path: outputs/phase_03_reverse/scan_report.json
     description: 掃描範圍、排除項、語言與限制
     required: true
   - name: module_list.json
+    id: module_list.json
+    path: outputs/phase_03_reverse/module_list.json
     description: 模組清單與來源位置
     required: true
   - name: class_function_list.json
+    id: class_function_list.json
+    path: outputs/phase_03_reverse/class_function_list.json
     description: 類別、函數與來源位置
     required: true
   - name: api_routes.json
+    id: api_routes.json
+    path: outputs/phase_03_reverse/api_routes.json
     description: 可靜態辨識的路由與來源位置
     required: true
   - name: db_schema_raw.sql
+    id: db_schema_raw.sql
+    path: outputs/phase_03_reverse/db_schema_raw.sql
     description: 有證據可還原時產出的候選 DDL
     required: false
   - name: table_list.json
+    id: table_list.json
+    path: outputs/phase_03_reverse/table_list.json
     description: 可辨識資料表、欄位與來源位置；未知欄位不得猜測
     required: true
   - name: dependency_list.json
+    id: dependency_list.json
+    path: outputs/phase_03_reverse/dependency_list.json
     description: 依賴名稱/版本及 manifest 來源；不安裝依賴
     required: true
   - name: code_analysis.md
+    id: code_analysis.md
+    path: outputs/phase_03_reverse/code_analysis.md
     description: 分析摘要、證據引用、信心與限制
     required: true

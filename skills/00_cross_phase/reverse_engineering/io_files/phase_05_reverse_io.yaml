@@ -1,27 +1,52 @@
+phase: "05"
+mode: reverse_engineering
+path_base: project_root
 # Phase 05 部署現況盤點；不得部署或讀取機密值。
 inputs:
   - name: source_code_dir
+    id: source_code_dir
+    path: .
     description: 舊專案根目錄（唯讀）
     required: true
   - name: deployment_configs
+    id: deployment_configs
+    path: .
     description: 偵測 Docker/Kubernetes/IIS/雲端等部署檔（若有）
     required: false
   - name: dependency_manifests
+    id: dependency_manifests
+    path: .
     description: 依賴/建置 manifest（若有）
     required: false
+  - name: spec_ref.md
+    id: spec_ref.md
+    path: 05_deployment/inputs/spec_ref.md
+    description: 已核准 SSOT 的階段參照，人工審核後建立
+    required: true
+
 outputs:
   - name: deploy_files_manifest.json
+    id: deploy_files_manifest.json
+    path: outputs/phase_05/deploy_files_manifest.json
     description: 部署與建置檔清單及路徑
     required: true
-  - name: docker_analysis.md
-    description: 存在 Dockerfile 時的靜態分析；否則略過
+  - name: deployment_config_analysis.md
+    id: deployment_config_analysis.md
+    path: outputs/phase_05/deployment_config_analysis.md
+    description: 存在任一部署設定時產出的靜態分析；否則略過
     required: false
   - name: deployment_topology.md
+    id: deployment_topology.md
+    path: outputs/phase_05/deployment_topology.md
     description: 從配置證據整理的拓撲及未知項
     required: true
   - name: build_manifest.json
+    id: build_manifest.json
+    path: outputs/phase_05/build_manifest.json
     description: 建置步驟/依賴的觀察或推論摘要，不執行建置
     required: true
   - name: deployment_report.md
+    id: deployment_report.md
+    path: outputs/phase_05/deployment_report.md
     description: 部署現況、證據、敏感值遮蔽與限制
     required: true

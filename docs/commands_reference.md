@@ -90,7 +90,7 @@
 | **`@guide off`** | 無 | 退出引導模式，已完成項目保持不變。口語觸發：「關閉引導」「停止引導」。 | `@guide off` |
 | **`@guide status`** | 無 | 查看當前階段引導進度（已完成/待完成關卡）。口語觸發：「引導進度」「我做到哪裡了」。 | `@guide status` |
 | **`@guide next`** | 無 | 跳過/完成當前步驟，前進下一個引導步驟。口語觸發：「下一步」「跳過這步」。 | `@guide next` |
-| **`@reverse <專案路徑> [--phase 03,02,01,04,05,06]`** | 專案路徑；可選指定階段 | 唯讀盤點既有專案。Phase 03→02→01 產生候選基線；Phase 01 後必須人工確認，才可繼續盤點 04→05→06。預設不執行測試/建置/部署、不讀取機密值。口語觸發：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」。 | `@reverse D:/old_app --phase 03,02,01` |
+| **`@reverse <專案路徑> [--phase 03,02,01,04,05,06]`** | 專案路徑；可選指定階段 | 唯讀盤點既有專案。Phase 03→02→01 產生候選基線；Phase 01 後人工審核狀態同步寫入 `phase_gates.json` 與完成摘要。執行任何 04–06 指令前先用 Mode E 驗證核准狀態；啟用 IO 管理時也驗證逆向契約。預設不執行測試/建置/部署、不讀取機密值。口語觸發：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」。 | `@reverse D:/old_app --phase 03,02,01` |
 | **`@reverse status` / `@reverse stop`** | 無 | 唯讀顯示逆向進度 / 停止後續工作並保留既有產物。 | `@reverse status` |
 | **`@reverse-code <專案路徑>`** | 專案路徑 | 僅執行 Phase 03 靜態程式碼盤點。 | `@reverse-code D:/old_app` |
 | **`@reverse-design <Phase 03 產出>`** | Phase 03 產出目錄 | 僅執行 Phase 02 設計候選還原。 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |

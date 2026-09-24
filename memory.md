@@ -1964,3 +1964,12 @@ Phase 06：運維解析（順向）
 ### 變更檔案
 - `skills/00_cross_phase/reverse_engineering/SKILL.md`、六份子 Skill、六份 IO YAML；公開修改註記見 `docs/reverse_engineering_change_notes.md`
 - `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md`、`skills/README.md`、`待辦事項.md`、`memory.md`、`backups/BACKUP_MANIFEST.md`
+
+## 逆向工程 PR 合併前審查修正 (2026-09-24)
+
+- PR #2 審查指出逆向 IO 範本未接入 Mode E、缺少人工核准的機械狀態、Phase 04–06 可繞過閘口，以及無部署/維運設定時的必填產物矛盾。
+- 六份 YAML 增加 `phase`、`id`、專案相對 `path`，並在 `scripts/check_spec_integrity.py --mode E` 啟用 reverse 專用契約檢查；IO 管理關閉時只保留人工審核閘口。
+- `phase_gates.json` 與 `reverse_completion_summary.json` 以 `approval_status`、`approved_at` 同步；核准前阻擋 Phase 04–06。Phase 04–06 在 IO 管理啟用時要求 `spec_ref.md`。
+- 對齊 Phase 05 通用部署設定分析檔名，規定無部署/維運設定時仍產出可證實的空清單、缺口報告與待補說明；需求場景改為按聚合需求產生。
+- 修正 `.github/labeler.yml` 的無效頂層 `name` 欄位，PR 標題改用語義式 `docs:` 前綴。
+- 修正前公開基線為 Git commit `586e93c`；本機補強前備份仍保留於 `backups/reverse_engineering_pre_20260924-153000/`。

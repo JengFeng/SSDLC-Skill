@@ -9,7 +9,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 - 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
 - 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
 - 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
-- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。Evaluator 依 IO YAML 驗證必要產物與來源追溯。
+- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
 
 
 ## 一、定位
@@ -58,7 +58,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 將功能需求轉為行為化規格：
 
-1. 每個 API 端點生成對應的 Gherkin 場景
+1. 每項已依證據聚合的候選需求生成對應 Gherkin 場景；端點只作為追溯來源，不逐端點硬拆場景
 2. 每個 Use Case 生成 Happy Path + Edge Case
 3. 使用 Given-When-Then 格式
 
@@ -89,8 +89,8 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 1. 標記所有逆向產出為 `reverse_engineered`
 2. 產出逆向工程摘要報告
-3. 詢問使用者是否確認逆向成果
-4. 確認後切換至順向流程
+3. 將 `reverse_completion_summary.json` 與 `phase_gates.json` 的 `approval_status` 設為 `pending`，`approved_at` 設為 `null`，詢問使用者是否確認逆向成果
+4. 使用者明確確認後，兩檔同步設為 `approved` 並寫入相同的 `approved_at` ISO 時間；此時才把 Phase 01 加入 `completed_phases`，建立 Phase 04–06 的 `inputs/spec_ref.md` 指向已核准 SSOT。拒絕時設 `rejected` 並清除核准時間；修訂後回到 `pending`
 
 產出：
 - `reverse_engineering_report.md`：逆向工程完成報告
@@ -108,7 +108,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 | `system_specification.md` | 系統規格書（IEEE 830） | SSOT 追溯鏈 |
 | `traceability_matrix.md` | 需求追溯矩陣 | SSOT 追溯鏈 |
 | `reverse_engineering_report.md` | 逆向工程完成報告 | 使用者 |
-| `reverse_completion_summary.json` | 完成狀態摘要 | 主控 Orchestrator |
+| `reverse_completion_summary.json` | 候選／人工審核狀態摘要（含 approval_status、approved_at） | 主控 Orchestrator |
 
 ---
 

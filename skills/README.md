@@ -8,7 +8,7 @@
 本階段技能用於專案初期的需求釐清、文件協作、數據處理、提案報價與內部資訊傳遞。
 
 
-*   **[[73] reverse_engineering](00_cross_phase/reverse_engineering)**：逆向工程主控 Orchestrator。對既有專案進行唯讀證據分析，從 Phase 03 往回推至 Phase 01 產生候選基線，經人工審核後再盤點 Phase 04~06；不執行來源程式碼或修改來源。包含六個子 Skill：Phase 03 程式碼分析、Phase 02 設計反推、Phase 01 需求反推、Phase 04 測試整合、Phase 05 部署解析、Phase 06 運維解析。
+*   **[[73] reverse_engineering](00_cross_phase/reverse_engineering)**：逆向工程主控 Orchestrator。對既有專案進行唯讀證據分析，從 Phase 03 往回推至 Phase 01 產生候選基線，經人工審核後再盤點 Phase 04~06；不執行來源程式碼或修改來源。包含六個子 Skill：Phase 03 程式碼分析、Phase 02 設計反推、Phase 01 需求反推、Phase 04 既有測試盤點、Phase 05 部署設定盤點、Phase 06 維運現況盤點。
     *   **追溯來源**：本專案自行設計（2026-08-07）
     *   **指令**：@reverse [專案路徑]、@reverse-code、@reverse-design、@reverse-requirements
     *   **口語觸發**：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」

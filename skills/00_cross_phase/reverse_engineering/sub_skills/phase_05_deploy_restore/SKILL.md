@@ -9,7 +9,7 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 - 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
 - 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
 - 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
-- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。Evaluator 依 IO YAML 驗證必要產物與來源追溯。
+- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
 
 
 ## 一、定位
@@ -49,12 +49,12 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 ### Step 2：部署設定靜態解析
 
 依存在的部署設定靜態解析（Dockerfile、compose、Kubernetes、IIS 或其他）；不執行建置/部署，不連線外部環境：
-1. 解析基礎映像、建置階段、公開埠號
-2. 記錄環境變數名稱、Volume 掛載；遮蔽所有值
-3. 產出容器配置摘要
+1. 依實際存在的檔案解析服務、建置步驟、埠號與外部依賴；容器欄位僅在 Docker 設定存在時記錄
+2. 記錄環境變數名稱與掛載；遮蔽所有值
+3. 產出部署設定摘要並標記未能確認的項目
 
 產出：
-- `docker_analysis.md`：部署設定分析報告
+- `deployment_config_analysis.md`：存在部署設定時的靜態分析報告
 
 ### Step 3：部署拓撲圖生成
 
@@ -85,7 +85,7 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 | 檔案 | 說明 |
 |:-----|:-----|
 | `deploy_files_manifest.json` | 部署檔案清單 |
-| `docker_analysis.md` | 部署設定分析報告 |
+| `deployment_config_analysis.md` | 部署設定分析報告（有設定時） |
 | `deployment_topology.md` | 部署拓撲圖 |
 | `build_manifest.json` | 建置清單 |
 | `deployment_report.md` | 部署逆向整合報告 |
@@ -96,6 +96,6 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 
 | 錯誤類型 | 處理方式 |
 |:---------|:---------|
-| 無部署檔案 | 標註為無部署配置，跳過本階段 |
+| 無部署檔案 | 仍產出 `deploy_files_manifest.json`（空清單）、`deployment_topology.md`（無可證實拓撲）、`build_manifest.json`（無可證實建置步驟）及 `deployment_report.md`（缺口）；只略過可選的設定分析 |
 | Dockerfile 語法異常 | 僅解析可識別的部分 |
 | K8s 配置不完整 | 標註已識別的服務，其餘標記待補 |

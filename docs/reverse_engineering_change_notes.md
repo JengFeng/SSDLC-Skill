@@ -20,10 +20,12 @@
 3. **Phase 01 人工審核**：SSOT 四規格先以候選稿產出；使用者確認前，不解鎖下游、不標記已核准、不建立已驗證 Baseline。
 4. **Phase 04–06 現況盤點**：整理既有測試、部署與維運素材；缺少證據時標示未知，不產生虛構的覆蓋率、環境參數或操作步驟。
 5. **敏感資料**：只記錄設定檔存在與必要的變數名稱，不讀取或輸出密鑰、憑證及個資值。
+6. **可檢查的契約**：逆向 IO 範本加入 `id` 與專案相對 `path`，由 `check_spec_integrity.py --mode E` 在啟用 IO 管理時驗證。Phase 04–06 的人工核准閘口始終生效。
 
 ## 驗證與後續
 
 - 六份 IO YAML 與 `phase_gates.json` 皆可解析；`git diff --check` 通過。
+- PR 審查補強後，使用臨時專案驗證 Phase 01 待審核／已核准、IO 未啟用／已啟用，以及缺少 `spec_ref.md` 的閘口行為。
 - `python scripts/check_spec_integrity.py` 全掃描結果：5 項通過、8 項缺失。缺少 `specs/features/requirements.feature` 與 00–06 階段的 `inputs/spec_ref.md`；另警告 `02_system_design/outputs` 不存在。這些是目前框架根目錄的既有缺項，尚須另行處理。
 - 小型既有專案 POC 尚未執行，因此本次只驗證文件與設定一致性，尚未驗證實際專案的還原品質。
 - 本次未引入 Benson Skill。

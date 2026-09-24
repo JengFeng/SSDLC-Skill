@@ -677,6 +677,8 @@ outputs:
 
 使用者可透過 `io_files.override.yaml` 進行覆蓋，系統優先讀取覆蓋層。
 
+逆向工程的六份範本位於 `skills/00_cross_phase/reverse_engineering/io_files/phase_NN_reverse_io.yaml`，同樣使用 `id`、`path`、`required`；`path` 以目標專案根目錄為基準。啟用 `io_management.enabled` 且 `reverse_engineering.enabled` 時，`check_spec_integrity.py --mode E --phase NN --project <專案路徑>` 改讀這六份契約。未啟用 IO 管理時不檢查契約產物，但 Phase 04–06 的人工審核閘口仍由 Mode E 驗證。
+
 #### 12.3 指令規範
 
 | 指令 | 用途 | 口語觸發 |
@@ -974,8 +976,8 @@ AI：收到，我來幫你回報這個框架問題。
   1. 讀取 `skills/00_cross_phase/reverse_engineering/SKILL.md`、指定子 Skill 與對應 IO YAML；確認來源、輸出位置、排除範圍。
   2. 預設唯讀掃描來源，不執行程式碼、測試、建置、部署或安裝依賴；不讀取/輸出密鑰、憑證與個資值。
   3. 依 Phase 03→02→01 產生含證據引用、觀察/推論/待確認、信心與限制的候選產物；不得把反推結論冒充已確認需求。
-  4. Phase 01 完成後強制暫停，呈現候選需求與缺口請使用者審核；未確認不得標記通過、建立已驗證 Baseline、解鎖或自動進入 Phase 04。
-  5. 僅在審核確認後按序盤點 Phase 04→05→06；依 `phase_gates.json` 實況更新逆向進度，不預先標記六階段完成。錯誤依 CORE_RULES.md 分級處理。
+  4. Phase 01 產出候選需求後，將 `phase_gates.json` 與 `reverse_completion_summary.json` 的 `approval_status` 設為 `pending`；使用者明確核准才同步設為 `approved` 並寫入相同 `approved_at`。拒絕時設為 `rejected`、清除時間，修訂後回到 `pending`。
+  5. 執行任何 Phase 04–06 指令前，必須執行 `python scripts/check_spec_integrity.py --project <專案路徑> --mode E --phase NN` 驗證人工核准；未通過即拒絕執行。若啟用 IO 管理，也驗證逆向 IO 契約與各階段 `inputs/spec_ref.md`。不預先標記六階段完成。錯誤依 CORE_RULES.md 分級處理。
 
 #### @guide reverse — 逆向工程引導
 

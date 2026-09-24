@@ -1,36 +1,67 @@
+phase: "04"
+mode: reverse_engineering
+path_base: project_root
 # Phase 04 既有測試盤點；執行測試須另獲明確同意。
 inputs:
   - name: source_code_dir
+    id: source_code_dir
+    path: .
     description: 舊專案根目錄（唯讀）
     required: true
   - name: module_list.json
+    id: module_list.json
+    path: outputs/phase_03_reverse/module_list.json
     description: Phase 03 模組清單
     required: true
   - name: existing_tests_dir
+    id: existing_tests_dir
+    path: .
     description: 現有測試目錄（自動偵測）
     required: false
   - name: requirements.feature
-    description: 已人工確認的候選規格（若已確認）
-    required: false
+    id: requirements.feature
+    path: outputs/phase_01_reverse/requirements.feature
+    description: Phase 01 已人工核准的行為規格
+    required: true
+  - name: spec_ref.md
+    id: spec_ref.md
+    path: 04_testing/inputs/spec_ref.md
+    description: 已核准 SSOT 的階段參照，人工審核後建立
+    required: true
+
 outputs:
   - name: existing_tests.json
+    id: existing_tests.json
+    path: outputs/phase_04/existing_tests.json
     description: 測試檔/案例靜態盤點
     required: true
   - name: test_framework_report.json
+    id: test_framework_report.json
+    path: outputs/phase_04/test_framework_report.json
     description: 測試框架偵測與是否執行測試
     required: true
   - name: coverage_report.md
+    id: coverage_report.md
+    path: outputs/phase_04/coverage_report.md
     description: 僅在授權執行且工具可用時產生的覆蓋率報告
     required: false
   - name: uncovered_modules.json
+    id: uncovered_modules.json
+    path: outputs/phase_04/uncovered_modules.json
     description: 根據有效覆蓋率證據整理的缺口
     required: false
   - name: test_gap_analysis.md
+    id: test_gap_analysis.md
+    path: outputs/phase_04/test_gap_analysis.md
     description: 測試存在性/斷言/邊界情況缺口分析
     required: true
   - name: missing_tests.json
+    id: missing_tests.json
+    path: outputs/phase_04/missing_tests.json
     description: 尚未覆蓋項目；不得新增測試程式
     required: true
   - name: test_restoration_report.md
+    id: test_restoration_report.md
+    path: outputs/phase_04/test_restoration_report.md
     description: 測試現況、執行授權、結果與限制
     required: true
