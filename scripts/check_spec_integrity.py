@@ -689,7 +689,7 @@ class SpecIntegrityChecker:
             print()
 
     def run(self):
-        mode_names = {"A":"規格存在性","B":"產出一致性","C":"追溯鏈","D":"全掃描","E":"@io 跨階段契約","E":"@io 跨階段契約","S":"@CheckSpec 四規格"}
+        mode_names = {"A":"規格存在性","B":"產出一致性","C":"追溯鏈","D":"全掃描","E":"@io 跨階段契約","S":"@CheckSpec 四規格"}
         print(f"SSOT 規格完整性檢查 - {datetime.now().isoformat()}")
         print(f"   模式: {self.mode} ({mode_names.get(self.mode, self.mode)}) | 目標階段: {self.target_phase or '全部'}")
         print("=" * 50)

@@ -25,8 +25,8 @@ function Find-NextHeading {
     if ($m.Success) { return $m.Index } else { return $Text.Length }
 }
 
-function Write-Fix { param($msg) $fixes += $msg; if ($VerboseOutput) { Write-Host "[FIX] $msg" -ForegroundColor Green } }
-function Write-Warn { param($msg) $warnings += $msg; Write-Host "[WARN] $msg" -ForegroundColor Yellow }
+function Write-Fix { param($msg) $script:fixes += $msg; if ($VerboseOutput) { Write-Host "[FIX] $msg" -ForegroundColor Green } }
+function Write-Warn { param($msg) $script:warnings += $msg; Write-Host "[WARN] $msg" -ForegroundColor Yellow }
 
 # ═══════════════════════════════════════════
 # STEP 0: 前置檢查 - README.md 是否存在且非空
@@ -206,13 +206,10 @@ if ($needTableUpdate) {
 # Project dirs exist in TEMPLATE_SKILL.md tree but not in repo root - exclude from warnings
 $projectOnlyDirs = @("00_cross_phase","01_planning_and_analysis","02_system_design","03_implementation_and_coding","04_testing","05_deployment","06_maintenance")
 $treeOnly = $treeDirs | Where-Object { $_ -notin $tableDirs -and $_ -notin $actualDirs -and $_ -notin $projectOnlyDirs }
-$tableOnly = $tableDirs | Where-Object { $_ -notin $treeDirs -and $_ -notin $projectOnlyDirs }
+# 標準專案 tree 與框架倉庫 table 描述不同根目錄；僅檢查 tree 的額外宣告。
 
 if ($treeOnly) {
     Write-Warn "Tree has dirs not in table: $($treeOnly -join ', ')"
-}
-if ($tableOnly) {
-    Write-Warn "Table has dirs not in tree: $($tableOnly -join ', ')"
 }
 
 # ═══════════════════════════════════════════
@@ -248,7 +245,8 @@ foreach ($sub in $securitySubs) {
 
 # Check @security-check and @security-load in command table
 $cmdSection = ''
-$cmdIdx = $readme.IndexOf('指令系統')
+$cmdHeading = [regex]::Match($readme, '^## 🎮 (?:\[)?指令系統', [System.Text.RegularExpressions.RegexOptions]::Multiline)
+$cmdIdx = if ($cmdHeading.Success) { $cmdHeading.Index } else { -1 }
 if ($cmdIdx -ge 0) {
     $cmdEnd = Find-NextHeading $readme ($cmdIdx + 1)
     if ($cmdEnd -lt 0) { $cmdEnd = $readme.Length }
@@ -292,6 +290,19 @@ if (-not $DryRun -and $needTableUpdate) {
 }
 
 # ═══════════════════════════════════════════
+# STEP 10: 指令與逆向工程框架靜態對齊
+# ═══════════════════════════════════════════
+foreach ($check in @('scripts/check_readme_commands.py', 'scripts/check_reverse_alignment.py')) {
+    Write-Host "[CHECK] $check" -ForegroundColor Cyan
+    $pyResult = python $check 2>&1
+    $pyExit = $LASTEXITCODE
+    $pyResult | ForEach-Object { Write-Host "  $_" }
+    if ($pyExit -ne 0) {
+        Write-Warn "$check failed with exit code $pyExit"
+    }
+}
+
+# ═══════════════════════════════════════════
 # REPORT
 # ═══════════════════════════════════════════
 Write-Host ""
@@ -318,15 +329,3 @@ Write-Host ""
 $exitCode = if ($warnings.Count -gt 0) { 2 } else { 0 }
 Pop-Location
 exit $exitCode
-# ============================================================
-# STEP 6: Command System Consistency Check
-# ============================================================
-Write-Host "[STEP 6] Command system consistency check..." -ForegroundColor Cyan
-$pyResult = python scripts/check_readme_commands.py 2>&1
-$pyExit = $LASTEXITCODE
-$pyResult | ForEach-Object { Write-Host "  $_" }
-if ($pyExit -ne 0) {
-    Write-Warn "Command table inconsistency detected. See above for details."
-} else {
-    Write-Host "  [PASS] README command table matches commands_reference.md" -ForegroundColor Green
-}

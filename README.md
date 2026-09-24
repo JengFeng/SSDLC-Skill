@@ -179,7 +179,13 @@
 | `@io set [phase]` | 互動式設定階段 IO 檔案 | `@io set 03` |
 | `@io diff [A] [B]` | 比對兩個階段 IO 檔案差異 | `@io diff 02 03` |
 | `@io list [phase]` | 列出各階段預設 IO 速查表 | `@io list` |
-| `@optimize [--incremental] [--files]` | ⚠️ 框架建造者專用（需 `@role builder`）：執行全案關聯檢查。`--incremental` 僅檢查異動檔案（口語：「執行增量架構對齊」）；`--files` 指定檔案檢查 | `@optimize --incremental` |
+| `@optimize [--incremental] [--files]` | ⚠️ 框架建造者專用（需 `@role builder`）：執行全案關聯檢查，包含指令表及逆向工程 Skill/IO/審核規範靜態對齊。`--incremental` 僅檢查異動檔案（口語：「執行增量架構對齊」）；`--files` 指定檔案檢查 | `@optimize --incremental` |
+| `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` | 唯讀還原 Phase 03→02→01 候選基線；人工核准後才盤點 Phase 04→05→06 | `@reverse D:/old_app` |
+| `@reverse status` / `@reverse stop` | 唯讀查看進度／停止後續流程並保留既有產物 | `@reverse status` |
+| `@reverse-code <專案路徑>` | 靜態盤點 Phase 03 程式碼 | `@reverse-code D:/old_app` |
+| `@reverse-design <Phase 03 產出>` | 從程式碼證據反推 Phase 02 設計 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |
+| `@reverse-requirements <Phase 02 產出>` | 產生 Phase 01 候選需求，交由使用者審核 | `@reverse-requirements D:/old_app/outputs/phase_02_reverse` |
+| `@guide reverse <專案路徑>` | 引導式逆向工程，含 Phase 01 人工審核閘口 | `@guide reverse D:/old_app` |
 | `@restore [latest|N|timestamp]` | 回溯工作目錄至指定快照（SHA-256 驗證 + git diff 補丁還原） | `@restore latest` |
 | `@role [builder/developer]` | 切換使用者角色：`builder`（框架建造者）/ `developer`（專案開發者，預設）。💡 自我管理機制：`@init` 預設 `developer`，需調整框架時切到 `builder`，改完切回。⚠️ **四條核心規則**：① 框架歸框架（builder 只能修正框架根目錄）② 專案歸專案（專案指令不觸及框架）③ 反饋走待辦（專案發現框架問題記錄到 `待辦事項.md`）④ 目錄辨識（AI 自動掃描 `docs/` 下框架專屬檔案判斷目錄類型）。 | `@role builder` |
 | `@security-check [general|medium|high]` | 載入資安防護基準檢核表，逐項比對並產出報告 | `@security-check medium` |
@@ -520,6 +526,8 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `system_specification.md` | 系統功能規格書 SRS（IEEE 830 標準） |
 | `traceability_matrix.md` | 全域需求追溯矩陣（RTM，六階段對應） |
 | `待辦事項.md` | 未來需求與待辦清單 |
+| `專案逆向工程skill設計構想討論內容.md` | 逆向工程原始設計討論記錄 |
+
 ## 📝 近期更新記錄（2026-07-08）
 
 ### 🏗️ 架構強化
@@ -599,3 +607,5 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 `skills/00_cross_phase/reverse_engineering/`
 
 本次補強的修改理由、檔案對照與驗證結果見 [逆向工程 Skill 補強註記](docs/reverse_engineering_change_notes.md)。
+
+核心執行規範見 [CORE_RULES.md](docs/CORE_RULES.md) 第 8-3 節；修改後可執行 `python scripts/check_reverse_alignment.py` 核對規章、指令、六階段 Skill/IO 與審核設定。

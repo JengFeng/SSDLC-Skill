@@ -450,6 +450,14 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 - `io_files.yaml` 定義**檔案層級**的輸入輸出依存關係
 - 兩者共同構成 SSOT 的完整追溯鏈
 
+#### 8-3. 逆向工程的檔案與審核契約
+
+1. 逆向工程是 `skills/00_cross_phase/reverse_engineering/` 的跨階段 Skill，沿用 Phase 01–06，不新增 Phase 00。先以 Phase 03→02→01 還原候選基線；Phase 01 人工確認後，才可進入 Phase 04→05→06 現況盤點。
+2. 來源專案須保持唯讀。預設不執行來源程式碼、測試、建置或部署，不安裝依賴，也不讀取或輸出機密值；每項結論須標示來源證據、觀察與推論、信心及限制。
+3. Phase 01 候選需求尚未經使用者明確核准時，不得當作已核准 SSOT。`phase_gates.json` 與 `outputs/phase_01_reverse/reverse_completion_summary.json` 的 `approval_status` 及 `approved_at` 須一致；Phase 04–06 無論是否啟用 IO 管理，均須先經 Mode E 驗證審核閘口。
+4. 六份 `phase_NN_reverse_io.yaml` 應與六個子 Skill 產物清單對齊。每筆輸入與輸出須有穩定 `id`、以目標專案根目錄為基準的 `path` 及布林值 `required`；下游必填輸入應可追溯到上游輸出或明確的人工確認參照。只有 `io_management.enabled=true` 時，才以 Mode E 驗證逆向 IO 產物；審核閘口不受此開關影響。
+5. 修改逆向指令、核心規範、Skill 或 IO 契約時，須同步核對根 `AGENTS.md`、`.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md`、`docs/Harness_Optimization_SKILL.md` 與檢查腳本；執行 `python scripts/check_reverse_alignment.py` 檢查框架範本的一致性。此靜態檢查不替代針對目標專案的 Mode E 驗證。
+
 
 
 

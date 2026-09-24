@@ -5,7 +5,7 @@
 #### ⭐ 指令集查詢與框架優化
 
 - 說出「**讀取指令集**」、「**查詢可用指令**」或「**叫出指令對照表**」→ AI 代理自動呈獻此參照表。
-- 說出「**幫我執行駕馭工程框架優化檢查**」、「**Harness Optimization**」、「**對齊所有**」、「**對齊架構**」、「**幫我對齊架構**」、「**檢查全案關聯**」、「**規範落實度檢查**」或「**CORE_RULES 落差掃描**」→ ⚠️ 框架建造者專用。AI 代理將顯示警告提示，確認後依序執行 10 大檢查組（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性地毯式檢查與修復。
+- 說出「**幫我執行駕馭工程框架優化檢查**」、「**Harness Optimization**」、「**對齊所有**」、「**對齊架構**」、「**幫我對齊架構**」、「**檢查全案關聯**」、「**規範落實度檢查**」或「**CORE_RULES 落差掃描**」→ ⚠️ 框架建造者專用。AI 代理將顯示警告提示，確認後依序執行 Harness Optimization 的 16 組檢查點（含 CORE_RULES 規範 vs 實際落實落差掃描）的全域檔案關聯性檢查與修復。
 - 說出「**執行增量架構對齊**」、「**只對異動檔案做架構對齊**」或「**增量檢查框架**」→ AI 代理自動執行 `@optimize --incremental`，僅對 Git diff 異動檔案及其關聯檔案執行檢查，大幅降低 Token 消耗。
 - 說出「**切換角色**」、「**我是建造者**」或「**我是開發者**」→ AI 代理自動執行 `@role`，切換使用者角色。`builder` 可執行 `@optimize`、`@unlock`；`developer` 為預設角色，僅允許一般指令。新專案 `@init` 時預設為 `developer`，需調整框架時切到 `builder`，改完切回。
 
@@ -108,7 +108,7 @@
 | **`@io list [phase]`** | phase: `00`~`06`，省略 = 全顯示 | 列出各階段預設 IO 速查表，供快速瀏覽與選取。 | `@io list` |
 | **`@io set [phase]`** | phase: `00`~`06` | 互動式設定階段 IO 檔案。顯示編號清單，使用者勾選保留項目。 | `@io set 03` |
 | **`@io show [phase]`** | phase: `00`~`06` | 檢視指定階段的 IO 檔案清單（inputs / outputs）。 | `@io show 03` |
-| **`@optimize [--incremental] [--files <清單>]`** | 無：全量 / `--incremental`：增量 / `--files`：指定檔案 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描，再執行 10 大檢查組。`--incremental` 透過 Git diff 僅檢查異動檔案及其關聯檔案；`--files` 僅對指定檔案執行關聯檢查。**需 `@role builder` 方可執行。** 口語觸發：「對齊架構」「執行增量架構對齊」「只對異動檔案做架構對齊」。 | `@optimize --incremental` |
+| **`@optimize [--incremental] [--files <清單>]`** | 無：全量 / `--incremental`：增量 / `--files`：指定檔案 | ⚠️ **框架建造者專用**。觸發 Harness Optimization。先執行 `scripts/align_framework.ps1` 動態掃描、指令表及逆向工程 Skill/IO/審核規範靜態對齊，再執行其餘檢查組。`--incremental` 透過 Git diff 僅檢查異動檔案及其關聯檔案；`--files` 僅對指定檔案執行關聯檢查。**需 `@role builder` 方可執行。** 口語觸發：「對齊架構」「執行增量架構對齊」「只對異動檔案做架構對齊」。 | `@optimize --incremental` |
 | **`@restore`** | `latest` / `N`（1~5） / `YYYYMMDD-HHMMSS` | 回溯工作目錄至指定執行快照。自動 `git stash` 保留未提交變更 → `git apply` 載入差異補丁 → SHA-256 驗證還原完整性。口語觸發：「回溯快照」「還原快照」「退回上一步」。 | `@restore latest` |
 | **`@role [builder/developer]`** | `builder` / `developer` / 無參數=顯示當前角色 | 切換使用者角色。`builder` 可執行 `@optimize`、`@unlock`；`developer` 為預設角色，僅允許一般指令。`@init` 時預設為 `developer`。口語觸發：「切換角色」「我是建造者」「我是開發者」。 | `@role builder` |
 | **`@security-check [等級]`** | `general` / `medium` / `high` | 載入對應等級之資安防護基準檢核表（Security-Principles Skill），根據當前 SSDLC 階段篩選適用構面，**參照 `check_scope_per_domain.md` 逐項比對**系統產出是否符合控制措施要求，產出 `outputs/security_check_report.md`（**報告格式參照 `security_check_report_template.md`**）。構面 8（非軟體因子）在軟體專案中預設標記為不適用。**⚠️ 檢核報告強制包含階段性限制免責聲明**：非軟體因素導致未符合之項目須明確標註原因。口語觸發：「執行資安檢核」「資通安全稽核」「以普級防護基準檢查」。 | `@security-check medium` |

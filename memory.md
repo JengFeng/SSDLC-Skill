@@ -1973,3 +1973,11 @@ Phase 06：運維解析（順向）
 - 對齊 Phase 05 通用部署設定分析檔名，規定無部署/維運設定時仍產出可證實的空清單、缺口報告與待補說明；需求場景改為按聚合需求產生。
 - 修正 `.github/labeler.yml` 的無效頂層 `name` 欄位，PR 標題改用語義式 `docs:` 前綴。
 - 修正前公開基線為 Git commit `586e93c`；本機補強前備份仍保留於 `backups/reverse_engineering_pre_20260924-153000/`。
+
+## 逆向工程核心規範與文件對齊 (2026-09-25)
+
+- 依使用者要求，自根 `AGENTS.md` 核對其規章鏈、規格監控模式及記憶/備份參照，補充逆向 Mode E 與文件對齊入口。
+- 在 `docs/CORE_RULES.md` 加入逆向工程的唯讀、候選 SSOT、人工審核閘口及六階段 IO 契約規範；`docs/Harness_Optimization_SKILL.md` 加入對齊檢查點。
+- 同步 `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md` 的 `@optimize` 說明，並修正檢查組數量、步驟編號及 Mode E 顯示名稱重複鍵。
+- 新增 `scripts/check_reverse_alignment.py` 靜態核對根規章、指令、Skill、IO、審核狀態與 Mode E；修正 `scripts/align_framework.ps1` 中原本位於 `exit` 後的指令檢查，使兩項檢查在報告前執行，並讓警告數量反映實際結果。
+- 修改前 8 份檔案的本機備份位於 `backups/reverse_core_alignment_pre_20260925/`；清單見 `backups/BACKUP_MANIFEST.md`。POC 仍為後續工作。
