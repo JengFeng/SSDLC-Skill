@@ -13,7 +13,7 @@ description: 執行整個駕馭工程的框架優化。當使用者說「幫我�
 
 ## 一、 核心檢查對照與關聯防線 (Linkage & Consistency)
 
-AI 代理必須依序對以下 11 大檢查組（涵蓋 20+ 組核心檔案與目錄）進行地毯式關聯性檢查，發現不一致或超連結失效時，必須立即進行同步優化：
+AI 代理必須依序對以下 16 組檢查點（涵蓋 20+ 組核心檔案與目錄）進行關聯性檢查，發現不一致或超連結失效時，必須同步修正：
 
 ### 1. 最高指導守則防線 (`docs/CORE_RULES.md`)
 *   **檢查點**：
@@ -285,6 +285,15 @@ AI 代理必須檢查上述所有修改檔案是否嚴格符合以下繁體中�
        - 各階段 `SKILL.md` 的安全整合段落引用路徑（`external-resources/Security-Principles/`）正確可達。
     8. **檔案數量一致性檢查**：Security-Principles 目錄實際檔案數（19）與 `README.md`、`SKILL.md`、`memory.md` 中描述的數量一致，無缺漏或殘留。
 *   **失敗處理**：任一檢查失敗即於對話中輸出「Security-Principles 對齊失敗報告」，包含失敗項目、根因分析、建議修復方案。涉及指令不一致者，以 `.agents/AGENTS.md` 為權威來源自動修正。
+
+### 16. 逆向工程核心規範與檔案對齊防線
+*   **檢查點**：執行 `python scripts/check_reverse_alignment.py`，並核對：
+    1. 根 `AGENTS.md` 指向的核心規範、詳細規章、規格掃描與記憶/備份檔案皆存在，且掃描模式說明與實際腳本一致。
+    2. 逆向工程主 Skill、六個 Phase 子 Skill 及六份 IO YAML 齊全；契約的 `phase`、`path_base`、`id`、`path`、`required` 有效，輸出與子 Skill 產物清單一致，下游引用可追溯。
+    3. `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md` 中的 `@reverse`、`@guide reverse` 與 `@optimize` 行為一致；`CORE_RULES.md` 記錄逆向唯讀、候選基線、人工審核及 IO 選用原則。
+    4. `phase_gates.json` 具備逆向審核欄位，`scripts/check_spec_integrity.py` 的 Mode E 在 IO 關閉時仍檢查 Phase 04–06 審核閘口。
+    5. 靜態框架檢查與目標專案產物檢查須分開回報；範本中尚未產生的 `requirements.feature` 或 `spec_ref.md` 不應誤報為框架檔案缺失。
+*   **失敗處理**：對齊腳本應在輸出報告及退出前執行上述檢查；不一致列入警告與非零結束碼，修正後重新掃描。
 
 ### 步驟四：產出報告與同步 Baseline (Report & Sync)
 1. 於對話中輸出框架優化成果報告（以「Status + Root Cause + Suggested Fix」格式說明修補處）。
