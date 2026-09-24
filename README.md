@@ -181,6 +181,7 @@
 | `@io list [phase]` | 列出各階段預設 IO 速查表 | `@io list` |
 | `@optimize [--incremental] [--files]` | ⚠️ 框架建造者專用（需 `@role builder`）：執行全案關聯檢查，包含指令表及逆向工程 Skill/IO/審核規範靜態對齊。`--incremental` 僅檢查異動檔案（口語：「執行增量架構對齊」）；`--files` 指定檔案檢查 | `@optimize --incremental` |
 | `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` | 唯讀還原 Phase 03→02→01 候選基線；人工核准後才盤點 Phase 04→05→06 | `@reverse D:/old_app` |
+| `@reverse status` / `@reverse stop` | 唯讀查看進度／停止後續流程並保留既有產物 | `@reverse status` |
 | `@reverse-code <專案路徑>` | 靜態盤點 Phase 03 程式碼 | `@reverse-code D:/old_app` |
 | `@reverse-design <Phase 03 產出>` | 從程式碼證據反推 Phase 02 設計 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |
 | `@reverse-requirements <Phase 02 產出>` | 產生 Phase 01 候選需求，交由使用者審核 | `@reverse-requirements D:/old_app/outputs/phase_02_reverse` |

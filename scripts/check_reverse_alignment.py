@@ -11,7 +11,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "skills/00_cross_phase/reverse_engineering"
 PHASES = ("03", "02", "01", "04", "05", "06")
-COMMANDS = ("@reverse", "@reverse-code", "@reverse-design", "@reverse-requirements", "@guide reverse", "@optimize")
+COMMANDS = ("@reverse", "@reverse status", "@reverse stop", "@reverse-code", "@reverse-design", "@reverse-requirements", "@guide reverse", "@optimize")
 
 
 def read(path, errors):
