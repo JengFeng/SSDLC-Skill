@@ -502,6 +502,13 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `.agents/` | 專案規章守則（AGENTS.md）與 7 階段 Skill 定義 |
 | `.github/` | GitHub 設定 |
 | `.vscode/` | IDE 整合設定（tasks.json 自動化防線工作設定檔） |
+| `00_cross_phase/` | 跨階段全域層的 `inputs/spec_ref.md` 規格參照範本 |
+| `01_planning_and_analysis/` | Phase 01 的規格參照範本 |
+| `02_system_design/` | Phase 02 的規格參照範本與待產出目錄 |
+| `03_implementation_and_coding/` | Phase 03 的規格參照範本 |
+| `04_testing/` | Phase 04 的規格參照範本 |
+| `05_deployment/` | Phase 05 的規格參照範本 |
+| `06_maintenance/` | Phase 06 的規格參照範本 |
 | `backups/` | 框架核心檔案自動備份（@optimize 觸發，保留最近 5 份） |
 | `baseline/` | 獨立可執行專案快照（run.bat + app.py + requirements.txt） |
 | `demo_project/` | 完整驗證用示範專案（Flask + SQLite 員工管理 CRUD，已導入普級資安防護基準） |
@@ -512,7 +519,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `scripts/` | 框架核心工具腳本（check_spec_integrity.py 規格完整性檢查、align_framework.ps1 框架對齊引擎、generate_srs.py SRS 自動生成）+ 🔒 安全工具鏈 |
 | `skills/` | 95 個 Skill 實體（含 README.md 與歸類索引，13 雙归屬） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
-| `specs/` | 可執行規格 SSOT（executable_spec.yaml、system_specification.md） |
+| `specs/` | 可執行規格 SSOT 母版與待由核准需求產生的 Gherkin 範本 |
 
 ### 根目錄檔案
 

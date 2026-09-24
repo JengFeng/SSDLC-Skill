@@ -428,6 +428,10 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 4. **版本遞增**：`project.version` 在每次寫入時必須較前次版本遞增。
 5. 驗證失敗則標記為 B 類錯誤，退回 Planner 重新規劃。
 
+#### 7-6. 框架 SSOT 範本與專案實例的邊界
+
+框架根目錄的 `specs/features/requirements.feature` 與七份 `inputs/spec_ref.md` 是初始化範本。Feature 不得包含虛構的已核准場景；專案 Phase 01 核准需求後，才可由 YAML 的 `acceptance_criteria` 生成實際場景。`spec_ref.md` 的四種規格參照必須以檔案所在 `inputs/` 目錄為基準，解析至同一專案根目錄。上游產物尚未生成時，應記錄預期來源與待交接狀態，不得以空檔案或佔位文字宣稱階段完成。
+
 ---
 
 
