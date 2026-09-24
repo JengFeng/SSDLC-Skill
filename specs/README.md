@@ -53,7 +53,7 @@ specs/
 ├── README.md                    ← 本檔案
 ├── executable_spec.yaml         ← YAML 可執行規格母版（SSOT）
 └── features/                    ← Gherkin .feature 檔案（BDD 可執行規格）
-    └── .gitkeep
+    └── requirements.feature     ← 等待 Phase 01 由已核准的 YAML 驗收條件產生場景
 ```
 
 ## 規格異動時機
@@ -69,6 +69,8 @@ specs/
 | **規格審查修正** | 框架建造者 | Evaluator 發現規格不足時，修正 acceptance_criteria |
 
 > **重要原則**：`executable_spec.yaml` 是 SSOT（Single Source of Truth），所有下游文件（SRS、RTM、Gherkin）都由此檔案自動生成，**嚴禁手動修改下游文件**。
+
+框架根目錄的 `requirements.feature` 僅保留 Gherkin 語法與生成說明，不含真實驗收場景；`@init` 建立的專案須先填入並核准 YAML 需求，再由其 `acceptance_criteria` 生成場景。各階段 `inputs/spec_ref.md` 同樣是參照範本，連結以該檔所在目錄為基準；上游產物尚未建立時，不得視為已交接。
 
 ### `requirements.feature`（Gherkin 行為規格）
 

@@ -73,6 +73,7 @@ graph TD
 
 每個階段的 inputs/ 目錄必須包含 spec_ref.md，記錄本階段必讀的 SSOT 規格路徑。
 AI 代理執行前必須先讀取 spec_ref.md 中列出的所有規格，未讀取即執行者，Evaluator 判定為 B 類錯誤。
+框架範本的 `spec_ref.md` 必須以自身 `inputs/` 目錄為基準，提供可到達專案根目錄之 YAML、Feature、SRS 與 RTM 相對連結。專案初始化後應核對連結目標；上游階段尚未產出的檔案僅列為待交接項目，不得偽稱已存在或已核准。框架 `requirements.feature` 為無真實場景的範本，需求場景須由已核准的 YAML 驗收條件產生。
 
 ### 2.2.5 每階段完成後自動同步 SSOT 規則（活系統規格書）
 

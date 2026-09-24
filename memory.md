@@ -1981,3 +1981,10 @@ Phase 06：運維解析（順向）
 - 同步 `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md` 的 `@optimize` 說明，並修正檢查組數量、步驟編號及 Mode E 顯示名稱重複鍵。
 - 新增 `scripts/check_reverse_alignment.py` 靜態核對根規章、指令、Skill、IO、審核狀態與 Mode E；修正 `scripts/align_framework.ps1` 中原本位於 `exit` 後的指令檢查，使兩項檢查在報告前執行，並讓警告數量反映實際結果。
 - 修改前 8 份檔案的本機備份位於 `backups/reverse_core_alignment_pre_20260925/`；清單見 `backups/BACKUP_MANIFEST.md`。POC 仍為後續工作。
+
+## SSOT 範本缺口補齊 (2026-09-25)
+
+- 補齊根框架的 `specs/features/requirements.feature` 與 `00_cross_phase`、Phase 01–06 共七份 `inputs/spec_ref.md`，維持 YAML 為唯一結構化資料源；Feature 保留生成說明與空場景，未虛構需求或核准狀態。
+- 七份規格參照以各自 `inputs/` 目錄為基準，提供可解析的 YAML、Feature、SRS、RTM 連結；下游交接從 YAML 的階段輸出欄位取得實際檔案路徑，未產出時只記錄待交接。
+- 同步 `.agents/AGENTS.md`、`docs/CORE_RULES.md`、`specs/README.md` 與根 README 的範本規則和目錄說明；建立 `02_system_design/outputs/` 供掃描器辨識空白範本目錄。
+- 修改前 7 份既有檔案備份於本機 `backups/ssot_template_pre_20260925/`，不納入公開提交。補齊後執行 `python scripts/check_spec_integrity.py`：Mode D 全掃描 12 項通過、0 失敗、0 警告；七份參照共 42 個 Markdown 連結逐一解析，無失效連結；`align_framework.ps1 -DryRun` 為 0 警告。
