@@ -1,35 +1,36 @@
-# Phase 04 順向整合 IO 檔案定義
-# 觸發條件：@reverse（Phase 01 逆向完成後自動）或 @reverse-test
+# Phase 04 既有測試盤點；執行測試須另獲明確同意。
 inputs:
   - name: source_code_dir
-    description: 舊專案原始碼目錄
+    description: 舊專案根目錄（唯讀）
     required: true
   - name: module_list.json
-    description: Phase 03 逆向產出
+    description: Phase 03 模組清單
     required: true
   - name: existing_tests_dir
     description: 現有測試目錄（自動偵測）
     required: false
-
+  - name: requirements.feature
+    description: 已人工確認的候選規格（若已確認）
+    required: false
 outputs:
   - name: existing_tests.json
-    description: 現有測試清單
+    description: 測試檔/案例靜態盤點
     required: true
   - name: test_framework_report.json
-    description: 測試框架偵測結果
+    description: 測試框架偵測與是否執行測試
     required: true
   - name: coverage_report.md
-    description: 覆蓋率分析報告
+    description: 僅在授權執行且工具可用時產生的覆蓋率報告
     required: false
   - name: uncovered_modules.json
-    description: 未覆蓋模組清單
+    description: 根據有效覆蓋率證據整理的缺口
     required: false
   - name: test_gap_analysis.md
-    description: 測試缺口分析
+    description: 測試存在性/斷言/邊界情況缺口分析
     required: true
   - name: missing_tests.json
-    description: 缺失測試清單
+    description: 尚未覆蓋項目；不得新增測試程式
     required: true
   - name: test_restoration_report.md
-    description: 測試逆向整合報告
+    description: 測試現況、執行授權、結果與限制
     required: true

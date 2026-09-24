@@ -1,50 +1,48 @@
-# Phase 02 逆向模式 IO 檔案定義
-# 觸發條件：@reverse（Phase 03 完成後自動）或 @reverse-design
+# Phase 02 逆向模式 IO；輸入來自 Phase 03。
 inputs:
   - name: module_list.json
-    description: Phase 03 逆向產出
+    description: Phase 03 模組清單
     required: true
   - name: api_routes.json
-    description: Phase 03 逆向產出
+    description: Phase 03 靜態路由盤點
     required: true
   - name: db_schema_raw.sql
-    description: Phase 03 逆向產出（若有）
+    description: Phase 03 候選 DDL（若有）
     required: false
   - name: table_list.json
-    description: Phase 03 逆向產出
+    description: Phase 03 資料表清單
     required: true
   - name: code_analysis.md
-    description: Phase 03 逆向產出
+    description: Phase 03 分析與證據摘要
     required: true
   - name: dependency_list.json
-    description: Phase 03 逆向產出
+    description: Phase 03 依賴清單
     required: true
-
 outputs:
   - name: er_diagram.md
-    description: Mermaid 格式 ER 圖
+    description: Mermaid ER 圖與待確認關係
     required: true
   - name: er_description.md
-    description: ER 圖文字說明
+    description: 資料模型描述與證據
     required: true
   - name: api_spec.md
-    description: API 規格文件（Markdown 格式）
+    description: 已觀察路由及未知請求/回應欄位
     required: true
   - name: api_spec.yaml
-    description: OpenAPI 3.0 YAML（若有結構化資訊）
+    description: 可被證據支持的 OpenAPI 候選規格
     required: false
   - name: system_architecture.md
-    description: 系統架構圖 + 文字說明
+    description: 模組/依賴架構與推論標記
     required: true
   - name: use_case_diagram.md
-    description: Use Case 圖
+    description: 有足夠證據時產出的使用案例圖
     required: false
   - name: use_case_list.json
-    description: Use Case 清單
+    description: 有足夠證據時產出的使用案例清單
     required: false
   - name: activity_diagram.md
-    description: 活動圖
+    description: 有追蹤流程證據時產出的活動圖
     required: false
   - name: sequence_diagram.md
-    description: 時序圖
+    description: 有追蹤流程證據時產出的時序圖
     required: false

@@ -18,6 +18,7 @@
 | memory.md.prehotfix9 | 2026-07-08 | 第九次修正前備份 |
 | TEMPLATE_SKILL.md.prehotfix4 | 2026-07-08 | 第四次修正前備份 |
 | skills_README.md.prehotfix5 | 2026-07-07 | 第五次修正前備份 |
+| `reverse_engineering_pre_20260924-153000/`（20 檔） | 2026-09-24 | 本機逆向工程 Skill 補強前備份；保留原目錄結構，不納入公開提交 |
 
 ## 歷史備份（已清理）
 

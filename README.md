@@ -575,20 +575,25 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 ## 🔄 逆向工程模組（2026-08-07 新增）
 
-本框架支援對既有無完整文件之交付專案原始碼，進行逆向分析還原。
+本框架支援對既有專案進行唯讀證據分析，產生可追溯的程式碼、設計與需求候選基線；程式碼無法證明原始商業意圖，需求產物須經人工確認。
 
 ### 逆向流程
-- Phase 03 逆向：程式碼分析（起點）→ 模組清單、API 路由、DB Schema
-- Phase 02 逆向：設計文件反推 → ER 圖、API Spec、系統架構圖
-- Phase 01 逆向：需求文件反推 → 需求文件、SSOT 四規格、追溯矩陣
-- Phase 04~06：順向整合（測試、部署、運維）
+- Phase 03：唯讀盤點程式碼、模組、路由、資料模型與依賴
+- Phase 02：依證據整理設計、API 與架構；未知內容標示待確認
+- Phase 01：產生候選需求與 SSOT 草案，必須經使用者審核後才可確認
+- Phase 04~06：在確認後盤點測試、部署與運維現況；預設不執行測試、建置或部署
+
+來源專案不安裝依賴、不啟動程式、不修改檔案；不讀取或輸出密鑰、憑證及個資值。所有產物依 IO 定義寫入 `outputs/`，保留證據、推論、信心與限制。
 
 ### 指令
-- @reverse [專案路徑] — 啟動完整逆向工程
-- @reverse-code [專案路徑] — 僅執行 Phase 03 程式碼分析
-- @reverse-design [Phase 03 產出] — 僅執行 Phase 02 設計反推
-- @reverse-requirements [Phase 02 產出] — 僅執行 Phase 01 需求反推
-- @guide reverse [專案路徑] — 引導式逆向工程
+- `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` — 完整或指定階段盤點
+- `@reverse status` / `@reverse stop` — 查看進度 / 停止後續工作
+- `@reverse-code <專案路徑>` — 僅執行 Phase 03 程式碼分析
+- `@reverse-design <Phase 03 產出>` — 僅執行 Phase 02 設計反推
+- `@reverse-requirements <Phase 02 產出>` — 僅執行 Phase 01 需求反推
+- `@guide reverse <專案路徑>` — 引導式逆向工程
 
 ### Skill 位置
-skills/00_cross_phase/reverse_engineering/
+`skills/00_cross_phase/reverse_engineering/`
+
+本次補強的修改理由、檔案對照與驗證結果見 [逆向工程 Skill 補強註記](docs/reverse_engineering_change_notes.md)。
