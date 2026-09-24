@@ -351,8 +351,8 @@ namespace TWNPPublic.Domain.Service
                                 var first = root.Data[0];
 
                                 // 若 ADDRESS 或 NAME 有可能是 null，也建議加上 null 檢查
-                                first.ADDRESS_DAES = first.ADDRESS?.MYSQL_AESDecrypt();
-                                first.NAME_DAES = first.NAME?.MYSQL_AESDecrypt();
+                                first.ADDRESS_DAES = first.ADDRESS?.MYSQL_AESDecrypt() ?? "";
+                                first.NAME_DAES = first.NAME?.MYSQL_AESDecrypt() ?? "";
                             }
                         }
                         

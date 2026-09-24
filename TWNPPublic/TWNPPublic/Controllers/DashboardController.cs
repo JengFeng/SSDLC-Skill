@@ -154,15 +154,15 @@ namespace TWNPPublic.Controllers
             //}
             #endregion
 
-            //將費用名字改成帳號的名稱
-            var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
-            var NAME = result2 == null ? CurrentResult.NAME_DAES : result2.USERNAME == null ? CurrentResult.NAME_DAES : result2.USERNAME == "" ? CurrentResult.NAME_DAES : result2.USERNAME;
-            CurrentResult.NAME_DAES = NAME;
-            if (aspNetUser.UserId > 0)
-            {
-                //民眾版
-                CurrentResult.NAME_DAES = NAME;
-            }
+            ////將費用名字改成帳號的名稱→先取消改原本撈回來的資料
+            //var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
+            //var NAME = result2 == null ? CurrentResult.NAME_DAES : result2.USERNAME == null ? CurrentResult.NAME_DAES : result2.USERNAME == "" ? CurrentResult.NAME_DAES : result2.USERNAME;
+            //CurrentResult.NAME_DAES = NAME;
+            //if (aspNetUser.UserId > 0)
+            //{
+            //    //民眾版
+            //    CurrentResult.NAME_DAES = NAME;
+            //}
 
             ViewBag.Type = billType;
             ViewBag.VDetailResult = CurrentResult;
@@ -461,12 +461,16 @@ namespace TWNPPublic.Controllers
                 result = await dashboardService.GetVWaterFee2ByWaterNoAndTime(aspNetUser.CurrentWaterNo, DateTime.Now.AddMonths(-1));
             }
 
-            var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
+            //var result2 = await dashboardService.GetAccountByWaterNo(aspNetUser.CurrentWaterNo);
+            //string NAME = "用戶";
+            //// 如果 result2.USERNAME 有值就用它，否則退回 result.NAME_DAES
+            //NAME = NAME = !string.IsNullOrEmpty(result2?.USERNAME)
+            //              ? result2.USERNAME
+            //              : result?.NAME_DAES ?? NAME;
+
+            // 1150924改用
             string NAME = "用戶";
-            // 如果 result2.USERNAME 有值就用它，否則退回 result.NAME_DAES
-            NAME = NAME = !string.IsNullOrEmpty(result2?.USERNAME)
-                          ? result2.USERNAME
-                          : result?.NAME_DAES ?? NAME;
+            NAME = result?.NAME_DAES ?? "";
 
             return Json(Success(new
             {
