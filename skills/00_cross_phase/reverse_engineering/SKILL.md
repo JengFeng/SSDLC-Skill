@@ -1,55 +1,44 @@
 ---
-name: ReverseEngineering
-description: 對既有專案進行唯讀證據分析，依 Phase 03→02→01 還原可追溯的程式、設計與需求基線，再經使用者確認後選擇性整理 Phase 04→05→06 的測試、部署與維運現況。
+name: reverse_engineering
+description: 對指定既有專案先按 Phase 03→02→01 逆向蒐證，再將候選結果遞回正向 Phase 01→02→03 SSOT；保留來源、信心與待決契約，按關卡推進 04→06。
 ---
 
-# 逆向工程 Reverse Engineering — 主控 Orchestrator
+# 逆向工程主控 Skill
 
-## 一、定位與適用範圍
+## 範圍與順序
 
-本 Skill 分析既有專案並產生可追溯的文件基線；它不宣稱能從程式碼確定原始商業意圖。`00_cross_phase` 是目錄分類，不建立 Phase 00。預設來源唯讀，輸出隔離於指定專案的 `outputs/`。不引入 Benson Skill 或其內容。
+先鎖定使用者指定的專案根目錄；同一資料夾中的其他專案不得混入。保留既有逆向產物，新增資料夾承接新案例。
 
-## 二、觸發與啟動
+1. **Phase 03 Reverse**：盤點實際入口、路由、類別與函式、外部依賴和資料庫使用。記錄檔案及行號，區分已觀察、推測、未知。
+2. **Phase 02 Reverse**：從證據建立 API 契約、架構、ER／類別／使用案例／順序／操作流程圖。每條邊、角色及欄位都要能回指來源；沒有證據時標記候選或未知。
+3. **Phase 01 Reverse**：按使用者操作與業務能力整理需求、SRS、Gherkin 和追溯關係。記下使用者文件與程式現況的衝突，不以現況推定應有行為。
+4. **正向 Phase 01**：將逆向候選與補充文件導入專案根 `specs/executable_spec.yaml`，同步 `requirements.feature`、`system_specification.md`、`traceability_matrix.md`。每項 REQ 保留證據、信心、決議與核准狀態。使用專案既有同步器及 `check_spec_integrity.py` 檢查。
+5. **正向 Phase 02→03**：從已核准需求逐階段形成設計、實作差異及驗證依據。逆向清單只是候選；未核准或未驗證時保留 `pending`，不能自動填 `evaluator.passed=true` 或 Baseline。
+6. **正向 Phase 04→06**：按既有階段關卡處理測試、部署、運維。子 Skill 04～06 可先整理已有檔案的靜態清單，但不得將清單或圖表當成執行、發布或營運驗證。
 
-- 指令：`@reverse <專案路徑> [--phase 03,02,01,04,05,06]`；未指定階段時執行完整流程。
-- 口語：「逆向分析這個專案」「幫我從程式碼反推需求」「還原舊專案文件」。
-- 不用於新專案從零規劃、單純程式碼審查或只要求修 Bug。
-- 開始前確認來源路徑可讀、輸出路徑、排除目錄、可用素材及是否允許執行測試（預設不允許）。不要求使用者重述可由檔案判定的資訊。
-- 不覆寫來源或已有產物；遇到同名輸出先採用新版本/新目錄並報告。執行 `--phase 04`、`05`、`06` 或相應單階段指令前，一律先以 `python scripts/check_spec_integrity.py --project <專案路徑> --mode E --phase NN` 驗證人工審核閘口；未核准即拒絕執行。
+`@reverse [專案路徑]` 執行前三步並建立可追溯的正向交接資料；`@reverse-code`、`@reverse-design`、`@reverse-requirements` 只執行指定逆向步驟。04～06 子 Skill 在各階段進入正向工作時使用，或依使用者明示要求只做既有素材盤點。
 
-## 三、流程與人工關卡
+## 入口到結果的追蹤
 
-1. **Phase 03 程式碼盤點**：靜態、唯讀掃描；產出清單及來源證據。
-2. **Phase 02 設計還原**：只從已盤點證據形成設計描述，明示推論及不確定性。
-3. **Phase 01 需求基線**：從可觀察行為和設計推導候選需求，產出 SSOT 草案與追溯鏈。
-4. **強制人工審核閘口**：呈現需求、信心、缺口與推論；使用者確認前不得標記 Phase 01 完成、建立已驗證 Baseline、解鎖下游或自動進入 Phase 04。
-5. **Phase 04、05、06**：經確認後依序盤點測試、部署、運維現況；是現況盤點，不代表執行測試、部署或修改系統。每階段完成後依正常 Evaluator 與專案規章檢查。
-6. **交接**：保留逆向模式標記及證據鏈，只有使用者確認的需求才可作為已核准 SSOT；其餘維持候選/待確認。由使用者決定何時開始一般順向 SSDLC 變更。
+對每個重點 API／使用者操作，追蹤 UI／Razor／JavaScript 觸發 → HTTP 路由與 Controller 分支 → Service／函式庫 → 資料存取或外部服務 → Session／Cookie／Token／回應或 Redirect。列出條件、呼叫先後、錯誤與副作用；操作手冊提供可依序執行的前置條件、請求、回應及失敗處理。缺少程式或執行證據時明示界限。
 
-可指定階段做局部盤點；Phase 02/01 若其上游產物不足，必須標示輸入缺口，不可假稱完整。
+## 產物與狀態
 
-## 四、輸出與追溯要求
+`outputs/phase_03_reverse/`、`phase_02_reverse/`、`phase_01_reverse/` 存放逆向證據與候選規格。輸入、必需與可選輸出依 `io_files/phase_0N_reverse_io.yaml`；例如只有表名時 `db_schema_raw.sql` 可以缺席，不能捏造 DDL。專案根四規格才是正向 SSOT。若既有逆向報告把 Phase 01～03 記為「逆向完成」，該字樣僅代表蒐證步驟，不代表正向 Evaluator 或業務核准通過。
 
-每階段輸出至 `outputs/phase_NN_reverse/`（Phase 04–06 為 `outputs/phase_NN/`），依各子 Skill 的產物清單工作；當 `phase_gates.json` 的 `io_management.enabled=true` 時，以對應逆向 IO YAML 的 `id`/`path`/`required` 契約檢查產物及跨階段引用。IO 管理未啟用時不以缺少契約產物阻斷流程，但人工審核閘口仍強制生效。每份報告包含範圍、掃描時間、排除項、方法、證據引用、觀察/推論/待確認、限制與未解析項。跨階段以穩定 ID 對應：程式符號/端點/資料表 → 設計元素 → 候選需求 → 測試/部署/運維證據。無證據的欄位明確留空或標示未知，不捏造。
+新增證據時，先對齊 REQ ID、來源指紋及衝突，再更新 YAML 主體，重新產生衍生文件並執行靜態完整性檢查。業務契約未決時，文件整理繼續，決議與執行驗證保持待確認；到實際關卡才依 `.agents/AGENTS.md` 的 Evaluator 和 SSOT 規則建立 Baseline。
 
-## 五、狀態管理、錯誤與停止
+在 `@reverse` 開始及交接時執行 `python scripts/check_reverse_skill_integrity.py --project "<專案目錄>"`，再依 `.agents/AGENTS.md` 執行該專案的 A／B／C／D／S 四規格檢查；兩者分別核對 Skill／IO／逆向產物與正向 SSOT。
 
-更新專案 `phase_gates.json` 的 `reverse_engineering` 狀態（enabled、mode、current_phase、completed_phases、approval_status、approved_at）；僅在專案內檔案已存在且使用者授權修改專案追蹤狀態時更新。`approval_status` 為 `not_started`、`pending`、`approved` 或 `rejected`；產出候選需求後設為 `pending`，只在使用者明確確認後設為 `approved`，並把相同 `approved_at` 寫入 `outputs/phase_01_reverse/reverse_completion_summary.json`。拒絕時設為 `rejected` 並清除核准時間；重新修訂則回到 `pending`。不得直接把所有六階段標為 completed；Phase 01 只在核准後加入 completed_phases。`@reverse status` 唯讀顯示狀態；`@reverse stop` 停止後續工作並保留已產生檔案。
+## 六個子 Skill
 
-遵循 CORE_RULES 的 A/B 分級與重試上限。證據不足或外部工具不可用是限制，不得以重試掩飾；需求/設計矛盾列為待釐清。
+| 子 Skill | 用途 |
+|---|---|
+| `phase_03_code_restore` | 程式、路由、函式呼叫與資料使用蒐證 |
+| `phase_02_design_restore` | 設計與 API／UML 候選還原 |
+| `phase_01_requirements_restore` | 需求、SRS、情境與追溯還原 |
+| `phase_04_test_restore` | 已有測試盤點；正向關卡下才執行測試 |
+| `phase_05_deploy_restore` | 既有部署配置盤點；正向關卡下才發布 |
+| `phase_06_ops_restore` | 既有營運配置盤點；正向關卡下才驗證運維 |
 
-## 六、框架整合
-
-- 各子 Skill 遵循 Planner → Generator → Evaluator；Evaluator 驗證產物、來源證據與 SSOT 交叉一致性；啟用 IO 管理時執行 `check_spec_integrity.py --mode E` 驗證逆向 IO YAML。
-- Phase 01 四規格完成後執行 `@CheckSpec`；任何未通過項不標記為通過。人工核准後建立 Phase 04–06 的 `inputs/spec_ref.md`，指向已核准的 SSOT；若有既存規格，先比對再更新，不直接覆寫。
-- 使用者確認前，產物是逆向候選基線；確認後依專案規章執行必要的 SSOT 完整性檢查與 Baseline 流程。
-- Security-Principles 可用於後續安全檢核；靜態掃描只能記錄可見證據，不代表已完成安全驗證。
-
-## 七、範例
-
-```text
-@reverse D:/legacy_app
-@reverse D:/legacy_app --phase 03,02
-@reverse status
-@reverse stop
-```
+每個子 Skill 的細節及 IO 契約見同目錄 `sub_skills/`、`io_files/`。例如 `Demo Project 3/forward_transition.md` 記錄一次完整的逆向→正向交接與未決閘口。

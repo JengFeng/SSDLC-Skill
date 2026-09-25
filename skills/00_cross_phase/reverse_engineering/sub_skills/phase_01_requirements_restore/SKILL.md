@@ -2,19 +2,10 @@
 name: Reverse_Skill_RequirementsRestore
 description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API Spec、架構圖、Use Case）反推需求文件、SSOT 四規格、追溯矩陣。逆向完成後切換順向流程。
 ---
-## 共通執行防線
-
-- 預設唯讀分析來源專案；不得修改、格式化、建置、安裝依賴、啟動服務或執行來源專案程式碼。測試執行須先取得使用者明確同意，並在隔離環境執行。
-- 不讀取或複製密鑰、token、私鑰、憑證、真實個資或 `.env` 值。只記錄檔案存在與變數名稱；輸出前遮蔽疑似敏感字串。
-- 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
-- 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
-- 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
-- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
-
 
 ## 一、定位
 
-本子 Skill 為逆向工程的**最後一步（逆序終點）**，從 Phase 02 的設計文件反推需求層級的文件，產出完整的 SSOT 四規格，逆向工程至此完成，後續切換順向流程。
+本子 Skill 是逆序蒐證終點。從 Phase 02 設計證據建立需求候選及四規格草稿，接著將其回灌專案根正向 Phase 01 SSOT；逆向完成不等於需求核准。
 
 **逆向方向**：Phase 02 產出 → 反推 → Phase 01 需求文件 → 完成逆向 → 切換順向
 
@@ -46,10 +37,11 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 從設計文件反推功能需求：
 
-1. 從 API Spec 產生候選功能需求；一個端點不必然等於一項業務需求，應按證據聚合並標記推論
+1. 按使用者任務與業務能力整合 API 端點；多端點可屬同一需求，一端點也可能涉及多條規則
 2. 從 Use Case 提取使用者場景需求
 3. 從 ER 圖提取資料模型需求
-4. 只記錄架構可支持的非功能觀察；無量測或明確配置證據時不得宣稱效能/可用性/安全需求
+4. 從系統架構提取有證據的非功能約束；沒有量測或業務文件時標成待決，不創造效能、可用性或安全性門檻
+5. 為關鍵操作寫出 UI 入口、Controller 分支、函式庫、資料存取及 Session／回應的先後順序，附來源檔案與行號
 
 產出：
 - `formal_requirements.md`：結構化需求文件
@@ -58,7 +50,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 將功能需求轉為行為化規格：
 
-1. 每項已依證據聚合的候選需求生成對應 Gherkin 場景；端點只作為追溯來源，不逐端點硬拆場景
+1. 依需求與操作路徑建立 Gherkin 場景，覆蓋成功、分支和錯誤；場景不必與端點一對一
 2. 每個 Use Case 生成 Happy Path + Edge Case
 3. 使用 Given-When-Then 格式
 
@@ -71,7 +63,7 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 1. `executable_spec.yaml`：結構化可執行規格
    - project 資訊
-   - phase_01~06 區塊（逆向標記 `status: reverse_engineered`）
+   - phase_01~06 區塊；逆向結果標記為候選，正向階段依真實 Evaluator 狀態保持 `in_progress` 或 `pending`
    - traceability 區塊
    - change_log 區塊
 
@@ -87,10 +79,10 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 ### Step 4：逆向工程完成標記
 
-1. 標記所有逆向產出為 `reverse_engineered`
+1. 標記逆向蒐證已完成，逐項列出候選、衝突與未知
 2. 產出逆向工程摘要報告
-3. 將 `reverse_completion_summary.json` 與 `phase_gates.json` 的 `approval_status` 設為 `pending`，`approved_at` 設為 `null`，詢問使用者是否確認逆向成果
-4. 使用者明確確認後，兩檔同步設為 `approved` 並寫入相同的 `approved_at` ISO 時間；此時才把 Phase 01 加入 `completed_phases`，建立 Phase 04–06 的 `inputs/spec_ref.md` 指向已核准 SSOT。拒絕時設 `rejected` 並清除核准時間；修訂後回到 `pending`
+3. 將逆向草稿回灌專案根 YAML，更新衍生四規格並執行靜態完整性檢查
+4. 業務決議未取得時保留 `approval_status: pending`；文件整理及可追溯性檢查可繼續
 
 產出：
 - `reverse_engineering_report.md`：逆向工程完成報告
@@ -108,15 +100,15 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 | `system_specification.md` | 系統規格書（IEEE 830） | SSOT 追溯鏈 |
 | `traceability_matrix.md` | 需求追溯矩陣 | SSOT 追溯鏈 |
 | `reverse_engineering_report.md` | 逆向工程完成報告 | 使用者 |
-| `reverse_completion_summary.json` | 候選／人工審核狀態摘要（含 approval_status、approved_at） | 主控 Orchestrator |
+| `reverse_completion_summary.json` | 完成狀態摘要 | 主控 Orchestrator |
 
 ---
 
 ## 六、SSOT 四規格交叉檢查
 
-逆向產出的四規格必須通過 `@CheckSpec` 檢查：
+逆向草稿及專案根四規格必須通過 `@CheckSpec` 的結構和追溯檢查；通過不代表業務語義或執行結果已獲驗證：
 
-1. **executable_spec.yaml**：需求 ID 唯一、必填欄位完整，且每項需求帶有證據/推論狀態
+1. **executable_spec.yaml**：需求 ID 唯一、無缺失欄位
 2. **requirements.feature**：Gherkin 語法正確、每個需求有對應場景
 3. **system_specification.md**：章節完整、與 executable_spec 一致
 4. **traceability_matrix.md**：每個需求有追溯鏈、無孤立節點
@@ -130,22 +122,15 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 ### 7.1 逆向完成後的切換流程
 
 ```
-逆向工程完成
-    │
-    ├── 使用者確認逆向成果
-    │
-    ├── 自動觸發 @baseline（封存逆向成果）
-    │
-    ├── phase_gates.json 狀態更新：
-    │   phase_01: { status: "completed", mode: "reverse_engineered" }
-    │   phase_02: { status: "completed", mode: "reverse_engineered" }
-    │   phase_03: { status: "completed", mode: "reverse_engineered" }
-    │
-    └── 切換至順向流程：Phase 04 → Phase 05 → Phase 06
+Phase 03→02→01 逆向候選
+    → 專案根正向 Phase 01 YAML／Feature／SRS／RTM
+    → 業務契約決議與 Phase 01 Evaluator
+    → Phase 02 設計 → Phase 03 實作
+    → Phase 04 測試 → Phase 05 部署 → Phase 06 維運
 ```
 
 ### 7.2 與 @guide 的整合
-逆向完成後，可透過 `@guide 04` 啟動 Phase 04 的引導式協作，開始順向流程。
+正向 Phase 01～03 的關卡與基線完成後，才可透過 `@guide 04` 啟動 Phase 04 引導式協作。
 
 ### 7.3 與 @security-load 的整合
 逆向完成後，可透過 `@security-load` 導入資安防護基準，對逆向成果進行安全檢核。
@@ -154,11 +139,11 @@ description: Phase 01 逆向模式 — 從 Phase 02 逆向產出（ER 圖、API 
 
 ## 八、人工審核閘口
 
-Phase 01 逆向完成後，**強制暫停**等待使用者確認：
+在 Phase 01 業務核准關卡整理決議資料：
 
 1. 顯示逆向成果摘要（需求數量、追溯鏈完整度）
 2. 標註自動生成 vs 人工補正的內容
-3. 詢問：「逆向成果是否正確？要修正嗎？」
-4. 使用者確認後才將需求標記為已核准；未確認前不得切換、完成標記或建立已驗證基線
+3. 列出需要業務方裁定的契約衝突；決議前不得將對應需求標成已核准
+4. 持續完成不依賴決議的文件與 Skill 完整性工作
 
 **原因**：需求層級的反推最容易有偏差，必須有人工審核確保正確性。

@@ -1,20 +1,11 @@
 ---
 name: Reverse_Skill_DeployRestore
-description: Phase 05 順向整合 — 逆向工程完成後，解析現有部署腳本、Dockerfile、組態檔，產出部署拓撲圖與建置清單。
+description: Phase 05 正向部署關卡 — 按實際平台解析配置與腳本，產出可追溯拓撲及建置清單；逆向期間僅能盤點。
 ---
-## 共通執行防線
-
-- 預設唯讀分析來源專案；不得修改、格式化、建置、安裝依賴、啟動服務或執行來源專案程式碼。測試執行須先取得使用者明確同意，並在隔離環境執行。
-- 不讀取或複製密鑰、token、私鑰、憑證、真實個資或 `.env` 值。只記錄檔案存在與變數名稱；輸出前遮蔽疑似敏感字串。
-- 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
-- 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
-- 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
-- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
-
 
 ## 一、定位
 
-本子 Skill 在逆向工程完成後，以順向模式執行 Phase 05 部署發布，解析舊專案中已有的部署相關檔案。
+本子 Skill 在正向 Phase 05 關卡處理部署資料；逆向期間若盤點既有配置，只產生靜態候選，不視為已部署。
 
 **流程位置**：Phase 04 完成 → Phase 05 順向（本 Skill）→ Phase 06
 
@@ -22,7 +13,7 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 
 ## 二、觸發條件
 
-- 被主控 Orchestrator `@reverse` 自動調度
+- 正向 Phase 05 進入時調度；`@reverse` 階段可依明示要求只盤點配置
 - 或手動觸發：`@reverse-deploy [專案路徑]`
 
 ---
@@ -41,20 +32,21 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 | `*.yaml` / `*.yml`（K8s） | Kubernetes 部署配置 |
 | `Makefile` | 建置腳本 |
 | `requirements.txt` / `package.json` | 依賴清單 |
-| `.env*` | 只記錄檔案存在與變數名稱；不讀值、不複製 |
+| `.env*` | 環境變數（僅結構，不含密鑰） |
+| `web.config` / `*.csproj` / IIS 文件 | Windows／.NET 站台、組建與應用程式集區線索 |
 
 產出：
 - `deploy_files_manifest.json`：部署檔案清單
 
-### Step 2：部署設定靜態解析
+### Step 2：部署平台解析
 
-依存在的部署設定靜態解析（Dockerfile、compose、Kubernetes、IIS 或其他）；不執行建置/部署，不連線外部環境：
-1. 依實際存在的檔案解析服務、建置步驟、埠號與外部依賴；容器欄位僅在 Docker 設定存在時記錄
-2. 記錄環境變數名稱與掛載；遮蔽所有值
-3. 產出部署設定摘要並標記未能確認的項目
+先依實際平台解析 IIS／Windows、容器或其他部署配置。若存在 Dockerfile：
+1. 解析基礎映像、建置階段、公開埠號
+2. 識別環境變數、_VOLUME 掛載
+3. 產出容器配置摘要
 
 產出：
-- `deployment_config_analysis.md`：存在部署設定時的靜態分析報告
+- `docker_analysis.md`：Dockerfile 分析報告
 
 ### Step 3：部署拓撲圖生成
 
@@ -85,7 +77,7 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 | 檔案 | 說明 |
 |:-----|:-----|
 | `deploy_files_manifest.json` | 部署檔案清單 |
-| `deployment_config_analysis.md` | 部署設定分析報告（有設定時） |
+| `docker_analysis.md` | 存在 Dockerfile 時的分析報告（可選） |
 | `deployment_topology.md` | 部署拓撲圖 |
 | `build_manifest.json` | 建置清單 |
 | `deployment_report.md` | 部署逆向整合報告 |
@@ -96,6 +88,6 @@ description: Phase 05 順向整合 — 逆向工程完成後，解析現有部�
 
 | 錯誤類型 | 處理方式 |
 |:---------|:---------|
-| 無部署檔案 | 仍產出 `deploy_files_manifest.json`（空清單）、`deployment_topology.md`（無可證實拓撲）、`build_manifest.json`（無可證實建置步驟）及 `deployment_report.md`（缺口）；只略過可選的設定分析 |
+| 無部署檔案 | 標註為無部署配置，跳過本階段 |
 | Dockerfile 語法異常 | 僅解析可識別的部分 |
 | K8s 配置不完整 | 標註已識別的服務，其餘標記待補 |

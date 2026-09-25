@@ -2,15 +2,6 @@
 name: Reverse_Skill_CodeRestore
 description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、API 路由、資料庫 Schema、第三方依賴，產出程式碼層級的完整分析文件。
 ---
-## 共通執行防線
-
-- 預設唯讀分析來源專案；不得修改、格式化、建置、安裝依賴、啟動服務或執行來源專案程式碼。測試執行須先取得使用者明確同意，並在隔離環境執行。
-- 不讀取或複製密鑰、token、私鑰、憑證、真實個資或 `.env` 值。只記錄檔案存在與變數名稱；輸出前遮蔽疑似敏感字串。
-- 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
-- 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
-- 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
-- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
-
 
 ## 一、定位
 
@@ -43,12 +34,12 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 
 1. 掃描目錄結構，偵測專案類型（Python/Node.js/Java/Go/.NET 等）
 2. 識別主要框架（Flask/Django/Express/Spring/...）
-3. 掃描是否存在：原始碼、Dockerfile、docker-compose、SQL DDL、測試目錄
+3. 掃描是否存在：原始碼、部署配置（依實際平台）、SQL DDL、測試目錄
 4. 產出 `scan_report.json`（專案概覽）
 
 ### Step 2：程式碼靜態分析
 
-僅使用不執行來源程式的靜態解析器；工具不存在時以有限度人工靜態檢視並記錄限制，不安裝工具或依賴。依偵測到的語言選擇對應工具：
+依偵測到的語言選擇對應工具：
 
 | 語言 | 工具 | 分析內容 |
 |:-----|:-----|:---------|
@@ -90,20 +81,20 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 ### Step 4：資料庫 Schema 反推
 
 - 若有 DDL 檔案 → 直接解析
-- 若無 DDL → 從 ORM Model 反推：
+- 若無 DDL → 從 ORM Model 或 SQL 呼叫蒐集可見的表、欄位與關聯線索：
   - SQLAlchemy：掃描 `Column()` 定義
   - Django ORM：掃描 `models.py`
   - Prisma：解析 `schema.prisma`
   - TypeORM：掃描 `@Entity()` 裝飾器
 
 產出：
-- `db_schema_raw.sql`：僅在有可追溯 ORM/DDL 證據時產出的候選 DDL
-- `table_list.json`：資料表清單（名稱、欄位、型態、關聯）
+- `db_schema_raw.sql`：僅在有足夠 DDL／ORM 證據可重建時產出，標註來源及推測部分；不得只憑表名生成 SQL
+- `table_list.json`：資料表清單；欄位、型態和關聯若無證據，標為未知或候選
 
 ### Step 5：程式碼分析摘要
 
 彙整以上分析結果，產出：
-- `code_analysis.md`：程式碼分析報告（含觀察/推論/待確認、證據位置、信心與限制）
+- `code_analysis.md`：程式碼分析報告
   - 專案概覽（語言、框架、依賴數量）
   - 模組架構摘要
   - API 端點統計
@@ -120,7 +111,7 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 | `module_list.json` | 模組清單 | Phase 02 逆向 |
 | `class_function_list.json` | 類別/函數清單 | Phase 02 逆向 |
 | `api_routes.json` | API 路由清單 | Phase 02 逆向 |
-| `db_schema_raw.sql` | 反推的 DB Schema | Phase 02 逆向 |
+| `db_schema_raw.sql` | 有充分證據時的 DB Schema（可選） | Phase 02 逆向 |
 | `table_list.json` | 資料表清單 | Phase 02 逆向 |
 | `dependency_list.json` | 第三方依賴清單 | Phase 02 逆向 |
 | `code_analysis.md` | 程式碼分析報告 | 所有後續階段 |
@@ -143,7 +134,7 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 - 驗證 JSON 檔案語法正確性
 - 驗證模組清單與實際目錄結構一致
 - 驗證 API 路由無重複
-- 驗證 DB Schema 與來源證據一致；不可推測未知欄位
+- 驗證 DB Schema 欄位型態合理
 
 ---
 

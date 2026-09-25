@@ -1988,3 +1988,11 @@ Phase 06：運維解析（順向）
 - 七份規格參照以各自 `inputs/` 目錄為基準，提供可解析的 YAML、Feature、SRS、RTM 連結；下游交接從 YAML 的階段輸出欄位取得實際檔案路徑，未產出時只記錄待交接。
 - 同步 `.agents/AGENTS.md`、`docs/CORE_RULES.md`、`specs/README.md` 與根 README 的範本規則和目錄說明；建立 `02_system_design/outputs/` 供掃描器辨識空白範本目錄。
 - 修改前 7 份既有檔案備份於本機 `backups/ssot_template_pre_20260925/`，不納入公開提交。補齊後執行 `python scripts/check_spec_integrity.py`：Mode D 全掃描 12 項通過、0 失敗、0 警告；七份參照共 42 個 Markdown 連結逐一解析，無失效連結；`align_framework.ps1 -DryRun` 為 0 警告。
+
+## 逆向 Skill 證據交接補強 (2026-09-25)
+
+- 將逆向流程明確分成 Phase 03→02→01 的唯讀蒐證，以及回灌正向 Phase 01 SSOT 後依核准關卡推進 Phase 02→06；候選需求保留來源、信心與待確認事項。
+- 六個子 Skill 與 IO 契約補充觀察／推論／未知的區分、禁止讀取或輸出敏感值，以及靜態盤點不等同測試、部署或營運驗證。
+- 新增 `scripts/check_reverse_skill_integrity.py`：預設檢查 Skill 與 IO 契約；指定 `--project` 時檢查逆向交接產物、SSOT 與人工審核狀態。
+- 更新 `.agents/AGENTS.md`、README、指令參照與技能索引。未把專案樣本、簡報或暫存資料納入公開變更。
+- 修改前基線為 Git commit `2acd65e`；其歷史可直接回溯，本次前的工作目錄備份保留於維護者本機，不隨公開提交。

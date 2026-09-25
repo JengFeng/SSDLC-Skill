@@ -2,15 +2,6 @@
 name: Reverse_Skill_DesignRestore
 description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單、API 路由、DB Schema）反推系統設計文件，包含 ER 圖、API Spec、系統架構圖、Use Case 圖。
 ---
-## 共通執行防線
-
-- 預設唯讀分析來源專案；不得修改、格式化、建置、安裝依賴、啟動服務或執行來源專案程式碼。測試執行須先取得使用者明確同意，並在隔離環境執行。
-- 不讀取或複製密鑰、token、私鑰、憑證、真實個資或 `.env` 值。只記錄檔案存在與變數名稱；輸出前遮蔽疑似敏感字串。
-- 所有路徑使用來源根目錄相對路徑；忽略 `.git`、建置輸出、快取、依賴套件與大型二進位檔，除非使用者指定納入。
-- 每項結論標示 `觀察`、`推論` 或 `待確認`，附來源檔案/符號/行號（可取得時）、信心與限制。不得把推論寫成已確認需求或安全保證。
-- 保留既有交付物；新產物只寫入指定的 `outputs/phase_NN_reverse/` 或 `outputs/phase_NN/`。不得覆寫來源或既有輸出，除非使用者明確指定。
-- 缺少輸入、解析器不支援或證據不足時，記錄缺口並降低結論信心；只有阻斷必要下游工作的缺項才暫停。啟用 IO 管理時，Evaluator 依逆向 IO YAML 驗證必要產物與來源追溯。
-
 
 ## 一、定位
 
@@ -43,11 +34,11 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 ### Step 1：ER 圖反推
 
-從 `table_list.json` 和 `db_schema_raw.sql` 生成 ER 圖：
+從 `table_list.json` 與可用的 DDL 證據生成 ER 圖：
 
-1. 解析資料表關聯（foreign key、關聯命名規則）
+1. 只有明確 FK／ORM 設定才能確認關聯；命名相似僅能列為候選
 2. 使用 Mermaid `erDiagram` 語法生成 ER 圖
-3. 標註主鍵、外鍵、關聯類型（1:1、1:N、M:N）
+3. 主鍵、外鍵、欄位型別與關聯類型有證據才標為已確認；只有表名時產出候選清單和待決說明
 
 產出：
 - `er_diagram.md`：Mermaid 格式 ER 圖
@@ -55,11 +46,11 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 ### Step 2：API Spec 反推
 
-從 `api_routes.json` 生成 API 盤點；僅將有程式碼證據的欄位視為已觀察，未能確認的請求/回應 schema 標為未知：
+從 `api_routes.json` 生成 API 規格：
 
 1. 整理路由清單（Method + Path + Handler）
-2. 從程式碼分析請求/回應結構
-3. 有足夠證據才產出 OpenAPI 3.0 候選規格
+2. 沿 UI／Razor／JavaScript → Controller → Service／函式庫 → 資料／外部服務 → Session／回應追蹤請求、分支及副作用
+3. 產出 OpenAPI 3.0 候選規格；未知欄位、HTTP 狀態、認證與環境網址不得臆測成已確認契約
 
 產出：
 - `api_spec.md`：API 規格文件（Markdown 格式）
@@ -81,8 +72,8 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 從 API 路由和模組結構推使用者場景：
 
 1. 從 API 路由識別使用者操作（CRUD）
-2. 從路由分組推角色（admin/user/guest）
-3. 使用 Mermaid `flowchart` 呈現角色與使用案例的關係；對無證據的角色標記「待確認」
+2. 角色須有授權檢查、使用者文件或 UI 證據；路由名稱僅作候選線索
+3. 以環境支援的 UML／SVG 或 Mermaid 流程圖呈現 Use Case；生成後檢查渲染結果
 
 產出：
 - `use_case_diagram.md`：Use Case 圖
@@ -100,6 +91,8 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 產出：
 - `activity_diagram.md`：活動圖
 - `sequence_diagram.md`：時序圖
+
+需要可單獨預覽的 UML 類別／順序／使用案例與操作流程圖時，使用 `skills/00_cross_phase/diagram-design/SKILL.md`；圖形仍須遵守本 Skill 的來源、候選與未知標記。
 
 ---
 
@@ -122,7 +115,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 ## 六、與現有框架的整合
 
 ### 6.1 與 Phase 02 正常模式的關係
-逆向產出的文件格式與 Phase 02 正常模式完全一致（er_diagram.md、api_spec.md 等），可直接進入 SSOT 追溯鏈。
+逆向產物可進入追溯鏈作為設計候選；正向 Phase 02 仍須依已核准的 Phase 01 需求審查後才成為設計基線。
 
 ### 6.2 Planner 職責
 - 讀取 Phase 03 逆向產出
@@ -138,7 +131,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 - 驗證 Mermaid 語法正確性
 - 驗證 ER 圖欄位與 DB Schema 一致
 - 驗證 API Spec 與路由清單一致
-- 驗證架構圖模組與 module_list 一致；檢查所有圖表與規格都有來源引用，推論標記清楚
+- 驗證架構圖模組與 module_list 一致
 
 ---
 

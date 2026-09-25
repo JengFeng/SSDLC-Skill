@@ -1,52 +1,29 @@
-phase: "06"
-mode: reverse_engineering
-path_base: project_root
-# Phase 06 維運現況盤點；不得連線至正式環境或輸出機密值。
+# Phase 06 順向整合 IO 檔案定義
+# 觸發條件：正向 Phase 06 關卡或 @reverse-ops；逆向階段僅可盤點素材
 inputs:
   - name: source_code_dir
-    id: source_code_dir
-    path: .
-    description: 舊專案根目錄（唯讀）
+    description: 舊專案原始碼目錄
     required: true
-  - name: operations_configs
-    id: operations_configs
-    path: .
-    description: 日誌/監控/告警/排程設定（若有）
+  - name: logging_config
+    description: 日誌配置檔案（若有）
     required: false
-  - name: existing_docs
-    id: existing_docs
-    path: .
-    description: README、INSTALL、runbook 等既有文件（若有）
+  - name: monitoring_config
+    description: 監控配置檔案（若有）
     required: false
-  - name: spec_ref.md
-    id: spec_ref.md
-    path: 06_maintenance/inputs/spec_ref.md
-    description: 已核准 SSOT 的階段參照，人工審核後建立
-    required: true
 
 outputs:
   - name: ops_files_manifest.json
-    id: ops_files_manifest.json
-    path: outputs/phase_06/ops_files_manifest.json
-    description: 維運相關檔案清單及路徑
+    description: 運維檔案清單
     required: true
   - name: logging_analysis.md
-    id: logging_analysis.md
-    path: outputs/phase_06/logging_analysis.md
-    description: 存在日誌設定時的靜態分析
+    description: 日誌配置分析
     required: false
   - name: monitoring_analysis.md
-    id: monitoring_analysis.md
-    path: outputs/phase_06/monitoring_analysis.md
-    description: 存在監控設定時的靜態分析
+    description: 監控配置分析
     required: false
   - name: ops_runbook.md
-    id: ops_runbook.md
-    path: outputs/phase_06/ops_runbook.md
-    description: 僅記錄有證據支持的操作；未知步驟標為待確認
+    description: 運維手冊
     required: true
   - name: ops_restoration_report.md
-    id: ops_restoration_report.md
-    path: outputs/phase_06/ops_restoration_report.md
-    description: 維運現況、缺口、證據及限制
+    description: 運維逆向整合報告
     required: true

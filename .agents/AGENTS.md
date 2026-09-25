@@ -999,3 +999,4 @@ AI：收到，我來幫你回報這個框架問題。
         * **關卡 5：開始逆向** — 摘要顯示範圍、唯讀限制、輸出路徑與測試預設不執行；確認後啟動 @reverse 流程
     4. 每個關卡完成後，僅在目標專案已有 `phase_gates.json` 且允許更新時，寫入 `reverse_engineering` 進度；不得預先將六階段標為完成
     5. 關卡 5 確認後觸發 @reverse；Phase 01 需求候選必須暫停交由使用者審核，未確認不得解鎖或自動進入 Phase 04
+    6. 逆向起點執行 `python scripts/check_reverse_skill_integrity.py`；交接時加上 `--project "<專案目錄>"` 檢查逆向產物、IO 契約、正向 SSOT 與審核狀態。

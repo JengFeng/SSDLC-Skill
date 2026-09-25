@@ -1,81 +1,50 @@
-phase: "02"
-mode: reverse_engineering
-path_base: project_root
-# Phase 02 逆向模式 IO；輸入來自 Phase 03。
+# Phase 02 逆向模式 IO 檔案定義
+# 觸發條件：@reverse（Phase 03 完成後自動）或 @reverse-design
 inputs:
   - name: module_list.json
-    id: module_list.json
-    path: outputs/phase_03_reverse/module_list.json
-    description: Phase 03 模組清單
+    description: Phase 03 逆向產出
     required: true
   - name: api_routes.json
-    id: api_routes.json
-    path: outputs/phase_03_reverse/api_routes.json
-    description: Phase 03 靜態路由盤點
+    description: Phase 03 逆向產出
     required: true
   - name: db_schema_raw.sql
-    id: db_schema_raw.sql
-    path: outputs/phase_03_reverse/db_schema_raw.sql
-    description: Phase 03 候選 DDL（若有）
+    description: Phase 03 逆向產出（若有）
     required: false
   - name: table_list.json
-    id: table_list.json
-    path: outputs/phase_03_reverse/table_list.json
-    description: Phase 03 資料表清單
+    description: Phase 03 逆向產出
     required: true
   - name: code_analysis.md
-    id: code_analysis.md
-    path: outputs/phase_03_reverse/code_analysis.md
-    description: Phase 03 分析與證據摘要
+    description: Phase 03 逆向產出
     required: true
   - name: dependency_list.json
-    id: dependency_list.json
-    path: outputs/phase_03_reverse/dependency_list.json
-    description: Phase 03 依賴清單
+    description: Phase 03 逆向產出
     required: true
+
 outputs:
   - name: er_diagram.md
-    id: er_diagram.md
-    path: outputs/phase_02_reverse/er_diagram.md
-    description: Mermaid ER 圖與待確認關係
+    description: Mermaid 格式 ER 圖
     required: true
   - name: er_description.md
-    id: er_description.md
-    path: outputs/phase_02_reverse/er_description.md
-    description: 資料模型描述與證據
+    description: ER 圖文字說明
     required: true
   - name: api_spec.md
-    id: api_spec.md
-    path: outputs/phase_02_reverse/api_spec.md
-    description: 已觀察路由及未知請求/回應欄位
+    description: API 規格文件（Markdown 格式）
     required: true
   - name: api_spec.yaml
-    id: api_spec.yaml
-    path: outputs/phase_02_reverse/api_spec.yaml
-    description: 可被證據支持的 OpenAPI 候選規格
+    description: OpenAPI 3.0 YAML（若有結構化資訊）
     required: false
   - name: system_architecture.md
-    id: system_architecture.md
-    path: outputs/phase_02_reverse/system_architecture.md
-    description: 模組/依賴架構與推論標記
+    description: 系統架構圖 + 文字說明
     required: true
   - name: use_case_diagram.md
-    id: use_case_diagram.md
-    path: outputs/phase_02_reverse/use_case_diagram.md
-    description: 有足夠證據時產出的使用案例圖
+    description: Use Case 圖
     required: false
   - name: use_case_list.json
-    id: use_case_list.json
-    path: outputs/phase_02_reverse/use_case_list.json
-    description: 有足夠證據時產出的使用案例清單
+    description: Use Case 清單
     required: false
   - name: activity_diagram.md
-    id: activity_diagram.md
-    path: outputs/phase_02_reverse/activity_diagram.md
-    description: 有追蹤流程證據時產出的活動圖
+    description: 活動圖
     required: false
   - name: sequence_diagram.md
-    id: sequence_diagram.md
-    path: outputs/phase_02_reverse/sequence_diagram.md
-    description: 有追蹤流程證據時產出的時序圖
+    description: 時序圖
     required: false

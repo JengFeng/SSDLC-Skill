@@ -1,74 +1,44 @@
-phase: "01"
-mode: reverse_engineering
-path_base: project_root
-# Phase 01 逆向模式 IO；產物在人工確認前皆為候選基線。
+# Phase 01 逆向模式 IO 檔案定義
+# 觸發條件：@reverse（Phase 02 完成後自動）或 @reverse-requirements
 inputs:
   - name: er_diagram.md
-    id: er_diagram.md
-    path: outputs/phase_02_reverse/er_diagram.md
-    description: Phase 02 資料模型
+    description: Phase 02 逆向產出
     required: true
   - name: api_spec.md
-    id: api_spec.md
-    path: outputs/phase_02_reverse/api_spec.md
-    description: Phase 02 API 盤點/候選規格
+    description: Phase 02 逆向產出
     required: true
   - name: system_architecture.md
-    id: system_architecture.md
-    path: outputs/phase_02_reverse/system_architecture.md
-    description: Phase 02 架構描述
+    description: Phase 02 逆向產出
     required: true
   - name: use_case_diagram.md
-    id: use_case_diagram.md
-    path: outputs/phase_02_reverse/use_case_diagram.md
-    description: Phase 02 使用案例圖（若有）
+    description: Phase 02 逆向產出（若有）
     required: false
   - name: use_case_list.json
-    id: use_case_list.json
-    path: outputs/phase_02_reverse/use_case_list.json
-    description: Phase 02 使用案例清單（若有）
+    description: Phase 02 逆向產出（若有）
     required: false
   - name: code_analysis.md
-    id: code_analysis.md
-    path: outputs/phase_03_reverse/code_analysis.md
-    description: Phase 03 證據摘要
-    required: true
-outputs:
-  - name: formal_requirements.md
-    id: formal_requirements.md
-    path: outputs/phase_01_reverse/formal_requirements.md
-    description: 有追溯證據的候選功能/非功能需求
-    required: true
-  - name: executable_spec.yaml
-    id: executable_spec.yaml
-    path: outputs/phase_01_reverse/executable_spec.yaml
-    description: SSOT 候選規格，明確標示 reverse_engineered 與 approval 狀態
-    required: true
-  - name: requirements.feature
-    id: requirements.feature
-    path: outputs/phase_01_reverse/requirements.feature
-    description: 可追溯到證據的候選 Gherkin 場景
-    required: true
-  - name: system_specification.md
-    id: system_specification.md
-    path: outputs/phase_01_reverse/system_specification.md
-    description: 系統規格候選稿，區分事實與假設
-    required: true
-  - name: traceability_matrix.md
-    id: traceability_matrix.md
-    path: outputs/phase_01_reverse/traceability_matrix.md
-    description: 候選需求到設計/程式證據的雙向追溯矩陣
-    required: true
-  - name: reverse_engineering_report.md
-    id: reverse_engineering_report.md
-    path: outputs/phase_01_reverse/reverse_engineering_report.md
-    description: 還原範圍、信心、限制、缺口與人工審核摘要
-    required: true
-  - name: reverse_completion_summary.json
-    id: reverse_completion_summary.json
-    path: outputs/phase_01_reverse/reverse_completion_summary.json
-    description: 階段狀態與待審核資訊；不得預先宣告已核准
+    description: Phase 03 逆向產出
     required: true
 
-# reverse_completion_summary.json 內的 approval_status 初始為 pending；
-# 使用者確認後才可寫 approved，並與 phase_gates.json 的 approved_at 同步。
+outputs:
+  - name: formal_requirements.md
+    description: 結構化需求文件
+    required: true
+  - name: executable_spec.yaml
+    description: 結構化可執行規格（SSOT 核心）
+    required: true
+  - name: requirements.feature
+    description: Gherkin 行為規格
+    required: true
+  - name: system_specification.md
+    description: 系統規格書（IEEE 830 格式）
+    required: true
+  - name: traceability_matrix.md
+    description: 需求追溯矩陣
+    required: true
+  - name: reverse_engineering_report.md
+    description: 逆向工程完成報告
+    required: true
+  - name: reverse_completion_summary.json
+    description: 完成狀態摘要
+    required: true
