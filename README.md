@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> 各階段 Skill 以實際目錄與下方索引清單為準；跨階段共用的 Skill 會列在各自適用的分類中。
+<!-- Skill 數量以索引動態變化，不在 README 維護固定數字。 -->
 
 ---
 
@@ -75,6 +75,7 @@
 | | `open-design` | AI 設計引擎 Skill 合集 |
 | 配色 / 字型 / 風格 | `ui-ux-pro-max` | 84 風格 + 161 色板 + 73 字型配對即時查詢 |
 | UML / 架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
+| 威脅建模 / STRIDE / DFD | `threat-modeling` | 依 DFD 與信任邊界整理威脅、排序風險並連結控制與驗證 |
 | 資料庫 / API 設計 | `prisma` / `openapi_generator` | DB Schema 與 API 規格產生 |
 | 多模態內容 | `minimax-multimodal-toolkit` | 影片 / 音樂 / TTS / 圖片生成 |
 | 視覺效果 / Shader | `shader-dev` | GLSL 著色器技術（光追 / 流體 / 粒子） |
@@ -373,6 +374,10 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
   - ⚠️ 4 項部分符合為非軟體缺陷或需排程功能（部署待設定憟證、帳號關閉排程等）
 - 已完成 4 段 Baseline（Phase 01~04），Phase 05~06 待執行
 
+## 🧭 Project Demo：逆向工程與威脅建模
+
+`project_demos/` 收錄去識別化的案例，示範如何從既有 App/API 流程建立可追溯的 DFD 與 STRIDE 威脅模型。案例將靜態觀察、推論與未知事項分開標示；不包含真實來源碼、端點、行號或憑證。從 [案例索引](project_demos/README.md) 開始閱讀。
+
 ---
 
 ## 🛡️ 資安防護基準
@@ -517,7 +522,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出強整區（SBOM、安全檢核報告、安全掃描報告） |
 | `scripts/` | 框架核心工具腳本（check_spec_integrity.py 規格完整性檢查、align_framework.ps1 框架對齊引擎、generate_srs.py SRS 自動生成）+ 🔒 安全工具鏈 |
-| `skills/` | 依 SSDLC 階段分類的 Skill 目錄與索引 |
+| `skills/` | SSDLC 六階段與跨階段 Skill、README 與歸類索引 |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT 母版與待由核准需求產生的 Gherkin 範本 |
 
@@ -596,6 +601,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | Anthropic Skills | MIT License |
 | GitHub Skills | 依各 Skill 授模 |
 | MiniMax Skills | MIT License |
+| Diagram Design (`diagram-design`) | MIT License (v2.6, Cathryn Lavery) |
 | guizang-ppt-skill | AGPL-3.0 |
 | Other External Resources | 依各 Repo 授模 |
 
@@ -606,21 +612,29 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 本框架以唯讀證據分析既有專案，按 Phase 03→02→01 產生可追溯的候選資料，再依核准狀態銜接正向 SSDLC。原始碼現況不能單獨證明原始商業意圖；需求層結論須由熟悉原系統的人審核。
 
-### 逆向與正向銜接
-- **逆向蒐證**：Phase 03 程式碼 → Phase 02 設計 → Phase 01 需求；記錄來源位置、觀察與推論、信心和未知事項。
-- **候選 SSOT**：Phase 01 輸出先保留為候選稿；使用者核准後才更新專案根 SSOT 並解鎖後續階段。
-- **正向推進**：核准後依 Phase 02→06 的既有關卡推進。Phase 04–06 可盤點既有素材，但盤點結果不代表測試、部署或營運已驗證。
-- **IO 契約**：六份契約位於 `skills/00_cross_phase/reverse_engineering/io_files/`，每筆輸入／輸出定義穩定 ID、專案根相對路徑及必填狀態；僅在 IO 管理啟用時檢查檔案交接。Phase 04–06 的人工核准閘口一律保留。
+新手可使用 `@guide reverse` 從手邊的程式碼、功能操作、文件或問題開始。AI 會先盤點材料並尋找入口候選，逐步追出流程與圖表，再由圖和來源整理設計及需求候選；每輪最多問一個白話問題，回答「不知道」會保留為未知。完整通用步驟與證據標記見 `skills/00_cross_phase/reverse_engineering/GUIDED_REVERSE_SOP.md`。此引導不限於 API 或單一產業情境。
 
-來源專案預設不執行程式、測試、建置或部署，不安裝依賴、不修改來源檔案，也不讀取或輸出密鑰、憑證及個資值。產物會分開標示證據、推論、信心與限制。
+### 逆向流程
+- Phase 03 逆向：程式碼分析（起點）→ 模組清單、API 路由、可證實的資料庫線索
+- Phase 02 逆向：設計文件反推 → ER 圖、API Spec、系統架構圖
+- Phase 01 逆向：需求文件反推 → 需求候選、四規格草稿、追溯矩陣
+- 正向 Phase 01→02→03：將候選回灌專案根 SSOT，按需求核准、設計及實作關卡遞推
+- 正向 Phase 04→06：在前述關卡通過後執行測試、部署、運維；靜態盤點不代表實際驗證
 
 ### 指令
-- `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` — 依逆向順序蒐證並準備交接
-- `@reverse status` / `@reverse stop` — 查看進度 / 停止後續工作
-- `@reverse-code <專案路徑>` — 僅執行 Phase 03 程式碼分析
-- `@reverse-design <Phase 03 產出>` — 僅執行 Phase 02 設計反推
-- `@reverse-requirements <Phase 02 產出>` — 僅執行 Phase 01 需求反推
-- `@guide reverse <專案路徑>` — 引導式逆向工程
+- @reverse [專案路徑] — 啟動完整逆向工程
+- @reverse-code [專案路徑] — 僅執行 Phase 03 程式碼分析
+- @reverse-design [Phase 03 產出] — 僅執行 Phase 02 設計反推
+- @reverse-requirements [Phase 02 產出] — 僅執行 Phase 01 需求反推
+- @guide reverse [專案路徑] — 依通用新手 SOP 引導式逆向工程；可由 AI 尋找入口，逐步畫圖並反推設計／需求
 
-### Skill 與規範
-主控 Skill 位於 `skills/00_cross_phase/reverse_engineering/`。執行細節見 [CORE_RULES.md](docs/CORE_RULES.md) 第 8-3 節、[指令參照](docs/commands_reference.md) 及[逆向工程補強註記](docs/reverse_engineering_change_notes.md)。可執行 `python scripts/check_reverse_alignment.py` 核對規章、指令、Skill、IO 契約與審核狀態設定。
+### Skill 位置
+skills/00_cross_phase/reverse_engineering/
+
+### 圖形 Skill
+`skills/00_cross_phase/diagram-design/` 收錄 [diagram-design](https://github.com/cathrynlavery/diagram-design) 原始版型與工具；Phase 01～06 各有階段入口，分別支援使用案例、UML 類別／順序、操作流程、測試、部署與維運圖。產圖時依目標專案的程式碼與文件提供來源證據，並將未知事項標示為待確認。
+
+### 更新記錄（2026-10-08）
+
+- 新增 MIT 授權的 `diagram-design`（上游 v2.6，固定 commit `dc1ace47b99a419e42d01a03cb6ace5346efa8ae`），依 Phase 01～06 需求、設計、實作、測試、部署與維運場景分類，並提供跨階段主 Skill。
+- Skill 入口位於 `skills/00_cross_phase/diagram-design/` 與各階段 `skills/<phase>/diagram-design/`；依框架階段清單及快捷編號導入。

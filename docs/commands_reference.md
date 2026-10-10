@@ -42,7 +42,7 @@
 - 說出「**查看逆向進度**」、「**逆向做到哪裡了**」或「**reverse status**」→ AI 代理自動執行 @reverse status，顯示當前逆向工程進度與階段狀態。
 - 說出「**中止逆向工程**」、「**停止逆向**」或「**reverse stop**」→ AI 代理自動執行 @reverse stop，中止當前逆向工程流程。
 
-`@reverse` 的逆向蒐證順序為 Phase 03→02→01；完成後先將候選與來源回灌專案根正向 Phase 01 SSOT，再依人工核准及 Evaluator 關卡推進 Phase 02→06。歷史變更紀錄中的舊順序僅記載當時設計，不作現行操作依據。
+`@reverse` 的逆向蒐證順序為 Phase 03→02→01；完成後先將候選與來源回灌專案根正向 Phase 01 SSOT，再依 Evaluator 關卡推進 Phase 02→06。歷史變更紀錄中的舊順序僅記載當時設計，不作現行操作依據。
 
 #### 📂 IO 檔案管理
 
@@ -58,7 +58,7 @@
 - 說出「**關閉引導**」、「**停止引導**」→ AI 代理自動執行 @guide off，退出引導模式。
 - 說出「**引導進度**」、「**我做到哪裡了**」→ AI 代理自動執行 @guide status，顯示引導進度。
 - 說出「**下一步**」、「**跳過這步**」→ AI 代理自動執行 @guide next，前進到下一個引導步驟。
-- 說出「**引導我做逆向工程**」、「**帶我逆向分析**」或「**guide reverse**」→ AI 代理自動執行 @guide reverse [專案路徑]，啟動逆向工程五關卡引導。
+- 說出「**引導我做逆向工程**」、「**帶我逆向分析**」或「**guide reverse**」→ AI 代理執行 @guide reverse [專案路徑]，依 skills/00_cross_phase/reverse_engineering/GUIDED_REVERSE_SOP.md 逐步引導。五關卡是進度架構，不是一次填完的問卷；每輪最多問一個白話問題，回答「不知道」時標記未知並繼續可做的分析。
 
 #### 🛡️ 資安防護
 
@@ -92,12 +92,7 @@
 | **`@guide off`** | 無 | 退出引導模式，已完成項目保持不變。口語觸發：「關閉引導」「停止引導」。 | `@guide off` |
 | **`@guide status`** | 無 | 查看當前階段引導進度（已完成/待完成關卡）。口語觸發：「引導進度」「我做到哪裡了」。 | `@guide status` |
 | **`@guide next`** | 無 | 跳過/完成當前步驟，前進下一個引導步驟。口語觸發：「下一步」「跳過這步」。 | `@guide next` |
-| **`@reverse <專案路徑> [--phase 03,02,01,04,05,06]`** | 專案路徑；可選指定階段 | 唯讀盤點既有專案。Phase 03→02→01 產生候選基線；Phase 01 後人工審核狀態同步寫入 `phase_gates.json` 與完成摘要。執行任何 04–06 指令前先用 Mode E 驗證核准狀態；啟用 IO 管理時也驗證逆向契約。預設不執行測試/建置/部署、不讀取機密值。口語觸發：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」。 | `@reverse D:/old_app --phase 03,02,01` |
-| **`@reverse status` / `@reverse stop`** | 無 | 唯讀顯示逆向進度 / 停止後續工作並保留既有產物。 | `@reverse status` |
-| **`@reverse-code <專案路徑>`** | 專案路徑 | 僅執行 Phase 03 靜態程式碼盤點。 | `@reverse-code D:/old_app` |
-| **`@reverse-design <Phase 03 產出>`** | Phase 03 產出目錄 | 僅執行 Phase 02 設計候選還原。 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |
-| **`@reverse-requirements <Phase 02 產出>`** | Phase 02 產出目錄 | 僅執行 Phase 01 候選需求與 SSOT 草案；必須經人工確認。 | `@reverse-requirements D:/old_app/outputs/phase_02_reverse` |
-| **`@guide reverse`** | `[專案路徑]` | 啟動逆向工程五關卡引導。口語觸發：「引導我做逆向工程」「帶我逆向分析」。 | `@guide reverse D:/old_app` |
+| **`@guide reverse`** | `[專案路徑]` | 依通用新手 SOP 逐步引導逆向分析：可從程式、功能、文件或問題開始；AI 先盤點材料並找入口候選，每輪最多問一個白話問題，允許回答「不知道」，記錄證據／推論／未知／衝突，按授權決定靜態分析或測試。 | `@guide reverse D:/old_app` |
 | **`@help`** | 無 | 立即顯示本指令集參照表的完整內容，方便快速查閱所有可用指令與語法。 | `@help` |
 | **`@import-skill <skill-name>`** | Skill 目錄名稱 | 將 `external-resources/` 中指定外部 Skill 匯入 `skills/` 成為框架內建 Skill。自動執行歸類判斷、複製目錄、更新三檔。口語觸發：「導入 Skill」「收錄成內建 Skill」。 | `@import-skill markitdown` |
 | **`@import-skill-list`** | 無 | 掃描 `external-resources/` 與 `skills/`，列出尚未匯入框架內建的外部 Skill 清單。口語觸發：「列出可匯入 Skill」。 | `@import-skill-list` |
@@ -610,7 +605,7 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
 
 
 *   **2026-08-07 (@reverse 逆向工程指令體系)**：
-    *   新增 @reverse 指令，依 Phase 03→02→01 進行逆向蒐證；Phase 01 人工核准後才盤點 Phase 04→05→06。
+    *   新增 @reverse 指令；現行執行順序見上方說明（Phase 03→02→01 逆向，再回灌正向 Phase 01→06）。
     *   新增 @reverse status 子指令，查看逆向工程進度。
     *   新增 @reverse stop 子指令，中止逆向工程流程。
     *   新增 @reverse --phase 03,02 參數，支援指定階段逆向。

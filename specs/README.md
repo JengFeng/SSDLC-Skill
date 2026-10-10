@@ -19,6 +19,7 @@ system_specification.md  ←──自動生成───   executable_spec.yaml (
 - **`executable_spec.yaml`** 是唯一資料源
 - 所有 6 個階段的 AI 代理（Planner/Generator/Evaluator）皆以此檔案作為主要讀取/寫入對象
 - `system_specification.md` 由此檔案自動生成，永不手動編輯
+- `phase_01_planning.requirements` 是需求主體；頂層 `requirements` 與 `phases` 是供 `check_spec_integrity.py` 計數與核對產出的相容投影。產生專案規格時需同步兩處需求，檢查器會攔截兩者不一致。
 
 ### 階段間資料流
 ```

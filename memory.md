@@ -1951,57 +1951,51 @@ Phase 06：運維解析（順向）
 
 ---
 
-## 逆向工程 Skill 補強 (2026-09-24)
+## 2026-09-25 Demo Project 3 逆向證據回灌正向 SSOT
 
-### 本次調整
-- 依 CORE_RULES.md 與 .agents/AGENTS.md 盤點並補強逆向工程主控 Skill、六個 Phase 子 Skill、六份 reverse IO YAML。
-- 統一 Phase 03→02→01 候選還原與 Phase 01 強制人工審核閘口；使用者確認後才進入 Phase 04→05→06 現況盤點。明確不新增 Phase 00。
-- 將來源專案設為唯讀；預設不執行程式碼、測試、建置或部署，不安裝依賴、不讀取/輸出機密值。要求證據引用、觀察/推論/待確認、信心與限制標記。
-- 校準各子 Skill 與 IO YAML 產物契約，修正測試執行預設、部署/維運盤點範圍及已發現的重複文字/語意偏差。
-- 同步 .agents/AGENTS.md、docs/commands_reference.md、README.md、skills/README.md、phase_gates.json 與待辦事項.md；將逆向設計待辦標為已修正，POC 留待後續。原有 Benson 待辦/資源未變更，未導入 Benson Skill。
-- 執行規章要求的 `python scripts/check_spec_integrity.py` 掃描；輸出 5 項通過、8 項既有缺失（requirements.feature 與六階段 spec_ref.md）、另有 1 項 02_system_design/outputs 缺失警告。
+- 根因：`Demo Project 3` 的需求 YAML、Gherkin、SRS、RTM 僅存在 `outputs/phase_01_reverse/`，正向 `specs/` 未初始化；`check_spec_integrity.py` 讀取頂層 `requirements`／`phases`，根母版原本只列 `phase_01_planning` 等分段。
+- 修正：在根母版加空的相容投影欄位，並同步需求證據、結構化情境、待核定優先級與階段輸入／輸出欄位；`Demo Project 3/bootstrap_forward_ssot.py` 從指定網站逆向成果產生專案根 SSOT、Gherkin、SRS、RTM。8 項需求、20 個候選情境；Phase 01 in_progress，Phase 02–06 pending，沒有冒充核准或測試。
+- 同步修正 `check_spec_integrity.py`：四規格摘要改用真實的 `specs/` 路徑；中文標題為單一詞時改以已核對的 REQ ID 當追溯依據，避免「通過但摘要顯示缺失」及無意義警告。
+- B/S 檢查另比對頂層 `requirements` 與 `phase_01_planning.requirements` 是否完全一致，防止相容投影日後漂移。
+- `Demo Project 3/sync_forward_ssot.py` 將 20 個 Gherkin 情境回灌到 YAML，再由需求主體同步產生 Feature、SRS 正向段落、RTM 和相容投影，提供下一輪需求變更的重跑路徑。
+- Phase 02／03 既得逆向資料也進入 YAML：24 個表名候選、70 個路由候選、1 個網站模組與引用；各處標示靜態／無 DDL／未實機驗證，正向階段狀態仍 pending。
+- 後續對齊防線：`sync_forward_ssot.py --check` 唯讀比對四份生成文件、指定網站來源指紋、逆向清單及使用者 PDF 雜湊；`check_spec_integrity.py` 的 A／B／C／D／S 對有此鉤子的專案自動執行。來源改動須先審閱再更新 SSOT，不能僅替換雜湊值。
+- `.agents/AGENTS.md` 第二章 2.4 已補代理執行規範，要求每次階段關卡使用唯讀對齊檢查；仍須由執行者實際呼叫 A／B／C，不能把工具存在視為自動啟動完整階段流程。
+- 影響範圍：`specs/executable_spec.yaml` 模板、`specs/README.md` 說明與 `Demo Project 3` 正向入口；原 `demo_project2`、指定網站來源及逆向產物保留。
+- 備份：`backups/executable_spec.yaml.backup.20260925-121457`、`backups/check_spec_integrity.py.backup.20260925-121457`、`backups/check_spec_integrity.py.backup.20260925-135234`、`backups/specs_README.md.backup.20260925-121457`、`backups/agents_AGENTS.md.backup.20260925-135740`。
 
-### 變更檔案
-- `skills/00_cross_phase/reverse_engineering/SKILL.md`、六份子 Skill、六份 IO YAML；公開修改註記見 `docs/reverse_engineering_change_notes.md`
-- `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md`、`skills/README.md`、`待辦事項.md`、`memory.md`、`backups/BACKUP_MANIFEST.md`
+## 2026-09-25 逆向 Skill 與 Demo Project 3 文件完整性
 
-## 逆向工程 PR 合併前審查修正 (2026-09-24)
-
-- PR #2 審查指出逆向 IO 範本未接入 Mode E、缺少人工核准的機械狀態、Phase 04–06 可繞過閘口，以及無部署/維運設定時的必填產物矛盾。
-- 六份 YAML 增加 `phase`、`id`、專案相對 `path`，並在 `scripts/check_spec_integrity.py --mode E` 啟用 reverse 專用契約檢查；IO 管理關閉時只保留人工審核閘口。
-- `phase_gates.json` 與 `reverse_completion_summary.json` 以 `approval_status`、`approved_at` 同步；核准前阻擋 Phase 04–06。Phase 04–06 在 IO 管理啟用時要求 `spec_ref.md`。
-- 對齊 Phase 05 通用部署設定分析檔名，規定無部署/維運設定時仍產出可證實的空清單、缺口報告與待補說明；需求場景改為按聚合需求產生。
-- 修正 `.github/labeler.yml` 的無效頂層 `name` 欄位，PR 標題改用語義式 `docs:` 前綴。
-- 修正前公開基線為 Git commit `586e93c`；本機補強前備份仍保留於 `backups/reverse_engineering_pre_20260924-153000/`。
-
-## 逆向工程核心規範與文件對齊 (2026-09-25)
-
-- 依使用者要求，自根 `AGENTS.md` 核對其規章鏈、規格監控模式及記憶/備份參照，補充逆向 Mode E 與文件對齊入口。
-- 在 `docs/CORE_RULES.md` 加入逆向工程的唯讀、候選 SSOT、人工審核閘口及六階段 IO 契約規範；`docs/Harness_Optimization_SKILL.md` 加入對齊檢查點。
-- 同步 `.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md` 的 `@optimize` 說明，並修正檢查組數量、步驟編號及 Mode E 顯示名稱重複鍵。
-- 新增 `scripts/check_reverse_alignment.py` 靜態核對根規章、指令、Skill、IO、審核狀態與 Mode E；修正 `scripts/align_framework.ps1` 中原本位於 `exit` 後的指令檢查，使兩項檢查在報告前執行，並讓警告數量反映實際結果。
-- 修改前 8 份檔案的本機備份位於 `backups/reverse_core_alignment_pre_20260925/`；清單見 `backups/BACKUP_MANIFEST.md`。POC 仍為後續工作。
-
-## SSOT 範本缺口補齊 (2026-09-25)
-
-- 補齊根框架的 `specs/features/requirements.feature` 與 `00_cross_phase`、Phase 01–06 共七份 `inputs/spec_ref.md`，維持 YAML 為唯一結構化資料源；Feature 保留生成說明與空場景，未虛構需求或核准狀態。
-- 七份規格參照以各自 `inputs/` 目錄為基準，提供可解析的 YAML、Feature、SRS、RTM 連結；下游交接從 YAML 的階段輸出欄位取得實際檔案路徑，未產出時只記錄待交接。
-- 同步 `.agents/AGENTS.md`、`docs/CORE_RULES.md`、`specs/README.md` 與根 README 的範本規則和目錄說明；建立 `02_system_design/outputs/` 供掃描器辨識空白範本目錄。
-- 修改前 7 份既有檔案備份於本機 `backups/ssot_template_pre_20260925/`，不納入公開提交。補齊後執行 `python scripts/check_spec_integrity.py`：Mode D 全掃描 12 項通過、0 失敗、0 警告；七份參照共 42 個 Markdown 連結逐一解析，無失效連結；`align_framework.ps1 -DryRun` 為 0 警告。
-
-## 逆向 Skill 證據交接補強 (2026-09-25)
-
-- 將逆向流程明確分成 Phase 03→02→01 的唯讀蒐證，以及回灌正向 Phase 01 SSOT 後依核准關卡推進 Phase 02→06；候選需求保留來源、信心與待確認事項。
-- 六個子 Skill 與 IO 契約補充觀察／推論／未知的區分、禁止讀取或輸出敏感值，以及靜態盤點不等同測試、部署或營運驗證。
-- 新增 `scripts/check_reverse_skill_integrity.py`：預設檢查 Skill 與 IO 契約；指定 `--project` 時檢查逆向交接產物、SSOT 與人工審核狀態。
-- 更新 `.agents/AGENTS.md`、README、指令參照與技能索引。未把專案樣本、簡報或暫存資料納入公開變更。
-- 修改前基線為 Git commit `2acd65e`；其歷史可直接回溯，本次前的工作目錄備份保留於維護者本機，不隨公開提交。
+- 使用者本輪只要求文件與 Skill 資料完整；APP V4 契約決議、測試環境與實機驗證留待後續，不改核准或階段狀態。
+- 修正 `reverse_engineering` 主 Skill 與六個子 Skill：逆向 Phase 03→02→01 蒐證後，必須回灌正向 Phase 01 SSOT，再按 02→06 關卡遞推。逆向完成不自動觸發 Baseline、Phase 04 或真實測試。
+- 統一不確定性規則：無 DDL 不造 SQL；API／UML 的欄位、角色、關聯及執行順序要能回指原始碼或使用者文件；SRS／操作手冊應顯示完整呼叫鏈與衝突。
+- 更新六階段 IO 觸發說明、框架 README、Skill 索引、指令說明及 `.agents/AGENTS.md` 引導條目；新增唯讀 `scripts/check_reverse_skill_integrity.py` 及 Demo Project 3 完整性報告。
+- 核對結果：六個子 Skill／IO 0 錯誤；四規格 8 REQ、20 Scenario、4 文件對齊；A/B/C/D/S 為 13/3/9/23/28 通過，均 0 失敗。正向 Phase 02 產出目錄尚未建立的警告對應 pending。
+- 修改前資料備份於 `backups/reverse_skill_before_alignment_20260925/`；原專案來源及既有逆向成果保留。
+- `diagram-design` 原專案版本 2.6／commit `dc1ace47b99a419e42d01a03cb6ace5346efa8ae` 已納入 `skills/00_cross_phase/diagram-design/`（含原始 Skill、版型、工具與 MIT LICENSE）；Phase 01～06 均新增對應入口並更新 `skills/SKILLS歸類.md`。`Demo Project 3/outputs/diagrams/` 的五張既有 HTML／SVG 圖接到該 Skill，保留來源證據和候選標記。
+- 使用上游 `self_check.py` 逐張檢查時發現五張 SVG 的 title／desc ID 未加圖名；修正 `generate_diagrams.py` 後重產五組 HTML／SVG，全部通過自含與可讀性靜態檢查。另保留 `THIRD_PARTY_LICENSES.md`。
+- 為核對上游內容保留 `external-resources/diagram-design/` 暫存 clone。移除巢狀 `.git` 的遞迴刪除命令被自動審查以 `blocked by policy` 拒絕；輸出未揭露具體規則，疑似與刪除 Git 中繼資料的破壞性操作有關。改採保留 clone、整個來源目錄加入 `.gitignore`，並將版本、授權及固定 commit 的來源索引放在可調用 Skill 目錄中。
 
 
-## 文件、目錄與逆向 IO 契約對齊（2026-10-10）
+## 2026-10-10 新手引導式通用逆向 SOP
 
-- 以 `skills/<phase>/<skill>/SKILL.md` 重算：95 個唯一 Skill、108 個階段歸屬位置、13 個雙重歸屬。
-- 修正 `README.md` 與 `skills/README.md` 的來源統計說明、逆向流程版本及完整技能索引；移除已不存在的 `document-skills` 索引。
-- 依實際技能目錄重建 `skills/SKILLS歸類.md` 各階段清單。
-- 將六份逆向 IO YAML 對齊 `phase/id/path/required` 契約，更新兩個靜態檢查器及目錄表產生器。
-- 驗證：README 指令對齊、SSOT Mode B、逆向 Skill/IO 契約和逆向靜態對齊檢查。
+- POC 對話顯示逐步問答方式可用，但原本 `@guide reverse` 五關卡只有設定項目，缺少新手如何提供材料、入口未知時如何由 AI 追查、如何標記不知道及如何分清程式現況與預期的通用操作規則。
+- 新增 `skills/00_cross_phase/reverse_engineering/GUIDED_REVERSE_SOP.md`：涵蓋跨系統類型的材料盤點、入口候選、逐題引導、靜態／實際證據分級、授權與正式環境界線、從流程圖反推設計與需求、原始規格對照及精簡交付判準。API 清單明確為選用附錄，POC 範例不限制適用情境。
+- 更新逆向工程主 Skill、`.agents/AGENTS.md` 的 `@guide reverse` 執行規則、`docs/commands_reference.md` 與 `README.md`；五關卡保留作為進度架構，每輪至多一個白話問題，可答不知道；候選需求未核准前不寫成正式 SSOT。
+- 修改前定點備份本次修改的六個既有檔案至 `backups/guided_reverse_before_update_20261010/`；工作區原有大量未提交內容保留，未建立混合狀態 Git tag。
+- 本次是 Skill／文件規則更新，不執行專案測試套件；後續執行逆向時仍須依目標專案的來源檢查器及正向 SSOT 檢查驗證。
+
+## 2026-10-10 威脅建模 Skill 整理
+
+- 新增 `skills/02_system_design/threat-modeling/`：OWASP 四步主線、DFD／信任邊界、STRIDE、風險排序、控制措施、驗證與新手逐題引導；附來源摘要及交付模板。
+- 整理七個使用者提供的來源。OWASP 作為主流程；Cloudflare 回 403，FIND 網址只回傳網站外框，未將其內容當作依據。Everpure 改用同篇一般網址成功讀取，原 `?print=print` 連結仍記錄 403。
+- 更新根 README、技能目錄及階段歸類入口；依使用者先前要求，移除固定技能總數與分類數，避免日後索引數量漂移。
+- `skill-creator/scripts/quick_validate.py`（`python -X utf8`）檢查通過。未執行專案測試；沒有推送 GitHub。
+- 工作樹已有多項未提交變更，均保留。本次未建立混合狀態備份；原因另記於 `backups/BACKUP_MANIFEST.md`。
+
+## 2026-10-10 OWASP 官方社群頁面整合
+
+- 將使用者指定的 OWASP Foundation 官方社群頁面 `https://community.owasp.org/Threat_Modeling_Process#data-flow-diagrams` 明確列為 `threat-modeling` Skill 的主要流程來源；頁面可讀，標題標示為 Historical。
+- 對齊 Skill 工作流程與 OWASP 四步：界定範圍、辨識威脅、決定對策／緩解、評估成果；將風險排序併入對策決策，說明可能性、損害、修復成本／複雜度與業務影響是參考因素而非固定公式。
+- 同步更新 `skills/02_system_design/threat-modeling/SKILL.md` 與 `references/source-basis.md`；先將修改前版本保存於 `backups/threat-modeling_before_owasp_community_sync_20261010/`。
+- Validation: skill-creator quick_validate.py passed; project tests and GitHub push were not run.

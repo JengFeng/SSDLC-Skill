@@ -1,8 +1,5 @@
-# Phase 04 逆向模式 IO 契約
-# 路徑皆相對於使用者指定的專案根目錄。
-phase: "04"
-mode: reverse_engineering
-path_base: project_root
+# Phase 04 順向整合 IO 檔案定義
+# 觸發條件：正向 Phase 04 關卡或 @reverse-test；逆向階段僅可盤點素材
 inputs:
   - id: "source_code_dir"
     path: "."

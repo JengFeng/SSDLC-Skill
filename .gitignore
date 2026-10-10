@@ -64,6 +64,9 @@ external-resources/awesome-design-md/*
 !external-resources/awesome-design-md/url.txt
 external-resources/codex-ppt-skill/*
 !external-resources/codex-ppt-skill/url.txt
+# 本機保留上游 clone；巢狀 .git 讓外層 Git 無法追蹤子檔案。
+# 來源索引隨安裝用 Skill 保存在 skills/00_cross_phase/diagram-design/。
+external-resources/diagram-design/
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
 external-resources/guizang-ppt-skill/*

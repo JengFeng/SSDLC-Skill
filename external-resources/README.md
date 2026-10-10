@@ -13,6 +13,7 @@
 | `anthropics-skills/` | [anthropics/skills](https://github.com/anthropics/skills) | See `THIRD_PARTY_NOTICES.md` | Anthropic 官方 Skill 合集 |
 | `awesome-design-md/` | [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT | AI 設計系統文件集合（73+ 網站 DESIGN.md） |
 | `codex-ppt-skill/` | [ningzimu/codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) | MIT | GPT-Image-2 圖片式 PPT 生成 Skill（整頁圖片組裝 .pptx） |
+| `diagram-design/`（本機來源副本） | [來源索引](../skills/00_cross_phase/diagram-design/url.txt) | MIT v2.6 | 巢狀 Git clone 保留於本機並由 `.gitignore` 排除；可調用 Skill 與來源索引位於 `skills/00_cross_phase/diagram-design/` |
 | `github-skills/`
 | `guizang-ppt-skill/` | [op7418/guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) | AGPL-3.0 | AI 網頁 PPT 生成 Skill（電子雜誌風 + 瑞士國際主義，HTML Deck） | | GitHub 社群彙整 | — | GitHub 社群 Skill 合集 |
 | `markitdown/` | [microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT | Microsoft 輕量 Markdown 轉換工具（文件/簡報/試算表轉 Markdown） |
@@ -96,6 +97,7 @@ AI 代理將依序執行：
 |:-----|:-----|:-----|
 | Anthropic Skills | [github.com/anthropics/skills](https://github.com/anthropics/skills) | See THIRD_PARTY_NOTICES.md |
 | Awesome DESIGN.md | [github.com/VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT |
+| Diagram Design | [github.com/cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) | MIT v2.6 |
 | MarkItDown | [github.com/microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT |
 | MiniMax Skills | [github.com/MiniMax-AI/skills](https://github.com/MiniMax-AI/skills) | MIT |
 | UI/UX Pro Max | [github.com/nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 |
@@ -112,6 +114,8 @@ AI 代理將依序執行：
 # 排除原始碼內容，保留 url.txt 和 README.md 索引
 external-resources/anthropics-skills/*
 !external-resources/anthropics-skills/url.txt
+# 本機巢狀 Git clone 保留在外部資源目錄，追蹤來源索引放在安裝後的 Skill 套件內
+external-resources/diagram-design/
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
 external-resources/markitdown/*
