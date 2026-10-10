@@ -1,6 +1,6 @@
 ---
 name: minimax-skills
-description: "MiniMax AI development skills collection (17 skills): frontend-dev, fullstack-dev, android/ios/flutter/RN dev, shader-dev, minimax-pdf/docx/xlsx, pptx-generator, multimodal toolkit, music gen/playlist, buddy-sings, vision-analysis, gif-sticker-maker. All sub-skills distributed across phases."
+description: "MiniMax AI development skills collection: frontend-dev, fullstack-dev, android/ios/flutter/RN dev, shader-dev, minimax-pdf/docx/xlsx, pptx-generator, multimodal toolkit, music gen/playlist, buddy-sings, vision-analysis, gif-sticker-maker. All sub-skills distributed across phases."
 argument-hint: "[skill name]"
 license: MIT
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 # MiniMax Skills Collection
 
-MiniMax AI 17 個開發 Skill 合集索引。
+MiniMax AI 開發 Skill 合集索引。
 
 ## Sub-Skills (已分散收錄於各階段)
 

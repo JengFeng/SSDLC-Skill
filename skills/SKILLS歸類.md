@@ -18,31 +18,31 @@
 
 ### 1. `00_cross_phase` — 跨階段全域共用
 * **適用技能**：版本控制、跨階段協作、通用文件、資安、流程治理與逆向工程。
-* **技能清單**：`Security-Principles`、`anthropics-skills`、`autoresearch`、`brainstorming`、`codex-ppt-skill`、`diffsync`、`docx`、`firecrawl`、`git`、`github-skills`、`guizang-ppt-skill`、`langgraph`、`markitdown`、`minimax-docx`、`minimax-pdf`、`minimax-skills`、`minimax-xlsx`、`pdf`、`ppt-master`、`pptx`、`pptx-generator`、`ralph-loop`、`reverse_engineering`、`slides`、`test-driven-development`、`ui-ux-pro-max`、`ui-ux-pro-max-skill`、`using-superpowers`、`verification-before-completion`、`writing-plans`、`xlsx`（31 個歸屬）
+* **技能清單**：`Security-Principles`、`anthropics-skills`、`autoresearch`、`brainstorming`、`codex-ppt-skill`、`diffsync`、`docx`、`firecrawl`、`git`、`github-skills`、`guizang-ppt-skill`、`langgraph`、`markitdown`、`minimax-docx`、`minimax-pdf`、`minimax-skills`、`minimax-xlsx`、`pdf`、`ppt-master`、`pptx`、`pptx-generator`、`ralph-loop`、`reverse_engineering`、`slides`、`test-driven-development`、`ui-ux-pro-max`、`ui-ux-pro-max-skill`、`using-superpowers`、`verification-before-completion`、`writing-plans`、`xlsx`
 
 ### 2. `01_planning_and_analysis` — 規劃與需求分析
 * **適用技能**：需求釐清、訪談整理、文件分析與規格產製。
-* **技能清單**：`codex-ppt-skill`、`doc-coauthoring`、`docling`、`docusaurus`、`docx`、`guizang-ppt-skill`、`internal-comms`、`langchain`、`llamaindex`、`minimax-docx`、`minimax-pdf`、`minimax-xlsx`、`pdf`、`ppt-master`、`pptx`、`pptx-generator`、`xlsx`（17 個歸屬）
+* **技能清單**：`codex-ppt-skill`、`doc-coauthoring`、`docling`、`docusaurus`、`docx`、`guizang-ppt-skill`、`internal-comms`、`langchain`、`llamaindex`、`minimax-docx`、`minimax-pdf`、`minimax-xlsx`、`pdf`、`ppt-master`、`pptx`、`pptx-generator`、`xlsx`
 
 ### 3. `02_system_design` — 系統設計
 * **適用技能**：架構、資料庫、API、圖表、UI 與視覺設計。
-* **技能清單**：`ai-news-video`、`algorithmic-art`、`awesome-design-md`、`banner-design`、`brand`、`brand-guidelines`、`buddy-sings`、`canvas-design`、`design`、`design-system`、`frontend-design`、`gif-sticker-maker`、`mermaid`、`minimax-multimodal-toolkit`、`minimax-music-gen`、`minimax-music-playlist`、`open-design`、`openapi_generator`、`plantuml`、`prisma`、`shader-dev`、`slack-gif-creator`、`theme-factory`、`ui-styling`（24 個歸屬）
+* **技能清單**：`ai-news-video`、`algorithmic-art`、`awesome-design-md`、`banner-design`、`brand`、`brand-guidelines`、`buddy-sings`、`canvas-design`、`design`、`design-system`、`frontend-design`、`gif-sticker-maker`、`mermaid`、`minimax-multimodal-toolkit`、`minimax-music-gen`、`minimax-music-playlist`、`open-design`、`openapi_generator`、`plantuml`、`prisma`、`shader-dev`、`slack-gif-creator`、`theme-factory`、`ui-styling`
 
 ### 4. `03_implementation_and_coding` — 開發與編碼
 * **適用技能**：程式實作、框架整合、程式碼品質與前端建置。
-* **技能清單**：`android-native-dev`、`claude-api`、`code-simplifier`、`codellama`、`continue_dev`、`eslint`、`flutter-dev`、`frontend-dev`、`fullstack-dev`、`ios-application-dev`、`mcp-builder`、`nx`、`open-design`、`prettier`、`react-native-dev`、`skill-creator`、`ui-styling`、`web-artifacts-builder`（18 個歸屬）
+* **技能清單**：`android-native-dev`、`claude-api`、`code-simplifier`、`codellama`、`continue_dev`、`eslint`、`flutter-dev`、`frontend-dev`、`fullstack-dev`、`ios-application-dev`、`mcp-builder`、`nx`、`open-design`、`prettier`、`react-native-dev`、`skill-creator`、`ui-styling`、`web-artifacts-builder`
 
 ### 5. `04_testing` — 測試驗證
 * **適用技能**：自動化測試、除錯、覆蓋率、品質及安全檢查。
-* **技能清單**：`coverage_py`、`cypress`、`jest`、`playwright`、`pytest`、`robot_framework`、`selenium`、`sonarqube`、`systematic-debugging`、`vision-analysis`、`webapp-testing`（11 個歸屬）
+* **技能清單**：`coverage_py`、`cypress`、`jest`、`playwright`、`pytest`、`robot_framework`、`selenium`、`sonarqube`、`systematic-debugging`、`vision-analysis`、`webapp-testing`
 
 ### 6. `05_deployment` — 部署發布
 * **適用技能**：部署自動化、容器與伺服器組態。
-* **技能清單**：`ansible`、`docker`、`nginx_config_generator`（3 個歸屬）
+* **技能清單**：`ansible`、`docker`、`nginx_config_generator`
 
 ### 7. `06_maintenance` — 維護與營運
 * **適用技能**：日誌、監控、維運分析與告警。
-* **技能清單**：`elk_stack`、`logparser`、`opentelemetry`、`prometheus_grafana`（4 個歸屬）
+* **技能清單**：`elk_stack`、`logparser`、`opentelemetry`、`prometheus_grafana`
 
 ## 執行步驟 SOP（完整版）
 
@@ -107,16 +107,15 @@
 
 `skills/README.md` 開頭段落為全文件的總覽摘要，每次新增 Skill 後必須同步更新以下全部欄位：
 
-1. **來源細項統計數字**：`Anthropic 官方（N）、GitHub 社群（N）、Anthropic 官方插件（N）` → 根據實際新增的 Skill 來源遞增對應數字。
-2. **技能總數**：`共 N 個獨立 Skill` → 遞增總數。
-3. **雙歸屬技能清單與計數**：`其中 <skill-A>/<skill-B>/... 等 N 個具跨階段通用性` → 若新增了雙歸屬技能，必須在此列出技能名稱並更新計數。格式範例：`其中 docx/pdf/xlsx/pptx/file-organizer 等 5 個具跨階段通用性，ui-styling 同時歸類於 Phase 02 與 Phase 03，共計 6 個雙歸屬 Skill`。
-4. **新增技能群組摘要**（若有）：若新增的技能來自同一個來源套件（如 UI/UX Pro Max 7 個子技能），應在開頭段落中簡述。格式範例：`本次新增 nextlevelbuilder/ui-ux-pro-max-skill（MIT v2.6.2）之 7 個設計智慧技能，歸入 Phase 00/02/03`。
+1. **來源與用途摘要**：新增 Skill 時更新來源、用途與連結，不維護來源或技能數量統計。
+2. **跨階段歸屬說明**：如有跨階段歸屬，列出所屬分類與原因，不維護重複歸屬數字。
+3. **新增技能群組摘要**（若有）：說明來源套件、技能名稱及歸入的 SSDLC 分類，不標示套件內技能數量。
 
 #### 3-B. 在各階段區塊下新增技能條目
 
 在 `skills/README.md` 中對應的階段區塊下：
 
-1. **若該來源類別尚無子標題**：建立新子標題（如 `### UI/UX Pro Max 設計智慧技能 (N)`）。
+1. **若該來源類別尚無子標題**：建立能描述用途的新子標題。
 2. **新增技能條目**：依現有格式新增，包含：
    - 可點擊的本機路徑連結（`skills/<phase>/<skill-name>`）
    - 技能功能用途描述
@@ -133,11 +132,7 @@
 
 ### 步驟 5：更新根 README.md
 
-1. **更新 Skill 總數**：搜尋並替換所有 Skill 總數（如 88→95），包含：
-   - Banner 行
-   - 專案概述段
-   - 來源統計段（GitHub 社群 N 個）
-   - 倉庫結構段
+1. **同步 Skill 索引**：依實際目錄更新技能名稱、用途及連結；不在文件中維護總數、階段數或來源數量。
 2. **評估上下文感知推薦表**：檢查「## 🧠 上下文感知 Skill 推薦對照表」，判斷新 Skill 是否需要加入：
    - 新 Skill 的使用場景是否為高頻操作？
    - 新 Skill 是否填補了推薦表中的空白情境？
@@ -146,6 +141,6 @@
 
 ### 步驟 6：最終一致性驗證
 
-1. **三檔交叉驗證**：確保根 `README.md`、`skills/README.md` 與實際目錄清單的唯一 Skill 數一致。只計算 `skills/00_cross_phase` 至 `skills/06_maintenance` 下直接一層的 `<skill>/SKILL.md`；排除 `reverse_engineering/sub_skills/` 等巢狀子 Skill，再以 Skill 名稱去除跨階段重複。另列階段歸屬位置數與重複歸屬數，避免將兩種數量混為一談。
+1. **三檔交叉驗證**：核對根 `README.md`、`skills/README.md` 與實際目錄中的 Skill 名稱、用途及連結；以 `skills/00_cross_phase` 至 `skills/06_maintenance` 的直接子目錄為準，不在文件中維護技能或歸屬數量。
 2. **執行對齊架構檢查**：執行 `@optimize`（Harness Optimization）進行全案關聯性檢查。
 3. **執行規格完整性檢查**：執行 `python scripts/check_spec_integrity.py --mode B`。

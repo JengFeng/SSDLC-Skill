@@ -1,6 +1,6 @@
 ---
 name: anthropics-skills
-description: "Anthropic official skills collection (17 skills): algorithmic-art, brand-guidelines, canvas-design, claude-api, doc-coauthoring, docx, frontend-design, internal-comms, mcp-builder, pdf, pptx, skill-creator, slack-gif-creator, theme-factory, web-artifacts-builder, webapp-testing, xlsx. All sub-skills are distributed across phases."
+description: "Anthropic official skills collection: algorithmic-art, brand-guidelines, canvas-design, claude-api, doc-coauthoring, docx, frontend-design, internal-comms, mcp-builder, pdf, pptx, skill-creator, slack-gif-creator, theme-factory, web-artifacts-builder, webapp-testing, xlsx. All sub-skills are distributed across phases."
 argument-hint: "[skill name]"
 license: Proprietary
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 # Anthropic Skills Collection
 
-Anthropic 官方 17 個 Skill 合集索引。
+Anthropic 官方 Skill 合集索引。
 
 ## Sub-Skills (已分散收錄於各階段)
 

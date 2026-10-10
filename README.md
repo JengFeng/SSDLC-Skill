@@ -1,14 +1,14 @@
 ﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
-  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × 95 個 AI 協作 Skill</strong>
+  <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × AI 協作 Skill</strong>
 </p>
 
 ---
 
 ## 📌 專案概述
 
-**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），合計 95 個 AI 協作 Skill，並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
+**SSDLC-Skill** 是一套專為 AI 協作開發設計的**安全軟體開發生命週期（Secure Software Development Lifecycle）框架**。它將軟體開發流程正規化為六大核心開發階段，搭配一個跨階段全域共用層（`00`），並透過**指令系統**與**口語觸發**讓開發者能自然地與 AI 代理協作。
 
 本框架的核心哲學是 **Harness Engineering（駕馭工程）**：不只為了人類好操作，更為了 AI 好測試。透過一源多用（SSOT）、雙軌測試（pytest + Playwright）、安全防護基準、以及全域連貫性大循環，確保開發過程中的需求追溯、規格一致性、安全合規與品質防線。
 
@@ -18,7 +18,7 @@
 
 ## 🧩 開發階段架構
 
-本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`），合計 **95 個** AI 協作 Skill。
+本框架包含 **六大核心開發階段**，外加一個 **跨階段全域共用層**（`00`）。
 
 ### 🌐 跨階段全域共用
 
@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 95 個唯一 Skill**，目前分布於 108 個階段目錄位置，其中 13 個跨階段重複歸屬。已列出的來源分類為 Anthropic 官方 17 個、GitHub 社群 48 個、Anthropic 官方插件 2 個；來源分類合計 67 個，其餘 28 個未納入這三類統計。
+> 各階段 Skill 以實際目錄與下方索引清單為準；跨階段共用的 Skill 會列在各自適用的分類中。
 
 ---
 
@@ -72,7 +72,7 @@
 | 設計系統 / 品牌規範 | `design-system` | 三層 token 架構（primitive → semantic → component） |
 | | `brand-guidelines` | 品牌識別系統設計 |
 | | `awesome-design-md` | 73+ 網站 DESIGN.md 設計系統參考 |
-| | `open-design` | AI 設計引擎 150+ Skill 合集 |
+| | `open-design` | AI 設計引擎 Skill 合集 |
 | 配色 / 字型 / 風格 | `ui-ux-pro-max` | 84 風格 + 161 色板 + 73 字型配對即時查詢 |
 | UML / 架構圖 | `mermaid` / `plantuml` | Mermaid 優先，瀏覽器直接渲染 |
 | 資料庫 / API 設計 | `prisma` / `openapi_generator` | DB Schema 與 API 規格產生 |
@@ -517,7 +517,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出強整區（SBOM、安全檢核報告、安全掃描報告） |
 | `scripts/` | 框架核心工具腳本（check_spec_integrity.py 規格完整性檢查、align_framework.ps1 框架對齊引擎、generate_srs.py SRS 自動生成）+ 🔒 安全工具鏈 |
-| `skills/` | 95 個唯一 Skill（108 個階段目錄位置，13 個跨階段重複歸屬） |
+| `skills/` | 依 SSDLC 階段分類的 Skill 目錄與索引 |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT 母版與待由核准需求產生的 Gherkin 範本 |
 
@@ -543,12 +543,11 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 |:---|:---|
 | **逆向工程支援** | 新增主控 Skill、六個階段子 Skill 與六份 IO 契約；明確區分證據、推論、候選規格及人工核准。 |
 | **SSOT 範本與追溯** | 補齊空白規格範本、Feature 範本與階段 `spec_ref.md`，並強化逆向交接檢查。 |
-| **文件索引** | 根 README 與 `skills/` 索引已依 95 個唯一 Skill 更新；實際階段歸屬見 `skills/SKILLS歸類.md`。 |
+| **文件索引** | 根 README 與 `skills/` 索引已同步更新；實際階段歸屬見 `skills/SKILLS歸類.md`。 |
 
 ### 2026-10-10 文件一致性校準
 
-- 以 `skills/<phase>/<skill>/SKILL.md` 目錄重算技能數量：95 個唯一 Skill、108 個階段歸屬位置、13 個跨階段重複歸屬。
-- 同步完整目錄索引、分類清單、逆向工程 IO 契約格式與靜態檢查器。
+- 依 `skills/<phase>/<skill>/SKILL.md` 實際目錄同步完整目錄索引與分類清單，並對齊逆向工程 IO 契約格式與靜態檢查器。
 
 ## 🗃️ 歷史更新記錄（截至 2026-07-08）
 
@@ -556,7 +555,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 | 項目 | 說明 |
 |:---|:---|
-| **跨階段通用 Skill 體系** | 5 個文件產製 Skill（docx/pdf/xlsx/pptx/file-organizer）複製至 `skills/00_cross_phase/`，支援 G 前綴混搭導入（`@02/01,G01,G03`），任一階段皆可選用通用 Skill |
+| **跨階段通用 Skill 體系** | 文件產製 Skill（docx/pdf/xlsx/pptx/file-organizer）複製至 `skills/00_cross_phase/`，支援 G 前綴混搭導入（`@02/01,G01,G03`），任一階段皆可選用通用 Skill |
 | **@io 階段 IO 檔案管理** | 新增 `@io show/set/list/diff` 指令體系，`io_files.yaml` 定義階段輸入輸出，支援跨階段勾稽檢查與可選啟用 |
 | **活系統規格書全階段同步** | `system_specification.md` 從僅 Phase 01 更新，擴展為 6 階段全部自動同步，確保規格書隨開發進度持續生長 |
 | **CORE_RULES 補強** | 補入 IO 管理機制、跨階段 Skill 層、Phase 03/06 規格同步規則，與 AGENTS.md 完全互補 |
@@ -575,7 +574,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 | 項目 | 說明 |
 |:---|:---|
-| **UI/UX Pro Max 技能組** | 新增 7 個設計智慧技能（ui-ux-pro-max/brand/design/design-system/ui-styling/slides/banner-design），來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT v2.6.2），歸入 Phase 00/02/03 |
+| **UI/UX Pro Max 技能組** | 新增設計智慧技能（ui-ux-pro-max/brand/design/design-system/ui-styling/slides/banner-design），來自 [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT v2.6.2），歸入 Phase 00/02/03 |
 
 ### 📋 維護修正
 

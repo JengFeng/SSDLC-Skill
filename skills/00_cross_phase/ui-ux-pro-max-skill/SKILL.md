@@ -1,6 +1,6 @@
 ---
 name: ui-ux-pro-max-skill
-description: "UI/UX Pro Max design intelligence collection (7 skills): banner-design, brand, design, design-system, slides, ui-styling, ui-ux-pro-max. All sub-skills distributed across Phase 00/02/03."
+description: "UI/UX Pro Max design intelligence collection: banner-design, brand, design, design-system, slides, ui-styling, ui-ux-pro-max. All sub-skills distributed across Phase 00/02/03."
 argument-hint: "[skill name]"
 license: MIT v2.6.2
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 # UI/UX Pro Max Skill Collection
 
-UI/UX 設計智慧 7 個 Skill 合集索引。
+UI/UX 設計智慧 Skill 合集索引。
 
 ## Sub-Skills (已分散收錄於各階段)
 

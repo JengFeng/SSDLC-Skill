@@ -1,6 +1,6 @@
 ﻿# 軟體開發流程技能目錄索引表
 
-本目錄依 SSDLC 七個分類層（Phase 00 跨階段共用及 Phase 01–06）整理技能。實際目錄共 **95 個唯一 Skill、108 個階段歸屬位置**；其中 13 個 Skill 歸屬於兩個階段。既有來源統計列出 Anthropic 官方 17 個、GitHub 社群 48 個、Anthropic 官方插件 2 個（合計 67 個）；其餘 28 個未納入這三類來源統計。下方原有段落保留來源與用途說明，文末「完整技能目錄」依實際資料夾列出全部歸屬，作為查找基準。
+本目錄依 SSDLC 分類層（Phase 00 跨階段共用及 Phase 01–06）整理技能。各階段 Skill 與來源以實際資料夾及下方清單為準；跨階段共用的 Skill 會列在各自適用的分類中。文末「完整技能目錄」依實際資料夾列出全部歸屬，作為查找基準。
 
 ---
 
@@ -90,7 +90,7 @@
 
 * **[[27] awesome-design-md](skills/02_system_design/awesome-design-md)**：AI 設計系統文件集合 — 73+ 網站 DESIGN.md，涵蓋色彩/字型/組件/佈局/響應式設計規範。
   * **追溯來源**：[本機外部資源目錄](../external-resources/awesome-design-md) / [原始 GitHub 倉庫](https://github.com/VoltAgent/awesome-design-md)
-* **[[28] open-design](skills/02_system_design/open-design)**：AI 設計引擎 Skill 合集 — 150+ Skill，前端/UI/動畫/影片/簡報/PDF/品牌/3D。 🌐 雙歸屬（Phase 02 系統設計 + Phase 03 開發實作）
+* **[[28] open-design](skills/02_system_design/open-design)**：AI 設計引擎 Skill 合集 — 涵蓋前端/UI/動畫/影片/簡報/PDF/品牌/3D。 🌐 雙歸屬（Phase 02 系統設計 + Phase 03 開發實作）
   * **追溯來源**：[本機外部資源目錄](../external-resources/open-design) / [原始 GitHub 倉庫](https://github.com/nexu-io/open-design)
 
 ## 3. 開發與編碼
@@ -130,7 +130,7 @@
 * **[[37] ui-styling](skills/03_implementation_and_coding/ui-styling)**：前端樣式落地實作 — shadcn/ui 元件開發 / Tailwind CSS 工具類 / 響應式佈局 / 暗色模式實作。 🌐 雙歸屬（Phase 02 設計規範 + Phase 03 實作落地）
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/ui-styling) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 
-* **[[38] open-design](skills/03_implementation_and_coding/open-design)**：AI 設計引擎 Skill 合集 — 150+ Skill，前端/UI/動畫/影片/簡報/PDF/品牌/3D。 🌐 雙歸屬（Phase 02 系統設計 + Phase 03 開發實作）
+* **[[38] open-design](skills/03_implementation_and_coding/open-design)**：AI 設計引擎 Skill 合集 — 涵蓋前端/UI/動畫/影片/簡報/PDF/品牌/3D。 🌐 雙歸屬（Phase 02 系統設計 + Phase 03 開發實作）
   * **追溯來源**：[本機外部資源目錄](../external-resources/open-design) / [原始 GitHub 倉庫](https://github.com/nexu-io/open-design)
 
 ## 4. 測試驗證
@@ -270,11 +270,11 @@
 
 ## 完整技能目錄（依實際 `skills/` 目錄核對）
 
-> 本表列出每個階段目錄中的實際 Skill；跨階段 Skill 會在各所屬階段重複列出。數量為 95 個唯一 Skill、108 個階段歸屬位置、13 個雙重歸屬。
+> 本表列出每個階段目錄中的實際 Skill；跨階段 Skill 會在各所屬階段重複列出。
 
 | 階段 | Skill | 說明 |
 |:---|:---|:---|
-| `00_cross_phase` 跨階段全域共用 | [`anthropics-skills`](../skills/00_cross_phase/anthropics-skills/SKILL.md) | Anthropic official skills collection (17 skills): algorithmic-art, brand-guidelines, canvas-design, claude-api, doc-coauthoring, docx, frontend-design, internal-comms, mcp-builder, pdf, pptx, skill-creator, slack-gif-creator, theme-factory, web-artifacts-builder, webapp-testing, xlsx. All sub-skills are distributed across phases. |
+| `00_cross_phase` 跨階段全域共用 | [`anthropics-skills`](../skills/00_cross_phase/anthropics-skills/SKILL.md) | Anthropic official skills collection: algorithmic-art, brand-guidelines, canvas-design, claude-api, doc-coauthoring, docx, frontend-design, internal-comms, mcp-builder, pdf, pptx, skill-creator, slack-gif-creator, theme-factory, web-artifacts-builder, webapp-testing, xlsx. All sub-skills are distributed across phases. |
 | `00_cross_phase` 跨階段全域共用 | [`autoresearch`](../skills/00_cross_phase/autoresearch/SKILL.md) | Autonomous iteration loop: modify, verify, keep/discard against any metric |
 | `00_cross_phase` 跨階段全域共用 | [`brainstorming`](../skills/00_cross_phase/brainstorming/SKILL.md) | You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation. |
 | `00_cross_phase` 跨階段全域共用 | [`codex-ppt-skill`](../skills/00_cross_phase/codex-ppt-skill/SKILL.md)（雙重歸屬） | GPT-Image-2 PPT Generator: converts articles/reports into image-based PowerPoint presentations. Plans outline and visual style, generates each slide as AI image, assembles into .pptx. Supports Codex, Claude Code, OpenClaw, Hermes Agent. Requires image generation API key. |
@@ -282,13 +282,13 @@
 | `00_cross_phase` 跨階段全域共用 | [`docx`](../skills/00_cross_phase/docx/SKILL.md)（雙重歸屬） | Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of 'Word doc', 'word document', '.docx', or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation. |
 | `00_cross_phase` 跨階段全域共用 | [`firecrawl`](../skills/00_cross_phase/firecrawl/SKILL.md) | Fetch web content, take screenshots, extract structured data, search the web, and crawl documentation sites. Use when the user needs current web information, asks to scrape a URL, wants a screenshot, needs to extract specific data from a page, or wants to learn about a framework or library. |
 | `00_cross_phase` 跨階段全域共用 | [`git`](../skills/00_cross_phase/git/SKILL.md) | 全域版本控制、分支管理與 Baseline 基線封存追溯工具。 |
-| `00_cross_phase` 跨階段全域共用 | [`github-skills`](../skills/00_cross_phase/github-skills/SKILL.md) | GitHub community skills collection (48 skills): curated from GitHub community contributions. Includes tools for CI/CD, code review, documentation, testing, and more. |
+| `00_cross_phase` 跨階段全域共用 | [`github-skills`](../skills/00_cross_phase/github-skills/SKILL.md) | GitHub community skills collection curated from GitHub community contributions. Includes tools for CI/CD, code review, documentation, testing, and more. |
 | `00_cross_phase` 跨階段全域共用 | [`guizang-ppt-skill`](../skills/00_cross_phase/guizang-ppt-skill/SKILL.md)（雙重歸屬） | AI Agent HTML slide deck generator: editorial magazine and Swiss international layouts, image prompts, social covers, WebGL presentation runtime. Dual visual system with 10+22 layout templates. Outputs single-file horizontal-flip HTML PPT. |
 | `00_cross_phase` 跨階段全域共用 | [`langgraph`](../skills/00_cross_phase/langgraph/SKILL.md) | 複雜狀態多 Agent 協作工作流的圖形狀態管理引擎。 |
 | `00_cross_phase` 跨階段全域共用 | [`markitdown`](../skills/00_cross_phase/markitdown/SKILL.md) | 輕量 Python 工具，將各種檔案格式（PDF、Word、PowerPoint、Excel、圖片、HTML、CSV、JSON、XML、ZIP、YouTube、EPub 等）轉換為 Markdown，適用於 LLM 文本分析與跨階段文件前處理。 |
 | `00_cross_phase` 跨階段全域共用 | [`minimax-docx`](../skills/00_cross_phase/minimax-docx/SKILL.md)（雙重歸屬） | Professional DOCX creation/editing: OpenXML SDK, three pipelines (create/fill/template), XSD validation. Requires MiniMax API Key for full functionality. Source: MiniMax-AI/skills (MIT). |
 | `00_cross_phase` 跨階段全域共用 | [`minimax-pdf`](../skills/00_cross_phase/minimax-pdf/SKILL.md)（雙重歸屬） | PDF generation: 15 cover styles, form filling, document reformatting, print-ready typography. MiniMax API integration. Requires MiniMax API Key for full functionality. Source: MiniMax-AI/skills (MIT). |
-| `00_cross_phase` 跨階段全域共用 | [`minimax-skills`](../skills/00_cross_phase/minimax-skills/SKILL.md) | MiniMax AI development skills collection (17 skills): frontend-dev, fullstack-dev, android/ios/flutter/RN dev, shader-dev, minimax-pdf/docx/xlsx, pptx-generator, multimodal toolkit, music gen/playlist, buddy-sings, vision-analysis, gif-sticker-maker. All sub-skills distributed across phases. |
+| `00_cross_phase` 跨階段全域共用 | [`minimax-skills`](../skills/00_cross_phase/minimax-skills/SKILL.md) | MiniMax AI development skills collection: frontend-dev, fullstack-dev, android/ios/flutter/RN dev, shader-dev, minimax-pdf/docx/xlsx, pptx-generator, multimodal toolkit, music gen/playlist, buddy-sings, vision-analysis, gif-sticker-maker. All sub-skills distributed across phases. |
 | `00_cross_phase` 跨階段全域共用 | [`minimax-xlsx`](../skills/00_cross_phase/minimax-xlsx/SKILL.md)（雙重歸屬） | Excel file operations: create/read/analyze/edit/validate .xlsx/.xlsm/.csv. XML templates, pandas, zero-format-loss editing. Requires MiniMax API Key for full functionality. Source: MiniMax-AI/skills (MIT). |
 | `00_cross_phase` 跨階段全域共用 | [`pdf`](../skills/00_cross_phase/pdf/SKILL.md)（雙重歸屬） | Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill. |
 | `00_cross_phase` 跨階段全域共用 | [`ppt-master`](../skills/00_cross_phase/ppt-master/SKILL.md)（雙重歸屬） | AI generates natively editable PPTX from any document — native shapes and animations, editable charts and tables, speaker notes with audio narration, custom .pptx template support. Not slide images, real editable PowerPoint. |
@@ -300,7 +300,7 @@
 | `00_cross_phase` 跨階段全域共用 | [`slides`](../skills/00_cross_phase/slides/SKILL.md) | Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies. |
 | `00_cross_phase` 跨階段全域共用 | [`test-driven-development`](../skills/00_cross_phase/test-driven-development/SKILL.md) | Use when implementing any feature or bugfix, before writing implementation code |
 | `00_cross_phase` 跨階段全域共用 | [`ui-ux-pro-max`](../skills/00_cross_phase/ui-ux-pro-max/SKILL.md) | UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across 10 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, and HTML/CSS). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, and check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, and mobile app. Elements: button, modal, navbar, sidebar, card, table, form, and chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, and flat design. Topics: color systems, accessibility, animation, layout, typography, font pairing, spacing, interaction states, shadow, and gradient. Integrations: shadcn/ui MCP for component search and examples. |
-| `00_cross_phase` 跨階段全域共用 | [`ui-ux-pro-max-skill`](../skills/00_cross_phase/ui-ux-pro-max-skill/SKILL.md) | UI/UX Pro Max design intelligence collection (7 skills): banner-design, brand, design, design-system, slides, ui-styling, ui-ux-pro-max. All sub-skills distributed across Phase 00/02/03. |
+| `00_cross_phase` 跨階段全域共用 | [`ui-ux-pro-max-skill`](../skills/00_cross_phase/ui-ux-pro-max-skill/SKILL.md) | UI/UX Pro Max design intelligence collection: banner-design, brand, design, design-system, slides, ui-styling, ui-ux-pro-max. All sub-skills distributed across Phase 00/02/03. |
 | `00_cross_phase` 跨階段全域共用 | [`using-superpowers`](../skills/00_cross_phase/using-superpowers/SKILL.md) | Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions |
 | `00_cross_phase` 跨階段全域共用 | [`verification-before-completion`](../skills/00_cross_phase/verification-before-completion/SKILL.md) | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always |
 | `00_cross_phase` 跨階段全域共用 | [`writing-plans`](../skills/00_cross_phase/writing-plans/SKILL.md) | Use when you have a spec or requirements for a multi-step task, before touching code |

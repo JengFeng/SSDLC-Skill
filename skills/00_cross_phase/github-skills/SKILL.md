@@ -1,6 +1,6 @@
 ---
 name: github-skills
-description: "GitHub community skills collection (48 skills): curated from GitHub community contributions. Includes tools for CI/CD, code review, documentation, testing, and more."
+description: "GitHub community skills collection curated from GitHub community contributions. Includes tools for CI/CD, code review, documentation, testing, and more."
 argument-hint: "[skill name]"
 license: Various (see individual SKILL.md)
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 # GitHub Skills Collection
 
-GitHub 社群 48 個 Skill 合集索引。
+GitHub 社群 Skill 合集索引。
 
 ## Note
 
