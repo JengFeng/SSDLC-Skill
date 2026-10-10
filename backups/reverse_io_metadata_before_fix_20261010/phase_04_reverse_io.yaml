@@ -1,0 +1,48 @@
+# Phase 04 順向整合 IO 檔案定義
+# 觸發條件：正向 Phase 04 關卡或 @reverse-test；逆向階段僅可盤點素材
+inputs:
+  - id: "source_code_dir"
+    path: "."
+    required: true
+    description: "指定專案根目錄與來源檔案"
+  - id: "module_list.json"
+    path: "outputs/phase_03_reverse/module_list.json"
+    required: true
+    description: "Phase 03 逆向產出"
+  - id: "reverse_completion_summary.json"
+    path: "outputs/phase_01_reverse/reverse_completion_summary.json"
+    required: true
+    description: "Phase 01 審核摘要"
+  - id: "existing_tests_dir"
+    path: "tests"
+    required: false
+    description: "現有測試目錄（若有）"
+outputs:
+  - id: "existing_tests.json"
+    path: "outputs/phase_04_reverse/existing_tests.json"
+    required: true
+    description: "現有測試清單"
+  - id: "test_framework_report.json"
+    path: "outputs/phase_04_reverse/test_framework_report.json"
+    required: true
+    description: "測試框架偵測結果"
+  - id: "coverage_report.md"
+    path: "outputs/phase_04_reverse/coverage_report.md"
+    required: false
+    description: "覆蓋率分析報告（若有執行證據）"
+  - id: "uncovered_modules.json"
+    path: "outputs/phase_04_reverse/uncovered_modules.json"
+    required: false
+    description: "未覆蓋模組清單"
+  - id: "test_gap_analysis.md"
+    path: "outputs/phase_04_reverse/test_gap_analysis.md"
+    required: true
+    description: "測試缺口分析"
+  - id: "missing_tests.json"
+    path: "outputs/phase_04_reverse/missing_tests.json"
+    required: true
+    description: "缺失測試清單"
+  - id: "test_restoration_report.md"
+    path: "outputs/phase_04_reverse/test_restoration_report.md"
+    required: true
+    description: "測試素材盤點／逆向整合報告"

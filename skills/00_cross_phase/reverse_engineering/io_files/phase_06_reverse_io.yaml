@@ -1,5 +1,8 @@
 # Phase 06 順向整合 IO 檔案定義
 # 觸發條件：正向 Phase 06 關卡或 @reverse-ops；逆向階段僅可盤點素材
+phase: "06"
+mode: reverse_engineering
+path_base: project_root
 inputs:
   - id: "source_code_dir"
     path: "."

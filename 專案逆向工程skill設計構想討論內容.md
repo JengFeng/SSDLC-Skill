@@ -13,7 +13,7 @@
 | 階段定位 | 新增 Phase 00，或作為六階段前置作業 | **已決定不新增 Phase 00。** 逆向工程是跨階段 Skill，沿用既有 Phase 01–06。 | [`docs/CORE_RULES.md`](docs/CORE_RULES.md)、[`skills/00_cross_phase/reverse_engineering/SKILL.md`](skills/00_cross_phase/reverse_engineering/SKILL.md) |
 | 逆向順序 | 由程式碼回推六階段交付物 | **核心流程已實作：Phase 03 → 02 → 01** 蒐證並形成候選；經 Phase 01 人工確認後，才依正向關卡推進後續階段。 | [主 Skill](skills/00_cross_phase/reverse_engineering/SKILL.md)、[IO 契約](skills/00_cross_phase/reverse_engineering/io_files/) |
 | 子 Skill | 建立需求、設計、程式、測試、部署、維運六個逆向子 Skill | **六個子 Skill 已建立。** Phase 04–06 僅可盤點既有測試、部署及營運素材；這不代表測試已執行、部署已驗證或正式維運已完成。 | [逆向子 Skills](skills/00_cross_phase/reverse_engineering/sub_skills/) |
-| 輸入與交付物 | 收集來源碼、DDL、測試及部署材料，轉換成標準文件 | **六階段 IO YAML 均已建立**，以 `id`、`path`、`required` 描述輸入及交付物；但目前 `check_reverse_alignment.py` 指出 Phase 04–06 缺少 `phase`、`mode`、`path_base` 欄位，完整對齊尚未通過，列入待辦 #6。來源不足時保留未知；缺少 DDL 不會阻止 API 或架構候選分析，也不得捏造資料庫結構。 | [IO 契約](skills/00_cross_phase/reverse_engineering/io_files/)、[完整性檢查器](scripts/check_reverse_skill_integrity.py)、[對齊檢查器](scripts/check_reverse_alignment.py) |
+| 輸入與交付物 | 收集來源碼、DDL、測試及部署材料，轉換成標準文件 | **六階段 IO YAML 均已建立並通過對齊檢查。** 每份契約以 `phase`、`mode`、`path_base` 標示範圍，並以 `id`、`path`、`required` 描述輸入及交付物。來源不足時保留未知；缺少 DDL 不會阻止 API 或架構候選分析，也不得捏造資料庫結構。 | [IO 契約](skills/00_cross_phase/reverse_engineering/io_files/)、[完整性檢查器](scripts/check_reverse_skill_integrity.py)、[對齊檢查器](scripts/check_reverse_alignment.py) |
 | 新手引導 | 讓使用者選擇逆向範圍並補足資訊 | **`@guide reverse` 已實作。** AI 先盤點素材並提出有依據的入口候選，一輪最多問一個白話問題；「不知道」會記成未知，不要求新手先掌握技術術語。 | [引導 SOP](skills/00_cross_phase/reverse_engineering/GUIDED_REVERSE_SOP.md)、[命令文件](docs/commands_reference.md) |
 | 證據與人工審核 | 自動比對產物、標出缺口並交由人員修正 | **證據分層與人工審核閘口已實作。** 程式觀察、文件契約、使用者確認、AI 推論、衝突與未知需分開記錄；需求核准前，正向規格維持候選狀態。 | [主 Skill](skills/00_cross_phase/reverse_engineering/SKILL.md)、[`docs/CORE_RULES.md`](docs/CORE_RULES.md) |
 | POC 範例 | 以小型既有專案驗證流程 | **靜態流程 POC 已有案例。** 公開版整理於 [`project_demos/`](project_demos/README.md)，並已去識別化。它不驗證所有自動化構想，也不包含正式服務測試或安全核准。 | [Project Demo 索引](project_demos/README.md) |
@@ -33,7 +33,7 @@
 
 ## POC 範圍與限制
 
-目前 POC 案例以靜態來源整理流程、設計與需求候選，並示範 DFD／STRIDE 威脅分析。檢查結果為：`check_reverse_skill_integrity.py --project "Demo Project 3"` 通過；`check_spec_integrity.py --mode D --project "Demo Project 3"` 為 23 項通過、0 項失敗（另有 Phase 02 outputs 目錄不存在的警告）；`check_reverse_alignment.py` 仍有 Phase 04–06 IO metadata 不一致，詳見待辦 #6。這些結果沒有證明以下初始檢核點已完成：自動互斥規則、逆向專屬三次重試、全域自動同步、完整六階段自動掃描或順向自動切換。POC 未執行來源系統、正式服務請求、建置、部署或資料庫連線；候選結果仍須由業務、開發、資料庫及資安負責人審閱。
+目前 POC 案例以靜態來源整理流程、設計與需求候選，並示範 DFD／STRIDE 威脅分析。最近一次檢查結果：`check_reverse_skill_integrity.py --project "Demo Project 3"` 通過；`check_spec_integrity.py --mode D --project "Demo Project 3"` 為 23 項通過、0 項失敗（另有 Phase 02 outputs 目錄不存在的警告）；`check_reverse_alignment.py` 通過，Phase 04–06 IO metadata 缺漏已修正。這些結果沒有證明以下初始檢核點已完成：自動互斥規則、逆向專屬三次重試、全域自動同步、完整六階段自動掃描或順向自動切換。POC 未執行來源系統、正式服務請求、建置、部署或資料庫連線；候選結果仍須由業務、開發、資料庫及資安負責人審閱。
 
 公開案例只分享去識別化方法和候選情境；真實來源碼、端點、檔案路徑、行號及原始簡報不放在公開案例資料夾。
 
