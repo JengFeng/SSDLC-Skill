@@ -1,0 +1,44 @@
+# Phase 05 順向整合 IO 檔案定義
+# 觸發條件：正向 Phase 05 關卡或 @reverse-deploy；逆向階段僅可盤點素材
+inputs:
+  - id: "source_code_dir"
+    path: "."
+    required: true
+    description: "指定專案根目錄與來源檔案"
+  - id: "reverse_completion_summary.json"
+    path: "outputs/phase_01_reverse/reverse_completion_summary.json"
+    required: true
+    description: "Phase 01 審核摘要"
+  - id: "dockerfile"
+    path: "Dockerfile"
+    required: false
+    description: "Dockerfile（若有）"
+  - id: "docker_compose"
+    path: "docker-compose.yml"
+    required: false
+    description: "Compose 設定（若有）"
+  - id: "deploy_scripts"
+    path: "deploy"
+    required: false
+    description: "部署腳本目錄（若有）"
+outputs:
+  - id: "deploy_files_manifest.json"
+    path: "outputs/phase_05_reverse/deploy_files_manifest.json"
+    required: true
+    description: "部署檔案清單"
+  - id: "docker_analysis.md"
+    path: "outputs/phase_05_reverse/docker_analysis.md"
+    required: false
+    description: "Dockerfile 分析（若有）"
+  - id: "deployment_topology.md"
+    path: "outputs/phase_05_reverse/deployment_topology.md"
+    required: true
+    description: "部署拓撲圖"
+  - id: "build_manifest.json"
+    path: "outputs/phase_05_reverse/build_manifest.json"
+    required: true
+    description: "建置設定清單"
+  - id: "deployment_report.md"
+    path: "outputs/phase_05_reverse/deployment_report.md"
+    required: true
+    description: "部署素材盤點／逆向整合報告"

@@ -1999,3 +1999,9 @@ Phase 06：運維解析（順向）
 - 對齊 Skill 工作流程與 OWASP 四步：界定範圍、辨識威脅、決定對策／緩解、評估成果；將風險排序併入對策決策，說明可能性、損害、修復成本／複雜度與業務影響是參考因素而非固定公式。
 - 同步更新 `skills/02_system_design/threat-modeling/SKILL.md` 與 `references/source-basis.md`；先將修改前版本保存於 `backups/threat-modeling_before_owasp_community_sync_20261010/`。
 - Validation: skill-creator quick_validate.py passed; project tests and GitHub push were not run.
+
+## 2026-10-10 逆向 IO Phase 04–06 對齊修正
+
+- `scripts/check_reverse_alignment.py` 原先回報 Phase 04、05、06 的逆向 IO YAML 缺少 `phase`、`mode`、`path_base` 頂層欄位；其他契約欄位及子 Skill 輸出清單未因此檢查失敗。
+- 三份 YAML 已補上對應階段編號、`reverse_engineering` 模式及 `project_root` 路徑基準；修改前版本保存於 `backups/reverse_io_metadata_before_fix_20261010/`，並列入 `backups/BACKUP_MANIFEST.md`。
+- 設計討論稿與待辦事項已同步記錄問題原因、修正及對齊檢查結果。
