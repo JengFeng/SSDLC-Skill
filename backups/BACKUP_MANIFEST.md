@@ -27,6 +27,7 @@
 | guided_reverse_before_update_20261010/ | 2026-10-10 | 新手引導式通用逆向 SOP 調整前，定點保存主 Skill、@guide 規章、指令參照、README、memory 與備份清單 |
 | threat-modeling_before_owasp_community_sync_20261010/ | 2026-10-10 | threat-modeling Skill 與來源整理加入使用者指定 OWASP 官方社群頁面前的版本 |
 | reverse_io_metadata_before_fix_20261010/ | 2026-10-10 | Phase 04–06 逆向 IO YAML 補齊 phase/mode/path_base 對齊欄位前的版本 |
+| check_spec_integrity.py.backup.20261010-phase02-mermaid | 2026-10-10 | Mermaid 目錄檢查依 Phase 02 pending 狀態調整前的完整性檢查器 |
 
 ## 歷史備份（已清理）
 

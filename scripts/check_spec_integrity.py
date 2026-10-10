@@ -204,7 +204,24 @@ class SpecIntegrityChecker:
         print("\n=== Mermaid 語法檢查 ===")
         diagram_dir = os.path.join(self.project_base, "02_system_design", "outputs")
         if not os.path.isdir(diagram_dir):
-            self.log("WARN", "02_system_design/outputs 目錄不存在")
+            phase_status = None
+            phase_outputs = None
+            spec_path = os.path.join(self.project_base, "specs", "executable_spec.yaml")
+            try:
+                with open(spec_path, encoding="utf-8") as spec_file:
+                    spec = yaml.safe_load(spec_file) or {}
+                phases = spec.get("phases", {})
+                phase_02 = phases.get("02_system_design", {}) if isinstance(phases, dict) else {}
+                if isinstance(phase_02, dict):
+                    phase_status = str(phase_02.get("status", "")).strip().lower()
+                    phase_outputs = phase_02.get("outputs")
+            except (OSError, yaml.YAMLError, AttributeError):
+                pass
+
+            if phase_status == "pending" and phase_outputs == []:
+                print("  [INFO] Phase 02 尚未開始且尚無預期產出，略過 Mermaid 語法檢查")
+            else:
+                self.log("WARN", "02_system_design/outputs 目錄不存在")
             return
 
         bt = b"```"

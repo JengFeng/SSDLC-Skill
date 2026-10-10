@@ -2005,3 +2005,9 @@ Phase 06：運維解析（順向）
 - `scripts/check_reverse_alignment.py` 原先回報 Phase 04、05、06 的逆向 IO YAML 缺少 `phase`、`mode`、`path_base` 頂層欄位；其他契約欄位及子 Skill 輸出清單未因此檢查失敗。
 - 三份 YAML 已補上對應階段編號、`reverse_engineering` 模式及 `project_root` 路徑基準；修改前版本保存於 `backups/reverse_io_metadata_before_fix_20261010/`，並列入 `backups/BACKUP_MANIFEST.md`。
 - 設計討論稿與待辦事項已同步記錄問題原因、修正及對齊檢查結果。
+
+## 2026-10-10 Phase 02 Mermaid 檢查提示修正
+
+- `check_spec_integrity.py` 原先在 Mermaid 輸出目錄不存在時一律警告；對 Phase 02 尚未開始且 SSOT 明定 `outputs: []` 的專案造成預期中的誤導警告。
+- 現在只有 Phase 02 為 `pending` 且沒有預期產出時提示略過；其他狀態缺少輸出目錄仍會警告。修改前版本保存於 `backups/check_spec_integrity.py.backup.20261010-phase02-mermaid`。
+- 以逆向 POC 重新驗證 A/D 檢查；IO 對齊與逆向 Skill 完整性檢查仍通過。
