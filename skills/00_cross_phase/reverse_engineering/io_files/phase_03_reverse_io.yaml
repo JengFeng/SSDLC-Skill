@@ -1,38 +1,49 @@
-# Phase 03 逆向模式 IO 檔案定義
-# 觸發條件：@reverse 或 @reverse-code
+# Phase 03 逆向模式 IO 契約
+# 路徑皆相對於使用者指定的專案根目錄。
+phase: "03"
+mode: reverse_engineering
+path_base: project_root
 inputs:
-  - name: source_code_dir
-    description: 舊專案完整原始碼目錄路徑
+  - id: "source_code_dir"
+    path: "."
     required: true
-  - name: db_ddl_file
-    description: 資料庫 DDL 檔案（若有）
+    description: "指定專案根目錄與來源檔案"
+  - id: "db_ddl_file"
+    path: "inputs/db_schema.sql"
     required: false
-  - name: language_hint
-    description: 程式語言提示（可選，系統自動偵測）
-    required: false
-
+    description: "資料庫 DDL（若有）"
 outputs:
-  - name: scan_report.json
-    description: 專案掃描概覽
+  - id: "scan_report.json"
+    path: "outputs/phase_03_reverse/scan_report.json"
     required: true
-  - name: module_list.json
-    description: 模組清單（檔名、路徑、職責描述）
+    description: "專案掃描概覽"
+  - id: "module_list.json"
+    path: "outputs/phase_03_reverse/module_list.json"
     required: true
-  - name: class_function_list.json
-    description: 類別與函數清單
+    description: "模組清單（檔名、路徑、職責描述）"
+  - id: "class_function_list.json"
+    path: "outputs/phase_03_reverse/class_function_list.json"
     required: true
-  - name: api_routes.json
-    description: API 路由清單
+    description: "類別與函數清單"
+  - id: "api_routes.json"
+    path: "outputs/phase_03_reverse/api_routes.json"
     required: true
-  - name: db_schema_raw.sql
-    description: 反推的 DB Schema
+    description: "API 路由清單"
+  - id: "db_schema_raw.sql"
+    path: "outputs/phase_03_reverse/db_schema_raw.sql"
     required: false
-  - name: table_list.json
-    description: 資料表清單
+    description: "有證據時的反推 DB Schema"
+  - id: "table_list.json"
+    path: "outputs/phase_03_reverse/table_list.json"
     required: true
-  - name: dependency_list.json
-    description: 第三方依賴清單
+    description: "資料表清單"
+  - id: "dependency_list.json"
+    path: "outputs/phase_03_reverse/dependency_list.json"
     required: true
-  - name: code_analysis.md
-    description: 程式碼分析報告
+    description: "第三方依賴清單"
+  - id: "code_analysis.md"
+    path: "outputs/phase_03_reverse/code_analysis.md"
     required: true
+    description: "程式碼分析報告"
+
+# language_hint 為對話／執行參數，不是檔案，不列入檔案 IO 契約。

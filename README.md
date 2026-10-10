@@ -37,7 +37,7 @@
 | `05` | 部署發布 | Ansible、Docker、Nginx 組態、SHA-256 簽章驗證 |
 | `06` | 維護與營運 | ELK Stack、Prometheus、OpenTelemetry、Hotfix |
 
-> **合計 95 個 Skill**：Anthropic 官方 17 個 + GitHub 社群 48 個 + Anthropic 官方插件 2 個
+> **合計 95 個唯一 Skill**，目前分布於 108 個階段目錄位置，其中 13 個跨階段重複歸屬。已列出的來源分類為 Anthropic 官方 17 個、GitHub 社群 48 個、Anthropic 官方插件 2 個；來源分類合計 67 個，其餘 28 個未納入這三類統計。
 
 ---
 
@@ -517,7 +517,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `logs/` | 全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌 |
 | `outputs/` | 跨階段安全產出強整區（SBOM、安全檢核報告、安全掃描報告） |
 | `scripts/` | 框架核心工具腳本（check_spec_integrity.py 規格完整性檢查、align_framework.ps1 框架對齊引擎、generate_srs.py SRS 自動生成）+ 🔒 安全工具鏈 |
-| `skills/` | 95 個 Skill 實體（含 README.md 與歸類索引，13 雙归屬） |
+| `skills/` | 95 個唯一 Skill（108 個階段目錄位置，13 個跨階段重複歸屬） |
 | `snapshots/` | 全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆） |
 | `specs/` | 可執行規格 SSOT 母版與待由核准需求產生的 Gherkin 範本 |
 
@@ -535,7 +535,22 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `待辦事項.md` | 未來需求與待辦清單 |
 | `專案逆向工程skill設計構想討論內容.md` | 逆向工程原始設計討論記錄 |
 
-## 📝 近期更新記錄（2026-07-08）
+## 📝 文件更新記錄（截至 2026-10-10）
+
+### v1.4.1（2026-09-25）
+
+| 項目 | 說明 |
+|:---|:---|
+| **逆向工程支援** | 新增主控 Skill、六個階段子 Skill 與六份 IO 契約；明確區分證據、推論、候選規格及人工核准。 |
+| **SSOT 範本與追溯** | 補齊空白規格範本、Feature 範本與階段 `spec_ref.md`，並強化逆向交接檢查。 |
+| **文件索引** | 根 README 與 `skills/` 索引已依 95 個唯一 Skill 更新；實際階段歸屬見 `skills/SKILLS歸類.md`。 |
+
+### 2026-10-10 文件一致性校準
+
+- 以 `skills/<phase>/<skill>/SKILL.md` 目錄重算技能數量：95 個唯一 Skill、108 個階段歸屬位置、13 個跨階段重複歸屬。
+- 同步完整目錄索引、分類清單、逆向工程 IO 契約格式與靜態檢查器。
+
+## 🗃️ 歷史更新記錄（截至 2026-07-08）
 
 ### 🏗️ 架構強化
 
@@ -588,30 +603,25 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 > 詳細授模詳情請參照各 Skill 目錄下之 LICENSE 或 url.txt。
 
 
-## 🔄 逆向工程模組（2026-08-07 新增）
+## 🔄 逆向工程模組（v1.4.1 更新）
 
-本框架支援對既有專案進行唯讀證據分析，先產生可追溯的程式碼、設計與需求候選，再回灌正向 Phase 01 SSOT；程式碼無法證明原始商業意圖，需求產物須經人工確認。
+本框架以唯讀證據分析既有專案，按 Phase 03→02→01 產生可追溯的候選資料，再依核准狀態銜接正向 SSDLC。原始碼現況不能單獨證明原始商業意圖；需求層結論須由熟悉原系統的人審核。
 
-### 逆向流程
-- Phase 03→02→01：唯讀蒐證，建立含來源、信心和待確認項目的程式、設計及需求候選
-- 正向 Phase 01：將候選回灌專案根 SSOT，經人工審核後才可確認
-- 正向 Phase 02→06：依階段關卡推進；測試、建置、部署預設不執行
+### 逆向與正向銜接
+- **逆向蒐證**：Phase 03 程式碼 → Phase 02 設計 → Phase 01 需求；記錄來源位置、觀察與推論、信心和未知事項。
+- **候選 SSOT**：Phase 01 輸出先保留為候選稿；使用者核准後才更新專案根 SSOT 並解鎖後續階段。
+- **正向推進**：核准後依 Phase 02→06 的既有關卡推進。Phase 04–06 可盤點既有素材，但盤點結果不代表測試、部署或營運已驗證。
+- **IO 契約**：六份契約位於 `skills/00_cross_phase/reverse_engineering/io_files/`，每筆輸入／輸出定義穩定 ID、專案根相對路徑及必填狀態；僅在 IO 管理啟用時檢查檔案交接。Phase 04–06 的人工核准閘口一律保留。
 
-人工審核狀態會同步記錄於 `phase_gates.json` 與完成摘要。即使只指定 Phase 04、05 或 06，也須先通過審核閘口；啟用 IO 管理時另以逆向 IO 契約核對輸入與產物。
-
-來源專案不安裝依賴、不啟動程式、不修改檔案；不讀取或輸出密鑰、憑證及個資值。所有產物依 IO 定義寫入 `outputs/`，保留證據、推論、信心與限制。
+來源專案預設不執行程式、測試、建置或部署，不安裝依賴、不修改來源檔案，也不讀取或輸出密鑰、憑證及個資值。產物會分開標示證據、推論、信心與限制。
 
 ### 指令
-- `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` — 完整或指定階段盤點
+- `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` — 依逆向順序蒐證並準備交接
 - `@reverse status` / `@reverse stop` — 查看進度 / 停止後續工作
 - `@reverse-code <專案路徑>` — 僅執行 Phase 03 程式碼分析
 - `@reverse-design <Phase 03 產出>` — 僅執行 Phase 02 設計反推
 - `@reverse-requirements <Phase 02 產出>` — 僅執行 Phase 01 需求反推
 - `@guide reverse <專案路徑>` — 引導式逆向工程
 
-### Skill 位置
-`skills/00_cross_phase/reverse_engineering/`
-
-本次補強的修改理由、檔案對照與驗證結果見 [逆向工程 Skill 補強註記](docs/reverse_engineering_change_notes.md)。
-
-核心執行規範見 [CORE_RULES.md](docs/CORE_RULES.md) 第 8-3 節；修改後可執行 `python scripts/check_reverse_alignment.py` 核對規章、指令、六階段 Skill/IO 與審核設定。
+### Skill 與規範
+主控 Skill 位於 `skills/00_cross_phase/reverse_engineering/`。執行細節見 [CORE_RULES.md](docs/CORE_RULES.md) 第 8-3 節、[指令參照](docs/commands_reference.md) 及[逆向工程補強註記](docs/reverse_engineering_change_notes.md)。可執行 `python scripts/check_reverse_alignment.py` 核對規章、指令、Skill、IO 契約與審核狀態設定。

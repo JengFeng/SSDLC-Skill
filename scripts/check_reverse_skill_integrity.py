@@ -4,14 +4,21 @@ from __future__ import annotations
 
 import argparse
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills/00_cross_phase/reverse_engineering"
-PHASE_DIRS = {1: "phase_01_reverse", 2: "phase_02_reverse", 3: "phase_03_reverse"}
+PHASE_DIRS = {
+    1: "phase_01_reverse",
+    2: "phase_02_reverse",
+    3: "phase_03_reverse",
+    4: "phase_04_reverse",
+    5: "phase_05_reverse",
+    6: "phase_06_reverse",
+}
 
 
 def check(project: Path | None = None) -> list[str]:
@@ -35,21 +42,30 @@ def check(project: Path | None = None) -> list[str]:
             io = yaml.safe_load(io_path.read_text(encoding="utf-8-sig"))
             if not isinstance(io, dict) or not all(isinstance(io.get(k), list) for k in ("inputs", "outputs")):
                 raise ValueError("inputs／outputs 必須是清單")
+            if (str(io.get("phase")) != f"{number:02d}"
+                    or io.get("mode") != "reverse_engineering"
+                    or io.get("path_base") != "project_root"):
+                raise ValueError("phase／mode／path_base 與契約檔案不一致")
             child_text = children[0].read_text(encoding="utf-8-sig") if len(children) == 1 else ""
             for kind in ("inputs", "outputs"):
                 names: set[str] = set()
                 for item in io[kind]:
-                    if (not isinstance(item, dict) or not isinstance(item.get("name"), str)
+                    if (not isinstance(item, dict) or not isinstance(item.get("id"), str)
+                            or not isinstance(item.get("path"), str)
                             or not isinstance(item.get("required"), bool)):
-                        raise ValueError(f"{kind} 項目需包含 name 與 required")
-                    name = item["name"]
+                        raise ValueError(f"{kind} 項目需包含 id、path 與 required")
+                    name = item["id"]
                     if name in names:
-                        raise ValueError(f"{kind} 名稱重複：{name}")
+                        raise ValueError(f"{kind} ID 重複：{name}")
                     names.add(name)
+                    path = item["path"].replace("\\", "/")
+                    safe_path = PurePosixPath(path)
+                    if (not path or safe_path.is_absolute() or ".." in safe_path.parts):
+                        raise ValueError(f"{kind} 路徑無效或超出專案根目錄：{path}")
                     if kind == "outputs" and name not in child_text:
                         errors.append(f"Phase {number:02d} 子 Skill 未記載 IO 產物：{name}")
                     if project and number in PHASE_DIRS and kind == "outputs" and item["required"]:
-                        output = project / "outputs" / PHASE_DIRS[number] / name
+                        output = project.joinpath(*safe_path.parts)
                         if not output.is_file():
                             errors.append(f"交接缺少必需逆向產物：{output}")
         except (OSError, yaml.YAMLError, ValueError) as exc:

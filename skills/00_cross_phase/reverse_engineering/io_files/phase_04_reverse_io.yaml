@@ -1,35 +1,51 @@
-# Phase 04 順向整合 IO 檔案定義
-# 觸發條件：正向 Phase 04 關卡或 @reverse-test；逆向階段僅可盤點素材
+# Phase 04 逆向模式 IO 契約
+# 路徑皆相對於使用者指定的專案根目錄。
+phase: "04"
+mode: reverse_engineering
+path_base: project_root
 inputs:
-  - name: source_code_dir
-    description: 舊專案原始碼目錄
+  - id: "source_code_dir"
+    path: "."
     required: true
-  - name: module_list.json
-    description: Phase 03 逆向產出
+    description: "指定專案根目錄與來源檔案"
+  - id: "module_list.json"
+    path: "outputs/phase_03_reverse/module_list.json"
     required: true
-  - name: existing_tests_dir
-    description: 現有測試目錄（自動偵測）
+    description: "Phase 03 逆向產出"
+  - id: "reverse_completion_summary.json"
+    path: "outputs/phase_01_reverse/reverse_completion_summary.json"
+    required: true
+    description: "Phase 01 審核摘要"
+  - id: "existing_tests_dir"
+    path: "tests"
     required: false
-
+    description: "現有測試目錄（若有）"
 outputs:
-  - name: existing_tests.json
-    description: 現有測試清單
+  - id: "existing_tests.json"
+    path: "outputs/phase_04_reverse/existing_tests.json"
     required: true
-  - name: test_framework_report.json
-    description: 測試框架偵測結果
+    description: "現有測試清單"
+  - id: "test_framework_report.json"
+    path: "outputs/phase_04_reverse/test_framework_report.json"
     required: true
-  - name: coverage_report.md
-    description: 覆蓋率分析報告
+    description: "測試框架偵測結果"
+  - id: "coverage_report.md"
+    path: "outputs/phase_04_reverse/coverage_report.md"
     required: false
-  - name: uncovered_modules.json
-    description: 未覆蓋模組清單
+    description: "覆蓋率分析報告（若有執行證據）"
+  - id: "uncovered_modules.json"
+    path: "outputs/phase_04_reverse/uncovered_modules.json"
     required: false
-  - name: test_gap_analysis.md
-    description: 測試缺口分析
+    description: "未覆蓋模組清單"
+  - id: "test_gap_analysis.md"
+    path: "outputs/phase_04_reverse/test_gap_analysis.md"
     required: true
-  - name: missing_tests.json
-    description: 缺失測試清單
+    description: "測試缺口分析"
+  - id: "missing_tests.json"
+    path: "outputs/phase_04_reverse/missing_tests.json"
     required: true
-  - name: test_restoration_report.md
-    description: 測試逆向整合報告
+    description: "缺失測試清單"
+  - id: "test_restoration_report.md"
+    path: "outputs/phase_04_reverse/test_restoration_report.md"
     required: true
+    description: "測試素材盤點／逆向整合報告"

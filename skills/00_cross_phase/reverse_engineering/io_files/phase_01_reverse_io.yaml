@@ -1,44 +1,67 @@
-# Phase 01 逆向模式 IO 檔案定義
-# 觸發條件：@reverse（Phase 02 完成後自動）或 @reverse-requirements
+# Phase 01 逆向模式 IO 契約
+# 路徑皆相對於使用者指定的專案根目錄。
+phase: "01"
+mode: reverse_engineering
+path_base: project_root
 inputs:
-  - name: er_diagram.md
-    description: Phase 02 逆向產出
+  - id: "er_diagram.md"
+    path: "outputs/phase_02_reverse/er_diagram.md"
     required: true
-  - name: api_spec.md
-    description: Phase 02 逆向產出
+    description: "Phase 02 逆向產出"
+  - id: "api_spec.md"
+    path: "outputs/phase_02_reverse/api_spec.md"
     required: true
-  - name: system_architecture.md
-    description: Phase 02 逆向產出
+    description: "Phase 02 逆向產出"
+  - id: "system_architecture.md"
+    path: "outputs/phase_02_reverse/system_architecture.md"
     required: true
-  - name: use_case_diagram.md
-    description: Phase 02 逆向產出（若有）
+    description: "Phase 02 逆向產出"
+  - id: "use_case_diagram.md"
+    path: "outputs/phase_02_reverse/use_case_diagram.md"
     required: false
-  - name: use_case_list.json
-    description: Phase 02 逆向產出（若有）
+    description: "Phase 02 逆向產出（若有）"
+  - id: "use_case_list.json"
+    path: "outputs/phase_02_reverse/use_case_list.json"
     required: false
-  - name: code_analysis.md
-    description: Phase 03 逆向產出
+    description: "Phase 02 逆向產出（若有）"
+  - id: "activity_diagram.md"
+    path: "outputs/phase_02_reverse/activity_diagram.md"
+    required: false
+    description: "Phase 02 逆向產出（若有）"
+  - id: "sequence_diagram.md"
+    path: "outputs/phase_02_reverse/sequence_diagram.md"
+    required: false
+    description: "Phase 02 逆向產出（若有）"
+  - id: "code_analysis.md"
+    path: "outputs/phase_03_reverse/code_analysis.md"
     required: true
-
+    description: "Phase 03 逆向產出"
 outputs:
-  - name: formal_requirements.md
-    description: 結構化需求文件
+  - id: "formal_requirements.md"
+    path: "outputs/phase_01_reverse/formal_requirements.md"
     required: true
-  - name: executable_spec.yaml
-    description: 結構化可執行規格（SSOT 核心）
+    description: "結構化需求候選文件"
+  - id: "executable_spec.yaml"
+    path: "outputs/phase_01_reverse/executable_spec.yaml"
     required: true
-  - name: requirements.feature
-    description: Gherkin 行為規格
+    description: "結構化可執行規格候選（SSOT）"
+  - id: "requirements.feature"
+    path: "outputs/phase_01_reverse/requirements.feature"
     required: true
-  - name: system_specification.md
-    description: 系統規格書（IEEE 830 格式）
+    description: "Gherkin 行為規格候選"
+  - id: "system_specification.md"
+    path: "outputs/phase_01_reverse/system_specification.md"
     required: true
-  - name: traceability_matrix.md
-    description: 需求追溯矩陣
+    description: "系統規格書候選（IEEE 830）"
+  - id: "traceability_matrix.md"
+    path: "outputs/phase_01_reverse/traceability_matrix.md"
     required: true
-  - name: reverse_engineering_report.md
-    description: 逆向工程完成報告
+    description: "需求追溯矩陣候選"
+  - id: "reverse_engineering_report.md"
+    path: "outputs/phase_01_reverse/reverse_engineering_report.md"
     required: true
-  - name: reverse_completion_summary.json
-    description: 完成狀態摘要
+    description: "逆向工程報告"
+  - id: "reverse_completion_summary.json"
+    path: "outputs/phase_01_reverse/reverse_completion_summary.json"
     required: true
+    description: "完成狀態及人工審核摘要"

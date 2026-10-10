@@ -29,3 +29,9 @@
 - `python scripts/check_spec_integrity.py` 全掃描結果：5 項通過、8 項缺失。缺少 `specs/features/requirements.feature` 與 00–06 階段的 `inputs/spec_ref.md`；另警告 `02_system_design/outputs` 不存在。這些是目前框架根目錄的既有缺項，尚須另行處理。
 - 小型既有專案 POC 尚未執行，因此本次只驗證文件與設定一致性，尚未驗證實際專案的還原品質。
 - 本次未引入 Benson Skill。
+
+## 2026-10-10 文件與 IO 契約對齊
+
+- 修正六份逆向 IO 契約，使其統一使用 `phase`、`mode`、`path_base` 與輸入／輸出的 `id`、`path`、`required` 欄位；輸出路徑指向各階段 `outputs/phase_NN_reverse/`。
+- 更新逆向完整性檢查器，驗證契約欄位、路徑安全性及必填產物實際位置。
+- 更新 README、Skill 完整索引與技能分類清單；目錄核對結果為 95 個唯一 Skill、108 個階段歸屬位置、13 個雙重歸屬。

@@ -1,29 +1,43 @@
-# Phase 06 順向整合 IO 檔案定義
-# 觸發條件：正向 Phase 06 關卡或 @reverse-ops；逆向階段僅可盤點素材
+# Phase 06 逆向模式 IO 契約
+# 路徑皆相對於使用者指定的專案根目錄。
+phase: "06"
+mode: reverse_engineering
+path_base: project_root
 inputs:
-  - name: source_code_dir
-    description: 舊專案原始碼目錄
+  - id: "source_code_dir"
+    path: "."
     required: true
-  - name: logging_config
-    description: 日誌配置檔案（若有）
+    description: "指定專案根目錄與來源檔案"
+  - id: "reverse_completion_summary.json"
+    path: "outputs/phase_01_reverse/reverse_completion_summary.json"
+    required: true
+    description: "Phase 01 審核摘要"
+  - id: "logging_config"
+    path: "config/logging.yaml"
     required: false
-  - name: monitoring_config
-    description: 監控配置檔案（若有）
+    description: "日誌設定（若有）"
+  - id: "monitoring_config"
+    path: "config/monitoring.yaml"
     required: false
-
+    description: "監控設定（若有）"
 outputs:
-  - name: ops_files_manifest.json
-    description: 運維檔案清單
+  - id: "ops_files_manifest.json"
+    path: "outputs/phase_06_reverse/ops_files_manifest.json"
     required: true
-  - name: logging_analysis.md
-    description: 日誌配置分析
+    description: "運維檔案清單"
+  - id: "logging_analysis.md"
+    path: "outputs/phase_06_reverse/logging_analysis.md"
     required: false
-  - name: monitoring_analysis.md
-    description: 監控配置分析
+    description: "日誌設定分析（若有）"
+  - id: "monitoring_analysis.md"
+    path: "outputs/phase_06_reverse/monitoring_analysis.md"
     required: false
-  - name: ops_runbook.md
-    description: 運維手冊
+    description: "監控設定分析（若有）"
+  - id: "ops_runbook.md"
+    path: "outputs/phase_06_reverse/ops_runbook.md"
     required: true
-  - name: ops_restoration_report.md
-    description: 運維逆向整合報告
+    description: "以已知資料編製的運維手冊"
+  - id: "ops_restoration_report.md"
+    path: "outputs/phase_06_reverse/ops_restoration_report.md"
     required: true
+    description: "運維素材盤點／逆向整合報告"

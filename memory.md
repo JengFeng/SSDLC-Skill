@@ -1996,3 +1996,12 @@ Phase 06：運維解析（順向）
 - 新增 `scripts/check_reverse_skill_integrity.py`：預設檢查 Skill 與 IO 契約；指定 `--project` 時檢查逆向交接產物、SSOT 與人工審核狀態。
 - 更新 `.agents/AGENTS.md`、README、指令參照與技能索引。未把專案樣本、簡報或暫存資料納入公開變更。
 - 修改前基線為 Git commit `2acd65e`；其歷史可直接回溯，本次前的工作目錄備份保留於維護者本機，不隨公開提交。
+
+
+## 文件、目錄與逆向 IO 契約對齊（2026-10-10）
+
+- 以 `skills/<phase>/<skill>/SKILL.md` 重算：95 個唯一 Skill、108 個階段歸屬位置、13 個雙重歸屬。
+- 修正 `README.md` 與 `skills/README.md` 的來源統計說明、逆向流程版本及完整技能索引；移除已不存在的 `document-skills` 索引。
+- 依實際技能目錄重建 `skills/SKILLS歸類.md` 各階段清單。
+- 將六份逆向 IO YAML 對齊 `phase/id/path/required` 契約，更新兩個靜態檢查器及目錄表產生器。
+- 驗證：README 指令對齊、SSOT Mode B、逆向 Skill/IO 契約和逆向靜態對齊檢查。

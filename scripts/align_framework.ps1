@@ -162,7 +162,7 @@ if ($needTableUpdate) {
         'logs' = '全域錯誤日誌（A/B 類）、對話紀錄、迭代日誌'
         'outputs' = '跨階段安全產出彙整區（SBOM、安全檢核報告、安全掃描報告）'
         'scripts' = '輔助腳本 + 🔒 安全工具鏈（align_framework.ps1、pre_commit_secrets.py、run_security_scan.py 等）'
-        'skills' = '88 個 Skill 實體（含 README.md 與歸類索引）'
+        'skills' = 'Skill 目錄與完整索引（含跨階段重複歸屬）'
         'snapshots' = '全域執行快照（snapshot_*.md + diff_*.patch，保留最近 5 筆）'
         'specs' = '可執行規格 SSOT（executable_spec.yaml、system_specification.md）'
     }
