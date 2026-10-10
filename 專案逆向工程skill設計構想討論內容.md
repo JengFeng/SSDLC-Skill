@@ -33,7 +33,7 @@
 
 ## POC 範圍與限制
 
-目前 POC 案例以靜態來源整理流程、設計與需求候選，並示範 DFD／STRIDE 威脅分析。最近一次檢查結果：`check_reverse_skill_integrity.py --project "Demo Project 3"` 通過；`check_spec_integrity.py --mode D --project "Demo Project 3"` 為 23 項通過、0 項失敗（另有 Phase 02 outputs 目錄不存在的警告）；`check_reverse_alignment.py` 通過，Phase 04–06 IO metadata 缺漏已修正。這些結果沒有證明以下初始檢核點已完成：自動互斥規則、逆向專屬三次重試、全域自動同步、完整六階段自動掃描或順向自動切換。POC 未執行來源系統、正式服務請求、建置、部署或資料庫連線；候選結果仍須由業務、開發、資料庫及資安負責人審閱。
+目前 POC 案例以靜態來源整理流程、設計與需求候選，並示範 DFD／STRIDE 威脅分析。`check_spec_integrity.py` 已調整為：Phase 02 為 `pending` 且 `outputs` 為空時，明確提示略過 Mermaid 檢查；Phase 02 已啟動或狀態未知卻缺少輸出目錄時仍保留警告。最近一次檢查結果：`check_reverse_skill_integrity.py --project "Demo Project 3"` 通過；`check_spec_integrity.py --mode D --project "Demo Project 3"` 為 22 項通過、0 項失敗；`check_reverse_alignment.py` 通過。這些結果沒有證明以下初始檢核點已完成：自動互斥規則、逆向專屬三次重試、全域自動同步、完整六階段自動掃描或順向自動切換。POC 未執行來源系統、正式服務請求、建置、部署或資料庫連線；候選結果仍須由業務、開發、資料庫及資安負責人審閱。
 
 公開案例只分享去識別化方法和候選情境；真實來源碼、端點、檔案路徑、行號及原始簡報不放在公開案例資料夾。
 
