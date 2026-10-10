@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>APP 介接的邏輯資料關係</title><style>
+:root{--paper:#f7faf9;--ink:#243d42;--muted:#60777a;--accent:#089bab}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Geist','Microsoft JhengHei','Segoe UI',sans-serif}
+main{max-width:1440px;margin:auto;padding:40px 32px}h1,h2{font-family:'Instrument Serif','Noto Serif TC',Georgia,serif;font-weight:500}
+h1{font-size:36px;margin:8px 0 16px}h2{font-size:28px;margin:8px 0 16px}h3{font-size:16px}
+p,li{line-height:1.8}a{color:#087d8b}code,.eyebrow{font-family:'Geist Mono',Consolas,monospace}.eyebrow{font-size:11px;letter-spacing:.12em;color:var(--muted)}
+section{padding:28px 0;border-top:1px solid #d5e2df;scroll-margin-top:20px}nav{line-height:2.2}nav a{display:inline-block;margin-right:20px}
+.diagram{width:100%;overflow-x:auto;background:#fff;border:1px solid #d5e2df;border-radius:6px;padding:12px}
+svg{display:block;width:100%;height:auto;min-width:0}table{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px}
+th,td{border-bottom:1px solid #d5e2df;text-align:left;padding:10px;vertical-align:top}th{background:#edf4f2}
+.note{border-left:3px solid var(--accent);padding:12px 20px;background:#edf7f6}.foot{font-size:12px;color:var(--muted)}
+details{margin:16px 0}summary{cursor:pointer;color:#087d8b}footer{border-top:1px solid #d5e2df;margin-top:32px;padding-top:16px}
+@media print{main{padding:0}nav{display:none}.diagram{border:0;padding:0}svg{min-width:0}section{break-before:page}details>*{display:block}a{color:inherit}}
+
+table{font-size:16px}.eyebrow,.foot{font-size:14px;color:#304e54}
+@media print{svg{min-width:0!important}}
+
+body{font-size:12px}main{max-width:none;width:100%;padding:24px clamp(12px,2vw,32px)}
+h1{font-size:27px;margin:6px 0 12px}h2{font-size:21px;margin:6px 0 12px}h3{font-size:12px}
+section{width:100%;padding:21px 0;scroll-margin-top:15px}.diagram{padding:9px}
+table{font-size:12px;margin:12px 0}th,td{padding:7.5px}
+.eyebrow,.foot{font-size:10.5px}.note{padding:9px 15px}
+details{margin:12px 0}footer{margin-top:24px;padding-top:12px}
+
+.font-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;color:#183b43;font-size:12px}
+.font-controls[hidden]{display:none}
+.font-presets{display:flex;gap:5px}
+.font-controls button,.font-controls input{font:inherit;color:#183b43;background:#fff;border:1.5px solid #6f9699;border-radius:4px;min-height:32px;padding:6px 9px}
+.font-controls input{width:7em}
+.font-controls button{cursor:pointer;font-weight:600}
+.font-controls button[aria-pressed="true"]{color:#fff;background:#087e8c;border-color:#087e8c}
+.font-controls button:focus-visible,.font-controls input:focus-visible,.diagram:focus-visible{outline:3px solid #087e8c;outline-offset:3px}
+.font-custom,.font-controls label{display:flex;align-items:center;gap:6px}
+.font-controls input[aria-invalid="true"]{border-color:#a52121}
+.font-status{font-weight:600}
+@media print{.font-controls{display:none}.diagram{overflow:visible}svg{width:100%!important;min-width:0!important;height:auto!important}}
+</style></head><body><main><section id="10-er"><p class="eyebrow">ER · 原始碼逆向分析</p><h2>APP 介接的邏輯資料關係</h2><p>有效帳號可取得零到多筆水號綁定；Token 實際存於帳號，DTO 僅為查詢或回應投影。</p><div class="font-controls" data-font-controls="10-er-frame" role="group" aria-label="圖中文字大小" hidden><span>文字大小</span><div class="font-presets"><button type="button" data-percent="60" aria-controls="10-er-frame" aria-pressed="false">小（60%）</button><button type="button" data-percent="75" aria-controls="10-er-frame" aria-pressed="false">中（75%）</button><button type="button" data-percent="100" aria-controls="10-er-frame" aria-pressed="true">大（100%）</button></div><form class="font-custom" novalidate><label for="10-er-font-percent">自訂<input id="10-er-font-percent" type="number" inputmode="decimal" step="any" value="100" aria-controls="10-er-frame" aria-describedby="10-er-font-hint" aria-label="自訂文字大小百分比"/>%</label><button type="submit">套用</button></form><span class="font-status" role="status" aria-live="polite" aria-atomic="true">目前 100%</span><span id="10-er-font-hint">可輸入小數，按 Enter 或套用</span></div><div class="diagram" id="10-er-frame" tabindex="0" role="region" aria-label="APP 介接的邏輯資料關係，可捲動的自適應圖表"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 320 1280 1068" role="img" aria-labelledby="10-er-title 10-er-desc" style="display:block;width:100%;min-width:0;height:auto" data-default-font-percent="100" width="1280" height="1068"><title id="10-er-title">APP 介接的邏輯資料關係</title><desc id="10-er-desc">有效帳號可取得零到多筆水號綁定；Token 實際存於帳號，DTO 僅為查詢或回應投影。</desc><defs><style>
+.node{fill:#fff;stroke:#98b4b5;stroke-width:1.2}.focal{fill:#e8f6f6;stroke:#089bab;stroke-width:1.5}
+.name{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:700;fill:#182f34}
+.sub,.member,.tag,.label,.source{font-family:'Geist Mono','Microsoft JhengHei',monospace;fill:#40595d}
+.sub,.member{font-size:13px}.tag{font-size:12px;font-weight:700}.label{font-size:10.5px;font-weight:700}.source{font-size:11px;font-weight:700}.group{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:17px;font-weight:700;fill:#182f34}
+.edge{fill:none;stroke:#60777a;stroke-width:1.2}.sep{stroke:#d5e2df;stroke-width:1}.zone{fill:#f0f6f4;stroke:#d5e2df;stroke-width:1}
+
+.name{font-size:22px;font-weight:700;fill:#183b43}
+.sub{font-size:18px;font-weight:500;fill:#304e54}
+.member,.label{font-size:16px;font-weight:600;fill:#304e54}
+.tag,.source{font-size:14px;font-weight:600;fill:#304e54}
+.group{font-size:22px;font-weight:700;fill:#183b43}
+.node{stroke:#6f9699;stroke-width:1.8}.focal{stroke:#087e8c;stroke-width:2.2}
+.edge{stroke:#3f6269;stroke-width:1.8}.sep{stroke:#b4cdca;stroke-width:1.2}
+</style>
+<marker id="10-er-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#60777a" /></marker>
+<marker id="10-er-open" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#60777a" /></marker>
+<marker id="10-er-triangle" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#f7faf9" stroke="#60777a" /></marker></defs><path class="edge" d="M 384,572 L 864,572" stroke-dasharray="5 4"><title>HAS BINDINGS | E11, E21, E22</title></path><g data-label="true"><rect x="552.56" y="544" width="142.88" height="22" fill="#f7faf9" rx="2" /><text x="624" y="561" class="label" text-anchor="middle"><tspan x="624" y="561">HAS BINDINGS</tspan></text></g><g data-label="true"><rect x="392.88" y="544" width="30.24" height="22" fill="#f7faf9" rx="2" /><text x="408" y="561" class="label" text-anchor="middle"><tspan x="408" y="561">1</tspan></text></g><g data-label="true"><rect x="793.52" y="544" width="60.96" height="22" fill="#f7faf9" rx="2" /><text x="824" y="561" class="label" text-anchor="middle"><tspan x="824" y="561">0..*</tspan></text></g><path class="edge" d="M 224,792 L 224,950.4 Q 224,968,232,968 L 616,968 Q 624,968,624,985.6 L 624,1056" stroke-dasharray="5 4" marker-end="url(#10-er-arrow)"><title>PROJECT | E09</title></path><g data-label="true"><rect x="378.16" y="940" width="91.68" height="22" fill="#f7faf9" rx="2" /><text x="424" y="957" class="label" text-anchor="middle"><tspan x="424" y="957">PROJECT</tspan></text></g><g data-node="acct"><rect x="64" y="352" width="320" height="440" rx="6" class="focal" /><text x="224" y="404.8" class="name" text-anchor="middle"><tspan x="224" y="404.8">b_ACCOUNT（帳號）</tspan></text><line class="sep" x1="64" y1="431.2" x2="384" y2="431.2" /><text x="76" y="466.4" class="member" text-anchor="start"><tspan x="76" y="466.4">B_ACCOUNT_SN : int</tspan></text><text x="76" y="519.2" class="member" text-anchor="start"><tspan x="76" y="519.2">B_ACCOUNT : string</tspan></text><text x="76" y="572" class="member" text-anchor="start"><tspan x="76" y="572">APWD : string（驗證密碼）</tspan></text><text x="76" y="624.8" class="member" text-anchor="start"><tspan x="76" y="624.8">PWD : string（access token）</tspan></text><text x="76" y="677.6" class="member" text-anchor="start"><tspan x="76" y="677.6">APP_REFRESH_TOKEN : string?</tspan></text><text x="76" y="730.4" class="member" text-anchor="start"><tspan x="76" y="730.4">VALID : decimal</tspan></text><text x="372" y="776.6" class="source" text-anchor="end"><tspan x="372" y="776.6">來源：E21、E09、E12</tspan></text></g><g data-node="water"><rect x="864" y="352" width="320" height="387.2" rx="6" class="node" /><text x="1024" y="387.2" class="name" text-anchor="middle"><tspan x="1024" y="387.2">B_ACCOUNT_WATER_NO（</tspan><tspan x="1024" y="422.4">綁定）</tspan></text><line class="sep" x1="864" y1="431.2" x2="1184" y2="431.2" /><text x="876" y="466.4" class="member" text-anchor="start"><tspan x="876" y="466.4">B_ACCOUNT_SN : int（邏輯关联）</tspan></text><text x="876" y="519.2" class="member" text-anchor="start"><tspan x="876" y="519.2">WATER_NO : string</tspan></text><text x="876" y="572" class="member" text-anchor="start"><tspan x="876" y="572">VALID : decimal</tspan></text><text x="876" y="624.8" class="member" text-anchor="start"><tspan x="876" y="624.8">NICK_NAME : string</tspan></text><text x="876" y="677.6" class="member" text-anchor="start"><tspan x="876" y="677.6">NICK_NAME_SHOW : decimal?</tspan></text><text x="1172" y="723.8" class="source" text-anchor="end"><tspan x="1172" y="723.8">來源：E22、E11</tspan></text></g><g data-node="dto"><rect x="464" y="1056" width="320" height="246.4" rx="6" class="node" /><title>AppTokenInfoDto（投影） | E01, E09</title><text x="624" y="1114.3" class="name" text-anchor="middle"><tspan x="624" y="1114.3">AppTokenInfoDto（投影</tspan><tspan x="624" y="1149.5">）</tspan></text><text x="624" y="1179.7" class="sub" text-anchor="middle"><tspan x="624" y="1179.7">ACCOUNT_NO / WATER_NO</tspan></text><text x="624" y="1208.5" class="sub" text-anchor="middle"><tspan x="624" y="1208.5">ACCESS_TOKEN /</tspan><tspan x="624" y="1237.3">REFRESH_TOKEN</tspan></text><text x="774" y="1290.4" class="source" text-anchor="end"><tspan x="774" y="1290.4">來源：E01、E09</tspan></text></g><line class="sep" x1="32" y1="1332" x2="1248" y2="1332" /><text x="32" y="1364" class="source" text-anchor="start">來源 E##：E = Evidence（證據），數字是索引，非步驟／錯誤碼；完整檔名與行號見下方「來源編號索引」。</text></svg></div><p class="foot">圖面預設依頁面可用寬度自動 fit，視窗大小改變時會重新調整。文字大小按鈕以目前圖框寬度為基準；超過 100% 時可左右捲動。來源編號不是步驟或錯誤碼；較小框的來源放在滑鼠提示與下方證據表。</p><p class="note">1→0..* 是依查詢還原的邏輯關係，SQL PK／FK／唯一性約束未確認。AppTokenInfoDto 不是實體 Token 表；WATER_NO 由 @WaterNo 投影，EXPIRES_AT 未由 token 查詢 SQL 回填。</p><details><summary>來源編號索引與圖面元素對照（5 個元素）</summary><p>圖中的「來源：E09」表示該節點或連線有 E09 這筆程式碼證據。下表可用編號查到原始檔、行號及該段程式的摘要；多個編號表示有多處程式共同支持。</p><table><thead><tr><th>證據編號</th><th>原始碼位置</th><th>內容摘要</th></tr></thead><tbody><tr><td>E01</td><td><code>ViewModels/Home/HomeViewModel.cs:1–154</code></td><td>DTO／驗證屬性；HomeViewModel 本身為空類別</td></tr><tr><td>E09</td><td><code>Domain/Service/HomeService.cs:83–113</code></td><td>以 B_ACCOUNT 的 PWD／APP_REFRESH_TOKEN 比對</td></tr><tr><td>E11</td><td><code>Domain/Service/HomeService.cs:121–150</code></td><td>全部有效綁定水號與覆寫 Token 欄位</td></tr><tr><td>E12</td><td><code>Domain/Service/HomeService.cs:115–119</code></td><td>以 APWD 驗證 APP V4 帳密</td></tr><tr><td>E21</td><td><code>Models/Entity/B_ACCOUNT.cs:1–24</code></td><td>帳號 C# model；不是 SQL DDL</td></tr><tr><td>E22</td><td><code>Models/Entity/B_ACCOUNT_WATER_NO.cs:1–20</code></td><td>水號綁定 C# model；不是 SQL DDL</td></tr></tbody></table><table><thead><tr><th>節點／關係／欄位</th><th>種類</th><th>來源編號</th></tr></thead><tbody><tr><td>b_ACCOUNT（帳號） / B_ACCOUNT_SN : int；B_ACCOUNT : string；APWD : string（驗證密碼）；PWD : string（access token）；APP_REFRESH_TOKEN : string?；VALID : decimal</td><td>table</td><td>E21, E09, E12</td></tr><tr><td>B_ACCOUNT_WATER_NO（綁定） / B_ACCOUNT_SN : int（邏輯关联）；WATER_NO : string；VALID : decimal；NICK_NAME : string；NICK_NAME_SHOW : decimal?</td><td>table</td><td>E22, E11</td></tr><tr><td>acct → water：HAS BINDINGS</td><td>relationship</td><td>E11, E21, E22</td></tr><tr><td>AppTokenInfoDto（投影） / ACCOUNT_NO / WATER_NO；ACCESS_TOKEN / REFRESH_TOKEN</td><td>node</td><td>E01, E09</td></tr><tr><td>acct → dto：PROJECT</td><td>relationship</td><td>E09</td></tr></tbody></table></details></section><noscript><p>目前顯示完整的預設大小圖面；啟用 JavaScript 後可使用文字大小按鈕。</p></noscript><footer class="foot">2026-10-10 · 靜態逆向蒐證；尚未驗證正式 APP／WCF／DB。依 cathrynlavery/diagram-design MIT v2.6 製作；無外部字型下載，使用本機字型 fallback。</footer></main><script id="diagram-font-controller">
+(() => {
+  'use strict';
+  for (const controls of document.querySelectorAll('[data-font-controls]')) {
+    const frame = document.getElementById(controls.dataset.fontControls);
+    const svg = frame.querySelector('svg');
+    const frameStyle = getComputedStyle(frame);
+    const availableWidth = () => frame.clientWidth
+      - parseFloat(frameStyle.paddingLeft)
+      - parseFloat(frameStyle.paddingRight);
+    const input = controls.querySelector('input');
+    const form = controls.querySelector('form');
+    const status = controls.querySelector('[role="status"]');
+    const buttons = [...controls.querySelectorAll('button[data-percent]')];
+    function applySize(value) {
+      const percent = Number(value);
+      const width = availableWidth() * percent / 100;
+      if (!String(value).trim() || !Number.isFinite(percent) || percent <= 0 || !Number.isFinite(width) || width <= 0) {
+        input.setAttribute('aria-invalid', 'true');
+        status.textContent = `請輸入大於 0 的有效百分比；目前 ${svg.dataset.fontPercent}%`;
+        return;
+      }
+      // Expand the entire reading layout with the type. Keeping shape/text/route
+      // proportions preserves wrapping and prevents a larger font colliding.
+      svg.style.width = `${width}px`;
+      svg.style.minWidth = `${percent > 100 ? width : 0}px`;
+      svg.dataset.fontPercent = String(percent);
+      input.value = String(percent);
+      input.removeAttribute('aria-invalid');
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.percent) === percent));
+      }
+      status.textContent = `目前 ${percent}%`;
+    }
+    for (const button of buttons) {
+      button.addEventListener('click', () => applySize(button.dataset.percent));
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      applySize(input.value);
+    });
+    applySize(svg.dataset.defaultFontPercent);
+    window.addEventListener('resize', () => applySize(svg.dataset.fontPercent), { passive: true });
+    controls.hidden = false;
+  }
+})();
+</script></body></html>

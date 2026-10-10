@@ -1,0 +1,410 @@
+{
+  "captured_date": "2026-10-10",
+  "scope": "Home APP V4 integration; static evidence only",
+  "diagram_design": {
+    "repository": "https://github.com/cathrynlavery/diagram-design",
+    "installed_version": "2.6",
+    "installed_vendor_commit": "dc1ace47b99a419e42d01a03cb6ace5346efa8ae",
+    "remote_head_observed": "cdfdc9686cd7465da70b68b036581833b503810c",
+    "license": "MIT",
+    "note": "Uses installed vendor instructions; remote HEAD is provenance observation, not claimed downloaded renderer."
+  },
+  "sources": [
+    {
+      "id": "E01",
+      "file": "ViewModels/Home/HomeViewModel.cs",
+      "lines": [
+        1,
+        154
+      ],
+      "sha256": "77aa19a878f8f716e0edaef38cabda98520d3c93e8db77c1dc876c1a547b6b66",
+      "description": "DTO／驗證屬性；HomeViewModel 本身為空類別",
+      "scope": "specified project"
+    },
+    {
+      "id": "E02",
+      "file": "Program.cs",
+      "lines": [
+        19,
+        45
+      ],
+      "sha256": "ba3423bc248a46c2d7dc1295b3400aa1436bd8c56e9e816db512e73d3a046ffd",
+      "description": "HTTP middleware 與 MVC conventional route",
+      "scope": "specified project"
+    },
+    {
+      "id": "E03",
+      "file": "Startup.cs",
+      "lines": [
+        11,
+        63
+      ],
+      "sha256": "a1ccca00ef2f8cb6cc890297e9bfc9aac1aba11abbf475d88f646b4614b34d4f",
+      "description": "記憶體 Session、Cookie、MVC、WCF、DI",
+      "scope": "specified project"
+    },
+    {
+      "id": "E04",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        33,
+        87
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "AccessToken：參數、帳號、grant_type、refresh 分支",
+      "scope": "specified project"
+    },
+    {
+      "id": "E05",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        102,
+        146
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "ExternalLogin 與取消授權",
+      "scope": "specified project"
+    },
+    {
+      "id": "E06",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        159,
+        213
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "LoginAPP：Token、帳號、水號、Session、Dashboard",
+      "scope": "specified project"
+    },
+    {
+      "id": "E07",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        215,
+        261
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "核發 AES/Base64Url Token；六個月驗證",
+      "scope": "specified project"
+    },
+    {
+      "id": "E08",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        263,
+        370
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "回應 DTO、callback query、expires_in、Base64Url",
+      "scope": "specified project"
+    },
+    {
+      "id": "E09",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        83,
+        113
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "以 B_ACCOUNT 的 PWD／APP_REFRESH_TOKEN 比對",
+      "scope": "specified project"
+    },
+    {
+      "id": "E10",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        73,
+        81
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "有效帳號查詢；沒有 LOGIN_TYPE／水表檢查",
+      "scope": "specified project"
+    },
+    {
+      "id": "E11",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        121,
+        150
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "全部有效綁定水號與覆寫 Token 欄位",
+      "scope": "specified project"
+    },
+    {
+      "id": "E12",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        115,
+        119
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "以 APWD 驗證 APP V4 帳密",
+      "scope": "specified project"
+    },
+    {
+      "id": "E13",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        1308,
+        1380
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "Session 寫入與一次性驗證碼驗證",
+      "scope": "specified project"
+    },
+    {
+      "id": "E14",
+      "file": "Common/Attributes/SessionAuthorization.cs",
+      "lines": [
+        1,
+        21
+      ],
+      "sha256": "0f2a6f2f76b0d4c5f5b5f27e5601ae24afba50fe1440651ee837f7bbb502dd94",
+      "description": "UserName Session 決定登入授權",
+      "scope": "specified project"
+    },
+    {
+      "id": "E15",
+      "file": "../../SqlData/DapperDataAccess.cs",
+      "lines": [
+        14,
+        111
+      ],
+      "sha256": "e4add2636ed95c68812dcf24c71597d98b9accd013c81157c1542523ad706a50",
+      "description": "參照專案：WCF ChannelService Query／Execute",
+      "scope": "referenced dependency boundary"
+    },
+    {
+      "id": "E16",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        693,
+        767
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "DenyAppAcounnt：舊格式 Token 與 LOGIN_TYPE 更新",
+      "scope": "specified project"
+    },
+    {
+      "id": "E17",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        372,
+        691
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "#if false：不啟用的舊版 APP 流程",
+      "scope": "specified project"
+    },
+    {
+      "id": "E18",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        1193,
+        1224
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "CreateValidate：JPEG 與五分鐘 Session 驗證碼",
+      "scope": "specified project"
+    },
+    {
+      "id": "E19",
+      "file": "Views/Home/ExternalLogin.cshtml",
+      "lines": [
+        1,
+        75
+      ],
+      "sha256": "1f4eb78e1fa52f2e4dd3e23444b79a23119df94bf5bb4af5fd15a3323149a81b",
+      "description": "授權 HTML、hidden fields、CSRF、captcha、取消",
+      "scope": "specified project"
+    },
+    {
+      "id": "E20",
+      "file": "Common/Security/PasswordHashUtil.cs",
+      "lines": [
+        28,
+        79
+      ],
+      "sha256": "8c0451028d5fb431828e9cd9865595630e5521983ef6799da9f6742958c45e86",
+      "description": "PBKDF2 驗證，失敗後兼容舊 AES 密碼",
+      "scope": "specified project"
+    },
+    {
+      "id": "E21",
+      "file": "Models/Entity/B_ACCOUNT.cs",
+      "lines": [
+        1,
+        24
+      ],
+      "sha256": "12951d9cb2cb5cf33b8eb4316472c71c935d81b73cc2ba24c0f9f082448d404e",
+      "description": "帳號 C# model；不是 SQL DDL",
+      "scope": "specified project"
+    },
+    {
+      "id": "E22",
+      "file": "Models/Entity/B_ACCOUNT_WATER_NO.cs",
+      "lines": [
+        1,
+        20
+      ],
+      "sha256": "e7f34842eec9ad54bac5d24ae5b373fe4568bede6954bda854e3c5fa51c87983",
+      "description": "水號綁定 C# model；不是 SQL DDL",
+      "scope": "specified project"
+    },
+    {
+      "id": "E23",
+      "file": "Controllers/BasicController.cs",
+      "lines": [
+        1,
+        12
+      ],
+      "sha256": "91c30f6bfd50914b9e59c21c39c58c831e67d2387c341c68a98cf61fd7a9daed",
+      "description": "SessionAuthorization／自動 CSRF Filter",
+      "scope": "specified project"
+    },
+    {
+      "id": "E24",
+      "file": "Controllers/DashboardController.cs",
+      "lines": [
+        23,
+        64
+      ],
+      "sha256": "570737fb6d2c50b3428ea6db59fed2d06879d08a87e5918e72bc52db74f6f6e7",
+      "description": "Dashboard 繼承 BasicController；首頁入口",
+      "scope": "specified project"
+    },
+    {
+      "id": "E25",
+      "file": "Domain/Extensions/DapperDataAccessExtensions.cs",
+      "lines": [
+        1,
+        20
+      ],
+      "sha256": "fd8a258e89aa1fc414a4794d90eebe687a27ad3fb4358129e054aa5c53c56423",
+      "description": "IDapperDataAccess singleton 注入",
+      "scope": "specified project"
+    },
+    {
+      "id": "E26",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        281,
+        292
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "DenyAccountFromApp 僅更新 LOGIN_TYPE=0",
+      "scope": "specified project"
+    },
+    {
+      "id": "E27",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        1038,
+        1042
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "Logout 僅移除 UserName Session",
+      "scope": "specified project"
+    },
+    {
+      "id": "E28",
+      "file": "Common/Extension/AESEncryption.cs",
+      "lines": [
+        69,
+        191
+      ],
+      "sha256": "4dfe285fbaaa778110f75fdd72d7d0f89092e445031b83c4eda389f5918c6c7b",
+      "description": "AES 與由固定字串衍生的 Key／IV；不公開祕密值",
+      "scope": "specified project"
+    },
+    {
+      "id": "E29",
+      "file": "../../SqlData/DapperDataAccess.cs",
+      "lines": [
+        119,
+        170
+      ],
+      "sha256": "e4add2636ed95c68812dcf24c71597d98b9accd013c81157c1542523ad706a50",
+      "description": "SYS_LOG 前置寫入；可能早於主 Query／Execute 失敗",
+      "scope": "referenced dependency boundary"
+    },
+    {
+      "id": "E30",
+      "file": "Common/Extension/AspNetUser.cs",
+      "lines": [
+        6,
+        128
+      ],
+      "sha256": "cccd7921d6f87a4b916ccd265c560aa6b8b6fb91cc0bc02cb584c106b21d6ade",
+      "description": "IAspNetUser 讀取 Session",
+      "scope": "specified project"
+    },
+    {
+      "id": "E31",
+      "file": "Views/Home/LoginAppAuthFailed.cshtml",
+      "lines": [
+        1,
+        23
+      ],
+      "sha256": "daa49fff46896eb6849cda87b1c643f19b72a42b6bb18f31dee112736f331a72",
+      "description": "LoginAPP 錯誤為 HTML 頁面",
+      "scope": "specified project"
+    },
+    {
+      "id": "E32",
+      "file": "TWNPPublic.csproj",
+      "lines": [
+        1,
+        25
+      ],
+      "sha256": "2dea7f3f6641f6af5cddfb86f8d86de8d5b72462675a87b38966c59a90699e36",
+      "description": "實際 target 為 net6.0",
+      "scope": "specified project"
+    },
+    {
+      "id": "E33",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        11,
+        21
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "HomeService 注入 dataAccess 與 IAspNetUser",
+      "scope": "specified project"
+    },
+    {
+      "id": "E34",
+      "file": "Controllers/ContextController.cs",
+      "lines": [
+        1,
+        95
+      ],
+      "sha256": "6d6e84b5afd41abeb76e51d6848df151e917598105e3404519373075bc4e43d6",
+      "description": "MVC 基底 Controller 與 MessageAPI 回應包裝",
+      "scope": "specified project"
+    },
+    {
+      "id": "E35",
+      "file": "Domain/Service/HomeService.cs",
+      "lines": [
+        556,
+        612
+      ],
+      "sha256": "bd1a4abbc8b73856e078f132ac665c85a6c9f3674c420a92f3b1047318d3cbe9",
+      "description": "IHomeService 介面契約",
+      "scope": "specified project"
+    },
+    {
+      "id": "E36",
+      "file": "Controllers/HomeController.cs",
+      "lines": [
+        20,
+        31
+      ],
+      "sha256": "6f0558bacdef988bab4037e5e42161391932192fb2737471de7cbb5be72bf08e",
+      "description": "HomeController 的繼承、欄位與建構式",
+      "scope": "specified project"
+    }
+  ]
+}

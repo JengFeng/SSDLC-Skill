@@ -1,0 +1,34 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>登入與 APP Token 使用者案例圖</title><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--ink:#24363a;--muted:#60777a;--teal:#089bab;--rule:#d9e5e5;--wash:#f5fbfb;--sans:'Geist','Noto Sans TC',sans-serif;--mono:'Geist Mono',monospace}*{box-sizing:border-box}body{margin:0;background:#f5f8f8;color:var(--ink);font-family:var(--sans)}main{max-width:1280px;margin:auto;padding:36px 42px;background:#fff}h1{font:500 34px/1.2 'Noto Serif TC',serif;margin:2px 0 8px}.eyebrow{font:500 11px var(--mono);letter-spacing:.16em;color:var(--muted);margin:0 0 6px}.intro{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 14px}.diagram{width:100%;height:auto;display:block}.foot{border-top:1px solid var(--rule);padding-top:12px;color:var(--muted);font-size:12px;line-height:1.6;margin-top:14px}@media print{body{background:#fff}main{padding:18px}}
+</style></head><body><main><p class="eyebrow">AUTHENTICATION · UML USE CASE</p><h1>登入與 APP 授權使用者案例</h1><p class="intro">把一般網站帳密登入與行動 APP Token 流程放在同一個系統邊界內。參與者依目前公開 Controller 入口推導；需求文件未定義的正式角色仍屬候選。</p>
+<svg class="diagram" viewBox="0 0 1280 1040" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="usecase-title usecase-desc">
+<title id="usecase-title">一般登入與 APP Token 使用者案例圖</title><desc id="usecase-desc">網站使用者可用帳號密碼登入；行動 APP 可發起授權並取得或更新 Token，再以 Access Token 登入網站。兩種登入成功後都建立網站 Session。</desc>
+<defs><marker id="uc-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polyline points="0 0,8 3,0 6" fill="none" stroke="#60777a" stroke-width="1.1"/></marker><style>
+.boundary{fill:#fff;stroke:rgba(8,155,171,.5);stroke-width:1.4}.boundary-title{fill:#089bab;font:600 12px 'Geist Mono','Noto Sans TC',monospace;letter-spacing:.08em}.actor-line{stroke:#24363a;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}.actor-label{fill:#24363a;font:500 12px 'Noto Sans TC',sans-serif;text-anchor:middle}.uc{fill:#f5fbfb;stroke:#8fb9bd;stroke-width:1.3}.uc-core{fill:#eaf8f8;stroke:#089bab;stroke-width:1.7}.uc-label{fill:#24363a;font:500 12px 'Noto Sans TC',sans-serif;text-anchor:middle}.edge{stroke:#60777a;stroke-width:1.2;fill:none}.include{stroke:#60777a;stroke-width:1.1;stroke-dasharray:4 3;fill:none;marker-end:url(#uc-arrow)}.edge-label{fill:#60777a;font:9px 'Geist Mono','Noto Sans TC',monospace}.group{fill:#60777a;font:600 10px 'Geist Mono','Noto Sans TC',monospace;letter-spacing:.1em}
+</style></defs><rect width="1280" height="1040" fill="#fff"/>
+<rect class="boundary" x="250" y="62" width="790" height="910" rx="6"/><text class="boundary-title" x="278" y="92">TWNPPUBLIC · 登入與 APP 授權系統</text>
+<text class="group" x="285" y="135">網站帳密登入</text><text class="group" x="285" y="505">APP / 外部 Token</text>
+<!-- actor associations and use-case relations behind nodes -->
+<path class="edge" d="M130 335 H205 V190 H450"/><path class="edge" d="M130 347 H220 V340 H450"/><path class="edge" d="M130 359 H235 V452 H450"/>
+<path class="edge" d="M1150 585 H1080 V585 H845"/><path class="edge" d="M1150 598 H1095 V790 H845"/><path class="edge" d="M130 370 H240 V640 H450"/><path class="edge" d="M130 382 H230 V865 H450"/>
+<path class="include" d="M575 220 V292 H565 V310"/><text class="edge-label" x="584" y="275">«include»</text>
+<path class="include" d="M650 220 V270 H850 V310"/><text class="edge-label" x="760" y="263">«include»</text>
+<path class="include" d="M650 220 V421"/><text class="edge-label" x="660" y="393">«include»</text>
+<path class="include" d="M575 670 V716 H565 V745"/><text class="edge-label" x="584" y="706">«include»</text>
+<path class="include" d="M650 670 V716 H850 V745"/><text class="edge-label" x="758" y="706">«include»</text>
+<!-- actors -->
+<circle cx="130" cy="282" r="17" fill="#fff" stroke="#24363a" stroke-width="1.5"/><path class="actor-line" d="M130 299 V350 M100 320 H160 M130 350 L108 378 M130 350 L152 378"/><text class="actor-label" x="130" y="403">網站使用者</text>
+<circle cx="1150" cy="530" r="17" fill="#fff" stroke="#24363a" stroke-width="1.5"/><path class="actor-line" d="M1150 547 V598 M1120 568 H1180 M1150 598 L1128 626 M1150 598 L1172 626"/><text class="actor-label" x="1150" y="651">行動 APP</text>
+<!-- use cases -->
+<ellipse class="uc-core" cx="650" cy="190" rx="200" ry="38"/><text class="uc-label" x="650" y="195">一般帳密登入</text>
+<ellipse class="uc" cx="565" cy="340" rx="115" ry="33"/><text class="uc-label" x="565" y="345">完成 CAPTCHA</text>
+<ellipse class="uc" cx="850" cy="340" rx="140" ry="33"/><text class="uc-label" x="850" y="345">驗證帳號與密碼</text>
+<ellipse class="uc" cx="650" cy="452" rx="155" ry="35"/><text class="uc-label" x="650" y="457">建立網站 Session</text>
+<ellipse class="uc-core" cx="650" cy="630" rx="200" ry="40"/><text class="uc-label" x="650" y="626">外部 APP 授權</text><text class="uc-label" x="650" y="644">核發或更新 Access / Refresh Token</text>
+<ellipse class="uc" cx="565" cy="778" rx="145" ry="34"/><text class="uc-label" x="565" y="783">驗證使用者帳密與授權</text>
+<ellipse class="uc-core" cx="850" cy="790" rx="165" ry="40"/><text class="uc-label" x="850" y="786">APP Access Token</text><text class="uc-label" x="850" y="804">登入網站</text>
+<ellipse class="uc" cx="850" cy="900" rx="155" ry="34"/><text class="uc-label" x="850" y="905">核對 Token、帳號與期限</text>
+<ellipse class="uc" cx="565" cy="900" rx="115" ry="34"/><text class="uc-label" x="565" y="905">取消授權</text>
+<text class="edge-label" x="278" y="1000">Use cases inferred from code routes; external account roles and authorization policy require requirements confirmation.</text>
+</svg>
+<p class="foot">外部授權登入是使用者以帳密完成授權後，由網站回傳 Token 給 APP；APP Token 登入則是另一個 API，將 Access Token 換成網站 Session。請參閱 <a href="login-diagram-evidence.md">圖面證據表</a>。</p></main></body></html>

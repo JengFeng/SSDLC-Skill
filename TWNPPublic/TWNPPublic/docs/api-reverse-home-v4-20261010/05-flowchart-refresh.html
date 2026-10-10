@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Refresh Token：直接換發或重新驗證</title><style>
+:root{--paper:#f7faf9;--ink:#243d42;--muted:#60777a;--accent:#089bab}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Geist','Microsoft JhengHei','Segoe UI',sans-serif}
+main{max-width:1440px;margin:auto;padding:40px 32px}h1,h2{font-family:'Instrument Serif','Noto Serif TC',Georgia,serif;font-weight:500}
+h1{font-size:36px;margin:8px 0 16px}h2{font-size:28px;margin:8px 0 16px}h3{font-size:16px}
+p,li{line-height:1.8}a{color:#087d8b}code,.eyebrow{font-family:'Geist Mono',Consolas,monospace}.eyebrow{font-size:11px;letter-spacing:.12em;color:var(--muted)}
+section{padding:28px 0;border-top:1px solid #d5e2df;scroll-margin-top:20px}nav{line-height:2.2}nav a{display:inline-block;margin-right:20px}
+.diagram{width:100%;overflow-x:auto;background:#fff;border:1px solid #d5e2df;border-radius:6px;padding:12px}
+svg{display:block;width:100%;height:auto;min-width:0}table{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px}
+th,td{border-bottom:1px solid #d5e2df;text-align:left;padding:10px;vertical-align:top}th{background:#edf4f2}
+.note{border-left:3px solid var(--accent);padding:12px 20px;background:#edf7f6}.foot{font-size:12px;color:var(--muted)}
+details{margin:16px 0}summary{cursor:pointer;color:#087d8b}footer{border-top:1px solid #d5e2df;margin-top:32px;padding-top:16px}
+@media print{main{padding:0}nav{display:none}.diagram{border:0;padding:0}svg{min-width:0}section{break-before:page}details>*{display:block}a{color:inherit}}
+
+table{font-size:16px}.eyebrow,.foot{font-size:14px;color:#304e54}
+@media print{svg{min-width:0!important}}
+
+body{font-size:12px}main{max-width:none;width:100%;padding:24px clamp(12px,2vw,32px)}
+h1{font-size:27px;margin:6px 0 12px}h2{font-size:21px;margin:6px 0 12px}h3{font-size:12px}
+section{width:100%;padding:21px 0;scroll-margin-top:15px}.diagram{padding:9px}
+table{font-size:12px;margin:12px 0}th,td{padding:7.5px}
+.eyebrow,.foot{font-size:10.5px}.note{padding:9px 15px}
+details{margin:12px 0}footer{margin-top:24px;padding-top:12px}
+
+.font-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;color:#183b43;font-size:12px}
+.font-controls[hidden]{display:none}
+.font-presets{display:flex;gap:5px}
+.font-controls button,.font-controls input{font:inherit;color:#183b43;background:#fff;border:1.5px solid #6f9699;border-radius:4px;min-height:32px;padding:6px 9px}
+.font-controls input{width:7em}
+.font-controls button{cursor:pointer;font-weight:600}
+.font-controls button[aria-pressed="true"]{color:#fff;background:#087e8c;border-color:#087e8c}
+.font-controls button:focus-visible,.font-controls input:focus-visible,.diagram:focus-visible{outline:3px solid #087e8c;outline-offset:3px}
+.font-custom,.font-controls label{display:flex;align-items:center;gap:6px}
+.font-controls input[aria-invalid="true"]{border-color:#a52121}
+.font-status{font-weight:600}
+@media print{.font-controls{display:none}.diagram{overflow:visible}svg{width:100%!important;min-width:0!important;height:auto!important}}
+</style></head><body><main><section id="05-flowchart-refresh"><p class="eyebrow">Flowchart · 原始碼逆向分析</p><h2>Refresh Token：直接換發或重新驗證</h2><p>有效帳號且 grant_type=refresh_token 後，檢查 refresh_token；資料庫命中則直接覆寫新金鑰，未命中則顯示授權頁。</p><div class="font-controls" data-font-controls="05-flowchart-refresh-frame" role="group" aria-label="圖中文字大小" hidden><span>文字大小</span><div class="font-presets"><button type="button" data-percent="60" aria-controls="05-flowchart-refresh-frame" aria-pressed="false">小（60%）</button><button type="button" data-percent="75" aria-controls="05-flowchart-refresh-frame" aria-pressed="false">中（75%）</button><button type="button" data-percent="100" aria-controls="05-flowchart-refresh-frame" aria-pressed="true">大（100%）</button></div><form class="font-custom" novalidate><label for="05-flowchart-refresh-font-percent">自訂<input id="05-flowchart-refresh-font-percent" type="number" inputmode="decimal" step="any" value="100" aria-controls="05-flowchart-refresh-frame" aria-describedby="05-flowchart-refresh-font-hint" aria-label="自訂文字大小百分比"/>%</label><button type="submit">套用</button></form><span class="font-status" role="status" aria-live="polite" aria-atomic="true">目前 100%</span><span id="05-flowchart-refresh-font-hint">可輸入小數，按 Enter 或套用</span></div><div class="diagram" id="05-flowchart-refresh-frame" tabindex="0" role="region" aria-label="Refresh Token：直接換發或重新驗證，可捲動的自適應圖表"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 64 1280 1316" role="img" aria-labelledby="05-flowchart-refresh-title 05-flowchart-refresh-desc" style="display:block;width:100%;min-width:0;height:auto" data-default-font-percent="100" width="1280" height="1316"><title id="05-flowchart-refresh-title">Refresh Token：直接換發或重新驗證</title><desc id="05-flowchart-refresh-desc">有效帳號且 grant_type=refresh_token 後，檢查 refresh_token；資料庫命中則直接覆寫新金鑰，未命中則顯示授權頁。</desc><defs><style>
+.node{fill:#fff;stroke:#98b4b5;stroke-width:1.2}.focal{fill:#e8f6f6;stroke:#089bab;stroke-width:1.5}
+.name{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:700;fill:#182f34}
+.sub,.member,.tag,.label,.source{font-family:'Geist Mono','Microsoft JhengHei',monospace;fill:#40595d}
+.sub,.member{font-size:13px}.tag{font-size:12px;font-weight:700}.label{font-size:10.5px;font-weight:700}.source{font-size:11px;font-weight:700}.group{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:17px;font-weight:700;fill:#182f34}
+.edge{fill:none;stroke:#60777a;stroke-width:1.2}.sep{stroke:#d5e2df;stroke-width:1}.zone{fill:#f0f6f4;stroke:#d5e2df;stroke-width:1}
+
+.name{font-size:22px;font-weight:700;fill:#183b43}
+.sub{font-size:18px;font-weight:500;fill:#304e54}
+.member,.label{font-size:16px;font-weight:600;fill:#304e54}
+.tag,.source{font-size:14px;font-weight:600;fill:#304e54}
+.group{font-size:22px;font-weight:700;fill:#183b43}
+.node{stroke:#6f9699;stroke-width:1.8}.focal{stroke:#087e8c;stroke-width:2.2}
+.edge{stroke:#3f6269;stroke-width:1.8}.sep{stroke:#b4cdca;stroke-width:1.2}
+</style>
+<marker id="05-flowchart-refresh-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#60777a" /></marker>
+<marker id="05-flowchart-refresh-open" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#60777a" /></marker>
+<marker id="05-flowchart-refresh-triangle" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#f7faf9" stroke="#60777a" /></marker></defs><path class="edge" d="M 520,224 L 520,336" marker-end="url(#05-flowchart-refresh-arrow)"><title> | E04</title></path><path class="edge" d="M 520,496 L 520,624" marker-end="url(#05-flowchart-refresh-arrow)"><title>YES | E04</title></path><g data-label="true"><rect x="534.64" y="570" width="50.72" height="22" fill="#f7faf9" rx="2" /><text x="560" y="587" class="label" text-anchor="middle"><tspan x="560" y="587">YES</tspan></text></g><path class="edge" d="M 640,416 L 856,416" marker-end="url(#05-flowchart-refresh-arrow)"><title>NO | E04</title></path><g data-label="true"><rect x="727.76" y="388" width="40.48" height="22" fill="#f7faf9" rx="2" /><text x="748" y="405" class="label" text-anchor="middle"><tspan x="748" y="405">NO</tspan></text></g><path class="edge" d="M 520,784 L 520,928" marker-end="url(#05-flowchart-refresh-arrow)"><title>YES | E04, E09</title></path><g data-label="true"><rect x="534.64" y="874" width="50.72" height="22" fill="#f7faf9" rx="2" /><text x="560" y="891" class="label" text-anchor="middle"><tspan x="560" y="891">YES</tspan></text></g><path class="edge" d="M 640,704 L 856,704" marker-end="url(#05-flowchart-refresh-arrow)"><title>NO | E04</title></path><g data-label="true"><rect x="727.76" y="676" width="40.48" height="22" fill="#f7faf9" rx="2" /><text x="748" y="693" class="label" text-anchor="middle"><tspan x="748" y="693">NO</tspan></text></g><path class="edge" d="M 520,1088 L 520,1168" marker-end="url(#05-flowchart-refresh-arrow)"><title> | E04, E07</title></path><g data-node="entry"><rect x="400" y="96" width="240" height="128" rx="20" class="node" /><title>進入 refresh 分支 | E04</title><text x="520" y="155.9" class="name" text-anchor="middle"><tspan x="520" y="155.9">進入 refresh 分支</tspan></text><text x="630" y="212" class="source" text-anchor="end"><tspan x="630" y="212">來源：E04</tspan></text></g><g data-node="nonempty"><polygon points="520,336 640,416 520,496 400,416" class="node" /><title>refresh_token 非空？ | E04</title><text x="520" y="408.3" class="name" text-anchor="middle"><tspan x="520" y="408.3">refresh_tok</tspan><tspan x="520" y="443.5">en 非空？</tspan></text></g><g data-node="match"><polygon points="520,624 640,704 520,784 400,704" class="node" /><title>DB refresh 命中？ | E04, E09</title><text x="520" y="696.3" class="name" text-anchor="middle"><tspan x="520" y="696.3">DB refresh</tspan><tspan x="520" y="731.5">命中？</tspan></text></g><g data-node="issue"><rect x="400" y="928" width="240" height="160" rx="6" class="focal" /><title>IssueAppToken | E07, E11</title><text x="520" y="989.5" class="name" text-anchor="middle"><tspan x="520" y="989.5">IssueAppToken</tspan></text><text x="520" y="1019.7" class="sub" text-anchor="middle"><tspan x="520" y="1019.7">覆寫 PWD 與 refresh</tspan></text><text x="630" y="1076" class="source" text-anchor="end"><tspan x="630" y="1076">來源：E07、E11</tspan></text></g><g data-node="ok"><rect x="400" y="1168" width="240" height="128" rx="20" class="node" /><title>回應 result=200 | E04, E08</title><text x="520" y="1213.5" class="name" text-anchor="middle"><tspan x="520" y="1213.5">回應 result=200</tspan></text><text x="520" y="1243.7" class="sub" text-anchor="middle"><tspan x="520" y="1243.7">換發金鑰成功</tspan></text><text x="630" y="1284" class="source" text-anchor="end"><tspan x="630" y="1284">來源：E04、E08</tspan></text></g><g data-node="bad"><rect x="856" y="336" width="240" height="160" rx="6" class="node" /><title>回應 result=1001 | E04, E08</title><text x="976" y="397.5" class="name" text-anchor="middle"><tspan x="976" y="397.5">回應 result=1001</tspan></text><text x="976" y="427.7" class="sub" text-anchor="middle"><tspan x="976" y="427.7">refresh_token 空白</tspan></text><text x="1086" y="484" class="source" text-anchor="end"><tspan x="1086" y="484">來源：E04、E08</tspan></text></g><g data-node="relogin"><rect x="856" y="624" width="240" height="160" rx="6" class="node" /><title>顯示 ExternalLogin | E04, E19</title><text x="976" y="661.5" class="name" text-anchor="middle"><tspan x="976" y="661.5">顯示 ExternalLog</tspan><tspan x="976" y="696.7">in</tspan></text><text x="976" y="726.9" class="sub" text-anchor="middle"><tspan x="976" y="726.9">GrantType=refresh_</tspan><tspan x="976" y="755.7">token</tspan></text></g><line class="sep" x1="32" y1="1324" x2="1248" y2="1324" /><text x="32" y="1356" class="source" text-anchor="start">來源 E##：E = Evidence（證據），數字是索引，非步驟／錯誤碼；完整檔名與行號見下方「來源編號索引」。</text></svg></div><p class="foot">圖面預設依頁面可用寬度自動 fit，視窗大小改變時會重新調整。文字大小按鈕以目前圖框寬度為基準；超過 100% 時可左右捲動。來源編號不是步驟或錯誤碼；較小框的來源放在滑鼠提示與下方證據表。</p><p class="note">Refresh 路徑沒有檢查 access_token 是否過期，也没有解析 refresh_token 的時戳；依 DB 值匹配及帳號 VALID=1 判定。</p><details><summary>來源編號索引與圖面元素對照（13 個元素）</summary><p>圖中的「來源：E09」表示該節點或連線有 E09 這筆程式碼證據。下表可用編號查到原始檔、行號及該段程式的摘要；多個編號表示有多處程式共同支持。</p><table><thead><tr><th>證據編號</th><th>原始碼位置</th><th>內容摘要</th></tr></thead><tbody><tr><td>E04</td><td><code>Controllers/HomeController.cs:33–87</code></td><td>AccessToken：參數、帳號、grant_type、refresh 分支</td></tr><tr><td>E07</td><td><code>Controllers/HomeController.cs:215–261</code></td><td>核發 AES/Base64Url Token；六個月驗證</td></tr><tr><td>E08</td><td><code>Controllers/HomeController.cs:263–370</code></td><td>回應 DTO、callback query、expires_in、Base64Url</td></tr><tr><td>E09</td><td><code>Domain/Service/HomeService.cs:83–113</code></td><td>以 B_ACCOUNT 的 PWD／APP_REFRESH_TOKEN 比對</td></tr><tr><td>E11</td><td><code>Domain/Service/HomeService.cs:121–150</code></td><td>全部有效綁定水號與覆寫 Token 欄位</td></tr><tr><td>E19</td><td><code>Views/Home/ExternalLogin.cshtml:1–75</code></td><td>授權 HTML、hidden fields、CSRF、captcha、取消</td></tr></tbody></table><table><thead><tr><th>節點／關係／欄位</th><th>種類</th><th>來源編號</th></tr></thead><tbody><tr><td>進入 refresh 分支</td><td>node</td><td>E04</td></tr><tr><td>refresh_token 非空？</td><td>node</td><td>E04</td></tr><tr><td>DB refresh 命中？</td><td>node</td><td>E04, E09</td></tr><tr><td>IssueAppToken / 覆寫 PWD 與 refresh</td><td>node</td><td>E07, E11</td></tr><tr><td>回應 result=200 / 換發金鑰成功</td><td>node</td><td>E04, E08</td></tr><tr><td>回應 result=1001 / refresh_token 空白</td><td>node</td><td>E04, E08</td></tr><tr><td>顯示 ExternalLogin / GrantType=refresh_token</td><td>node</td><td>E04, E19</td></tr><tr><td>entry → nonempty</td><td>relationship</td><td>E04</td></tr><tr><td>nonempty → match：YES</td><td>relationship</td><td>E04</td></tr><tr><td>nonempty → bad：NO</td><td>relationship</td><td>E04</td></tr><tr><td>match → issue：YES</td><td>relationship</td><td>E04, E09</td></tr><tr><td>match → relogin：NO</td><td>relationship</td><td>E04</td></tr><tr><td>issue → ok</td><td>relationship</td><td>E04, E07</td></tr></tbody></table></details></section><noscript><p>目前顯示完整的預設大小圖面；啟用 JavaScript 後可使用文字大小按鈕。</p></noscript><footer class="foot">2026-10-10 · 靜態逆向蒐證；尚未驗證正式 APP／WCF／DB。依 cathrynlavery/diagram-design MIT v2.6 製作；無外部字型下載，使用本機字型 fallback。</footer></main><script id="diagram-font-controller">
+(() => {
+  'use strict';
+  for (const controls of document.querySelectorAll('[data-font-controls]')) {
+    const frame = document.getElementById(controls.dataset.fontControls);
+    const svg = frame.querySelector('svg');
+    const frameStyle = getComputedStyle(frame);
+    const availableWidth = () => frame.clientWidth
+      - parseFloat(frameStyle.paddingLeft)
+      - parseFloat(frameStyle.paddingRight);
+    const input = controls.querySelector('input');
+    const form = controls.querySelector('form');
+    const status = controls.querySelector('[role="status"]');
+    const buttons = [...controls.querySelectorAll('button[data-percent]')];
+    function applySize(value) {
+      const percent = Number(value);
+      const width = availableWidth() * percent / 100;
+      if (!String(value).trim() || !Number.isFinite(percent) || percent <= 0 || !Number.isFinite(width) || width <= 0) {
+        input.setAttribute('aria-invalid', 'true');
+        status.textContent = `請輸入大於 0 的有效百分比；目前 ${svg.dataset.fontPercent}%`;
+        return;
+      }
+      // Expand the entire reading layout with the type. Keeping shape/text/route
+      // proportions preserves wrapping and prevents a larger font colliding.
+      svg.style.width = `${width}px`;
+      svg.style.minWidth = `${percent > 100 ? width : 0}px`;
+      svg.dataset.fontPercent = String(percent);
+      input.value = String(percent);
+      input.removeAttribute('aria-invalid');
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.percent) === percent));
+      }
+      status.textContent = `目前 ${percent}%`;
+    }
+    for (const button of buttons) {
+      button.addEventListener('click', () => applySize(button.dataset.percent));
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      applySize(input.value);
+    });
+    applySize(svg.dataset.defaultFontPercent);
+    window.addEventListener('resize', () => applySize(svg.dataset.fontPercent), { passive: true });
+    controls.hidden = false;
+  }
+})();
+</script></body></html>

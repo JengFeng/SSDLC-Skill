@@ -1,0 +1,5 @@
+{
+  "status": "Not rerun after the adaptive-fit update",
+  "previous_results": "Invalid for the new responsive-width behavior",
+  "verification_to_run": "python docs/api-reverse-home-v4-20261010/verify_readability_browser.py"
+}

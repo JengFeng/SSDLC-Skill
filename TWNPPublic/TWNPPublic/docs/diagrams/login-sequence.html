@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>一般網站帳密登入 UML 順序圖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#fff; --ink:#24363a; --muted:#60777a; --soft:#84999b; --rule:#d9e5e5; --teal:#089bab; --teal-wash:rgba(8,155,171,.07); --teal-line:rgba(8,155,171,.5); --font-sans:'Geist','Noto Sans TC',system-ui,sans-serif; --font-mono:'Geist Mono',ui-monospace,monospace; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#f5f8f8; font-family:var(--font-sans); }
+    main { width:min(1280px,100%); margin:0 auto; padding:38px 42px 32px; background:var(--paper); }
+    .eyebrow { margin:0 0 8px; color:var(--muted); font:500 11px var(--font-mono); letter-spacing:.16em; text-transform:uppercase; }
+    h1 { margin:0; font:500 clamp(25px,3vw,36px)/1.2 'Noto Serif TC',serif; letter-spacing:.01em; }
+    .subtitle { margin:9px 0 20px; color:var(--muted); font-size:14px; line-height:1.7; }
+    .diagram { width:100%; height:auto; display:block; }
+    .foot { display:flex; justify-content:space-between; gap:24px; padding-top:12px; border-top:1px solid var(--rule); color:var(--muted); font-size:12px; line-height:1.6; }
+    .foot code { font:11px var(--font-mono); color:var(--ink); }
+    @media print { body { background:#fff; } main { padding:18px; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">登入流程 · UML Sequence</p>
+  <h1>一般網站帳密登入</h1>
+  <p class="subtitle">聚焦表單送出後的驗證、資料庫核驗與 Session 建立。前置：GET <code>/Home/Login</code> 顯示登入頁；GET <code>/Home/CreateValidate</code> 產生驗證碼並存入 Session。ModelState 或驗證碼未通過時，Controller 會直接回傳登入頁。</p>
+  <svg class="diagram" viewBox="0 0 1200 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="login-sequence-title login-sequence-desc">
+    <title id="login-sequence-title">一般網站帳密登入順序圖</title>
+    <desc id="login-sequence-desc">使用者送出登入表單後，HomeController 驗證欄位與驗證碼，HomeService 查詢有效帳號並驗證密碼，再呼叫 spB_LOGIN。成功時寫入 Session 並導向 Dashboard；失敗時回傳登入錯誤。</desc>
+    <defs>
+      <marker id="login-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#60777a"/></marker>
+      <marker id="login-arrow-teal" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#089bab"/></marker>
+      <style>
+        .actor { fill:#fff; stroke:rgba(8,155,171,.55); stroke-width:1.4; }
+        .actor-text { fill:#24363a; font:600 13px 'Noto Sans TC','Geist',sans-serif; text-anchor:middle; }
+        .life { stroke:#b9cccc; stroke-width:1; stroke-dasharray:4 5; }
+        .activation { fill:rgba(8,155,171,.08); stroke:#8fb9bd; stroke-width:1; }
+        .call { stroke:#60777a; stroke-width:1.35; fill:none; marker-end:url(#login-arrow); }
+        .return { stroke:#60777a; stroke-width:1.25; stroke-dasharray:5 4; fill:none; marker-end:url(#login-arrow); }
+        .success { stroke:#089bab; stroke-width:1.8; fill:none; marker-end:url(#login-arrow-teal); }
+        .label { fill:#24363a; font:500 12px 'Noto Sans TC','Geist',sans-serif; }
+        .small { fill:#60777a; font:11px 'Noto Sans TC','Geist',sans-serif; }
+        .mono { fill:#42595d; font:10px 'Geist Mono','Noto Sans TC',monospace; }
+        .frame { fill:rgba(8,155,171,.035); stroke:rgba(8,155,171,.45); stroke-width:1; }
+        .frame-tab { fill:#fff; stroke:rgba(8,155,171,.45); stroke-width:1; }
+        .frame-name { fill:#089bab; font:600 10px 'Geist Mono',monospace; letter-spacing:.12em; text-anchor:middle; }
+        .divider { stroke:#b9cccc; stroke-width:1; stroke-dasharray:4 3; }
+        .note { fill:#f5fbfb; stroke:#c7dede; stroke-width:1; }
+        .note-title { fill:#089bab; font:600 10px 'Geist Mono',monospace; letter-spacing:.1em; }
+      </style>
+    </defs>
+    <rect x="0" y="0" width="1200" height="1000" fill="#fff"/>
+
+    <!-- Context note -->
+    <rect class="note" x="36" y="20" width="1128" height="82" rx="5"/>
+    <text class="note-title" x="54" y="43">前置與範圍</text>
+    <text class="small" x="54" y="64">登入頁載入驗證碼圖；CreateValidate 將驗證碼、SessionId 與 5 分鐘期限存入 Session。</text>
+    <text class="small" x="54" y="84">本圖從 POST 表單開始；ModelState / CAPTCHA 未通過會提前回登入頁。APP、外部 Token 登入不在此圖。</text>
+
+    <!-- Lifelines and actors -->
+    <line class="life" x1="130" y1="184" x2="130" y2="954"/>
+    <line class="life" x1="450" y1="184" x2="450" y2="954"/>
+    <line class="life" x1="750" y1="184" x2="750" y2="954"/>
+    <line class="life" x1="1050" y1="184" x2="1050" y2="954"/>
+    <rect class="actor" x="45" y="132" width="170" height="52" rx="5"/>
+    <text class="actor-text" x="130" y="163">使用者／瀏覽器</text>
+    <rect class="actor" x="365" y="132" width="170" height="52" rx="5"/>
+    <text class="actor-text" x="450" y="163">HomeController</text>
+    <rect class="actor" x="665" y="132" width="170" height="52" rx="5"/>
+    <text class="actor-text" x="750" y="163">HomeService</text>
+    <rect class="actor" x="965" y="132" width="170" height="52" rx="5"/>
+    <text class="actor-text" x="1050" y="163">Dapper WCF · TWN</text>
+
+    <!-- Activations -->
+    <rect class="activation" x="445" y="245" width="10" height="572" rx="2"/>
+    <rect class="activation" x="745" y="365" width="10" height="350" rx="2"/>
+    <rect class="activation" x="1045" y="435" width="10" height="60" rx="2"/>
+    <rect class="activation" x="1045" y="605" width="10" height="62" rx="2"/>
+
+    <!-- 1: POST -->
+    <text class="label" x="290" y="222" text-anchor="middle">POST /Home/Login · 表單 + Anti-Forgery Token</text>
+    <text class="mono" x="290" y="238" text-anchor="middle">LoginViewModel: UserName / Pwd / CapthCode</text>
+    <line class="call" x1="130" y1="250" x2="450" y2="250"/>
+
+    <!-- 2: model and captcha validation self-call -->
+    <text class="label" x="492" y="297">ModelState + ValidateCaptcha()</text>
+    <text class="mono" x="492" y="313">讀取後立即移除 CaptchaData；檢查期限、SessionId、答案</text>
+    <path class="call" d="M450 282 H480 V326 H450"/>
+
+    <!-- 3: service -->
+    <text class="label" x="600" y="351" text-anchor="middle">LoginByUserNameAndPassWord(user, password, IP)</text>
+    <line class="call" x1="450" y1="369" x2="750" y2="369"/>
+
+    <!-- 4: account lookup -->
+    <text class="label" x="900" y="415" text-anchor="middle">查詢 B_ACCOUNT · B_ACCOUNT = @UserName · VALID = 1</text>
+    <line class="call" x1="750" y1="435" x2="1050" y2="435"/>
+    <text class="small" x="900" y="481" text-anchor="middle">回傳帳號資料（含 APWD）</text>
+    <line class="return" x1="1050" y1="495" x2="750" y2="495"/>
+
+    <!-- 5: password helper -->
+    <text class="label" x="792" y="548">VerifyPasswordOrLegacyAes(password, APWD)</text>
+    <text class="mono" x="792" y="565">PBKDF2 hash 驗證；失敗再比對舊 AES 格式</text>
+    <path class="call" d="M750 530 H778 V579 H750"/>
+
+    <!-- 6: stored procedure -->
+    <text class="label" x="900" y="589" text-anchor="middle">EXEC dbo.spB_LOGIN @UserName, @PassWord = account.APWD</text>
+    <line class="call" x1="750" y1="607" x2="1050" y2="607"/>
+    <text class="small" x="900" y="649" text-anchor="middle">F_B_LOGIN：LOGIN_STATUS、WATER_NO、帳號序號、日期</text>
+    <line class="return" x1="1050" y1="667" x2="750" y2="667"/>
+
+    <!-- 7: service result -->
+    <text class="small" x="600" y="700" text-anchor="middle">(IsSuccess, Message, UserInfo)</text>
+    <line class="return" x1="750" y1="716" x2="450" y2="716"/>
+
+    <!-- Branch on service result -->
+    <rect class="frame" x="106" y="756" width="572" height="184" rx="4"/>
+    <rect class="frame-tab" x="118" y="748" width="42" height="18" rx="2"/>
+    <text class="frame-name" x="139" y="761">ALT</text>
+    <text class="mono" x="173" y="762">spB_LOGIN 回傳狀態</text>
+    <text class="small" x="124" y="793">[LOGIN_STATUS == "OK"]</text>
+    <path class="call" d="M450 806 H474 V842 H450"/>
+    <text class="label" x="492" y="807">SetLoginSession：寫入 6 個登入狀態值</text>
+    <text class="mono" x="492" y="824">UserName · CurrentWaterNo · UserId</text>
+    <text class="mono" x="492" y="839">WaterNo(JSON) · StartDate · EndDate</text>
+    <text class="label" x="290" y="867" text-anchor="middle" fill="#089bab">302 Redirect → /Dashboard/Index</text>
+    <line class="success" x1="450" y1="878" x2="130" y2="878"/>
+    <line class="divider" x1="118" y1="891" x2="466" y2="891"/>
+    <text class="small" x="124" y="914">[else · 登入失敗]</text>
+    <text class="label" x="290" y="931" text-anchor="middle">回傳 Login View + result.Message</text>
+    <line class="return" x1="450" y1="936" x2="130" y2="936"/>
+
+    <!-- Caveat -->
+    <rect class="note" x="710" y="770" width="440" height="170" rx="5"/>
+    <text class="note-title" x="730" y="798">資料庫黑箱邊界</text>
+    <text class="small" x="730" y="825">程式透過 IDapperDataAccess 呼叫</text>
+    <text class="small" x="730" y="847">dbo.spB_LOGIN；實際 Stored Procedure</text>
+    <text class="small" x="730" y="869">定義不在專案內，因此 DB 規則未臆測。</text>
+    <text class="mono" x="730" y="914">Startup.cs:45–47 · HomeService.cs:312–357</text>
+
+    <text class="mono" x="38" y="978">Evidence: HomeController.cs:1071–1185 · HomeService.cs:294–357 · PasswordHashUtil.cs:28–79</text>
+  </svg>
+  <div class="foot">
+    <span>這張圖呈現一般網站登入；APP / 外部 Token 登入另有不同入口。</span>
+    <span>頁面配色取自 <code>wwwroot/css/Login.css</code> · SVG 可放大檢視</span>
+  </div>
+</main>
+</body>
+</html>

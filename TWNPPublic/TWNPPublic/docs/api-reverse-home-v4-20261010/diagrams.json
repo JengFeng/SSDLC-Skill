@@ -1,0 +1,4028 @@
+[
+  {
+    "slug": "01-architecture",
+    "title": "外部 APP 到網站及資料庫的架構",
+    "type": "Architecture",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 168 1280 932",
+    "notes": "SqlData 為 csproj 直接參照的外部依賴，僅追查其呼叫邊界。WCF 伺服端／SQL DDL 未提供；SQL 執行邊界用虛線標示。net6.0；沒有把本流程畫成 EF Core 或 JWT。",
+    "elements": [
+      {
+        "element": "外部 APP／瀏覽器 / form POST / callback",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "HomeController / AccessToken / ExternalLogin；LoginAPP",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E05",
+          "E06"
+        ]
+      },
+      {
+        "element": "HomeService / IHomeService；帳號、密碼、Token、水號",
+        "role": "node",
+        "evidence": [
+          "E09",
+          "E10",
+          "E11",
+          "E12"
+        ]
+      },
+      {
+        "element": "DapperDataAccess / IDapperDataAccess；WCF client",
+        "role": "node",
+        "evidence": [
+          "E15",
+          "E25"
+        ]
+      },
+      {
+        "element": "SQL Server TWN / B_ACCOUNT；B_ACCOUNT_WATER_NO",
+        "role": "node",
+        "evidence": [
+          "E09",
+          "E11"
+        ]
+      },
+      {
+        "element": "記憶體 Session / .TWNP.Session；UserName / CurrentWaterNo",
+        "role": "node",
+        "evidence": [
+          "E03",
+          "E13"
+        ]
+      },
+      {
+        "element": "DashboardController / BasicController；SessionAuthorization",
+        "role": "node",
+        "evidence": [
+          "E14",
+          "E23",
+          "E24"
+        ]
+      },
+      {
+        "element": "app → home：HTTP FORM",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E05",
+          "E06"
+        ]
+      },
+      {
+        "element": "home → svc：SERVICE",
+        "role": "relationship",
+        "evidence": [
+          "E33"
+        ]
+      },
+      {
+        "element": "svc → proxy：SQL + PARAM",
+        "role": "relationship",
+        "evidence": [
+          "E15",
+          "E33"
+        ]
+      },
+      {
+        "element": "proxy → db：WCF → SQL ?",
+        "role": "relationship",
+        "evidence": [
+          "E09",
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "home → session：SET SESSION",
+        "role": "relationship",
+        "evidence": [
+          "E06",
+          "E13"
+        ]
+      },
+      {
+        "element": "session → dash：AUTH FILTER",
+        "role": "relationship",
+        "evidence": [
+          "E14",
+          "E23"
+        ]
+      }
+    ],
+    "boxes": {
+      "app": [
+        40,
+        100,
+        240,
+        112
+      ],
+      "home": [
+        360,
+        100,
+        240,
+        112
+      ],
+      "svc": [
+        680,
+        100,
+        240,
+        112
+      ],
+      "proxy": [
+        1000,
+        100,
+        240,
+        112
+      ],
+      "db": [
+        1000,
+        396,
+        240,
+        112
+      ],
+      "session": [
+        360,
+        396,
+        240,
+        112
+      ],
+      "dash": [
+        680,
+        396,
+        240,
+        112
+      ]
+    },
+    "routes": [
+      {
+        "from": "app",
+        "to": "home",
+        "points": [
+          [
+            280,
+            156.0
+          ],
+          [
+            360,
+            156.0
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "svc",
+        "points": [
+          [
+            600,
+            156.0
+          ],
+          [
+            680,
+            156.0
+          ]
+        ]
+      },
+      {
+        "from": "svc",
+        "to": "proxy",
+        "points": [
+          [
+            920,
+            156.0
+          ],
+          [
+            1000,
+            156.0
+          ]
+        ]
+      },
+      {
+        "from": "proxy",
+        "to": "db",
+        "points": [
+          [
+            1120.0,
+            212
+          ],
+          [
+            1120.0,
+            396
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "session",
+        "points": [
+          [
+            480.0,
+            212
+          ],
+          [
+            480.0,
+            396
+          ]
+        ]
+      },
+      {
+        "from": "session",
+        "to": "dash",
+        "points": [
+          [
+            600,
+            452.0
+          ],
+          [
+            680,
+            452.0
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "02-swimlane",
+    "title": "首次授權：責任與交接",
+    "type": "Swimlane",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 100 1920 1292",
+    "notes": "主成功路徑；錯誤分支見 Flowchart。APP callback 的實際接收／保存實作未提供，圖中最後一步僅代表伺服器導向指定 URI。 泳道壓縮 Service／WCF 的往返；精確訊息先後見 Sequence。",
+    "elements": [
+      {
+        "element": "送出授權請求 / authorization_code",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "回傳授權頁 / ExternalLogin",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "輸入帳密／驗證碼 / AntiForgeryToken",
+        "role": "node",
+        "evidence": [
+          "E19"
+        ]
+      },
+      {
+        "element": "檢查授權請求 / Captcha + Account",
+        "role": "node",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "驗證 APWD / PasswordHashUtil",
+        "role": "node",
+        "evidence": [
+          "E12",
+          "E20"
+        ]
+      },
+      {
+        "element": "核發金鑰 / IssueAppToken",
+        "role": "node",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "覆寫金鑰欄位 / PWD / refresh",
+        "role": "node",
+        "evidence": [
+          "E11"
+        ]
+      },
+      {
+        "element": "導向 callback / result=200",
+        "role": "node",
+        "evidence": [
+          "E08"
+        ]
+      },
+      {
+        "element": "a → b",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "b → c",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "c → d",
+        "role": "relationship",
+        "evidence": [
+          "E19",
+          "E05"
+        ]
+      },
+      {
+        "element": "d → e",
+        "role": "relationship",
+        "evidence": [
+          "E05",
+          "E12",
+          "E20"
+        ]
+      },
+      {
+        "element": "e → f",
+        "role": "relationship",
+        "evidence": [
+          "E12",
+          "E20",
+          "E07"
+        ]
+      },
+      {
+        "element": "f → g",
+        "role": "relationship",
+        "evidence": [
+          "E07",
+          "E11"
+        ]
+      },
+      {
+        "element": "g → h",
+        "role": "relationship",
+        "evidence": [
+          "E11",
+          "E08"
+        ]
+      }
+    ],
+    "boxes": {
+      "a": [
+        200,
+        80,
+        112,
+        64
+      ],
+      "b": [
+        328,
+        288,
+        112,
+        64
+      ],
+      "c": [
+        456,
+        184,
+        112,
+        64
+      ],
+      "d": [
+        584,
+        288,
+        112,
+        64
+      ],
+      "e": [
+        712,
+        392,
+        112,
+        64
+      ],
+      "f": [
+        840,
+        288,
+        112,
+        64
+      ],
+      "g": [
+        968,
+        496,
+        112,
+        64
+      ],
+      "h": [
+        1096,
+        80,
+        112,
+        64
+      ]
+    },
+    "routes": [
+      {
+        "from": "a",
+        "to": "b",
+        "points": [
+          [
+            312,
+            112.0
+          ],
+          [
+            384.0,
+            112.0
+          ],
+          [
+            384.0,
+            288
+          ]
+        ]
+      },
+      {
+        "from": "b",
+        "to": "c",
+        "points": [
+          [
+            440,
+            320.0
+          ],
+          [
+            512.0,
+            320.0
+          ],
+          [
+            512.0,
+            248
+          ]
+        ]
+      },
+      {
+        "from": "c",
+        "to": "d",
+        "points": [
+          [
+            568,
+            216.0
+          ],
+          [
+            640.0,
+            216.0
+          ],
+          [
+            640.0,
+            288
+          ]
+        ]
+      },
+      {
+        "from": "d",
+        "to": "e",
+        "points": [
+          [
+            696,
+            320.0
+          ],
+          [
+            768.0,
+            320.0
+          ],
+          [
+            768.0,
+            392
+          ]
+        ]
+      },
+      {
+        "from": "e",
+        "to": "f",
+        "points": [
+          [
+            824,
+            424.0
+          ],
+          [
+            896.0,
+            424.0
+          ],
+          [
+            896.0,
+            352
+          ]
+        ]
+      },
+      {
+        "from": "f",
+        "to": "g",
+        "points": [
+          [
+            952,
+            320.0
+          ],
+          [
+            1024.0,
+            320.0
+          ],
+          [
+            1024.0,
+            496
+          ]
+        ]
+      },
+      {
+        "from": "g",
+        "to": "h",
+        "points": [
+          [
+            1080,
+            528.0
+          ],
+          [
+            1152.0,
+            528.0
+          ],
+          [
+            1152.0,
+            144
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "03-process",
+    "title": "首次授權：步驟、輸入輸出與工具",
+    "type": "Process",
+    "size": [
+      1064,
+      436
+    ],
+    "display_viewBox": "0 0 2128 976",
+    "notes": "使用 vendor 的 fit 公式；WB=HTTP 表單／回應，DB=持久化資料，TB=查詢結果。密碼與 Token 只標示欄位名，不展示真值。回傳頁面與 callback 跨請求，詳見 Sequence。",
+    "elements": [
+      {
+        "element": "請求授權 / grant_type=code；APP",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "顯示表單 / 有效帳號；MVC View",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "n0 → n1",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "送出帳密 / CSRF + Captcha；HTML form",
+        "role": "node",
+        "evidence": [
+          "E19"
+        ]
+      },
+      {
+        "element": "n1 → n2",
+        "role": "relationship",
+        "evidence": [
+          "E19"
+        ]
+      },
+      {
+        "element": "檢查請求 / Captcha / Account；MVC Filter",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E13"
+        ]
+      },
+      {
+        "element": "n2 → n3",
+        "role": "relationship",
+        "evidence": [
+          "E05",
+          "E13"
+        ]
+      },
+      {
+        "element": "驗證密碼 / APWD；PasswordHash",
+        "role": "node",
+        "evidence": [
+          "E12",
+          "E20"
+        ]
+      },
+      {
+        "element": "n3 → n4",
+        "role": "relationship",
+        "evidence": [
+          "E12",
+          "E20"
+        ]
+      },
+      {
+        "element": "產生 Token / AES / Base64Url；IssueAppToken",
+        "role": "node",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "n4 → n5",
+        "role": "relationship",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "保存金鑰 / UPDATE account；WCF Execute",
+        "role": "node",
+        "evidence": [
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "n5 → n6",
+        "role": "relationship",
+        "evidence": [
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "回 APP / 302 callback；Redirect",
+        "role": "node",
+        "evidence": [
+          "E08"
+        ]
+      },
+      {
+        "element": "n6 → n7",
+        "role": "relationship",
+        "evidence": [
+          "E08"
+        ]
+      }
+    ],
+    "boxes": {
+      "n0": [
+        148,
+        44,
+        100,
+        64
+      ],
+      "n1": [
+        260,
+        124,
+        100,
+        64
+      ],
+      "n2": [
+        372,
+        44,
+        100,
+        64
+      ],
+      "n3": [
+        484,
+        124,
+        100,
+        64
+      ],
+      "n4": [
+        596,
+        204,
+        100,
+        64
+      ],
+      "n5": [
+        708,
+        124,
+        100,
+        64
+      ],
+      "n6": [
+        820,
+        284,
+        100,
+        64
+      ],
+      "n7": [
+        932,
+        124,
+        100,
+        64
+      ]
+    },
+    "routes": [
+      {
+        "from": "n0",
+        "to": "n1",
+        "points": [
+          [
+            248,
+            76.0
+          ],
+          [
+            310.0,
+            76.0
+          ],
+          [
+            310.0,
+            124
+          ]
+        ]
+      },
+      {
+        "from": "n1",
+        "to": "n2",
+        "points": [
+          [
+            360,
+            156.0
+          ],
+          [
+            422.0,
+            156.0
+          ],
+          [
+            422.0,
+            108
+          ]
+        ]
+      },
+      {
+        "from": "n2",
+        "to": "n3",
+        "points": [
+          [
+            472,
+            76.0
+          ],
+          [
+            534.0,
+            76.0
+          ],
+          [
+            534.0,
+            124
+          ]
+        ]
+      },
+      {
+        "from": "n3",
+        "to": "n4",
+        "points": [
+          [
+            584,
+            156.0
+          ],
+          [
+            646.0,
+            156.0
+          ],
+          [
+            646.0,
+            204
+          ]
+        ]
+      },
+      {
+        "from": "n4",
+        "to": "n5",
+        "points": [
+          [
+            696,
+            236.0
+          ],
+          [
+            758.0,
+            236.0
+          ],
+          [
+            758.0,
+            188
+          ]
+        ]
+      },
+      {
+        "from": "n5",
+        "to": "n6",
+        "points": [
+          [
+            808,
+            156.0
+          ],
+          [
+            870.0,
+            156.0
+          ],
+          [
+            870.0,
+            284
+          ]
+        ]
+      },
+      {
+        "from": "n6",
+        "to": "n7",
+        "points": [
+          [
+            920,
+            316.0
+          ],
+          [
+            982.0,
+            316.0
+          ],
+          [
+            982.0,
+            188
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "04-flowchart-access",
+    "title": "AccessToken：入口分流",
+    "type": "Flowchart",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 32 1280 1348",
+    "notes": "1002 訊息雖為「用戶尚未使用智慧水表」，實際只檢查 B_ACCOUNT 存在且 VALID=1；沒有查 A_PH_METER_LIST。錯誤 result 不是 HTTP status。",
+    "elements": [
+      {
+        "element": "POST /Home/AccessToken",
+        "role": "node",
+        "evidence": [
+          "E02",
+          "E04"
+        ]
+      },
+      {
+        "element": "ModelState 有效？",
+        "role": "node",
+        "evidence": [
+          "E01",
+          "E04"
+        ]
+      },
+      {
+        "element": "有效帳號存在？",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E10"
+        ]
+      },
+      {
+        "element": "grant_type？",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "回應 result=1001 / 參數錯誤",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E08"
+        ]
+      },
+      {
+        "element": "回應 result=1002 / 有效帳號不存在",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E08"
+        ]
+      },
+      {
+        "element": "顯示 ExternalLogin / authorization_code",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "进入 refresh 流程 / 見 05 Flowchart",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "回應 result=1001 / 不支援的 grant_type",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E08"
+        ]
+      },
+      {
+        "element": "start → valid",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "valid → acct：YES",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "valid → err1：NO",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "acct → grant：YES",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "acct → err2：NO",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "grant → auth：AUTH CODE",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "grant → refresh：REFRESH",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "grant → badgrant：OTHER",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      }
+    ],
+    "boxes": {
+      "start": [
+        400,
+        32,
+        240,
+        80
+      ],
+      "valid": [
+        400,
+        136,
+        240,
+        80
+      ],
+      "acct": [
+        400,
+        280,
+        240,
+        80
+      ],
+      "grant": [
+        400,
+        424,
+        240,
+        80
+      ],
+      "err1": [
+        848,
+        136,
+        240,
+        80
+      ],
+      "err2": [
+        848,
+        280,
+        240,
+        80
+      ],
+      "auth": [
+        40,
+        424,
+        240,
+        80
+      ],
+      "refresh": [
+        848,
+        424,
+        240,
+        80
+      ],
+      "badgrant": [
+        400,
+        568,
+        240,
+        80
+      ]
+    },
+    "routes": [
+      {
+        "from": "start",
+        "to": "valid",
+        "points": [
+          [
+            520.0,
+            112
+          ],
+          [
+            520.0,
+            136
+          ]
+        ]
+      },
+      {
+        "from": "valid",
+        "to": "acct",
+        "points": [
+          [
+            520.0,
+            216
+          ],
+          [
+            520.0,
+            280
+          ]
+        ]
+      },
+      {
+        "from": "valid",
+        "to": "err1",
+        "points": [
+          [
+            640,
+            176.0
+          ],
+          [
+            848,
+            176.0
+          ]
+        ]
+      },
+      {
+        "from": "acct",
+        "to": "grant",
+        "points": [
+          [
+            520.0,
+            360
+          ],
+          [
+            520.0,
+            424
+          ]
+        ]
+      },
+      {
+        "from": "acct",
+        "to": "err2",
+        "points": [
+          [
+            640,
+            320.0
+          ],
+          [
+            848,
+            320.0
+          ]
+        ]
+      },
+      {
+        "from": "grant",
+        "to": "auth",
+        "points": [
+          [
+            400,
+            464.0
+          ],
+          [
+            280,
+            464.0
+          ]
+        ]
+      },
+      {
+        "from": "grant",
+        "to": "refresh",
+        "points": [
+          [
+            640,
+            464.0
+          ],
+          [
+            848,
+            464.0
+          ]
+        ]
+      },
+      {
+        "from": "grant",
+        "to": "badgrant",
+        "points": [
+          [
+            520.0,
+            504
+          ],
+          [
+            520.0,
+            568
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "05-flowchart-refresh",
+    "title": "Refresh Token：直接換發或重新驗證",
+    "type": "Flowchart",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 64 1280 1316",
+    "notes": "Refresh 路徑沒有檢查 access_token 是否過期，也没有解析 refresh_token 的時戳；依 DB 值匹配及帳號 VALID=1 判定。",
+    "elements": [
+      {
+        "element": "進入 refresh 分支",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "refresh_token 非空？",
+        "role": "node",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "DB refresh 命中？",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E09"
+        ]
+      },
+      {
+        "element": "IssueAppToken / 覆寫 PWD 與 refresh",
+        "role": "node",
+        "evidence": [
+          "E07",
+          "E11"
+        ]
+      },
+      {
+        "element": "回應 result=200 / 換發金鑰成功",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E08"
+        ]
+      },
+      {
+        "element": "回應 result=1001 / refresh_token 空白",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E08"
+        ]
+      },
+      {
+        "element": "顯示 ExternalLogin / GrantType=refresh_token",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "entry → nonempty",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "nonempty → match：YES",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "nonempty → bad：NO",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "match → issue：YES",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E09"
+        ]
+      },
+      {
+        "element": "match → relogin：NO",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "issue → ok",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E07"
+        ]
+      }
+    ],
+    "boxes": {
+      "entry": [
+        400,
+        48,
+        240,
+        64
+      ],
+      "nonempty": [
+        400,
+        168,
+        240,
+        80
+      ],
+      "match": [
+        400,
+        312,
+        240,
+        80
+      ],
+      "issue": [
+        400,
+        464,
+        240,
+        80
+      ],
+      "ok": [
+        400,
+        584,
+        240,
+        64
+      ],
+      "bad": [
+        856,
+        168,
+        240,
+        80
+      ],
+      "relogin": [
+        856,
+        312,
+        240,
+        80
+      ]
+    },
+    "routes": [
+      {
+        "from": "entry",
+        "to": "nonempty",
+        "points": [
+          [
+            520.0,
+            112
+          ],
+          [
+            520.0,
+            168
+          ]
+        ]
+      },
+      {
+        "from": "nonempty",
+        "to": "match",
+        "points": [
+          [
+            520.0,
+            248
+          ],
+          [
+            520.0,
+            312
+          ]
+        ]
+      },
+      {
+        "from": "nonempty",
+        "to": "bad",
+        "points": [
+          [
+            640,
+            208.0
+          ],
+          [
+            856,
+            208.0
+          ]
+        ]
+      },
+      {
+        "from": "match",
+        "to": "issue",
+        "points": [
+          [
+            520.0,
+            392
+          ],
+          [
+            520.0,
+            464
+          ]
+        ]
+      },
+      {
+        "from": "match",
+        "to": "relogin",
+        "points": [
+          [
+            640,
+            352.0
+          ],
+          [
+            856,
+            352.0
+          ]
+        ]
+      },
+      {
+        "from": "issue",
+        "to": "ok",
+        "points": [
+          [
+            520.0,
+            544
+          ],
+          [
+            520.0,
+            584
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "06-flowchart-external",
+    "title": "ExternalLogin：驗證與重新顯示頁面",
+    "type": "Flowchart",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 128 1280 1284",
+    "notes": "CSRF 由框架先處理，失敗不進入 Action。驗證碼在實際 ValidateCaptcha 呼叫時立即移除；帳密錯誤後也要重新取得驗證碼。各失敗節點不會回傳 1004 callback。",
+    "elements": [
+      {
+        "element": "ModelState 有效？",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E01"
+        ]
+      },
+      {
+        "element": "Captcha 有效？",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E13"
+        ]
+      },
+      {
+        "element": "AccountNo=Account？",
+        "role": "node",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "APWD 驗證成功？",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E12",
+          "E20"
+        ]
+      },
+      {
+        "element": "重新顯示 ExternalLogin / 欄位錯誤",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E19"
+        ]
+      },
+      {
+        "element": "model → fail-model：NO",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "重新顯示 ExternalLogin / 驗證碼錯誤／過期／已使用",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E19"
+        ]
+      },
+      {
+        "element": "captcha → fail-captcha：NO",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "重新顯示 ExternalLogin / 帳號與 AccountNo 不一致",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E19"
+        ]
+      },
+      {
+        "element": "account → fail-account：NO",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "重新顯示 ExternalLogin / APWD 密碼驗證失敗",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E19"
+        ]
+      },
+      {
+        "element": "pwd → fail-pwd：NO",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "核發 → callback 200 / IssueAppToken",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E07",
+          "E08"
+        ]
+      },
+      {
+        "element": "model → captcha：YES",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "captcha → account：YES",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "account → pwd：YES",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "pwd → issue：YES",
+        "role": "relationship",
+        "evidence": [
+          "E05",
+          "E07"
+        ]
+      }
+    ],
+    "boxes": {
+      "model": [
+        400,
+        80,
+        240,
+        80
+      ],
+      "captcha": [
+        400,
+        208,
+        240,
+        80
+      ],
+      "account": [
+        400,
+        336,
+        240,
+        80
+      ],
+      "pwd": [
+        400,
+        464,
+        240,
+        80
+      ],
+      "fail-model": [
+        848,
+        80,
+        272,
+        80
+      ],
+      "fail-captcha": [
+        848,
+        208,
+        272,
+        80
+      ],
+      "fail-account": [
+        848,
+        336,
+        272,
+        80
+      ],
+      "fail-pwd": [
+        848,
+        464,
+        272,
+        80
+      ],
+      "issue": [
+        400,
+        600,
+        240,
+        64
+      ]
+    },
+    "routes": [
+      {
+        "from": "model",
+        "to": "fail-model",
+        "points": [
+          [
+            640,
+            120.0
+          ],
+          [
+            848,
+            120.0
+          ]
+        ]
+      },
+      {
+        "from": "captcha",
+        "to": "fail-captcha",
+        "points": [
+          [
+            640,
+            248.0
+          ],
+          [
+            848,
+            248.0
+          ]
+        ]
+      },
+      {
+        "from": "account",
+        "to": "fail-account",
+        "points": [
+          [
+            640,
+            376.0
+          ],
+          [
+            848,
+            376.0
+          ]
+        ]
+      },
+      {
+        "from": "pwd",
+        "to": "fail-pwd",
+        "points": [
+          [
+            640,
+            504.0
+          ],
+          [
+            848,
+            504.0
+          ]
+        ]
+      },
+      {
+        "from": "model",
+        "to": "captcha",
+        "points": [
+          [
+            520.0,
+            160
+          ],
+          [
+            520.0,
+            208
+          ]
+        ]
+      },
+      {
+        "from": "captcha",
+        "to": "account",
+        "points": [
+          [
+            520.0,
+            288
+          ],
+          [
+            520.0,
+            336
+          ]
+        ]
+      },
+      {
+        "from": "account",
+        "to": "pwd",
+        "points": [
+          [
+            520.0,
+            416
+          ],
+          [
+            520.0,
+            464
+          ]
+        ]
+      },
+      {
+        "from": "pwd",
+        "to": "issue",
+        "points": [
+          [
+            520.0,
+            544
+          ],
+          [
+            520.0,
+            600
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "07-flowchart-login",
+    "title": "LoginAPP：Token 到網站登入",
+    "type": "Flowchart",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 16 1280 1332",
+    "notes": "IsValidAppToken 會解密並比對帳號與六個月期限。GetAppV4WaterNos 未使用 WaterNo 參數；取全部有效綁定並 ORDER BY WATER_NO，再用 First() 作為 CurrentWaterNo。失敗是 HTML。",
+    "elements": [
+      {
+        "element": "POST /Home/LoginAPP",
+        "role": "node",
+        "evidence": [
+          "E02",
+          "E06"
+        ]
+      },
+      {
+        "element": "ModelState 有效？",
+        "role": "node",
+        "evidence": [
+          "E01",
+          "E06"
+        ]
+      },
+      {
+        "element": "DB Token + AES 有效？",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E07",
+          "E09"
+        ]
+      },
+      {
+        "element": "帳號與水號清單存在？",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E10",
+          "E11"
+        ]
+      },
+      {
+        "element": "HTML：1001 / LoginAppAuthFailed",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E31"
+        ]
+      },
+      {
+        "element": "HTML：1004 / Token／帳號／清單失敗",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E31"
+        ]
+      },
+      {
+        "element": "SetLoginSession / → /Dashboard/Index",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E13"
+        ]
+      },
+      {
+        "element": "start → model",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "model → token：YES",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "model → invalid：NO",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "token → acct：YES",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "token → fail：NO",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "acct → fail：NO",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "acct → session：YES",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      }
+    ],
+    "boxes": {
+      "start": [
+        400,
+        24,
+        240,
+        80
+      ],
+      "model": [
+        400,
+        120,
+        240,
+        80
+      ],
+      "token": [
+        400,
+        264,
+        240,
+        80
+      ],
+      "acct": [
+        400,
+        408,
+        240,
+        80
+      ],
+      "invalid": [
+        848,
+        120,
+        240,
+        80
+      ],
+      "fail": [
+        848,
+        336,
+        240,
+        80
+      ],
+      "session": [
+        400,
+        552,
+        240,
+        80
+      ]
+    },
+    "routes": [
+      {
+        "from": "start",
+        "to": "model",
+        "points": [
+          [
+            520.0,
+            104
+          ],
+          [
+            520.0,
+            120
+          ]
+        ]
+      },
+      {
+        "from": "model",
+        "to": "token",
+        "points": [
+          [
+            520.0,
+            200
+          ],
+          [
+            520.0,
+            264
+          ]
+        ]
+      },
+      {
+        "from": "model",
+        "to": "invalid",
+        "points": [
+          [
+            640,
+            160.0
+          ],
+          [
+            848,
+            160.0
+          ]
+        ]
+      },
+      {
+        "from": "token",
+        "to": "acct",
+        "points": [
+          [
+            520.0,
+            344
+          ],
+          [
+            520.0,
+            408
+          ]
+        ]
+      },
+      {
+        "from": "token",
+        "to": "fail",
+        "points": [
+          [
+            640,
+            304.0
+          ],
+          [
+            720,
+            304
+          ],
+          [
+            720,
+            356
+          ],
+          [
+            848,
+            356.0
+          ]
+        ]
+      },
+      {
+        "from": "acct",
+        "to": "fail",
+        "points": [
+          [
+            640,
+            448.0
+          ],
+          [
+            768,
+            448
+          ],
+          [
+            768,
+            396
+          ],
+          [
+            848,
+            396.0
+          ]
+        ]
+      },
+      {
+        "from": "acct",
+        "to": "session",
+        "points": [
+          [
+            520.0,
+            488
+          ],
+          [
+            520.0,
+            552
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "08-data-flow-token",
+    "title": "Token 資料流：密碼驗證到資料庫欄位",
+    "type": "Data-flow",
+    "size": [
+      840,
+      436
+    ],
+    "display_viewBox": "0 0 1680 976",
+    "notes": "APWD 是驗證密碼，PWD 存 V4 access_token；不是同一欄位。EXPIRES_AT 僅新建 DTO 暫存，圖中沒有新增 Token／授權碼表。成功 callback 包含水號，但 token 密文不包含水號。",
+    "elements": [
+      {
+        "element": "表單資料 / Account / Password；+ Captcha",
+        "role": "node",
+        "evidence": [
+          "E19"
+        ]
+      },
+      {
+        "element": "讀取 APWD / 有效帳號；WCF Query",
+        "role": "node",
+        "evidence": [
+          "E10",
+          "E12"
+        ]
+      },
+      {
+        "element": "n0 → n1",
+        "role": "relationship",
+        "evidence": [
+          "E10",
+          "E12"
+        ]
+      },
+      {
+        "element": "密碼比較 / hash 或 legacy AES；PasswordHash",
+        "role": "node",
+        "evidence": [
+          "E20"
+        ]
+      },
+      {
+        "element": "n1 → n2",
+        "role": "relationship",
+        "evidence": [
+          "E20"
+        ]
+      },
+      {
+        "element": "Token 資料 / account + timestamp；AES / Base64Url",
+        "role": "node",
+        "evidence": [
+          "E07",
+          "E28"
+        ]
+      },
+      {
+        "element": "n2 → n3",
+        "role": "relationship",
+        "evidence": [
+          "E07",
+          "E28"
+        ]
+      },
+      {
+        "element": "帳號欄位 / PWD / refresh；WCF UPDATE",
+        "role": "node",
+        "evidence": [
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "n3 → n4",
+        "role": "relationship",
+        "evidence": [
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "Callback / 200 + Tokens；302 / JSON*",
+        "role": "node",
+        "evidence": [
+          "E08"
+        ]
+      },
+      {
+        "element": "n4 → n5",
+        "role": "relationship",
+        "evidence": [
+          "E08"
+        ]
+      }
+    ],
+    "boxes": {
+      "n0": [
+        148,
+        44,
+        100,
+        64
+      ],
+      "n1": [
+        260,
+        204,
+        100,
+        64
+      ],
+      "n2": [
+        372,
+        204,
+        100,
+        64
+      ],
+      "n3": [
+        484,
+        124,
+        100,
+        64
+      ],
+      "n4": [
+        596,
+        284,
+        100,
+        64
+      ],
+      "n5": [
+        708,
+        124,
+        100,
+        64
+      ]
+    },
+    "routes": [
+      {
+        "from": "n0",
+        "to": "n1",
+        "points": [
+          [
+            248,
+            76.0
+          ],
+          [
+            310.0,
+            76.0
+          ],
+          [
+            310.0,
+            204
+          ]
+        ]
+      },
+      {
+        "from": "n1",
+        "to": "n2",
+        "points": [
+          [
+            360,
+            236.0
+          ],
+          [
+            372,
+            236.0
+          ]
+        ]
+      },
+      {
+        "from": "n2",
+        "to": "n3",
+        "points": [
+          [
+            472,
+            236.0
+          ],
+          [
+            534.0,
+            236.0
+          ],
+          [
+            534.0,
+            188
+          ]
+        ]
+      },
+      {
+        "from": "n3",
+        "to": "n4",
+        "points": [
+          [
+            584,
+            156.0
+          ],
+          [
+            646.0,
+            156.0
+          ],
+          [
+            646.0,
+            284
+          ]
+        ]
+      },
+      {
+        "from": "n4",
+        "to": "n5",
+        "points": [
+          [
+            696,
+            316.0
+          ],
+          [
+            758.0,
+            316.0
+          ],
+          [
+            758.0,
+            188
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "09-data-flow-session",
+    "title": "登入資料流：Token 到 Session",
+    "type": "Data-flow",
+    "size": [
+      840,
+      436
+    ],
+    "display_viewBox": "0 0 1680 976",
+    "notes": "Session keys：UserName、CurrentWaterNo、WaterNo(JSON)、UserId、StartDate、EndDate。DB Query 不篩選傳入 water_no；水號清單有值才能 First()。WB=HTTP，TB=物件清單，LS=記憶體 Session。",
+    "elements": [
+      {
+        "element": "登入請求 / account / water；access_token",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E01"
+        ]
+      },
+      {
+        "element": "查 Token / PWD + VALID=1；Query B_ACCOUNT",
+        "role": "node",
+        "evidence": [
+          "E09"
+        ]
+      },
+      {
+        "element": "n0 → n1",
+        "role": "relationship",
+        "evidence": [
+          "E09"
+        ]
+      },
+      {
+        "element": "檢查 Token / account / 期限；AES decrypt",
+        "role": "node",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "n1 → n2",
+        "role": "relationship",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "帳號水號 / 全部有效綁定；ORDER WATER_NO",
+        "role": "node",
+        "evidence": [
+          "E10",
+          "E11"
+        ]
+      },
+      {
+        "element": "n2 → n3",
+        "role": "relationship",
+        "evidence": [
+          "E10",
+          "E11"
+        ]
+      },
+      {
+        "element": "轉換清單 / First() 目前水號；F_B_LOGIN list",
+        "role": "node",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "n3 → n4",
+        "role": "relationship",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "建立 Session / 六個欄位；SetLoginSession",
+        "role": "node",
+        "evidence": [
+          "E13"
+        ]
+      },
+      {
+        "element": "n4 → n5",
+        "role": "relationship",
+        "evidence": [
+          "E13"
+        ]
+      }
+    ],
+    "boxes": {
+      "n0": [
+        148,
+        44,
+        100,
+        64
+      ],
+      "n1": [
+        260,
+        204,
+        100,
+        64
+      ],
+      "n2": [
+        372,
+        124,
+        100,
+        64
+      ],
+      "n3": [
+        484,
+        204,
+        100,
+        64
+      ],
+      "n4": [
+        596,
+        124,
+        100,
+        64
+      ],
+      "n5": [
+        708,
+        284,
+        100,
+        64
+      ]
+    },
+    "routes": [
+      {
+        "from": "n0",
+        "to": "n1",
+        "points": [
+          [
+            248,
+            76.0
+          ],
+          [
+            310.0,
+            76.0
+          ],
+          [
+            310.0,
+            204
+          ]
+        ]
+      },
+      {
+        "from": "n1",
+        "to": "n2",
+        "points": [
+          [
+            360,
+            236.0
+          ],
+          [
+            422.0,
+            236.0
+          ],
+          [
+            422.0,
+            188
+          ]
+        ]
+      },
+      {
+        "from": "n2",
+        "to": "n3",
+        "points": [
+          [
+            472,
+            156.0
+          ],
+          [
+            534.0,
+            156.0
+          ],
+          [
+            534.0,
+            204
+          ]
+        ]
+      },
+      {
+        "from": "n3",
+        "to": "n4",
+        "points": [
+          [
+            584,
+            236.0
+          ],
+          [
+            646.0,
+            236.0
+          ],
+          [
+            646.0,
+            188
+          ]
+        ]
+      },
+      {
+        "from": "n4",
+        "to": "n5",
+        "points": [
+          [
+            696,
+            156.0
+          ],
+          [
+            758.0,
+            156.0
+          ],
+          [
+            758.0,
+            284
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "10-er",
+    "title": "APP 介接的邏輯資料關係",
+    "type": "ER",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 320 1280 1068",
+    "notes": "1→0..* 是依查詢還原的邏輯關係，SQL PK／FK／唯一性約束未確認。AppTokenInfoDto 不是實體 Token 表；WATER_NO 由 @WaterNo 投影，EXPIRES_AT 未由 token 查詢 SQL 回填。",
+    "elements": [
+      {
+        "element": "b_ACCOUNT（帳號） / B_ACCOUNT_SN : int；B_ACCOUNT : string；APWD : string（驗證密碼）；PWD : string（access token）；APP_REFRESH_TOKEN : string?；VALID : decimal",
+        "role": "table",
+        "evidence": [
+          "E21",
+          "E09",
+          "E12"
+        ]
+      },
+      {
+        "element": "B_ACCOUNT_WATER_NO（綁定） / B_ACCOUNT_SN : int（邏輯关联）；WATER_NO : string；VALID : decimal；NICK_NAME : string；NICK_NAME_SHOW : decimal?",
+        "role": "table",
+        "evidence": [
+          "E22",
+          "E11"
+        ]
+      },
+      {
+        "element": "acct → water：HAS BINDINGS",
+        "role": "relationship",
+        "evidence": [
+          "E11",
+          "E21",
+          "E22"
+        ]
+      },
+      {
+        "element": "AppTokenInfoDto（投影） / ACCOUNT_NO / WATER_NO；ACCESS_TOKEN / REFRESH_TOKEN",
+        "role": "node",
+        "evidence": [
+          "E01",
+          "E09"
+        ]
+      },
+      {
+        "element": "acct → dto：PROJECT",
+        "role": "relationship",
+        "evidence": [
+          "E09"
+        ]
+      }
+    ],
+    "boxes": {
+      "acct": [
+        64,
+        160,
+        320,
+        200
+      ],
+      "water": [
+        864,
+        160,
+        320,
+        176
+      ],
+      "dto": [
+        464,
+        480,
+        320,
+        112
+      ]
+    },
+    "routes": [
+      {
+        "from": "acct",
+        "to": "water",
+        "points": [
+          [
+            384,
+            260.0
+          ],
+          [
+            864,
+            260.0
+          ]
+        ]
+      },
+      {
+        "from": "acct",
+        "to": "dto",
+        "points": [
+          [
+            224.0,
+            360
+          ],
+          [
+            224,
+            440
+          ],
+          [
+            624,
+            440
+          ],
+          [
+            624.0,
+            480
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "11-db-schema",
+    "title": "資料庫 Schema：可觀察欄位與未知約束",
+    "type": "DB Schema",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 320 1280 664",
+    "notes": "未提供 DDL：右側標的是已觀察 CLR 型別，不是 SQL 型別。SQL 型別／長度／nullable／PK／FK／indexes／ON DELETE 都待確認，不捏造建表 SQL。只列核心欄位；完整 C# 欄位見分析報告。",
+    "elements": [
+      {
+        "element": "TWN.dbo.B_ACCOUNT / B_ACCOUNT_SN | CLR int; SQL ?；B_ACCOUNT | CLR string; SQL ?；APWD | CLR string; SQL ?；PWD | CLR string; SQL ?；APP_REFRESH_TOKEN | CLR string?; SQL ?；VALID | CLR decimal; SQL ?；ST_DATE | CLR DateTime?; SQL ?；EN_DATE | CLR DateTime?; SQL ?",
+        "role": "table",
+        "evidence": [
+          "E09",
+          "E11",
+          "E21"
+        ]
+      },
+      {
+        "element": "TWN.dbo.B_ACCOUNT_WATER_NO / B_ACCOUNT_SN | CLR int; SQL ?；WATER_NO | CLR string; SQL ?；VALID | CLR decimal; SQL ?；ST_DATE | CLR DateTime?; SQL ?；EN_DATE | CLR DateTime?; SQL ?；NICK_NAME | CLR string; SQL ?；NICK_NAME_SHOW | CLR decimal?; SQL ?",
+        "role": "table",
+        "evidence": [
+          "E11",
+          "E22"
+        ]
+      },
+      {
+        "element": "water → acct：FK / ON DELETE ?",
+        "role": "relationship",
+        "evidence": [
+          "E11"
+        ]
+      }
+    ],
+    "boxes": {
+      "acct": [
+        64,
+        160,
+        384,
+        248
+      ],
+      "water": [
+        800,
+        160,
+        384,
+        224
+      ]
+    },
+    "routes": [
+      {
+        "from": "water",
+        "to": "acct",
+        "points": [
+          [
+            800,
+            208.0
+          ],
+          [
+            448,
+            208.0
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "12-sequence-authorization",
+    "title": "首次授權的訊息順序",
+    "type": "Sequence",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 16 1280 1036",
+    "notes": "合併 WCF／DB 為一條 lifeline，未主張已取得伺服端程式。Captcha 圖片請求與 CSRF 由流程圖／證據說明。authorization_code 是分支名稱；程式沒有中介授權碼交換。",
+    "elements": [
+      {
+        "element": "APP／瀏覽器",
+        "role": "node",
+        "evidence": [
+          "E19",
+          "E04"
+        ]
+      },
+      {
+        "element": "HomeController",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E05"
+        ]
+      },
+      {
+        "element": "HomeService",
+        "role": "node",
+        "evidence": [
+          "E12",
+          "E11"
+        ]
+      },
+      {
+        "element": "WCF／DB 邊界",
+        "role": "node",
+        "evidence": [
+          "E15",
+          "E09"
+        ]
+      },
+      {
+        "element": "POST AccessToken / authorization_code",
+        "role": "message",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "GetAppV4Account",
+        "role": "message",
+        "evidence": [
+          "E04",
+          "E10"
+        ]
+      },
+      {
+        "element": "Query B_ACCOUNT",
+        "role": "message",
+        "evidence": [
+          "E10",
+          "E15"
+        ]
+      },
+      {
+        "element": "有效帳號",
+        "role": "message",
+        "evidence": [
+          "E10"
+        ]
+      },
+      {
+        "element": "帳號",
+        "role": "message",
+        "evidence": [
+          "E10"
+        ]
+      },
+      {
+        "element": "200 HTML ExternalLogin",
+        "role": "message",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "POST ExternalLogin + CSRF + Captcha",
+        "role": "message",
+        "evidence": [
+          "E05",
+          "E19"
+        ]
+      },
+      {
+        "element": "ValidateAppV4Password → APWD",
+        "role": "message",
+        "evidence": [
+          "E12",
+          "E20"
+        ]
+      },
+      {
+        "element": "true（含 WCF 查詢與密碼比較）",
+        "role": "message",
+        "evidence": [
+          "E12"
+        ]
+      },
+      {
+        "element": "IssueAppToken → SaveAppV4TokenToPwd",
+        "role": "message",
+        "evidence": [
+          "E07",
+          "E11"
+        ]
+      },
+      {
+        "element": "Execute UPDATE PWD / refresh",
+        "role": "message",
+        "evidence": [
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "302 callback query：result=200 + Tokens",
+        "role": "message",
+        "evidence": [
+          "E05",
+          "E08"
+        ]
+      }
+    ],
+    "boxes": {
+      "a0": [
+        32,
+        32,
+        192,
+        64
+      ],
+      "a1": [
+        372,
+        32,
+        192,
+        64
+      ],
+      "a2": [
+        712,
+        32,
+        192,
+        64
+      ],
+      "a3": [
+        1052,
+        32,
+        192,
+        64
+      ]
+    },
+    "routes": []
+  },
+  {
+    "slug": "13-sequence-refresh",
+    "title": "有效 Refresh Token 的訊息順序",
+    "type": "Sequence",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 16 1280 1036",
+    "notes": "主成功路徑。未命中時回 ExternalLogin HTML；參數空白回 1001。Execute 回傳 affected rows，但 SaveAppV4TokenToPwd 沒有檢查此數值。",
+    "elements": [
+      {
+        "element": "APP／瀏覽器",
+        "role": "node",
+        "evidence": [
+          "E19",
+          "E04"
+        ]
+      },
+      {
+        "element": "HomeController",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E05"
+        ]
+      },
+      {
+        "element": "HomeService",
+        "role": "node",
+        "evidence": [
+          "E12",
+          "E11"
+        ]
+      },
+      {
+        "element": "WCF／DB 邊界",
+        "role": "node",
+        "evidence": [
+          "E15",
+          "E09"
+        ]
+      },
+      {
+        "element": "POST AccessToken / refresh_token",
+        "role": "message",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "GetAppV4Account",
+        "role": "message",
+        "evidence": [
+          "E04",
+          "E10"
+        ]
+      },
+      {
+        "element": "有效帳號（內含 WCF 查詢）",
+        "role": "message",
+        "evidence": [
+          "E10",
+          "E15"
+        ]
+      },
+      {
+        "element": "GetAppV4TokenByRefreshToken",
+        "role": "message",
+        "evidence": [
+          "E04",
+          "E09"
+        ]
+      },
+      {
+        "element": "Query account + VALID + refresh",
+        "role": "message",
+        "evidence": [
+          "E09",
+          "E15"
+        ]
+      },
+      {
+        "element": "目前 Token DTO",
+        "role": "message",
+        "evidence": [
+          "E09"
+        ]
+      },
+      {
+        "element": "Token 命中",
+        "role": "message",
+        "evidence": [
+          "E09"
+        ]
+      },
+      {
+        "element": "IssueAppToken → SaveAppV4TokenToPwd",
+        "role": "message",
+        "evidence": [
+          "E07",
+          "E11"
+        ]
+      },
+      {
+        "element": "Execute UPDATE PWD / refresh",
+        "role": "message",
+        "evidence": [
+          "E11"
+        ]
+      },
+      {
+        "element": "affected rows（未檢查）",
+        "role": "message",
+        "evidence": [
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "完成；未檢查更新筆數",
+        "role": "message",
+        "evidence": [
+          "E11"
+        ]
+      },
+      {
+        "element": "302 callback：200 + 新 Token",
+        "role": "message",
+        "evidence": [
+          "E04",
+          "E08"
+        ]
+      }
+    ],
+    "boxes": {
+      "a0": [
+        32,
+        32,
+        192,
+        64
+      ],
+      "a1": [
+        372,
+        32,
+        192,
+        64
+      ],
+      "a2": [
+        712,
+        32,
+        192,
+        64
+      ],
+      "a3": [
+        1052,
+        32,
+        192,
+        64
+      ]
+    },
+    "routes": []
+  },
+  {
+    "slug": "14-sequence-login",
+    "title": "LoginAPP：金鑰驗證後建立網站 Session",
+    "type": "Sequence",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 16 1280 1036",
+    "notes": "Session／Dashboard 合併為網站邊界，六個 Session 欄位見 Data-flow。APP、授權頁與 Dashboard 的 Cookie 如何在手機 WebView 間共享，需要實際 APP 才能驗證。",
+    "elements": [
+      {
+        "element": "APP／瀏覽器",
+        "role": "node",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "HomeController",
+        "role": "node",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "HomeService／WCF",
+        "role": "node",
+        "evidence": [
+          "E09",
+          "E11",
+          "E15"
+        ]
+      },
+      {
+        "element": "Session／Dashboard",
+        "role": "node",
+        "evidence": [
+          "E13",
+          "E14",
+          "E24"
+        ]
+      },
+      {
+        "element": "POST LoginAPP：account / water / access",
+        "role": "message",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "GetAppV4TokenByAccessToken",
+        "role": "message",
+        "evidence": [
+          "E06",
+          "E09"
+        ]
+      },
+      {
+        "element": "DB token match（或 null）",
+        "role": "message",
+        "evidence": [
+          "E09"
+        ]
+      },
+      {
+        "element": "AES 帳號與期限驗證",
+        "role": "message",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "GetAppV4Account",
+        "role": "message",
+        "evidence": [
+          "E06",
+          "E10"
+        ]
+      },
+      {
+        "element": "有效帳號",
+        "role": "message",
+        "evidence": [
+          "E10"
+        ]
+      },
+      {
+        "element": "GetAppV4WaterNos：ALL VALID ORDER BY WATER_NO",
+        "role": "message",
+        "evidence": [
+          "E11"
+        ]
+      },
+      {
+        "element": "完整綁定水號清單",
+        "role": "message",
+        "evidence": [
+          "E11"
+        ]
+      },
+      {
+        "element": "SetLoginSession；First() 為目前水號",
+        "role": "message",
+        "evidence": [
+          "E06",
+          "E13"
+        ]
+      },
+      {
+        "element": "302 /Dashboard/Index",
+        "role": "message",
+        "evidence": [
+          "E06"
+        ]
+      },
+      {
+        "element": "GET Dashboard + .TWNP.Session",
+        "role": "message",
+        "evidence": [
+          "E03",
+          "E24"
+        ]
+      },
+      {
+        "element": "SessionAuthorization 通過後回首頁",
+        "role": "message",
+        "evidence": [
+          "E14",
+          "E23",
+          "E24"
+        ]
+      }
+    ],
+    "boxes": {
+      "a0": [
+        32,
+        32,
+        192,
+        64
+      ],
+      "a1": [
+        372,
+        32,
+        192,
+        64
+      ],
+      "a2": [
+        712,
+        32,
+        192,
+        64
+      ],
+      "a3": [
+        1052,
+        32,
+        192,
+        64
+      ]
+    },
+    "routes": []
+  },
+  {
+    "slug": "15-state-token",
+    "title": "Token 的可用狀態（由條件推導）",
+    "type": "State",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 0 1280 956",
+    "notes": "這些是依程式條件推導的狀態，沒有資料庫 STATE enum 或排程更新。Refresh 可在 access 過期後換發，只要目前 refresh 匹配且帳號有效；新核發描述新的一組凭證，不是恢復舊值。",
+    "elements": [
+      {
+        "element": "沒有可用 V4 金鑰 / 需帳密授權",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E07"
+        ]
+      },
+      {
+        "element": "可通過 Token 驗證 / DB 匹配 + VALID=1；Now ≤ issuedAt+6 months",
+        "role": "node",
+        "evidence": [
+          "E07",
+          "E09"
+        ]
+      },
+      {
+        "element": "Access 超過期限 / LoginAPP → 1004 HTML",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E07"
+        ]
+      },
+      {
+        "element": "舊憑證已被覆寫 / 舊 access / refresh 不匹配",
+        "role": "node",
+        "evidence": [
+          "E09",
+          "E11"
+        ]
+      },
+      {
+        "element": "帳號 VALID ≠ 1 / 查詢無命中",
+        "role": "node",
+        "evidence": [
+          "E09",
+          "E10"
+        ]
+      },
+      {
+        "element": "absent → valid：AUTHORIZE",
+        "role": "relationship",
+        "evidence": [
+          "E05",
+          "E07"
+        ]
+      },
+      {
+        "element": "valid → expired：TIME > 6 MONTH",
+        "role": "relationship",
+        "evidence": [
+          "E07"
+        ]
+      },
+      {
+        "element": "valid → replaced：NEW ISSUE",
+        "role": "relationship",
+        "evidence": [
+          "E07",
+          "E11"
+        ]
+      },
+      {
+        "element": "valid → disabled：VALID ≠ 1",
+        "role": "relationship",
+        "evidence": [
+          "E09"
+        ]
+      },
+      {
+        "element": "expired → valid：REFRESH MATCH / NEW TOKENS",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E09",
+          "E11"
+        ]
+      },
+      {
+        "element": "replaced → valid：REAUTHORIZE / NEW TOKENS",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E05",
+          "E07"
+        ]
+      }
+    ],
+    "boxes": {
+      "absent": [
+        64,
+        80,
+        240,
+        112
+      ],
+      "valid": [
+        480,
+        80,
+        240,
+        112
+      ],
+      "expired": [
+        896,
+        80,
+        240,
+        112
+      ],
+      "replaced": [
+        64,
+        400,
+        240,
+        112
+      ],
+      "disabled": [
+        896,
+        400,
+        240,
+        112
+      ]
+    },
+    "routes": [
+      {
+        "from": "absent",
+        "to": "valid",
+        "points": [
+          [
+            304,
+            136.0
+          ],
+          [
+            480,
+            136.0
+          ]
+        ]
+      },
+      {
+        "from": "valid",
+        "to": "expired",
+        "points": [
+          [
+            720,
+            136.0
+          ],
+          [
+            896,
+            136.0
+          ]
+        ]
+      },
+      {
+        "from": "valid",
+        "to": "replaced",
+        "points": [
+          [
+            536.0,
+            192
+          ],
+          [
+            536,
+            320
+          ],
+          [
+            184,
+            320
+          ],
+          [
+            184.0,
+            400
+          ]
+        ]
+      },
+      {
+        "from": "valid",
+        "to": "disabled",
+        "points": [
+          [
+            664.0,
+            192
+          ],
+          [
+            664,
+            352
+          ],
+          [
+            1016,
+            352
+          ],
+          [
+            1016.0,
+            400
+          ]
+        ]
+      },
+      {
+        "from": "expired",
+        "to": "valid",
+        "points": [
+          [
+            1016.0,
+            80
+          ],
+          [
+            1016,
+            40
+          ],
+          [
+            600,
+            40
+          ],
+          [
+            600.0,
+            80
+          ]
+        ]
+      },
+      {
+        "from": "replaced",
+        "to": "valid",
+        "points": [
+          [
+            64,
+            456.0
+          ],
+          [
+            32,
+            456
+          ],
+          [
+            32,
+            248
+          ],
+          [
+            448,
+            248
+          ],
+          [
+            448,
+            160
+          ],
+          [
+            480,
+            160.0
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "16-state-session",
+    "title": "瀏覽器的授權與 Session 狀態",
+    "type": "State",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 104 1280 1000",
+    "notes": "推導狀態，不是程式 enum。Session 閒置期限設定為 3600 秒且使用記憶體 cache；實際手機 Cookie／節點重啟後行為需執行驗證。Logout 僅移除 UserName，沒有清除 Token 或全部 Session。",
+    "elements": [
+      {
+        "element": "尚未登入網站 / UserName 不存在",
+        "role": "node",
+        "evidence": [
+          "E14"
+        ]
+      },
+      {
+        "element": "外部授權頁 / 等待帳密／驗證碼",
+        "role": "node",
+        "evidence": [
+          "E04",
+          "E19"
+        ]
+      },
+      {
+        "element": "APP 已取得金鑰 / 尚未建立登入 Session",
+        "role": "node",
+        "evidence": [
+          "E05",
+          "E07"
+        ]
+      },
+      {
+        "element": "網站 Session 已登入 / UserName / 水號清單",
+        "role": "node",
+        "evidence": [
+          "E06",
+          "E13"
+        ]
+      },
+      {
+        "element": "已取消此次授權 / 1003 或 refresh 的 1005",
+        "role": "node",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "out → form：AUTH CODE",
+        "role": "relationship",
+        "evidence": [
+          "E04"
+        ]
+      },
+      {
+        "element": "form → token：PASSWORD OK",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "token → login：LoginAPP [VALID]",
+        "role": "relationship",
+        "evidence": [
+          "E06",
+          "E13"
+        ]
+      },
+      {
+        "element": "form → cancel：CANCEL",
+        "role": "relationship",
+        "evidence": [
+          "E05"
+        ]
+      },
+      {
+        "element": "login → out：LOGOUT / SESSION ABSENT",
+        "role": "relationship",
+        "evidence": [
+          "E27",
+          "E14",
+          "E03"
+        ]
+      }
+    ],
+    "boxes": {
+      "out": [
+        64,
+        80,
+        240,
+        112
+      ],
+      "form": [
+        480,
+        80,
+        240,
+        112
+      ],
+      "token": [
+        896,
+        80,
+        240,
+        112
+      ],
+      "login": [
+        896,
+        400,
+        240,
+        112
+      ],
+      "cancel": [
+        480,
+        400,
+        240,
+        112
+      ]
+    },
+    "routes": [
+      {
+        "from": "out",
+        "to": "form",
+        "points": [
+          [
+            304,
+            136.0
+          ],
+          [
+            480,
+            136.0
+          ]
+        ]
+      },
+      {
+        "from": "form",
+        "to": "token",
+        "points": [
+          [
+            720,
+            136.0
+          ],
+          [
+            896,
+            136.0
+          ]
+        ]
+      },
+      {
+        "from": "token",
+        "to": "login",
+        "points": [
+          [
+            1016.0,
+            192
+          ],
+          [
+            1016.0,
+            400
+          ]
+        ]
+      },
+      {
+        "from": "form",
+        "to": "cancel",
+        "points": [
+          [
+            600.0,
+            192
+          ],
+          [
+            600.0,
+            400
+          ]
+        ]
+      },
+      {
+        "from": "login",
+        "to": "out",
+        "points": [
+          [
+            1016.0,
+            512
+          ],
+          [
+            1016,
+            600
+          ],
+          [
+            184,
+            600
+          ],
+          [
+            184.0,
+            192
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "17-uml-class-components",
+    "title": "Controller、Service 與依賴的類別結構",
+    "type": "UML Class",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 0 1280 1424",
+    "notes": "只列目前 APP V4 相關成員。虚線空心三角＝實作；實線空心三角＝繼承；虛線開放箭頭＝使用依賴。成員的 + / - 是實際 public / private。完整 UML 圖例：繼承 △、實作 - - △、依賴 - - >、關聯 →、聚合 ◇、組合 ◆；本圖只使用前三種。",
+    "elements": [
+      {
+        "element": "HomeController / - homeService: IHomeService；---；+ AccessToken(model): IActionResult；+ ExternalLogin(model): IActionResult；+ LoginAPP(model): IActionResult；- IssueAppToken(...): AppTokenInfoDto；- IsValidAppToken(...): bool",
+        "role": "class",
+        "evidence": [
+          "E04",
+          "E05",
+          "E06",
+          "E07"
+        ]
+      },
+      {
+        "element": "«interface» IHomeService / + GetAppV4Account(...): b_ACCOUNT?；+ ValidateAppV4Password(...): bool；+ GetAppV4TokenByAccessToken(...)；+ GetAppV4TokenByRefreshToken(...)；+ SaveAppV4TokenToPwd(...): void",
+        "role": "class",
+        "evidence": [
+          "E35"
+        ]
+      },
+      {
+        "element": "ContextController / + Success(...): MessageAPI；+ Failed(...): MessageAPI",
+        "role": "class",
+        "evidence": [
+          "E34"
+        ]
+      },
+      {
+        "element": "HomeService / - dataAccess: IDapperDataAccess；- _aspNetUser: IAspNetUser；---；+ ValidateAppV4Password(...): bool；+ GetAppV4WaterNos(...): List；+ SaveAppV4TokenToPwd(...): void",
+        "role": "class",
+        "evidence": [
+          "E11",
+          "E12",
+          "E33"
+        ]
+      },
+      {
+        "element": "«interface» IDapperDataAccess / + Query<T>(sql, parameters): List<T>；+ Execute(sql, parameters): int",
+        "role": "class",
+        "evidence": [
+          "E15"
+        ]
+      },
+      {
+        "element": "«static» PasswordHashUtil / + VerifyPassword(...): bool；+ VerifyPasswordOrLegacyAes(...): bool",
+        "role": "class",
+        "evidence": [
+          "E20"
+        ]
+      },
+      {
+        "element": "home → iface：USES",
+        "role": "relationship",
+        "evidence": [
+          "E33"
+        ]
+      },
+      {
+        "element": "home → context：EXTENDS",
+        "role": "relationship",
+        "evidence": [
+          "E36"
+        ]
+      },
+      {
+        "element": "svc → iface：IMPLEMENTS",
+        "role": "relationship",
+        "evidence": [
+          "E33"
+        ]
+      },
+      {
+        "element": "svc → data：USES",
+        "role": "relationship",
+        "evidence": [
+          "E33",
+          "E15"
+        ]
+      },
+      {
+        "element": "svc → pwd：USES",
+        "role": "relationship",
+        "evidence": [
+          "E12",
+          "E20"
+        ]
+      }
+    ],
+    "boxes": {
+      "home": [
+        64,
+        56,
+        320,
+        224
+      ],
+      "iface": [
+        480,
+        56,
+        320,
+        176
+      ],
+      "context": [
+        896,
+        56,
+        320,
+        104
+      ],
+      "svc": [
+        480,
+        408,
+        320,
+        200
+      ],
+      "data": [
+        64,
+        408,
+        320,
+        104
+      ],
+      "pwd": [
+        896,
+        408,
+        320,
+        104
+      ]
+    },
+    "routes": [
+      {
+        "from": "home",
+        "to": "iface",
+        "points": [
+          [
+            384,
+            144.0
+          ],
+          [
+            432,
+            144
+          ],
+          [
+            432,
+            144
+          ],
+          [
+            480,
+            144.0
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "context",
+        "points": [
+          [
+            224.0,
+            56
+          ],
+          [
+            224,
+            24
+          ],
+          [
+            1056,
+            24
+          ],
+          [
+            1056.0,
+            56
+          ]
+        ]
+      },
+      {
+        "from": "svc",
+        "to": "iface",
+        "points": [
+          [
+            640.0,
+            408
+          ],
+          [
+            640.0,
+            232
+          ]
+        ]
+      },
+      {
+        "from": "svc",
+        "to": "data",
+        "points": [
+          [
+            480,
+            472.0
+          ],
+          [
+            384,
+            472.0
+          ]
+        ]
+      },
+      {
+        "from": "svc",
+        "to": "pwd",
+        "points": [
+          [
+            800,
+            472.0
+          ],
+          [
+            896,
+            472.0
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "18-uml-class-contracts",
+    "title": "API 請求、回應與查詢 DTO",
+    "type": "UML Class",
+    "size": [
+      1280,
+      720
+    ],
+    "display_viewBox": "0 72 1280 1264",
+    "notes": "資料模型無繼承關係；只畫依賴，不把 DTO 畫成資料表。每個欄位仍由實際 ViewModel 對照。+ N more 明示被省略欄位，完整契約見報告。 UML 圖例同 17：本圖只使用依賴 - - >。",
+    "elements": [
+      {
+        "element": "AppAccessTokenV4RequestVm / + grant_type: string [Required]；+ refresh_token: string?；+ account_no: string [Required]；+ water_no: string [Required]；+ redirect_uri: string [Required]",
+        "role": "class",
+        "evidence": [
+          "E01"
+        ]
+      },
+      {
+        "element": "HomeController / + AccessToken(request): IActionResult；+ ExternalLogin(form): IActionResult；+ LoginAPP(request): IActionResult",
+        "role": "class",
+        "evidence": [
+          "E04",
+          "E05",
+          "E06"
+        ]
+      },
+      {
+        "element": "LoginAppV4Vm / + account_no: string [Required]；+ water_no: string [Required]；+ access_token: string [Required]",
+        "role": "class",
+        "evidence": [
+          "E01"
+        ]
+      },
+      {
+        "element": "ExternalLoginViewModel / + Account / Password: string [Required]；+ CapthCode: string [Required]；+ GrantType / AccountNo: string；+ WaterNo / RedirectUri: string",
+        "role": "class",
+        "evidence": [
+          "E01",
+          "E19"
+        ]
+      },
+      {
+        "element": "AppTokenV4ResponseVm / + account_no / water_no: string；+ result: int; message: string；+ access_token: string?；+ expires_in / refresh_token: string?",
+        "role": "class",
+        "evidence": [
+          "E01",
+          "E08"
+        ]
+      },
+      {
+        "element": "AppTokenInfoDto / + ACCOUNT_NO / WATER_NO: string；+ ACCESS_TOKEN / REFRESH_TOKEN: string；+ EXPIRES_AT: DateTime；+ VALID: decimal?",
+        "role": "class",
+        "evidence": [
+          "E01",
+          "E09"
+        ]
+      },
+      {
+        "element": "home → request：USES",
+        "role": "relationship",
+        "evidence": [
+          "E04",
+          "E01"
+        ]
+      },
+      {
+        "element": "home → login：USES",
+        "role": "relationship",
+        "evidence": [
+          "E06",
+          "E01"
+        ]
+      },
+      {
+        "element": "home → response：RETURNS",
+        "role": "relationship",
+        "evidence": [
+          "E08",
+          "E01"
+        ]
+      },
+      {
+        "element": "home → external：USES",
+        "role": "relationship",
+        "evidence": [
+          "E05",
+          "E01"
+        ]
+      },
+      {
+        "element": "home → dto：USES",
+        "role": "relationship",
+        "evidence": [
+          "E07",
+          "E01"
+        ]
+      }
+    ],
+    "boxes": {
+      "request": [
+        64,
+        48,
+        320,
+        176
+      ],
+      "home": [
+        480,
+        48,
+        320,
+        128
+      ],
+      "login": [
+        896,
+        48,
+        320,
+        128
+      ],
+      "external": [
+        64,
+        416,
+        320,
+        152
+      ],
+      "response": [
+        480,
+        416,
+        320,
+        152
+      ],
+      "dto": [
+        896,
+        416,
+        320,
+        152
+      ]
+    },
+    "routes": [
+      {
+        "from": "home",
+        "to": "request",
+        "points": [
+          [
+            480,
+            88.0
+          ],
+          [
+            384,
+            88.0
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "login",
+        "points": [
+          [
+            800,
+            88.0
+          ],
+          [
+            896,
+            88.0
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "response",
+        "points": [
+          [
+            640.0,
+            176
+          ],
+          [
+            640.0,
+            416
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "external",
+        "points": [
+          [
+            544.0,
+            176
+          ],
+          [
+            544,
+            352
+          ],
+          [
+            224,
+            352
+          ],
+          [
+            224.0,
+            416
+          ]
+        ]
+      },
+      {
+        "from": "home",
+        "to": "dto",
+        "points": [
+          [
+            736.0,
+            176
+          ],
+          [
+            736,
+            384
+          ],
+          [
+            1056,
+            384
+          ],
+          [
+            1056.0,
+            416
+          ]
+        ]
+      }
+    ]
+  }
+]

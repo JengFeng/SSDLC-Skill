@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>AccessToken：入口分流</title><style>
+:root{--paper:#f7faf9;--ink:#243d42;--muted:#60777a;--accent:#089bab}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Geist','Microsoft JhengHei','Segoe UI',sans-serif}
+main{max-width:1440px;margin:auto;padding:40px 32px}h1,h2{font-family:'Instrument Serif','Noto Serif TC',Georgia,serif;font-weight:500}
+h1{font-size:36px;margin:8px 0 16px}h2{font-size:28px;margin:8px 0 16px}h3{font-size:16px}
+p,li{line-height:1.8}a{color:#087d8b}code,.eyebrow{font-family:'Geist Mono',Consolas,monospace}.eyebrow{font-size:11px;letter-spacing:.12em;color:var(--muted)}
+section{padding:28px 0;border-top:1px solid #d5e2df;scroll-margin-top:20px}nav{line-height:2.2}nav a{display:inline-block;margin-right:20px}
+.diagram{width:100%;overflow-x:auto;background:#fff;border:1px solid #d5e2df;border-radius:6px;padding:12px}
+svg{display:block;width:100%;height:auto;min-width:0}table{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px}
+th,td{border-bottom:1px solid #d5e2df;text-align:left;padding:10px;vertical-align:top}th{background:#edf4f2}
+.note{border-left:3px solid var(--accent);padding:12px 20px;background:#edf7f6}.foot{font-size:12px;color:var(--muted)}
+details{margin:16px 0}summary{cursor:pointer;color:#087d8b}footer{border-top:1px solid #d5e2df;margin-top:32px;padding-top:16px}
+@media print{main{padding:0}nav{display:none}.diagram{border:0;padding:0}svg{min-width:0}section{break-before:page}details>*{display:block}a{color:inherit}}
+
+table{font-size:16px}.eyebrow,.foot{font-size:14px;color:#304e54}
+@media print{svg{min-width:0!important}}
+
+body{font-size:12px}main{max-width:none;width:100%;padding:24px clamp(12px,2vw,32px)}
+h1{font-size:27px;margin:6px 0 12px}h2{font-size:21px;margin:6px 0 12px}h3{font-size:12px}
+section{width:100%;padding:21px 0;scroll-margin-top:15px}.diagram{padding:9px}
+table{font-size:12px;margin:12px 0}th,td{padding:7.5px}
+.eyebrow,.foot{font-size:10.5px}.note{padding:9px 15px}
+details{margin:12px 0}footer{margin-top:24px;padding-top:12px}
+
+.font-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;color:#183b43;font-size:12px}
+.font-controls[hidden]{display:none}
+.font-presets{display:flex;gap:5px}
+.font-controls button,.font-controls input{font:inherit;color:#183b43;background:#fff;border:1.5px solid #6f9699;border-radius:4px;min-height:32px;padding:6px 9px}
+.font-controls input{width:7em}
+.font-controls button{cursor:pointer;font-weight:600}
+.font-controls button[aria-pressed="true"]{color:#fff;background:#087e8c;border-color:#087e8c}
+.font-controls button:focus-visible,.font-controls input:focus-visible,.diagram:focus-visible{outline:3px solid #087e8c;outline-offset:3px}
+.font-custom,.font-controls label{display:flex;align-items:center;gap:6px}
+.font-controls input[aria-invalid="true"]{border-color:#a52121}
+.font-status{font-weight:600}
+@media print{.font-controls{display:none}.diagram{overflow:visible}svg{width:100%!important;min-width:0!important;height:auto!important}}
+</style></head><body><main><section id="04-flowchart-access"><p class="eyebrow">Flowchart · 原始碼逆向分析</p><h2>AccessToken：入口分流</h2><p>依序驗證欄位、有效帳號與 grant_type，進入首次授權、換發或錯誤回應。</p><div class="font-controls" data-font-controls="04-flowchart-access-frame" role="group" aria-label="圖中文字大小" hidden><span>文字大小</span><div class="font-presets"><button type="button" data-percent="60" aria-controls="04-flowchart-access-frame" aria-pressed="false">小（60%）</button><button type="button" data-percent="75" aria-controls="04-flowchart-access-frame" aria-pressed="false">中（75%）</button><button type="button" data-percent="100" aria-controls="04-flowchart-access-frame" aria-pressed="true">大（100%）</button></div><form class="font-custom" novalidate><label for="04-flowchart-access-font-percent">自訂<input id="04-flowchart-access-font-percent" type="number" inputmode="decimal" step="any" value="100" aria-controls="04-flowchart-access-frame" aria-describedby="04-flowchart-access-font-hint" aria-label="自訂文字大小百分比"/>%</label><button type="submit">套用</button></form><span class="font-status" role="status" aria-live="polite" aria-atomic="true">目前 100%</span><span id="04-flowchart-access-font-hint">可輸入小數，按 Enter 或套用</span></div><div class="diagram" id="04-flowchart-access-frame" tabindex="0" role="region" aria-label="AccessToken：入口分流，可捲動的自適應圖表"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 32 1280 1348" role="img" aria-labelledby="04-flowchart-access-title 04-flowchart-access-desc" style="display:block;width:100%;min-width:0;height:auto" data-default-font-percent="100" width="1280" height="1348"><title id="04-flowchart-access-title">AccessToken：入口分流</title><desc id="04-flowchart-access-desc">依序驗證欄位、有效帳號與 grant_type，進入首次授權、換發或錯誤回應。</desc><defs><style>
+.node{fill:#fff;stroke:#98b4b5;stroke-width:1.2}.focal{fill:#e8f6f6;stroke:#089bab;stroke-width:1.5}
+.name{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:700;fill:#182f34}
+.sub,.member,.tag,.label,.source{font-family:'Geist Mono','Microsoft JhengHei',monospace;fill:#40595d}
+.sub,.member{font-size:13px}.tag{font-size:12px;font-weight:700}.label{font-size:10.5px;font-weight:700}.source{font-size:11px;font-weight:700}.group{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:17px;font-weight:700;fill:#182f34}
+.edge{fill:none;stroke:#60777a;stroke-width:1.2}.sep{stroke:#d5e2df;stroke-width:1}.zone{fill:#f0f6f4;stroke:#d5e2df;stroke-width:1}
+
+.name{font-size:22px;font-weight:700;fill:#183b43}
+.sub{font-size:18px;font-weight:500;fill:#304e54}
+.member,.label{font-size:16px;font-weight:600;fill:#304e54}
+.tag,.source{font-size:14px;font-weight:600;fill:#304e54}
+.group{font-size:22px;font-weight:700;fill:#183b43}
+.node{stroke:#6f9699;stroke-width:1.8}.focal{stroke:#087e8c;stroke-width:2.2}
+.edge{stroke:#3f6269;stroke-width:1.8}.sep{stroke:#b4cdca;stroke-width:1.2}
+</style>
+<marker id="04-flowchart-access-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#60777a" /></marker>
+<marker id="04-flowchart-access-open" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#60777a" /></marker>
+<marker id="04-flowchart-access-triangle" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#f7faf9" stroke="#60777a" /></marker></defs><path class="edge" d="M 520,224 L 520,272" marker-end="url(#04-flowchart-access-arrow)"><title> | E04</title></path><path class="edge" d="M 520,432 L 520,560" marker-end="url(#04-flowchart-access-arrow)"><title>YES | E04</title></path><g data-label="true"><rect x="530.64" y="506" width="50.72" height="22" fill="#f7faf9" rx="2" /><text x="556" y="523" class="label" text-anchor="middle"><tspan x="556" y="523">YES</tspan></text></g><path class="edge" d="M 640,352 L 848,352" marker-end="url(#04-flowchart-access-arrow)"><title>NO | E04</title></path><g data-label="true"><rect x="723.76" y="324" width="40.48" height="22" fill="#f7faf9" rx="2" /><text x="744" y="341" class="label" text-anchor="middle"><tspan x="744" y="341">NO</tspan></text></g><path class="edge" d="M 520,720 L 520,848" marker-end="url(#04-flowchart-access-arrow)"><title>YES | E04</title></path><g data-label="true"><rect x="530.64" y="794" width="50.72" height="22" fill="#f7faf9" rx="2" /><text x="556" y="811" class="label" text-anchor="middle"><tspan x="556" y="811">YES</tspan></text></g><path class="edge" d="M 640,640 L 848,640" marker-end="url(#04-flowchart-access-arrow)"><title>NO | E04</title></path><g data-label="true"><rect x="723.76" y="612" width="40.48" height="22" fill="#f7faf9" rx="2" /><text x="744" y="629" class="label" text-anchor="middle"><tspan x="744" y="629">NO</tspan></text></g><path class="edge" d="M 400,928 L 280,928" marker-end="url(#04-flowchart-access-arrow)"><title>AUTH CODE | E04</title></path><g data-label="true"><rect x="309.52" y="874.4" width="60.96" height="47.6" fill="#f7faf9" rx="2" /><text x="340" y="891.4" class="label" text-anchor="middle"><tspan x="340" y="891.4">AUTH</tspan><tspan x="340" y="917">CODE</tspan></text></g><path class="edge" d="M 640,928 L 848,928" marker-end="url(#04-flowchart-access-arrow)"><title>REFRESH | E04</title></path><g data-label="true"><rect x="698.16" y="900" width="91.68" height="22" fill="#f7faf9" rx="2" /><text x="744" y="917" class="label" text-anchor="middle"><tspan x="744" y="917">REFRESH</tspan></text></g><path class="edge" d="M 520,1008 L 520,1136" marker-end="url(#04-flowchart-access-arrow)"><title>OTHER | E04</title></path><g data-label="true"><rect x="520.4" y="1082" width="71.2" height="22" fill="#f7faf9" rx="2" /><text x="556" y="1099" class="label" text-anchor="middle"><tspan x="556" y="1099">OTHER</tspan></text></g><g data-node="start"><rect x="400" y="64" width="240" height="160" rx="20" class="node" /><title>POST /Home/AccessToken | E02, E04</title><text x="520" y="122.3" class="name" text-anchor="middle"><tspan x="520" y="122.3">POST /Home/</tspan><tspan x="520" y="157.5">AccessToken</tspan></text><text x="630" y="212" class="source" text-anchor="end"><tspan x="630" y="212">來源：E02、E04</tspan></text></g><g data-node="valid"><polygon points="520,272 640,352 520,432 400,352" class="node" /><title>ModelState 有效？ | E01, E04</title><text x="520" y="344.3" class="name" text-anchor="middle"><tspan x="520" y="344.3">ModelState</tspan><tspan x="520" y="379.5">有效？</tspan></text></g><g data-node="acct"><polygon points="520,560 640,640 520,720 400,640" class="node" /><title>有效帳號存在？ | E04, E10</title><text x="520" y="649.9" class="name" text-anchor="middle"><tspan x="520" y="649.9">有效帳號存在？</tspan></text></g><g data-node="grant"><polygon points="520,848 640,928 520,1008 400,928" class="node" /><title>grant_type？ | E04</title><text x="520" y="937.9" class="name" text-anchor="middle"><tspan x="520" y="937.9">grant_type？</tspan></text></g><g data-node="err1"><rect x="848" y="272" width="240" height="160" rx="6" class="node" /><title>回應 result=1001 | E04, E08</title><text x="968" y="333.5" class="name" text-anchor="middle"><tspan x="968" y="333.5">回應 result=1001</tspan></text><text x="968" y="363.7" class="sub" text-anchor="middle"><tspan x="968" y="363.7">參數錯誤</tspan></text><text x="1078" y="420" class="source" text-anchor="end"><tspan x="1078" y="420">來源：E04、E08</tspan></text></g><g data-node="err2"><rect x="848" y="560" width="240" height="160" rx="6" class="node" /><title>回應 result=1002 | E04, E08</title><text x="968" y="621.5" class="name" text-anchor="middle"><tspan x="968" y="621.5">回應 result=1002</tspan></text><text x="968" y="651.7" class="sub" text-anchor="middle"><tspan x="968" y="651.7">有效帳號不存在</tspan></text><text x="1078" y="708" class="source" text-anchor="end"><tspan x="1078" y="708">來源：E04、E08</tspan></text></g><g data-node="auth"><rect x="40" y="848" width="240" height="160" rx="6" class="node" /><title>顯示 ExternalLogin | E04, E19</title><text x="160" y="891.9" class="name" text-anchor="middle"><tspan x="160" y="891.9">顯示 ExternalLog</tspan><tspan x="160" y="927.1">in</tspan></text><text x="160" y="957.3" class="sub" text-anchor="middle"><tspan x="160" y="957.3">authorization_code</tspan></text><text x="270" y="996" class="source" text-anchor="end"><tspan x="270" y="996">來源：E04、E19</tspan></text></g><g data-node="refresh"><rect x="848" y="848" width="240" height="160" rx="6" class="node" /><title>进入 refresh 流程 | E04</title><text x="968" y="909.5" class="name" text-anchor="middle"><tspan x="968" y="909.5">进入 refresh 流程</tspan></text><text x="968" y="939.7" class="sub" text-anchor="middle"><tspan x="968" y="939.7">見 05 Flowchart</tspan></text><text x="1078" y="996" class="source" text-anchor="end"><tspan x="1078" y="996">來源：E04</tspan></text></g><g data-node="badgrant"><rect x="400" y="1136" width="240" height="160" rx="6" class="node" /><title>回應 result=1001 | E04, E08</title><text x="520" y="1197.5" class="name" text-anchor="middle"><tspan x="520" y="1197.5">回應 result=1001</tspan></text><text x="520" y="1227.7" class="sub" text-anchor="middle"><tspan x="520" y="1227.7">不支援的 grant_type</tspan></text><text x="630" y="1284" class="source" text-anchor="end"><tspan x="630" y="1284">來源：E04、E08</tspan></text></g><line class="sep" x1="32" y1="1324" x2="1248" y2="1324" /><text x="32" y="1356" class="source" text-anchor="start">來源 E##：E = Evidence（證據），數字是索引，非步驟／錯誤碼；完整檔名與行號見下方「來源編號索引」。</text></svg></div><p class="foot">圖面預設依頁面可用寬度自動 fit，視窗大小改變時會重新調整。文字大小按鈕以目前圖框寬度為基準；超過 100% 時可左右捲動。來源編號不是步驟或錯誤碼；較小框的來源放在滑鼠提示與下方證據表。</p><p class="note">1002 訊息雖為「用戶尚未使用智慧水表」，實際只檢查 B_ACCOUNT 存在且 VALID=1；沒有查 A_PH_METER_LIST。錯誤 result 不是 HTTP status。</p><details><summary>來源編號索引與圖面元素對照（17 個元素）</summary><p>圖中的「來源：E09」表示該節點或連線有 E09 這筆程式碼證據。下表可用編號查到原始檔、行號及該段程式的摘要；多個編號表示有多處程式共同支持。</p><table><thead><tr><th>證據編號</th><th>原始碼位置</th><th>內容摘要</th></tr></thead><tbody><tr><td>E01</td><td><code>ViewModels/Home/HomeViewModel.cs:1–154</code></td><td>DTO／驗證屬性；HomeViewModel 本身為空類別</td></tr><tr><td>E02</td><td><code>Program.cs:19–45</code></td><td>HTTP middleware 與 MVC conventional route</td></tr><tr><td>E04</td><td><code>Controllers/HomeController.cs:33–87</code></td><td>AccessToken：參數、帳號、grant_type、refresh 分支</td></tr><tr><td>E08</td><td><code>Controllers/HomeController.cs:263–370</code></td><td>回應 DTO、callback query、expires_in、Base64Url</td></tr><tr><td>E10</td><td><code>Domain/Service/HomeService.cs:73–81</code></td><td>有效帳號查詢；沒有 LOGIN_TYPE／水表檢查</td></tr><tr><td>E19</td><td><code>Views/Home/ExternalLogin.cshtml:1–75</code></td><td>授權 HTML、hidden fields、CSRF、captcha、取消</td></tr></tbody></table><table><thead><tr><th>節點／關係／欄位</th><th>種類</th><th>來源編號</th></tr></thead><tbody><tr><td>POST /Home/AccessToken</td><td>node</td><td>E02, E04</td></tr><tr><td>ModelState 有效？</td><td>node</td><td>E01, E04</td></tr><tr><td>有效帳號存在？</td><td>node</td><td>E04, E10</td></tr><tr><td>grant_type？</td><td>node</td><td>E04</td></tr><tr><td>回應 result=1001 / 參數錯誤</td><td>node</td><td>E04, E08</td></tr><tr><td>回應 result=1002 / 有效帳號不存在</td><td>node</td><td>E04, E08</td></tr><tr><td>顯示 ExternalLogin / authorization_code</td><td>node</td><td>E04, E19</td></tr><tr><td>进入 refresh 流程 / 見 05 Flowchart</td><td>node</td><td>E04</td></tr><tr><td>回應 result=1001 / 不支援的 grant_type</td><td>node</td><td>E04, E08</td></tr><tr><td>start → valid</td><td>relationship</td><td>E04</td></tr><tr><td>valid → acct：YES</td><td>relationship</td><td>E04</td></tr><tr><td>valid → err1：NO</td><td>relationship</td><td>E04</td></tr><tr><td>acct → grant：YES</td><td>relationship</td><td>E04</td></tr><tr><td>acct → err2：NO</td><td>relationship</td><td>E04</td></tr><tr><td>grant → auth：AUTH CODE</td><td>relationship</td><td>E04</td></tr><tr><td>grant → refresh：REFRESH</td><td>relationship</td><td>E04</td></tr><tr><td>grant → badgrant：OTHER</td><td>relationship</td><td>E04</td></tr></tbody></table></details></section><noscript><p>目前顯示完整的預設大小圖面；啟用 JavaScript 後可使用文字大小按鈕。</p></noscript><footer class="foot">2026-10-10 · 靜態逆向蒐證；尚未驗證正式 APP／WCF／DB。依 cathrynlavery/diagram-design MIT v2.6 製作；無外部字型下載，使用本機字型 fallback。</footer></main><script id="diagram-font-controller">
+(() => {
+  'use strict';
+  for (const controls of document.querySelectorAll('[data-font-controls]')) {
+    const frame = document.getElementById(controls.dataset.fontControls);
+    const svg = frame.querySelector('svg');
+    const frameStyle = getComputedStyle(frame);
+    const availableWidth = () => frame.clientWidth
+      - parseFloat(frameStyle.paddingLeft)
+      - parseFloat(frameStyle.paddingRight);
+    const input = controls.querySelector('input');
+    const form = controls.querySelector('form');
+    const status = controls.querySelector('[role="status"]');
+    const buttons = [...controls.querySelectorAll('button[data-percent]')];
+    function applySize(value) {
+      const percent = Number(value);
+      const width = availableWidth() * percent / 100;
+      if (!String(value).trim() || !Number.isFinite(percent) || percent <= 0 || !Number.isFinite(width) || width <= 0) {
+        input.setAttribute('aria-invalid', 'true');
+        status.textContent = `請輸入大於 0 的有效百分比；目前 ${svg.dataset.fontPercent}%`;
+        return;
+      }
+      // Expand the entire reading layout with the type. Keeping shape/text/route
+      // proportions preserves wrapping and prevents a larger font colliding.
+      svg.style.width = `${width}px`;
+      svg.style.minWidth = `${percent > 100 ? width : 0}px`;
+      svg.dataset.fontPercent = String(percent);
+      input.value = String(percent);
+      input.removeAttribute('aria-invalid');
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.percent) === percent));
+      }
+      status.textContent = `目前 ${percent}%`;
+    }
+    for (const button of buttons) {
+      button.addEventListener('click', () => applySize(button.dataset.percent));
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      applySize(input.value);
+    });
+    applySize(svg.dataset.defaultFontPercent);
+    window.addEventListener('resize', () => applySize(svg.dataset.fontPercent), { passive: true });
+    controls.hidden = false;
+  }
+})();
+</script></body></html>

@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>首次授權：步驟、輸入輸出與工具</title><style>
+:root{--paper:#f7faf9;--ink:#243d42;--muted:#60777a;--accent:#089bab}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Geist','Microsoft JhengHei','Segoe UI',sans-serif}
+main{max-width:1440px;margin:auto;padding:40px 32px}h1,h2{font-family:'Instrument Serif','Noto Serif TC',Georgia,serif;font-weight:500}
+h1{font-size:36px;margin:8px 0 16px}h2{font-size:28px;margin:8px 0 16px}h3{font-size:16px}
+p,li{line-height:1.8}a{color:#087d8b}code,.eyebrow{font-family:'Geist Mono',Consolas,monospace}.eyebrow{font-size:11px;letter-spacing:.12em;color:var(--muted)}
+section{padding:28px 0;border-top:1px solid #d5e2df;scroll-margin-top:20px}nav{line-height:2.2}nav a{display:inline-block;margin-right:20px}
+.diagram{width:100%;overflow-x:auto;background:#fff;border:1px solid #d5e2df;border-radius:6px;padding:12px}
+svg{display:block;width:100%;height:auto;min-width:0}table{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px}
+th,td{border-bottom:1px solid #d5e2df;text-align:left;padding:10px;vertical-align:top}th{background:#edf4f2}
+.note{border-left:3px solid var(--accent);padding:12px 20px;background:#edf7f6}.foot{font-size:12px;color:var(--muted)}
+details{margin:16px 0}summary{cursor:pointer;color:#087d8b}footer{border-top:1px solid #d5e2df;margin-top:32px;padding-top:16px}
+@media print{main{padding:0}nav{display:none}.diagram{border:0;padding:0}svg{min-width:0}section{break-before:page}details>*{display:block}a{color:inherit}}
+
+table{font-size:16px}.eyebrow,.foot{font-size:14px;color:#304e54}
+@media print{svg{min-width:0!important}}
+
+body{font-size:12px}main{max-width:none;width:100%;padding:24px clamp(12px,2vw,32px)}
+h1{font-size:27px;margin:6px 0 12px}h2{font-size:21px;margin:6px 0 12px}h3{font-size:12px}
+section{width:100%;padding:21px 0;scroll-margin-top:15px}.diagram{padding:9px}
+table{font-size:12px;margin:12px 0}th,td{padding:7.5px}
+.eyebrow,.foot{font-size:10.5px}.note{padding:9px 15px}
+details{margin:12px 0}footer{margin-top:24px;padding-top:12px}
+
+.font-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;color:#183b43;font-size:12px}
+.font-controls[hidden]{display:none}
+.font-presets{display:flex;gap:5px}
+.font-controls button,.font-controls input{font:inherit;color:#183b43;background:#fff;border:1.5px solid #6f9699;border-radius:4px;min-height:32px;padding:6px 9px}
+.font-controls input{width:7em}
+.font-controls button{cursor:pointer;font-weight:600}
+.font-controls button[aria-pressed="true"]{color:#fff;background:#087e8c;border-color:#087e8c}
+.font-controls button:focus-visible,.font-controls input:focus-visible,.diagram:focus-visible{outline:3px solid #087e8c;outline-offset:3px}
+.font-custom,.font-controls label{display:flex;align-items:center;gap:6px}
+.font-controls input[aria-invalid="true"]{border-color:#a52121}
+.font-status{font-weight:600}
+@media print{.font-controls{display:none}.diagram{overflow:visible}svg{width:100%!important;min-width:0!important;height:auto!important}}
+</style></head><body><main><section id="03-process"><p class="eyebrow">Process · 原始碼逆向分析</p><h2>首次授權：步驟、輸入輸出與工具</h2><p>將外部 APP、Controller、Service 和資料端的責任按主成功路徑排列，並標出輸入輸出的資料形式。</p><div class="font-controls" data-font-controls="03-process-frame" role="group" aria-label="圖中文字大小" hidden><span>文字大小</span><div class="font-presets"><button type="button" data-percent="60" aria-controls="03-process-frame" aria-pressed="false">小（60%）</button><button type="button" data-percent="75" aria-controls="03-process-frame" aria-pressed="false">中（75%）</button><button type="button" data-percent="100" aria-controls="03-process-frame" aria-pressed="true">大（100%）</button></div><form class="font-custom" novalidate><label for="03-process-font-percent">自訂<input id="03-process-font-percent" type="number" inputmode="decimal" step="any" value="100" aria-controls="03-process-frame" aria-describedby="03-process-font-hint" aria-label="自訂文字大小百分比"/>%</label><button type="submit">套用</button></form><span class="font-status" role="status" aria-live="polite" aria-atomic="true">目前 100%</span><span id="03-process-font-hint">可輸入小數，按 Enter 或套用</span></div><div class="diagram" id="03-process-frame" tabindex="0" role="region" aria-label="首次授權：步驟、輸入輸出與工具，可捲動的自適應圖表"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2128 976" role="img" aria-labelledby="03-process-title 03-process-desc" style="display:block;width:100%;min-width:0;height:auto" data-default-font-percent="100" width="2128" height="976"><title id="03-process-title">首次授權：步驟、輸入輸出與工具</title><desc id="03-process-desc">將外部 APP、Controller、Service 和資料端的責任按主成功路徑排列，並標出輸入輸出的資料形式。</desc><defs><style>
+.node{fill:#fff;stroke:#98b4b5;stroke-width:1.2}.focal{fill:#e8f6f6;stroke:#089bab;stroke-width:1.5}
+.name{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:700;fill:#182f34}
+.sub,.member,.tag,.label,.source{font-family:'Geist Mono','Microsoft JhengHei',monospace;fill:#40595d}
+.sub,.member{font-size:13px}.tag{font-size:12px;font-weight:700}.label{font-size:10.5px;font-weight:700}.source{font-size:11px;font-weight:700}.group{font-family:'Geist','Microsoft JhengHei',sans-serif;font-size:17px;font-weight:700;fill:#182f34}
+.edge{fill:none;stroke:#60777a;stroke-width:1.2}.sep{stroke:#d5e2df;stroke-width:1}.zone{fill:#f0f6f4;stroke:#d5e2df;stroke-width:1}
+
+.name{font-size:22px;font-weight:700;fill:#183b43}
+.sub{font-size:18px;font-weight:500;fill:#304e54}
+.member,.label{font-size:16px;font-weight:600;fill:#304e54}
+.tag,.source{font-size:14px;font-weight:600;fill:#304e54}
+.group{font-size:22px;font-weight:700;fill:#183b43}
+.node{stroke:#6f9699;stroke-width:1.8}.focal{stroke:#087e8c;stroke-width:2.2}
+.edge{stroke:#3f6269;stroke-width:1.8}.sep{stroke:#b4cdca;stroke-width:1.2}
+</style>
+<marker id="03-process-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#60777a" /></marker>
+<marker id="03-process-open" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#60777a" /></marker>
+<marker id="03-process-triangle" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#f7faf9" stroke="#60777a" /></marker></defs><rect x="280" y="90" width="1848" height="200" rx="0" class="zone" /><text x="140" y="200" class="sub" text-anchor="middle">外部 APP／頁面</text><rect x="280" y="290" width="1848" height="200" rx="0" class="zone" /><text x="140" y="400" class="sub" text-anchor="middle">HomeController</text><rect x="280" y="490" width="1848" height="200" rx="0" class="zone" /><text x="140" y="600" class="sub" text-anchor="middle">HomeService</text><rect x="280" y="690" width="1848" height="200" rx="0" class="zone" /><text x="140" y="800" class="sub" text-anchor="middle">WCF／SQL 邊界</text><text x="396" y="40" class="tag" text-anchor="middle">01</text><text x="396" y="75" class="tag" text-anchor="middle">請求授權</text><text x="620" y="40" class="tag" text-anchor="middle">02</text><text x="620" y="75" class="tag" text-anchor="middle">顯示表單</text><text x="844" y="40" class="tag" text-anchor="middle">03</text><text x="844" y="75" class="tag" text-anchor="middle">送出帳密</text><text x="1068" y="40" class="tag" text-anchor="middle">04</text><text x="1068" y="75" class="tag" text-anchor="middle">檢查請求</text><text x="1292" y="40" class="tag" text-anchor="middle">05</text><text x="1292" y="75" class="tag" text-anchor="middle">驗證密碼</text><text x="1516" y="40" class="tag" text-anchor="middle">06</text><text x="1516" y="75" class="tag" text-anchor="middle">產生 Token</text><text x="1740" y="40" class="tag" text-anchor="middle">07</text><text x="1740" y="75" class="tag" text-anchor="middle">保存金鑰</text><text x="1964" y="40" class="tag" text-anchor="middle">08</text><text x="1964" y="75" class="tag" text-anchor="middle">回 APP</text><path class="edge" d="M 496,190 L 604,190 Q 620,190,620,210 L 620,310" marker-end="url(#03-process-arrow)"><title> | E04, E19</title></path><path class="edge" d="M 720,390 L 828,390 Q 844,390,844,370 L 844,270" marker-end="url(#03-process-arrow)"><title> | E19</title></path><path class="edge" d="M 944,190 L 1052,190 Q 1068,190,1068,210 L 1068,310" marker-end="url(#03-process-arrow)"><title> | E05, E13</title></path><path class="edge" d="M 1168,390 L 1276,390 Q 1292,390,1292,410 L 1292,510" marker-end="url(#03-process-arrow)"><title> | E12, E20</title></path><path class="edge" d="M 1392,590 L 1500,590 Q 1516,590,1516,570 L 1516,470" marker-end="url(#03-process-arrow)"><title> | E07</title></path><path class="edge" d="M 1616,390 L 1724,390 Q 1740,390,1740,410 L 1740,710" marker-end="url(#03-process-arrow)"><title> | E11, E15</title></path><path class="edge" d="M 1840,790 L 1948,790 Q 1964,790,1964,770 L 1964,470" marker-end="url(#03-process-arrow)"><title> | E08</title></path><g data-node="n0"><rect x="296" y="110" width="200" height="160" rx="6" class="node" /><title>E04</title><text x="396" y="154.3" class="name" text-anchor="middle"><tspan x="396" y="154.3">請求授權</tspan></text><text x="396" y="184.5" class="sub" text-anchor="middle"><tspan x="396" y="184.5">grant_type=code</tspan></text><text x="396" y="208.3" class="tag" text-anchor="middle"><tspan x="396" y="208.3">APP</tspan></text></g><text x="484" y="250" class="tag" text-anchor="end">OUT:WB</text><g data-node="n1"><rect x="520" y="310" width="200" height="160" rx="6" class="node" /><title>E04 · E19</title><text x="620" y="354.3" class="name" text-anchor="middle"><tspan x="620" y="354.3">顯示表單</tspan></text><text x="620" y="384.5" class="sub" text-anchor="middle"><tspan x="620" y="384.5">有效帳號</tspan></text><text x="620" y="408.3" class="tag" text-anchor="middle"><tspan x="620" y="408.3">MVC View</tspan></text></g><text x="532" y="450" class="tag" text-anchor="start">IN:WB</text><text x="708" y="450" class="tag" text-anchor="end">OUT:WB</text><g data-node="n2"><rect x="744" y="110" width="200" height="160" rx="6" class="node" /><title>E19</title><text x="844" y="154.3" class="name" text-anchor="middle"><tspan x="844" y="154.3">送出帳密</tspan></text><text x="844" y="184.5" class="sub" text-anchor="middle"><tspan x="844" y="184.5">CSRF + Captcha</tspan></text><text x="844" y="208.3" class="tag" text-anchor="middle"><tspan x="844" y="208.3">HTML form</tspan></text></g><text x="756" y="250" class="tag" text-anchor="start">IN:WB</text><text x="932" y="250" class="tag" text-anchor="end">OUT:WB</text><g data-node="n3"><rect x="968" y="310" width="200" height="160" rx="6" class="node" /><title>E05 · E13</title><text x="1068" y="347.5" class="name" text-anchor="middle"><tspan x="1068" y="347.5">檢查請求</tspan></text><text x="1068" y="377.7" class="sub" text-anchor="middle"><tspan x="1068" y="377.7">Captcha /</tspan><tspan x="1068" y="406.5">Account</tspan></text><text x="1068" y="430.3" class="tag" text-anchor="middle"><tspan x="1068" y="430.3">MVC Filter</tspan></text></g><text x="980" y="450" class="tag" text-anchor="start">IN:WB</text><text x="1156" y="450" class="tag" text-anchor="end">OUT:WB</text><g data-node="n4"><rect x="1192" y="510" width="200" height="160" rx="6" class="node" /><title>E12 · E20</title><text x="1292" y="554.3" class="name" text-anchor="middle"><tspan x="1292" y="554.3">驗證密碼</tspan></text><text x="1292" y="584.5" class="sub" text-anchor="middle"><tspan x="1292" y="584.5">APWD</tspan></text><text x="1292" y="608.3" class="tag" text-anchor="middle"><tspan x="1292" y="608.3">PasswordHash</tspan></text></g><text x="1204" y="650" class="tag" text-anchor="start">IN:WB</text><text x="1380" y="650" class="tag" text-anchor="end">OUT:TB</text><g data-node="n5"><rect x="1416" y="310" width="200" height="160" rx="6" class="node" /><title>E07</title><text x="1516" y="354.3" class="name" text-anchor="middle"><tspan x="1516" y="354.3">產生 Token</tspan></text><text x="1516" y="384.5" class="sub" text-anchor="middle"><tspan x="1516" y="384.5">AES / Base64Url</tspan></text><text x="1516" y="408.3" class="tag" text-anchor="middle"><tspan x="1516" y="408.3">IssueAppToken</tspan></text></g><text x="1428" y="450" class="tag" text-anchor="start">IN:TB</text><text x="1604" y="450" class="tag" text-anchor="end">OUT:WB</text><g data-node="n6"><rect x="1640" y="710" width="200" height="160" rx="6" class="focal" /><title>E11 · E15</title><text x="1740" y="754.3" class="name" text-anchor="middle"><tspan x="1740" y="754.3">保存金鑰</tspan></text><text x="1740" y="784.5" class="sub" text-anchor="middle"><tspan x="1740" y="784.5">UPDATE account</tspan></text><text x="1740" y="808.3" class="tag" text-anchor="middle"><tspan x="1740" y="808.3">WCF Execute</tspan></text></g><text x="1652" y="850" class="tag" text-anchor="start">IN:WB</text><text x="1828" y="850" class="tag" text-anchor="end">OUT:DB</text><g data-node="n7"><rect x="1864" y="310" width="200" height="160" rx="6" class="node" /><title>E08</title><text x="1964" y="354.3" class="name" text-anchor="middle"><tspan x="1964" y="354.3">回 APP</tspan></text><text x="1964" y="384.5" class="sub" text-anchor="middle"><tspan x="1964" y="384.5">302 callback</tspan></text><text x="1964" y="408.3" class="tag" text-anchor="middle"><tspan x="1964" y="408.3">Redirect</tspan></text></g><text x="1876" y="450" class="tag" text-anchor="start">IN:DB</text><line class="sep" x1="64" y1="920" x2="2064" y2="920" /><text x="64" y="952" class="source" text-anchor="start">來源 E##：E = Evidence（證據），數字是索引，非步驟／錯誤碼；完整檔名與行號見下方「來源編號索引」。</text></svg></div><p class="foot">圖面預設依頁面可用寬度自動 fit，視窗大小改變時會重新調整。文字大小按鈕以目前圖框寬度為基準；超過 100% 時可左右捲動。來源編號不是步驟或錯誤碼；較小框的來源放在滑鼠提示與下方證據表。</p><p class="note">使用 vendor 的 fit 公式；WB=HTTP 表單／回應，DB=持久化資料，TB=查詢結果。密碼與 Token 只標示欄位名，不展示真值。回傳頁面與 callback 跨請求，詳見 Sequence。</p><details><summary>來源編號索引與圖面元素對照（15 個元素）</summary><p>圖中的「來源：E09」表示該節點或連線有 E09 這筆程式碼證據。下表可用編號查到原始檔、行號及該段程式的摘要；多個編號表示有多處程式共同支持。</p><table><thead><tr><th>證據編號</th><th>原始碼位置</th><th>內容摘要</th></tr></thead><tbody><tr><td>E04</td><td><code>Controllers/HomeController.cs:33–87</code></td><td>AccessToken：參數、帳號、grant_type、refresh 分支</td></tr><tr><td>E05</td><td><code>Controllers/HomeController.cs:102–146</code></td><td>ExternalLogin 與取消授權</td></tr><tr><td>E07</td><td><code>Controllers/HomeController.cs:215–261</code></td><td>核發 AES/Base64Url Token；六個月驗證</td></tr><tr><td>E08</td><td><code>Controllers/HomeController.cs:263–370</code></td><td>回應 DTO、callback query、expires_in、Base64Url</td></tr><tr><td>E11</td><td><code>Domain/Service/HomeService.cs:121–150</code></td><td>全部有效綁定水號與覆寫 Token 欄位</td></tr><tr><td>E12</td><td><code>Domain/Service/HomeService.cs:115–119</code></td><td>以 APWD 驗證 APP V4 帳密</td></tr><tr><td>E13</td><td><code>Controllers/HomeController.cs:1308–1380</code></td><td>Session 寫入與一次性驗證碼驗證</td></tr><tr><td>E15</td><td><code>../../SqlData/DapperDataAccess.cs:14–111</code></td><td>參照專案：WCF ChannelService Query／Execute</td></tr><tr><td>E19</td><td><code>Views/Home/ExternalLogin.cshtml:1–75</code></td><td>授權 HTML、hidden fields、CSRF、captcha、取消</td></tr><tr><td>E20</td><td><code>Common/Security/PasswordHashUtil.cs:28–79</code></td><td>PBKDF2 驗證，失敗後兼容舊 AES 密碼</td></tr></tbody></table><table><thead><tr><th>節點／關係／欄位</th><th>種類</th><th>來源編號</th></tr></thead><tbody><tr><td>請求授權 / grant_type=code；APP</td><td>node</td><td>E04</td></tr><tr><td>顯示表單 / 有效帳號；MVC View</td><td>node</td><td>E04, E19</td></tr><tr><td>n0 → n1</td><td>relationship</td><td>E04, E19</td></tr><tr><td>送出帳密 / CSRF + Captcha；HTML form</td><td>node</td><td>E19</td></tr><tr><td>n1 → n2</td><td>relationship</td><td>E19</td></tr><tr><td>檢查請求 / Captcha / Account；MVC Filter</td><td>node</td><td>E05, E13</td></tr><tr><td>n2 → n3</td><td>relationship</td><td>E05, E13</td></tr><tr><td>驗證密碼 / APWD；PasswordHash</td><td>node</td><td>E12, E20</td></tr><tr><td>n3 → n4</td><td>relationship</td><td>E12, E20</td></tr><tr><td>產生 Token / AES / Base64Url；IssueAppToken</td><td>node</td><td>E07</td></tr><tr><td>n4 → n5</td><td>relationship</td><td>E07</td></tr><tr><td>保存金鑰 / UPDATE account；WCF Execute</td><td>node</td><td>E11, E15</td></tr><tr><td>n5 → n6</td><td>relationship</td><td>E11, E15</td></tr><tr><td>回 APP / 302 callback；Redirect</td><td>node</td><td>E08</td></tr><tr><td>n6 → n7</td><td>relationship</td><td>E08</td></tr></tbody></table></details></section><noscript><p>目前顯示完整的預設大小圖面；啟用 JavaScript 後可使用文字大小按鈕。</p></noscript><footer class="foot">2026-10-10 · 靜態逆向蒐證；尚未驗證正式 APP／WCF／DB。依 cathrynlavery/diagram-design MIT v2.6 製作；無外部字型下載，使用本機字型 fallback。</footer></main><script id="diagram-font-controller">
+(() => {
+  'use strict';
+  for (const controls of document.querySelectorAll('[data-font-controls]')) {
+    const frame = document.getElementById(controls.dataset.fontControls);
+    const svg = frame.querySelector('svg');
+    const frameStyle = getComputedStyle(frame);
+    const availableWidth = () => frame.clientWidth
+      - parseFloat(frameStyle.paddingLeft)
+      - parseFloat(frameStyle.paddingRight);
+    const input = controls.querySelector('input');
+    const form = controls.querySelector('form');
+    const status = controls.querySelector('[role="status"]');
+    const buttons = [...controls.querySelectorAll('button[data-percent]')];
+    function applySize(value) {
+      const percent = Number(value);
+      const width = availableWidth() * percent / 100;
+      if (!String(value).trim() || !Number.isFinite(percent) || percent <= 0 || !Number.isFinite(width) || width <= 0) {
+        input.setAttribute('aria-invalid', 'true');
+        status.textContent = `請輸入大於 0 的有效百分比；目前 ${svg.dataset.fontPercent}%`;
+        return;
+      }
+      // Expand the entire reading layout with the type. Keeping shape/text/route
+      // proportions preserves wrapping and prevents a larger font colliding.
+      svg.style.width = `${width}px`;
+      svg.style.minWidth = `${percent > 100 ? width : 0}px`;
+      svg.dataset.fontPercent = String(percent);
+      input.value = String(percent);
+      input.removeAttribute('aria-invalid');
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.percent) === percent));
+      }
+      status.textContent = `目前 ${percent}%`;
+    }
+    for (const button of buttons) {
+      button.addEventListener('click', () => applySize(button.dataset.percent));
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      applySize(input.value);
+    });
+    applySize(svg.dataset.defaultFontPercent);
+    window.addEventListener('resize', () => applySize(svg.dataset.fontPercent), { passive: true });
+    controls.hidden = false;
+  }
+})();
+</script></body></html>
