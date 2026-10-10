@@ -18,15 +18,20 @@
 | memory.md.prehotfix9 | 2026-07-08 | 第九次修正前備份 |
 | TEMPLATE_SKILL.md.prehotfix4 | 2026-07-08 | 第四次修正前備份 |
 | skills_README.md.prehotfix5 | 2026-07-07 | 第五次修正前備份 |
-| `reverse_engineering_pre_20260924-153000/`（20 檔） | 2026-09-24 | 本機逆向工程 Skill 補強前備份；保留原目錄結構，不納入公開提交 |
-| `reverse_core_alignment_pre_20260925/`（8 檔） | 2026-09-25 | 根規章、核心規範、指令及對齊腳本同步前的本機備份；保留原目錄結構，不納入公開提交 |
-| `ssot_template_pre_20260925/`（7 檔） | 2026-09-25 | SSOT 範本補齊前的核心規範、README、YAML、記憶與備份清單本機備份；不納入公開提交 |
-| Git commit `2acd65e` | 2026-09-25 | 逆向 Skill 證據交接補強前公開基線，可由 Git 歷史回溯；工作目錄備份僅保留本機 |
-| Git commit `0a9d69d` | 2026-09-25 | v1.4.1 文件與規格同步前公開基線，供 2026-10-10 文件校準回溯 |
-
-2026-09-24 PR 合併前審查修正沿用此本機備份；修正前的公開版本另可由 Git commit `586e93c` 回溯。
+| executable_spec.yaml.backup.20260925-121457 | 2026-09-25 | 加入檢查器相容投影欄位前的 SSOT 母版 |
+| check_spec_integrity.py.backup.20260925-121457 | 2026-09-25 | 修正四規格摘要與中文標題追溯前的完整性檢查器 |
+| specs_README.md.backup.20260925-121457 | 2026-09-25 | 補充 SSOT 相容投影說明前的框架規格說明 |
+| check_spec_integrity.py.backup.20260925-135234 | 2026-09-25 | 接入每階段唯讀對齊鉤子前的檢查器 |
+| agents_AGENTS.md.backup.20260925-135740 | 2026-09-25 | 加入逆向轉正向專案執行前對齊關卡前的代理規章 |
+| reverse_skill_before_alignment_20260925/ | 2026-09-25 | 逆向主 Skill、六個子 Skill、IO 契約及框架說明與技能歸類在順序與證據規則修正前的版本 |
+| guided_reverse_before_update_20261010/ | 2026-10-10 | 新手引導式通用逆向 SOP 調整前，定點保存主 Skill、@guide 規章、指令參照、README、memory 與備份清單 |
+| threat-modeling_before_owasp_community_sync_20261010/ | 2026-10-10 | threat-modeling Skill 與來源整理加入使用者指定 OWASP 官方社群頁面前的版本 |
 
 ## 歷史備份（已清理）
 
 2026-07-11 執行自動清理，保留最新 5 份，刪除 36 個舊版備份。
 原始備份涵蓋 2026-06-27 ~ 2026-07-08 期間的框架建置階段調整紀錄。
+
+## 2026-10-10 備份紀錄補充
+
+`threat-modeling` Skill 與索引更新未建立 pre-change 備份。執行時工作樹已有其他未提交變更，為避免把混合狀態誤記為修改前快照，保留目前內容並以 Git 差異追溯。本次未執行 `@optimize`。

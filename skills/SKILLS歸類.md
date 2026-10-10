@@ -14,35 +14,33 @@
 
 ## 技能分類規則與映射表
 
-> 本清單以 `skills/<phase>/<skill>/SKILL.md` 實際目錄為準；重複列於多階段者為跨階段歸屬。
+### 1. 01_planning_and_analysis
+* **適用技能**：需求場景拆解、訪談整理、文件結構化、通用文件處理、增強版文檔技能合集與靜態文檔建置。
+* **技能清單**：`langchain`、`llamaindex`、`docling`、`docusaurus`、`doc-coauthoring`、`internal-comms`、`docx`、`xlsx` / `pdf` / `pptx`、`document-skills`、`minimax-pdf`、`minimax-docx`、`minimax-xlsx`、`pptx-generator`（docx/pdf/pptx/xlsx 增強合集）、`diagram-design`（使用案例／旅程／操作流程）。
 
-### 1. `00_cross_phase` — 跨階段全域共用
-* **適用技能**：版本控制、跨階段協作、通用文件、資安、流程治理與逆向工程。
-* **技能清單**：`Security-Principles`、`anthropics-skills`、`autoresearch`、`brainstorming`、`codex-ppt-skill`、`diffsync`、`docx`、`firecrawl`、`git`、`github-skills`、`guizang-ppt-skill`、`langgraph`、`markitdown`、`minimax-docx`、`minimax-pdf`、`minimax-skills`、`minimax-xlsx`、`pdf`、`ppt-master`、`pptx`、`pptx-generator`、`ralph-loop`、`reverse_engineering`、`slides`、`test-driven-development`、`ui-ux-pro-max`、`ui-ux-pro-max-skill`、`using-superpowers`、`verification-before-completion`、`writing-plans`、`xlsx`
+### 2. 02_system_design
+* **適用技能**：架構圖、流程圖、UML 圖表、資料庫設計、API 規格產生、前端視覺色彩規範、AI 設計系統文件、設計引擎 Skill 合集。
+* **技能清單**：`mermaid`、`plantuml`、`diagram-design`（UML／ER／架構）、`threat-modeling`（DFD／STRIDE／信任邊界）、`prisma`、`openapi_generator`、`frontend-design`、`theme-factory`、`brand-guidelines`、`canvas-design`、`algorithmic-art`、`slack-gif-creator`、`brand`、`design`、`design-system`、`ui-styling`、`banner-design`、`ai-news-video`、`shader-dev`、`minimax-multimodal-toolkit`、`minimax-music-gen`、`minimax-music-playlist`、`buddy-sings`、`gif-sticker-maker`、`awesome-design-md`、`open-design`、`frontend-dev`、`fullstack-dev`、`android-native-dev`、`ios-application-dev`、`flutter-dev`、`react-native-dev`。
 
-### 2. `01_planning_and_analysis` — 規劃與需求分析
-* **適用技能**：需求釐清、訪談整理、文件分析與規格產製。
-* **技能清單**：`codex-ppt-skill`、`doc-coauthoring`、`docling`、`docusaurus`、`docx`、`guizang-ppt-skill`、`internal-comms`、`langchain`、`llamaindex`、`minimax-docx`、`minimax-pdf`、`minimax-xlsx`、`pdf`、`ppt-master`、`pptx`、`pptx-generator`、`xlsx`
+### 3. 03_implementation_and_coding
+* **適用技能**：AI 輔助寫碼、本地編譯、代碼規格語法與排版檢核、多模組整合管理、設計驅動前端開發。
+* **技能清單**：`continue_dev`、`codellama`、`eslint`、`prettier`、`nx`、`web-artifacts-builder`、`mcp-builder`、`claude-api`、`skill-creator`、`code-simplifier`、`ui-styling`、`open-design`、`diagram-design`（模組呼叫與依賴）。
 
-### 3. `02_system_design` — 系統設計
-* **適用技能**：架構、資料庫、API、圖表、UI 與視覺設計。
-* **技能清單**：`ai-news-video`、`algorithmic-art`、`awesome-design-md`、`banner-design`、`brand`、`brand-guidelines`、`buddy-sings`、`canvas-design`、`design`、`design-system`、`frontend-design`、`gif-sticker-maker`、`mermaid`、`minimax-multimodal-toolkit`、`minimax-music-gen`、`minimax-music-playlist`、`open-design`、`openapi_generator`、`plantuml`、`prisma`、`shader-dev`、`slack-gif-creator`、`theme-factory`、`ui-styling`
+### 4. 04_testing
+* **適用技能**：單元測試、前後端驗證、UI 自動化測試、API 與 Web 服務之 Schema 驗證、單機應用程式 UI 測試、安全漏洞靜態掃描與覆蓋率分析。
+* **技能清單**：`playwright`、`selenium`、`cypress`、`robot_framework`、`pytest`、`jest`、`sonarqube`、`coverage_py`、`webapp-testing`、`systematic-debugging`、`vision-analysis`、`diagram-design`（測試路徑與分支）。
 
-### 4. `03_implementation_and_coding` — 開發與編碼
-* **適用技能**：程式實作、框架整合、程式碼品質與前端建置。
-* **技能清單**：`android-native-dev`、`claude-api`、`code-simplifier`、`codellama`、`continue_dev`、`eslint`、`flutter-dev`、`frontend-dev`、`fullstack-dev`、`ios-application-dev`、`mcp-builder`、`nx`、`open-design`、`prettier`、`react-native-dev`、`skill-creator`、`ui-styling`、`web-artifacts-builder`
+### 5. 05_deployment
+* **適用技能**：成品建置與打包、組態管理配置、遠端批次部署與反向代理組態生成。
+* **技能清單**：`docker`、`ansible`、`nginx_config_generator`、`diagram-design`（部署拓撲）。
 
-### 5. `04_testing` — 測試驗證
-* **適用技能**：自動化測試、除錯、覆蓋率、品質及安全檢查。
-* **技能清單**：`coverage_py`、`cypress`、`jest`、`playwright`、`pytest`、`robot_framework`、`selenium`、`sonarqube`、`systematic-debugging`、`vision-analysis`、`webapp-testing`
+### 6. 06_maintenance
+* **適用技能**：線上故障分析、進程異常修復、運行日誌收集與格式化、指標監控告警。
+* **技能清單**：`elk_stack`、`prometheus_grafana`、`opentelemetry`、`logparser`、`diagram-design`（監控與事件流程）。
 
-### 6. `05_deployment` — 部署發布
-* **適用技能**：部署自動化、容器與伺服器組態。
-* **技能清單**：`ansible`、`docker`、`nginx_config_generator`
-
-### 7. `06_maintenance` — 維護與營運
-* **適用技能**：日誌、監控、維運分析與告警。
-* **技能清單**：`elk_stack`、`logparser`、`opentelemetry`、`prometheus_grafana`
+### 7. 00_cross_phase
+* **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制、程式碼差異比對以及跨格式文件轉 Markdown。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`、`markitdown`、`anthropics-skills`、`github-skills`、`minimax-skills`、`ui-ux-pro-max-skill`、`codex-ppt-skill`、`guizang-ppt-skill`、`ppt-master`、`Security-Principles`、`diagram-design`（全階段共用原始版型與驗證規則）。
 
 ## 執行步驟 SOP（完整版）
 

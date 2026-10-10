@@ -14,6 +14,7 @@
 """
 
 import os
+import subprocess
 import sys
 import json
 import yaml
@@ -64,6 +65,32 @@ class SpecIntegrityChecker:
         else:
             self.passes.append(msg)
 
+    def check_forward_alignment(self):
+        """Run an opted-in project's read-only forward SSOT drift guard."""
+        hook = os.path.join(self.project_base, "sync_forward_ssot.py")
+        if not os.path.isfile(hook):
+            return
+        print("\n=== 正向 SSOT／來源漂移檢查 ===")
+        try:
+            result = subprocess.run(
+                [sys.executable, hook, "--check"],
+                cwd=self.project_base,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                timeout=30,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            self.log("ERR", f"正向 SSOT 檢查無法完成: {exc}")
+            return
+        if result.returncode == 0:
+            self.log("OK", result.stdout.strip() or "正向 SSOT 與衍生文件一致")
+        else:
+            detail = (result.stderr or result.stdout).strip().splitlines()
+            self.log("ERR", f"正向 SSOT／來源已漂移: {detail[-1] if detail else '未知錯誤'}")
+            self.fix_hints.append("先核對原始碼與逆向證據；若僅 YAML 改動，審閱後執行 sync_forward_ssot.py")
+
     def check_ssot_files_exist(self):
         """檢查點 A：SSOT 規格檔案是否存在"""
         print("\n=== 檢查點 A：規格檔案存在性 ===")
@@ -87,6 +114,11 @@ class SpecIntegrityChecker:
         try:
             with open(yaml_path, encoding="utf-8") as f:
                 spec = yaml.safe_load(f)
+            projected = spec.get("requirements", [])
+            phase_reqs = spec.get("phase_01_planning", {}).get("requirements", [])
+            if projected and phase_reqs and projected != phase_reqs:
+                self.log("ERR", "頂層 requirements 與 phase_01_planning.requirements 不一致")
+                return None
             reqs = len(spec.get("requirements", []))
             phases = len(spec.get("phases", {}))
             self.log("OK", f"YAML 有效: {reqs} 需求, {phases} 階段")
@@ -390,8 +422,13 @@ class SpecIntegrityChecker:
                 keywords = keywords[:5]
                 feat_lower = feat_content.lower()
                 matched = sum(1 for kw in keywords if kw in feat_lower)
-                if matched >= 2:
-                    self.log("OK", f"{rid} 標題關鍵字相符 ({matched}/{len(keywords)}): {title}")
+                # Chinese titles commonly form one unsplit token; in that case
+                # the requirement ID already checked above is the stable link.
+                chinese_id_match = (len(keywords) == 1 and any(ord(c) > 127 for c in keywords[0])
+                                    and rid in feat_content)
+                if matched >= min(2, len(keywords)) or chinese_id_match:
+                    detail = "ID 對應" if chinese_id_match and not matched else f"{matched}/{len(keywords)}"
+                    self.log("OK", f"{rid} 標題／需求對應 ({detail}): {title}")
                 else:
                     self.log("WARN", f"{rid} 標題關鍵字不足 ({matched}/{len(keywords)}): {title}")
                     self.fix_hints.append(f"{rid} 標題關鍵字不符 → 確認 Feature 中有 {rid} 對應的 Scenario")
@@ -673,8 +710,8 @@ class SpecIntegrityChecker:
         print("=" * 60)
 
         specs = [
-            ("結構化可執行規格", "executable_spec.yaml", "YAML（需求/API/資料模型/安全控制）"),
-            ("行為可執行規格",   "requirements.feature",    "Gherkin（Given-When-Then 場景）"),
+            ("結構化可執行規格", "specs/executable_spec.yaml", "YAML（需求/API/資料模型/安全控制）"),
+            ("行為可執行規格",   "specs/features/requirements.feature", "Gherkin（Given-When-Then 場景）"),
             ("系統規格書 (SRS)",  "system_specification.md",  "人可讀"),
             ("追溯矩陣 (RTM)",   "traceability_matrix.md",   "需求追溯"),
         ]
@@ -693,6 +730,9 @@ class SpecIntegrityChecker:
         print(f"SSOT 規格完整性檢查 - {datetime.now().isoformat()}")
         print(f"   模式: {self.mode} ({mode_names.get(self.mode, self.mode)}) | 目標階段: {self.target_phase or '全部'}")
         print("=" * 50)
+
+        if self.mode in ("A", "B", "C", "D", "S"):
+            self.check_forward_alignment()
 
         if self.mode in ("A", "D"):
             self.check_ssot_files_exist()
@@ -725,6 +765,7 @@ class SpecIntegrityChecker:
             print("  @CheckSpec 模式：四規格完整性 + 交叉一致性")
             print("=" * 50)
             self.check_ssot_files_exist()
+            self.check_yaml_valid()
             self.check_feature_gherkin()
             self.check_srs_references()
             self.check_traceability()

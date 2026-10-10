@@ -1,6 +1,6 @@
-﻿# 軟體開發流程技能目錄索引表
+# 軟體開發流程技能目錄索引表
 
-本目錄依 SSDLC 分類層（Phase 00 跨階段共用及 Phase 01–06）整理技能。各階段 Skill 與來源以實際資料夾及下方清單為準；跨階段共用的 Skill 會列在各自適用的分類中。文末「完整技能目錄」依實際資料夾列出全部歸屬，作為查找基準。
+本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的安全軟體開發生命週期六階段（SSDLC）分類技能。技能依階段及跨階段用途歸類，並加註來源以方便追溯。
 
 ---
 
@@ -8,9 +8,14 @@
 本階段技能用於專案初期的需求釐清、文件協作、數據處理、提案報價與內部資訊傳遞。
 
 
+*   **[[73] reverse_engineering](00_cross_phase/reverse_engineering/SKILL.md)**：對指定舊專案按 Phase 03→02→01 逆向蒐證，再回灌專案根正向 Phase 01 SSOT，依核准關卡推進 Phase 02→06。六個子 Skill 分別處理程式、設計、需求、測試、部署與維運；後三者的靜態盤點不算執行驗證。
+    *   **追溯來源**：本專案自行設計（2026-08-07）
+    *   **指令**：@reverse [專案路徑]、@reverse-code、@reverse-design、@reverse-requirements
+    *   **口語觸發**：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」
 
+*   **[diagram-design](00_cross_phase/diagram-design/SKILL.md)**：MIT 開源圖形 Skill，來源為 [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design)，固定版本 2.6／commit `dc1ace47b99a419e42d01a03cb6ace5346efa8ae`。跨階段主 Skill 保留原始版型與工具；Phase 01～06 各設有階段入口，分別對應使用案例／旅程、UML／ER／架構、模組呼叫、測試流程、部署拓撲、運維流程。圖中事實要能追溯來源，未知內容維持候選。
 
-### Anthropic 官方技能 (6)
+### Anthropic 官方技能
 * **[[01] doc-coauthoring](skills/01_planning_and_analysis/doc-coauthoring)**：文件協同撰寫引導。提供結構化工作流以協同撰寫提案、規格書或決策文件。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/doc-coauthoring) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring)
 * **[[02] internal-comms](skills/01_planning_and_analysis/internal-comms)**：內部溝通撰寫資源。提供狀態報告、事件報告及專案更新等內部通訊文件格式。
@@ -31,7 +36,7 @@
 ---
 
 
-### GitHub 推薦開源工具技能 (4)
+### GitHub 推薦開源工具技能
 * **[[07] langchain](skills/01_planning_and_analysis/langchain)**：需求場景拆解、語意整理與鏈式呼叫工具。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/01_planning_and_analysis/langchain) / [原始 GitHub 倉庫](https://github.com/langchain-ai/langchain)
 * **[[08] llamaindex](skills/01_planning_and_analysis/llamaindex)**：文件數據索引萃取與關鍵需求擷取工具。
@@ -42,13 +47,16 @@
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/01_planning_and_analysis/docusaurus) / [原始 GitHub 倉庫](https://github.com/facebook/docusaurus)
 
 
-### GitHub 推薦開源文檔技能合集 (1)
-
+### GitHub 推薦開源文檔技能合集
+* **[[11] document-skills](skills/01_planning_and_analysis/document-skills)**：增強版文件處理技能合集，涵蓋 docx、pdf、pptx、xlsx 四種格式的進階操作、OOXML 底層編輯、HTML 轉換與試算表重算。
+  * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/01_planning_and_analysis/document-skills) / [原始 GitHub 倉庫](https://github.com/appautomaton/document-SKILLs)
 
 ## 2. 系統設計
-本階段技能用於前端 UI 原型設計、配色、品牌風格套用、系統分析（SA/SD）設計與簡報與提案影音輔助。
+本階段技能用於前端 UI 原型設計、配色、品牌風格套用、系統分析（SA/SD）設計與簡報與提案影音輔助。### 本專案自行設計
+* **[threat-modeling](02_system_design/threat-modeling/SKILL.md)**：以 DFD 與信任邊界為基礎，按 OWASP 四步主線搭配 STRIDE，建立可追溯的威脅、風險排序、控制措施與驗證工作。
+  * **方法來源與可讀狀態**：[來源整理](02_system_design/threat-modeling/references/source-basis.md)
 
-### Anthropic 官方技能 (6)
+### Anthropic 官方技能
 * **[[12] frontend-design](skills/02_system_design/frontend-design)**：前端 UI 視覺設計引導。協助規劃字型排版與視覺方向，避免模板化設計。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/frontend-design) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
 * **[[13] theme-factory](skills/02_system_design/theme-factory)**：配色主題工具。提供 10 種預設配色與字型主題，可套用至簡報、網頁或文件。
@@ -65,7 +73,7 @@
 ---
 
 
-### GitHub 推薦開源工具技能 (4)
+### GitHub 推薦開源工具技能
 * **[[18] mermaid](skills/02_system_design/mermaid)**：以文字繪製專案流程圖、系統架構圖與狀態圖。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/02_system_design/mermaid) / [原始 GitHub 倉庫](https://github.com/mermaid-js/mermaid)
 * **[[19] plantuml](skills/02_system_design/plantuml)**：產生精確 UML 類別圖、序列圖與部署圖的標準設計工具。
@@ -76,7 +84,7 @@
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/02_system_design/openapi_generator) / [原始 GitHub 倉庫](https://github.com/OpenAPITools/openapi-generator)
 
 
-### UI/UX Pro Max 設計智慧技能 (5)
+### UI/UX Pro Max 設計智慧技能
 * **[[22] brand](skills/02_system_design/brand)**：品牌識別指南 — 品牌聲音 / 視覺識別 / 訊息框架 / 資產管理 / 一致性檢查。內含 11 份參考文件與品牌模板。
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/brand) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 * **[[23] design](skills/02_system_design/design)**：通用設計工具包 — Logo 設計（55 風格）/ CIP 企業識別（50 交付物）/ 圖示設計 / 社群素材。
@@ -96,7 +104,7 @@
 ## 3. 開發與編碼
 本階段技能用於開發任務管理、程式碼實作、MCP 伺服器建置、API 規格查詢與自訂技能管理。
 
-### Anthropic 官方技能 (4)
+### Anthropic 官方技能
 * **[[27] web-artifacts-builder](skills/03_implementation_and_coding/web-artifacts-builder)**：網頁應用建置。使用 React、Tailwind CSS 與 shadcn/ui 設計多組件的前端應用。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/web-artifacts-builder) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder)
 * **[[28] mcp-builder](skills/03_implementation_and_coding/mcp-builder)**：MCP 伺服器建置。使用 Python 或 Node.js/TypeScript 開發 Model Context Protocol 伺服器以對接外部服務。
@@ -109,7 +117,7 @@
 ---
 
 
-### GitHub 推薦開源工具技能 (5)
+### GitHub 推薦開源工具技能
 * **[[31] continue_dev](skills/03_implementation_and_coding/continue_dev)**：本機 AI 輔助寫碼、語境理解與程式產生套件。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/03_implementation_and_coding/continue_dev) / [原始 GitHub 倉庫](https://github.com/continuedev/continue)
 * **[[32] codellama](skills/03_implementation_and_coding/codellama)**：本地離線代碼編譯、語法生成與程式碼自動補全核心。
@@ -122,11 +130,11 @@
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/03_implementation_and_coding/nx) / [原始 GitHub 倉庫](https://github.com/nrwl/nx)
 
 
-### Anthropic 官方插件技能 (2)
+### Anthropic 官方插件技能
 * **[[36] code-simplifier](skills/03_implementation_and_coding/code-simplifier)**：程式碼簡化與精煉。在保留所有功能的前提下，提升程式碼清晰度、一致性與可維護性。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/03_implementation_and_coding/code-simplifier) / [原始 GitHub 倉庫](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier)
 
-### UI/UX Pro Max 前端實作技能 (1)
+### UI/UX Pro Max 前端實作技能
 * **[[37] ui-styling](skills/03_implementation_and_coding/ui-styling)**：前端樣式落地實作 — shadcn/ui 元件開發 / Tailwind CSS 工具類 / 響應式佈局 / 暗色模式實作。 🌐 雙歸屬（Phase 02 設計規範 + Phase 03 實作落地）
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/ui-styling) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 
@@ -136,14 +144,14 @@
 ## 4. 測試驗證
 本階段技能用於前端功能自動化測試、後端功能驗證、API 與資安漏洞掃描。
 
-### Anthropic 官方技能 (1)
+### Anthropic 官方技能
 * **[[38] webapp-testing](skills/04_testing/webapp-testing)**：網頁應用測試。利用 Playwright 對本機應用程式進行自動化 UI 驗證、除錯與截圖。
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/webapp-testing) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/webapp-testing)
 
 ---
 
 
-### GitHub 推薦開源工具技能 (9)
+### GitHub 推薦開源工具技能
 * **[[39] playwright](skills/04_testing/playwright)**：主流 UI 自動化測試與跨瀏覽器兼容性回歸測試套件。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/04_testing/playwright) / [原始 GitHub 倉庫](https://github.com/microsoft/playwright)
 * **[[40] selenium](skills/04_testing/selenium)**：傳統網頁與多瀏覽器的自動化測試與兼容性回歸測試工具。
@@ -171,7 +179,7 @@
 ---
 
 
-### GitHub 推薦開源工具技能 (3)
+### GitHub 推薦開源工具技能
 * **[[48] docker](skills/05_deployment/docker)**：容器化服務打包、鏡像製作與多服務 Docker Compose 部署。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/05_deployment/docker) / [原始 GitHub 倉庫](https://github.com/docker/docker-ce)
 * **[[49] ansible](skills/05_deployment/ansible)**：伺服器自動化組態管理、主機配置與遠端批次部署。
@@ -183,7 +191,7 @@
 ## 6. 維護與營運
 本階段技能用於系統上線後的資安內部稽核準備，以及線上運行訊號與討論輿情監控。
 
-### GitHub 推薦開源工具技能 (4)
+### GitHub 推薦開源工具技能
 * **[[51] elk_stack](skills/06_maintenance/elk_stack)**：線上日誌集中化收集、Elasticsearch 檢索與日誌異常分析。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/06_maintenance/elk_stack) / [原始 GitHub 倉庫](https://github.com/elastic/elasticsearch)
 * **[[52] prometheus_grafana](skills/06_maintenance/prometheus_grafana)**：系統硬體指標與服務效能監控、即時 Grafana 圖表告警機制。
@@ -213,7 +221,7 @@
 * **[[58] pptx](skills/00_cross_phase/pptx)**：投影片與簡報製作。建立與編輯簡報投影片。🌐 通用
   * **追溯來源**：[本機外部資源目錄](../external-resources/anthropics-skills/skills/pptx) / [原始 GitHub 倉庫](https://github.com/anthropics/skills/tree/main/skills/pptx)
 
-### GitHub 推薦開源工具技能 (11)
+### GitHub 推薦開源工具技能
 
 * **[[59] langgraph](skills/00_cross_phase/langgraph)**：複雜狀態多 Agent 協作工作流的圖形狀態管理引擎。
   * **追溯來源**：[本機外部資源目錄](../external-resources/github-skills/00_cross_phase/langgraph) / [原始 GitHub 倉庫](https://github.com/langchain-ai/langgraph)
@@ -241,7 +249,7 @@
 
 
 
-### UI/UX Pro Max 全域設計技能 (2)
+### UI/UX Pro Max 全域設計技能
 * **[[70] ui-ux-pro-max](skills/00_cross_phase/ui-ux-pro-max)**：設計智慧搜尋引擎 — Python 搜尋引擎 + 14 個 CSV 資料庫（84 風格 / 161 色板 / 73 字型配對 / 99 UX 指南 / 25 圖表類型 / 17 技術棧）。支援 `product`/`style`/`typography`/`color`/`landing`/`chart`/`ux` 七大領域即時查詢。 ⚠️ 為其他 UI/UX 技能的基礎依賴。
   * **追溯來源**：[本機外部資源目錄](../external-resources/ui-ux-pro-max-skill/.claude/skills/ui-ux-pro-max) / [原始 GitHub 倉庫](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 * **[[71] slides](skills/00_cross_phase/slides)**：HTML 簡報製作 — Chart.js 資料視覺化 / 文案公式 / 版型策略 / 響應式簡報。所有階段皆可用於製作專案簡報。

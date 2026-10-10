@@ -1,0 +1,4 @@
+https://github.com/cathrynlavery/diagram-design
+Version: 2.6
+License: MIT
+Commit: dc1ace47b99a419e42d01a03cb6ace5346efa8ae

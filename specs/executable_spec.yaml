@@ -19,6 +19,17 @@ project:
   last_updated: "<專案初始化後自動填入>"
   current_phase: "01_planning_and_analysis"
   description: "<專案初始化後自動填入>"
+  source_root: null          # 逆向分析的唯一原始碼範圍
+  source_fingerprint_sha256: null
+  source_mode: null          # reverse_engineered / forward_design
+  approval_status: pending
+  approved_at: null
+  manual_sources: []        # 使用者補充文件的路徑與 SHA-256
+
+# 相容投影：供 check_spec_integrity.py 讀取需求數與階段產出。
+# 專案初始化後由 phase_01_planning.requirements 與各階段 outputs 同步產生。
+requirements: []
+phases: {}
 
 # =============================================================================
 # 階段 01：規劃與需求分析
@@ -29,15 +40,24 @@ phase_01_planning:
   inputs:
     raw_requirements: []     # 原始口語需求來源路徑
     rfp_documents: []        # RFP 文件路徑
+    user_api_manual: null    # 使用者介接文件或比對結果
   outputs:
     formal_requirements: null    # outputs/formal_requirements.md
     requirement_tracker: null    # reg/requirement_tracker.md
+    system_specification: null   # 專案根 SRS
+    gherkin: null                # specs/features/requirements.feature
   requirements:              # 正規化後的需求清單（由 Generator 寫入）
     - id: "<專案初始化後自動填入>"
+      title: "<專案初始化後自動填入>"
       description: "<專案初始化後自動填入>"
-      priority: P0           # P0 | P1 | P2
+      priority: null         # 待核定時為 null；核定後 P0 | P1 | P2
+      priority_status: pending_business_review
       source: "<專案初始化後自動填入>"
+      evidence: []           # 逆向或業務來源證據
+      confidence: null       # 靜態證據信心，非業務核准
       acceptance_criteria: []
+      scenarios: []          # 結構化 Given/When/Then，供 Gherkin 生成
+      approval_status: pending
   evaluator:
     passed: false
     scores:
@@ -55,6 +75,7 @@ phase_01_planning:
 phase_02_design:
   status: pending
   baseline: null
+  reverse_evidence: []       # 逆向設計只作正向輸入證據
   inputs:
     requirements: []         # 承接 01 階段 outputs
   outputs:
@@ -67,8 +88,10 @@ phase_02_design:
     sequence_diagram: null   # sequence_diagram.md
   database:
     tables: []               # 資料表定義（由 Generator 從 db_schema.sql 萃取寫入）
+    evidence_status: pending # 僅有逆向表名時不得視為已驗證 Schema
   api:
     endpoints: []            # API 端點清單（由 Generator 從 api_spec.md 萃取寫入）
+    evidence_status: pending # 逆向路由候選須經正式契約與實機核對
   evaluator:
     passed: false
     scores:
@@ -85,6 +108,8 @@ phase_02_design:
 phase_03_implementation:
   status: pending
   baseline: null
+  reverse_evidence: []       # 現有原始碼盤點只作證據
+  evidence_status: pending  # 原始碼存在不表示正向實作已完成
   inputs:
     design_outputs: []       # 承接 02 階段 outputs
   outputs:
