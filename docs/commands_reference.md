@@ -1,4 +1,4 @@
-﻿# AI 協作對話指令集參照表 (Command Reference)
+# AI 協作對話指令集參照表 (Command Reference)
 
 本文件整理了專案中所有可用的對話指令。未來協作時，除了手動打字，您亦可直接用語音或口語進行操作：
 
@@ -620,3 +620,15 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
 ## 威脅建模條件與生命週期
 
 安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](THREAT_MODELING_LIFECYCLE.md)。
+
+## REA 與無原始碼逆向規則
+
+`@reverse`、`@reverse-code`、`@guide reverse` 支援完全沒有原始碼的案例。先按材料分流：成品／離線紀錄可選 REA；只有 UI／遠端服務使用已授權黑箱觀察；只有文件用文件工具；完整原始碼沿用原有解析器。不新增 `@rea` 指令。
+
+無原始碼時讀取 `skills/00_cross_phase/rea/SKILL.md`，建立 `inputs/reverse_input_manifest.json`（source_available=false、來源指紋與操作範圍）。Phase 03 蒐集成品與行為證據；Phase 02 先建外部 DFD，服務端內部保持黑箱，無證據不補造 ER／DDL／handler。必需產物仍保留檔名，另以 coverage.json 記支持、部分、未知、未觀察或不適用及理由。
+
+共享 evidence_manifest.json、findings_index.json、unknowns.json，每項 finding／設計候選／威脅可回指 Evidence ID。靜態 observed、歷史 HAR 與本次受控執行分開；未看到控制不代表控制不存在。起點用 check_no_source_evidence.py --inputs-only，交接由 reverse integrity 與 Mode E 驗證來源與覆蓋；IO 管理關閉不關閉此條件式證據檢查。
+
+REA 僅為選用 provider；不自動安裝 runtime、註冊 MCP、啟動目標或重送請求。安全基準已啟用，或使用者明確要求／選取威脅建模時模型才必要；選用 REA 不改變此條件。工具成功、契約檢查通過或 unknown 解決不自動核准需求、風險或階段。
+
+REA／無原始碼的新手可複製提示與資料準備見 [新手指南](../skills/00_cross_phase/rea/references/getting-started.md)；@guide reverse 是代理對話指令，不是 PowerShell 命令。

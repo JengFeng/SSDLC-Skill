@@ -36,6 +36,22 @@ inputs:
     path: "outputs/phase_03_reverse/code_analysis.md"
     required: true
     description: "Phase 03 逆向產出"
+  - id: "evidence_manifest.json"
+    path: "outputs/phase_03_reverse/evidence_manifest.json"
+    required: false
+    description: "無原始碼模式必要上游證據；須讀取未知與覆蓋，不能僅以清單還原。"
+  - id: "findings_index.json"
+    path: "outputs/phase_03_reverse/findings_index.json"
+    required: false
+    description: "無原始碼模式必要上游證據；須讀取未知與覆蓋，不能僅以清單還原。"
+  - id: "unknowns.json"
+    path: "outputs/phase_03_reverse/unknowns.json"
+    required: false
+    description: "無原始碼模式必要上游證據；須讀取未知與覆蓋，不能僅以清單還原。"
+  - id: "coverage.json"
+    path: "outputs/phase_03_reverse/coverage.json"
+    required: false
+    description: "無原始碼模式必要上游證據；須讀取未知與覆蓋，不能僅以清單還原。"
 outputs:
   - id: "er_diagram.md"
     path: "outputs/phase_02_reverse/er_diagram.md"
@@ -77,3 +93,8 @@ outputs:
     path: "outputs/phase_02_reverse/threat_model.md"
     required: false
     description: "條件式必要：安全基準已啟用或使用者明確要求／選取威脅建模。由完整性檢查驗證；候選不等於核准。"
+
+  - id: "coverage.json"
+    path: "outputs/phase_02_reverse/coverage.json"
+    required: false
+    description: "無原始碼模式必要：設計產物覆蓋與未知，由條件式檢查器驗證。"

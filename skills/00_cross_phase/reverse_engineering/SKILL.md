@@ -11,7 +11,7 @@ description: 對指定既有專案先按 Phase 03→02→01 逆向蒐證，再�
 
 先鎖定使用者指定的專案根目錄；同一資料夾中的其他專案不得混入。保留既有逆向產物，新增資料夾承接新案例。
 
-1. **Phase 03 Reverse**：盤點實際入口、路由、類別與函式、外部依賴和資料庫使用。記錄檔案及行號，區分已觀察、推測、未知。
+1. **Phase 03 Reverse**：按可用原始碼、成品或行為材料盤點入口、路由、可見結構與依賴；資料庫僅依證據列出。記錄檔案／行號或 artifact 位置／Evidence ID，區分已觀察、推測、未知。
 2. **Phase 02 Reverse**：從證據建立 API 契約、架構、ER／類別／使用案例／順序／操作流程圖。每條邊、角色及欄位都要能回指來源；沒有證據時標記候選或未知。
 3. **Phase 01 Reverse**：按使用者操作與業務能力整理需求、SRS、Gherkin 和追溯關係。記下使用者文件與程式現況的衝突，不以現況推定應有行為。
 4. **正向 Phase 01**：將逆向候選與補充文件導入專案根 `specs/executable_spec.yaml`，同步 `requirements.feature`、`system_specification.md`、`traceability_matrix.md`。每項 REQ 保留證據、信心、決議與核准狀態。使用專案既有同步器及 `check_spec_integrity.py` 檢查。
@@ -53,3 +53,11 @@ description: 對指定既有專案先按 Phase 03→02→01 逆向蒐證，再�
 | `phase_06_ops_restore` | 既有營運配置盤點；正向關卡下才驗證運維 |
 
 每個子 Skill 的細節及 IO 契約見同目錄 `sub_skills/`、`io_files/`。若目標專案有 `forward_transition.md`，可用它記錄逆向到正向交接的狀態與未決閘口。
+
+## REA 與無原始碼逆向
+
+沒有完整原始碼時，先讀 [REA 整合 Skill](../rea/SKILL.md)，依成品、離線紀錄、黑箱目標或文件分流。REA 是選用 provider；只有文件／UI 不強制安裝 REA。來源 manifest 記 `source_available=false`；Phase 03 改做成品與行為蒐證，不能要求完整類別、服務端路由或 DB。
+
+保留既有產物檔名；資料不足時寫未知或空清單並附 coverage，不以檔案存在推定完整。Phase 02 必須讀取 evidence_manifest.json、findings_index.json、unknowns.json、coverage.json；內部無證據時用黑箱節點，不補造 ER／DDL／handler。原始 REA observed 不等於本次執行。
+
+起點先執行 `python scripts/check_no_source_evidence.py --project <專案路徑> --inputs-only`；交接時由 reverse integrity／Mode E 檢查證據與覆蓋。仍按 Phase 03→02→01 候選流程及既有正向核准關卡推進。

@@ -1,4 +1,4 @@
-﻿---
+---
 name: 00_cross_phase
 description: 跨階段全域共用技能。適用於所有 SSDLC 開發階段的通用工具，包含版本控制、多 Agent 協作、程式碼差異同步、自主迭代研究與 TDD 流程。
 ---
@@ -212,4 +212,6 @@ IO 檔案管理僅在以下任一條件成立時啟用：
 | `@[phase] in: f1, f2?` | 快速定義輸入（觸發啟用） |
 | `@[phase] out: f1, f2` | 快速定義輸出（觸發啟用） |
 
+## REA 選用證據 provider
 
+無原始碼逆向時讀取 [REA Skill](../../../skills/00_cross_phase/rea/SKILL.md)，由既有 reverse_engineering 主控，不新增核准路徑。Planner 確認來源與操作範圍；Generator 蒐證；Evaluator 使用 check_no_source_evidence.py 檢查來源、未知與覆蓋。runtime／MCP 並非隨 Skill 自動安裝。

@@ -34,6 +34,16 @@ def main():
     read("memory.md", errors)
     read("backups/BACKUP_MANIFEST.md", errors)
     read("skills/00_cross_phase/reverse_engineering/SKILL.md", errors)
+    for path in ("skills/00_cross_phase/rea/SKILL.md",
+                 "skills/00_cross_phase/rea/references/no-source-rules.md",
+                 "skills/00_cross_phase/rea/references/provider-contract.md",
+                 "scripts/check_no_source_evidence.py", "external-resources/rea/url.txt"):
+        read(path, errors)
+    for label, content in ((".agents/AGENTS.md", agents), ("docs/commands_reference.md", commands), ("README.md", readme)):
+        if "skills/00_cross_phase/rea/SKILL.md" not in content or "source_available=false" not in content:
+            errors.append(f"{label} 缺少 REA 無原始碼路由與來源宣告")
+    if "check_no_source_evidence" not in checker:
+        errors.append("Mode E 未接入無原始碼證據檢查")
 
     for path in ("docs/CORE_RULES.md", ".agents/AGENTS.md", "scripts/check_spec_integrity.py",
                  "scripts/check_reverse_alignment.py", "backups/BACKUP_MANIFEST.md"):

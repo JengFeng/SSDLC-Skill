@@ -195,3 +195,7 @@ AI 執行流程：
 2. 讀取各 url.txt
 3. 輸出資源清單表格
 ```
+
+## REA 來源登記
+
+`rea/url.txt` 記錄 morluto/rea、6.4.0、commit 與 MIT；自建整合位於 `skills/00_cross_phase/rea/`。上游原始內容／runtime 留本機並排除 Git，僅追蹤來源索引。安裝與適用引擎見整合 Skill；商業引擎與依賴另依其授權。

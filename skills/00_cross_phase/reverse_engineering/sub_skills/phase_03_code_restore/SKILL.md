@@ -1,11 +1,11 @@
 ---
 name: Reverse_Skill_CodeRestore
-description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、API 路由、資料庫 Schema、第三方依賴，產出程式碼層級的完整分析文件。
+description: Phase 03 逆向模式 — 從原始碼或無原始碼成品／紀錄蒐集實作證據，保存未知與覆蓋，產出可追溯分析文件。
 ---
 
 ## 一、定位
 
-本子 Skill 為逆向工程的**起點**，負責分析使用者提供的原始碼，產出程式碼層級的結構化分析結果，供 Phase 02 逆向使用。
+本子 Skill 為逆向工程的**起點**，負責分析使用者提供的原始碼或成品／行為材料，產出程式碼層級的結構化分析結果，供 Phase 02 逆向使用。
 
 **逆向方向**：Phase 03（程式碼）→ 產出分析文件 → 供 Phase 02 逆向使用
 
@@ -22,13 +22,16 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 
 | 項目 | 說明 | 必填 |
 |:-----|:-----|:-----|
-| 原始碼目錄 | 舊專案完整原始碼路徑 | ✅ |
+| 案例目錄 | 原始碼、成品、紀錄、文件或黑箱目標來源宣告 | 必填 |
+| `reverse_input_manifest.json` | 無原始碼時填 source_available=false、來源及操作範圍 | 無原始碼必要 |
 | 語言/框架偵測 | 自動偵測或使用者指定 | 自動 |
 | 資料庫 DDL | 若有，提供 DB 結構 | 可選 |
 
 ---
 
 ## 四、執行流程
+
+無原始碼時先讀 [REA Skill](../../../rea/SKILL.md) 與其證據契約，再按材料選工具。下列原始碼掃描步驟只用於實際取得 source 的範圍；不適用時改做成品／紀錄蒐證，不強制產生內部結構。
 
 ### Step 1：環境偵測與素材掃描
 
@@ -47,7 +50,7 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 | JavaScript/TypeScript | TypeScript Compiler API / tree-sitter | 函數/類別/路由/型別 |
 | Java | javap / tree-sitter | 類別/方法/註解 |
 | Go | go/ast | 函數/結構體/路由 |
-| .NET | Roslyn / reflection | 類別/方法/屬性 |
+| .NET 原始碼 | Roslyn（成品改用 REA 靜態 parser，不載入 assembly） | 類別/方法/屬性 |
 
 分析產出：
 - `module_list.json`：模組清單（檔名、路徑、職責描述）
@@ -114,14 +117,18 @@ description: Phase 03 逆向模式 — 從既有原始碼分析模組結構、AP
 | `db_schema_raw.sql` | 有充分證據時的 DB Schema（可選） | Phase 02 逆向 |
 | `table_list.json` | 資料表清單 | Phase 02 逆向 |
 | `dependency_list.json` | 第三方依賴清單 | Phase 02 逆向 |
-| `code_analysis.md` | 程式碼分析報告 | 所有後續階段 |
+| `code_analysis.md` | 原始碼／成品與行為分析報告 | 所有後續階段 |
+| `evidence_manifest.json` | 無原始碼模式必要：證據、未知或產物覆蓋 | Phase 02 逆向 |
+| `findings_index.json` | 無原始碼模式必要：證據、未知或產物覆蓋 | Phase 02 逆向 |
+| `unknowns.json` | 無原始碼模式必要：證據、未知或產物覆蓋 | Phase 02 逆向 |
+| `coverage.json` | 無原始碼模式必要：證據、未知或產物覆蓋 | Phase 02 逆向 |
 
 ---
 
 ## 六、與現有框架的整合
 
 ### 6.1 Planner 職責
-- 確認原始碼目錄可達
+- 確認案例目錄與來源可達，無原始碼時驗證來源 manifest
 - 選擇適合的靜態分析工具
 - 規劃分析順序（先掃描結構 → 再分析程式碼 → 最後匯整）
 

@@ -30,6 +30,8 @@
 
 | 標記 | 意義 | 例子 |
 |---|---|---|
+| `成品可見` | 靜態解析成品 bytes／metadata／CIL | 附 artifact 指紋、位置及 Evidence ID；不是原始碼或實際執行 |
+| `歷史紀錄` | 既有 HAR／日誌的錄製行為 | 附錄製版本、環境與範圍；不是本次執行 |
 | `程式可見` | 靜態讀取程式碼可直接確認 | 某分支收到欄位 X 後呼叫函式 Y；附檔案與行號 |
 | `文件記載` | 附件或既有文件明確寫出 | API PDF 說明成功回應格式；附文件頁碼／章節 |
 | `使用者提供` | 使用者回憶、描述或選定的預期 | 使用者表示 Token 期限為六個月 |
@@ -50,7 +52,7 @@
 
 ### 第 2 步：盤點手邊材料
 
-請使用者提供可取得的專案路徑、程式碼、規格 PDF、截圖、日誌、範例請求／回應、資料表定義、測試或部署文件。每輪只追問最有價值的一項缺口。
+請使用者提供可取得的專案路徑、程式碼、規格 PDF、截圖、日誌、範例請求／回應、資料表定義、測試或部署文件。每輪只追問最有價值的一項缺口。無原始碼時可提供 DLL／EXE／APK／ASAR 或已去識別化 HAR；先依 REA 規則建立來源宣告，不要求補齊原始碼。
 
 在允許讀取的範圍內先自行列出材料清單及無法讀取的項目。提醒使用者遮蔽密碼、Token、個人資料、連線字串及正式環境秘密；不要求提供真實憑證。使用者只有 PDF 或片段時，仍可先做局部分析並標出範圍限制。
 
@@ -116,3 +118,13 @@ AI 先依任務類型找入口。例如：HTTP 路由／Controller、UI 事件�
 ## API 類案例的可選檢查清單
 
 只有在本次目標確實是 API 時才使用：呼叫端與用途、方法與路徑、請求欄位、驗證／授權、回應格式與狀態碼、錯誤碼、資料副作用、Token／Session 生命週期、重試／冪等、callback／redirect、限制與版本。缺少程式、規格或實際觀察的項目標為未知；不得把此清單硬套到其他類型的逆向工作。
+
+## REA 與無原始碼逆向
+
+沒有完整原始碼時，先讀 [REA 整合 Skill](../rea/SKILL.md)，依成品、離線紀錄、黑箱目標或文件分流。REA 是選用 provider；只有文件／UI 不強制安裝 REA。來源 manifest 記 `source_available=false`；Phase 03 改做成品與行為蒐證，不能要求完整類別、服務端路由或 DB。
+
+保留既有產物檔名；資料不足時寫未知或空清單並附 coverage，不以檔案存在推定完整。Phase 02 必須讀取 evidence_manifest.json、findings_index.json、unknowns.json、coverage.json；內部無證據時用黑箱節點，不補造 ER／DDL／handler。原始 REA observed 不等於本次執行。
+
+起點先執行 `python scripts/check_no_source_evidence.py --project <專案路徑> --inputs-only`；交接時由 reverse integrity／Mode E 檢查證據與覆蓋。仍按 Phase 03→02→01 候選流程及既有正向核准關卡推進。
+
+無原始碼新手直接使用 [REA 新手指南](../rea/references/getting-started.md) 的提示。先說明來源、工具準備與交付物；由 AI 填 manifest，不能要求新手自行建立完整證據 schema。
