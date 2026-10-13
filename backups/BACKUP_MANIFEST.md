@@ -60,3 +60,29 @@
 ## 2026-10-13 建模面向與分析維度更新前備份
 
 `threat-model-dimensions-before-20261013.zip` 保存本次 14 份既有文件更新前內容，來源 commit：`1c7af61d68b5bee1acd651d942191d1915fe328b`（承接 main 與代碼清單規則）。ZIP 本機留存依既有排除規則不入 Git；新增 modeling-dimensions.md 可由本次提交追溯。不代表案例 Baseline 或階段核准。
+
+
+## 2026-10-13 威脅建模代碼中文對照規範修改前備份（歷史補登）
+
+`threat-model-glossary-before-20261013-142451.zip` 保存首次加入「完整代碼中文清單必須在分析交付前建立並提供查閱入口」規則前的八份工作區文件。備份包含既有未提交變更，不代表乾淨 Git 基線、案例 Baseline 或階段核准。首次修改當時未推送；後續規範已隨 [PR #11](https://github.com/JengFeng/SSDLC-Skill/pull/11) 合併 main。
+
+本機實體：`E:\00AI協作\SSDLC-skill\backups\threat-model-glossary-before-20261013-142451.zip`。ZIP 依既有規則不入 Git；遠端只有歷程紀錄，不含備份實體。
+
+| ZIP 項目順序 | 原始檔案位置 |
+|---|---|
+| 1 | `skills/02_system_design/threat-modeling/SKILL.md` |
+| 2 | `skills/02_system_design/threat-modeling/references/deliverable-template.md` |
+| 3 | `skills/02_system_design/threat-modeling/references/risk-and-review.md` |
+| 4 | `skills/00_cross_phase/reverse_engineering/sub_skills/phase_02_design_restore/SKILL.md` |
+| 5 | `skills/README.md` |
+| 6 | `README.md` |
+| 7 | `memory.md` |
+| 8 | `backups/BACKUP_MANIFEST.md` |
+
+ZIP SHA-256：`79e52cb12279503869da99fd78a8d7e8badf1a22463be4a9c37a94ab31a84a43`。本次以 ZIP 逐項內容確認順序並通過壓縮完整性檢查。
+
+**還原限制**：此 ZIP 未保留目錄層級，含兩個 `SKILL.md` 及兩個 `README.md`；直接解壓縮可能覆蓋同名檔案。還原須依 ZIP 項目順序與內容辨識，逐項放回上表原始路徑，不能僅按檔名取得內容。這是修改前歷史版本，不應覆蓋 main 的更新版本。
+
+## 2026-10-13 歷史記憶與備份清單補登前備份
+
+`glossary-history-before-20261013.zip` 保存本次補登前的 `memory.md` 與 `backups/BACKUP_MANIFEST.md`，保留原始路徑。本機位於 `E:\00AI協作\SSDLC-backup-history\backups\`，依既有規則不入 Git。此次只補歷史與查閱限制，不修改 Skill 或案例。
