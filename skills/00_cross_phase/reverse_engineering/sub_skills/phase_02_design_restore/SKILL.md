@@ -158,3 +158,6 @@ Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查�
 ## 無原始碼設計候選
 
 讀取 Phase 03 的 evidence_manifest.json、findings_index.json、unknowns.json、coverage.json；依 [REA 規則](../../../rea/references/no-source-rules.md) 建立外部 DFD 與可觀察的契約。內部沒有證據時保持黑箱；ER／API 文件可記未知原因，不捏造資料庫或 handler。產出本階段 coverage.json 並回指上游 Evidence ID。選用 REA 不自動觸發必要威脅建模。
+
+建立、更新或審查該模型時，必須依威脅建模 Skill 的重要規範，在分析交付前建立／更新完整的代碼與中文說明對照清單，預設同目錄 `code_glossary.md`；已有專案清單則沿用。涵蓋實際 ID、STRIDE 組合、結果碼及相關縮寫，核對無遺漏，並在模型、成果入口和交付回覆提供連結與位置。清單只作解釋，不代替模型審閱、需求核准或控制驗證。
+

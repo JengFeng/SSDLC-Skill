@@ -56,6 +56,7 @@
 ## 2. 系統設計
 本階段技能用於前端 UI 原型設計、配色、品牌風格套用、系統分析（SA/SD）設計與簡報與提案影音輔助。### 本專案自行設計
 * **[threat-modeling](02_system_design/threat-modeling/SKILL.md)**：以 DFD 與信任邊界為基礎，按 OWASP 四步主線搭配 STRIDE，建立可追溯的威脅、風險排序、控制措施與驗證工作。
+  * **必要交付**：分析交付前主動建立／更新完整代碼與中文說明對照清單，涵蓋實際編號與縮寫並提供查閱連結；詳見 Skill 的重要規範。
   * **方法來源與可讀狀態**：[來源整理](02_system_design/threat-modeling/references/source-basis.md)
 
 ### Anthropic 官方技能
