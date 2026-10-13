@@ -83,3 +83,6 @@ external-resources/open-design/*
 external-resources/ppt-master/*
 !external-resources/ppt-master/url.txt
 
+# REA upstream sources/runtime: retain only provenance index
+external-resources/rea/*
+!external-resources/rea/url.txt

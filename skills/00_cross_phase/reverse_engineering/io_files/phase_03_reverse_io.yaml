@@ -4,10 +4,14 @@ phase: "03"
 mode: reverse_engineering
 path_base: project_root
 inputs:
-  - id: "source_code_dir"
+  - id: "project_dir"
     path: "."
     required: true
-    description: "指定專案根目錄與來源檔案"
+    description: "指定案例根目錄；可包含原始碼、成品、紀錄或文件。無原始碼另須來源 manifest。"
+  - id: "reverse_input_manifest.json"
+    path: "inputs/reverse_input_manifest.json"
+    required: false
+    description: "無原始碼模式必要：來源、source_available=false、操作範圍與指紋；檢查器另行驗證。"
   - id: "db_ddl_file"
     path: "inputs/db_schema.sql"
     required: false
@@ -47,3 +51,23 @@ outputs:
     description: "程式碼分析報告"
 
 # language_hint 為對話／執行參數，不是檔案，不列入檔案 IO 契約。
+
+  - id: "evidence_manifest.json"
+    path: "outputs/phase_03_reverse/evidence_manifest.json"
+    required: false
+    description: "無原始碼模式必要，由 check_no_source_evidence.py 條件式驗證。"
+
+  - id: "findings_index.json"
+    path: "outputs/phase_03_reverse/findings_index.json"
+    required: false
+    description: "無原始碼模式必要，由 check_no_source_evidence.py 條件式驗證。"
+
+  - id: "unknowns.json"
+    path: "outputs/phase_03_reverse/unknowns.json"
+    required: false
+    description: "無原始碼模式必要，由 check_no_source_evidence.py 條件式驗證。"
+
+  - id: "coverage.json"
+    path: "outputs/phase_03_reverse/coverage.json"
+    required: false
+    description: "無原始碼模式必要，由 check_no_source_evidence.py 條件式驗證。"

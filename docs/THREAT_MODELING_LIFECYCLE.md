@@ -33,3 +33,7 @@
 `check_spec_integrity.py` 在 A／B／C／D／E／S 模式呼叫威脅模型條件檢查。根框架母版的預設條件關閉，不要求模型。符合條件的正向 Phase 02 完成／交接、後續階段啟動或已完成的逆向 Phase 02，缺少模型列為完整性缺失；是否退回或放行仍依既有規章，腳本不修改 gate。
 
 可以單獨執行 `python scripts/check_threat_modeling.py --project <專案目錄> --phase 02 --mode B` 檢查 Phase 02 交付；不會掃描服務或修改資料。`scripts/test_threat_modeling_policy.py` 用暫存專案驗證開關、里程碑、路徑及逆向條件；不代表真實系統控制驗證。
+
+## 無原始碼的模型證據
+
+REA 是選用成品／紀錄 provider，必要建模條件不變。依 [REA Skill](../skills/00_cross_phase/rea/SKILL.md) 區分靜態證據、歷史錄製、受控執行與推論；外部 DFD 可使用黑箱服務。每項威脅列支持證據、未知控制及驗證方式，不將反編譯字串或未找到控制直接當成漏洞。模型完成與安全驗證、人工核准分開。

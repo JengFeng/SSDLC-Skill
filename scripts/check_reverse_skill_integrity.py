@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from check_no_source_evidence import check as check_no_source_evidence
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +28,7 @@ PHASE_DIRS = {
 
 
 def check(project: Path) -> list[str]:
-    errors: list[str] = []
+    errors: list[str] = check_no_source_evidence(project, ("03", "02"))
     for path in (DIAGRAM / "SKILL.md", DIAGRAM / "vendor/SKILL.md", DIAGRAM / "LICENSE"):
         if not path.is_file():
             errors.append(f"缺少 Diagram Design 資料：{path}")

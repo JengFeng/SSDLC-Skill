@@ -2021,3 +2021,12 @@ Phase 06：運維解析（順向）
 ## 2026-10-13 README 更新紀錄與 Mermaid 渲染修正
 
 補上根 README 缺漏的威脅建模整合紀錄、政策、六階段交接、Skill／SSOT／IO、驗收與文件連結。修正公開 App／API data-flow.md 的 Store 資料儲存節點結尾括號順序，並同步 preview/threat_model.md 的同源圖表。僅修正語法，不改資料流程或風險結論。整併前備份：backups/threat-model-docs-mermaid-before.zip。
+
+
+## 2026-10-13：REA 無原始碼逆向整合
+
+使用者要求將 REA 納入 Skill 並同步 README 與相應規則。新增 SSDLC 自建 rea Skill 與兩份 reference、來源索引；補無原始碼 manifest、證據索引、未知及 coverage，接入逆向 IO、子 Skill、主控／引導、Mode E 與 reverse integrity。保留既有 source 案例、候選核准與條件式威脅建模；不安裝 runtime、不註冊 MCP、不對真實目標測試。修改前追蹤檔案為乾淨，保留既有未追蹤案例與暫存資料。
+
+## 2026-10-13：REA GitHub 發布準備
+
+補上 REA 新手指南、可複製代理提示、材料準備、工具依賴、產物用途及檢查時機；同步 README、REA Skill、引導 SOP 與指令說明。此次 REA 使用獨立 feat/rea-no-source-integration 分支；本機威脅代碼對照與使用者案例另行保留。

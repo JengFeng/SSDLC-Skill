@@ -1,0 +1,5 @@
+https://github.com/morluto/rea
+release: rea-agents 6.4.0
+commit: bb96afdbe32f5318d57fcb00099191c5a7712f53
+license: MIT (REA-authored code); dependencies retain their licenses
+use: optional no-source evidence provider; SSDLC-owned Skill in skills/00_cross_phase/rea

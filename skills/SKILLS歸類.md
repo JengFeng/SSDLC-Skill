@@ -40,7 +40,7 @@
 
 ### 7. 00_cross_phase
 * **適用技能**：跨階段全域共用技能，用於腦力激盪、自主迭代研究、TDD 測試驅動開發、計畫撰寫、網頁資料擷取、完成前驗證、複雜多 Agent 協作工作流、版本控制、程式碼差異比對以及跨格式文件轉 Markdown。
-* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`、`markitdown`、`anthropics-skills`、`github-skills`、`minimax-skills`、`ui-ux-pro-max-skill`、`codex-ppt-skill`、`guizang-ppt-skill`、`ppt-master`、`Security-Principles`、`diagram-design`（全階段共用原始版型與驗證規則）。
+* **技能清單**：`langgraph`、`git`、`diffsync`、`autoresearch`、`brainstorming`、`firecrawl`、`test-driven-development`、`verification-before-completion`、`writing-plans`、`ralph-loop`、`using-superpowers`、`llm-council`、`ui-ux-pro-max`、`slides`、`markitdown`、`anthropics-skills`、`github-skills`、`minimax-skills`、`ui-ux-pro-max-skill`、`codex-ppt-skill`、`guizang-ppt-skill`、`ppt-master`、`Security-Principles`、`rea`（無原始碼成品／行為證據與交接）、`diagram-design`（全階段共用原始版型與驗證規則）。
 
 ## 執行步驟 SOP（完整版）
 
@@ -142,3 +142,7 @@
 1. **三檔交叉驗證**：核對根 `README.md`、`skills/README.md` 與實際目錄中的 Skill 名稱、用途及連結；以 `skills/00_cross_phase` 至 `skills/06_maintenance` 的直接子目錄為準，不在文件中維護技能或歸屬數量。
 2. **執行對齊架構檢查**：執行 `@optimize`（Harness Optimization）進行全案關聯性檢查。
 3. **執行規格完整性檢查**：執行 `python scripts/check_spec_integrity.py --mode B`。
+
+## REA 無原始碼逆向整合
+
+[rea](00_cross_phase/rea/SKILL.md) 為 SSDLC 自建跨階段整合 Skill，來源工具為 morluto/rea（MIT，固定 rea-agents 6.4.0）。適用 Phase 03 成品／紀錄蒐證、Phase 02 設計／威脅候選、Phase 01 需求交接與後續版本影響分析；由既有 @reverse／@guide reverse 路由。無原始碼不強制 REA；證據、未知與覆蓋須保留。

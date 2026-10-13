@@ -5,7 +5,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 ## 一、定位
 
-本子 Skill 為逆向工程的**第二步**，從 Phase 03 的程式碼分析結果反推系統設計層級的文件。
+本子 Skill 為逆向工程的**第二步**，從 Phase 03 的原始碼／成品／行為分析結果反推系統設計層級的文件。
 
 **逆向方向**：Phase 03 產出 → 反推 → Phase 02 設計文件 → 供 Phase 01 逆向使用
 
@@ -31,6 +31,8 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 ---
 
 ## 四、執行流程
+
+無原始碼時先建立外部架構／DFD，以下步驟僅依足夠證據執行；資料不足的必需文件寫明未知與原因，覆蓋寫入 coverage.json。
 
 ### Step 1：ER 圖反推
 
@@ -100,6 +102,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 安全基準已啟用，或使用者明確要求／選取威脅建模時，載入 `skills/02_system_design/threat-modeling/SKILL.md`，以逆向候選 DFD／證據建立 `outputs/phase_02_reverse/threat_model.md`。模型保留候選與未知，先建立威脅→候選安全需求→控制→測試設計的追溯；不代表控制已驗證。其餘情況為選用。
 
+
 Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查。IO 契約保留 `required: false` 並註記條件，由完整性檢查在條件成立及逆向 Phase 02 完成時檢查模型，即使 IO 關閉也檢查必要交付。原 Phase 01 人工審核與 Phase 04–06 關卡維持。
 
 ## 五、輸出清單
@@ -116,6 +119,7 @@ Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查�
 | `use_case_list.json` | Use Case 清單 | Phase 01 逆向 |
 | `activity_diagram.md` | 活動圖 | Phase 01 逆向 |
 | `sequence_diagram.md` | 時序圖 | Phase 01 逆向 |
+| `coverage.json` | 無原始碼模式必要：產物覆蓋、證據與未知 | Phase 01 逆向 |
 
 ---
 
@@ -126,7 +130,7 @@ Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查�
 
 ### 6.2 Planner 職責
 - 讀取 Phase 03 逆向產出
-- 規劃設計反推順序（ER → API → 架構 → Use Case → 活動/時序）
+- 規劃設計反推順序；無原始碼時先外部架構／DFD，再依證據補 API、Use Case 等，不強制 ER
 - 確認哪些文件可自動生成、哪些需人工補正
 
 ### 6.3 Generator 職責
@@ -150,3 +154,7 @@ Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查�
 | API 結構無法推斷 | 僅產出路由清單，不產出請求/回應結構 |
 | 模組關聯不明確 | 產出初步架構圖，標記「待人工確認」 |
 | Use Case 無法推斷 | 跳過 Use Case 圖，不阻斷流程 |
+
+## 無原始碼設計候選
+
+讀取 Phase 03 的 evidence_manifest.json、findings_index.json、unknowns.json、coverage.json；依 [REA 規則](../../../rea/references/no-source-rules.md) 建立外部 DFD 與可觀察的契約。內部沒有證據時保持黑箱；ER／API 文件可記未知原因，不捏造資料庫或 handler。產出本階段 coverage.json 並回指上游 Evidence ID。選用 REA 不自動觸發必要威脅建模。

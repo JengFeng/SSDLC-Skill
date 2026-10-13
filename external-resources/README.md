@@ -20,6 +20,7 @@
 | `minimax-skills/` | [MiniMax-AI/skills](https://github.com/MiniMax-AI/skills) | MIT | MiniMax AI 開發技能合集（前端/全端/行動/文件/多模態/音樂） |
 | `open-design/`
 | `ppt-master/` | [hugohe3/ppt-master](https://github.com/hugohe3/ppt-master) | MIT | AI 原生可編輯 PPTX 生成（原生圖形/動畫/圖表/表格/語音旁白） | | [nexu-io/open-design](https://github.com/nexu-io/open-design) | Apache-2.0 | AI 設計引擎 Skill 合集（前端/UI/動畫/影片/簡報/PDF） |
+| `rea/` | [morluto/rea](https://github.com/morluto/rea) | MIT；依賴另計 | [來源索引](rea/url.txt)；[自建無原始碼整合 Skill](../skills/00_cross_phase/rea/SKILL.md)，不含 runtime |
 | `Security-Principles/` | 本框架自建 | — | 數位發展部資通安全署防護基準 Skill |
 | `ui-ux-pro-max-skill/` | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 | UI/UX 設計智慧技能組 |
 
@@ -98,6 +99,7 @@ AI 代理將依序執行：
 | Anthropic Skills | [github.com/anthropics/skills](https://github.com/anthropics/skills) | See THIRD_PARTY_NOTICES.md |
 | Awesome DESIGN.md | [github.com/VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT |
 | Diagram Design | [github.com/cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) | MIT v2.6 |
+| REA | [github.com/morluto/rea](https://github.com/morluto/rea) | MIT；依賴另計 |
 | MarkItDown | [github.com/microsoft/markitdown](https://github.com/microsoft/markitdown) | MIT |
 | MiniMax Skills | [github.com/MiniMax-AI/skills](https://github.com/MiniMax-AI/skills) | MIT |
 | UI/UX Pro Max | [github.com/nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | MIT v2.6.2 |
@@ -118,6 +120,8 @@ external-resources/anthropics-skills/*
 external-resources/diagram-design/
 external-resources/github-skills/*
 !external-resources/github-skills/url.txt
+external-resources/rea/*
+!external-resources/rea/url.txt
 external-resources/markitdown/*
 !external-resources/markitdown/url.txt
 external-resources/ui-ux-pro-max-skill/*
@@ -137,3 +141,7 @@ external-resources/ui-ux-pro-max-skill/*
 ```
 
 各 Skill 的完整安裝與設定方式，請參考其 GitHub Repository 的 README。
+
+## REA 登記與操作
+
+REA 來源僅登記於 `rea/url.txt`；本次納入的是 SSDLC 自建整合 Skill，未下載 runtime 或將上游 Skill 覆蓋既有主控。能力、固定版本、平台限制及契約見 [REA Skill](../skills/00_cross_phase/rea/SKILL.md)。上游原始程式碼與相依引擎需依需求另行安裝，遵守各自授權。

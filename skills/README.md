@@ -2,6 +2,8 @@
 
 本目錄依據 [TEMPLATE_SKILL.md](../docs/TEMPLATE_SKILL.md) 所定義的安全軟體開發生命週期六階段（SSDLC）分類技能。技能依階段及跨階段用途歸類，並加註來源以方便追溯。
 
+新增可選 [REA 無原始碼逆向 Skill](00_cross_phase/rea/SKILL.md)：成品／離線紀錄蒐證、黑箱候選模型與來源覆蓋；由既有逆向主控調度。
+
 ---
 
 ## 1. 規劃與需求分析
@@ -390,3 +392,9 @@
 | `06_maintenance` 維護與營運 | [`logparser`](../skills/06_maintenance/logparser/SKILL.md) | 雜亂日誌自動清理、正則篩選與格式化輸出分析。 |
 | `06_maintenance` 維護與營運 | [`opentelemetry`](../skills/06_maintenance/opentelemetry/SKILL.md) | 雲原生 APM 效能瓶頸、調用鏈分佈式追蹤系統。 |
 | `06_maintenance` 維護與營運 | [`prometheus_grafana`](../skills/06_maintenance/prometheus_grafana/SKILL.md) | 系統硬體指標與服務效能監控、即時 Grafana 圖表告警機制。 |
+
+## REA 無原始碼逆向整合
+
+[rea](00_cross_phase/rea/SKILL.md) 為 SSDLC 自建跨階段整合 Skill，來源工具為 morluto/rea（MIT，固定 rea-agents 6.4.0）。適用 Phase 03 成品／紀錄蒐證、Phase 02 設計／威脅候選、Phase 01 需求交接與後續版本影響分析；由既有 @reverse／@guide reverse 路由。無原始碼不強制 REA；證據、未知與覆蓋須保留。
+
+REA 新手操作與可複製提示：[新手指南](00_cross_phase/rea/references/getting-started.md)。

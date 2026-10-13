@@ -459,7 +459,7 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 1. 逆向工程是 `skills/00_cross_phase/reverse_engineering/` 的跨階段 Skill，沿用 Phase 01–06，不新增 Phase 00。先以 Phase 03→02→01 還原候選基線；Phase 01 人工確認後，才可進入 Phase 04→05→06 現況盤點。
 2. 來源專案須保持唯讀。預設不執行來源程式碼、測試、建置或部署，不安裝依賴，也不讀取或輸出機密值；每項結論須標示來源證據、觀察與推論、信心及限制。
 3. Phase 01 候選需求尚未經使用者明確核准時，不得當作已核准 SSOT。`phase_gates.json` 與 `outputs/phase_01_reverse/reverse_completion_summary.json` 的 `approval_status` 及 `approved_at` 須一致；Phase 04–06 無論是否啟用 IO 管理，均須先經 Mode E 驗證審核閘口。
-4. 六份 `phase_NN_reverse_io.yaml` 應與六個子 Skill 產物清單對齊。每筆輸入與輸出須有穩定 `id`、以目標專案根目錄為基準的 `path` 及布林值 `required`；下游必填輸入應可追溯到上游輸出或明確的人工確認參照。只有 `io_management.enabled=true` 時，才以 Mode E 驗證逆向 IO 產物；審核閘口不受此開關影響。
+4. 六份 `phase_NN_reverse_io.yaml` 應與六個子 Skill 產物清單對齊。每筆輸入與輸出須有穩定 `id`、以目標專案根目錄為基準的 `path` 及布林值 `required`；下游必填輸入應可追溯到上游輸出或明確的人工確認參照。只有 `io_management.enabled=true` 時，才以 Mode E 驗證逆向 IO 產物；審核閘口及無原始碼的來源／證據／覆蓋檢查不受此開關影響；無原始碼條件式交付由 check_no_source_evidence.py 驗證。
 5. 修改逆向指令、核心規範、Skill 或 IO 契約時，須同步核對根 `AGENTS.md`、`.agents/AGENTS.md`、`docs/commands_reference.md`、`README.md`、`docs/Harness_Optimization_SKILL.md` 與檢查腳本；執行 `python scripts/check_reverse_alignment.py` 檢查框架範本的一致性。此靜態檢查不替代針對目標專案的 Mode E 驗證。
 
 
@@ -571,3 +571,13 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 ## 威脅建模條件與生命週期
 
 安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](THREAT_MODELING_LIFECYCLE.md)。
+
+## REA 與無原始碼逆向規則
+
+`@reverse`、`@reverse-code`、`@guide reverse` 支援完全沒有原始碼的案例。先按材料分流：成品／離線紀錄可選 REA；只有 UI／遠端服務使用已授權黑箱觀察；只有文件用文件工具；完整原始碼沿用原有解析器。不新增 `@rea` 指令。
+
+無原始碼時讀取 `skills/00_cross_phase/rea/SKILL.md`，建立 `inputs/reverse_input_manifest.json`（source_available=false、來源指紋與操作範圍）。Phase 03 蒐集成品與行為證據；Phase 02 先建外部 DFD，服務端內部保持黑箱，無證據不補造 ER／DDL／handler。必需產物仍保留檔名，另以 coverage.json 記支持、部分、未知、未觀察或不適用及理由。
+
+共享 evidence_manifest.json、findings_index.json、unknowns.json，每項 finding／設計候選／威脅可回指 Evidence ID。靜態 observed、歷史 HAR 與本次受控執行分開；未看到控制不代表控制不存在。起點用 check_no_source_evidence.py --inputs-only，交接由 reverse integrity 與 Mode E 驗證來源與覆蓋；IO 管理關閉不關閉此條件式證據檢查。
+
+REA 僅為選用 provider；不自動安裝 runtime、註冊 MCP、啟動目標或重送請求。安全基準已啟用，或使用者明確要求／選取威脅建模時模型才必要；選用 REA 不改變此條件。工具成功、契約檢查通過或 unknown 解決不自動核准需求、風險或階段。

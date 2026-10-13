@@ -1,4 +1,4 @@
-﻿# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
+# SSDLC-Skill：AI 協作安全軟體開發生命週期框架
 
 <p align="center">
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × AI 協作 Skill</strong>
@@ -81,6 +81,7 @@
 | 視覺效果 / Shader | `shader-dev` | GLSL 著色器技術（光追 / 流體 / 粒子） |
 | 橫幅 / 封面設計 | `banner-design` | 多格式橫幅設計（22 風格） |
 | 生成式藝術 | `algorithmic-art` | 生成式藝術與視覺實驗 |
+
 
 ---
 
@@ -183,8 +184,8 @@
 | `@optimize [--incremental] [--files]` | ⚠️ 框架建造者專用（需 `@role builder`）：執行全案關聯檢查，包含指令表及逆向工程 Skill/IO/審核規範靜態對齊。`--incremental` 僅檢查異動檔案（口語：「執行增量架構對齊」）；`--files` 指定檔案檢查 | `@optimize --incremental` |
 | `@reverse <專案路徑> [--phase 03,02,01,04,05,06]` | 唯讀還原 Phase 03→02→01 候選基線；人工核准後才盤點 Phase 04→05→06 | `@reverse D:/old_app` |
 | `@reverse status` / `@reverse stop` | 唯讀查看進度／停止後續流程並保留既有產物 | `@reverse status` |
-| `@reverse-code <專案路徑>` | 靜態盤點 Phase 03 程式碼 | `@reverse-code D:/old_app` |
-| `@reverse-design <Phase 03 產出>` | 從程式碼證據反推 Phase 02 設計 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |
+| `@reverse-code <專案路徑>` | 靜態盤點 Phase 03 原始碼或成品／紀錄 | `@reverse-code D:/old_app` |
+| `@reverse-design <Phase 03 產出>` | 從原始碼／成品／行為證據反推 Phase 02 設計 | `@reverse-design D:/old_app/outputs/phase_03_reverse` |
 | `@reverse-requirements <Phase 02 產出>` | 產生 Phase 01 候選需求，交由使用者審核 | `@reverse-requirements D:/old_app/outputs/phase_02_reverse` |
 | `@guide reverse <專案路徑>` | 引導式逆向工程，含 Phase 01 人工審核閘口 | `@guide reverse D:/old_app` |
 | `@restore [latest|N|timestamp]` | 回溯工作目錄至指定快照（SHA-256 驗證 + git diff 補丁還原） | `@restore latest` |
@@ -542,6 +543,14 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 ## 📝 文件更新記錄（截至 2026-10-13）
 
+### 2026-10-13：REA 與無原始碼逆向整合
+
+- 新增 [REA Skill](skills/00_cross_phase/rea/SKILL.md) 與 [無原始碼規則](skills/00_cross_phase/rea/references/no-source-rules.md)，涵蓋成品、離線紀錄、黑箱及文件分流。
+- 補來源 manifest、Evidence／finding／unknown 索引及 Phase 03／02 產物覆蓋，保留舊 source 案例相容。
+- 更新逆向主 Skill、子 Skill、引導 SOP、IO、核心規則及指令三檔；新增條件式證據檢查並接入 reverse integrity／Mode E。
+- REA 是選用 provider；威脅建模必要條件與人工核准關卡不變。Skill 可使用，runtime／MCP 與真實成品驗證尚未安裝／執行。
+
+
 ### 2026-10-13 威脅建模整合與文件修正
 
 | 項目 | 說明 |
@@ -628,7 +637,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 新手可使用 `@guide reverse` 從手邊的程式碼、功能操作、文件或問題開始。AI 會先盤點材料並尋找入口候選，逐步追出流程與圖表，再由圖和來源整理設計及需求候選；每輪最多問一個白話問題，回答「不知道」會保留為未知。完整通用步驟與證據標記見 `skills/00_cross_phase/reverse_engineering/GUIDED_REVERSE_SOP.md`。此引導不限於 API 或單一產業情境。
 
 ### 逆向流程
-- Phase 03 逆向：程式碼分析（起點）→ 模組清單、API 路由、可證實的資料庫線索
+- Phase 03 逆向：原始碼或成品／行為蒐證（起點）→ 模組清單、API 路由、可證實的資料庫線索
 - Phase 02 逆向：設計文件反推 → ER 圖、API Spec、系統架構圖
 - Phase 01 逆向：需求文件反推 → 需求候選、四規格草稿、追溯矩陣
 - 正向 Phase 01→02→03：將候選回灌專案根 SSOT，按需求核准、設計及實作關卡遞推
@@ -636,7 +645,7 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 
 ### 指令
 - @reverse [專案路徑] — 啟動完整逆向工程
-- @reverse-code [專案路徑] — 僅執行 Phase 03 程式碼分析
+- @reverse-code [專案路徑] — 僅執行 Phase 03 原始碼或成品／行為分析
 - @reverse-design [Phase 03 產出] — 僅執行 Phase 02 設計反推
 - @reverse-requirements [Phase 02 產出] — 僅執行 Phase 01 需求反推
 - @guide reverse [專案路徑] — 依通用新手 SOP 引導式逆向工程；可由 AI 尋找入口，逐步畫圖並反推設計／需求
@@ -656,3 +665,27 @@ skills/00_cross_phase/reverse_engineering/
 ## 威脅建模條件與生命週期
 
 安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](docs/THREAT_MODELING_LIFECYCLE.md)。
+
+## REA Skill：無原始碼逆向工程
+
+`@reverse`、`@reverse-code`、`@guide reverse` 支援完全沒有原始碼的案例。先按材料分流：成品／離線紀錄可選 REA；只有 UI／遠端服務使用已授權黑箱觀察；只有文件用文件工具；完整原始碼沿用原有解析器。不新增 `@rea` 指令。
+
+無原始碼時讀取 `skills/00_cross_phase/rea/SKILL.md`，建立 `inputs/reverse_input_manifest.json`（source_available=false、來源指紋與操作範圍）。Phase 03 蒐集成品與行為證據；Phase 02 先建外部 DFD，服務端內部保持黑箱，無證據不補造 ER／DDL／handler。必需產物仍保留檔名，另以 coverage.json 記支持、部分、未知、未觀察或不適用及理由。
+
+共享 evidence_manifest.json、findings_index.json、unknowns.json，每項 finding／設計候選／威脅可回指 Evidence ID。靜態 observed、歷史 HAR 與本次受控執行分開；未看到控制不代表控制不存在。起點用 check_no_source_evidence.py --inputs-only，交接由 reverse integrity 與 Mode E 驗證來源與覆蓋；IO 管理關閉不關閉此條件式證據檢查。
+
+REA 僅為選用 provider；不自動安裝 runtime、註冊 MCP、啟動目標或重送請求。安全基準已啟用，或使用者明確要求／選取威脅建模時模型才必要；選用 REA 不改變此條件。工具成功、契約檢查通過或 unknown 解決不自動核准需求、風險或階段。
+
+使用範例：`@guide reverse E:/legacy-review`，並說明「沒有原始碼，只有 DLL 與已去識別化 HAR」。詳細操作及格式見 [REA Skill](skills/00_cross_phase/rea/SKILL.md) 與 [證據契約](skills/00_cross_phase/rea/references/provider-contract.md)。
+
+### 新手開始使用 REA
+
+先建立獨立案例目錄，把成品、已去識別化紀錄或文件放入 inputs。無須知道原始碼入口，可直接在 AI 對話貼上：
+
+```text
+@guide reverse E:/legacy-review
+沒有原始碼，只有 DLL 與已去識別化 HAR。請使用 REA Skill 引導我，
+先盤點來源與版本，只做離線分析；缺資料保留未知，不啟動或重送請求。
+```
+
+這是代理對話指令，不是終端機命令。若要建模，另加「請建立威脅模型」。完整準備、操作順序、產物查閱及檢查時機見 [REA 新手指南](skills/00_cross_phase/rea/references/getting-started.md)。REA runtime 與外部引擎依材料另行準備；只有文件／UI 不強制安裝。

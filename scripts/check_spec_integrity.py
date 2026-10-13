@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """SSOT 規格完整性檢查腳本 (Spec Integrity Check)
 
 檢查點：
@@ -21,6 +21,7 @@ import yaml
 import argparse
 from datetime import datetime
 from check_threat_modeling import check as check_threat_model_delivery
+from check_no_source_evidence import check as check_no_source_evidence
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -665,8 +666,12 @@ class SpecIntegrityChecker:
             else:
                 self.log("ERR", "Phase 04–06 須先取得 Phase 01 人工核准，且 phase_gates.json 與摘要的審核狀態/時間一致")
 
+        if selected:
+            for error in check_no_source_evidence(self.project_base, selected):
+                self.log("ERR", error)
+
         if not gates.get("io_management", {}).get("enabled", False):
-            self.log("OK", "IO 管理未啟用；跳過逆向 IO 契約檢查（人工審核閘口仍生效）")
+            self.log("OK", "IO 管理未啟用；跳過逆向 IO 契約檢查（人工審核與無原始碼證據閘口仍生效）")
             return
 
         contract_dir = os.path.join(ROOT, "skills", "00_cross_phase", "reverse_engineering", "io_files")
