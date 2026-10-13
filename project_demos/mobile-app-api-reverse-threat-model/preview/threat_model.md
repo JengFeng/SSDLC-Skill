@@ -22,11 +22,11 @@ flowchart LR
   end
   subgraph TB2[信任邊界：網站服務]
     API([處理程序：授權與登入 API])
-    Session[(資料儲存：網站工作階段)]
+    Session[("資料儲存：網站工作階段")]
   end
   subgraph TB3[信任邊界：內部資料服務]
     Identity([處理程序：帳戶／權杖驗證])
-    Store[(資料儲存：帳戶、權杖及資源關聯])
+    Store[("資料儲存：帳戶、權杖及資源關聯")]
   end
   User -->|F-01：帳密與挑戰回應| App
   App -->|F-02：授權請求、回呼參數| API

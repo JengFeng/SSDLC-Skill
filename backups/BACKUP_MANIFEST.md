@@ -42,3 +42,8 @@
 ## 2026-10-13 威脅建模預覽整併前備份
 
 `threat-modeling-preview-before.zip` 保存本次修改前的 Skill、六階段模板、核心規章、SSOT、設定、完整性檢查、逆向契約與記憶／manifest。來源 commit：`ca460180fc20b9b7ff55ce3b200bd660d8982ce5`。用途：本機預覽差異審閱與回溯，不代表六階段專案 Baseline 或階段核准。
+
+
+## 2026-10-13 README／Mermaid 修正前備份
+
+`threat-model-docs-mermaid-before.zip` 保存 README、App／API 資料流程圖、預覽模型及修正前 memory／manifest。來源：main 的 `1b22a5b`。用途：文件更新紀錄與 Mermaid 節點語法修正的回溯。

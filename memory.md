@@ -2016,3 +2016,8 @@ Phase 06：運維解析（順向）
 ## 2026-10-13 威脅建模本機預覽整併
 
 使用者確認啟用政策：安全基準已啟用，或明確要求／選取建模時，模型為必要交付物；其餘選用。依指示僅於本機 preview/threat-modeling-integration 分支整併 Skill、六階段角色、SSOT 路徑、逆向契約與交付檢查。Phase 01 規劃、02 第一版、04 控制驗證、05–06 維護。原 App／API 公開案例新增獨立 preview，不覆寫原候選情境；完整性腳本不替代人工核准。備份：backups/threat-modeling-preview-before.zip。驗證與限制見 docs/THREAT_MODELING_PREVIEW.md。未推送遠端。
+
+
+## 2026-10-13 README 更新紀錄與 Mermaid 渲染修正
+
+補上根 README 缺漏的威脅建模整合紀錄、政策、六階段交接、Skill／SSOT／IO、驗收與文件連結。修正公開 App／API data-flow.md 的 Store 資料儲存節點結尾括號順序，並同步 preview/threat_model.md 的同源圖表。僅修正語法，不改資料流程或風險結論。整併前備份：backups/threat-model-docs-mermaid-before.zip。
