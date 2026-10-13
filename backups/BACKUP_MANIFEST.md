@@ -56,3 +56,7 @@
 ## 2026-10-13 威脅建模主要參考文件同步前備份
 
 `threat-model-glossary-reference-before-20261013-152410.zip` 保存本次規範、範本、主要參考文件、記憶及備份清單的修改前工作區版本。ZIP 保留本機；Git 差異可追溯發布內容。發布使用獨立 worktree，保留原工作區 REA 與案例資料，不宣稱案例 Baseline 或階段核准。
+
+## 2026-10-13 建模面向與分析維度更新前備份
+
+`threat-model-dimensions-before-20261013.zip` 保存本次 14 份既有文件更新前內容，來源 commit：`1c7af61d68b5bee1acd651d942191d1915fe328b`（承接 main 與代碼清單規則）。ZIP 本機留存依既有排除規則不入 Git；新增 modeling-dimensions.md 可由本次提交追溯。不代表案例 Baseline 或階段核准。

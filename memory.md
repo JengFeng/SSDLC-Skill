@@ -2038,3 +2038,12 @@ Phase 06：運維解析（順向）
 依使用者要求，將完整代碼中文清單的必要交付規範同步到根 README／AGENTS、詳細代理規章、CORE_RULES、指令參照、威脅建模生命週期及 Harness 審查文件；納入既有 Skill、交付範本、審查標準與逆向 Phase 02 流程。清單須逐項解釋實際代碼，附來源與限制，交付前核對並提供成果查閱連結。GitHub 發布採獨立 docs/threat-model-glossary-reference-sync 分支；排除 REA 混合變更與本機案例。修改前備份：backups/threat-model-glossary-reference-before-20261013-152410.zip。
 
 驗證：Skill quick_validate（UTF-8 模式）通過；逆向框架對齊通過；Mode D 全掃描 13 通過、0 失敗。
+
+
+## 2026-10-13 [THREAT_MODEL_DIMENSIONS] 網路來源與面向補強
+
+使用者要求更新 GitHub 威脅建模 Skill 與相關 Skill／README。以最新 origin/main 建立獨立工作目錄，承接已推送但未合併的代碼中文清單規則，保留原工作區修改。新增九面向／分析維度、方法比較、官方來源與限制；同步主 Skill、提示、交付範本、審查、逆向主控／設計還原、README、AGENTS 與生命週期。維持候選與核准、啟用條件及授權；不新增 IO 必填或檢查腳本行為。修改前 ZIP 及 manifest 留存，驗證結果另記本次交付紀錄。
+
+驗證結果：UTF-8 Skill 驗證、逆向框架對齊、Mode D（13 通過／0 失敗）、新增相對連結與 diff 格式通過。
+
+補充驗證限制：通用 skill-creator 驗證器拒絕既有 reverse_engineering 與 Reverse_Skill_DesignRestore 名稱（非 hyphen-case），名稱本次未改；威脅建模 Skill 驗證通過。專案逆向對齊檢查通過，不將通用命名檢查寫成全部通過。

@@ -61,3 +61,7 @@ description: 對指定既有專案先按 Phase 03→02→01 逆向蒐證，再�
 保留既有產物檔名；資料不足時寫未知或空清單並附 coverage，不以檔案存在推定完整。Phase 02 必須讀取 evidence_manifest.json、findings_index.json、unknowns.json、coverage.json；內部無證據時用黑箱節點，不補造 ER／DDL／handler。原始 REA observed 不等於本次執行。
 
 起點先執行 `python scripts/check_no_source_evidence.py --project <專案路徑> --inputs-only`；交接時由 reverse integrity／Mode E 檢查證據與覆蓋。仍按 Phase 03→02→01 候選流程及既有正向核准關卡推進。
+
+## 逆向威脅建模的面向與維度
+
+符合既有威脅建模啟用條件時，依 [面向與方法選用指引](../../02_system_design/threat-modeling/references/modeling-dimensions.md) 規劃覆蓋，以 DFD＋STRIDE 為主線，按資料、業務、部署及證據選用隱私、濫用案例與攻擊路徑等補充。未見控制記未知；沒有部署證據不填成部署事實。新增方法／分類同步個案 code_glossary.md，不改人工核准與主動測試授權。

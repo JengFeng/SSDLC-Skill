@@ -691,3 +691,9 @@ REA 僅為選用 provider；不自動安裝 runtime、註冊 MCP、啟動目標�
 ```
 
 這是代理對話指令，不是終端機命令。若要建模，另加「請建立威脅模型」。完整準備、操作順序、產物查閱及檢查時機見 [REA 新手指南](skills/00_cross_phase/rea/references/getting-started.md)。REA runtime 與外部引擎依材料另行準備；只有文件／UI 不強制安裝。
+
+## 威脅建模面向與分析維度
+
+[選用指引](skills/02_system_design/threat-modeling/references/modeling-dimensions.md) 彙整系統資料流、身分授權、資料隱私、業務流程、攻擊路徑、部署雲端、供應鏈第三方、維運復原及風險處置九個常見面向，附中文方法比較、登入 API 教學問題與官方來源。
+
+保留 OWASP 四問／四步與 DFD＋STRIDE 主線，按案件選用 LINDDUN、攻擊樹、濫用案例、PASTA、OCTAVE／VAST；ATT&CK 與 API Top 10 作補充。九面向是框架整合提示，不是全部必選或外部統一標準。記錄選用理由、覆蓋、未知與來源限制；通用分類字典與個案實際 ID 分開，新增代碼同步完整中文對照清單。既有啟用、授權、候選與核准規則保持適用。
