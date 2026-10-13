@@ -540,7 +540,20 @@ AI：🚀 Phase 01 啟動！我們從需求釐清開始...
 | `待辦事項.md` | 未來需求與待辦清單 |
 | `專案逆向工程skill設計構想討論內容.md` | 逆向工程原始設計討論記錄 |
 
-## 📝 文件更新記錄（截至 2026-10-10）
+## 📝 文件更新記錄（截至 2026-10-13）
+
+### 2026-10-13 威脅建模整合與文件修正
+
+| 項目 | 說明 |
+|:---|:---|
+| **啟用與必要交付條件** | 安全基準已啟用，或使用者明確要求／選取威脅建模時，模型為必要交付物；其餘選用。選取建模不自動開啟安全基準。 |
+| **六階段生命週期** | Phase 01 規劃、02 完成第一版模型與審查、03 實作控制、04 驗證改善、05 核對部署、06 持續更新。詳見 [生命週期與啟用政策](docs/THREAT_MODELING_LIFECYCLE.md)。 |
+| **Skill 與交付範本** | 更新 [threat-modeling Skill](skills/02_system_design/threat-modeling/SKILL.md)，補穩定 ID、覆蓋表、威脅／需求／控制／測試追溯與剩餘風險狀態。 |
+| **設定、SSOT 與逆向 IO** | 新增 requested／selected 設定、Phase 02 模型路徑及逆向候選契約，並保留既有人工核准流程。 |
+| **交付檢查與驗收** | 新增條件式交付檢查及 13 個政策測試方法，涵蓋 8 種開關組合、里程碑與路徑限制。完整性檢查不能代替模型品質或實際控制驗證。 |
+| **案例與預覽文件** | 新增 [整併說明](docs/THREAT_MODELING_PREVIEW.md) 與 [既有 App／API 模型預覽](project_demos/mobile-app-api-reverse-threat-model/preview/threat_model.md)，保留原五筆候選威脅，補覆蓋與追溯。原整併已於 [PR #8](https://github.com/JengFeng/SSDLC-Skill/pull/8) 合併至 main。 |
+| **Mermaid 渲染修正** | 修正 [資料流程圖](project_demos/mobile-app-api-reverse-threat-model/data-flow.md) 及模型預覽的資料儲存節點括號順序，恢復圖表渲染。 |
+
 
 ### v1.4.1（2026-09-25）
 
