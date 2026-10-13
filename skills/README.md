@@ -56,6 +56,7 @@
 ## 2. 系統設計
 本階段技能用於前端 UI 原型設計、配色、品牌風格套用、系統分析（SA/SD）設計與簡報與提案影音輔助。### 本專案自行設計
 * **[threat-modeling](02_system_design/threat-modeling/SKILL.md)**：以 DFD 與信任邊界為基礎，按 OWASP 四步主線搭配 STRIDE，建立可追溯的威脅、風險排序、控制措施與驗證工作。
+  * **必要交付**：分析交付前主動建立／更新完整代碼與中文說明對照清單，涵蓋實際編號與縮寫並提供查閱連結；詳見 Skill 的重要規範。
   * **方法來源與可讀狀態**：[來源整理](02_system_design/threat-modeling/references/source-basis.md)
 
 ### Anthropic 官方技能
@@ -398,3 +399,9 @@
 [rea](00_cross_phase/rea/SKILL.md) 為 SSDLC 自建跨階段整合 Skill，來源工具為 morluto/rea（MIT，固定 rea-agents 6.4.0）。適用 Phase 03 成品／紀錄蒐證、Phase 02 設計／威脅候選、Phase 01 需求交接與後續版本影響分析；由既有 @reverse／@guide reverse 路由。無原始碼不強制 REA；證據、未知與覆蓋須保留。
 
 REA 新手操作與可複製提示：[新手指南](00_cross_phase/rea/references/getting-started.md)。
+
+## 威脅建模面向與分析維度
+
+[選用指引](02_system_design/threat-modeling/references/modeling-dimensions.md) 彙整系統資料流、身分授權、資料隱私、業務流程、攻擊路徑、部署雲端、供應鏈第三方、維運復原及風險處置九個常見面向，附中文方法比較、登入 API 教學問題與官方來源。
+
+保留 OWASP 四問／四步與 DFD＋STRIDE 主線，按案件選用 LINDDUN、攻擊樹、濫用案例、PASTA、OCTAVE／VAST；ATT&CK 與 API Top 10 作補充。九面向是框架整合提示，不是全部必選或外部統一標準。記錄選用理由、覆蓋、未知與來源限制；通用分類字典與個案實際 ID 分開，新增代碼同步完整中文對照清單。既有啟用、授權、候選與核准規則保持適用。

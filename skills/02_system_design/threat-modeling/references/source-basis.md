@@ -41,3 +41,7 @@
 - [Microsoft STRIDE](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats)：六類威脅提示。
 
 穩定 ID、SEC-CAND 候選需求、追溯表及模型審查結論是此補強包的工程設計選擇，不宣稱是 OWASP 強制欄位。LINDDUN 及 AI 分析提示為按情境選用，不表示所有系統必須導入，也不據此宣告符合特定法規。
+
+## 2026-10-13 網路面向與維度補強
+
+新增 [modeling-dimensions.md](modeling-dimensions.md)，整理九個常見面向、分析維度、方法比較與來源對應。此次重新取得 OWASP 官方原始文件、Microsoft、AWS、LINDDUN、VerSprite、MITRE 及 OWASP API Top 10 正文；SEI 本次連線重設，僅列延伸閱讀。NIST SP 800-154 頁面另保留版本限制，不作正式定稿標準。九面向、覆蓋欄位與登入問題是框架整合，不宣稱出自某單一標準，不推導個案漏洞確認。
