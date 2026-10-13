@@ -47,3 +47,7 @@
 ## 2026-10-13 README／Mermaid 修正前備份
 
 `threat-model-docs-mermaid-before.zip` 保存 README、App／API 資料流程圖、預覽模型及修正前 memory／manifest。來源：main 的 `1b22a5b`。用途：文件更新紀錄與 Mermaid 節點語法修正的回溯。
+
+## 2026-10-13 威脅建模主要參考文件同步前備份
+
+`threat-model-glossary-reference-before-20261013-152410.zip` 保存本次規範、範本、主要參考文件、記憶及備份清單的修改前工作區版本。ZIP 保留本機；Git 差異可追溯發布內容。發布使用獨立 worktree，保留原工作區 REA 與案例資料，不宣稱案例 Baseline 或階段核准。

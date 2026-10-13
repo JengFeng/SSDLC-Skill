@@ -4,6 +4,8 @@
   <strong>🏗️ Harness Engineering 駕馭工程 × 六大階段 SSDLC × AI 協作 Skill</strong>
 </p>
 
+威脅建模分析必須在交付前主動建立／更新完整的「代碼與中文說明對照清單」，涵蓋實際編號、STRIDE 組合及相關縮寫，並在成果入口與交付回覆提供查閱連結。詳見 [threat-modeling Skill 重要規範](skills/02_system_design/threat-modeling/SKILL.md#重要規範完整代碼與中文說明對照清單必須交付)。
+
 ---
 
 ## 📌 專案概述

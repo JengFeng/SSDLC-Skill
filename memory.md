@@ -2021,3 +2021,10 @@ Phase 06：運維解析（順向）
 ## 2026-10-13 README 更新紀錄與 Mermaid 渲染修正
 
 補上根 README 缺漏的威脅建模整合紀錄、政策、六階段交接、Skill／SSOT／IO、驗收與文件連結。修正公開 App／API data-flow.md 的 Store 資料儲存節點結尾括號順序，並同步 preview/threat_model.md 的同源圖表。僅修正語法，不改資料流程或風險結論。整併前備份：backups/threat-model-docs-mermaid-before.zip。
+
+
+## 2026-10-13 威脅建模代碼中文對照規範與主要文件同步
+
+依使用者要求，將完整代碼中文清單的必要交付規範同步到根 README／AGENTS、詳細代理規章、CORE_RULES、指令參照、威脅建模生命週期及 Harness 審查文件；納入既有 Skill、交付範本、審查標準與逆向 Phase 02 流程。清單須逐項解釋實際代碼，附來源與限制，交付前核對並提供成果查閱連結。GitHub 發布採獨立 docs/threat-model-glossary-reference-sync 分支；排除 REA 混合變更與本機案例。修改前備份：backups/threat-model-glossary-reference-before-20261013-152410.zip。
+
+驗證：Skill quick_validate（UTF-8 模式）通過；逆向框架對齊通過；Mode D 全掃描 13 通過、0 失敗。

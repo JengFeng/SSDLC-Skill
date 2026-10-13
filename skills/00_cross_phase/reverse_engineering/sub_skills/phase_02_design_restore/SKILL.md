@@ -100,6 +100,8 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 安全基準已啟用，或使用者明確要求／選取威脅建模時，載入 `skills/02_system_design/threat-modeling/SKILL.md`，以逆向候選 DFD／證據建立 `outputs/phase_02_reverse/threat_model.md`。模型保留候選與未知，先建立威脅→候選安全需求→控制→測試設計的追溯；不代表控制已驗證。其餘情況為選用。
 
+建立、更新或審查該模型時，必須依威脅建模 Skill 的重要規範，在分析交付前建立／更新完整的代碼與中文說明對照清單，預設同目錄 `code_glossary.md`；已有專案清單則沿用。涵蓋實際 ID、STRIDE 組合、結果碼及相關縮寫，核對無遺漏，並在模型、成果入口和交付回覆提供連結與位置。清單只作解釋，不代替模型審閱、需求核准或控制驗證。
+
 Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查。IO 契約保留 `required: false` 並註記條件，由完整性檢查在條件成立及逆向 Phase 02 完成時檢查模型，即使 IO 關閉也檢查必要交付。原 Phase 01 人工審核與 Phase 04–06 關卡維持。
 
 ## 五、輸出清單
