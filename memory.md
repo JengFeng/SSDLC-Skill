@@ -2047,3 +2047,14 @@ Phase 06：運維解析（順向）
 驗證結果：UTF-8 Skill 驗證、逆向框架對齊、Mode D（13 通過／0 失敗）、新增相對連結與 diff 格式通過。
 
 補充驗證限制：通用 skill-creator 驗證器拒絕既有 reverse_engineering 與 Reverse_Skill_DesignRestore 名稱（非 hyphen-case），名稱本次未改；威脅建模 Skill 驗證通過。專案逆向對齊檢查通過，不將通用命名檢查寫成全部通過。
+
+
+## 2026-10-13 威脅建模代碼中文對照必要交付
+
+- 使用者要求：往後完成威脅建模分析時，必須主動建立完整的代碼與中文說明對照清單，放入成果供使用者查閱，不等待追問。
+- 更新 threat-modeling/SKILL.md、交付範本、risk-and-review 審查標準及逆向 Phase 02 呼叫規範；同步 README 與 skills/README 入口說明。涵蓋實際 ID、STRIDE 組合、結果碼、重要欄位／類別與縮寫，附來源與候選／未驗證限制，交付前核對無漏列。
+- 預設模型同目錄 code_glossary.md，已有專案清單則沿用；模型、成果入口與交付回覆提供查閱連結。清單完整性不代表需求核准、漏洞確認、控制驗證或階段通過。
+- 在 docs/threat-model-code-glossary 分支更新，保留原有未提交變更；修改前定點 ZIP 備份為 backups/threat-model-glossary-before-20261013-142451.zip，保存的是當時工作區版本，不是乾淨提交或正式 Baseline。
+- 驗證：skill-creator quick_validate 通過；check_reverse_alignment.py 通過；check_spec_integrity.py Mode D 為 13 通過、0 失敗。未執行應用測試、正式環境請求或遠端推送。
+
+- 後續狀態補充：上述「未執行遠端推送」是首次修改當時的狀態。主要文件同步於提交 `9a3e005` 發布，並隨 [PR #11](https://github.com/JengFeng/SSDLC-Skill/pull/11) 於 2026-10-13 合併 main（`41e3399`）。本次僅補回歷史紀錄，不改模型、控制驗證或階段核准。
