@@ -86,6 +86,7 @@ phase_02_design:
     use_case_diagram: null   # use_case_diagram.md
     activity_diagram: null   # activity_diagram.md
     sequence_diagram: null   # sequence_diagram.md
+    threat_model: null       # 條件式；專案根相對路徑，例如 02_system_design/outputs/threat_model.md
   database:
     tables: []               # 資料表定義（由 Generator 從 db_schema.sql 萃取寫入）
     evidence_status: pending # 僅有逆向表名時不得視為已驗證 Schema

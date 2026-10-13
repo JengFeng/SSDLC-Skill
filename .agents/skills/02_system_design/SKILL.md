@@ -9,6 +9,16 @@ description: 系統設計階段，負責承接正規化需求並產出七項標�
 
 > ⚠️ **最高指導框架原則**：本規範受 [CORE_RULES.md](../../../docs/CORE_RULES.md) 管轄，所有代理行為必須遵循 PDCA 閉環與錯誤分級重試機制。
 
+## 威脅建模整合（條件式）
+
+安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。此條件獨立於本文件其他安全基準項目的啟用條件。使用者明確要求時記錄 `phase_gates.json.threat_modeling.requested = true`，選取 Skill 時記錄 `selected = true`；不得因此開啟安全基準。尚未寫入設定時，代理仍須遵守當次明確要求並補記設定，不能把未記錄當成跳過理由。
+
+完整生命週期與 IO／SSOT 規則見 [威脅建模生命週期](../../../docs/THREAT_MODELING_LIFECYCLE.md)。不符合條件時，不因缺少模型而阻擋階段；符合條件時，完成文件、模型審查、控制驗證與階段核准仍是不同狀態。
+
+- **Planner**：符合條件時載入 `skills/02_system_design/threat-modeling/SKILL.md`，規劃 DFD／邊界、威脅、排序、控制及驗證追溯；承接已核准需求，新增安全需求先列候選。
+- **Generator**：產出當前階段 `outputs/threat_model.md`（或專案 IO 契約指定路徑），含覆蓋／證據及 TM→REQ／候選需求→CTRL→TEST 追溯。更新 `phase_02_design.outputs.threat_model` 為專案根相對路徑；尚未實作／測試的控制只記預期風險降低。
+- **Evaluator**：依 Skill 的 `references/risk-and-review.md` 審查第一版模型，確認重要資料流與邊界、具體情境、排序、處置及未知；模型審查通過不表示控制已驗證或階段已自動核准。
+
 ## 一、 代理人職責規範
 
 ### 0. 安全防護整合（條件式）
@@ -139,8 +149,8 @@ description: 系統設計階段，負責承接正規化需求並產出七項標�
     | 活動圖 | `activity_diagram.md` | Mermaid flowchart |
     | 時序圖 | `sequence_diagram.md` | Mermaid sequenceDiagram |
 
-*   **🔒 安全產出（條件式）**：若 `security_baseline.enabled` 為 `true`，額外產出：
-    *   `outputs/threat_model.md` — 威脅模型（STRIDE 分析、攻擊樹、信任邊界圖）
+*   **威脅模型產出（條件式）**：若安全基準已啟用，或使用者明確要求／選取威脅建模，額外產出：
+    *   `outputs/threat_model.md` — 威脅模型（DFD／信任邊界、STRIDE 與適用濫用情境、處置與驗證追溯；攻擊樹依需要追加）
 
 > 📋 **IO 檔案管理（選擇性功能）**：
 > 若使用者已透過以下任一方式啟用 IO 檔案合約管理：

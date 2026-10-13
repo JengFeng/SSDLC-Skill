@@ -20,6 +20,7 @@ import json
 import yaml
 import argparse
 from datetime import datetime
+from check_threat_modeling import check as check_threat_model_delivery
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -750,6 +751,13 @@ class SpecIntegrityChecker:
 
         if self.mode in ("A", "B", "C", "D", "S"):
             self.check_forward_alignment()
+
+        print("\n=== 威脅模型條件式交付 ===")
+        threat_errors, threat_notes = check_threat_model_delivery(self.project_base, self.target_phase, self.mode)
+        for note in threat_notes:
+            self.log("OK", note)
+        for error in threat_errors:
+            self.log("ERR", error)
 
         if self.mode in ("A", "D"):
             self.check_ssot_files_exist()

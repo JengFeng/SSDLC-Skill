@@ -96,6 +96,12 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 
 ---
 
+## 條件式威脅建模
+
+安全基準已啟用，或使用者明確要求／選取威脅建模時，載入 `skills/02_system_design/threat-modeling/SKILL.md`，以逆向候選 DFD／證據建立 `outputs/phase_02_reverse/threat_model.md`。模型保留候選與未知，先建立威脅→候選安全需求→控制→測試設計的追溯；不代表控制已驗證。其餘情況為選用。
+
+Planner 規劃範圍、Generator 產出、Evaluator 依模型審查標準檢查。IO 契約保留 `required: false` 並註記條件，由完整性檢查在條件成立及逆向 Phase 02 完成時檢查模型，即使 IO 關閉也檢查必要交付。原 Phase 01 人工審核與 Phase 04–06 關卡維持。
+
 ## 五、輸出清單
 
 | 檔案 | 說明 | 供誰使用 |
@@ -105,6 +111,7 @@ description: Phase 02 逆向模式 — 從 Phase 03 逆向產出（模組清單�
 | `api_spec.md` | API 規格文件 | Phase 01 逆向 |
 | `api_spec.yaml` | OpenAPI 3.0 YAML | Phase 01 逆向 |
 | `system_architecture.md` | 系統架構圖 | Phase 01 逆向 |
+| `threat_model.md` | 條件式必要的候選威脅模型 | Phase 01 安全需求／正向設計 |
 | `use_case_diagram.md` | Use Case 圖 | Phase 01 逆向 |
 | `use_case_list.json` | Use Case 清單 | Phase 01 逆向 |
 | `activity_diagram.md` | 活動圖 | Phase 01 逆向 |

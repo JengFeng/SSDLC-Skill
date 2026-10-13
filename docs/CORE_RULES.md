@@ -566,3 +566,8 @@ specs/executable_spec.yaml (SSOT)  ←── AI 代理唯一讀寫源
 
 
 
+
+
+## 威脅建模條件與生命週期
+
+安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](THREAT_MODELING_LIFECYCLE.md)。

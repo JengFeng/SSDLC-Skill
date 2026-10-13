@@ -31,3 +31,13 @@
 - 風險評分尺度須採用專案／組織既有政策；缺少政策時，結果只能標示為暫定排序。
 - 程式碼行號、設定與執行行為應分別標記其證據來源和驗證狀態。
 - 來源頁面內容可能更新；需要正式合規結論時，應確認適用政策、版本與原文。
+
+## 2026-10-13 補強設計依據
+
+保留原本以 OWASP Historical 頁面為主線的選擇。以下補充流程維護與方法選擇，未取代既有專案規章。
+
+- [OWASP Threat Modeling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html)：持續維護、雲端責任邊界、依情境選擇方法，以及處置與可測量驗證。網頁直接抓取曾回 403，本次透過 [官方原始文件](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Threat_Modeling_Cheat_Sheet.md) 讀取。
+- [Threat Modeling Manifesto](https://www.threatmodelingmanifesto.org/)：四個核心問題、持續改善、跨職能協作及避免以形式完整取代實際價值。
+- [Microsoft STRIDE](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats)：六類威脅提示。
+
+穩定 ID、SEC-CAND 候選需求、追溯表及模型審查結論是此補強包的工程設計選擇，不宣稱是 OWASP 強制欄位。LINDDUN 及 AI 分析提示為按情境選用，不表示所有系統必須導入，也不據此宣告符合特定法規。

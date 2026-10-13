@@ -1004,3 +1004,8 @@ AI：收到，我來幫你回報這個框架問題。
     6. 每個關卡完成後更新 phase_gates.json 的 reverse_engineering 區塊（若該專案有此狀態欄位）；只記實際完成狀態，不虛報。
     7. 關卡 5 啟動逆向分析時依 `@reverse [專案路徑]` 執行；逆向蒐證完成只代表候選已整理，不代表業務核准、POC 執行成功、資安驗證或正向 Evaluator 通過。
     8. 在逆向起點與交接時執行 `python scripts/check_reverse_skill_integrity.py --project "<專案目錄>"`，檢查六個子 Skill、IO 契約和必需逆向產物；再按本章 2.4 執行專案四規格對齊檢查。
+
+
+## 威脅建模條件與生命週期
+
+安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](../docs/THREAT_MODELING_LIFECYCLE.md)。
