@@ -37,3 +37,8 @@
 ## 2026-10-10 備份紀錄補充
 
 `threat-modeling` Skill 與索引更新未建立 pre-change 備份。執行時工作樹已有其他未提交變更，為避免把混合狀態誤記為修改前快照，保留目前內容並以 Git 差異追溯。本次未執行 `@optimize`。
+
+
+## 2026-10-13 威脅建模預覽整併前備份
+
+`threat-modeling-preview-before.zip` 保存本次修改前的 Skill、六階段模板、核心規章、SSOT、設定、完整性檢查、逆向契約與記憶／manifest。來源 commit：`ca460180fc20b9b7ff55ce3b200bd660d8982ce5`。用途：本機預覽差異審閱與回溯，不代表六階段專案 Baseline 或階段核准。

@@ -638,3 +638,8 @@ skills/00_cross_phase/reverse_engineering/
 
 - 新增 MIT 授權的 `diagram-design`（上游 v2.6，固定 commit `dc1ace47b99a419e42d01a03cb6ace5346efa8ae`），依 Phase 01～06 需求、設計、實作、測試、部署與維運場景分類，並提供跨階段主 Skill。
 - Skill 入口位於 `skills/00_cross_phase/diagram-design/` 與各階段 `skills/<phase>/diagram-design/`；依框架階段清單及快捷編號導入。
+
+
+## 威脅建模條件與生命週期
+
+安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](docs/THREAT_MODELING_LIFECYCLE.md)。

@@ -73,3 +73,7 @@ outputs:
     path: "outputs/phase_02_reverse/sequence_diagram.md"
     required: false
     description: "時序圖"
+  - id: "threat_model.md"
+    path: "outputs/phase_02_reverse/threat_model.md"
+    required: false
+    description: "條件式必要：安全基準已啟用或使用者明確要求／選取威脅建模。由完整性檢查驗證；候選不等於核准。"

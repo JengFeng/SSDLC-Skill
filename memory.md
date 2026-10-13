@@ -2011,3 +2011,8 @@ Phase 06：運維解析（順向）
 - `check_spec_integrity.py` 原先在 Mermaid 輸出目錄不存在時一律警告；對 Phase 02 尚未開始且 SSOT 明定 `outputs: []` 的專案造成預期中的誤導警告。
 - 現在只有 Phase 02 為 `pending` 且沒有預期產出時提示略過；其他狀態缺少輸出目錄仍會警告。修改前版本保存於 `backups/check_spec_integrity.py.backup.20261010-phase02-mermaid`。
 - 以逆向 POC 重新驗證 A/D 檢查；IO 對齊與逆向 Skill 完整性檢查仍通過。
+
+
+## 2026-10-13 威脅建模本機預覽整併
+
+使用者確認啟用政策：安全基準已啟用，或明確要求／選取建模時，模型為必要交付物；其餘選用。依指示僅於本機 preview/threat-modeling-integration 分支整併 Skill、六階段角色、SSOT 路徑、逆向契約與交付檢查。Phase 01 規劃、02 第一版、04 控制驗證、05–06 維護。原 App／API 公開案例新增獨立 preview，不覆寫原候選情境；完整性腳本不替代人工核准。備份：backups/threat-modeling-preview-before.zip。驗證與限制見 docs/THREAT_MODELING_PREVIEW.md。未推送遠端。

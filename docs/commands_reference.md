@@ -615,3 +615,8 @@ Skill 選定後，可直接用一行指令定義該階段的輸入輸出，不�
     *   口語觸發：「逆向分析這個專案」「從程式碼反推需求」「還原舊專案文件」。
     *   逆向工程 Skill 實體位於 skills/00_cross_phase/reverse_engineering/。
     *   六個子 Skill 分別對應 Phase 03/02/01 證據還原 + Phase 04/05/06 現況盤點；來源唯讀，Phase 01 後設人工審核閘口。
+
+
+## 威脅建模條件與生命週期
+
+安全基準已啟用，或使用者明確要求／選取威脅建模時，威脅模型為必要交付物；其餘情況為選用。Phase 01 規劃、Phase 02 完成第一版模型與審查、Phase 03 實作控制、Phase 04 驗證改善措施、Phase 05 確認部署、Phase 06 持續更新。記錄 `phase_gates.json.threat_modeling.requested`／`selected`，不自動開啟安全基準，也不自動核准模型或階段。詳細的 IO／SSOT、候選模型與檢查範圍見 [威脅建模生命週期](THREAT_MODELING_LIFECYCLE.md)。

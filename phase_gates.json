@@ -83,5 +83,11 @@
     "approval_record": "outputs/phase_01_reverse/reverse_completion_summary.json",
     "skill_path": "skills/00_cross_phase/reverse_engineering",
     "description": "唯讀證據盤點：Phase 03→02→01 產生候選基線；Phase 01 後須人工確認才可盤點 Phase 04→05→06。預設不執行來源程式碼/測試/建置/部署，不讀取機密值。"
+  },
+  "threat_modeling": {
+    "requested": false,
+    "selected": false,
+    "skill_path": "skills/02_system_design/threat-modeling",
+    "description": "安全基準已啟用，或使用者明確要求／選取威脅建模時，模型為必要交付物；其餘為選用。Phase 01 規劃、02 交付、04 驗證，05–06 持續更新。"
   }
 }
